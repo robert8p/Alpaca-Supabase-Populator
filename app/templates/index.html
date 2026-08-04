@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpaca Rapid Discovery Loader</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">RD</div>
+        <div><strong>Rapid Discovery</strong><span>Alpaca → Supabase</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-view="new-load"><span>＋</span> New load</button>
+        <button class="nav-item" data-view="jobs"><span>↻</span> Jobs</button>
+        <button class="nav-item" data-view="inventory"><span>▦</span> Inventory</button>
+        <button class="nav-item" data-view="system"><span>⚙</span> System</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="status-dot" id="worker-dot"></div>
+        <div><strong id="worker-label">Checking worker</strong><span id="worker-age">—</span></div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><h1 id="page-title">Overview</h1><p id="page-subtitle">High-throughput, resumable market-data ingestion.</p></div>
+        <div class="top-actions"><button class="ghost" id="refresh-btn">Refresh</button><button class="primary" data-jump="new-load">Create load</button></div>
+      </header>
+
+      <section class="view active" id="view-overview">
+        <div class="metric-grid">
+          <article class="metric"><span>Active jobs</span><strong id="metric-active">—</strong><small>Queued, planning or running</small></article>
+          <article class="metric"><span>Rows loaded</span><strong id="metric-rows">—</strong><small>Across all completed task inserts</small></article>
+          <article class="metric"><span>API requests</span><strong id="metric-requests">—</strong><small>Checkpointed Alpaca pages</small></article>
+          <article class="metric"><span>Completed jobs</span><strong id="metric-completed">—</strong><small>Successful ingestion runs</small></article>
+        </div>
+        <div class="split-grid">
+          <article class="panel">
+            <div class="panel-head"><div><h2>Recent jobs</h2><p>Live progress and controls</p></div><button class="text-btn" data-jump="jobs">View all</button></div>
+            <div id="recent-jobs" class="job-list loading-block">Loading…</div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h2>Architecture</h2><p>Why this loader is faster</p></div></div>
+            <div class="flow">
+              <div><b>1</b><span><strong>Multi-symbol API pages</strong><small>Configurable batches and concurrency</small></span></div>
+              <i>↓</i>
+              <div><b>2</b><span><strong>Compressed staging</strong><small>Page-level resume checkpoints on worker disk</small></span></div>
+              <i>↓</i>
+              <div><b>3</b><span><strong>Postgres COPY</strong><small>Temporary tables, then partition-aware deduplication</small></span></div>
+              <i>↓</i>
+              <div><b>4</b><span><strong>Research features</strong><small>Optional daily feature rows generated incrementally</small></span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-new-load">
+        <div class="preset-row">
+          <button class="preset" data-preset="breadth"><strong>Rapid breadth</strong><span>5-minute · 12 months · broad universe</span></button>
+          <button class="preset" data-preset="precision"><strong>Event precision</strong><span>1-minute · 90 days · selected symbols</span></button>
+          <button class="preset" data-preset="baseline"><strong>Daily baseline</strong><span>Daily · 5 years · broad universe</span></button>
+        </div>
+
+        <form id="load-form">
+          <div class="form-grid">
+            <article class="panel form-panel">
+              <div class="step-title"><b>1</b><div><h2>Research scope</h2><p>Name, dates and candle intervals</p></div></div>
+              <label>Job name<input id="job-name" required minlength="3" value="Rapid discovery load"></label>
+              <div class="two-col"><label>Start date<input id="start-date" type="date" required></label><label>End date<input id="end-date" type="date" required></label></div>
+              <label>Candle intervals</label>
+              <div class="chip-grid" id="timeframe-chips">
+                <label class="chip"><input type="checkbox" value="1Min">1 min</label>
+                <label class="chip selected"><input type="checkbox" value="5Min" checked>5 min</label>
+                <label class="chip"><input type="checkbox" value="10Min">10 min</label>
+                <label class="chip"><input type="checkbox" value="15Min">15 min</label>
+                <label class="chip"><input type="checkbox" value="30Min">30 min</label>
+                <label class="chip"><input type="checkbox" value="1Hour">1 hour</label>
+                <label class="chip"><input type="checkbox" value="1Day">1 day</label>
+              </div>
+              <div class="inline-add"><input id="custom-minute" type="number" min="1" max="59" placeholder="Custom 1–59"><button type="button" class="ghost" id="add-minute">Add minute interval</button></div>
+            </article>
+
+            <article class="panel form-panel">
+              <div class="step-title"><b>2</b><div><h2>Equity universe</h2><p>Choose all active assets or an explicit list</p></div></div>
+              <div class="segmented"><button type="button" class="active" data-universe="all_active">Filtered Alpaca universe</button><button type="button" data-universe="explicit">Explicit symbols</button></div>
+              <div id="universe-filtered">
+                <label>Exchanges</label>
+                <div class="chip-grid compact" id="exchange-chips">
+                  <label class="chip selected"><input type="checkbox" value="NYSE" checked>NYSE</label>
+                  <label class="chip selected"><input type="checkbox" value="NASDAQ" checked>NASDAQ</label>
+                  <label class="chip selected"><input type="checkbox" value="AMEX" checked>AMEX</label>
+                  <label class="chip selected"><input type="checkbox" value="ARCA" checked>ARCA</label>
+                  <label class="chip selected"><input type="checkbox" value="BATS" checked>BATS</label>
+                  <label class="chip"><input type="checkbox" value="OTC">OTC</label>
+                </div>
+                <div class="toggle-grid">
+                  <label><input id="tradable-only" type="checkbox" checked><span>Tradable only</span></label>
+                  <label><input id="fractionable-only" type="checkbox"><span>Fractionable only</span></label>
+                  <label><input id="marginable-only" type="checkbox"><span>Marginable only</span></label>
+                  <label><input id="shortable-only" type="checkbox"><span>Shortable only</span></label>
+                  <label><input id="etb-only" type="checkbox"><span>Easy-to-borrow only</span></label>
+                  <label><input id="overnight-only" type="checkbox"><span>Overnight-tradable only</span></label>
+                </div>
+                <div class="two-col"><label>Include regex<input id="include-regex" placeholder="Optional, e.g. ^[A-M]"></label><label>Exclude regex<input id="exclude-regex" value="[/]" placeholder="Optional"></label></div>
+                <label>Maximum symbols<input id="symbol-limit" type="number" min="1" max="20000" placeholder="Blank = all matches"></label>
+              </div>
+              <div id="universe-explicit" hidden>
+                <label>Symbols<textarea id="symbols" rows="8" placeholder="AAPL, MSFT, NVDA&#10;One per line or comma-separated"></textarea></label>
+                <label class="file-button">Import .txt or .csv<input id="symbol-file" type="file" accept=".txt,.csv"></label>
+              </div>
+            </article>
+
+            <article class="panel form-panel">
+              <div class="step-title"><b>3</b><div><h2>Market data</h2><p>Feed, adjustment and session retention</p></div></div>
+              <div class="two-col"><label>Feed<select id="feed"><option value="sip">SIP — all US exchanges</option><option value="iex">IEX only</option><option value="boats">BOATS overnight</option><option value="otc">OTC</option></select></label><label>Adjustment<select id="adjustment"><option value="raw">Raw</option><option value="split">Split adjusted</option><option value="dividend">Dividend adjusted</option><option value="all">All adjustments</option></select></label></div>
+              <label>As-of symbol mapping date<input id="asof" type="date"><small>Optional. Useful when research spans ticker changes.</small></label>
+              <label>Session retained in Supabase<select id="session-mode"><option value="regular">Regular · 09:30–16:00 ET</option><option value="extended">Extended · 04:00–20:00 ET</option><option value="all">All returned bars</option><option value="custom">Custom ET window</option></select></label>
+              <div class="two-col" id="custom-session" hidden><label>Start ET<input id="custom-start" type="time" value="09:30"></label><label>End ET<input id="custom-end" type="time" value="16:00"></label></div>
+              <label class="checkline"><input id="weekdays-only" type="checkbox" checked><span>Retain weekdays only</span></label>
+            </article>
+
+            <article class="panel form-panel">
+              <div class="step-title"><b>4</b><div><h2>Throughput controls</h2><p>Balance API speed, disk and database pressure</p></div></div>
+              <div class="three-col">
+                <label>Symbols/request<input id="batch-size" type="number" min="1" max="100" value="20"></label>
+                <label>Days/task<input id="chunk-days" type="number" min="1" max="90" value="5"></label>
+                <label>Concurrent tasks<input id="concurrency" type="number" min="1" max="30" value="6"></label>
+              </div>
+              <div class="three-col">
+                <label>Target RPM<input id="target-rpm" type="number" min="60" max="10000" value="9000"></label>
+                <label>Rows/API page<input id="page-limit" type="number" min="100" max="10000" value="10000"></label>
+                <label>Retry limit<input id="max-retries" type="number" min="1" max="20" value="7"></label>
+              </div>
+              <div class="range-label"><span>Retry backoff</span><output id="backoff-output">1.5s</output></div><input id="backoff" type="range" min="0.5" max="10" step="0.5" value="1.5">
+              <div class="callout warning"><strong>Throughput guardrail</strong><span>Higher task concurrency increases API and COPY pressure simultaneously. Start at 6–8 unless Supabase compute has been upgraded.</span></div>
+            </article>
+
+            <article class="panel form-panel wide">
+              <div class="step-title"><b>5</b><div><h2>Storage and research output</h2><p>Deduplication, staged files and feature generation</p></div></div>
+              <div class="three-col">
+                <label>Duplicate handling<select id="conflict-policy"><option value="skip">Skip existing bars — fastest</option><option value="update">Refresh existing bars</option></select></label>
+                <label>Feature session<select id="feature-session"><option value="regular">Regular</option><option value="premarket">Premarket</option><option value="postmarket">Postmarket</option><option value="overnight">Overnight</option><option value="all">All retained bars</option></select></label>
+                <div class="toggle-stack"><label class="checkline"><input id="generate-features" type="checkbox" checked><span>Generate daily research features</span></label><label class="checkline"><input id="keep-staging" type="checkbox"><span>Keep compressed staging files</span></label></div>
+              </div>
+              <div class="estimate-box" id="estimate-box">
+                <div><span>Universe</span><strong id="est-symbols">Not estimated</strong></div>
+                <div><span>Tasks</span><strong id="est-tasks">—</strong></div>
+                <div><span>Expected rows</span><strong id="est-rows">—</strong></div>
+                <div><span>Staging</span><strong id="est-storage">—</strong></div>
+              </div>
+              <div class="form-actions"><button type="button" class="ghost" id="estimate-btn">Estimate load</button><button type="submit" class="primary" id="create-btn">Queue ingestion job</button></div>
+              <p class="form-message" id="form-message"></p>
+            </article>
+          </div>
+        </form>
+      </section>
+
+      <section class="view" id="view-jobs">
+        <article class="panel">
+          <div class="panel-head"><div><h2>Ingestion jobs</h2><p>Pause, resume, cancel, retry or inspect any run</p></div><button class="primary" data-jump="new-load">New load</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Job</th><th>Status</th><th>Progress</th><th>Rows</th><th>Requests</th><th>Created</th><th></th></tr></thead><tbody id="jobs-table"></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-inventory">
+        <article class="panel">
+          <div class="panel-head"><div><h2>Supabase inventory</h2><p>Incremental load ledger by timeframe, feed and adjustment</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Timeframe</th><th>Feed</th><th>Adjustment</th><th>Rows inserted</th><th>Earliest</th><th>Latest</th><th>Loads</th><th>Last load</th></tr></thead><tbody id="inventory-table"></tbody></table></div>
+          <div class="callout"><strong>Interpretation</strong><span>Rows are successful inserts/updates, not a live COUNT(*) of the partitioned bar table. This keeps the dashboard fast at large scale.</span></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-system">
+        <div class="split-grid">
+          <article class="panel"><div class="panel-head"><div><h2>Dependency health</h2><p>Direct connectivity checks</p></div><button class="ghost" id="test-deps">Run tests</button></div><div id="dependency-results" class="system-results">Not tested in this session.</div></article>
+          <article class="panel"><div class="panel-head"><div><h2>Worker services</h2><p>Heartbeat and current task claims</p></div></div><div id="worker-list" class="system-results">Loading…</div></article>
+        </div>
+        <article class="panel"><div class="panel-head"><div><h2>Operational notes</h2><p>Safe defaults for the first deployment</p></div></div><div class="notes-grid"><div><b>Supabase connection</b><span>Use the Session pooler on port 5432 for long-lived COPY transactions.</span></div><div><b>Worker disk</b><span>Only the worker needs /var/data. The web service remains stateless.</span></div><div><b>Initial validation</b><span>Start with 20 symbols, 5-minute bars and ten trading days before scaling.</span></div><div><b>Partitioning</b><span>Monthly bar partitions are created automatically under an advisory lock.</span></div></div></article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="job-dialog"><div class="dialog-head"><div><h2 id="dialog-title">Job detail</h2><p id="dialog-subtitle"></p></div><button id="dialog-close" class="icon-btn">×</button></div><div id="job-detail" class="dialog-body">Loading…</div></dialog>
+  <div id="toast" role="status"></div>
+  <script>window.APP_VERSION = "{{ version }}";</script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
