@@ -34,10 +34,11 @@ The app creates its schema automatically. You can also run `sql/schema.sql` manu
 1. In Render, select **New → Blueprint**.
 2. Connect the new GitHub repository.
 3. Render detects `render.yaml`.
-4. Confirm the two services:
+4. Confirm that both services show the environment variable `PYTHON_VERSION=3.12.7`. This is deliberately duplicated in the Blueprint rather than relying only on the hidden `.python-version` file.
+5. Confirm the two services:
    - `alpaca-rapid-discovery-web`
    - `alpaca-rapid-discovery-worker`
-5. Confirm the worker has a 20 GB persistent disk mounted at `/var/data`.
+6. Confirm the worker has a 20 GB persistent disk mounted at `/var/data`.
 
 The supplied Blueprint uses:
 
@@ -127,6 +128,10 @@ Suggested initial production throughput:
 The target RPM is a ceiling, not a guaranteed rate. Network latency, pagination distribution, staging compression and Supabase writes determine actual throughput.
 
 ## 9. Monitoring and troubleshooting
+
+### Build fails while installing `pydantic-core` or mentions Rust/maturin
+
+The service is using the wrong Python runtime. The deploy log must show `Python 3.12.7` at the start of the build. In Render, open **Environment**, add or correct `PYTHON_VERSION=3.12.7`, save, clear the build cache, and redeploy. Apply the same setting to both the web service and worker.
 
 ### Dashboard says no worker
 

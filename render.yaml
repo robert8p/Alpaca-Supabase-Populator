@@ -4,11 +4,13 @@ services:
     runtime: python
     region: frankfurt
     plan: starter
-    buildCommand: pip install -r requirements.txt
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
       - key: DATABASE_URL
         sync: false
       - key: ALPACA_API_KEY
@@ -33,7 +35,7 @@ services:
     runtime: python
     region: frankfurt
     plan: standard
-    buildCommand: pip install -r requirements.txt
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
     startCommand: python -m app.worker
     autoDeployTrigger: commit
     disk:
@@ -41,6 +43,8 @@ services:
       mountPath: /var/data
       sizeGB: 20
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
       - key: DATABASE_URL
         sync: false
       - key: ALPACA_API_KEY

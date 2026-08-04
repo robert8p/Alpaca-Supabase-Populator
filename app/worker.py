@@ -17,7 +17,7 @@ from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 

@@ -21,7 +21,7 @@ from app.db import close_pool, connection, execute_schema
 from app.core import estimate_for, filter_assets
 from app.models import EstimateRequest, JobCreateRequest
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 logger = logging.getLogger(__name__)
 settings = get_settings()
 security = HTTPBasic()

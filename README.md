@@ -115,6 +115,10 @@ where symbol = 'AAPL'
 order by bar_ts;
 ```
 
+## Runtime compatibility
+
+The Render Blueprint explicitly pins `PYTHON_VERSION=3.12.7` for both services. Do not remove this setting: Render services created from February 2026 onward otherwise default to Python 3.14, which can force pinned binary dependencies to compile from source. The build command also requires binary wheels so an incompatible runtime fails immediately and clearly rather than attempting a Rust/C build.
+
 ## Local use
 
 ```bash
