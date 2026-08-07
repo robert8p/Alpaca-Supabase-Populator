@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from psycopg import sql
+from psycopg.types.json import Jsonb
 
 from app.alpaca import AlpacaClient
 from app.config import get_settings
@@ -29,6 +30,42 @@ class TaskControl(RuntimeError):
     def __init__(self, action: str):
         super().__init__(action)
         self.action = action
+
+
+
+
+def _phase_heartbeat(task_id: int, worker_id: str, job_id: str, phase: str) -> None:
+    """Keep task, worker and job heartbeats fresh during long blocking DB phases."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE rd_tasks SET heartbeat_at=now() WHERE id=%s AND claimed_by=%s",
+                (task_id, worker_id),
+            )
+            cur.execute(
+                """
+                UPDATE rd_workers SET status='running', current_job_id=%s,
+                    heartbeat_at=now(), details=%s
+                WHERE worker_id=%s
+                """,
+                (job_id, Jsonb({"phase": phase, "task_id": task_id}), worker_id),
+            )
+            cur.execute(
+                "UPDATE rd_jobs SET heartbeat_at=now(), claimed_by=%s WHERE id=%s",
+                (worker_id, job_id),
+            )
+        conn.commit()
+
+
+async def _run_blocking_with_heartbeat(
+    func, *args, task_id: int, worker_id: str, job_id: str, phase: str
+):
+    future = asyncio.create_task(asyncio.to_thread(func, *args))
+    while True:
+        done, _ = await asyncio.wait({future}, timeout=15)
+        if future in done:
+            return future.result()
+        await asyncio.to_thread(_phase_heartbeat, task_id, worker_id, job_id, phase)
 
 
 def parse_timestamp(value: str) -> datetime:
@@ -289,10 +326,16 @@ async def process_task(task: dict[str, Any], config: JobConfig, worker_id: str, 
                 cur.execute("UPDATE rd_tasks SET status='loading', heartbeat_at=now() WHERE id=%s", (task_id,))
             conn.commit()
 
-        loaded = await asyncio.to_thread(bulk_load, task, config, path)
+        loaded = await _run_blocking_with_heartbeat(
+            bulk_load, task, config, path,
+            task_id=task_id, worker_id=worker_id, job_id=job_id, phase="bulk_loading"
+        )
         feature_rows = 0
         if config.storage.generate_daily_features and rows_staged:
-            feature_rows = await asyncio.to_thread(refresh_daily_features, task, config)
+            feature_rows = await _run_blocking_with_heartbeat(
+                refresh_daily_features, task, config,
+                task_id=task_id, worker_id=worker_id, job_id=job_id, phase="feature_generation"
+            )
 
         with connection() as conn:
             with conn.cursor() as cur:

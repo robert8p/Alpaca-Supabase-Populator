@@ -21,7 +21,7 @@ from app.db import close_pool, connection, execute_schema
 from app.core import estimate_for, filter_assets
 from app.models import EstimateRequest, JobCreateRequest
 
-VERSION = "1.0.1"
+VERSION = "1.0.3"
 logger = logging.getLogger(__name__)
 settings = get_settings()
 security = HTTPBasic()
@@ -164,7 +164,8 @@ def job_detail(job_id: str, _: str = Depends(require_auth)) -> dict[str, Any]:
             cur.execute(
                 """
                 SELECT id,timeframe,feed,window_start,window_end,symbols,status,pages_completed,
-                    rows_staged,rows_loaded,api_requests,attempts,error,heartbeat_at,completed_at
+                    rows_staged,rows_loaded,api_requests,attempts,error,claimed_by,heartbeat_at,completed_at,
+                    EXTRACT(EPOCH FROM (now()-heartbeat_at))::integer AS heartbeat_age_seconds
                 FROM rd_tasks WHERE job_id=%s ORDER BY id DESC LIMIT 100
                 """,
                 (jid,),
@@ -244,6 +245,45 @@ def job_action(job_id: str, action: str, _: str = Depends(require_auth)) -> dict
                     raise HTTPException(409, f"Job is already {current}")
                 new_status = "cancel_requested"
                 cur.execute("UPDATE rd_jobs SET status=%s WHERE id=%s", (new_status, jid))
+            elif action == "recover":
+                if current not in {"running", "pause_requested", "paused"}:
+                    raise HTTPException(409, f"Cannot recover tasks for a {current} job")
+                stale_seconds = settings.worker_stale_seconds
+                cur.execute(
+                    """
+                    UPDATE rd_tasks SET claimed_by=NULL,
+                        error=COALESCE(error,'Released by manual stalled-task recovery')
+                    WHERE job_id=%s AND status='staged' AND claimed_by IS NOT NULL
+                      AND (heartbeat_at IS NULL OR heartbeat_at < now() - (%s * interval '1 second'))
+                    """,
+                    (jid, stale_seconds),
+                )
+                staged_released = cur.rowcount or 0
+                cur.execute(
+                    """
+                    UPDATE rd_tasks SET
+                        status=CASE WHEN status='loading' THEN 'staged' ELSE 'pending' END,
+                        claimed_by=NULL,
+                        error=COALESCE(error,'Released by manual stalled-task recovery')
+                    WHERE job_id=%s AND status IN ('running','loading')
+                      AND (heartbeat_at IS NULL OR heartbeat_at < now() - (%s * interval '1 second'))
+                    """,
+                    (jid, stale_seconds),
+                )
+                active_recovered = cur.rowcount or 0
+                new_status = "running"
+                cur.execute(
+                    "UPDATE rd_jobs SET status='running',error=NULL,completed_at=NULL WHERE id=%s",
+                    (jid,),
+                )
+                cur.execute(
+                    """
+                    INSERT INTO rd_job_events(job_id,event_type,message,details)
+                    VALUES (%s,'manual_recovery',%s,%s)
+                    """,
+                    (jid, f"Released {staged_released} staged and recovered {active_recovered} running/loading task(s).",
+                     Jsonb({"staged_released": staged_released, "active_recovered": active_recovered})),
+                )
             elif action == "retry":
                 if current not in {"failed", "cancelled"}:
                     raise HTTPException(409, f"Cannot retry a {current} job")
@@ -267,10 +307,11 @@ def job_action(job_id: str, action: str, _: str = Depends(require_auth)) -> dict
                 return {"ok": True, "status": "deleted"}
             else:
                 raise HTTPException(400, "Unsupported action")
-            cur.execute(
-                "INSERT INTO rd_job_events(job_id,event_type,message) VALUES (%s,%s,%s)",
-                (jid, f"action_{action}", f"Action requested: {action}."),
-            )
+            if action != "recover":
+                cur.execute(
+                    "INSERT INTO rd_job_events(job_id,event_type,message) VALUES (%s,%s,%s)",
+                    (jid, f"action_{action}", f"Action requested: {action}."),
+                )
         conn.commit()
     return {"ok": True, "status": new_status}
 

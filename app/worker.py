@@ -12,12 +12,12 @@ from psycopg.types.json import Jsonb
 
 from app.alpaca import AlpacaClient
 from app.config import get_settings
-from app.db import close_pool, connection, execute_schema
+from app.db import assert_database_writable, close_pool, connection, execute_schema
 from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 
-VERSION = "1.0.1"
+VERSION = "1.0.3"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -49,6 +49,21 @@ def recover_stale_tasks() -> None:
     stale_seconds = get_settings().worker_stale_seconds
     with connection() as conn:
         with conn.cursor() as cur:
+            # A task can be checkpointed as `staged` while it is still claimed by the
+            # active worker. If that process stops before switching the task to
+            # `loading`, the old implementation left it permanently unclaimable.
+            cur.execute(
+                """
+                UPDATE rd_tasks SET
+                    claimed_by=NULL,
+                    error=COALESCE(error,'Recovered orphaned staged task after stale worker heartbeat')
+                WHERE status='staged'
+                  AND claimed_by IS NOT NULL
+                  AND (heartbeat_at IS NULL OR heartbeat_at < now() - (%s * interval '1 second'))
+                """,
+                (stale_seconds,),
+            )
+            released_staged = cur.rowcount or 0
             cur.execute(
                 """
                 UPDATE rd_tasks SET
@@ -80,8 +95,10 @@ def recover_stale_tasks() -> None:
                 (stale_seconds,),
             )
         conn.commit()
+    if released_staged:
+        logger.warning("Released %s orphaned staged tasks", released_staged)
     if recovered:
-        logger.warning("Recovered %s stale tasks", recovered)
+        logger.warning("Recovered %s stale running/loading tasks", recovered)
 
 
 def apply_job_controls() -> None:
@@ -242,6 +259,8 @@ async def run_worker() -> None:
     settings.staging_dir.mkdir(parents=True, exist_ok=True)
     if settings.auto_migrate:
         execute_schema()
+    else:
+        assert_database_writable()
     wid = worker_id()
     recover_stale_tasks()
     heartbeat(wid, "idle", details={"max_global_concurrency": settings.max_global_concurrency})

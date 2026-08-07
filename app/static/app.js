@@ -1,6 +1,6 @@
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const state = { dashboard: null, universeMode: 'all_active', activeView: 'overview' };
+const state = { dashboard: null, universeMode: 'all_active', activeView: 'overview', openJobId: null };
 
 function fmtNum(value) {
   const n = Number(value || 0);
@@ -60,7 +60,7 @@ function renderJobCard(job) {
 }
 function jobActions(job) {
   const actions = ['inspect'];
-  if (['running','planning'].includes(job.status)) actions.push('pause','cancel');
+  if (['running','planning'].includes(job.status)) actions.push('recover','pause','cancel');
   if (job.status === 'paused') actions.push('resume','cancel');
   if (['queued','pause_requested'].includes(job.status)) actions.push('cancel');
   if (['failed','cancelled'].includes(job.status)) actions.push('retry','delete');
@@ -210,20 +210,23 @@ document.addEventListener('click',e=>{
   const inspect=e.target.closest('.inspect-job'); if(inspect) return openJob(inspect.dataset.id);
   const action=e.target.closest('[data-action][data-id]'); if(action) handleJobAction(action.dataset.action,action.dataset.id);
 });
-async function openJob(id) {
-  const dialog=$('#job-dialog'); $('#job-detail').innerHTML='Loading…'; dialog.showModal();
+async function openJob(id, show=true) {
+  const dialog=$('#job-dialog'); state.openJobId=id; if(show && !dialog.open) dialog.showModal();
+  if(show) $('#job-detail').innerHTML='Loading…';
   try {
     const data=await api(`/api/jobs/${id}`), j=data.job; $('#dialog-title').textContent=j.name; $('#dialog-subtitle').textContent=`${j.id} · ${j.status}`;
     const summaries=data.task_summary.map(s=>`<span class="badge ${s.status}">${s.status}: ${fmtNum(s.tasks)}</span>`).join(' ');
+    const stalled=data.tasks.filter(t=>['staged','running','loading'].includes(t.status) && Number(t.heartbeat_age_seconds||0)>=180);
+    const stalledHtml=stalled.length ? `<div class="callout warning"><strong>${stalled.length} potentially stalled task(s)</strong><span>${stalled.slice(0,8).map(t=>`#${t.id} ${t.status} · ${fmtNum(t.rows_staged)} rows · ${fmtNum(t.heartbeat_age_seconds)}s stale`).join('<br>')}</span></div>` : '';
     const events=data.events.map(ev=>`<div class="event ${ev.level}"><strong>${escapeHtml(ev.message)}</strong><span>${escapeHtml(ev.event_type)} · ${fmtDate(ev.created_at)}</span></div>`).join('') || '<div class="empty">No events.</div>';
     $('#job-detail').innerHTML=`
       <div class="detail-grid"><div><span>Status</span><strong>${j.status}</strong></div><div><span>Progress</span><strong>${fmtNum(j.completed_tasks)} / ${fmtNum(j.total_tasks)}</strong></div><div><span>Rows loaded</span><strong>${fmtNum(j.rows_loaded)}</strong></div><div><span>API requests</span><strong>${fmtNum(j.api_requests)}</strong></div></div>
-      <p>${summaries}</p>${j.error?`<div class="callout warning"><strong>Error</strong><span>${escapeHtml(j.error)}</span></div>`:''}
+      <p>${summaries}</p>${stalledHtml}${j.error?`<div class="callout warning"><strong>Error</strong><span>${escapeHtml(j.error)}</span></div>`:''}
       <h3>Configuration</h3><pre class="config">${escapeHtml(JSON.stringify(j.config,null,2))}</pre>
       <h3>Latest events</h3><div class="event-list">${events}</div>`;
   } catch(e) { $('#job-detail').innerHTML=`<div class="empty">${escapeHtml(e.message)}</div>`; }
 }
-$('#dialog-close').addEventListener('click',()=>$('#job-dialog').close());
+$('#dialog-close').addEventListener('click',()=>{ state.openJobId=null; $('#job-dialog').close(); });
 
 $('#test-deps').addEventListener('click', async e => {
   setLoading(e.target,true,'Testing…'); $('#dependency-results').textContent='Running direct checks…';
@@ -233,4 +236,4 @@ $('#test-deps').addEventListener('click', async e => {
 });
 
 (function initDates(){ const end=new Date(); end.setDate(end.getDate()-1); const start=new Date(end); start.setFullYear(start.getFullYear()-1); $('#start-date').value=isoDate(start); $('#end-date').value=isoDate(end); })();
-refresh(); setInterval(()=>{ if(!document.hidden) refresh(); },5000);
+refresh(); setInterval(async()=>{ if(!document.hidden) { await refresh(); if(state.openJobId && $('#job-dialog').open) await openJob(state.openJobId,false); } },5000);
