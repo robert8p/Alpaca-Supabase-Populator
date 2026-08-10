@@ -3,7 +3,7 @@ services:
     name: alpaca-rapid-discovery-web
     runtime: python
     region: frankfurt
-    plan: starter
+    plan: free
     buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
