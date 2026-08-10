@@ -5,6 +5,7 @@ import logging
 import os
 import signal
 import socket
+import time
 import uuid
 from typing import Any
 
@@ -19,7 +20,7 @@ from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -265,6 +266,7 @@ async def run_worker() -> None:
         assert_database_writable()
     wid = worker_id()
     recover_stale_tasks()
+    last_recovery = time.monotonic()
     heartbeat(wid, "idle", details={"max_global_concurrency": settings.max_global_concurrency})
     logger.info("Worker %s started", wid)
 
@@ -273,6 +275,9 @@ async def run_worker() -> None:
 
     while not stop_event.is_set():
         try:
+            if time.monotonic() - last_recovery >= 60.0:
+                recover_stale_tasks()
+                last_recovery = time.monotonic()
             apply_job_controls()
             planning_job = claim_job_for_planning(wid)
             if planning_job:
