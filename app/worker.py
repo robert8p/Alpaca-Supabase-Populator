@@ -13,11 +13,13 @@ from psycopg.types.json import Jsonb
 from app.alpaca import AlpacaClient
 from app.config import get_settings
 from app.db import assert_database_writable, close_pool, connection, execute_schema
+from app.e003c_live import run_e003c_scheduler
+from app.live_maintenance import run_daily_maintenance_scheduler
 from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 
-VERSION = "1.0.3"
+VERSION = "1.0.5"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -266,6 +268,9 @@ async def run_worker() -> None:
     heartbeat(wid, "idle", details={"max_global_concurrency": settings.max_global_concurrency})
     logger.info("Worker %s started", wid)
 
+    capture_task = asyncio.create_task(run_e003c_scheduler(stop_event), name="e003c-live-evidence")
+    maintenance_task = asyncio.create_task(run_daily_maintenance_scheduler(stop_event), name="e003c-daily-maintenance")
+
     while not stop_event.is_set():
         try:
             apply_job_controls()
@@ -311,6 +316,9 @@ async def run_worker() -> None:
             heartbeat(wid, "error")
             await asyncio.sleep(max(2, settings.worker_poll_seconds))
 
+    capture_task.cancel()
+    maintenance_task.cancel()
+    await asyncio.gather(capture_task, maintenance_task, return_exceptions=True)
     heartbeat(wid, "stopped")
     close_pool()
 
