@@ -162,7 +162,22 @@ async def _latest_quotes(client: AlpacaClient, symbols: list[str], chunk_size: i
     return quotes
 
 
+def _entry_already_captured(trade_date: date) -> bool:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT EXISTS (SELECT 1 FROM ra_e003c_live_days WHERE trade_date=%s) AS captured",
+                (trade_date,),
+            )
+            row = cur.fetchone()
+        conn.rollback()
+    return bool(row and row["captured"])
+
+
 async def capture_entry(trade_date: date, client: AlpacaClient) -> dict[str, Any]:
+    if _entry_already_captured(trade_date):
+        return {"ok": True, "trade_date": str(trade_date), "reason": "already_captured"}
+
     signal_date = _latest_signal_date(trade_date)
     if signal_date is None or signal_date < trade_date - timedelta(days=5):
         logger.warning("E-003C entry skipped: no recent signal date for %s", trade_date)
