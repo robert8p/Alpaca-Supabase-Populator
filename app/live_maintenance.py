@@ -10,6 +10,7 @@ from psycopg.types.json import Jsonb
 
 from app.db import connection
 from app.e003c_freeze import freeze_latest_completed_signal
+from app.spy_ms001_live import maintain_spy_ms001_shadow
 
 logger = logging.getLogger(__name__)
 NY = ZoneInfo("America/New_York")
@@ -180,6 +181,10 @@ async def run_daily_maintenance_scheduler(stop_event: asyncio.Event) -> None:
             freeze_result = freeze_latest_completed_signal()
             if freeze_result.get("frozen"):
                 logger.info("E-003C signal freeze created: %s", freeze_result)
+
+            spy_shadow = maintain_spy_ms001_shadow()
+            if spy_shadow["signal"].get("frozen") or spy_shadow["outcomes_settled"]:
+                logger.info("SPY-MS-001 shadow updated: %s", spy_shadow)
         except asyncio.CancelledError:
             raise
         except Exception:
