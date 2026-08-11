@@ -4,6 +4,7 @@ import asyncio
 import csv
 import gzip
 import logging
+import re
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,7 @@ CSV_FIELDS = [
     "symbol", "bar_ts", "timeframe", "feed", "adjustment", "session_label",
     "open", "high", "low", "close", "volume", "trade_count", "vwap", "loaded_by_job_id",
 ]
+INVALID_SYMBOL_RE = re.compile(r"invalid symbol:\s*([A-Za-z0-9._-]+)", re.IGNORECASE)
 
 
 class TaskControl(RuntimeError):
@@ -32,6 +34,56 @@ class TaskControl(RuntimeError):
         self.action = action
 
 
+def _invalid_symbol_from_error(exc: BaseException) -> str | None:
+    """Extract the single symbol Alpaca rejected from a batched bars response."""
+    match = INVALID_SYMBOL_RE.search(str(exc))
+    return match.group(1).upper() if match else None
+
+
+def _persist_quarantined_symbol(
+    task_id: int,
+    job_id: str,
+    symbols: list[str],
+    invalid_symbol: str,
+    requests: int,
+) -> None:
+    """Persist a reduced task universe so retries/restarts never reintroduce the bad symbol."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE rd_tasks SET symbols=%s,page_token=NULL,pages_completed=0,rows_staged=0,
+                    api_requests=%s,bytes_staged=0,staging_path=NULL,error=%s,heartbeat_at=now()
+                WHERE id=%s
+                """,
+                (symbols, requests, f"Quarantined Alpaca-invalid symbol: {invalid_symbol}", task_id),
+            )
+        conn.commit()
+    add_event(
+        job_id,
+        "invalid_symbol_quarantined",
+        f"Alpaca rejected {invalid_symbol}; removed only that symbol and retained the rest of the historical batch.",
+        task_id=task_id,
+        level="warning",
+        details={"invalid_symbol": invalid_symbol, "remaining_symbols": len(symbols)},
+    )
+
+
+def _complete_empty_task(task_id: int, job_id: str, path: Path, config: JobConfig) -> None:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE rd_tasks SET status='completed',rows_staged=0,rows_loaded=0,page_token=NULL,
+                    completed_at=now(),heartbeat_at=now(),claimed_by=NULL,error=NULL
+                WHERE id=%s
+                """,
+                (task_id,),
+            )
+        conn.commit()
+    if not config.storage.keep_staging_files:
+        path.unlink(missing_ok=True)
+    add_event(job_id, "empty_historical_batch", "All symbols in this historical batch were rejected by Alpaca; task completed with zero rows.", task_id=task_id, level="warning")
 
 
 def _phase_heartbeat(task_id: int, worker_id: str, job_id: str, phase: str) -> None:
@@ -81,14 +133,13 @@ def _job_control(job_id: str) -> str:
     return row["status"] if row else "cancel_requested"
 
 
-
-
 def _is_cancel(control: str) -> bool:
     return control in {"cancel_requested", "cancelled"}
 
 
 def _is_pause(control: str) -> bool:
     return control in {"pause_requested", "paused"}
+
 
 def _task_path(job_id: str, task_id: int) -> Path:
     base = get_settings().staging_dir / job_id
@@ -278,18 +329,45 @@ async def process_task(task: dict[str, Any], config: JobConfig, worker_id: str, 
                 raise TaskControl("cancel")
             if _is_pause(control):
                 raise TaskControl("pause")
+            if not task["symbols"]:
+                await asyncio.to_thread(_complete_empty_task, task_id, job_id, path, config)
+                return
 
-            result = await client.fetch_bars_page(
-                symbols=task["symbols"],
-                timeframe=task["timeframe"],
-                start=task["window_start"].isoformat(),
-                end=task["window_end"].isoformat(),
-                feed=task["feed"],
-                adjustment=task["adjustment"],
-                asof=config.asof.isoformat() if config.asof else None,
-                limit=config.performance.page_limit,
-                page_token=page_token,
-            )
+            try:
+                result = await client.fetch_bars_page(
+                    symbols=task["symbols"],
+                    timeframe=task["timeframe"],
+                    start=task["window_start"].isoformat(),
+                    end=task["window_end"].isoformat(),
+                    feed=task["feed"],
+                    adjustment=task["adjustment"],
+                    asof=config.asof.isoformat() if config.asof else None,
+                    limit=config.performance.page_limit,
+                    page_token=page_token,
+                )
+            except Exception as exc:
+                invalid_symbol = _invalid_symbol_from_error(exc)
+                if invalid_symbol and invalid_symbol in {str(s).upper() for s in task["symbols"]}:
+                    requests += 1
+                    remaining = [s for s in task["symbols"] if str(s).upper() != invalid_symbol]
+                    # Changing the symbol universe invalidates any saved pagination token or
+                    # partially staged pages. Restart the reduced batch from page one.
+                    path.unlink(missing_ok=True)
+                    page_token = None
+                    pages = 0
+                    rows_staged = 0
+                    task["symbols"] = remaining
+                    await asyncio.to_thread(
+                        _persist_quarantined_symbol,
+                        task_id, job_id, remaining, invalid_symbol, requests,
+                    )
+                    if not remaining:
+                        await asyncio.to_thread(_complete_empty_task, task_id, job_id, path, config)
+                        return
+                    control = await asyncio.to_thread(_job_control, job_id)
+                    continue
+                raise
+
             payload = result.data
             bars_payload = payload.get("bars") or {}
             new_file = not path.exists() or path.stat().st_size == 0
