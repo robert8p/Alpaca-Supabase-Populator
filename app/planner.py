@@ -49,6 +49,8 @@ def _symbol_hash(symbols: list[str]) -> str:
 async def resolve_universe(config: JobConfig, client: AlpacaClient) -> tuple[list[str], list[dict[str, Any]]]:
     if config.universe.mode == "all_known":
         assets = await client.list_known_assets()
+    elif config.universe.mode == "inactive_known":
+        assets = await client.list_assets(status="inactive")
     else:
         assets = await client.list_assets()
     selected = filter_assets(assets, config)
@@ -133,7 +135,10 @@ def claim_job_for_planning(worker_id: str) -> dict[str, Any] | None:
 async def plan_job(job: dict[str, Any], worker_id: str) -> None:
     job_id = job["id"]
     config = JobConfig.model_validate(job["config"])
-    source_description = "active + inactive Alpaca assets" if config.universe.mode == "all_known" else "Alpaca asset universe"
+    source_description = {
+        "all_known": "active + inactive Alpaca assets",
+        "inactive_known": "inactive Alpaca assets",
+    }.get(config.universe.mode, "Alpaca asset universe")
     add_event(job_id, "planning_started", f"Resolving the {source_description} and creating resumable tasks.")
     try:
         async with AlpacaClient(
