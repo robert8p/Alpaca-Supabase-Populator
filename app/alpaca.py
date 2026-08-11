@@ -122,6 +122,30 @@ class AlpacaClient:
         url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/quotes/latest"
         return await self._get(url, {"symbols": ",".join(symbols), "feed": feed})
 
+    async def fetch_quotes_page(
+        self,
+        *,
+        symbols: list[str],
+        start: str,
+        end: str,
+        feed: str,
+        limit: int,
+        page_token: str | None,
+    ) -> RequestResult:
+        """Fetch one page of historical NBBO quotes for a fixed symbol/time window."""
+        url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/quotes"
+        params: dict[str, Any] = {
+            "symbols": ",".join(symbols),
+            "start": start,
+            "end": end,
+            "feed": feed,
+            "limit": limit,
+            "sort": "asc",
+        }
+        if page_token:
+            params["page_token"] = page_token
+        return await self._get(url, params)
+
     async def fetch_bars_page(
         self,
         *,
