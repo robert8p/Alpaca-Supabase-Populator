@@ -52,6 +52,37 @@ def _quote_metrics(quote: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def _parse_quote_datetime(value: Any) -> datetime | None:
+    if isinstance(value, datetime):
+        parsed = value
+    elif isinstance(value, str) and value.strip():
+        text = value.strip()
+        if text.endswith("Z"):
+            text = text[:-1] + "+00:00"
+        try:
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            return None
+    else:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=NY)
+    return parsed.astimezone(NY)
+
+
+def _quote_in_window(
+    observed_at: Any,
+    trade_date: date,
+    start: time,
+    end: time,
+) -> bool:
+    parsed = _parse_quote_datetime(observed_at)
+    if parsed is None or parsed.date() != trade_date:
+        return False
+    current = parsed.timetz().replace(tzinfo=None)
+    return start <= current <= end
+
+
 def _within(now_et: datetime, start: time, end: time) -> bool:
     current = now_et.timetz().replace(tzinfo=None)
     return start <= current <= end
@@ -239,14 +270,18 @@ async def capture_entry(trade_date: date, client: AlpacaClient) -> dict[str, Any
         shortable = bool(asset.get("shortable"))
         easy_to_borrow = bool(asset.get("easy_to_borrow"))
         entry_ge_5 = bool(qm["mid"] is not None and qm["mid"] >= 5)
-        quote_ok = bool(qm["bid"] and qm["ask"] and qm["mid"])
+        quote_values_ok = bool(qm["bid"] and qm["ask"] and qm["mid"])
+        quote_fresh = _quote_in_window(qm["observed_at"], trade_date, time(9, 30), time(9, 35, 59))
+        quote_ok = bool(quote_values_ok and quote_fresh)
         executable = bool(shortable and easy_to_borrow and entry_ge_5 and quote_ok)
         if not shortable:
             reason = "not_shortable"
         elif not easy_to_borrow:
             reason = "hard_to_borrow"
-        elif not quote_ok:
+        elif not quote_values_ok:
             reason = "quote_missing_or_invalid"
+        elif not quote_fresh:
+            reason = "quote_stale_or_outside_entry_window"
         elif not entry_ge_5:
             reason = "entry_below_5"
         else:
@@ -392,6 +427,82 @@ async def capture_entry(trade_date: date, client: AlpacaClient) -> dict[str, Any
     }
 
 
+def _snapshot_candidates(trade_date: date, phase: str) -> tuple[date | None, list[str]]:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            if phase == "entry":
+                cur.execute(
+                    """
+                    SELECT signal_date, symbol
+                    FROM ra_e003c_live_candidates
+                    WHERE trade_date=%s AND rule_version=%s
+                    ORDER BY symbol
+                    """,
+                    (trade_date, RULE_VERSION),
+                )
+            else:
+                cur.execute(
+                    """
+                    SELECT signal_date, symbol
+                    FROM ra_e003c_live_candidates
+                    WHERE trade_date=%s AND rule_version=%s
+                      AND included_in_basket=true
+                    ORDER BY symbol
+                    """,
+                    (trade_date, RULE_VERSION),
+                )
+            rows = [dict(row) for row in cur.fetchall()]
+        conn.rollback()
+    signal_date = rows[0]["signal_date"] if rows else None
+    return signal_date, [row["symbol"] for row in rows]
+
+
+async def capture_quote_snapshot(trade_date: date, phase: str, client: AlpacaClient) -> dict[str, Any]:
+    if phase not in {"entry", "exit"}:
+        raise ValueError(f"Unsupported E-003C quote snapshot phase: {phase}")
+    signal_date, symbols = _snapshot_candidates(trade_date, phase)
+    if not symbols:
+        return {"ok": False, "reason": "no_snapshot_candidates", "phase": phase}
+
+    quotes = await _latest_quotes(client, symbols)
+    recorder_at = datetime.now(tz=NY).replace(second=0, microsecond=0)
+    with connection() as conn:
+        with conn.cursor() as cur:
+            for symbol in symbols:
+                quote = quotes.get(symbol, {})
+                qm = _quote_metrics(quote)
+                cur.execute(
+                    """
+                    INSERT INTO ra_e003c_quote_snapshots(
+                        trade_date, signal_date, symbol, rule_version, phase,
+                        recorder_observed_at, quote_observed_at,
+                        bid, ask, mid, spread_bp, raw_quote
+                    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    ON CONFLICT(trade_date,symbol,phase,recorder_observed_at) DO UPDATE SET
+                        quote_observed_at=excluded.quote_observed_at,
+                        bid=excluded.bid, ask=excluded.ask, mid=excluded.mid,
+                        spread_bp=excluded.spread_bp, raw_quote=excluded.raw_quote
+                    """,
+                    (
+                        trade_date,
+                        signal_date,
+                        symbol,
+                        RULE_VERSION,
+                        phase,
+                        recorder_at,
+                        qm["observed_at"],
+                        qm["bid"],
+                        qm["ask"],
+                        qm["mid"],
+                        qm["spread_bp"],
+                        Jsonb(quote),
+                    ),
+                )
+        conn.commit()
+    logger.info("E-003C %s quote snapshot captured trade_date=%s names=%s", phase, trade_date, len(symbols))
+    return {"ok": True, "phase": phase, "trade_date": str(trade_date), "names": len(symbols)}
+
+
 async def capture_exit(trade_date: date, client: AlpacaClient) -> dict[str, Any]:
     with connection() as conn:
         with conn.cursor() as cur:
@@ -400,7 +511,7 @@ async def capture_exit(trade_date: date, client: AlpacaClient) -> dict[str, Any]
                 SELECT id, symbol, entry_bid, entry_ask, entry_mid, entry_spread_bp
                 FROM ra_e003c_live_candidates
                 WHERE trade_date=%s AND rule_version=%s
-                  AND included_in_basket=true AND exit_observed_at IS NULL
+                  AND included_in_basket=true
                 ORDER BY symbol
                 """,
                 (trade_date, RULE_VERSION),
@@ -419,6 +530,8 @@ async def capture_exit(trade_date: date, client: AlpacaClient) -> dict[str, Any]
                 quote = quotes.get(row["symbol"], {})
                 qm = _quote_metrics(quote)
                 if not qm["bid"] or not qm["ask"] or not qm["mid"]:
+                    continue
+                if not _quote_in_window(qm["observed_at"], trade_date, time(15, 54), time(15, 59, 59)):
                     continue
                 entry_bid = _safe_float(row["entry_bid"])
                 entry_mid = _safe_float(row["entry_mid"])
@@ -443,7 +556,7 @@ async def capture_exit(trade_date: date, client: AlpacaClient) -> dict[str, Any]
                     WHERE id=%s
                     """,
                     (
-                        qm["observed_at"] or datetime.now(tz=NY),
+                        qm["observed_at"],
                         qm["bid"],
                         qm["ask"],
                         qm["mid"],
@@ -471,8 +584,12 @@ async def run_e003c_scheduler(stop_event: asyncio.Event) -> None:
         return
     logger.info("E-003C live evidence scheduler enabled")
     while not stop_event.is_set():
+        fast_window = False
         try:
             now_et = datetime.now(tz=NY)
+            entry_window = _within(now_et, time(9, 30), time(9, 35, 59))
+            exit_window = _within(now_et, time(15, 54), time(15, 59, 59))
+            fast_window = bool(entry_window or exit_window)
             if now_et.weekday() < 5:
                 async with AlpacaClient(
                     target_rpm=min(300, settings.default_target_rpm),
@@ -481,17 +598,21 @@ async def run_e003c_scheduler(stop_event: asyncio.Event) -> None:
                 ) as client:
                     clock = await client.get_clock()
                     is_open = bool(clock.get("is_open")) if isinstance(clock, dict) else False
-                    if is_open and _within(now_et, time(9, 30), time(9, 35, 59)):
+                    if is_open and entry_window:
                         await capture_entry(now_et.date(), client)
-                    if is_open and _within(now_et, time(15, 54), time(15, 59, 59)):
-                        await capture_exit(now_et.date(), client)
+                        await capture_quote_snapshot(now_et.date(), "entry", client)
+                    if is_open and exit_window:
+                        await capture_quote_snapshot(now_et.date(), "exit", client)
+                        if now_et.timetz().replace(tzinfo=None) >= time(15, 58, 30):
+                            await capture_exit(now_et.date(), client)
         except asyncio.CancelledError:
             raise
         except Exception:
             logger.exception("E-003C live evidence scheduler error")
 
         try:
-            poll_seconds = max(10.0, float(os.getenv("E003C_CAPTURE_POLL_SECONDS", "30")))
+            configured_poll = max(10.0, float(os.getenv("E003C_CAPTURE_POLL_SECONDS", "30")))
+            poll_seconds = min(configured_poll, 60.0) if fast_window else configured_poll
             await asyncio.wait_for(stop_event.wait(), timeout=poll_seconds)
         except TimeoutError:
             pass
