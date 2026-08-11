@@ -1,17 +1,30 @@
 from __future__ import annotations
 
 import logging
-from datetime import date
+from datetime import date, datetime, time, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from app.db import connection
 from app.e003c_live import RULE_VERSION, _signal_candidates
 
 logger = logging.getLogger(__name__)
+NY = ZoneInfo("America/New_York")
+SAFE_ALL_SESSION_TIME = time(20, 15)
+
+
+def _safe_signal_date_ceiling(now_et: datetime | None = None) -> date:
+    """Latest date that can possibly contain a complete 04:00-20:00 ET all-session signal."""
+    current = now_et or datetime.now(tz=NY)
+    current_et = current.astimezone(NY)
+    if current_et.timetz().replace(tzinfo=None) >= SAFE_ALL_SESSION_TIME:
+        return current_et.date()
+    return current_et.date() - timedelta(days=1)
 
 
 def _latest_completed_feature_date() -> date | None:
-    """Return the latest all-session feature date that is not still being loaded."""
+    """Return the latest complete all-session feature date that is not still being loaded."""
+    safe_ceiling = _safe_signal_date_ceiling()
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -24,6 +37,7 @@ def _latest_completed_feature_date() -> date | None:
                       AND feed='sip'
                       AND adjustment='raw'
                       AND session_label='all'
+                      AND trade_date <= %s
                 ) f
                 WHERE NOT EXISTS (
                     SELECT 1
@@ -36,7 +50,8 @@ def _latest_completed_feature_date() -> date | None:
                       AND (j.config->>'start_date')::date <= f.trade_date
                       AND (j.config->>'end_date')::date >= f.trade_date
                 )
-                """
+                """,
+                (safe_ceiling,),
             )
             row = cur.fetchone()
         conn.rollback()
@@ -63,6 +78,15 @@ def _already_frozen(signal_date: date) -> bool:
 
 def freeze_signal_date(signal_date: date) -> dict[str, Any]:
     """Persist the frozen E-003C candidate list for a completed signal date."""
+    safe_ceiling = _safe_signal_date_ceiling()
+    if signal_date > safe_ceiling:
+        return {
+            "signal_date": str(signal_date),
+            "frozen": False,
+            "reason": "all_session_not_yet_complete",
+            "safe_ceiling": str(safe_ceiling),
+        }
+
     if _already_frozen(signal_date):
         return {"signal_date": str(signal_date), "frozen": False, "reason": "already_frozen"}
 
