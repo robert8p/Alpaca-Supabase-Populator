@@ -19,8 +19,9 @@ from app.live_maintenance import run_daily_maintenance_scheduler
 from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
+from app.rv30_quote_audit import run_rv30_quote_audit_batch
 
-VERSION = "1.0.6"
+VERSION = "1.0.7"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -52,9 +53,6 @@ def recover_stale_tasks() -> None:
     stale_seconds = get_settings().worker_stale_seconds
     with connection() as conn:
         with conn.cursor() as cur:
-            # A task can be checkpointed as `staged` while it is still claimed by the
-            # active worker. If that process stops before switching the task to
-            # `loading`, the old implementation left it permanently unclaimable.
             cur.execute(
                 """
                 UPDATE rd_tasks SET
@@ -287,6 +285,10 @@ async def run_worker() -> None:
 
             job = next_running_job()
             if not job:
+                audited = await run_rv30_quote_audit_batch()
+                if audited:
+                    heartbeat(wid, "rv30_quote_audit", details={"groups_processed": audited})
+                    continue
                 heartbeat(wid, "idle")
                 try:
                     await asyncio.wait_for(stop_event.wait(), timeout=settings.worker_poll_seconds)
