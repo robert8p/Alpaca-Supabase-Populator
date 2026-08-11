@@ -11,7 +11,7 @@ SYMBOL_RE = re.compile(r"^[A-Z0-9.\-]+$")
 
 
 class UniverseConfig(BaseModel):
-    mode: Literal["all_active", "all_known", "explicit"] = "all_active"
+    mode: Literal["all_active", "all_known", "inactive_known", "explicit"] = "all_active"
     symbols: list[str] = Field(default_factory=list)
     exchanges: list[str] = Field(default_factory=lambda: ["NYSE", "NASDAQ", "AMEX", "ARCA", "BATS", "NYSEARCA"])
     tradable_only: bool = True

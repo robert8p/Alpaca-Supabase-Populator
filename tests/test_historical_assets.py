@@ -61,6 +61,13 @@ def test_resolve_all_known_can_source_inactive_history_without_current_tradable_
     assert any(row["status"] == "inactive" for row in assets)
 
 
+def test_inactive_known_sources_only_inactive_assets():
+    client = FakeAlpacaClient()
+    symbols, assets = asyncio.run(resolve_universe(_config("inactive_known", tradable_only=False), client))
+    assert symbols == ["OLD", "SAME"]
+    assert all(row["status"] == "inactive" for row in assets)
+
+
 def test_all_active_behavior_is_unchanged():
     client = FakeAlpacaClient()
     symbols, _ = asyncio.run(resolve_universe(_config("all_active", tradable_only=True), client))
