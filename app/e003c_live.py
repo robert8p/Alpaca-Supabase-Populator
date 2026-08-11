@@ -151,6 +151,48 @@ def _signal_candidates(signal_date: date) -> list[dict[str, Any]]:
     return [dict(row) for row in rows]
 
 
+def _entry_signal_candidates(signal_date: date) -> list[dict[str, Any]]:
+    """Use the immutable pre-market freeze when present; recompute only as fallback."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT candidate_count
+                FROM ra_e003c_signal_freeze_days
+                WHERE signal_date=%s AND rule_version=%s
+                """,
+                (signal_date, RULE_VERSION),
+            )
+            freeze_day = cur.fetchone()
+            if freeze_day:
+                cur.execute(
+                    """
+                    SELECT symbol,
+                           signal_open, signal_high, signal_low, signal_close,
+                           signal_return_pct, signal_range_pct, signal_dollar_volume,
+                           signal_bar_count, prior_range_pct, prior_dollar_volume,
+                           prior_bar_count, range_log_change, dollar_volume_log_change,
+                           bar_count_log_change
+                    FROM ra_e003c_signal_freeze_candidates
+                    WHERE signal_date=%s AND rule_version=%s
+                    ORDER BY symbol
+                    """,
+                    (signal_date, RULE_VERSION),
+                )
+                rows = [dict(row) for row in cur.fetchall()]
+                expected = int(freeze_day["candidate_count"])
+                if len(rows) != expected:
+                    raise RuntimeError(
+                        f"E-003C freeze ledger mismatch for {signal_date}: expected {expected}, found {len(rows)}"
+                    )
+                conn.rollback()
+                return rows
+        conn.rollback()
+
+    logger.warning("E-003C entry using recomputed candidates because no freeze exists for %s", signal_date)
+    return _signal_candidates(signal_date)
+
+
 async def _latest_quotes(client: AlpacaClient, symbols: list[str], chunk_size: int = 150) -> dict[str, dict[str, Any]]:
     quotes: dict[str, dict[str, Any]] = {}
     for index in range(0, len(symbols), chunk_size):
@@ -183,7 +225,7 @@ async def capture_entry(trade_date: date, client: AlpacaClient) -> dict[str, Any
         logger.warning("E-003C entry skipped: no recent signal date for %s", trade_date)
         return {"ok": False, "reason": "signal_date_missing"}
 
-    candidates = _signal_candidates(signal_date)
+    candidates = _entry_signal_candidates(signal_date)
     symbols = [row["symbol"] for row in candidates]
     assets = {str(asset.get("symbol")): asset for asset in await client.list_assets()}
     quotes = await _latest_quotes(client, symbols) if symbols else {}
