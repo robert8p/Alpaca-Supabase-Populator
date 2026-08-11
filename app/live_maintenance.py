@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 from psycopg.types.json import Jsonb
 
 from app.db import connection
+from app.e003c_freeze import freeze_latest_completed_signal
 
 logger = logging.getLogger(__name__)
 NY = ZoneInfo("America/New_York")
@@ -175,6 +176,10 @@ async def run_daily_maintenance_scheduler(stop_event: asyncio.Event) -> None:
             queued = queue_safe_missing_days(now_et)
             if queued:
                 logger.info("E-003C maintenance queued missing dates: %s", queued)
+
+            freeze_result = freeze_latest_completed_signal()
+            if freeze_result.get("frozen"):
+                logger.info("E-003C signal freeze created: %s", freeze_result)
         except asyncio.CancelledError:
             raise
         except Exception:
