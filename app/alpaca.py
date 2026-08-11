@@ -104,12 +104,36 @@ class AlpacaClient:
                 await asyncio.sleep(self.backoff_seconds * (2 ** min(attempt, 6)) + random.random())
         raise AlpacaError(f"Alpaca request failed after retries: {last_error}")
 
-    async def list_assets(self) -> list[dict[str, Any]]:
+    async def list_assets(self, *, status: str = "active") -> list[dict[str, Any]]:
         url = f"{self.settings.alpaca_trading_base_url.rstrip('/')}/v2/assets"
-        result = await self._get(url, {"status": "active", "asset_class": "us_equity"})
+        result = await self._get(url, {"status": status, "asset_class": "us_equity"})
         if not isinstance(result.data, list):
             raise AlpacaError("Unexpected assets response")
         return result.data
+
+    async def list_known_assets(self) -> list[dict[str, Any]]:
+        """Return the union of currently active and inactive US-equity asset records.
+
+        Historical research must not derive its raw-symbol source only from the
+        set of securities that remain active today. Alpaca exposes inactive asset
+        records separately, so the loader can request their historical bars too.
+        Duplicate symbols are resolved in favour of the active record; old symbols
+        with distinct tickers remain available for historical `asof` requests.
+        """
+        active, inactive = await asyncio.gather(
+            self.list_assets(status="active"),
+            self.list_assets(status="inactive"),
+        )
+        by_symbol: dict[str, dict[str, Any]] = {}
+        for asset in inactive:
+            symbol = str(asset.get("symbol") or "").upper()
+            if symbol:
+                by_symbol[symbol] = asset
+        for asset in active:
+            symbol = str(asset.get("symbol") or "").upper()
+            if symbol:
+                by_symbol[symbol] = asset
+        return [by_symbol[symbol] for symbol in sorted(by_symbol)]
 
     async def get_clock(self) -> dict[str, Any]:
         url = f"{self.settings.alpaca_trading_base_url.rstrip('/')}/v2/clock"
