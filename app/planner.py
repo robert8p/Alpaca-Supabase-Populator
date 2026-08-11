@@ -47,7 +47,10 @@ def _symbol_hash(symbols: list[str]) -> str:
 
 
 async def resolve_universe(config: JobConfig, client: AlpacaClient) -> tuple[list[str], list[dict[str, Any]]]:
-    assets = await client.list_assets()
+    if config.universe.mode == "all_known":
+        assets = await client.list_known_assets()
+    else:
+        assets = await client.list_assets()
     selected = filter_assets(assets, config)
     symbols = [str(asset["symbol"]).upper() for asset in selected]
     return symbols, selected
@@ -130,7 +133,8 @@ def claim_job_for_planning(worker_id: str) -> dict[str, Any] | None:
 async def plan_job(job: dict[str, Any], worker_id: str) -> None:
     job_id = job["id"]
     config = JobConfig.model_validate(job["config"])
-    add_event(job_id, "planning_started", "Resolving the Alpaca asset universe and creating resumable tasks.")
+    source_description = "active + inactive Alpaca assets" if config.universe.mode == "all_known" else "Alpaca asset universe"
+    add_event(job_id, "planning_started", f"Resolving the {source_description} and creating resumable tasks.")
     try:
         async with AlpacaClient(
             target_rpm=min(config.performance.target_rpm, 1000),
@@ -193,7 +197,7 @@ async def plan_job(job: dict[str, Any], worker_id: str) -> None:
                 )
             conn.commit()
         estimate = estimate_for(config, len(symbols))
-        add_event(job_id, "planning_completed", f"Planned {len(task_rows):,} tasks across {len(symbols):,} symbols.", details=estimate)
+        add_event(job_id, "planning_completed", f"Planned {len(task_rows):,} tasks across {len(symbols):,} symbols.", details={**estimate, "universe_mode": config.universe.mode})
     except Exception as exc:
         logger.exception("Planning failed for job %s", job_id)
         with connection() as conn:
