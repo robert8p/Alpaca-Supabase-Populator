@@ -121,9 +121,9 @@ def _signal_candidates(signal_date: date) -> list[dict[str, Any]]:
                        s.bar_count AS signal_bar_count,
                        p.range_pct AS prior_range_pct, p.dollar_volume AS prior_dollar_volume,
                        p.bar_count AS prior_bar_count,
-                       ln(s.range_pct / p.range_pct) AS range_log_change,
-                       ln(s.dollar_volume / p.dollar_volume) AS dollar_volume_log_change,
-                       ln(s.bar_count::double precision / p.bar_count::double precision) AS bar_count_log_change
+                       ln((s.range_pct + 0.01) / (p.range_pct + 0.01)) AS range_log_change,
+                       ln((s.dollar_volume + 1) / (p.dollar_volume + 1)) AS dollar_volume_log_change,
+                       ln((s.bar_count + 1)::double precision / (p.bar_count + 1)::double precision) AS bar_count_log_change
                 FROM s JOIN p USING(symbol)
                 WHERE s.open >= 5
                   AND s.close >= 5
@@ -133,9 +133,9 @@ def _signal_candidates(signal_date: date) -> list[dict[str, Any]]:
                   AND s.range_pct > 0 AND p.range_pct > 0
                   AND s.dollar_volume > 0 AND p.dollar_volume > 0
                   AND p.bar_count > 0
-                  AND ln(s.range_pct / p.range_pct) >= %s
-                  AND ln(s.dollar_volume / p.dollar_volume) >= %s
-                  AND ln(s.bar_count::double precision / p.bar_count::double precision) >= %s
+                  AND ln((s.range_pct + 0.01) / (p.range_pct + 0.01)) >= %s
+                  AND ln((s.dollar_volume + 1) / (p.dollar_volume + 1)) >= %s
+                  AND ln((s.bar_count + 1)::double precision / (p.bar_count + 1)::double precision) >= %s
                 ORDER BY s.symbol
                 """,
                 (
