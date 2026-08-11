@@ -481,9 +481,9 @@ async def run_e003c_scheduler(stop_event: asyncio.Event) -> None:
                 ) as client:
                     clock = await client.get_clock()
                     is_open = bool(clock.get("is_open")) if isinstance(clock, dict) else False
-                    if is_open and _within(now_et, time(9, 30), time(9, 40)):
+                    if is_open and _within(now_et, time(9, 30), time(9, 35, 59)):
                         await capture_entry(now_et.date(), client)
-                    if is_open and _within(now_et, time(15, 50), time(15, 59, 59)):
+                    if is_open and _within(now_et, time(15, 54), time(15, 59, 59)):
                         await capture_exit(now_et.date(), client)
         except asyncio.CancelledError:
             raise
