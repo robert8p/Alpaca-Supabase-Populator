@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import Any
+from typing import Any, Iterator
 
 from app.alpaca import AlpacaClient
 from app.config import get_settings
@@ -44,10 +44,21 @@ def _claim_groups(limit: int = BATCH_SIZE) -> list[dict[str, Any]]:
 
 
 def _quote_time(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    # Alpaca commonly returns RFC3339 timestamps with nanoseconds. Python accepts
+    # standard ISO offsets; trim excess fractional precision deterministically.
+    text = value.strip().replace("Z", "+00:00")
+    if "." in text:
+        head, tail = text.split(".", 1)
+        sign_pos = max(tail.find("+"), tail.find("-"))
+        if sign_pos >= 0:
+            fraction, offset = tail[:sign_pos], tail[sign_pos:]
+        else:
+            fraction, offset = tail, ""
+        text = f"{head}.{fraction[:6]}{offset}"
+    return datetime.fromisoformat(text)
 
 
-def _iter_quotes(data: Any):
+def _iter_quotes(data: Any) -> Iterator[tuple[str, dict[str, Any]]]:
     if not isinstance(data, dict):
         return
     payload = data.get("quotes")
@@ -67,7 +78,13 @@ def _iter_quotes(data: Any):
                 yield str(symbol), row
 
 
-def _valid_snapshot(symbol: str, row: dict[str, Any], target_ts: datetime) -> dict[str, Any] | None:
+def _valid_snapshot(
+    symbol: str,
+    row: dict[str, Any],
+    *,
+    earliest_ts: datetime,
+    target_ts: datetime,
+) -> dict[str, Any] | None:
     ts_raw = row.get("t") or row.get("timestamp")
     if not ts_raw:
         return None
@@ -77,7 +94,7 @@ def _valid_snapshot(symbol: str, row: dict[str, Any], target_ts: datetime) -> di
         ask = float(row.get("ap") if row.get("ap") is not None else row.get("ask_price"))
     except (TypeError, ValueError):
         return None
-    if bid <= 0 or ask < bid or quote_ts < target_ts:
+    if bid <= 0 or ask < bid or quote_ts < earliest_ts:
         return None
     bid_size_raw = row.get("bs") if row.get("bs") is not None else row.get("bid_size")
     ask_size_raw = row.get("as") if row.get("as") is not None else row.get("ask_size")
@@ -111,7 +128,12 @@ async def _process_group(client: AlpacaClient, group: dict[str, Any]) -> None:
             for symbol, row in _iter_quotes(result.data):
                 if symbol in first:
                     continue
-                snap = _valid_snapshot(symbol, row, group["request_start"])
+                snap = _valid_snapshot(
+                    symbol,
+                    row,
+                    earliest_ts=group["request_start"],
+                    target_ts=group["target_ts"],
+                )
                 if snap is not None:
                     first[symbol] = snap
             if len(first) == len(symbols):
@@ -201,7 +223,11 @@ async def run_rv30_quote_audit_batch() -> int:
     if not groups:
         return 0
     settings = get_settings()
-    async with AlpacaClient(target_rpm=min(settings.default_target_rpm, 600), max_retries=5, backoff_seconds=1.0) as client:
+    async with AlpacaClient(
+        target_rpm=min(settings.default_target_rpm, 600),
+        max_retries=5,
+        backoff_seconds=1.0,
+    ) as client:
         for group in groups:
             await _process_group(client, group)
     logger.info("Processed %s frozen RV30 quote-audit groups", len(groups))
