@@ -55,6 +55,22 @@ def _already_complete() -> bool:
     return complete == len(_SIGNAL_COLS) * len(_EXIT_COLS)
 
 
+def _family_complete(signal_name: str, exit_name: str) -> bool:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("select to_regclass('research.blankcanvas_pair_scan_status_v1') as rel")
+            if cur.fetchone()["rel"] is None:
+                conn.rollback()
+                return False
+            cur.execute(
+                "select status from research.blankcanvas_pair_scan_status_v1 where signal_name=%s and exit_name=%s",
+                (signal_name, exit_name),
+            )
+            row = cur.fetchone()
+        conn.rollback()
+    return bool(row and row["status"] == "completed")
+
+
 def _ensure_tables() -> None:
     with connection() as conn:
         with conn.cursor() as cur:
@@ -85,6 +101,7 @@ def _ensure_tables() -> None:
 def _populate_family(signal_name: str, signal_col: str, exit_name: str, exit_col: str) -> int:
     with connection() as conn:
         with conn.cursor() as cur:
+            cur.execute("set local work_mem='256MB'")
             cur.execute(
                 """
                 insert into research.blankcanvas_pair_scan_status_v1(signal_name,exit_name,status,started_at,completed_at,error)
@@ -136,6 +153,7 @@ def _populate_family(signal_name: str, signal_col: str, exit_name: str, exit_col
 def _build_summaries() -> tuple[int, int]:
     with connection() as conn:
         with conn.cursor() as cur:
+            cur.execute("set local work_mem='256MB'")
             cur.execute("drop table if exists research.blankcanvas_pair_candidate_summary_v1")
             cur.execute(
                 """
@@ -256,6 +274,9 @@ def _run_scan() -> None:
     logger.warning("Pair candidate ledger scan started; registered candidate definitions=%s", theoretical_candidates)
     for signal_name, signal_col in _SIGNAL_COLS.items():
         for exit_name, exit_col in _EXIT_COLS.items():
+            if _family_complete(signal_name, exit_name):
+                logger.info("Pair ledger already completed %s->%s; skipping", signal_name, exit_name)
+                continue
             try:
                 rows = _populate_family(signal_name, signal_col, exit_name, exit_col)
                 logger.info("Pair ledger completed %s->%s: %s year-stat rows", signal_name, exit_name, rows)
