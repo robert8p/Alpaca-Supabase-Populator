@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-from datetime import date
+from datetime import date, timedelta
 
 from app.db import connection
 
@@ -29,6 +29,9 @@ def _months(start_year: int = 2017, start_month: int = 1, end_year: int = 2026, 
 def _compact_month(year: int, month: int) -> int:
     table = f"rd_bars_{year}{month:02d}"
     month_start = date(year, month, 1)
+    next_month = date(year + 1, 1, 1) if month == 12 else date(year, month + 1, 1)
+    month_end = next_month - timedelta(days=1)
+
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute("select to_regclass(%s) as rel", (f"public.{table}",))
@@ -70,25 +73,39 @@ def _compact_month(year: int, month: int) -> int:
             )
             conn.commit()
 
+        # Generate the small set of exact market-clock timestamps first, then join once to the
+        # physical monthly partition. This avoids repeatedly applying timezone functions across
+        # every minute row and benchmarks at roughly one second per month on the research DB.
         sql = f"""
+            with days as (
+              select d::date trade_date
+              from generate_series(date '{month_start.isoformat()}', date '{month_end.isoformat()}', interval '1 day') d
+              where extract(isodow from d) < 6
+            ), mins as (
+              select m as minute_et
+              from generate_series(570,959) m
+              where m=959
+                 or mod(m-570,30)=0
+                 or mod(m-585,30)=0
+                 or mod(m-601,30)=0
+            ), grid as (
+              select s.symbol,d.trade_date,m.minute_et,
+                ((d.trade_date + make_time((m.minute_et/60)::int,(m.minute_et%60)::int,0))
+                  at time zone 'America/New_York') bar_ts
+              from days d
+              cross join mins m
+              cross join (values('DIA'),('HYG'),('QQQ'),('SPY'),('TLT'),('USO')) s(symbol)
+            )
             insert into public.blankcanvas_intraday_snapshots_v1(symbol,trade_date,minute_et,open,close)
-            select symbol,(bar_ts at time zone 'America/New_York')::date,
-              (extract(hour from bar_ts at time zone 'America/New_York')::int*60
-               + extract(minute from bar_ts at time zone 'America/New_York')::int),
-              open,close
-            from public.{table}
-            where symbol in ({_SYMBOLS_SQL})
-              and timeframe='1Min' and feed='sip' and adjustment='raw' and session_label='regular'
-              and (
-                (extract(hour from bar_ts at time zone 'America/New_York')::int*60
-                 + extract(minute from bar_ts at time zone 'America/New_York')::int)=959
-                or mod((extract(hour from bar_ts at time zone 'America/New_York')::int*60
-                 + extract(minute from bar_ts at time zone 'America/New_York')::int)-570,30)=0
-                or mod((extract(hour from bar_ts at time zone 'America/New_York')::int*60
-                 + extract(minute from bar_ts at time zone 'America/New_York')::int)-585,30)=0
-                or mod((extract(hour from bar_ts at time zone 'America/New_York')::int*60
-                 + extract(minute from bar_ts at time zone 'America/New_York')::int)-601,30)=0
-              )
+            select g.symbol,g.trade_date,g.minute_et,b.open,b.close
+            from grid g
+            join public.{table} b
+              on b.symbol=g.symbol
+             and b.timeframe='1Min'
+             and b.feed='sip'
+             and b.adjustment='raw'
+             and b.session_label='regular'
+             and b.bar_ts=g.bar_ts
             on conflict(symbol,trade_date,minute_et) do update set
               open=excluded.open,close=excluded.close
         """
@@ -110,7 +127,7 @@ def _compact_month(year: int, month: int) -> int:
 async def run_intraday_snapshot_compactor(stop_event: asyncio.Event) -> None:
     """Low-priority one-off compaction of selected intraday clock points.
 
-    The task is inert unless BLANKCANVAS_INTRADAY_COMPACTOR is enabled. It scans one physical
+    The task is inert unless BLANKCANVAS_INTRADAY_COMPACTOR is enabled. It reads one physical
     monthly partition at a time, commits after each month, and never modifies rd_bars.
     """
     if not _enabled():
