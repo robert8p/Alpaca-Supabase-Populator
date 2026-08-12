@@ -199,15 +199,19 @@ async def run_daily_maintenance_scheduler(stop_event: asyncio.Event) -> None:
     while not stop_event.is_set():
         try:
             now_et = datetime.now(tz=NY)
-            queued = queue_safe_missing_days(now_et)
+
+            # All maintenance work is synchronous PostgreSQL/CPU work. Keep it off the
+            # asyncio event loop so a slow research query can never starve the E-003C
+            # point-in-time entry/exit scheduler during a live capture window.
+            queued = await asyncio.to_thread(queue_safe_missing_days, now_et)
             if queued:
                 logger.info("E-003C maintenance queued missing dates: %s", queued)
 
-            freeze_result = freeze_latest_completed_signal()
+            freeze_result = await asyncio.to_thread(freeze_latest_completed_signal)
             if freeze_result.get("frozen"):
                 logger.info("E-003C signal freeze created: %s", freeze_result)
 
-            spy_shadow = maintain_spy_ms001_shadow()
+            spy_shadow = await asyncio.to_thread(maintain_spy_ms001_shadow)
             if spy_shadow["signal"].get("frozen") or spy_shadow["outcomes_settled"]:
                 logger.info("SPY-MS-001 shadow updated: %s", spy_shadow)
         except asyncio.CancelledError:
