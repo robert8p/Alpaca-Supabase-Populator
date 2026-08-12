@@ -16,13 +16,14 @@ from app.alpaca import AlpacaClient
 from app.config import get_settings
 from app.db import assert_database_writable, close_pool, connection, execute_schema
 from app.e003c_live import run_e003c_scheduler
+from app.intraday_snapshot_compactor import run_intraday_snapshot_compactor
 from app.live_maintenance import run_daily_maintenance_scheduler
 from app.loader import process_task
 from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 from app.rv30_quote_audit import run_rv30_quote_audit_batch
 
-VERSION = "1.0.8"
+VERSION = "1.0.9"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -276,6 +277,7 @@ async def run_worker() -> None:
 
     capture_task = asyncio.create_task(run_e003c_scheduler(stop_event), name="e003c-live-evidence")
     maintenance_task = asyncio.create_task(run_daily_maintenance_scheduler(stop_event), name="e003c-daily-maintenance")
+    compactor_task = asyncio.create_task(run_intraday_snapshot_compactor(stop_event), name="blankcanvas-intraday-compactor")
 
     while not stop_event.is_set():
         try:
@@ -331,7 +333,8 @@ async def run_worker() -> None:
 
     capture_task.cancel()
     maintenance_task.cancel()
-    await asyncio.gather(capture_task, maintenance_task, return_exceptions=True)
+    compactor_task.cancel()
+    await asyncio.gather(capture_task, maintenance_task, compactor_task, return_exceptions=True)
     heartbeat(wid, "stopped")
     close_pool()
 
