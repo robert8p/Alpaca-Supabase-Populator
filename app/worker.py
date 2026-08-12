@@ -11,6 +11,7 @@ from typing import Any
 
 from psycopg.types.json import Jsonb
 
+from app.adjusted_daily_audit import run_adjusted_daily_audit_once
 from app.alpaca import AlpacaClient
 from app.config import get_settings
 from app.db import assert_database_writable, close_pool, connection, execute_schema
@@ -21,7 +22,7 @@ from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 from app.rv30_quote_audit import run_rv30_quote_audit_batch
 
-VERSION = "1.0.7"
+VERSION = "1.0.8"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -267,6 +268,11 @@ async def run_worker() -> None:
     last_recovery = time.monotonic()
     heartbeat(wid, "idle", details={"max_global_concurrency": settings.max_global_concurrency})
     logger.info("Worker %s started", wid)
+
+    audit_rows = await run_adjusted_daily_audit_once()
+    if audit_rows:
+        heartbeat(wid, "adjusted_daily_audit", details={"rows_upserted": audit_rows})
+        logger.warning("One-off adjusted daily audit wrote %s rows", audit_rows)
 
     capture_task = asyncio.create_task(run_e003c_scheduler(stop_event), name="e003c-live-evidence")
     maintenance_task = asyncio.create_task(run_daily_maintenance_scheduler(stop_event), name="e003c-daily-maintenance")
