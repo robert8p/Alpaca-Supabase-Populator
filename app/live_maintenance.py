@@ -36,17 +36,36 @@ def _latest_feature_date() -> date | None:
 
 
 def _day_is_loaded(trade_date: date) -> bool:
+    """Only treat a signal day as loaded when a feature-generating all-session job completed after 20:15 ET."""
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT EXISTS(
-                    SELECT 1 FROM rd_daily_features
-                    WHERE trade_date=%s
-                      AND timeframe='1Min' AND feed='sip' AND adjustment='raw' AND session_label='all'
-                ) AS loaded
+                SELECT
+                    EXISTS(
+                        SELECT 1
+                        FROM rd_daily_features f
+                        WHERE f.trade_date=%s
+                          AND f.timeframe='1Min'
+                          AND f.feed='sip'
+                          AND f.adjustment='raw'
+                          AND f.session_label='all'
+                    )
+                    AND EXISTS(
+                        SELECT 1
+                        FROM rd_jobs j
+                        WHERE j.status='completed'
+                          AND j.config->>'feed'='sip'
+                          AND j.config->>'adjustment'='raw'
+                          AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
+                          AND COALESCE(j.config->'session'->>'mode','')='all'
+                          AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
+                          AND (j.config->>'start_date')::date <= %s
+                          AND (j.config->>'end_date')::date >= %s
+                          AND j.completed_at >= ((%s::date + time '20:15') AT TIME ZONE 'America/New_York')
+                    ) AS loaded
                 """,
-                (trade_date,),
+                (trade_date, trade_date, trade_date, trade_date),
             )
             row = cur.fetchone()
         conn.rollback()
@@ -54,6 +73,7 @@ def _day_is_loaded(trade_date: date) -> bool:
 
 
 def _day_has_covering_job(trade_date: date) -> bool:
+    """Avoid duplicate feature jobs, but do not let partial/completed early jobs suppress the post-close maintenance run."""
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -61,11 +81,12 @@ def _day_has_covering_job(trade_date: date) -> bool:
                 SELECT EXISTS(
                     SELECT 1
                     FROM rd_jobs
-                    WHERE status IN ('queued','planning','running','pause_requested','paused','completed')
+                    WHERE status IN ('queued','planning','running','pause_requested')
                       AND config->>'feed'='sip'
                       AND config->>'adjustment'='raw'
                       AND COALESCE(config->'timeframes','[]'::jsonb) ? '1Min'
                       AND COALESCE(config->'session'->>'mode','')='all'
+                      AND COALESCE(config->'storage'->>'generate_daily_features','false')='true'
                       AND (config->>'start_date')::date <= %s
                       AND (config->>'end_date')::date >= %s
                 ) AS covered
@@ -154,6 +175,10 @@ def queue_safe_missing_days(now_et: datetime) -> list[str]:
     safe_date = now_et.date() if now_et.timetz().replace(tzinfo=None) >= time(20, 15) else now_et.date() - timedelta(days=1)
     latest = _latest_feature_date()
     start = (latest + timedelta(days=1)) if latest else safe_date
+    if latest is not None and latest == safe_date and not _day_is_loaded(safe_date):
+        # A partial same-day feature set can exist from an intraday research job.
+        # Revisit that date so the dedicated post-close maintenance job can complete it.
+        start = safe_date
     queued: list[str] = []
     cursor = start
     # Bound automatic repair so an accidental empty database cannot enqueue years.
