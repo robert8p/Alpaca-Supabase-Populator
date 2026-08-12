@@ -2,13 +2,11 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 from typing import Final
 
 from app.db import connection
 
 logger = logging.getLogger(__name__)
-_TRUE_VALUES: Final = {"1", "true", "yes", "on"}
 _SIGNAL_COLS: Final = {
     "15m": "div15_pct",
     "30m": "div30_pct",
@@ -36,8 +34,25 @@ _MAG_VALUES_SQL: Final = """
 """
 
 
-def _enabled() -> bool:
-    return os.getenv("BLANKCANVAS_PAIR_LEDGER", "").strip().lower() in _TRUE_VALUES
+def _already_complete() -> bool:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                select to_regclass('research.blankcanvas_pair_scan_status_v1') as status_rel,
+                       to_regclass('research.blankcanvas_pair_preholdout_freeze_v1') as freeze_rel
+                """
+            )
+            rels = cur.fetchone()
+            if not rels or rels["status_rel"] is None or rels["freeze_rel"] is None:
+                conn.rollback()
+                return False
+            cur.execute(
+                "select count(*)::int as n from research.blankcanvas_pair_scan_status_v1 where status='completed'"
+            )
+            complete = int(cur.fetchone()["n"])
+        conn.rollback()
+    return complete == len(_SIGNAL_COLS) * len(_EXIT_COLS)
 
 
 def _ensure_tables() -> None:
@@ -233,6 +248,9 @@ def _build_summaries() -> tuple[int, int]:
 
 
 def _run_scan() -> None:
+    if _already_complete():
+        logger.info("Pair candidate ledger already complete; skipping")
+        return
     _ensure_tables()
     theoretical_candidates = len(_SIGNAL_COLS) * len(_EXIT_COLS) * 15 * 11 * 10 * 2
     logger.warning("Pair candidate ledger scan started; registered candidate definitions=%s", theoretical_candidates)
@@ -276,6 +294,6 @@ def _run_scan() -> None:
 
 
 async def run_pair_candidate_ledger(stop_event: asyncio.Event) -> None:
-    if not _enabled() or stop_event.is_set():
+    if stop_event.is_set():
         return
     await asyncio.to_thread(_run_scan)
