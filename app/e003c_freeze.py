@@ -22,8 +22,35 @@ def _safe_signal_date_ceiling(now_et: datetime | None = None) -> date:
     return current_et.date() - timedelta(days=1)
 
 
+def _feature_date_has_completed_all_session_job(signal_date: date) -> bool:
+    """Require proof that a feature-generating all-session load completed after 20:15 ET."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT EXISTS(
+                    SELECT 1
+                    FROM rd_jobs j
+                    WHERE j.status='completed'
+                      AND j.config->>'feed'='sip'
+                      AND j.config->>'adjustment'='raw'
+                      AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
+                      AND COALESCE(j.config->'session'->>'mode','')='all'
+                      AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
+                      AND (j.config->>'start_date')::date <= %s
+                      AND (j.config->>'end_date')::date >= %s
+                      AND j.completed_at >= ((%s::date + time '20:15') AT TIME ZONE 'America/New_York')
+                ) AS completed
+                """,
+                (signal_date, signal_date, signal_date),
+            )
+            row = cur.fetchone()
+        conn.rollback()
+    return bool(row and row["completed"])
+
+
 def _latest_completed_feature_date() -> date | None:
-    """Return the latest complete all-session feature date that is not still being loaded."""
+    """Return the latest feature date proven complete by a post-session all-session job."""
     safe_ceiling = _safe_signal_date_ceiling()
     with connection() as conn:
         with conn.cursor() as cur:
@@ -39,14 +66,28 @@ def _latest_completed_feature_date() -> date | None:
                       AND session_label='all'
                       AND trade_date <= %s
                 ) f
-                WHERE NOT EXISTS (
+                WHERE EXISTS (
                     SELECT 1
                     FROM rd_jobs j
-                    WHERE j.status IN ('queued','planning','running','pause_requested','paused')
+                    WHERE j.status='completed'
                       AND j.config->>'feed'='sip'
                       AND j.config->>'adjustment'='raw'
                       AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
                       AND COALESCE(j.config->'session'->>'mode','')='all'
+                      AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
+                      AND (j.config->>'start_date')::date <= f.trade_date
+                      AND (j.config->>'end_date')::date >= f.trade_date
+                      AND j.completed_at >= ((f.trade_date + time '20:15') AT TIME ZONE 'America/New_York')
+                )
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM rd_jobs j
+                    WHERE j.status IN ('queued','planning','running','pause_requested')
+                      AND j.config->>'feed'='sip'
+                      AND j.config->>'adjustment'='raw'
+                      AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
+                      AND COALESCE(j.config->'session'->>'mode','')='all'
+                      AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
                       AND (j.config->>'start_date')::date <= f.trade_date
                       AND (j.config->>'end_date')::date >= f.trade_date
                 )
@@ -85,6 +126,13 @@ def freeze_signal_date(signal_date: date) -> dict[str, Any]:
             "frozen": False,
             "reason": "all_session_not_yet_complete",
             "safe_ceiling": str(safe_ceiling),
+        }
+
+    if not _feature_date_has_completed_all_session_job(signal_date):
+        return {
+            "signal_date": str(signal_date),
+            "frozen": False,
+            "reason": "no_post_session_completion_proof",
         }
 
     if _already_frozen(signal_date):
