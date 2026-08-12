@@ -13,6 +13,7 @@ from psycopg.types.json import Jsonb
 
 from app.adjusted_daily_audit import run_adjusted_daily_audit_once
 from app.alpaca import AlpacaClient
+from app.blankcanvas_net5_postprocess import run_net5_postprocess_async
 from app.config import get_settings
 from app.db import assert_database_writable, close_pool, connection, execute_schema
 from app.e003c_live import run_e003c_scheduler
@@ -23,7 +24,7 @@ from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 from app.rv30_quote_audit import run_rv30_quote_audit_batch
 
-VERSION = "1.0.12"
+VERSION = "1.0.13"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -276,6 +277,7 @@ async def run_worker() -> None:
         logger.warning("One-off adjusted daily audit wrote %s rows", audit_rows)
 
     compactor_task = asyncio.create_task(run_intraday_snapshot_compactor(stop_event), name="blankcanvas-intraday-compactor")
+    net5_task = asyncio.create_task(run_net5_postprocess_async(), name="blankcanvas-net5-postprocess")
     await asyncio.sleep(0)
     capture_task = asyncio.create_task(run_e003c_scheduler(stop_event), name="e003c-live-evidence")
     maintenance_task = asyncio.create_task(run_daily_maintenance_scheduler(stop_event), name="e003c-daily-maintenance")
@@ -335,7 +337,8 @@ async def run_worker() -> None:
     capture_task.cancel()
     maintenance_task.cancel()
     compactor_task.cancel()
-    await asyncio.gather(capture_task, maintenance_task, compactor_task, return_exceptions=True)
+    net5_task.cancel()
+    await asyncio.gather(capture_task, maintenance_task, compactor_task, net5_task, return_exceptions=True)
     heartbeat(wid, "stopped")
     close_pool()
 
