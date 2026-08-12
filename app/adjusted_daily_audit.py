@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 
 from app.alpaca import AlpacaClient
+from app.blankcanvas_stale_cleanup import cancel_stale_blankcanvas_mgmt_queries
 from app.db import connection
 
 logger = logging.getLogger(__name__)
@@ -77,10 +78,10 @@ def _upsert_rows(rows: list[tuple]) -> int:
 async def run_adjusted_daily_audit_once() -> int:
     """Fetch raw and fully adjusted Alpaca daily bars for the fixed seven-ETF audit universe.
 
-    The routine is inert unless BLANKCANVAS_ADJUSTED_DAILY_AUDIT is enabled and writes only
-    to public.blankcanvas_adjusted_daily_bars_v1. It never modifies rd_bars or production
-    research features.
+    On worker startup, first cancel only stale mgmt-api queries from this blank-canvas workflow.
+    The data-fetch portion is otherwise inert unless BLANKCANVAS_ADJUSTED_DAILY_AUDIT is enabled.
     """
+    cancel_stale_blankcanvas_mgmt_queries()
     if not _enabled():
         return 0
 
