@@ -23,7 +23,7 @@ from app.models import JobConfig
 from app.planner import add_event, claim_job_for_planning, plan_job
 from app.rv30_quote_audit import run_rv30_quote_audit_batch
 
-VERSION = "1.0.9"
+VERSION = "1.0.10"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
@@ -275,9 +275,13 @@ async def run_worker() -> None:
         heartbeat(wid, "adjusted_daily_audit", details={"rows_upserted": audit_rows})
         logger.warning("One-off adjusted daily audit wrote %s rows", audit_rows)
 
+    # Give the low-priority research compactor one event-loop slice before the normal schedulers
+    # begin their synchronous database checks. The compactor immediately moves monthly work to a
+    # thread, so live E-003C and maintenance then continue concurrently rather than starving it.
+    compactor_task = asyncio.create_task(run_intraday_snapshot_compactor(stop_event), name="blankcanvas-intraday-compactor")
+    await asyncio.sleep(0)
     capture_task = asyncio.create_task(run_e003c_scheduler(stop_event), name="e003c-live-evidence")
     maintenance_task = asyncio.create_task(run_daily_maintenance_scheduler(stop_event), name="e003c-daily-maintenance")
-    compactor_task = asyncio.create_task(run_intraday_snapshot_compactor(stop_event), name="blankcanvas-intraday-compactor")
 
     while not stop_event.is_set():
         try:
