@@ -7,7 +7,7 @@ import os
 import socket
 import uuid
 from dataclasses import dataclass
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -95,12 +95,15 @@ RULE_DEFINITION: dict[str, Any] = {
 
 
 def canonical_rule_json(definition: dict[str, Any] | None = None) -> str:
-    return json.dumps(definition or RULE_DEFINITION, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return json.dumps(
+        definition or RULE_DEFINITION,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    )
 
 
 RULE_HASH = hashlib.sha256(canonical_rule_json().encode("utf-8")).hexdigest()
-
-
 
 
 def _json_safe(value: Any) -> Any:
@@ -113,6 +116,7 @@ def _json_safe(value: Any) -> Any:
     if isinstance(value, uuid.UUID):
         return str(value)
     return value
+
 
 def _truthy(value: str | None) -> bool:
     return str(value or "").strip().lower() in {"1", "true", "yes", "on"}
@@ -153,48 +157,86 @@ class RuntimeIdentity:
     expected_service_id: str | None
 
     @classmethod
-    def from_environment(cls) -> "RuntimeIdentity":
+    def from_environment(cls) -> RuntimeIdentity:
         service_id = os.getenv("RENDER_SERVICE_ID", "local-service")
         instance_id = os.getenv("RENDER_INSTANCE_ID") or socket.gethostname()
         release_sha = os.getenv("E003C_RELEASE_SHA", "").strip()
         git_sha = os.getenv("RENDER_GIT_COMMIT", "").strip() or release_sha
-        owner_id = os.getenv("E003C_OWNER_ID") or f"{service_id}:{instance_id}:{uuid.uuid4().hex}"
+        owner_id = (
+            os.getenv("E003C_OWNER_ID")
+            or f"{service_id}:{instance_id}:{uuid.uuid4().hex}"
+        )
         return cls(
             owner_id=owner_id,
             service_id=service_id,
             service_name=os.getenv("RENDER_SERVICE_NAME", "e003c-prospective-capture"),
             service_type=os.getenv("RENDER_SERVICE_TYPE", "unknown"),
-            deployment_id=(os.getenv("RENDER_DEPLOY_ID") or os.getenv("E003C_DEPLOYMENT_ID") or None),
+            deployment_id=(
+                os.getenv("RENDER_DEPLOY_ID")
+                or os.getenv("E003C_DEPLOYMENT_ID")
+                or None
+            ),
             instance_id=instance_id,
             git_sha=git_sha,
             git_branch=os.getenv("RENDER_GIT_BRANCH", ""),
             repo_slug=os.getenv("RENDER_GIT_REPO_SLUG", ""),
             release_sha=release_sha,
             expected_branch=(os.getenv("E003C_EXPECTED_BRANCH") or None),
-            expected_service_name=os.getenv("E003C_EXPECTED_SERVICE_NAME", "alpaca-e003c-prospective-worker"),
+            expected_service_name=os.getenv(
+                "E003C_EXPECTED_SERVICE_NAME", "alpaca-e003c-prospective-worker"
+            ),
             expected_service_id=(os.getenv("E003C_EXPECTED_SERVICE_ID") or None),
         )
 
 
 def release_pin_readiness(identity: RuntimeIdentity) -> dict[str, Any]:
-    sha_is_full = len(identity.release_sha) == 40 and all(ch in "0123456789abcdef" for ch in identity.release_sha.lower())
+    sha_is_full = len(identity.release_sha) == 40 and all(
+        ch in "0123456789abcdef" for ch in identity.release_sha.lower()
+    )
     git_matches_release = bool(sha_is_full and identity.git_sha == identity.release_sha)
-    branch_matches = identity.expected_branch is None or identity.git_branch == identity.expected_branch
+    branch_matches = (
+        identity.expected_branch is None
+        or identity.git_branch == identity.expected_branch
+    )
     service_type_ok = identity.service_type in {"worker", "background_worker"}
     service_name_ok = identity.service_name == identity.expected_service_name
-    service_id_ok = identity.expected_service_id is None or identity.service_id == identity.expected_service_id
-    deployment_id_ok = bool(identity.deployment_id and identity.deployment_id.startswith("dep-"))
+    service_id_ok = (
+        identity.expected_service_id is None
+        or identity.service_id == identity.expected_service_id
+    )
+    instance_id_ok = bool(
+        identity.service_id.startswith("srv-")
+        and identity.instance_id.startswith(f"{identity.service_id}-")
+        and len(identity.instance_id) > len(identity.service_id) + 1
+    )
     repo_ok = identity.repo_slug == "robert8p/Alpaca-Supabase-Populator"
+    independent_render_identity_ok = bool(
+        git_matches_release
+        and branch_matches
+        and service_type_ok
+        and service_name_ok
+        and service_id_ok
+        and instance_id_ok
+        and repo_ok
+    )
+    deployment_id_present = bool(identity.deployment_id)
+    deployment_id_format_ok = bool(
+        deployment_id_present
+        and identity.deployment_id is not None
+        and identity.deployment_id.startswith("dep-")
+    )
+    deployment_id_ok = (
+        deployment_id_format_ok
+        if deployment_id_present
+        else independent_render_identity_ok
+    )
+    deployment_identity_source = (
+        "render_deployment_id"
+        if deployment_id_present
+        else "independent_render_identity"
+    )
     return {
-        "ok": bool(
-            git_matches_release
-            and branch_matches
-            and service_type_ok
-            and service_name_ok
-            and service_id_ok
-            and deployment_id_ok
-            and repo_ok
-        ),
+        "ok": bool(independent_render_identity_ok and deployment_id_ok),
         "release_sha": identity.release_sha,
         "git_sha": identity.git_sha,
         "git_matches_release": git_matches_release,
@@ -209,14 +251,22 @@ def release_pin_readiness(identity: RuntimeIdentity) -> dict[str, Any]:
         "service_id": identity.service_id,
         "expected_service_id": identity.expected_service_id,
         "service_id_ok": service_id_ok,
+        "instance_id": identity.instance_id,
+        "instance_id_ok": instance_id_ok,
         "deployment_id": identity.deployment_id,
+        "deployment_id_present": deployment_id_present,
+        "deployment_id_format_ok": deployment_id_format_ok,
         "deployment_id_ok": deployment_id_ok,
+        "deployment_identity_source": deployment_identity_source,
+        "independent_render_identity_ok": independent_render_identity_ok,
         "repo_slug": identity.repo_slug,
         "repo_ok": repo_ok,
     }
 
 
-def phase_state(now_et: datetime, provider_clock: dict[str, Any] | None = None) -> dict[str, Any]:
+def phase_state(
+    now_et: datetime, provider_clock: dict[str, Any] | None = None
+) -> dict[str, Any]:
     current = now_et.astimezone(NY)
     current_time = current.timetz().replace(tzinfo=None)
     provider_clock = provider_clock or {}
@@ -243,7 +293,11 @@ def phase_state(now_et: datetime, provider_clock: dict[str, Any] | None = None) 
         phase = "post_close_wait"
         next_phase = "signal_maintenance"
         next_phase_at = datetime.combine(current.date(), ALL_SESSION_SAFE_AT, tzinfo=NY)
-    elif next_open is not None and next_open.date() == current.date() and current < next_open:
+    elif (
+        next_open is not None
+        and next_open.date() == current.date()
+        and current < next_open
+    ):
         phase = "pre_market"
         next_phase = "entry_capture"
         next_phase_at = next_open
@@ -279,7 +333,12 @@ def database_readiness() -> dict[str, Any]:
         conn.rollback()
     objects_ready = all(
         bool(row[key])
-        for key in ("rule_registry_ready", "instance_registry_ready", "lease_registry_ready", "heartbeat_registry_ready")
+        for key in (
+            "rule_registry_ready",
+            "instance_registry_ready",
+            "lease_registry_ready",
+            "heartbeat_registry_ready",
+        )
     )
     return {"ok": bool(diagnostics["writable"] and objects_ready), **diagnostics, **row}
 
@@ -298,9 +357,15 @@ def rule_registry_readiness() -> dict[str, Any]:
             row = cur.fetchone()
         conn.rollback()
     if not row:
-        return {"ok": False, "reason": "rule_not_registered", "expected_rule_hash": RULE_HASH}
+        return {
+            "ok": False,
+            "reason": "rule_not_registered",
+            "expected_rule_hash": RULE_HASH,
+        }
     definition = dict(row["rule_definition"])
-    stored_definition_hash = hashlib.sha256(canonical_rule_json(definition).encode("utf-8")).hexdigest()
+    stored_definition_hash = hashlib.sha256(
+        canonical_rule_json(definition).encode("utf-8")
+    ).hexdigest()
     return {
         "ok": bool(
             row["rule_hash"] == RULE_HASH
@@ -405,7 +470,8 @@ def basket_readiness(now_et: datetime | None = None) -> dict[str, Any]:
         and included_rows == expected_included
     )
     completion_expected = row["trade_date"] < current.date() or (
-        row["trade_date"] == current.date() and current.timetz().replace(tzinfo=None) >= time(16, 0)
+        row["trade_date"] == current.date()
+        and current.timetz().replace(tzinfo=None) >= time(16, 0)
     )
     completion_ok = True
     if completion_expected and included_rows:
@@ -435,7 +501,9 @@ def basket_readiness(now_et: datetime | None = None) -> dict[str, Any]:
     }
 
 
-def cutover_readiness(identity: RuntimeIdentity, *, require_authorized: bool) -> dict[str, Any]:
+def cutover_readiness(
+    identity: RuntimeIdentity, *, require_authorized: bool
+) -> dict[str, Any]:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -457,7 +525,8 @@ def cutover_readiness(identity: RuntimeIdentity, *, require_authorized: bool) ->
         return {"ok": False, "reason": "cutover_control_missing"}
 
     baseline_ok = (
-        str(row["baseline_checkpoint_job_id"]) == os.getenv(
+        str(row["baseline_checkpoint_job_id"])
+        == os.getenv(
             "E003C_BASELINE_CHECKPOINT_JOB_ID", "9c19eea7-2401-481a-a9f3-1d75a75a07f6"
         )
         and int(row["baseline_checkpoint_event_id"])
@@ -476,7 +545,12 @@ def cutover_readiness(identity: RuntimeIdentity, *, require_authorized: bool) ->
     )
     transfer_authorized = row["transfer_authorized_at"] is not None
     if require_authorized:
-        ok = baseline_ok and readiness_identity_ok and legacy_disabled and transfer_authorized
+        ok = (
+            baseline_ok
+            and readiness_identity_ok
+            and legacy_disabled
+            and transfer_authorized
+        )
     else:
         ok = baseline_ok and row["status"] in {
             "prepared",
@@ -512,9 +586,13 @@ def cutover_readiness(identity: RuntimeIdentity, *, require_authorized: bool) ->
 
 
 def baseline_checkpoint_readiness() -> dict[str, Any]:
-    expected_job_id = os.getenv("E003C_BASELINE_CHECKPOINT_JOB_ID", "9c19eea7-2401-481a-a9f3-1d75a75a07f6")
+    expected_job_id = os.getenv(
+        "E003C_BASELINE_CHECKPOINT_JOB_ID", "9c19eea7-2401-481a-a9f3-1d75a75a07f6"
+    )
     expected_event_id = int(os.getenv("E003C_BASELINE_CHECKPOINT_EVENT_ID", "275"))
-    expected_hash = os.getenv("E003C_BASELINE_AUDIT_HASH", "29e2168dd128e60ed7e454acce9b973b")
+    expected_hash = os.getenv(
+        "E003C_BASELINE_AUDIT_HASH", "29e2168dd128e60ed7e454acce9b973b"
+    )
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -529,7 +607,11 @@ def baseline_checkpoint_readiness() -> dict[str, Any]:
             row = cur.fetchone()
         conn.rollback()
     if not row:
-        return {"ok": False, "reason": "baseline_checkpoint_missing", "job_id": expected_job_id}
+        return {
+            "ok": False,
+            "reason": "baseline_checkpoint_missing",
+            "job_id": expected_job_id,
+        }
     result = dict(row["result"] or {})
     event_details = dict(row["details"] or {})
     return {
@@ -735,7 +817,10 @@ class AdvisoryWriterLock:
             application_name="e003c-prospective-writer-lock",
         )
         with conn.cursor() as cur:
-            cur.execute("SELECT hashtextextended(%s,0) AS lock_key, pg_backend_pid() AS backend_pid", (WRITER_LOCK_NAME,))
+            cur.execute(
+                "SELECT hashtextextended(%s,0) AS lock_key, pg_backend_pid() AS backend_pid",
+                (WRITER_LOCK_NAME,),
+            )
             row = cur.fetchone()
             lock_key = int(row["lock_key"])
             backend_pid = int(row["backend_pid"])
@@ -775,14 +860,24 @@ class AdvisoryWriterLock:
             self.backend_pid = None
 
 
-def assert_writer_authority(identity: RuntimeIdentity, lock: AdvisoryWriterLock) -> None:
+def assert_writer_authority(
+    identity: RuntimeIdentity, lock: AdvisoryWriterLock
+) -> None:
     lock.assert_held()
     if not writer_lease_is_current(identity):
         raise RuntimeError("E003C database writer lease is not current")
 
 
 def critical_readiness_ok(readiness: dict[str, Any], *, require_provider: bool) -> bool:
-    required = ["release_pin", "database", "rule_registry", "freeze", "basket", "baseline_checkpoint", "cutover"]
+    required = [
+        "release_pin",
+        "database",
+        "rule_registry",
+        "freeze",
+        "basket",
+        "baseline_checkpoint",
+        "cutover",
+    ]
     if require_provider:
         required.append("provider")
     return all(bool((readiness.get(name) or {}).get("ok")) for name in required)
