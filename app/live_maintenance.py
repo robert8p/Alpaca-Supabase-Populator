@@ -20,6 +20,10 @@ def _enabled() -> bool:
     return os.getenv("E003C_DAILY_INGEST_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _signal_freeze_enabled() -> bool:
+    return os.getenv("E003C_SIGNAL_FREEZE_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _latest_feature_date() -> date | None:
     with connection() as conn:
         with conn.cursor() as cur:
@@ -207,9 +211,10 @@ async def run_daily_maintenance_scheduler(stop_event: asyncio.Event) -> None:
             if queued:
                 logger.info("E-003C maintenance queued missing dates: %s", queued)
 
-            freeze_result = await asyncio.to_thread(freeze_latest_completed_signal)
-            if freeze_result.get("frozen"):
-                logger.info("E-003C signal freeze created: %s", freeze_result)
+            if _signal_freeze_enabled():
+                freeze_result = await asyncio.to_thread(freeze_latest_completed_signal)
+                if freeze_result.get("frozen"):
+                    logger.info("E-003C signal freeze created: %s", freeze_result)
 
             spy_shadow = await asyncio.to_thread(maintain_spy_ms001_shadow)
             if spy_shadow["signal"].get("frozen") or spy_shadow["outcomes_settled"]:
