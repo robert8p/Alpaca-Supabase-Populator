@@ -50,37 +50,42 @@ def _feature_date_has_completed_all_session_job(signal_date: date) -> bool:
 
 
 def _latest_completed_feature_date() -> date | None:
-    """Return the latest feature date proven complete by a post-session all-session job."""
+    """Return the latest feature date proven complete by a post-session all-session job.
+
+    Drive the lookup from the small completed-job set, then use one backward index probe into
+    ``rd_daily_features`` per job. The previous MAX-over-DISTINCT shape scanned millions of
+    feature rows on every maintenance poll and could occupy the database for several minutes.
+    """
     safe_ceiling = _safe_signal_date_ceiling()
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT max(f.trade_date) AS trade_date
-                FROM (
-                    SELECT DISTINCT trade_date
-                    FROM rd_daily_features
-                    WHERE timeframe='1Min'
-                      AND feed='sip'
-                      AND adjustment='raw'
-                      AND session_label='all'
-                      AND trade_date <= %s
-                ) f
-                WHERE EXISTS (
-                    SELECT 1
-                    FROM rd_jobs j
-                    WHERE j.status='completed'
-                      AND j.config->>'feed'='sip'
-                      AND j.config->>'adjustment'='raw'
-                      AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
-                      AND COALESCE(j.config->'session'->>'mode','')='all'
-                      AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
-                      AND (j.config->>'start_date')::date <= f.trade_date
-                      AND (j.config->>'end_date')::date >= f.trade_date
-                      AND j.completed_at >= ((f.trade_date + time '20:15') AT TIME ZONE 'America/New_York')
-                )
-                AND NOT EXISTS (
-                    SELECT 1
+                WITH completed_jobs AS MATERIALIZED (
+                    SELECT q.start_date,
+                           LEAST(q.config_end_date, %s::date, q.completion_ceiling) AS end_date
+                    FROM (
+                        SELECT
+                            (j.config->>'start_date')::date AS start_date,
+                            (j.config->>'end_date')::date AS config_end_date,
+                            CASE
+                                WHEN (j.completed_at AT TIME ZONE 'America/New_York')::time >= time '20:15'
+                                THEN (j.completed_at AT TIME ZONE 'America/New_York')::date
+                                ELSE (j.completed_at AT TIME ZONE 'America/New_York')::date - 1
+                            END AS completion_ceiling
+                        FROM rd_jobs j
+                        WHERE j.status='completed'
+                          AND j.config->>'feed'='sip'
+                          AND j.config->>'adjustment'='raw'
+                          AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
+                          AND COALESCE(j.config->'session'->>'mode','')='all'
+                          AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
+                          AND (j.config->>'start_date')::date <= %s
+                    ) q
+                ), active_jobs AS MATERIALIZED (
+                    SELECT
+                        (j.config->>'start_date')::date AS start_date,
+                        (j.config->>'end_date')::date AS end_date
                     FROM rd_jobs j
                     WHERE j.status IN ('queued','planning','running','pause_requested')
                       AND j.config->>'feed'='sip'
@@ -88,11 +93,31 @@ def _latest_completed_feature_date() -> date | None:
                       AND COALESCE(j.config->'timeframes','[]'::jsonb) ? '1Min'
                       AND COALESCE(j.config->'session'->>'mode','')='all'
                       AND COALESCE(j.config->'storage'->>'generate_daily_features','false')='true'
-                      AND (j.config->>'start_date')::date <= f.trade_date
-                      AND (j.config->>'end_date')::date >= f.trade_date
+                ), candidates AS (
+                    SELECT f.trade_date
+                    FROM completed_jobs j
+                    CROSS JOIN LATERAL (
+                        SELECT d.trade_date
+                        FROM rd_daily_features d
+                        WHERE d.timeframe='1Min'
+                          AND d.feed='sip'
+                          AND d.adjustment='raw'
+                          AND d.session_label='all'
+                          AND d.trade_date BETWEEN j.start_date AND j.end_date
+                          AND NOT EXISTS (
+                              SELECT 1
+                              FROM active_jobs a
+                              WHERE a.start_date <= d.trade_date
+                                AND a.end_date >= d.trade_date
+                          )
+                        ORDER BY d.trade_date DESC
+                        LIMIT 1
+                    ) f
                 )
+                SELECT max(trade_date) AS trade_date
+                FROM candidates
                 """,
-                (safe_ceiling,),
+                (safe_ceiling, safe_ceiling),
             )
             row = cur.fetchone()
         conn.rollback()
