@@ -1,0 +1,9 @@
+Rule: E003C_v1
+Rule source commit: 2019c4cb260816b672133154f76f65011c15ef73
+Baseline trade date: 2026-08-13
+Checkpoint job: 9c19eea7-2401-481a-a9f3-1d75a75a07f6
+Checkpoint event: 275
+Audit hash: 29e2168dd128e60ed7e454acce9b973b
+Existing evidence tables remain authoritative and immutable.
+Dedicated runtime scope: readiness, prospective capture, E003C signal freeze, phase heartbeat.
+Excluded scope: Rapid Discovery jobs and generic maintenance.
