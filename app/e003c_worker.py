@@ -36,7 +36,6 @@ from app.e003c_runtime import (
     try_acquire_writer_lease,
     upsert_runtime_instance,
 )
-from app.live_maintenance import queue_safe_missing_days
 
 VERSION = "e003c-isolation-1.0.0"
 logger = logging.getLogger(__name__)
@@ -55,8 +54,8 @@ def _seconds(name: str, default: float, minimum: float, maximum: float) -> float
     return min(max(value, minimum), maximum)
 
 
-def _maintenance_enabled() -> bool:
-    return os.getenv("E003C_DEDICATED_MAINTENANCE_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
+def _signal_freeze_enabled() -> bool:
+    return os.getenv("E003C_SIGNAL_FREEZE_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
 
 
 async def _provider_readiness() -> tuple[dict[str, Any], dict[str, Any]]:
@@ -150,21 +149,16 @@ async def _capture_scheduler(
             pass
 
 
-async def _maintenance_scheduler(
+async def _signal_freeze_scheduler(
     identity: RuntimeIdentity,
     lock: AdvisoryWriterLock,
     local_stop_event: asyncio.Event,
 ) -> None:
-    if not _maintenance_enabled():
+    if not _signal_freeze_enabled():
         return
-    logger.info("Dedicated E003C maintenance scheduler enabled")
+    logger.info("Dedicated E003C signal-freeze scheduler enabled")
     while not local_stop_event.is_set():
         try:
-            now_et = datetime.now(tz=NY)
-            await asyncio.to_thread(assert_writer_authority, identity, lock)
-            queued = await asyncio.to_thread(queue_safe_missing_days, now_et)
-            if queued:
-                logger.info("Dedicated E003C maintenance queued missing dates: %s", queued)
             await asyncio.to_thread(assert_writer_authority, identity, lock)
             freeze_result = await asyncio.to_thread(freeze_latest_completed_signal)
             if freeze_result.get("frozen"):
@@ -172,9 +166,9 @@ async def _maintenance_scheduler(
         except asyncio.CancelledError:
             raise
         except Exception:
-            logger.exception("Dedicated E003C maintenance scheduler error")
+            logger.exception("Dedicated E003C signal-freeze scheduler error")
         try:
-            poll_seconds = _seconds("E003C_MAINTENANCE_POLL_SECONDS", 900.0, 300.0, 3600.0)
+            poll_seconds = _seconds("E003C_SIGNAL_FREEZE_POLL_SECONDS", 900.0, 300.0, 3600.0)
             await asyncio.wait_for(local_stop_event.wait(), timeout=poll_seconds)
         except TimeoutError:
             pass
@@ -288,7 +282,7 @@ async def run_dedicated_worker() -> None:
             tasks.extend(
                 [
                     asyncio.create_task(_capture_scheduler(identity, lock, stop_event), name="e003c-dedicated-capture"),
-                    asyncio.create_task(_maintenance_scheduler(identity, lock, stop_event), name="e003c-dedicated-maintenance"),
+                    asyncio.create_task(_signal_freeze_scheduler(identity, lock, stop_event), name="e003c-dedicated-signal-freeze"),
                 ]
             )
         tasks.append(

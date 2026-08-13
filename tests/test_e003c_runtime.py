@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from app.e003c_runtime import (
@@ -92,3 +93,29 @@ def test_json_safe_serialises_control_timestamps() -> None:
         "trade_date": "2026-08-13",
         "observed_at": "2026-08-13T20:21:00+00:00",
     }
+
+
+def test_release_pin_accepts_render_background_worker_type() -> None:
+    sha = "c" * 40
+    identity = RuntimeIdentity(
+        owner_id="owner",
+        service_id="srv-test",
+        service_name="e003c",
+        service_type="background_worker",
+        deployment_id="dep-test",
+        instance_id="instance",
+        git_sha=sha,
+        git_branch="release/e003c-prospective-20260813",
+        repo_slug="robert8p/Alpaca-Supabase-Populator",
+        release_sha=sha,
+        expected_branch="release/e003c-prospective-20260813",
+        expected_service_name="e003c",
+        expected_service_id="srv-test",
+    )
+    assert release_pin_readiness(identity)["ok"] is True
+
+
+def test_dedicated_worker_excludes_generic_rapid_maintenance() -> None:
+    worker_source = (Path(__file__).resolve().parents[1] / "app" / "e003c_worker.py").read_text()
+    assert "queue_safe_missing_days" not in worker_source
+    assert "app.live_maintenance" not in worker_source

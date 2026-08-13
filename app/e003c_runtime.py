@@ -180,7 +180,7 @@ def release_pin_readiness(identity: RuntimeIdentity) -> dict[str, Any]:
     sha_is_full = len(identity.release_sha) == 40 and all(ch in "0123456789abcdef" for ch in identity.release_sha.lower())
     git_matches_release = bool(sha_is_full and identity.git_sha == identity.release_sha)
     branch_matches = identity.expected_branch is None or identity.git_branch == identity.expected_branch
-    service_type_ok = identity.service_type == "worker"
+    service_type_ok = identity.service_type in {"worker", "background_worker"}
     service_name_ok = identity.service_name == identity.expected_service_name
     service_id_ok = identity.expected_service_id is None or identity.service_id == identity.expected_service_id
     deployment_id_ok = bool(identity.deployment_id and identity.deployment_id.startswith("dep-"))

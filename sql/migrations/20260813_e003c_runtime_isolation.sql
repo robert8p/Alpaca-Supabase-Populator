@@ -138,7 +138,7 @@ CREATE TRIGGER e003c_rule_registry_immutable
 BEFORE UPDATE OR DELETE ON research_control.e003c_rule_registry
 FOR EACH ROW EXECUTE FUNCTION research_control.e003c_reject_immutable_change();
 
-DROP TRIGGGER IF EXISTS e003c_runtime_heartbeats_append_only ON research_control.e003c_runtime_heartbeats;
+DROP TRIGGER IF EXISTS e003c_runtime_heartbeats_append_only ON research_control.e003c_runtime_heartbeats;
 CREATE TRIGGER e003c_runtime_heartbeats_append_only
 BEFORE UPDATE OR DELETE ON research_control.e003c_runtime_heartbeats
 FOR EACH ROW EXECUTE FUNCTION research_control.e003c_reject_immutable_change();
@@ -155,12 +155,12 @@ BEGIN
 END;
 $$;
 
-DROP TRIGGGER IF EXISTS e003c_cutover_control_updated_at ON research_control.e003c_cutover_control;
+DROP TRIGGER IF EXISTS e003c_cutover_control_updated_at ON research_control.e003c_cutover_control;
 CREATE TRIGGER e003c_cutover_control_updated_at
 BEFORE UPDATE ON research_control.e003c_cutover_control
 FOR EACH ROW EXECUTE FUNCTION research_control.e003c_set_updated_at();
 
-DROP TRIGGGER IF EXISTS e003c_runtime_instances_updated_at ON research_control.e003c_runtime_instances;
+DROP TRIGGER IF EXISTS e003c_runtime_instances_updated_at ON research_control.e003c_runtime_instances;
 CREATE TRIGGER e003c_runtime_instances_updated_at
 BEFORE UPDATE ON research_control.e003c_runtime_instances
 FOR EACH ROW EXECUTE FUNCTION research_control.e003c_set_updated_at();

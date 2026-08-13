@@ -53,7 +53,7 @@ services:
         value: "30"
       - key: E003C_LEASE_TTL_SECONDS
         value: "120"
-      - key: E003C_DEDICATED_MAINTENANCE_ENABLED
+      - key: E003C_SIGNAL_FREEZE_ENABLED
         value: "true"
-      - key: E003C_MAINTENANCE_POLL_SECONDS
+      - key: E003C_SIGNAL_FREEZE_POLL_SECONDS
         value: "900"
