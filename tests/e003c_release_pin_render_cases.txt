@@ -1,0 +1,77 @@
+
+
+
+def test_release_pin_accepts_missing_render_deployment_id_with_strict_identity() -> None:
+    sha = "d" * 40
+    identity = RuntimeIdentity(
+        owner_id="owner",
+        service_id="srv-test",
+        service_name="e003c",
+        service_type="worker",
+        deployment_id=None,
+        instance_id="srv-test-instance-123",
+        git_sha=sha,
+        git_branch="release/e003c-prospective-20260813",
+        repo_slug="robert8p/Alpaca-Supabase-Populator",
+        release_sha=sha,
+        expected_branch="release/e003c-prospective-20260813",
+        expected_service_name="e003c",
+        expected_service_id="srv-test",
+    )
+    result = release_pin_readiness(identity)
+    assert result["ok"] is True
+    assert result["deployment_id"] is None
+    assert result["deployment_id_present"] is False
+    assert result["deployment_id_ok"] is True
+    assert result["deployment_identity_source"] == "independent_render_identity"
+    assert result["instance_id_ok"] is True
+    assert result["independent_render_identity_ok"] is True
+
+
+def test_release_pin_rejects_missing_deployment_id_with_foreign_instance() -> None:
+    sha = "e" * 40
+    identity = RuntimeIdentity(
+        owner_id="owner",
+        service_id="srv-test",
+        service_name="e003c",
+        service_type="worker",
+        deployment_id=None,
+        instance_id="srv-other-instance-123",
+        git_sha=sha,
+        git_branch="release/e003c-prospective-20260813",
+        repo_slug="robert8p/Alpaca-Supabase-Populator",
+        release_sha=sha,
+        expected_branch="release/e003c-prospective-20260813",
+        expected_service_name="e003c",
+        expected_service_id="srv-test",
+    )
+    result = release_pin_readiness(identity)
+    assert result["ok"] is False
+    assert result["instance_id_ok"] is False
+    assert result["deployment_id_ok"] is False
+    assert result["independent_render_identity_ok"] is False
+
+
+def test_release_pin_rejects_invalid_exposed_deployment_id() -> None:
+    sha = "f" * 40
+    identity = RuntimeIdentity(
+        owner_id="owner",
+        service_id="srv-test",
+        service_name="e003c",
+        service_type="worker",
+        deployment_id="not-a-render-deploy",
+        instance_id="srv-test-instance-123",
+        git_sha=sha,
+        git_branch="release/e003c-prospective-20260813",
+        repo_slug="robert8p/Alpaca-Supabase-Populator",
+        release_sha=sha,
+        expected_branch="release/e003c-prospective-20260813",
+        expected_service_name="e003c",
+        expected_service_id="srv-test",
+    )
+    result = release_pin_readiness(identity)
+    assert result["ok"] is False
+    assert result["independent_render_identity_ok"] is True
+    assert result["deployment_id_present"] is True
+    assert result["deployment_id_format_ok"] is False
+    assert result["deployment_id_ok"] is False
