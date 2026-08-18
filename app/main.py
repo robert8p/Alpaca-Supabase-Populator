@@ -20,8 +20,9 @@ from app.config import get_settings
 from app.db import close_pool, connection, execute_schema
 from app.core import estimate_for, filter_assets
 from app.models import EstimateRequest, JobCreateRequest
+from app.oversold import router as oversold_router
 
-VERSION = "1.0.3"
+VERSION = "1.1.0"
 logger = logging.getLogger(__name__)
 settings = get_settings()
 security = HTTPBasic()
@@ -39,6 +40,7 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title="Alpaca Rapid Discovery Loader", version=VERSION, lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.include_router(oversold_router)
 
 
 def require_auth(credentials: HTTPBasicCredentials = Depends(security)) -> str:
