@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 
 from app.oversold_tracking import (
     _calendar_datetime,
+    _candidate_context,
     _checkpoint_times,
     _last_completed_bar,
     _trade_from_payload,
@@ -39,3 +40,21 @@ def test_last_completed_bar_excludes_bar_starting_at_checkpoint():
     ]
     selected = _last_completed_bar(bars, target)
     assert selected["c"] == 10.2
+
+
+def test_candidate_context_freezes_decision_inputs():
+    candidate = {
+        "drop_pct": -24.5,
+        "spread_pct": 0.4,
+        "prev_dollar_volume": 12_000_000,
+        "catalyst_class": "C",
+        "catalyst_summary": "Material but uncertain repricing catalyst detected.",
+        "risk_flags": ["dilution"],
+        "headline_count": 4,
+        "heuristic_score": 61,
+        "triage_label": "REVIEW",
+    }
+    snapshot = _candidate_context(candidate)
+    assert snapshot == candidate
+    candidate["heuristic_score"] = 10
+    assert snapshot["heuristic_score"] == 61
