@@ -109,6 +109,9 @@ class AlpacaClient:
         result = await self._get(url, {"status": status, "asset_class": "us_equity"})
         if not isinstance(result.data, list):
             raise AlpacaError("Unexpected assets response")
+        for asset in result.data:
+            if isinstance(asset, dict) and not asset.get("asset_class") and asset.get("class"):
+                asset["asset_class"] = asset["class"]
         return result.data
 
     async def list_known_assets(self) -> list[dict[str, Any]]:
