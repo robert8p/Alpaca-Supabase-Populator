@@ -57,7 +57,12 @@ def _recent_manual_scan() -> dict[str, Any] | None:
 
 @router.get("/oversold", response_class=HTMLResponse)
 def oversold_page(request: Request):
-    return templates.TemplateResponse("oversold.html", {"request": request})
+    html = templates.get_template("oversold.html").render(request=request)
+    html = html.replace(
+        '<a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>',
+        "",
+    )
+    return HTMLResponse(content=html)
 
 
 @router.get("/api/oversold/latest")
