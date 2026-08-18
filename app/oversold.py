@@ -38,7 +38,7 @@ NEWS_LOOKBACK_HOURS = 72
 NEWS_SYMBOL_BATCH_SIZE = 20
 NEWS_MAX_PAGES = 2
 NON_OPERATING_INSTRUMENT_RE = re.compile(
-    r"\b(etf|exchange[- ]traded fund|warrants?|rights?|units?|preferred)\b",
+    r"\b(etf|exchange[- ]traded fund|warrants?|rights?|units?|preferred|proshares|direxion|tradr|leverage shares|t-rex|defiance|graniteshares|yieldmax|roundhill|rex shares)\b",
     re.IGNORECASE,
 )
 
@@ -475,7 +475,7 @@ async def execute_scan(
                                 "news_lookback_hours": NEWS_LOOKBACK_HOURS,
                                 "min_price": MIN_PRICE,
                                 "min_prev_dollar_volume": MIN_PREV_DOLLAR_VOLUME,
-                                "instrument_filter": "operating_company_v1",
+                                "instrument_filter": "operating_company_v1_1",
                                 "scoring_model": "heuristic_v1",
                             }),
                             scan_id,
