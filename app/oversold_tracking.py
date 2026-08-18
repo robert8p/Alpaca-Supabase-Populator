@@ -130,7 +130,13 @@ def _load_candidate(candidate_id: int) -> dict[str, Any] | None:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "SELECT id,symbol,name,last_price,decision,review_notes,reviewed_at FROM or_candidates WHERE id=%s",
+                """
+                SELECT id,symbol,name,last_price,decision,review_notes,reviewed_at,
+                       drop_pct,spread_pct,prev_dollar_volume,catalyst_class,catalyst_summary,
+                       risk_flags,headline_count,heuristic_score,triage_label
+                FROM or_candidates
+                WHERE id=%s
+                """,
                 (candidate_id,),
             )
             row = cur.fetchone()
@@ -138,10 +144,33 @@ def _load_candidate(candidate_id: int) -> dict[str, Any] | None:
     return row
 
 
-def _existing_track(candidate_id: int) -> dict[str, Any] | None:
+def _candidate_context(candidate: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "drop_pct": candidate.get("drop_pct"),
+        "spread_pct": candidate.get("spread_pct"),
+        "prev_dollar_volume": candidate.get("prev_dollar_volume"),
+        "catalyst_class": candidate.get("catalyst_class"),
+        "catalyst_summary": candidate.get("catalyst_summary"),
+        "risk_flags": candidate.get("risk_flags") or [],
+        "headline_count": candidate.get("headline_count") or 0,
+        "heuristic_score": candidate.get("heuristic_score"),
+        "triage_label": candidate.get("triage_label"),
+    }
+
+
+def _active_track(candidate_id: int) -> dict[str, Any] | None:
     with connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM or_decision_tracks WHERE candidate_id=%s", (candidate_id,))
+            cur.execute(
+                """
+                SELECT *
+                FROM or_decision_tracks
+                WHERE candidate_id=%s AND active=true
+                ORDER BY selected_at DESC,id DESC
+                LIMIT 1
+                """,
+                (candidate_id,),
+            )
             row = cur.fetchone()
         conn.rollback()
     return row
@@ -153,20 +182,34 @@ async def sync_candidate_tracking(candidate_id: int, decision: str) -> dict[str,
     if not candidate:
         raise ValueError(f"Candidate {candidate_id} not found")
 
-    existing = _existing_track(candidate_id)
+    active = _active_track(candidate_id)
+    review_notes = str(candidate.get("review_notes") or "")[:4000]
+
     if decision not in TRACKED_DECISIONS:
-        if existing and existing.get("active"):
+        if active:
             with connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
-                        "UPDATE or_decision_tracks SET active=false,updated_at=now() WHERE candidate_id=%s",
-                        (candidate_id,),
+                        """
+                        UPDATE or_decision_tracks
+                        SET active=false,ended_at=COALESCE(ended_at,now()),updated_at=now()
+                        WHERE id=%s AND active=true
+                        """,
+                        (active["id"],),
                     )
                 conn.commit()
         return None
 
-    if existing and existing.get("active") and existing.get("decision") == decision:
-        return existing
+    if active and active.get("decision") == decision:
+        if active.get("decision_notes") != review_notes:
+            with connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        "UPDATE or_decision_tracks SET decision_notes=%s,updated_at=now() WHERE id=%s",
+                        (review_notes, active["id"]),
+                    )
+                conn.commit()
+        return _active_track(candidate_id)
 
     selected_at = datetime.now(UTC)
     fallback_price = float(candidate["last_price"]) if candidate.get("last_price") else None
@@ -182,21 +225,27 @@ async def sync_candidate_tracking(candidate_id: int, decision: str) -> dict[str,
     s1, s2 = sessions
     with connection() as conn:
         with conn.cursor() as cur:
+            if active:
+                cur.execute(
+                    """
+                    UPDATE or_decision_tracks
+                    SET active=false,ended_at=%s,updated_at=now()
+                    WHERE id=%s AND active=true
+                    """,
+                    (selected_at, active["id"]),
+                )
+
             cur.execute(
                 """
                 INSERT INTO or_decision_tracks(
                     candidate_id,symbol,name,decision,selected_at,selected_price,selected_trade_ts,
                     session1_date,session1_open,session1_close,session2_date,session2_open,session2_close,
-                    active,completed_at,updated_at
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,true,NULL,now())
-                ON CONFLICT (candidate_id) DO UPDATE SET
-                    symbol=EXCLUDED.symbol,name=EXCLUDED.name,decision=EXCLUDED.decision,
-                    selected_at=EXCLUDED.selected_at,selected_price=EXCLUDED.selected_price,
-                    selected_trade_ts=EXCLUDED.selected_trade_ts,
-                    session1_date=EXCLUDED.session1_date,session1_open=EXCLUDED.session1_open,
-                    session1_close=EXCLUDED.session1_close,session2_date=EXCLUDED.session2_date,
-                    session2_open=EXCLUDED.session2_open,session2_close=EXCLUDED.session2_close,
-                    active=true,completed_at=NULL,updated_at=now()
+                    active,completed_at,ended_at,decision_notes,context_snapshot,updated_at
+                ) VALUES (
+                    %s,%s,%s,%s,%s,%s,%s,
+                    %s,%s,%s,%s,%s,%s,
+                    true,NULL,NULL,%s,%s,now()
+                )
                 RETURNING id
                 """,
                 (
@@ -213,10 +262,11 @@ async def sync_candidate_tracking(candidate_id: int, decision: str) -> dict[str,
                     s2["date"],
                     s2["open"],
                     s2["close"],
+                    review_notes,
+                    Jsonb(_candidate_context(candidate)),
                 ),
             )
             track_id = cur.fetchone()["id"]
-            cur.execute("DELETE FROM or_track_checkpoints WHERE track_id=%s", (track_id,))
             for session_no, session in ((1, s1), (2, s2)):
                 for kind, scheduled_at in _checkpoint_times(session["open"], session["close"]).items():
                     cur.execute(
@@ -228,7 +278,7 @@ async def sync_candidate_tracking(candidate_id: int, decision: str) -> dict[str,
                     )
         conn.commit()
 
-    return _existing_track(candidate_id)
+    return _active_track(candidate_id)
 
 
 async def ensure_existing_tracks(limit: int = 100) -> int:
@@ -238,9 +288,14 @@ async def ensure_existing_tracks(limit: int = 100) -> int:
                 """
                 SELECT c.id,c.decision
                 FROM or_candidates c
-                LEFT JOIN or_decision_tracks t ON t.candidate_id=c.id
                 WHERE c.decision IN ('investigate','pass')
-                  AND (t.id IS NULL OR t.active=false)
+                  AND NOT EXISTS (
+                    SELECT 1
+                    FROM or_decision_tracks t
+                    WHERE t.candidate_id=c.id
+                      AND t.active=true
+                      AND t.decision=c.decision
+                  )
                 ORDER BY c.reviewed_at DESC NULLS LAST,c.id DESC
                 LIMIT %s
                 """,
@@ -259,17 +314,18 @@ async def ensure_existing_tracks(limit: int = 100) -> int:
     return created
 
 
-def list_tracked() -> dict[str, Any]:
+def list_tracked(limit: int = 500) -> dict[str, Any]:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT t.*,c.review_notes,c.catalyst_class,c.catalyst_summary,c.heuristic_score,c.triage_label
+                SELECT t.*,c.decision AS current_decision
                 FROM or_decision_tracks t
                 JOIN or_candidates c ON c.id=t.candidate_id
-                WHERE t.active=true
-                ORDER BY t.selected_at DESC,t.id DESC
-                """
+                ORDER BY t.active DESC,t.selected_at DESC,t.id DESC
+                LIMIT %s
+                """,
+                (limit,),
             )
             tracks = cur.fetchall()
             track_ids = [row["id"] for row in tracks]
@@ -277,7 +333,8 @@ def list_tracked() -> dict[str, Any]:
             if track_ids:
                 cur.execute(
                     """
-                    SELECT * FROM or_track_checkpoints
+                    SELECT *
+                    FROM or_track_checkpoints
                     WHERE track_id=ANY(%s)
                     ORDER BY track_id,session_no,
                       CASE checkpoint_kind WHEN 'open_plus_1h' THEN 1 WHEN 'mid_session' THEN 2 ELSE 3 END
@@ -309,7 +366,7 @@ async def capture_due_checkpoints() -> dict[str, int]:
                 SELECT cp.id,cp.track_id,cp.scheduled_at,t.symbol,t.selected_price
                 FROM or_track_checkpoints cp
                 JOIN or_decision_tracks t ON t.id=cp.track_id
-                WHERE cp.status='pending' AND cp.scheduled_at <= %s AND t.active=true
+                WHERE cp.status='pending' AND cp.scheduled_at <= %s
                 ORDER BY cp.scheduled_at,cp.id
                 LIMIT 500
                 """,
@@ -410,14 +467,13 @@ async def capture_due_checkpoints() -> dict[str, int]:
                 """
                 UPDATE or_decision_tracks t
                 SET completed_at=COALESCE(t.completed_at,now()),updated_at=now()
-                WHERE t.active=true
-                  AND NOT EXISTS (
+                WHERE NOT EXISTS (
                     SELECT 1 FROM or_track_checkpoints cp
                     WHERE cp.track_id=t.id AND cp.status='pending'
-                  )
+                )
                   AND EXISTS (
                     SELECT 1 FROM or_track_checkpoints cp WHERE cp.track_id=t.id
-                  )
+                )
                 """
             )
         conn.commit()
