@@ -8,11 +8,11 @@
     :root { color-scheme: dark; --bg:#0b0d10; --panel:#13171c; --line:#29313a; --text:#eef3f7; --muted:#95a1ad; --good:#53d18b; --warn:#f4bd4f; --bad:#ff6b6b; --accent:#7eb6ff; }
     * { box-sizing:border-box; }
     body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    main { max-width:1600px; margin:0 auto; padding:28px 22px 60px; }
+    main { max-width:1800px; margin:0 auto; padding:28px 22px 60px; }
     header { display:flex; gap:18px; justify-content:space-between; align-items:flex-end; margin-bottom:22px; flex-wrap:wrap; }
     h1 { margin:0; font-size:28px; letter-spacing:-.02em; }
     .sub { color:var(--muted); margin-top:5px; }
-    button, select, input { font:inherit; }
+    button, select, input, textarea { font:inherit; }
     button { border:1px solid var(--line); background:#1b222a; color:var(--text); border-radius:8px; padding:9px 13px; cursor:pointer; }
     button:hover { border-color:#465463; }
     button.primary { background:#e8f1ff; color:#101722; border-color:#e8f1ff; font-weight:700; }
@@ -28,7 +28,7 @@
     .toolbar input { min-width:200px; }
     .status { margin-left:auto; color:var(--muted); }
     .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--panel); }
-    table { width:100%; border-collapse:collapse; min-width:1460px; }
+    table { width:100%; border-collapse:collapse; min-width:1740px; }
     th, td { border-bottom:1px solid var(--line); padding:10px 9px; vertical-align:top; text-align:left; }
     th { position:sticky; top:0; background:#171c22; color:#b9c3cc; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
     .th-hint { display:block; margin-top:2px; color:var(--accent); font-size:10px; font-weight:700; text-transform:none; letter-spacing:0; }
@@ -54,10 +54,16 @@
     .decision-button { padding:6px 9px; font-size:11px; font-weight:800; border-color:#4a5968; background:#1a222a; transition:border-color .12s ease, background .12s ease, color .12s ease, box-shadow .12s ease; }
     .decision-button:hover { border-color:#7d91a4; background:#232d37; }
     .decision-button[aria-pressed="true"] { border-style:solid; box-shadow:0 0 0 1px currentColor inset; }
-    .decision-button.selected-investigate { color:var(--good); border-color:#3a8a61; background:#123021; }
-    .decision-button.selected-watch { color:var(--warn); border-color:#8f7029; background:#332a15; }
-    .decision-button.selected-pass { color:var(--bad); border-color:#8d4242; background:#351a1a; }
+    .decision-button.selected-investigate { color:#fff; border-color:#dc5757; background:#7a2424; }
+    .decision-button.selected-watch { color:#171109; border-color:#f4bd4f; background:#f4bd4f; }
+    .decision-button.selected-pass { color:#07140c; border-color:#53d18b; background:#53d18b; }
     .decision-help { margin-top:6px; color:var(--muted); font-size:10px; }
+    .commentary-cell { min-width:280px; }
+    .commentary-input { width:100%; min-height:86px; resize:vertical; padding:8px 9px; border:1px solid #44505c; border-radius:8px; background:#0f1419; color:var(--text); line-height:1.35; }
+    .commentary-input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+    .commentary-actions { display:flex; align-items:center; gap:8px; margin-top:6px; }
+    .commentary-save { padding:5px 9px; font-size:11px; font-weight:800; }
+    .commentary-status { color:var(--muted); font-size:10px; }
     .empty { padding:40px; text-align:center; color:var(--muted); }
     @media (max-width:900px) { .cards { grid-template-columns:repeat(2,minmax(140px,1fr)); } }
   </style>
@@ -88,7 +94,7 @@
     The score prioritises investigation using price dislocation, liquidity, spread and headline keywords.
     Class C can still be attractive: it means material new information whose <em>magnitude</em> may have been over-priced.
     Verify the company announcement / SEC filing before trading.
-    <strong style="color:var(--text)"> Use the Decision buttons in each row to record your choice; the selected option stays highlighted.</strong>
+    <strong style="color:var(--text)"> Use the Decision buttons in each row to record your choice, and Commentary to retain your reasoning.</strong>
   </div>
 
   <div class="toolbar">
@@ -109,7 +115,7 @@
       <thead>
         <tr>
           <th>#</th><th>Company</th><th>Move</th><th>Price / spread</th><th>Liquidity</th>
-          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>ChatGPT</th><th>Decision<span class="th-hint">select one ↓</span></th>
+          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>ChatGPT</th><th>Decision<span class="th-hint">select one ↓</span></th><th>Commentary<span class="th-hint">free text</span></th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
@@ -122,7 +128,7 @@
 let state = { scan: null, candidates: [] };
 let pollTimer = null;
 
-const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[c]));
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const fmt = (v, digits=2) => v == null ? "—" : Number(v).toLocaleString(undefined,{maximumFractionDigits:digits});
 const money = (v) => v == null ? "—" : Number(v).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
 const compactMoney = (v) => {
@@ -159,6 +165,7 @@ function buildChatGPTPrompt(c) {
   }).join("\n\n") || "No recent company-specific news was retained by the scanner.";
 
   const flags=(c.risk_flags ?? []).length ? c.risk_flags.join(", ") : "none flagged";
+  const commentary=c.review_notes ? `\n- Reviewer commentary: ${c.review_notes}` : "";
   return `Analyse ${c.name || c.symbol} (${c.symbol}) as an Oversold Reversion candidate.
 
 Scanner context:
@@ -171,7 +178,7 @@ Scanner context:
 - Scanner score: ${c.heuristic_score ?? "unknown"}/100
 - Scanner triage: ${c.triage_label || "unknown"}
 - Risk flags: ${flags}
-- Scanner summary: ${c.catalyst_summary || "none"}
+- Scanner summary: ${c.catalyst_summary || "none"}${commentary}
 
 Recent news retained by the scanner:
 ${news}
@@ -264,6 +271,13 @@ function renderRows() {
         </div>
         <div class="decision-help">${selected ? "Saved choice — select another button to change it." : "Click one of the buttons above to record your review."}</div>
       </td>
+      <td class="commentary-cell">
+        <textarea class="commentary-input" id="commentary-${c.id}" maxlength="4000" placeholder="Add your reasoning, caveats or follow-up notes…" oninput="updateCommentaryDraft(${c.id}, this.value)">${esc(c.review_notes || "")}</textarea>
+        <div class="commentary-actions">
+          <button class="commentary-save" id="commentary-save-${c.id}" onclick="saveCommentary(${c.id})">Save commentary</button>
+          <span class="commentary-status" id="commentary-status-${c.id}">${c.review_notes ? "Saved" : "Not saved yet"}</span>
+        </div>
+      </td>
     </tr>`;
   }).join("");
   document.getElementById("empty").hidden=rows.length>0;
@@ -302,6 +316,42 @@ async function runScan() {
   }
 }
 
+function updateCommentaryDraft(id, value) {
+  const candidate=state.candidates.find(item => Number(item.id)===Number(id));
+  if (!candidate) return;
+  candidate.review_notes=value.slice(0,4000);
+  const statusEl=document.getElementById(`commentary-status-${id}`);
+  if (statusEl) statusEl.textContent="Unsaved changes";
+}
+
+async function saveCommentary(id) {
+  const candidate=state.candidates.find(item => Number(item.id)===Number(id));
+  if (!candidate) return;
+  const button=document.getElementById(`commentary-save-${id}`);
+  const statusEl=document.getElementById(`commentary-status-${id}`);
+  if (button) button.disabled=true;
+  if (statusEl) statusEl.textContent="Saving…";
+  try {
+    const res=await fetch(`/api/oversold/candidates/${id}`,{
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({decision:candidate.decision || "unreviewed",review_notes:candidate.review_notes || ""})
+    });
+    if (!res.ok) {
+      let detail=`HTTP ${res.status}`;
+      try { detail=(await res.json()).detail || detail; } catch (_) {}
+      throw new Error(detail);
+    }
+    if (statusEl) statusEl.textContent="Saved";
+    document.getElementById("status-line").textContent=`${candidate.symbol}: commentary saved.`;
+  } catch (e) {
+    if (statusEl) statusEl.textContent="Save failed";
+    document.getElementById("status-line").textContent=`Commentary save failed: ${e.message}`;
+  } finally {
+    if (button) button.disabled=false;
+  }
+}
+
 async function setDecision(id, decision) {
   const candidate=state.candidates.find(item => Number(item.id)===Number(id));
   const previous=candidate?.decision;
@@ -314,7 +364,7 @@ async function setDecision(id, decision) {
     const res=await fetch(`/api/oversold/candidates/${id}`,{
       method:"PATCH",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({decision})
+      body:JSON.stringify({decision,review_notes:candidate?.review_notes || ""})
     });
     if (!res.ok) {
       let detail=`HTTP ${res.status}`;
