@@ -37,6 +37,10 @@ SNAPSHOT_CONCURRENCY = 8
 NEWS_LOOKBACK_HOURS = 72
 NEWS_SYMBOL_BATCH_SIZE = 20
 NEWS_MAX_PAGES = 2
+NON_OPERATING_INSTRUMENT_RE = re.compile(
+    r"\b(etf|exchange[- ]traded fund|warrants?|rights?|units?|preferred)\b",
+    re.IGNORECASE,
+)
 
 EXISTENTIAL_WORDS = (
     "bankruptcy", "chapter 11", "chapter 7", "insolven", "going concern",
@@ -61,7 +65,6 @@ TRANSIENT_WORDS = (
     "operations resume", "resumes operations", "short-term disruption",
 )
 ANALYST_WORDS = ("downgrade", "upgrade", "price target", "analyst", "rating")
-
 RISK_KEYWORDS: dict[str, tuple[str, ...]] = {
     "solvency": ("bankruptcy", "chapter 11", "chapter 7", "insolven", "going concern", "debt default"),
     "dilution": ("public offering", "registered direct", "at-the-market", "dilution", "convertible", "warrant"),
@@ -76,10 +79,9 @@ _scan_lock = asyncio.Lock()
 
 
 def _basic_auth_ok(credentials: HTTPBasicCredentials | None) -> bool:
-    if credentials is None:
-        return False
-    return (
-        secrets.compare_digest(credentials.username.encode(), settings.app_username.encode())
+    return bool(
+        credentials
+        and secrets.compare_digest(credentials.username.encode(), settings.app_username.encode())
         and secrets.compare_digest(credentials.password.encode(), settings.app_password.encode())
     )
 
@@ -113,18 +115,14 @@ def authorize_run(
 
 def _number(value: Any) -> float | None:
     try:
-        if value is None:
-            return None
-        return float(value)
+        return None if value is None else float(value)
     except (TypeError, ValueError):
         return None
 
 
 def _integer(value: Any) -> int | None:
     try:
-        if value is None:
-            return None
-        return int(value)
+        return None if value is None else int(value)
     except (TypeError, ValueError):
         return None
 
@@ -140,8 +138,9 @@ def _snapshot_payload(data: Any) -> dict[str, Any]:
     return nested if isinstance(nested, dict) else data
 
 
-def _headline_text(article: dict[str, Any]) -> str:
-    return " ".join(str(article.get(key) or "") for key in ("headline", "summary")).lower()
+def _is_operating_company_asset(asset: dict[str, Any]) -> bool:
+    name = str(asset.get("name") or "")
+    return not bool(NON_OPERATING_INSTRUMENT_RE.search(name))
 
 
 def _contains_any(text: str, words: tuple[str, ...]) -> bool:
@@ -152,30 +151,24 @@ def _classify_news(articles: list[dict[str, Any]]) -> tuple[str, str, list[str]]
     if not articles:
         return "U", "No recent company-specific Alpaca news found in the 72-hour window.", ["no_news"]
 
-    text = " ".join(_headline_text(article) for article in articles)
+    text = " ".join(
+        " ".join(str(article.get(key) or "") for key in ("headline", "summary")).lower()
+        for article in articles
+    )
     risk_flags = [flag for flag, words in RISK_KEYWORDS.items() if _contains_any(text, words)]
 
     if _contains_any(text, EXISTENTIAL_WORDS):
-        catalyst_class = "E"
-        summary = "Existential-risk language detected (solvency, fraud, delisting or liquidation)."
-    elif _contains_any(text, STRUCTURAL_WORDS):
-        catalyst_class = "D"
-        summary = "Potential structural impairment language detected."
-    elif _contains_any(text, MATERIAL_WORDS):
-        catalyst_class = "C"
-        summary = "Material but uncertain repricing catalyst detected; underlying facts require review."
-    elif _contains_any(text, TRANSIENT_WORDS):
-        catalyst_class = "B"
-        summary = "Potentially temporary operational/disruption catalyst detected."
-    elif _contains_any(text, ANALYST_WORDS):
-        catalyst_class = "A"
-        summary = "News appears dominated by analyst/sentiment action rather than a clear new operating event."
+        return "E", "Existential-risk language detected (solvency, fraud, delisting or liquidation).", sorted(set(risk_flags))
+    if _contains_any(text, STRUCTURAL_WORDS):
+        return "D", "Potential structural impairment language detected.", sorted(set(risk_flags))
+    if _contains_any(text, MATERIAL_WORDS):
+        return "C", "Material but uncertain repricing catalyst detected; underlying facts require review.", sorted(set(risk_flags))
+    if _contains_any(text, TRANSIENT_WORDS):
+        return "B", "Potentially temporary operational/disruption catalyst detected.", sorted(set(risk_flags))
+    if _contains_any(text, ANALYST_WORDS):
         risk_flags.append("analyst_only")
-    else:
-        catalyst_class = "U"
-        summary = "Recent news exists, but the catalyst is not confidently classified by the first-pass rules."
-
-    return catalyst_class, summary, sorted(set(risk_flags))
+        return "A", "News appears dominated by analyst/sentiment action rather than a clear new operating event.", sorted(set(risk_flags))
+    return "U", "Recent news exists, but the catalyst is not confidently classified by the first-pass rules.", sorted(set(risk_flags))
 
 
 def _score_candidate(
@@ -190,24 +183,10 @@ def _score_candidate(
     score = 10 + min(25, max(0, round((severity - DEFAULT_MIN_DROP_PCT) * 0.55)))
 
     liquidity = prev_dollar_volume or 0.0
-    if liquidity >= 50_000_000:
-        score += 15
-    elif liquidity >= 10_000_000:
-        score += 12
-    elif liquidity >= 2_000_000:
-        score += 8
-    elif liquidity >= MIN_PREV_DOLLAR_VOLUME:
-        score += 4
+    score += 15 if liquidity >= 50_000_000 else 12 if liquidity >= 10_000_000 else 8 if liquidity >= 2_000_000 else 4 if liquidity >= MIN_PREV_DOLLAR_VOLUME else 0
 
     if spread_pct is not None:
-        if spread_pct <= 0.50:
-            score += 10
-        elif spread_pct <= 1.00:
-            score += 8
-        elif spread_pct <= 2.00:
-            score += 5
-        elif spread_pct <= 5.00:
-            score += 1
+        score += 10 if spread_pct <= 0.50 else 8 if spread_pct <= 1.00 else 5 if spread_pct <= 2.00 else 1 if spread_pct <= 5.00 else 0
 
     score += {"A": 20, "B": 20, "C": 10, "D": -5, "E": -25, "U": 4}.get(catalyst_class, 0)
     score += 5 if headline_count else -5
@@ -228,8 +207,6 @@ def _triage_label(catalyst_class: str, score: int) -> str:
 
 async def _fetch_snapshots(client: AlpacaClient, symbols: list[str]) -> tuple[dict[str, Any], int]:
     semaphore = asyncio.Semaphore(SNAPSHOT_CONCURRENCY)
-    merged: dict[str, Any] = {}
-    request_count = 0
 
     async def one(batch: list[str]) -> dict[str, Any]:
         async with semaphore:
@@ -237,17 +214,15 @@ async def _fetch_snapshots(client: AlpacaClient, symbols: list[str]) -> tuple[di
             result = await client._get(url, {"symbols": ",".join(batch), "feed": "sip"})
             return _snapshot_payload(result.data)
 
-    results = await asyncio.gather(
-        *(one(batch) for batch in _chunks(symbols, SNAPSHOT_BATCH_SIZE)),
-        return_exceptions=True,
-    )
+    batches = _chunks(symbols, SNAPSHOT_BATCH_SIZE)
+    results = await asyncio.gather(*(one(batch) for batch in batches), return_exceptions=True)
+    merged: dict[str, Any] = {}
     for result in results:
-        request_count += 1
         if isinstance(result, Exception):
             logger.warning("Snapshot batch failed: %s", result)
-            continue
-        merged.update(result)
-    return merged, request_count
+        else:
+            merged.update(result)
+    return merged, len(batches)
 
 
 async def _fetch_news_map(client: AlpacaClient, symbols: list[str]) -> tuple[dict[str, list[dict[str, Any]]], int]:
@@ -270,7 +245,11 @@ async def _fetch_news_map(client: AlpacaClient, symbols: list[str]) -> tuple[dic
             }
             if token:
                 params["page_token"] = token
-            result = await client._get(url, params)
+            try:
+                result = await client._get(url, params)
+            except Exception as exc:
+                logger.warning("News batch failed for %s: %s", ",".join(batch), exc)
+                break
             request_count += 1
             data = result.data if isinstance(result.data, dict) else {}
             articles = data.get("news") if isinstance(data.get("news"), list) else []
@@ -294,10 +273,10 @@ async def _fetch_news_map(client: AlpacaClient, symbols: list[str]) -> tuple[dic
             if not token:
                 break
 
-    for symbol in output:
+    for symbol, articles in output.items():
         seen: set[str] = set()
         deduped: list[dict[str, Any]] = []
-        for article in output[symbol]:
+        for article in articles:
             key = str(article.get("id") or article.get("url") or article.get("headline") or "")
             if key and key in seen:
                 continue
@@ -309,7 +288,6 @@ async def _fetch_news_map(client: AlpacaClient, symbols: list[str]) -> tuple[dic
 
 
 def _create_scan(trigger_source: str, min_drop_pct: float, candidate_limit: int) -> UUID:
-    london_date = datetime.now(LONDON).date()
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -317,7 +295,7 @@ def _create_scan(trigger_source: str, min_drop_pct: float, candidate_limit: int)
                 INSERT INTO or_scans(trigger_source,scan_date,min_drop_pct,candidate_limit,status)
                 VALUES (%s,%s,%s,%s,'running') RETURNING id
                 """,
-                (trigger_source, london_date, min_drop_pct, candidate_limit),
+                (trigger_source, datetime.now(LONDON).date(), min_drop_pct, candidate_limit),
             )
             scan_id = cur.fetchone()["id"]
         conn.commit()
@@ -325,7 +303,6 @@ def _create_scan(trigger_source: str, min_drop_pct: float, candidate_limit: int)
 
 
 def _existing_scheduled_scan() -> dict[str, Any] | None:
-    london_date = datetime.now(LONDON).date()
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -336,11 +313,55 @@ def _existing_scheduled_scan() -> dict[str, Any] | None:
                   AND status IN ('running','completed')
                 ORDER BY started_at DESC LIMIT 1
                 """,
-                (london_date,),
+                (datetime.now(LONDON).date(),),
             )
             row = cur.fetchone()
         conn.rollback()
     return row
+
+
+def _extract_candidate(symbol: str, snapshot: dict[str, Any], asset: dict[str, Any], min_drop_pct: float) -> dict[str, Any] | None:
+    previous = snapshot.get("prevDailyBar") or {}
+    latest_trade = snapshot.get("latestTrade") or {}
+    latest_quote = snapshot.get("latestQuote") or {}
+    minute_bar = snapshot.get("minuteBar") or {}
+    daily_bar = snapshot.get("dailyBar") or {}
+
+    prev_close = _number(previous.get("c"))
+    last_price = _number(latest_trade.get("p")) or _number(minute_bar.get("c")) or _number(daily_bar.get("c"))
+    if not prev_close or not last_price or prev_close <= 0 or last_price < MIN_PRICE:
+        return None
+
+    drop_pct = ((last_price / prev_close) - 1.0) * 100.0
+    if drop_pct > -abs(min_drop_pct):
+        return None
+
+    prev_volume = _integer(previous.get("v"))
+    prev_dollar_volume = prev_close * prev_volume if prev_volume is not None else None
+    if prev_dollar_volume is not None and prev_dollar_volume < MIN_PREV_DOLLAR_VOLUME:
+        return None
+
+    bid = _number(latest_quote.get("bp"))
+    ask = _number(latest_quote.get("ap"))
+    spread_pct = None
+    if bid and ask and ask >= bid and ((ask + bid) / 2) > 0:
+        spread_pct = ((ask - bid) / ((ask + bid) / 2)) * 100.0
+
+    return {
+        "symbol": symbol,
+        "name": asset.get("name"),
+        "exchange": asset.get("exchange"),
+        "prev_close": prev_close,
+        "last_price": last_price,
+        "drop_pct": drop_pct,
+        "prev_volume": prev_volume,
+        "prev_dollar_volume": prev_dollar_volume,
+        "bid": bid,
+        "ask": ask,
+        "spread_pct": spread_pct,
+        "latest_trade_ts": latest_trade.get("t"),
+        "raw_snapshot": snapshot,
+    }
 
 
 async def execute_scan(
@@ -358,65 +379,24 @@ async def execute_scan(
                     if asset.get("tradable") is True
                     and str(asset.get("asset_class") or "").lower() == "us_equity"
                     and "otc" not in str(asset.get("exchange") or "").lower()
+                    and _is_operating_company_asset(asset)
                     and re.fullmatch(r"[A-Z][A-Z0-9.\-]{0,9}", str(asset.get("symbol") or "").upper())
                 ]
                 asset_by_symbol = {
                     str(asset["symbol"]).upper(): asset
                     for asset in eligible_assets if asset.get("symbol")
                 }
-                symbols = sorted(asset_by_symbol)
-                snapshots, snapshot_requests = await _fetch_snapshots(client, symbols)
+                snapshots, snapshot_requests = await _fetch_snapshots(client, sorted(asset_by_symbol))
 
-                raw_candidates: list[dict[str, Any]] = []
-                for symbol, snapshot in snapshots.items():
-                    if symbol not in asset_by_symbol or not isinstance(snapshot, dict):
-                        continue
-                    previous = snapshot.get("prevDailyBar") or {}
-                    latest_trade = snapshot.get("latestTrade") or {}
-                    latest_quote = snapshot.get("latestQuote") or {}
-                    minute_bar = snapshot.get("minuteBar") or {}
-                    daily_bar = snapshot.get("dailyBar") or {}
-
-                    prev_close = _number(previous.get("c"))
-                    last_price = _number(latest_trade.get("p")) or _number(minute_bar.get("c")) or _number(daily_bar.get("c"))
-                    if not prev_close or not last_price or prev_close <= 0 or last_price < MIN_PRICE:
-                        continue
-
-                    drop_pct = ((last_price / prev_close) - 1.0) * 100.0
-                    if drop_pct > -abs(min_drop_pct):
-                        continue
-
-                    prev_volume = _integer(previous.get("v"))
-                    prev_dollar_volume = prev_close * prev_volume if prev_volume is not None else None
-                    if prev_dollar_volume is not None and prev_dollar_volume < MIN_PREV_DOLLAR_VOLUME:
-                        continue
-
-                    bid = _number(latest_quote.get("bp"))
-                    ask = _number(latest_quote.get("ap"))
-                    spread_pct = None
-                    if bid and ask and ask >= bid and ((ask + bid) / 2) > 0:
-                        spread_pct = ((ask - bid) / ((ask + bid) / 2)) * 100.0
-
-                    raw_candidates.append({
-                        "symbol": symbol,
-                        "name": asset_by_symbol[symbol].get("name"),
-                        "exchange": asset_by_symbol[symbol].get("exchange"),
-                        "prev_close": prev_close,
-                        "last_price": last_price,
-                        "drop_pct": drop_pct,
-                        "prev_volume": prev_volume,
-                        "prev_dollar_volume": prev_dollar_volume,
-                        "bid": bid,
-                        "ask": ask,
-                        "spread_pct": spread_pct,
-                        "latest_trade_ts": latest_trade.get("t"),
-                        "raw_snapshot": snapshot,
-                    })
-
+                raw_candidates = [
+                    candidate
+                    for symbol, snapshot in snapshots.items()
+                    if symbol in asset_by_symbol and isinstance(snapshot, dict)
+                    if (candidate := _extract_candidate(symbol, snapshot, asset_by_symbol[symbol], min_drop_pct)) is not None
+                ]
                 raw_candidates.sort(key=lambda item: item["drop_pct"])
                 raw_candidates = raw_candidates[:candidate_limit]
-                candidate_symbols = [item["symbol"] for item in raw_candidates]
-                news_map, news_requests = await _fetch_news_map(client, candidate_symbols)
+                news_map, news_requests = await _fetch_news_map(client, [item["symbol"] for item in raw_candidates])
 
             enriched: list[dict[str, Any]] = []
             for item in raw_candidates:
@@ -429,22 +409,24 @@ async def execute_scan(
                     catalyst_class=catalyst_class,
                     headline_count=len(articles),
                 )
-                item.update({
-                    "catalyst_class": catalyst_class,
-                    "catalyst_summary": catalyst_summary,
-                    "risk_flags": risk_flags,
-                    "headlines": articles,
-                    "headline_count": len(articles),
-                    "heuristic_score": score,
-                    "triage_label": _triage_label(catalyst_class, score),
-                })
+                item.update(
+                    catalyst_class=catalyst_class,
+                    catalyst_summary=catalyst_summary,
+                    risk_flags=risk_flags,
+                    headlines=articles,
+                    headline_count=len(articles),
+                    heuristic_score=score,
+                    triage_label=_triage_label(catalyst_class, score),
+                )
                 enriched.append(item)
 
-            enriched.sort(key=lambda item: (
-                item["triage_label"] not in {"INVESTIGATE NOW", "REVIEW"},
-                -item["heuristic_score"],
-                item["drop_pct"],
-            ))
+            enriched.sort(
+                key=lambda item: (
+                    item["triage_label"] not in {"INVESTIGATE NOW", "REVIEW"},
+                    -item["heuristic_score"],
+                    item["drop_pct"],
+                )
+            )
 
             with connection() as conn:
                 with conn.cursor() as cur:
@@ -493,6 +475,7 @@ async def execute_scan(
                                 "news_lookback_hours": NEWS_LOOKBACK_HOURS,
                                 "min_price": MIN_PRICE,
                                 "min_prev_dollar_volume": MIN_PREV_DOLLAR_VOLUME,
+                                "instrument_filter": "operating_company_v1",
                                 "scoring_model": "heuristic_v1",
                             }),
                             scan_id,
@@ -544,9 +527,7 @@ def latest_scan(_: str = Depends(require_basic)) -> dict[str, Any]:
             cur.execute("SELECT id FROM or_scans ORDER BY started_at DESC LIMIT 1")
             row = cur.fetchone()
         conn.rollback()
-    if not row:
-        return {"scan": None, "candidates": []}
-    return _scan_detail(row["id"])
+    return {"scan": None, "candidates": []} if not row else _scan_detail(row["id"])
 
 
 @router.get("/api/oversold/scans/{scan_id}")
@@ -574,10 +555,12 @@ async def run_scan(
 
     trigger_source = "scheduled" if scheduled else "manual"
     scan_id = _create_scan(trigger_source, min_drop_pct, candidate_limit)
-
     if background:
         background_tasks.add_task(
-            execute_scan, scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit
+            execute_scan,
+            scan_id,
+            min_drop_pct=min_drop_pct,
+            candidate_limit=candidate_limit,
         )
         return {"status": "running", "scan_id": scan_id, "trigger_source": trigger_source, "auth_mode": auth_mode}
 
