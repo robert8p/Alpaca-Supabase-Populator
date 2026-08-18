@@ -145,6 +145,18 @@ class AlpacaClient:
             raise AlpacaError("Unexpected clock response")
         return result.data
 
+    async def get_calendar(self, *, start: str, end: str) -> list[dict[str, Any]]:
+        """Return Alpaca's market calendar, including actual open/close times."""
+        url = f"{self.settings.alpaca_trading_base_url.rstrip('/')}/v2/calendar"
+        result = await self._get(url, {"start": start, "end": end})
+        if not isinstance(result.data, list):
+            raise AlpacaError("Unexpected calendar response")
+        return [row for row in result.data if isinstance(row, dict)]
+
+    async def fetch_latest_trades(self, *, symbols: list[str], feed: str = "sip") -> RequestResult:
+        url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/trades/latest"
+        return await self._get(url, {"symbols": ",".join(symbols), "feed": feed})
+
     async def fetch_latest_quotes(self, *, symbols: list[str], feed: str = "sip") -> RequestResult:
         url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/quotes/latest"
         return await self._get(url, {"symbols": ",".join(symbols), "feed": feed})
