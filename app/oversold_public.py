@@ -72,7 +72,7 @@ def oversold_page(request: Request):
     )
     html = html.replace(
         "</body>",
-        '<script src="/static/oversold_tracking.js?v=1"></script>\n</body>',
+        '<script src="/static/oversold_tracking.js?v=2"></script>\n</body>',
     )
     return HTMLResponse(content=html)
 
@@ -85,6 +85,33 @@ def latest_scan() -> dict[str, Any]:
             row = cur.fetchone()
         conn.rollback()
     return {"scan": None, "candidates": []} if not row else _scan_detail(row["id"])
+
+
+@router.get("/api/oversold/scans")
+def scan_history(limit: int = Query(30, ge=1, le=100)) -> list[dict[str, Any]]:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    s.id,s.status,s.trigger_source,s.scan_date,s.min_drop_pct,s.candidate_limit,
+                    s.asset_count,s.snapshot_count,s.candidate_count,s.started_at,s.completed_at,s.error,
+                    count(c.id) FILTER (WHERE c.decision='unreviewed') AS unreviewed_count,
+                    count(c.id) FILTER (WHERE c.decision='investigate') AS investigate_count,
+                    count(c.id) FILTER (WHERE c.decision='watch') AS watch_count,
+                    count(c.id) FILTER (WHERE c.decision='pass') AS pass_count,
+                    count(c.id) FILTER (WHERE c.decision='traded') AS traded_count
+                FROM or_scans s
+                LEFT JOIN or_candidates c ON c.scan_id=s.id
+                GROUP BY s.id
+                ORDER BY s.started_at DESC
+                LIMIT %s
+                """,
+                (limit,),
+            )
+            rows = cur.fetchall()
+        conn.rollback()
+    return rows
 
 
 @router.get("/api/oversold/scans/{scan_id}")
@@ -174,6 +201,7 @@ async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[s
         row["tracking"] = {
             "active": bool(track and track.get("active")),
             "decision": track.get("decision") if track else None,
+            "track_id": track.get("id") if track else None,
         }
     except Exception as exc:
         logger.exception("Decision saved but tracking sync failed for candidate %s", candidate_id)
