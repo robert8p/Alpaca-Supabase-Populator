@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import secrets
 from datetime import datetime, timedelta
@@ -21,7 +22,14 @@ from app.oversold import (
     _scan_detail,
     execute_scan,
 )
+from app.oversold_tracking import (
+    capture_due_checkpoints,
+    ensure_existing_tracks,
+    list_tracked,
+    sync_candidate_tracking,
+)
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 PUBLIC_MANUAL_COOLDOWN_SECONDS = 300
@@ -62,6 +70,10 @@ def oversold_page(request: Request):
         '<a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>',
         "",
     )
+    html = html.replace(
+        "</body>",
+        '<script src="/static/oversold_tracking.js?v=1"></script>\n</body>',
+    )
     return HTMLResponse(content=html)
 
 
@@ -78,6 +90,18 @@ def latest_scan() -> dict[str, Any]:
 @router.get("/api/oversold/scans/{scan_id}")
 def scan_detail(scan_id: UUID) -> dict[str, Any]:
     return _scan_detail(scan_id)
+
+
+@router.get("/api/oversold/tracked")
+async def tracked_outcomes() -> dict[str, Any]:
+    await ensure_existing_tracks()
+    return list_tracked()
+
+
+@router.post("/api/oversold/outcomes/run")
+async def run_outcome_capture(request: Request) -> dict[str, int]:
+    _require_scheduled_token(request)
+    return await capture_due_checkpoints()
 
 
 @router.post("/api/oversold/run", status_code=202)
@@ -124,7 +148,7 @@ async def run_scan(
 
 
 @router.patch("/api/oversold/candidates/{candidate_id}")
-def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, Any]:
+async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, Any]:
     decision = str(payload.get("decision") or "").lower()
     if decision not in {"unreviewed", "watch", "investigate", "pass", "traded"}:
         raise HTTPException(400, "Invalid decision")
@@ -144,4 +168,14 @@ def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, An
             if not row:
                 raise HTTPException(404, "Candidate not found")
         conn.commit()
+
+    try:
+        track = await sync_candidate_tracking(candidate_id, decision)
+        row["tracking"] = {
+            "active": bool(track and track.get("active")),
+            "decision": track.get("decision") if track else None,
+        }
+    except Exception as exc:
+        logger.exception("Decision saved but tracking sync failed for candidate %s", candidate_id)
+        row["tracking_error"] = str(exc)[:1000]
     return row
