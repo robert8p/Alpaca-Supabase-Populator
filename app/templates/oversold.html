@@ -28,9 +28,10 @@
     .toolbar input { min-width:200px; }
     .status { margin-left:auto; color:var(--muted); }
     .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--panel); }
-    table { width:100%; border-collapse:collapse; min-width:1380px; }
+    table { width:100%; border-collapse:collapse; min-width:1460px; }
     th, td { border-bottom:1px solid var(--line); padding:10px 9px; vertical-align:top; text-align:left; }
     th { position:sticky; top:0; background:#171c22; color:#b9c3cc; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+    .th-hint { display:block; margin-top:2px; color:var(--accent); font-size:10px; font-weight:700; text-transform:none; letter-spacing:0; }
     tr:last-child td { border-bottom:0; }
     .symbol { font-weight:800; font-size:15px; }
     .company { color:var(--muted); max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -46,8 +47,17 @@
     .news a:hover { text-decoration:underline; }
     .headline { margin:0 0 5px; }
     .flags { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
-    .decision { display:flex; gap:5px; flex-wrap:wrap; }
-    .decision button { padding:4px 7px; font-size:11px; }
+    .decision-cell { min-width:225px; }
+    .decision-label { margin-bottom:6px; font-size:11px; font-weight:800; color:var(--text); }
+    .decision-label.unselected { color:var(--accent); }
+    .decision { display:flex; gap:6px; flex-wrap:wrap; padding:7px; border:1px dashed #4a5968; border-radius:9px; background:#0f1419; }
+    .decision-button { padding:6px 9px; font-size:11px; font-weight:800; border-color:#4a5968; background:#1a222a; transition:border-color .12s ease, background .12s ease, color .12s ease, box-shadow .12s ease; }
+    .decision-button:hover { border-color:#7d91a4; background:#232d37; }
+    .decision-button[aria-pressed="true"] { border-style:solid; box-shadow:0 0 0 1px currentColor inset; }
+    .decision-button.selected-investigate { color:var(--good); border-color:#3a8a61; background:#123021; }
+    .decision-button.selected-watch { color:var(--warn); border-color:#8f7029; background:#332a15; }
+    .decision-button.selected-pass { color:var(--bad); border-color:#8d4242; background:#351a1a; }
+    .decision-help { margin-top:6px; color:var(--muted); font-size:10px; }
     .empty { padding:40px; text-align:center; color:var(--muted); }
     @media (max-width:900px) { .cards { grid-template-columns:repeat(2,minmax(140px,1fr)); } }
   </style>
@@ -78,6 +88,7 @@
     The score prioritises investigation using price dislocation, liquidity, spread and headline keywords.
     Class C can still be attractive: it means material new information whose <em>magnitude</em> may have been over-priced.
     Verify the company announcement / SEC filing before trading.
+    <strong style="color:var(--text)"> Use the Decision buttons in each row to record your choice; the selected option stays highlighted.</strong>
   </div>
 
   <div class="toolbar">
@@ -98,7 +109,7 @@
       <thead>
         <tr>
           <th>#</th><th>Company</th><th>Move</th><th>Price / spread</th><th>Liquidity</th>
-          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>ChatGPT</th><th>Decision</th>
+          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>ChatGPT</th><th>Decision<span class="th-hint">select one ↓</span></th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
@@ -111,7 +122,7 @@
 let state = { scan: null, candidates: [] };
 let pollTimer = null;
 
-const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[c]));
 const fmt = (v, digits=2) => v == null ? "—" : Number(v).toLocaleString(undefined,{maximumFractionDigits:digits});
 const money = (v) => v == null ? "—" : Number(v).toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
 const compactMoney = (v) => {
@@ -123,6 +134,7 @@ const compactMoney = (v) => {
   return "$"+n.toFixed(0);
 };
 const badgeClass = (label) => label === "INVESTIGATE NOW" ? "now" : label === "REVIEW" ? "review" : label.startsWith("PASS") ? "pass" : "";
+const decisionTitle = (decision) => ({investigate:"Investigate",watch:"Watch",pass:"Pass",traded:"Traded"}[decision] || "");
 
 function renderMeta() {
   const s=state.scan;
@@ -229,6 +241,8 @@ function renderRows() {
       return `<div class="headline">${a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${headline}</a>` : headline}${src ? ` <span class="muted">· ${src}</span>` : ""}</div>`;
     }).join("") : `<span class="muted">No recent news found</span>`;
     const flags=(c.risk_flags ?? []).map(f=>`<span class="pill">${esc(f)}</span>`).join("");
+    const selected=c.decision && c.decision !== "unreviewed" ? c.decision : "";
+    const selectedTitle=decisionTitle(selected);
     return `<tr>
       <td>${c.rank}</td>
       <td><div class="symbol">${esc(c.symbol)}</div><div class="company" title="${esc(c.name)}">${esc(c.name || "")}</div><div class="muted">${esc(c.exchange || "")}</div></td>
@@ -241,13 +255,14 @@ function renderRows() {
       <td>${esc(c.catalyst_summary || "")}</td>
       <td class="news">${news}${c.headline_count > 3 ? `<div class="muted">+${c.headline_count-3} more retained</div>` : ""}</td>
       <td><button class="chatgpt-button" onclick="analyseInChatGPT(${c.id})" title="Copy a structured research prompt and open ChatGPT">Analyse ↗</button><div class="muted" style="margin-top:5px">news + context</div></td>
-      <td>
-        <div class="decision">
-          <button onclick="setDecision(${c.id},'investigate')">Investigate</button>
-          <button onclick="setDecision(${c.id},'watch')">Watch</button>
-          <button onclick="setDecision(${c.id},'pass')">Pass</button>
+      <td class="decision-cell">
+        <div class="decision-label ${selected ? "" : "unselected"}">${selected ? `Selected: ${esc(selectedTitle)}` : "Choose a decision ↓"}</div>
+        <div class="decision" role="group" aria-label="Choose decision for ${esc(c.symbol)}">
+          <button class="decision-button ${selected === "investigate" ? "selected-investigate" : ""}" aria-pressed="${selected === "investigate"}" onclick="setDecision(${c.id},'investigate')">${selected === "investigate" ? "✓ " : ""}Investigate</button>
+          <button class="decision-button ${selected === "watch" ? "selected-watch" : ""}" aria-pressed="${selected === "watch"}" onclick="setDecision(${c.id},'watch')">${selected === "watch" ? "✓ " : ""}Watch</button>
+          <button class="decision-button ${selected === "pass" ? "selected-pass" : ""}" aria-pressed="${selected === "pass"}" onclick="setDecision(${c.id},'pass')">${selected === "pass" ? "✓ " : ""}Pass</button>
         </div>
-        <div class="muted" style="margin-top:5px">${esc(c.decision)}</div>
+        <div class="decision-help">${selected ? "Saved choice — select another button to change it." : "Click one of the buttons above to record your review."}</div>
       </td>
     </tr>`;
   }).join("");
@@ -288,12 +303,33 @@ async function runScan() {
 }
 
 async function setDecision(id, decision) {
-  const res=await fetch(`/api/oversold/candidates/${id}`,{
-    method:"PATCH",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({decision})
-  });
-  if (res.ok) await load();
+  const candidate=state.candidates.find(item => Number(item.id)===Number(id));
+  const previous=candidate?.decision;
+  if (candidate) {
+    candidate.decision=decision;
+    renderRows();
+    document.getElementById("status-line").textContent=`${candidate.symbol}: saving ${decisionTitle(decision)} decision…`;
+  }
+  try {
+    const res=await fetch(`/api/oversold/candidates/${id}`,{
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({decision})
+    });
+    if (!res.ok) {
+      let detail=`HTTP ${res.status}`;
+      try { detail=(await res.json()).detail || detail; } catch (_) {}
+      throw new Error(detail);
+    }
+    await load();
+    if (candidate) document.getElementById("status-line").textContent=`${candidate.symbol}: decision saved as ${decisionTitle(decision)}.`;
+  } catch (e) {
+    if (candidate) {
+      candidate.decision=previous;
+      renderRows();
+    }
+    document.getElementById("status-line").textContent=`Decision save failed: ${e.message}`;
+  }
 }
 
 document.getElementById("run").addEventListener("click",runScan);
