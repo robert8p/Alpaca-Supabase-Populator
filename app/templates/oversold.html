@@ -8,7 +8,7 @@
     :root { color-scheme: dark; --bg:#0b0d10; --panel:#13171c; --line:#29313a; --text:#eef3f7; --muted:#95a1ad; --good:#53d18b; --warn:#f4bd4f; --bad:#ff6b6b; --accent:#7eb6ff; }
     * { box-sizing:border-box; }
     body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    main { max-width:1500px; margin:0 auto; padding:28px 22px 60px; }
+    main { max-width:1600px; margin:0 auto; padding:28px 22px 60px; }
     header { display:flex; gap:18px; justify-content:space-between; align-items:flex-end; margin-bottom:22px; flex-wrap:wrap; }
     h1 { margin:0; font-size:28px; letter-spacing:-.02em; }
     .sub { color:var(--muted); margin-top:5px; }
@@ -17,6 +17,7 @@
     button:hover { border-color:#465463; }
     button.primary { background:#e8f1ff; color:#101722; border-color:#e8f1ff; font-weight:700; }
     button:disabled { opacity:.55; cursor:wait; }
+    .chatgpt-button { white-space:nowrap; font-weight:700; border-color:#3a4b5d; }
     .cards { display:grid; grid-template-columns:repeat(5,minmax(150px,1fr)); gap:10px; margin-bottom:16px; }
     .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 14px; min-height:78px; }
     .label { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
@@ -27,7 +28,7 @@
     .toolbar input { min-width:200px; }
     .status { margin-left:auto; color:var(--muted); }
     .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--panel); }
-    table { width:100%; border-collapse:collapse; min-width:1250px; }
+    table { width:100%; border-collapse:collapse; min-width:1380px; }
     th, td { border-bottom:1px solid var(--line); padding:10px 9px; vertical-align:top; text-align:left; }
     th { position:sticky; top:0; background:#171c22; color:#b9c3cc; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
     tr:last-child td { border-bottom:0; }
@@ -97,7 +98,7 @@
       <thead>
         <tr>
           <th>#</th><th>Company</th><th>Move</th><th>Price / spread</th><th>Liquidity</th>
-          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>Decision</th>
+          <th>Class</th><th>Score</th><th>Triage</th><th>Why</th><th>Recent news</th><th>ChatGPT</th><th>Decision</th>
         </tr>
       </thead>
       <tbody id="rows"></tbody>
@@ -135,6 +136,83 @@ function renderMeta() {
     : "No scan yet";
 }
 
+function buildChatGPTPrompt(c) {
+  const news=(c.headlines ?? []).map((a,i) => {
+    const parts=[`${i+1}. ${a.headline || "Untitled"}`];
+    if (a.source) parts.push(`Source: ${a.source}`);
+    if (a.created_at) parts.push(`Published: ${a.created_at}`);
+    if (a.summary) parts.push(`Summary: ${a.summary}`);
+    if (a.url) parts.push(`URL: ${a.url}`);
+    return parts.join("\n   ");
+  }).join("\n\n") || "No recent company-specific news was retained by the scanner.";
+
+  const flags=(c.risk_flags ?? []).length ? c.risk_flags.join(", ") : "none flagged";
+  return `Analyse ${c.name || c.symbol} (${c.symbol}) as an Oversold Reversion candidate.
+
+Scanner context:
+- Current move versus previous close: ${fmt(c.drop_pct,2)}%
+- Last price: ${money(c.last_price)}
+- Previous close: ${money(c.prev_close)}
+- Bid/ask spread: ${c.spread_pct == null ? "unknown" : fmt(c.spread_pct,2)+"%"}
+- Previous-day dollar volume: ${compactMoney(c.prev_dollar_volume)}
+- Scanner catalyst class: ${c.catalyst_class || "U"}
+- Scanner score: ${c.heuristic_score ?? "unknown"}/100
+- Scanner triage: ${c.triage_label || "unknown"}
+- Risk flags: ${flags}
+- Scanner summary: ${c.catalyst_summary || "none"}
+
+Recent news retained by the scanner:
+${news}
+
+Please independently verify the situation using current web search and prioritise primary sources such as company investor relations, SEC filings, regulators and trial registries where relevant. Do not assume the scanner classification is correct.
+
+Assess:
+1. What actually caused the fall, with a timeline and source-backed facts.
+2. Whether the catalyst is noise, temporary impairment, uncertain repricing, structural impairment or existential.
+3. What permanent change to intrinsic value is plausibly justified versus the observed price fall.
+4. Evidence that the market may have overreacted, and the strongest evidence that it has not.
+5. Balance-sheet, dilution, solvency, regulatory, litigation and management risks.
+6. Near-term events that could drive a 1–3 trading-day reversion or further downside.
+7. Whether this is a credible Oversold Reversion setup right now.
+
+Finish with a concise verdict: INVESTIGATE / WATCH / PASS, confidence 0–100%, the key reason, and what would invalidate the thesis. This is research, not an instruction to trade.`;
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (_) {
+    try {
+      const el=document.createElement("textarea");
+      el.value=text;
+      el.setAttribute("readonly","");
+      el.style.position="fixed";
+      el.style.opacity="0";
+      document.body.appendChild(el);
+      el.select();
+      const ok=document.execCommand("copy");
+      document.body.removeChild(el);
+      return ok;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+function analyseInChatGPT(id) {
+  const c=state.candidates.find(item => Number(item.id)===Number(id));
+  if (!c) return;
+  const prompt=buildChatGPTPrompt(c);
+  const target=`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+  window.open(target,"_blank","noopener");
+  copyText(prompt).then(ok => {
+    document.getElementById("status-line").textContent=ok
+      ? `${c.symbol}: analysis prompt copied; ChatGPT opened in a new tab.`
+      : `${c.symbol}: ChatGPT opened. If the prompt is not prefilled, copy the row context manually.`;
+  });
+}
+
 function renderRows() {
   const q=document.getElementById("search").value.trim().toLowerCase();
   const triage=document.getElementById("triage").value;
@@ -162,6 +240,7 @@ function renderRows() {
       <td><span class="pill ${badgeClass(c.triage_label)}">${esc(c.triage_label)}</span></td>
       <td>${esc(c.catalyst_summary || "")}</td>
       <td class="news">${news}${c.headline_count > 3 ? `<div class="muted">+${c.headline_count-3} more retained</div>` : ""}</td>
+      <td><button class="chatgpt-button" onclick="analyseInChatGPT(${c.id})" title="Copy a structured research prompt and open ChatGPT">Analyse ↗</button><div class="muted" style="margin-top:5px">news + context</div></td>
       <td>
         <div class="decision">
           <button onclick="setDecision(${c.id},'investigate')">Investigate</button>
