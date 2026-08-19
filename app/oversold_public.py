@@ -22,11 +22,9 @@ from app.oversold import (
     _scan_detail,
     execute_scan,
 )
-from app.oversold_tracking import (
-    capture_due_checkpoints,
-    list_tracked,
-    sync_candidate_tracking,
-)
+from app.oversold_outcomes import capture_signal_outcomes
+from app.oversold_scoring import MODEL_STATUS, SCORING_CONFIG, public_scoring_contract
+from app.oversold_tracking import capture_due_checkpoints, list_tracked, sync_candidate_tracking
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -51,11 +49,9 @@ def _recent_manual_scan() -> dict[str, Any] | None:
                 """
                 SELECT id,status,started_at,completed_at
                 FROM or_scans
-                WHERE trigger_source='manual'
-                  AND started_at >= %s
+                WHERE trigger_source='manual' AND started_at >= %s
                   AND status IN ('running','completed')
-                ORDER BY started_at DESC
-                LIMIT 1
+                ORDER BY started_at DESC LIMIT 1
                 """,
                 (cutoff,),
             )
@@ -81,10 +77,15 @@ def _latest_decision_rows(limit: int = 500) -> list[dict[str, Any]]:
                     WHERE c.decision <> 'unreviewed'
                     ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
                 )
-                SELECT *
-                FROM latest
-                WHERE decision = ANY(%s)
-                ORDER BY reviewed_at DESC NULLS LAST,id DESC
+                SELECT l.*,mr.final_score AS reversion_score,mr.model_status,mr.verdict AS model_verdict,
+                       mr.damage_risk,mr.evidence_confidence,mr.scoring_model_version
+                FROM latest l
+                LEFT JOIN LATERAL (
+                    SELECT * FROM or_model_runs x WHERE x.candidate_id=l.id AND x.run_kind='original'
+                    ORDER BY x.created_at ASC,x.id ASC LIMIT 1
+                ) mr ON true
+                WHERE l.decision = ANY(%s)
+                ORDER BY l.reviewed_at DESC NULLS LAST,l.id DESC
                 LIMIT %s
                 """,
                 (list(CURRENT_DECISIONS), limit),
@@ -100,30 +101,22 @@ async def _ensure_current_tracks(limit: int = 100) -> int:
             cur.execute(
                 """
                 WITH latest AS (
-                    SELECT DISTINCT ON (c.symbol)
-                        c.id,c.symbol,c.decision,c.reviewed_at
-                    FROM or_candidates c
-                    WHERE c.decision <> 'unreviewed'
+                    SELECT DISTINCT ON (c.symbol) c.id,c.symbol,c.decision,c.reviewed_at
+                    FROM or_candidates c WHERE c.decision <> 'unreviewed'
                     ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
                 )
-                SELECT l.id,l.decision
-                FROM latest l
+                SELECT l.id,l.decision FROM latest l
                 WHERE l.decision = ANY(%s)
                   AND NOT EXISTS (
-                    SELECT 1
-                    FROM or_decision_tracks t
-                    WHERE t.candidate_id=l.id
-                      AND t.decision=l.decision
-                      AND t.active=true
+                    SELECT 1 FROM or_decision_tracks t
+                    WHERE t.candidate_id=l.id AND t.decision=l.decision AND t.active=true
                   )
-                ORDER BY l.reviewed_at DESC NULLS LAST,l.id DESC
-                LIMIT %s
+                ORDER BY l.reviewed_at DESC NULLS LAST,l.id DESC LIMIT %s
                 """,
                 (list(TRACKED_DECISIONS), limit),
             )
             rows = cur.fetchall()
         conn.rollback()
-
     created = 0
     for row in rows:
         try:
@@ -134,18 +127,122 @@ async def _ensure_current_tracks(limit: int = 100) -> int:
     return created
 
 
+def _model_diagnostics() -> dict[str, Any]:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    count(*) AS scored_signals,
+                    count(*) FILTER (WHERE mr.model_status='calibrated') AS calibrated_predictions,
+                    count(*) FILTER (WHERE mr.missing_inputs @> '[\"company_specific_news\"]'::jsonb) AS missing_news_count,
+                    count(*) FILTER (WHERE mr.hard_veto) AS hard_veto_count,
+                    count(*) FILTER (WHERE (mr.catalyst_analysis->>'analysis_method')='rules_v2_no_llm') AS rules_without_llm_count,
+                    count(*) FILTER (WHERE so.status='matured') AS matured_outcomes,
+                    count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS calibration_eligible_matured,
+                    count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=true) AS eligible_hits,
+                    count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=false) AS eligible_misses,
+                    avg(so.mfe_6w) FILTER (WHERE so.status='matured') AS average_mfe,
+                    avg(so.mae_6w) FILTER (WHERE so.status='matured') AS average_mae,
+                    avg(so.hours_to_plus_5) FILTER (WHERE so.first_plus_5_ts IS NOT NULL) AS average_hours_to_target
+                FROM or_model_runs mr
+                LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
+                WHERE mr.run_kind='original'
+                """
+            )
+            summary = cur.fetchone() or {}
+            cur.execute(
+                """
+                SELECT
+                    LEAST(9,FLOOR(mr.final_score/10)::int) AS bucket,
+                    count(*) AS sample_count,
+                    count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS matured_count,
+                    count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks) AS hit_count,
+                    avg(so.mfe_6w) FILTER (WHERE so.status='matured') AS average_mfe,
+                    avg(so.mae_6w) FILTER (WHERE so.status='matured') AS average_mae
+                FROM or_model_runs mr
+                LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
+                WHERE mr.run_kind='original'
+                GROUP BY 1 ORDER BY 1
+                """
+            )
+            buckets = cur.fetchall()
+            cur.execute(
+                """
+                SELECT COALESCE(es.sector_hint,'unknown') AS sector,
+                       count(*) AS sample_count,
+                       count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS matured_count,
+                       count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks) AS hit_count
+                FROM or_model_runs mr
+                JOIN or_evidence_snapshots es ON es.id=mr.evidence_snapshot_id
+                LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
+                WHERE mr.run_kind='original'
+                GROUP BY 1 ORDER BY sample_count DESC
+                """
+            )
+            sectors = cur.fetchall()
+            cur.execute(
+                """
+                SELECT COALESCE(mr.catalyst_analysis->>'catalyst_type','unknown') AS catalyst_type,
+                       count(*) AS sample_count,
+                       count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS matured_count,
+                       count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks) AS hit_count
+                FROM or_model_runs mr
+                LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
+                WHERE mr.run_kind='original'
+                GROUP BY 1 ORDER BY sample_count DESC
+                """
+            )
+            catalysts = cur.fetchall()
+            cur.execute("SELECT * FROM or_calibration_runs ORDER BY created_at DESC LIMIT 1")
+            latest_calibration = cur.fetchone()
+        conn.rollback()
+
+    matured = int(summary.get("calibration_eligible_matured") or 0)
+    positives = int(summary.get("eligible_hits") or 0)
+    negatives = int(summary.get("eligible_misses") or 0)
+    cfg = SCORING_CONFIG["calibration"]
+    reasons: list[str] = []
+    if matured < cfg["minimum_matured_signals"]:
+        reasons.append(f"Need {cfg['minimum_matured_signals']} calibration-eligible matured signals; have {matured}.")
+    if positives < cfg["minimum_positives"]:
+        reasons.append(f"Need {cfg['minimum_positives']} positive outcomes; have {positives}.")
+    if negatives < cfg["minimum_negatives"]:
+        reasons.append(f"Need {cfg['minimum_negatives']} negative outcomes; have {negatives}.")
+    if not latest_calibration or not latest_calibration.get("passed"):
+        reasons.append("No temporal calibration run has passed the configured quality checks.")
+    return {
+        "model_status": MODEL_STATUS,
+        "calibration_status": "Calibrated" if not reasons and MODEL_STATUS == "calibrated" else "Uncalibrated",
+        "calibration_reasons": reasons,
+        "summary": summary,
+        "score_buckets": [
+            {
+                **row,
+                "range": f"{int(row['bucket']) * 10}-{int(row['bucket']) * 10 + 9}",
+                "hit_rate": (float(row["hit_count"]) / float(row["matured_count"]) * 100.0) if row.get("matured_count") else None,
+            }
+            for row in buckets
+        ],
+        "by_sector": sectors,
+        "by_catalyst_type": catalysts,
+        "latest_calibration_run": latest_calibration,
+        "contract": public_scoring_contract(),
+        "catalyst_backend": "rules_v2_no_llm",
+        "calibration_guard": "Outcomes remain excluded while corporate-action status is unchecked.",
+    }
+
+
 @router.get("/oversold", response_class=HTMLResponse)
 def oversold_page(request: Request):
     html = templates.get_template("oversold.html").render(request=request)
-    html = html.replace(
-        '<a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>',
-        "",
-    )
+    html = html.replace('<a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>', "")
     html = html.replace(
         "</body>",
         '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_top5.js?v=3"></script>\n'
-        '<script src="/static/oversold_chatgpt_score.js?v=1"></script>\n</body>',
+        '<script src="/static/oversold_score_ui.js?v=1"></script>\n'
+        '<script src="/static/oversold_top5.js?v=4"></script>\n'
+        '<script src="/static/oversold_chatgpt_score.js?v=2"></script>\n</body>',
     )
     return HTMLResponse(content=html)
 
@@ -160,26 +257,32 @@ def latest_scan() -> dict[str, Any]:
     return {"scan": None, "candidates": []} if not row else _scan_detail(row["id"])
 
 
+@router.get("/api/oversold/scoring-contract")
+def scoring_contract() -> dict[str, Any]:
+    return public_scoring_contract()
+
+
+@router.get("/api/oversold/diagnostics")
+def scoring_diagnostics() -> dict[str, Any]:
+    return _model_diagnostics()
+
+
 @router.get("/api/oversold/scans")
 def scan_history(limit: int = Query(30, ge=1, le=100)) -> list[dict[str, Any]]:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT
-                    s.id,s.status,s.trigger_source,s.scan_date,s.min_drop_pct,s.candidate_limit,
-                    s.asset_count,s.snapshot_count,s.candidate_count,s.started_at,s.completed_at,s.error,
-                    count(c.id) FILTER (WHERE c.decision='unreviewed') AS unreviewed_count,
-                    count(c.id) FILTER (WHERE c.decision='investigate') AS investigate_count,
-                    count(c.id) FILTER (WHERE c.decision='watch') AS watch_count,
-                    count(c.id) FILTER (WHERE c.decision='pass') AS pass_count,
-                    count(c.id) FILTER (WHERE c.decision='reject') AS reject_count,
-                    count(c.id) FILTER (WHERE c.decision='traded') AS traded_count
-                FROM or_scans s
-                LEFT JOIN or_candidates c ON c.scan_id=s.id
-                GROUP BY s.id
-                ORDER BY s.started_at DESC
-                LIMIT %s
+                SELECT s.id,s.status,s.trigger_source,s.scan_date,s.min_drop_pct,s.candidate_limit,
+                       s.asset_count,s.snapshot_count,s.candidate_count,s.started_at,s.completed_at,s.error,
+                       count(c.id) FILTER (WHERE c.decision='unreviewed') AS unreviewed_count,
+                       count(c.id) FILTER (WHERE c.decision='investigate') AS investigate_count,
+                       count(c.id) FILTER (WHERE c.decision='watch') AS watch_count,
+                       count(c.id) FILTER (WHERE c.decision='pass') AS pass_count,
+                       count(c.id) FILTER (WHERE c.decision='reject') AS reject_count,
+                       count(c.id) FILTER (WHERE c.decision='traded') AS traded_count
+                FROM or_scans s LEFT JOIN or_candidates c ON c.scan_id=s.id
+                GROUP BY s.id ORDER BY s.started_at DESC LIMIT %s
                 """,
                 (limit,),
             )
@@ -202,7 +305,6 @@ def decision_board() -> dict[str, Any]:
         for track in history.get(decision, []):
             if track.get("active"):
                 active_by_candidate[int(track["candidate_id"])] = track
-
     board = {decision: [] for decision in CURRENT_DECISIONS}
     for row in rows:
         row["tracking"] = active_by_candidate.get(int(row["id"]))
@@ -217,9 +319,11 @@ async def tracked_outcomes() -> dict[str, Any]:
 
 
 @router.post("/api/oversold/outcomes/run")
-async def run_outcome_capture(request: Request) -> dict[str, int]:
+async def run_outcome_capture(request: Request) -> dict[str, Any]:
     _require_scheduled_token(request)
-    return await capture_due_checkpoints()
+    decision_checkpoints = await capture_due_checkpoints()
+    signal_outcomes = await capture_signal_outcomes()
+    return {"decision_checkpoints": decision_checkpoints, "signal_outcomes": signal_outcomes}
 
 
 @router.post("/api/oversold/run", status_code=202)
@@ -243,24 +347,12 @@ async def run_scan(
     else:
         recent = _recent_manual_scan()
         if recent:
-            return {
-                "status": recent["status"],
-                "scan_id": recent["id"],
-                "duplicate": True,
-                "cooldown_seconds": PUBLIC_MANUAL_COOLDOWN_SECONDS,
-            }
+            return {"status": recent["status"], "scan_id": recent["id"], "duplicate": True, "cooldown_seconds": PUBLIC_MANUAL_COOLDOWN_SECONDS}
         trigger_source = "manual"
-
     scan_id = _create_scan(trigger_source, min_drop_pct, candidate_limit)
     if background:
-        background_tasks.add_task(
-            execute_scan,
-            scan_id,
-            min_drop_pct=min_drop_pct,
-            candidate_limit=candidate_limit,
-        )
+        background_tasks.add_task(execute_scan, scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
         return {"status": "running", "scan_id": scan_id, "trigger_source": trigger_source}
-
     await execute_scan(scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
     return _scan_detail(scan_id)
 
@@ -274,12 +366,7 @@ async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[s
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """
-                UPDATE or_candidates
-                SET decision=%s,review_notes=%s,reviewed_at=now()
-                WHERE id=%s
-                RETURNING id,decision,review_notes,reviewed_at
-                """,
+                "UPDATE or_candidates SET decision=%s,review_notes=%s,reviewed_at=now() WHERE id=%s RETURNING id,decision,review_notes,reviewed_at",
                 (decision, review_notes, candidate_id),
             )
             row = cur.fetchone()
@@ -287,23 +374,13 @@ async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[s
                 raise HTTPException(404, "Candidate not found")
             if decision not in TRACKED_DECISIONS:
                 cur.execute(
-                    """
-                    UPDATE or_decision_tracks
-                    SET active=false,ended_at=COALESCE(ended_at,now()),updated_at=now()
-                    WHERE active=true
-                      AND symbol=(SELECT symbol FROM or_candidates WHERE id=%s)
-                    """,
+                    "UPDATE or_decision_tracks SET active=false,ended_at=COALESCE(ended_at,now()),updated_at=now() WHERE active=true AND symbol=(SELECT symbol FROM or_candidates WHERE id=%s)",
                     (candidate_id,),
                 )
         conn.commit()
-
     try:
         track = await sync_candidate_tracking(candidate_id, decision)
-        row["tracking"] = {
-            "active": bool(track and track.get("active")),
-            "decision": track.get("decision") if track else None,
-            "track_id": track.get("id") if track else None,
-        }
+        row["tracking"] = {"active": bool(track and track.get("active")), "decision": track.get("decision") if track else None, "track_id": track.get("id") if track else None}
     except Exception as exc:
         logger.exception("Decision saved but tracking sync failed for candidate %s", candidate_id)
         row["tracking_error"] = str(exc)[:1000]
