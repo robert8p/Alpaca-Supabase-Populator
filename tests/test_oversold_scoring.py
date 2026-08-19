@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from app.oversold_outcomes import calculate_outcome_metrics
+from app.oversold_outcomes import calculate_outcome_metrics, refine_intraday_events
 from app.oversold_scoring import evidence_snapshot_hash, final_score, score_candidate
 
 
@@ -69,6 +69,14 @@ def test_biotech_pivotal_failure_hard_vetoes():
     assert result["verdict"] == "PASS"
 
 
+def test_secondary_biotech_miss_is_less_damaging_than_pivotal_failure():
+    c = candidate(drop=-32.0, last=10.2)
+    news = [article("Phase 2 study misses secondary endpoint", "Primary endpoint was achieved; one secondary endpoint was not met.")]
+    result = score_candidate(c, news, "C", ["clinical_regulatory"])
+    assert result["hard_veto"] is False
+    assert 50 <= result["damage_risk"] < 90
+
+
 def test_analyst_downgrade_without_operating_failure_can_be_reversible():
     c = candidate(drop=-22.0)
     news = [article("Broker downgrade cuts price target", "Analyst rating changed; no new company operating announcement cited.", "Broker note")]
@@ -76,6 +84,14 @@ def test_analyst_downgrade_without_operating_failure_can_be_reversible():
     assert result["catalyst_score"] >= 65
     assert result["damage_risk"] <= 25
     assert result["catalyst_analysis"]["analyst_reaction"]["coverage_available"] is True
+
+
+def test_broad_sector_selloff_can_be_reversible_without_company_impairment():
+    c = candidate(drop=-21.0)
+    news = [article("Broad sector sell-off pressures shares", "Industry-wide risk-off move; no company-specific operating announcement.")]
+    result = score_candidate(c, news, "B", [])
+    assert result["catalyst_score"] >= 65
+    assert result["hard_veto"] is False
 
 
 def test_missing_news_never_gets_favourable_neutral_treatment():
@@ -87,20 +103,24 @@ def test_missing_news_never_gets_favourable_neutral_treatment():
     assert "company_specific_news" in result["missing_inputs"]
 
 
+def test_conflicting_evidence_is_preserved():
+    c = candidate(drop=-28.0)
+    news = [article("Temporary outage but permanent closure under review", "Operations are temporarily halted while management considers permanent closure.")]
+    result = score_candidate(c, news, "D", [])
+    analysis = result["catalyst_analysis"]
+    assert analysis["supporting_evidence"]
+    assert analysis["contradictory_evidence"]
+    assert result["damage_risk"] >= 70
+
+
 def test_damage_gate_overrides_perfect_other_components():
-    result = final_score(
-        setup=100, catalyst=100, resilience=100, confirmation=100,
-        confidence=100, damage_risk=90, cause_verified=True,
-    )
+    result = final_score(setup=100, catalyst=100, resilience=100, confirmation=100, confidence=100, damage_risk=90, cause_verified=True)
     assert result["final_score"] <= 20
     assert result["verdict"] == "PASS"
 
 
 def test_low_confidence_shrinks_extreme_core_toward_neutral():
-    result = final_score(
-        setup=90, catalyst=90, resilience=90, confirmation=90,
-        confidence=20, damage_risk=0, cause_verified=True,
-    )
+    result = final_score(setup=90, catalyst=90, resilience=90, confirmation=90, confidence=20, damage_risk=0, cause_verified=True)
     assert result["core_score"] == pytest.approx(90.0)
     assert result["confidence_adjusted_score"] == pytest.approx(58.0)
     assert result["final_score"] == pytest.approx(58.0)
@@ -122,23 +142,53 @@ def test_outcome_tracker_excludes_signal_day_bar_and_future_beyond_cutoff():
     deadline = signal + timedelta(weeks=6)
     row = {"signal_timestamp": signal, "horizon_deadline": deadline, "signal_price": 10.0}
     bars = [
-        {"t": "2026-08-19T13:30:00Z", "o": 9, "h": 20, "l": 8, "c": 15},  # before signal: must not count
+        {"t": "2026-08-19T13:30:00Z", "o": 9, "h": 20, "l": 8, "c": 15},
         {"t": "2026-08-20T13:30:00Z", "o": 10, "h": 10.4, "l": 9.8, "c": 10.2},
         {"t": "2026-08-21T13:30:00Z", "o": 10.2, "h": 10.6, "l": 10.0, "c": 10.5},
-        {"t": (deadline + timedelta(days=1)).isoformat(), "o": 10, "h": 30, "l": 9, "c": 25},  # after horizon
+        {"t": (deadline + timedelta(days=1)).isoformat(), "o": 10, "h": 30, "l": 9, "c": 25},
     ]
     metrics = calculate_outcome_metrics(row, bars, now=deadline + timedelta(days=1))
     assert metrics["return_1d"] == pytest.approx(2.0)
     assert metrics["hit_plus_5pct_within_6_weeks"] is True
     assert metrics["trading_days_to_plus_5"] == 2
     assert metrics["mfe_6w"] == pytest.approx(6.0)
+    assert metrics["first_plus_5_ts"] is None
+    assert metrics["intraday_refinement"] == "required"
 
 
-def test_outcome_target_not_labelled_before_six_week_maturity():
+def test_target_is_not_final_label_before_six_week_maturity():
     signal = datetime(2026, 8, 19, 20, 0, tzinfo=UTC)
     row = {"signal_timestamp": signal, "horizon_deadline": signal + timedelta(weeks=6), "signal_price": 10.0}
     bars = [{"t": "2026-08-20T13:30:00Z", "o": 10, "h": 10.7, "l": 9.9, "c": 10.5}]
     metrics = calculate_outcome_metrics(row, bars, now=signal + timedelta(weeks=1))
-    assert metrics["first_plus_5_ts"] is not None
+    assert metrics["target_touch_day"] is not None
     assert metrics["hit_plus_5pct_within_6_weeks"] is None
     assert metrics["status"] == "pending"
+
+
+def test_intraday_refinement_resolves_downside_before_target():
+    signal = datetime(2026, 8, 19, 20, 0, tzinfo=UTC)
+    deadline = signal + timedelta(weeks=6)
+    row = {"signal_timestamp": signal, "horizon_deadline": deadline, "signal_price": 10.0}
+    daily = [{"t": "2026-08-20T04:00:00Z", "o": 10.0, "h": 10.7, "l": 9.4, "c": 10.5}]
+    metrics = calculate_outcome_metrics(row, daily, now=deadline + timedelta(days=1))
+    assert metrics["minus_5_before_plus_5"] is None
+    minute = [
+        {"t": "2026-08-20T13:31:00Z", "h": 10.1, "l": 9.4},
+        {"t": "2026-08-20T13:32:00Z", "h": 10.6, "l": 9.8},
+    ]
+    refined = refine_intraday_events(row, metrics, minute)
+    assert refined["first_plus_5_ts"] == datetime(2026, 8, 20, 13, 32, tzinfo=UTC)
+    assert refined["minus_5_before_plus_5"] is True
+    assert refined["intraday_refinement"] == "sip_1min"
+
+
+def test_intraday_same_minute_order_remains_unknown():
+    signal = datetime(2026, 8, 19, 20, 0, tzinfo=UTC)
+    deadline = signal + timedelta(weeks=6)
+    row = {"signal_timestamp": signal, "horizon_deadline": deadline, "signal_price": 10.0}
+    daily = [{"t": "2026-08-20T04:00:00Z", "o": 10.0, "h": 10.7, "l": 9.4, "c": 10.3}]
+    metrics = calculate_outcome_metrics(row, daily, now=deadline + timedelta(days=1))
+    minute = [{"t": "2026-08-20T13:31:00Z", "h": 10.6, "l": 9.4}]
+    refined = refine_intraday_events(row, metrics, minute)
+    assert refined["minus_5_before_plus_5"] is None
