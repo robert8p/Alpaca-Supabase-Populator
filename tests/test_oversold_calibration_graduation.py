@@ -31,6 +31,19 @@ def test_split_inside_horizon_excludes_outcome_from_calibration():
     assert result["material_events"][0]["type"] == "forward_splits"
 
 
+def test_split_announced_inside_window_but_effective_after_window_is_not_excluded():
+    result = classify_corporate_actions(
+        outcome_row(),
+        {
+            "forward_splits": [
+                {"symbol": "TEST", "process_date": "2026-01-20", "ex_date": "2026-03-15", "old_rate": "1", "new_rate": "4"}
+            ]
+        },
+    )
+    assert result["corporate_action_status"] == "clear"
+    assert result["eligible_for_calibration"] is True
+
+
 def test_ordinary_cash_dividend_remains_eligible():
     result = classify_corporate_actions(
         outcome_row(signal_price=100.0),
