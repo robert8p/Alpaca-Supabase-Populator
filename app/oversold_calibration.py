@@ -43,16 +43,21 @@ def calibrated_probability(raw_score: float, calibration: dict[str, Any] | None)
 
 
 def active_calibration_from_cursor(cur: Any) -> dict[str, Any] | None:
+    """Return the latest calibration only when that latest run itself passed.
+
+    A newer failed quality check deliberately demotes the current model rather than
+    silently keeping an older passed mapping active after evidence of degradation.
+    """
     cur.execute(
         """
         SELECT * FROM or_calibration_runs
-        WHERE passed=true AND scoring_model_version=%s AND scoring_config_version=%s
+        WHERE scoring_model_version=%s AND scoring_config_version=%s
         ORDER BY created_at DESC,id DESC LIMIT 1
         """,
         (SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION),
     )
     row = cur.fetchone()
-    return dict(row) if row else None
+    return dict(row) if row and row.get("passed") else None
 
 
 def load_active_calibration() -> dict[str, Any] | None:
