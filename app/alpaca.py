@@ -161,6 +161,31 @@ class AlpacaClient:
         url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/quotes/latest"
         return await self._get(url, {"symbols": ",".join(symbols), "feed": feed})
 
+    async def fetch_corporate_actions_page(
+        self,
+        *,
+        symbols: list[str],
+        start: str,
+        end: str,
+        limit: int = 1000,
+        page_token: str | None = None,
+        data_quality: str = "complete",
+    ) -> RequestResult:
+        """Fetch one page from Alpaca's Market Data corporate-actions endpoint."""
+        url = f"{self.settings.alpaca_data_base_url.rstrip('/')}/v1/corporate-actions"
+        params: dict[str, Any] = {
+            "symbols": ",".join(symbols),
+            "start": start,
+            "end": end,
+            "region": "us",
+            "data_quality": data_quality,
+            "limit": max(1, min(int(limit), 1000)),
+            "sort": "asc",
+        }
+        if page_token:
+            params["page_token"] = page_token
+        return await self._get(url, params)
+
     async def fetch_quotes_page(
         self,
         *,
