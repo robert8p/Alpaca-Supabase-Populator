@@ -85,10 +85,10 @@ CREATE TABLE IF NOT EXISTS or_signal_outcomes (
     minus_5_before_plus_5 boolean,
     minus_10_before_plus_5 boolean,
     minus_20_before_plus_5 boolean,
-    corporate_action_status text NOT NULL DEFAULT 'unchecked',
+    corporate_action_status text NOT NULL DEFAULT 'unchecked' CHECK (corporate_action_status IN ('unchecked','clear','affected','review_error')),
     trading_status text NOT NULL DEFAULT 'normal',
     outcome_resolution text NOT NULL DEFAULT '1Day',
-    eligible_for_calibration boolean NOT NULL DEFAULT true,
+    eligible_for_calibration boolean NOT NULL DEFAULT false,
     status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','matured','error','excluded')),
     error text,
     metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
@@ -122,7 +122,10 @@ CREATE TABLE IF NOT EXISTS or_calibration_runs (
 CREATE INDEX IF NOT EXISTS or_calibration_runs_created_idx ON or_calibration_runs(created_at DESC);
 
 CREATE OR REPLACE FUNCTION or_reject_immutable_mutation()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = ''
+AS $$
 BEGIN
     RAISE EXCEPTION '% is append-only and immutable', TG_TABLE_NAME;
 END;
@@ -136,6 +139,11 @@ FOR EACH ROW EXECUTE FUNCTION or_reject_immutable_mutation();
 DROP TRIGGER IF EXISTS or_model_runs_immutable ON or_model_runs;
 CREATE TRIGGER or_model_runs_immutable
 BEFORE UPDATE OR DELETE ON or_model_runs
+FOR EACH ROW EXECUTE FUNCTION or_reject_immutable_mutation();
+
+DROP TRIGGER IF EXISTS or_calibration_runs_immutable ON or_calibration_runs;
+CREATE TRIGGER or_calibration_runs_immutable
+BEFORE UPDATE OR DELETE ON or_calibration_runs
 FOR EACH ROW EXECUTE FUNCTION or_reject_immutable_mutation();
 
 ALTER TABLE or_evidence_snapshots ENABLE ROW LEVEL SECURITY;
