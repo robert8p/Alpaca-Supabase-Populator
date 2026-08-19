@@ -1,0 +1,19 @@
+name: oversold-v2-smoke
+
+on:
+  push:
+    branches:
+      - agent/oversold-outcome-scheduler
+
+jobs:
+  production-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger synchronous production scan
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --show-error --silent \
+            --max-time 480 \
+            -X POST \
+            'https://alpaca-rapid-discovery-web.onrender.com/api/oversold/run?background=false&candidate_limit=20'
