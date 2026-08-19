@@ -61,7 +61,67 @@
 
   function buildPrompt(candidates) {
     const context = candidates.map(candidateContext).join('\n\n');
-    return `Briefly analyse these top ${candidates.length} Oversold Reversion candidates from the current scanner.\n\n${context}\n\nUse current web research before answering. Verify the reason for each price fall using reliable sources, prioritising company investor relations, SEC filings and regulators where relevant. For analyst prediction, use the current analyst consensus / price-target direction and recent rating changes; if reliable current analyst coverage is unavailable, say so rather than guessing.\n\nReturn a concise markdown table with one row per stock and these columns:\n1. Stock\n2. Reason for decrease — max 20 words\n3. Analyst prediction — max 20 words; state the current consensus using labels such as Strong Buy, Buy, Hold, Sell, or a clearly equivalent broker-consensus label\n4. Allocated position — % of the total 100% allocation\n5. Recommended holding period — give a specific short-term period such as intraday, 1–2 sessions, or 3–5 sessions\n\nALLOCATION RULES — follow these exactly:\n- Only stocks whose current analyst consensus is Buy or better may receive a non-zero allocation. Treat Strong Buy, Buy, Outperform, Overweight, or a directly equivalent positive consensus as Buy-or-better.\n- Hold/Neutral/Market Perform, Underperform, Sell, or stocks without reliable current analyst consensus must receive 0%.\n- Allocate exactly 100.0% in total across the qualifying Buy-or-better stocks. The non-zero percentages must sum to exactly 100.0%.\n- If one stock qualifies, allocate it 100.0%. If several qualify, use risk-weighted percentages rather than automatically splitting equally.\n- Weight qualifying stocks using catalyst severity, liquidity, spread, dilution/solvency risk, analyst conviction and confidence in the reversion case.\n- If no stocks qualify as Buy-or-better, assign 0% to every analysed stock and state immediately below the table: No Buy-or-better candidates; no allocation.\n\nDo not allocate anything to a stock merely because it is in the scanner ranking. Do not turn a failed short-term reversion into a long-term hold. Keep the entire answer brief and clearly distinguish facts from uncertain analyst expectations.`;
+    return `Independently score and rank these ${candidates.length} Oversold Reversion candidates for a short-horizon mean-reversion strategy.
+
+SCANNER CONTEXT
+${context}
+
+RESEARCH RULES
+- Use current web research before scoring every stock. Verify the actual reason and timing of the price fall; do not infer the catalyst from the scanner headline alone.
+- Prioritise primary sources: company investor relations, SEC filings, regulators, court records and trial registries where relevant. Use reputable secondary sources to fill gaps.
+- Treat the scanner rank, class, heuristic score and triage as context only. They MUST NOT anchor or mechanically influence your score.
+- Distinguish confirmed facts, reasonable inference and unverified claims.
+- Analyst ratings are one confirmation signal, not an eligibility gate. Prefer rating/price-target changes published AFTER the catalyst. Stale pre-event consensus gets little evidential weight.
+- If reliable current analyst coverage is unavailable, say "unavailable", give the Analyst Reaction component a neutral 5/10, and reduce Evidence Confidence if that missing evidence matters. Never invent coverage.
+- Do not double-count one fact across multiple components. Technical oversold conditions do not prove that a catalyst is temporary.
+
+SCORE EACH STOCK OUT OF 100
+1. Catalyst reversibility / transience: 0–25
+   High = clearly temporary, operational, technical or timing-related. Low = durable thesis impairment, terminal asset failure or existential event.
+2. Price dislocation vs justified intrinsic-value impairment: 0–20
+   High = observed fall materially exceeds plausible permanent value damage. Low = price move broadly matches or understates fundamental damage.
+3. Fundamental resilience: 0–15
+   Balance sheet, cash runway, financing need, dilution, solvency, business concentration and ability to absorb the shock.
+4. Evidence quality & causal attribution: 0–10
+   Primary-source confirmation, clear timeline and confidence that the identified event actually caused the fall.
+5. Post-event analyst reaction: 0–10
+   High = analysts explicitly reiterate constructive views/targets after reviewing the event. Low = downgrades or material target cuts. Stale consensus alone is weak evidence.
+6. Technical / execution quality: 0–10
+   Liquidity, spread, tradability and evidence of a genuine dislocation. Do not reward illiquidity merely because the percentage fall is large.
+7. Near-term reversion path: 0–10
+   Credible mechanism for recovery within roughly 1–3 trading sessions, or a clearly identified short-term event that can resolve uncertainty.
+
+The seven component scores MUST sum exactly to the Reversion Score / 100.
+
+DECISION RULES
+- INVESTIGATE: Reversion Score >=75, Evidence Confidence >=60%, and no hard veto.
+- WATCH: Reversion Score 55–74; OR score >=75 but Evidence Confidence <60%; OR a key fact remains unresolved.
+- PASS: Reversion Score <55 or a hard veto applies.
+- If the cause of the fall cannot be independently verified, cap Reversion Score at 60 and the verdict at WATCH.
+- Hard-veto PASS examples: durable thesis-breaking impairment whose magnitude broadly explains the fall; acute going-concern/solvency risk; near-term financing/dilution risk that dominates the reversion case; fraud/regulatory/existential event; terminal failure of the core value driver without a credible recovery path.
+- Do not convert a failed short-term reversion into a long-term investment thesis.
+
+OUTPUT
+First return one concise markdown table, sorted by Reversion Score descending, with:
+1. Stock (include original scanner rank)
+2. Verified cause — max 20 words
+3. Reversion Score — X/100
+4. Evidence Confidence — X%
+5. Analyst Reaction — max 18 words, emphasising post-event changes
+6. Verdict — INVESTIGATE / WATCH / PASS
+7. Allocated position
+8. Holding period — e.g. intraday, 1–2 sessions, 2–3 sessions
+9. Key invalidator — max 15 words
+
+ALLOCATION RULES
+- Only INVESTIGATE stocks meeting score >=75, confidence >=60%, and no hard veto may receive a non-zero allocation.
+- WATCH and PASS receive 0%.
+- If at least one stock qualifies, allocate exactly 100.0% in total across qualifying stocks.
+- If one qualifies, allocate 100.0%. If several qualify, risk-weight using Reversion Score, Evidence Confidence, liquidity/spread, balance-sheet risk and downside-tail severity; do not automatically split equally.
+- If none qualify, allocate 0% to every stock and state immediately below the table: "No INVESTIGATE-grade candidates; no allocation."
+- Analyst consensus by itself must never determine eligibility or allocation.
+
+After the table, show the seven-component score breakdown only for the top three stocks, one line per stock, so the ranking is auditable. Keep the answer concise and source-backed. This is research, not an instruction to trade.`;
   }
 
   async function analyseTop(limit, button) {
@@ -83,7 +143,7 @@
       const status = statusLine();
       if (status) {
         status.textContent = copied
-          ? `Top ${candidates.length}: brief analysis prompt copied; ChatGPT opened in a new tab.`
+          ? `Top ${candidates.length}: scoring prompt copied; ChatGPT opened in a new tab.`
           : `Top ${candidates.length}: ChatGPT opened. If the prompt is not prefilled, copy the scanner context manually.`;
       }
     } catch (error) {
@@ -102,8 +162,8 @@
     button.id = id;
     button.className = 'chatgpt-button';
     button.style.marginLeft = '8px';
-    button.textContent = `Analyse Top ${limit} in ChatGPT ↗`;
-    button.title = `Open ChatGPT to analyse the latest top ${limit} and allocate 100% across Buy-or-better candidates`;
+    button.textContent = `Score Top ${limit} in ChatGPT ↗`;
+    button.title = `Open ChatGPT to independently score the latest top ${limit} with the evidence-weighted Oversold Reversion rubric`;
     afterElement.insertAdjacentElement('afterend', button);
     button.addEventListener('click', () => analyseTop(limit, button));
     return button;
