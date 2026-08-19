@@ -144,7 +144,7 @@ def oversold_page(request: Request):
     html = html.replace(
         "</body>",
         '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_top5.js?v=1"></script>\n</body>',
+        '<script src="/static/oversold_top5.js?v=2"></script>\n</body>',
     )
     return HTMLResponse(content=html)
 
