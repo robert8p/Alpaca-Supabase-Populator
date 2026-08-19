@@ -4,8 +4,6 @@ import hashlib
 import json
 from typing import Any
 
-from psycopg.types.json import Jsonb
-
 from app.db import connection
 from app.oversold_calibration import _load_samples, calibration_readiness, run_calibration
 from app.oversold_scoring import SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
@@ -52,18 +50,4 @@ def run_calibration_if_changed() -> dict[str, Any]:
     if _latest_calibration_sample_hash() == sample_hash:
         return {"status": "unchanged", "sample_hash": sample_hash, **readiness}
 
-    result = run_calibration()
-    calibration_run_id = result.get("calibration_run_id")
-    if calibration_run_id is not None:
-        with connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    UPDATE or_calibration_runs
-                    SET metrics=metrics || %s
-                    WHERE id=%s
-                    """,
-                    (Jsonb({"sample_hash": sample_hash}), calibration_run_id),
-                )
-            conn.commit()
-    return {**result, "sample_hash": sample_hash}
+    return run_calibration(samples=samples, sample_hash=sample_hash)
