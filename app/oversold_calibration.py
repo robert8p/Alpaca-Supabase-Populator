@@ -193,8 +193,12 @@ def calibration_readiness(samples: list[dict[str, Any]]) -> dict[str, Any]:
     return {"ready": not reasons, "sample_count": len(samples), "positive_count": positives, "negative_count": negatives, "reasons": reasons}
 
 
-def run_calibration() -> dict[str, Any]:
-    samples = _load_samples()
+def run_calibration(
+    samples: list[dict[str, Any]] | None = None,
+    *,
+    sample_hash: str | None = None,
+) -> dict[str, Any]:
+    samples = _load_samples() if samples is None else samples
     readiness = calibration_readiness(samples)
     if not readiness["ready"]:
         return {"status": "not_ready", **readiness}
@@ -242,6 +246,7 @@ def run_calibration() -> dict[str, Any]:
         "model_type": "regularized_logistic_regression",
         "feature": "raw_reversion_score",
         "feature_transform": "(score-50)/10",
+        "sample_hash": sample_hash,
         "coefficients": coefficients,
         "training_count": len(training),
         "holdout_count": len(holdout),
@@ -281,6 +286,7 @@ def run_calibration() -> dict[str, Any]:
         "status": "passed" if passed else "failed_quality_checks",
         "calibration_run_id": inserted["id"],
         "calibration_model_version": version,
+        "sample_hash": sample_hash,
         "passed": passed,
         "brier_score": brier,
         "base_rate_brier": base_brier,
