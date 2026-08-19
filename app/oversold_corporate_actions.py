@@ -54,7 +54,25 @@ SYMBOL_FIELDS_BY_TYPE: dict[str, tuple[str, ...]] = {
     "reorganizations": ("symbol", "old_symbol", "source_symbol", "acquiree_symbol"),
 }
 
-EVENT_DATE_FIELDS = (
+PRIMARY_DATE_FIELDS_BY_TYPE: dict[str, tuple[str, ...]] = {
+    "forward_splits": ("ex_date",),
+    "reverse_splits": ("ex_date",),
+    "unit_splits": ("effective_date",),
+    "stock_dividends": ("ex_date",),
+    "cash_dividends": ("ex_date",),
+    "spin_offs": ("ex_date",),
+    "cash_mergers": ("effective_date",),
+    "stock_mergers": ("effective_date",),
+    "stock_and_cash_mergers": ("effective_date",),
+    "redemptions": ("payable_date",),
+    "name_changes": ("process_date",),
+    "worthless_removals": ("process_date",),
+    "rights_distributions": ("ex_date",),
+    "partial_calls": ("effective_date", "ex_date", "payable_date"),
+    "reorganizations": ("effective_date", "ex_date", "payable_date"),
+}
+
+FALLBACK_DATE_FIELDS = (
     "ex_date",
     "effective_date",
     "payable_date",
@@ -133,9 +151,14 @@ def _matches_symbol(action_type: str, event: dict[str, Any], symbol: str) -> boo
     return any(str(event.get(field) or "").upper() == target for field in fields)
 
 
-def _event_in_window(event: dict[str, Any], start: date, end: date) -> bool:
-    dates = [_parse_date(event.get(field)) for field in EVENT_DATE_FIELDS]
-    return any(value is not None and start <= value <= end for value in dates)
+def _event_in_window(action_type: str, event: dict[str, Any], start: date, end: date) -> bool:
+    preferred = PRIMARY_DATE_FIELDS_BY_TYPE.get(action_type, ())
+    preferred_dates = [_parse_date(event.get(field)) for field in preferred]
+    known_preferred = [value for value in preferred_dates if value is not None]
+    if known_preferred:
+        return any(start <= value <= end for value in known_preferred)
+    fallback_dates = [_parse_date(event.get(field)) for field in FALLBACK_DATE_FIELDS]
+    return any(value is not None and start <= value <= end for value in fallback_dates)
 
 
 def _compact_event(action_type: str, event: dict[str, Any]) -> dict[str, Any]:
@@ -172,7 +195,7 @@ def classify_corporate_actions(
         for event in events:
             if not isinstance(event, dict) or not _matches_symbol(action_type, event, symbol):
                 continue
-            if not _event_in_window(event, start, end):
+            if not _event_in_window(action_type, event, start, end):
                 continue
             compact = _compact_event(action_type, event)
             if action_type == "cash_dividends":
