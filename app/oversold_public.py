@@ -78,11 +78,12 @@ def _latest_decision_rows(limit: int = 500) -> list[dict[str, Any]]:
                         s.started_at AS scan_started_at,s.trigger_source
                     FROM or_candidates c
                     JOIN or_scans s ON s.id=c.scan_id
-                    WHERE c.decision = ANY(%s)
+                    WHERE c.decision <> 'unreviewed'
                     ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
                 )
                 SELECT *
                 FROM latest
+                WHERE decision = ANY(%s)
                 ORDER BY reviewed_at DESC NULLS LAST,id DESC
                 LIMIT %s
                 """,
