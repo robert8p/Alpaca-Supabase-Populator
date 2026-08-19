@@ -284,6 +284,16 @@ async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[s
             row = cur.fetchone()
             if not row:
                 raise HTTPException(404, "Candidate not found")
+            if decision not in TRACKED_DECISIONS:
+                cur.execute(
+                    """
+                    UPDATE or_decision_tracks
+                    SET active=false,ended_at=COALESCE(ended_at,now()),updated_at=now()
+                    WHERE active=true
+                      AND symbol=(SELECT symbol FROM or_candidates WHERE id=%s)
+                    """,
+                    (candidate_id,),
+                )
         conn.commit()
 
     try:
