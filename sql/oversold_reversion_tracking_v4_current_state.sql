@@ -13,7 +13,28 @@ ALTER TABLE public.or_candidates
     'traded'::text
   ]));
 
--- Keep all historical episodes, but only the newest episode for a symbol may be current.
+-- Align any pre-existing active episode with the latest explicit decision for its symbol.
+WITH latest AS (
+  SELECT DISTINCT ON (c.symbol)
+      c.id,c.symbol,c.decision
+  FROM public.or_candidates c
+  WHERE c.decision <> 'unreviewed'
+  ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
+)
+UPDATE public.or_decision_tracks t
+SET active = false,
+    ended_at = COALESCE(t.ended_at, now()),
+    updated_at = now()
+FROM latest l
+WHERE t.symbol = l.symbol
+  AND t.active = true
+  AND (
+    l.decision NOT IN ('investigate','pass')
+    OR t.candidate_id <> l.id
+    OR t.decision <> l.decision
+  );
+
+-- If legacy data still contains more than one active episode, retain only the newest.
 WITH ranked_active AS (
   SELECT id,
          row_number() OVER (PARTITION BY symbol ORDER BY selected_at DESC, id DESC) AS rn
@@ -27,6 +48,32 @@ SET active = false,
 FROM ranked_active r
 WHERE t.id = r.id
   AND r.rn > 1;
+
+CREATE OR REPLACE FUNCTION public.or_enforce_single_active_symbol()
+RETURNS trigger
+LANGUAGE plpgsql
+SET search_path = public
+AS $$
+BEGIN
+  IF NEW.active THEN
+    UPDATE public.or_decision_tracks
+    SET active = false,
+        ended_at = COALESCE(ended_at, NEW.selected_at, now()),
+        updated_at = now()
+    WHERE symbol = NEW.symbol
+      AND active = true
+      AND id IS DISTINCT FROM NEW.id;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS or_single_active_symbol ON public.or_decision_tracks;
+CREATE TRIGGER or_single_active_symbol
+BEFORE INSERT OR UPDATE OF active, symbol
+ON public.or_decision_tracks
+FOR EACH ROW
+EXECUTE FUNCTION public.or_enforce_single_active_symbol();
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_or_tracks_one_active_symbol
   ON public.or_decision_tracks(symbol)
