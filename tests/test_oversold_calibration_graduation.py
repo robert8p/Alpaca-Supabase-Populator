@@ -2,9 +2,22 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
+from app.oversold_calibration import active_calibration_from_cursor
 from app.oversold_calibration_runtime import calibration_sample_hash
 from app.oversold_corporate_actions import classify_corporate_actions
 from app.oversold_score_store import apply_active_calibration
+
+
+class FakeCursor:
+    def __init__(self, row):
+        self.row = row
+        self.executed = None
+
+    def execute(self, query, params):
+        self.executed = (query, params)
+
+    def fetchone(self):
+        return self.row
 
 
 def outcome_row(symbol="TEST", signal_price=10.0):
@@ -107,6 +120,18 @@ def test_calibration_sample_hash_is_deterministic_and_changes_with_sample():
     changed = [dict(row) for row in rows]
     changed[1]["target"] = True
     assert calibration_sample_hash(rows) != calibration_sample_hash(changed)
+
+
+def test_latest_passed_calibration_is_active():
+    row = {"passed": True, "calibration_model_version": "cal-v2"}
+    cursor = FakeCursor(row)
+    assert active_calibration_from_cursor(cursor) == row
+    assert "passed=true" not in cursor.executed[0].lower()
+
+
+def test_latest_failed_calibration_demotes_older_passed_model():
+    cursor = FakeCursor({"passed": False, "calibration_model_version": "cal-v3"})
+    assert active_calibration_from_cursor(cursor) is None
 
 
 def test_passed_calibration_is_attached_without_changing_raw_score():
