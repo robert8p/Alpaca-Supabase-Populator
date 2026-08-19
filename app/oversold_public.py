@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import secrets
@@ -22,8 +23,11 @@ from app.oversold import (
     _scan_detail,
     execute_scan,
 )
+from app.oversold_calibration import active_calibration_from_cursor
+from app.oversold_calibration_runtime import run_calibration_if_changed
+from app.oversold_corporate_actions import review_corporate_actions
 from app.oversold_outcomes import capture_signal_outcomes
-from app.oversold_scoring import MODEL_STATUS, SCORING_CONFIG, public_scoring_contract
+from app.oversold_scoring import SCORING_CONFIG, public_scoring_contract
 from app.oversold_tracking import capture_due_checkpoints, list_tracked, sync_candidate_tracking
 
 logger = logging.getLogger(__name__)
@@ -60,6 +64,32 @@ def _recent_manual_scan() -> dict[str, Any] | None:
     return row
 
 
+def _enrich_scan_calibration(detail: dict[str, Any]) -> dict[str, Any]:
+    candidates = detail.get("candidates") or []
+    model_run_ids = [int(row["model_run_id"]) for row in candidates if row.get("model_run_id") is not None]
+    if not model_run_ids:
+        return detail
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id,model_status,calibration_model_version,calibrated_probability
+                FROM or_model_runs WHERE id=ANY(%s)
+                """,
+                (model_run_ids,),
+            )
+            projections = {int(row["id"]): dict(row) for row in cur.fetchall()}
+        conn.rollback()
+    for row in candidates:
+        projection = projections.get(int(row["model_run_id"])) if row.get("model_run_id") is not None else None
+        if not projection:
+            continue
+        row["model_status"] = projection.get("model_status")
+        row["calibration_model_version"] = projection.get("calibration_model_version")
+        row["calibrated_probability"] = projection.get("calibrated_probability")
+    return detail
+
+
 def _latest_decision_rows(limit: int = 500) -> list[dict[str, Any]]:
     with connection() as conn:
         with conn.cursor() as cur:
@@ -77,7 +107,8 @@ def _latest_decision_rows(limit: int = 500) -> list[dict[str, Any]]:
                     WHERE c.decision <> 'unreviewed'
                     ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
                 )
-                SELECT l.*,mr.final_score AS reversion_score,mr.model_status,mr.verdict AS model_verdict,
+                SELECT l.*,mr.final_score AS reversion_score,mr.model_status,mr.calibrated_probability,
+                       mr.calibration_model_version,mr.verdict AS model_verdict,
                        mr.damage_risk,mr.evidence_confidence,mr.scoring_model_version
                 FROM latest l
                 LEFT JOIN LATERAL (
@@ -142,6 +173,8 @@ def _model_diagnostics() -> dict[str, Any]:
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS calibration_eligible_matured,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=true) AS eligible_hits,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=false) AS eligible_misses,
+                    count(*) FILTER (WHERE so.status='matured' AND so.corporate_action_status='affected') AS corporate_action_exclusions,
+                    count(*) FILTER (WHERE so.status='matured' AND so.corporate_action_status='unchecked') AS corporate_action_unchecked,
                     avg(so.mfe_6w) FILTER (WHERE so.status='matured') AS average_mfe,
                     avg(so.mae_6w) FILTER (WHERE so.status='matured') AS average_mae,
                     avg(so.hours_to_plus_5) FILTER (WHERE so.first_plus_5_ts IS NOT NULL) AS average_hours_to_target
@@ -194,8 +227,9 @@ def _model_diagnostics() -> dict[str, Any]:
                 """
             )
             catalysts = cur.fetchall()
-            cur.execute("SELECT * FROM or_calibration_runs ORDER BY created_at DESC LIMIT 1")
+            cur.execute("SELECT * FROM or_calibration_runs ORDER BY created_at DESC,id DESC LIMIT 1")
             latest_calibration = cur.fetchone()
+            active_calibration = active_calibration_from_cursor(cur)
         conn.rollback()
 
     matured = int(summary.get("calibration_eligible_matured") or 0)
@@ -209,11 +243,12 @@ def _model_diagnostics() -> dict[str, Any]:
         reasons.append(f"Need {cfg['minimum_positives']} positive outcomes; have {positives}.")
     if negatives < cfg["minimum_negatives"]:
         reasons.append(f"Need {cfg['minimum_negatives']} negative outcomes; have {negatives}.")
-    if not latest_calibration or not latest_calibration.get("passed"):
+    if not active_calibration:
         reasons.append("No temporal calibration run has passed the configured quality checks.")
+    calibrated = bool(active_calibration)
     return {
-        "model_status": MODEL_STATUS,
-        "calibration_status": "Calibrated" if not reasons and MODEL_STATUS == "calibrated" else "Uncalibrated",
+        "model_status": "calibrated" if calibrated else "uncalibrated",
+        "calibration_status": "Calibrated" if calibrated else "Uncalibrated",
         "calibration_reasons": reasons,
         "summary": summary,
         "score_buckets": [
@@ -227,9 +262,11 @@ def _model_diagnostics() -> dict[str, Any]:
         "by_sector": sectors,
         "by_catalyst_type": catalysts,
         "latest_calibration_run": latest_calibration,
+        "active_calibration_run": active_calibration,
+        "active_calibration_model_version": active_calibration.get("calibration_model_version") if active_calibration else None,
         "contract": public_scoring_contract(),
         "catalyst_backend": "rules_v2_no_llm",
-        "calibration_guard": "Outcomes remain excluded while corporate-action status is unchecked.",
+        "calibration_guard": "Matured outcomes become calibration-eligible only after the delayed corporate-action review clears them; cleared cases are rechecked for late vendor updates.",
     }
 
 
@@ -240,7 +277,7 @@ def oversold_page(request: Request):
     html = html.replace(
         "</body>",
         '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_score_ui.js?v=1"></script>\n'
+        '<script src="/static/oversold_score_ui.js?v=2"></script>\n'
         '<script src="/static/oversold_top5.js?v=4"></script>\n'
         '<script src="/static/oversold_chatgpt_score.js?v=2"></script>\n</body>',
     )
@@ -254,7 +291,7 @@ def latest_scan() -> dict[str, Any]:
             cur.execute("SELECT id FROM or_scans ORDER BY started_at DESC LIMIT 1")
             row = cur.fetchone()
         conn.rollback()
-    return {"scan": None, "candidates": []} if not row else _scan_detail(row["id"])
+    return {"scan": None, "candidates": []} if not row else _enrich_scan_calibration(_scan_detail(row["id"]))
 
 
 @router.get("/api/oversold/scoring-contract")
@@ -293,7 +330,7 @@ def scan_history(limit: int = Query(30, ge=1, le=100)) -> list[dict[str, Any]]:
 
 @router.get("/api/oversold/scans/{scan_id}")
 def scan_detail(scan_id: UUID) -> dict[str, Any]:
-    return _scan_detail(scan_id)
+    return _enrich_scan_calibration(_scan_detail(scan_id))
 
 
 @router.get("/api/oversold/decision-board")
@@ -323,7 +360,14 @@ async def run_outcome_capture(request: Request) -> dict[str, Any]:
     _require_scheduled_token(request)
     decision_checkpoints = await capture_due_checkpoints()
     signal_outcomes = await capture_signal_outcomes()
-    return {"decision_checkpoints": decision_checkpoints, "signal_outcomes": signal_outcomes}
+    corporate_actions = await review_corporate_actions()
+    calibration = await asyncio.to_thread(run_calibration_if_changed)
+    return {
+        "decision_checkpoints": decision_checkpoints,
+        "signal_outcomes": signal_outcomes,
+        "corporate_actions": corporate_actions,
+        "calibration": calibration,
+    }
 
 
 @router.post("/api/oversold/run", status_code=202)
@@ -354,7 +398,7 @@ async def run_scan(
         background_tasks.add_task(execute_scan, scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
         return {"status": "running", "scan_id": scan_id, "trigger_source": trigger_source}
     await execute_scan(scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
-    return _scan_detail(scan_id)
+    return _enrich_scan_calibration(_scan_detail(scan_id))
 
 
 @router.patch("/api/oversold/candidates/{candidate_id}")
