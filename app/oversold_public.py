@@ -24,7 +24,6 @@ from app.oversold import (
 )
 from app.oversold_tracking import (
     capture_due_checkpoints,
-    ensure_existing_tracks,
     list_tracked,
     sync_candidate_tracking,
 )
@@ -33,6 +32,8 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 PUBLIC_MANUAL_COOLDOWN_SECONDS = 300
+CURRENT_DECISIONS = ("investigate", "watch", "pass", "reject")
+TRACKED_DECISIONS = ("investigate", "pass")
 
 
 def _require_scheduled_token(request: Request) -> None:
@@ -63,6 +64,75 @@ def _recent_manual_scan() -> dict[str, Any] | None:
     return row
 
 
+def _latest_decision_rows(limit: int = 500) -> list[dict[str, Any]]:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                WITH latest AS (
+                    SELECT DISTINCT ON (c.symbol)
+                        c.id,c.scan_id,c.rank,c.symbol,c.name,c.exchange,
+                        c.prev_close,c.last_price,c.drop_pct,c.prev_dollar_volume,c.spread_pct,
+                        c.catalyst_class,c.catalyst_summary,c.risk_flags,c.headline_count,
+                        c.heuristic_score,c.triage_label,c.decision,c.review_notes,c.reviewed_at,
+                        s.started_at AS scan_started_at,s.trigger_source
+                    FROM or_candidates c
+                    JOIN or_scans s ON s.id=c.scan_id
+                    WHERE c.decision = ANY(%s)
+                    ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
+                )
+                SELECT *
+                FROM latest
+                ORDER BY reviewed_at DESC NULLS LAST,id DESC
+                LIMIT %s
+                """,
+                (list(CURRENT_DECISIONS), limit),
+            )
+            rows = cur.fetchall()
+        conn.rollback()
+    return rows
+
+
+async def _ensure_current_tracks(limit: int = 100) -> int:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                WITH latest AS (
+                    SELECT DISTINCT ON (c.symbol)
+                        c.id,c.symbol,c.decision,c.reviewed_at
+                    FROM or_candidates c
+                    WHERE c.decision <> 'unreviewed'
+                    ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
+                )
+                SELECT l.id,l.decision
+                FROM latest l
+                WHERE l.decision = ANY(%s)
+                  AND NOT EXISTS (
+                    SELECT 1
+                    FROM or_decision_tracks t
+                    WHERE t.candidate_id=l.id
+                      AND t.decision=l.decision
+                      AND t.active=true
+                  )
+                ORDER BY l.reviewed_at DESC NULLS LAST,l.id DESC
+                LIMIT %s
+                """,
+                (list(TRACKED_DECISIONS), limit),
+            )
+            rows = cur.fetchall()
+        conn.rollback()
+
+    created = 0
+    for row in rows:
+        try:
+            await sync_candidate_tracking(row["id"], row["decision"])
+            created += 1
+        except Exception:
+            logger.exception("Failed to initialise current track for candidate %s", row["id"])
+    return created
+
+
 @router.get("/oversold", response_class=HTMLResponse)
 def oversold_page(request: Request):
     html = templates.get_template("oversold.html").render(request=request)
@@ -72,7 +142,7 @@ def oversold_page(request: Request):
     )
     html = html.replace(
         "</body>",
-        '<script src="/static/oversold_tracking.js?v=2"></script>\n'
+        '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
         '<script src="/static/oversold_top5.js?v=1"></script>\n</body>',
     )
     return HTMLResponse(content=html)
@@ -101,6 +171,7 @@ def scan_history(limit: int = Query(30, ge=1, le=100)) -> list[dict[str, Any]]:
                     count(c.id) FILTER (WHERE c.decision='investigate') AS investigate_count,
                     count(c.id) FILTER (WHERE c.decision='watch') AS watch_count,
                     count(c.id) FILTER (WHERE c.decision='pass') AS pass_count,
+                    count(c.id) FILTER (WHERE c.decision='reject') AS reject_count,
                     count(c.id) FILTER (WHERE c.decision='traded') AS traded_count
                 FROM or_scans s
                 LEFT JOIN or_candidates c ON c.scan_id=s.id
@@ -120,9 +191,26 @@ def scan_detail(scan_id: UUID) -> dict[str, Any]:
     return _scan_detail(scan_id)
 
 
+@router.get("/api/oversold/decision-board")
+def decision_board() -> dict[str, Any]:
+    rows = _latest_decision_rows()
+    history = list_tracked()
+    active_by_candidate: dict[int, dict[str, Any]] = {}
+    for decision in TRACKED_DECISIONS:
+        for track in history.get(decision, []):
+            if track.get("active"):
+                active_by_candidate[int(track["candidate_id"])] = track
+
+    board = {decision: [] for decision in CURRENT_DECISIONS}
+    for row in rows:
+        row["tracking"] = active_by_candidate.get(int(row["id"]))
+        board[row["decision"]].append(row)
+    return board
+
+
 @router.get("/api/oversold/tracked")
 async def tracked_outcomes() -> dict[str, Any]:
-    await ensure_existing_tracks()
+    await _ensure_current_tracks()
     return list_tracked()
 
 
@@ -178,7 +266,7 @@ async def run_scan(
 @router.patch("/api/oversold/candidates/{candidate_id}")
 async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, Any]:
     decision = str(payload.get("decision") or "").lower()
-    if decision not in {"unreviewed", "watch", "investigate", "pass", "traded"}:
+    if decision not in {"unreviewed", "watch", "investigate", "pass", "reject", "traded"}:
         raise HTTPException(400, "Invalid decision")
     review_notes = str(payload.get("review_notes") or "")[:4000]
     with connection() as conn:
