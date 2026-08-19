@@ -13,7 +13,28 @@ ALTER TABLE public.or_candidates
     'traded'::text
   ]));
 
--- Keep all historical episodes, but only the newest episode for a symbol may be current.
+-- Align any pre-existing active episode with the latest explicit decision for its symbol.
+WITH latest AS (
+  SELECT DISTINCT ON (c.symbol)
+      c.id,c.symbol,c.decision
+  FROM public.or_candidates c
+  WHERE c.decision <> 'unreviewed'
+  ORDER BY c.symbol,c.reviewed_at DESC NULLS LAST,c.id DESC
+)
+UPDATE public.or_decision_tracks t
+SET active = false,
+    ended_at = COALESCE(t.ended_at, now()),
+    updated_at = now()
+FROM latest l
+WHERE t.symbol = l.symbol
+  AND t.active = true
+  AND (
+    l.decision NOT IN ('investigate','pass')
+    OR t.candidate_id <> l.id
+    OR t.decision <> l.decision
+  );
+
+-- If legacy data still contains more than one active episode, retain only the newest.
 WITH ranked_active AS (
   SELECT id,
          row_number() OVER (PARTITION BY symbol ORDER BY selected_at DESC, id DESC) AS rn
