@@ -27,34 +27,20 @@ def persist_original_score(
         "market_data_completeness": (score.get("calculation_trace") or {}).get("market_data_completeness"),
     }
     market_data = {
-        "prev_close": item.get("prev_close"),
-        "last_price": item.get("last_price"),
-        "drop_pct": item.get("drop_pct"),
-        "prev_volume": item.get("prev_volume"),
-        "prev_dollar_volume": item.get("prev_dollar_volume"),
-        "bid": item.get("bid"),
-        "ask": item.get("ask"),
-        "spread_pct": item.get("spread_pct"),
-        "latest_trade_ts": item.get("latest_trade_ts"),
-        "raw_snapshot": item.get("raw_snapshot") or {},
+        "prev_close": item.get("prev_close"), "last_price": item.get("last_price"), "drop_pct": item.get("drop_pct"),
+        "prev_volume": item.get("prev_volume"), "prev_dollar_volume": item.get("prev_dollar_volume"),
+        "bid": item.get("bid"), "ask": item.get("ask"), "spread_pct": item.get("spread_pct"),
+        "latest_trade_ts": item.get("latest_trade_ts"), "raw_snapshot": item.get("raw_snapshot") or {},
     }
     source_quality = {
-        "missing_inputs": score.get("missing_inputs") or [],
-        "evidence_confidence": score.get("evidence_confidence"),
-        "cause_verified": analysis.get("cause_verified"),
-        "analysis_method": analysis.get("analysis_method"),
+        "missing_inputs": score.get("missing_inputs") or [], "evidence_confidence": score.get("evidence_confidence"),
+        "cause_verified": analysis.get("cause_verified"), "analysis_method": analysis.get("analysis_method"),
     }
     hash_payload = {
-        "candidate_id": candidate_id,
-        "scan_id": str(scan_id),
-        "symbol": item.get("symbol"),
-        "signal_timestamp": evidence_cutoff,
-        "evidence_cutoff": evidence_cutoff,
-        "signal_price": item.get("last_price"),
-        "market_data": market_data,
-        "technical_inputs": technical_inputs,
-        "news_items": news_items,
-        "sector_hint": sector_hint,
+        "candidate_id": candidate_id, "scan_id": str(scan_id), "symbol": item.get("symbol"),
+        "signal_timestamp": evidence_cutoff, "evidence_cutoff": evidence_cutoff,
+        "signal_price": item.get("last_price"), "market_data": market_data,
+        "technical_inputs": technical_inputs, "news_items": news_items, "sector_hint": sector_hint,
     }
     snapshot_hash = evidence_snapshot_hash(hash_payload)
     analyst_events = (analysis.get("analyst_reaction") or {}).get("post_event_updates") or []
@@ -70,19 +56,16 @@ def persist_original_score(
         RETURNING id
         """,
         (
-            candidate_id, scan_id, item.get("symbol"), item.get("name"), evidence_cutoff,
-            evidence_cutoff, item.get("last_price"), sector_hint, Jsonb(market_data),
-            Jsonb(technical_inputs), Jsonb(news_items), Jsonb(analyst_events), Jsonb(source_quality), snapshot_hash,
+            candidate_id, scan_id, item.get("symbol"), item.get("name"), evidence_cutoff, evidence_cutoff,
+            item.get("last_price"), sector_hint, Jsonb(market_data), Jsonb(technical_inputs), Jsonb(news_items),
+            Jsonb(analyst_events), Jsonb(source_quality), snapshot_hash,
         ),
     )
     row = cur.fetchone()
     if row:
         evidence_snapshot_id = int(row["id"])
     else:
-        cur.execute(
-            "SELECT id FROM or_evidence_snapshots WHERE candidate_id=%s AND snapshot_kind='original' AND evidence_cutoff=%s",
-            (candidate_id, evidence_cutoff),
-        )
+        cur.execute("SELECT id FROM or_evidence_snapshots WHERE candidate_id=%s AND snapshot_kind='original' AND evidence_cutoff=%s", (candidate_id, evidence_cutoff))
         evidence_snapshot_id = int(cur.fetchone()["id"])
 
     cur.execute(
@@ -116,11 +99,7 @@ def persist_original_score(
         model_run_id = int(row["id"])
     else:
         cur.execute(
-            """
-            SELECT id FROM or_model_runs
-            WHERE candidate_id=%s AND evidence_snapshot_id=%s AND run_kind='original'
-              AND scoring_model_version=%s AND scoring_config_version=%s
-            """,
+            "SELECT id FROM or_model_runs WHERE candidate_id=%s AND evidence_snapshot_id=%s AND run_kind='original' AND scoring_model_version=%s AND scoring_config_version=%s",
             (candidate_id, evidence_snapshot_id, score["scoring_model_version"], score["scoring_config_version"]),
         )
         model_run_id = int(cur.fetchone()["id"])
@@ -130,13 +109,13 @@ def persist_original_score(
         INSERT INTO or_signal_outcomes(
             candidate_id,evidence_snapshot_id,model_run_id,symbol,signal_timestamp,signal_price,horizon_deadline,
             corporate_action_status,trading_status,outcome_resolution,eligible_for_calibration,status,metadata
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,'unchecked','normal','1Day',true,'pending',%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,'unchecked','normal','1Day',false,'pending',%s)
         ON CONFLICT (candidate_id) DO NOTHING
         """,
         (
             candidate_id, evidence_snapshot_id, model_run_id, item.get("symbol"), evidence_cutoff,
             item.get("last_price"), evidence_cutoff + timedelta(weeks=6),
-            Jsonb({"target": "plus_5pct_within_6_weeks", "source": "alpaca_sip", "price_adjustment": "raw; corporate-action checks required before calibration"}),
+            Jsonb({"target": "plus_5pct_within_6_weeks", "source": "alpaca_sip", "price_adjustment": "raw", "calibration_exclusion": "corporate_action_status_unchecked"}),
         ),
     )
     return evidence_snapshot_id, model_run_id
