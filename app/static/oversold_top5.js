@@ -1,14 +1,6 @@
 (() => {
   const runButton = document.getElementById('run');
-  if (!runButton || document.getElementById('analyse-top5')) return;
-
-  const button = document.createElement('button');
-  button.id = 'analyse-top5';
-  button.className = 'chatgpt-button';
-  button.style.marginLeft = '8px';
-  button.textContent = 'Analyse Top 5 in ChatGPT ↗';
-  button.title = 'Open ChatGPT to analyse the latest top five and allocate 100% across Buy-or-better candidates';
-  runButton.insertAdjacentElement('afterend', button);
+  if (!runButton) return;
 
   const statusLine = () => document.getElementById('status-line');
   const fmt = (value, digits = 2) => value == null ? 'unknown' : Number(value).toLocaleString(undefined, { maximumFractionDigits: digits });
@@ -69,20 +61,20 @@
 
   function buildPrompt(candidates) {
     const context = candidates.map(candidateContext).join('\n\n');
-    return `Briefly analyse these top ${candidates.length} Oversold Reversion candidates from the current scanner.\n\n${context}\n\nUse current web research before answering. Verify the reason for each price fall using reliable sources, prioritising company investor relations, SEC filings and regulators where relevant. For analyst prediction, use the current analyst consensus / price-target direction and recent rating changes; if reliable current analyst coverage is unavailable, say so rather than guessing.\n\nReturn a concise markdown table with one row per stock and these columns:\n1. Stock\n2. Reason for decrease — max 20 words\n3. Analyst prediction — max 20 words; state the current consensus using labels such as Strong Buy, Buy, Hold, Sell, or a clearly equivalent broker-consensus label\n4. Allocated position — % of the total 100% allocation\n5. Recommended holding period — give a specific short-term period such as intraday, 1–2 sessions, or 3–5 sessions\n\nALLOCATION RULES — follow these exactly:\n- Only stocks whose current analyst consensus is Buy or better may receive a non-zero allocation. Treat Strong Buy, Buy, Outperform, Overweight, or a directly equivalent positive consensus as Buy-or-better.\n- Hold/Neutral/Market Perform, Underperform, Sell, or stocks without reliable current analyst consensus must receive 0%.\n- Allocate exactly 100.0% in total across the qualifying Buy-or-better stocks. The non-zero percentages must sum to exactly 100.0%.\n- If one stock qualifies, allocate it 100.0%. If several qualify, use risk-weighted percentages rather than automatically splitting equally.\n- Weight qualifying stocks using catalyst severity, liquidity, spread, dilution/solvency risk, analyst conviction and confidence in the reversion case.\n- If no stocks qualify as Buy-or-better, assign 0% to all five and state immediately below the table: No Buy-or-better candidates; no allocation.\n\nDo not allocate anything to a stock merely because it is in the scanner top five. Do not turn a failed short-term reversion into a long-term hold. Keep the entire answer brief and clearly distinguish facts from uncertain analyst expectations.`;
+    return `Briefly analyse these top ${candidates.length} Oversold Reversion candidates from the current scanner.\n\n${context}\n\nUse current web research before answering. Verify the reason for each price fall using reliable sources, prioritising company investor relations, SEC filings and regulators where relevant. For analyst prediction, use the current analyst consensus / price-target direction and recent rating changes; if reliable current analyst coverage is unavailable, say so rather than guessing.\n\nReturn a concise markdown table with one row per stock and these columns:\n1. Stock\n2. Reason for decrease — max 20 words\n3. Analyst prediction — max 20 words; state the current consensus using labels such as Strong Buy, Buy, Hold, Sell, or a clearly equivalent broker-consensus label\n4. Allocated position — % of the total 100% allocation\n5. Recommended holding period — give a specific short-term period such as intraday, 1–2 sessions, or 3–5 sessions\n\nALLOCATION RULES — follow these exactly:\n- Only stocks whose current analyst consensus is Buy or better may receive a non-zero allocation. Treat Strong Buy, Buy, Outperform, Overweight, or a directly equivalent positive consensus as Buy-or-better.\n- Hold/Neutral/Market Perform, Underperform, Sell, or stocks without reliable current analyst consensus must receive 0%.\n- Allocate exactly 100.0% in total across the qualifying Buy-or-better stocks. The non-zero percentages must sum to exactly 100.0%.\n- If one stock qualifies, allocate it 100.0%. If several qualify, use risk-weighted percentages rather than automatically splitting equally.\n- Weight qualifying stocks using catalyst severity, liquidity, spread, dilution/solvency risk, analyst conviction and confidence in the reversion case.\n- If no stocks qualify as Buy-or-better, assign 0% to every analysed stock and state immediately below the table: No Buy-or-better candidates; no allocation.\n\nDo not allocate anything to a stock merely because it is in the scanner ranking. Do not turn a failed short-term reversion into a long-term hold. Keep the entire answer brief and clearly distinguish facts from uncertain analyst expectations.`;
   }
 
-  button.addEventListener('click', async () => {
+  async function analyseTop(limit, button) {
     const originalText = button.textContent;
     button.disabled = true;
-    button.textContent = 'Preparing Top 5…';
+    button.textContent = `Preparing Top ${limit}…`;
     try {
       const response = await fetch('/api/oversold/latest', { cache: 'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       const candidates = [...(data.candidates || [])]
         .sort((a, b) => Number(a.rank ?? 999999) - Number(b.rank ?? 999999))
-        .slice(0, 5);
+        .slice(0, limit);
       if (!candidates.length) throw new Error('No candidates are available in the latest scan');
 
       const prompt = buildPrompt(candidates);
@@ -96,10 +88,27 @@
       }
     } catch (error) {
       const status = statusLine();
-      if (status) status.textContent = `Top 5 analysis failed: ${error.message}`;
+      if (status) status.textContent = `Top ${limit} analysis failed: ${error.message}`;
     } finally {
       button.disabled = false;
       button.textContent = originalText;
     }
-  });
+  }
+
+  function addButton(limit, afterElement) {
+    const id = `analyse-top${limit}`;
+    if (document.getElementById(id)) return afterElement;
+    const button = document.createElement('button');
+    button.id = id;
+    button.className = 'chatgpt-button';
+    button.style.marginLeft = '8px';
+    button.textContent = `Analyse Top ${limit} in ChatGPT ↗`;
+    button.title = `Open ChatGPT to analyse the latest top ${limit} and allocate 100% across Buy-or-better candidates`;
+    afterElement.insertAdjacentElement('afterend', button);
+    button.addEventListener('click', () => analyseTop(limit, button));
+    return button;
+  }
+
+  const top5Button = addButton(5, runButton);
+  addButton(10, top5Button);
 })();
