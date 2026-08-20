@@ -68,13 +68,21 @@ def assert_database_writable() -> None:
 
 
 def execute_schema() -> None:
-    schema_path = Path(__file__).resolve().parent.parent / "sql" / "schema.sql"
-    sql_text = schema_path.read_text(encoding="utf-8")
+    root = Path(__file__).resolve().parent.parent
+    schema_paths = [
+        root / "sql" / "schema.sql",
+        # Additive and idempotent.  Keeping the active model's columns in the
+        # application bootstrap makes a fresh environment equivalent to production
+        # without replaying every historical one-off migration.
+        root / "sql" / "oversold_reversion_v33_outcomes.sql",
+    ]
     try:
         assert_database_writable()
         with connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(sql_text)
+                for schema_path in schema_paths:
+                    if schema_path.exists():
+                        cur.execute(schema_path.read_text(encoding="utf-8"))
             conn.commit()
     except ReadOnlySqlTransaction as exc:
         raise RuntimeError(
