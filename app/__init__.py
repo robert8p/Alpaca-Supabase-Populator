@@ -98,8 +98,11 @@ if "pytest" not in sys.modules:
 
     _patch_evaluation_v34(_oversold_evaluation)
 
+    from . import oversold_calibration as _oversold_calibration
+    from . import oversold_calibration_runtime as _oversold_calibration_runtime
     from . import oversold_outcome_scheduler as _oversold_outcome_scheduler
     from . import oversold_outcomes as _oversold_outcomes
+    from .oversold_calibration_v35 import patch_module as _patch_calibration_v35
     from .oversold_outcomes_json_compat import patch_module as _patch_outcomes_json
     from .oversold_outcomes_v33 import install_patch as _patch_outcomes_v33
     from .oversold_primary_evidence_diagnostics import patch_module as _patch_primary_evidence_diagnostics
@@ -109,12 +112,14 @@ if "pytest" not in sys.modules:
     from .oversold_three_session_target import install_runtime_patches as _install_three_session_runtime
     from .oversold_v33_diagnostics import patch_module as _patch_v33_diagnostics
     from .oversold_v34_diagnostics import patch_module as _patch_v34_diagnostics
+    from .oversold_v35_diagnostics import patch_module as _patch_v35_diagnostics
 
     _patch_outcomes_json(_oversold_outcomes)
     _patch_outcomes_v33(_oversold_outcomes)
     _patch_target_marker(_oversold_target)
     _install_three_session_runtime()
     _patch_target_outcomes(_oversold_outcomes)
+    _patch_calibration_v35(_oversold_calibration, _oversold_calibration_runtime)
 
     # oversold_outcome_scheduler imports this function by value before runtime
     # patches are installed. Rebind it to the fully wrapped collector so worker
@@ -125,6 +130,7 @@ if "pytest" not in sys.modules:
     _patch_v33_diagnostics(_oversold_target)
     _patch_primary_evidence_diagnostics(_oversold_target)
     _patch_v34_diagnostics(_oversold_target)
+    _patch_v35_diagnostics(_oversold_target)
     _patch_target_scheduler(_oversold_outcome_scheduler)
     _patch_worker_scan_scheduler(_oversold_outcome_scheduler)
 
