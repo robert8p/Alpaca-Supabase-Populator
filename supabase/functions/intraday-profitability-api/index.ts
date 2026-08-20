@@ -17,6 +17,7 @@ const RATE_LIMITS: Record<string, { limit: number; windowMs: number }> = {
 };
 
 type ApiError = Error & { status?: number; retryAfterSeconds?: number };
+type Row = Record<string, unknown>;
 
 function requestOrigin(req: Request): string {
   return (req.headers.get("origin") || "").replace(/\/$/, "");
@@ -40,12 +41,7 @@ function corsHeaders(req: Request): Record<string, string> {
   return headers;
 }
 
-function out(
-  req: Request,
-  body: unknown,
-  status = 200,
-  extraHeaders: Record<string, string> = {},
-): Response {
+function out(req: Request, body: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: { ...corsHeaders(req), ...extraHeaders },
@@ -80,6 +76,10 @@ function first<T>(value: unknown): T | null {
   return Array.isArray(value) && value.length ? value[0] as T : null;
 }
 
+function rows(value: unknown): Row[] {
+  return Array.isArray(value) ? value as Row[] : [];
+}
+
 function clientAddress(req: Request): string {
   const forwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
   return req.headers.get("cf-connecting-ip") || forwarded || req.headers.get("x-real-ip") || "unknown";
@@ -94,11 +94,10 @@ async function enforceMutationRateLimit(req: Request, action: "run" | "select"):
   const rule = RATE_LIMITS[action];
   const hash = await clientHash(req);
   const since = new Date(Date.now() - rule.windowMs).toISOString();
-  const rows = await rest(
+  const recent = rows(await rest(
     `ip_public_api_requests?select=id,created_at&client_hash=eq.${hash}&action=eq.${action}`
       + `&created_at=gte.${encodeURIComponent(since)}&order=created_at.desc&limit=${rule.limit}`,
-  );
-  const recent = Array.isArray(rows) ? rows as Record<string, unknown>[] : [];
+  ));
   if (recent.length >= rule.limit) {
     const oldest = Date.parse(String(recent[recent.length - 1]?.created_at || since));
     const retry = Math.max(1, Math.ceil((oldest + rule.windowMs - Date.now()) / 1000));
@@ -111,7 +110,6 @@ async function enforceMutationRateLimit(req: Request, action: "run" | "select"):
     error.retryAfterSeconds = retry;
     throw error;
   }
-
   await rest("ip_public_api_requests", {
     method: "POST",
     body: JSON.stringify({
@@ -123,7 +121,6 @@ async function enforceMutationRateLimit(req: Request, action: "run" | "select"):
       },
     }),
   });
-
   if (action === "run") {
     const retentionCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     rest(`ip_public_api_requests?created_at=lt.${encodeURIComponent(retentionCutoff)}`, { method: "DELETE" })
@@ -133,9 +130,7 @@ async function enforceMutationRateLimit(req: Request, action: "run" | "select"):
 }
 
 async function enforceGlobalRunCooldown(): Promise<void> {
-  const latest = first<Record<string, unknown>>(
-    await rest("ip_scan_requests?select=requested_at&order=requested_at.desc&limit=1"),
-  );
+  const latest = first<Row>(await rest("ip_scan_requests?select=requested_at&order=requested_at.desc&limit=1"));
   if (!latest?.requested_at) return;
   const remaining = Date.parse(String(latest.requested_at)) + GLOBAL_RUN_COOLDOWN_MS - Date.now();
   if (remaining > 0) {
@@ -146,48 +141,73 @@ async function enforceGlobalRunCooldown(): Promise<void> {
   }
 }
 
-async function selectedRows(): Promise<Record<string, unknown>[]> {
-  const rows = await rest("ip_selected_candidates?select=*&order=selected_at.desc");
-  return Array.isArray(rows) ? rows as Record<string, unknown>[] : [];
+async function activeModelAudit(): Promise<Row | null> {
+  return first<Row>(await rest("ip_model_audits?select=*&active=eq.true&limit=1"));
 }
 
-async function scanDetail(scanId: string): Promise<{ scan: Record<string, unknown> | null; candidates: unknown[] }> {
+async function selectedRows(): Promise<Row[]> {
+  return rows(await rest(
+    "ip_selected_candidates?select=*&user_selected=eq.true"
+      + "&order=user_selected_at.desc.nullslast,selected_at.desc",
+  ));
+}
+
+async function trackingSummary(): Promise<Row> {
+  const tracked = rows(await rest(
+    "ip_selected_candidates?select=id,user_selected,status,horizon_status,entry_price,horizon_price,refresh_error",
+  ));
+  return {
+    total_candidates_tracked: tracked.length,
+    user_selected: tracked.filter((row) => row.user_selected === true).length,
+    horizon_matured: tracked.filter((row) => row.horizon_status === "matured").length,
+    close_matured: tracked.filter((row) => row.status === "closed").length,
+    entry_observed: tracked.filter((row) => row.entry_price != null).length,
+    tracking_errors: tracked.filter((row) => Boolean(row.refresh_error)).length,
+    population: "all persisted ranked candidates",
+  };
+}
+
+async function scanDetail(scanId: string): Promise<{ scan: Row | null; candidates: unknown[] }> {
   if (!UUID_RE.test(scanId)) {
     const error = new Error("Invalid scan ID") as ApiError;
     error.status = 400;
     throw error;
   }
-  const scan = first<Record<string, unknown>>(
-    await rest(`ip_scans?select=*&id=eq.${encodeURIComponent(scanId)}&limit=1`),
-  );
+  const scan = first<Row>(await rest(`ip_scans?select=*&id=eq.${encodeURIComponent(scanId)}&limit=1`));
   if (!scan) return { scan: null, candidates: [] };
-  const candidates = await rest(
-    `ip_candidates?select=*&scan_id=eq.${encodeURIComponent(scanId)}&order=rank.asc`,
-  );
+  const candidates = await rest(`ip_candidates?select=*&scan_id=eq.${encodeURIComponent(scanId)}&order=rank.asc`);
   return { scan, candidates: Array.isArray(candidates) ? candidates : [] };
 }
 
-async function latestPayload(): Promise<Record<string, unknown>> {
-  const [scanValue, activeValue, selections] = await Promise.all([
+async function latestPayload(): Promise<Row> {
+  const [scanValue, activeValue, selections, audit, tracking] = await Promise.all([
     rest("ip_scans?select=*&order=started_at.desc&limit=1"),
     rest("ip_scan_requests?select=*&status=in.(queued,running)&order=requested_at.asc&limit=1"),
     selectedRows(),
+    activeModelAudit(),
+    trackingSummary(),
   ]);
-  const scan = first<Record<string, unknown>>(scanValue);
-  const activeRequest = first<Record<string, unknown>>(activeValue);
-  const selectedCandidateIds = selections
-    .map((row) => Number(row.candidate_id))
-    .filter(Number.isFinite);
+  const scan = first<Row>(scanValue);
+  const activeRequest = first<Row>(activeValue);
+  const selectedCandidateIds = selections.map((row) => Number(row.candidate_id)).filter(Number.isFinite);
   if (!scan) {
     return {
       scan: null,
       candidates: [],
       active_request: activeRequest,
       selected_candidate_ids: selectedCandidateIds,
+      model_audit: audit,
+      tracking_summary: tracking,
     };
   }
   const detail = await scanDetail(String(scan.id));
-  return { ...detail, active_request: activeRequest, selected_candidate_ids: selectedCandidateIds };
+  return {
+    ...detail,
+    active_request: activeRequest,
+    selected_candidate_ids: selectedCandidateIds,
+    model_audit: audit,
+    tracking_summary: tracking,
+  };
 }
 
 function boundedNumber(value: unknown, fallback: number, min: number, max: number): number {
@@ -200,17 +220,15 @@ function boundedInteger(value: unknown, fallback: number, min: number, max: numb
   return Math.round(boundedNumber(value, fallback, min, max));
 }
 
-async function createRequest(req: Request, body: Record<string, unknown>): Promise<Record<string, unknown>> {
-  const active = first<Record<string, unknown>>(
-    await rest("ip_scan_requests?select=*&status=in.(queued,running)&order=requested_at.asc&limit=1"),
-  );
+async function createRequest(req: Request, body: Row): Promise<Row> {
+  const active = first<Row>(await rest(
+    "ip_scan_requests?select=*&status=in.(queued,running)&order=requested_at.asc&limit=1",
+  ));
   if (active) return { request: active, duplicate: true };
 
   const hash = await enforceMutationRateLimit(req, "run");
   await enforceGlobalRunCooldown();
-  const direction = ["both", "long", "short"].includes(String(body.direction))
-    ? String(body.direction)
-    : "both";
+  const direction = ["both", "long", "short"].includes(String(body.direction)) ? String(body.direction) : "both";
   const payload = {
     direction_filter: direction,
     min_price: boundedNumber(body.min_price, 5, 1, 1000),
@@ -220,7 +238,11 @@ async function createRequest(req: Request, body: Record<string, unknown>): Promi
     prefilter_limit: boundedInteger(body.prefilter_limit, 300, 25, 500),
     candidate_limit: boundedInteger(body.candidate_limit, 50, 10, 100),
     requested_by: "render-public-app",
-    metadata: { source: "intraday-profitability-public-v3", public_client_hash: hash },
+    metadata: {
+      source: "intraday-reliability-public-v4",
+      public_client_hash: hash,
+      requested_model_audit: "ip-reliability-v3.0",
+    },
   };
   try {
     const inserted = await rest("ip_scan_requests", {
@@ -228,69 +250,88 @@ async function createRequest(req: Request, body: Record<string, unknown>): Promi
       headers: { prefer: "return=representation" },
       body: JSON.stringify(payload),
     });
-    return { request: first<Record<string, unknown>>(inserted), duplicate: false };
+    return { request: first<Row>(inserted), duplicate: false };
   } catch (error) {
     if ((error as ApiError).status === 409) {
-      const concurrent = first<Record<string, unknown>>(
-        await rest("ip_scan_requests?select=*&status=in.(queued,running)&order=requested_at.asc&limit=1"),
-      );
+      const concurrent = first<Row>(await rest(
+        "ip_scan_requests?select=*&status=in.(queued,running)&order=requested_at.asc&limit=1",
+      ));
       if (concurrent) return { request: concurrent, duplicate: true };
     }
     throw error;
   }
 }
 
-async function requestPayload(requestId: string): Promise<Record<string, unknown>> {
+async function requestPayload(requestId: string): Promise<Row> {
   if (!UUID_RE.test(requestId)) {
     const error = new Error("Invalid request ID") as ApiError;
     error.status = 400;
     throw error;
   }
-  const request = first<Record<string, unknown>>(
-    await rest(`ip_scan_requests?select=*&id=eq.${encodeURIComponent(requestId)}&limit=1`),
-  );
+  const request = first<Row>(await rest(`ip_scan_requests?select=*&id=eq.${encodeURIComponent(requestId)}&limit=1`));
   if (!request) {
     const error = new Error("Scan request not found") as ApiError;
     error.status = 404;
     throw error;
   }
   if (!request.scan_id) return { request, scan: null, candidates: [] };
-  return { request, ...(await scanDetail(String(request.scan_id))) };
+  return {
+    request,
+    ...(await scanDetail(String(request.scan_id))),
+    model_audit: await activeModelAudit(),
+    tracking_summary: await trackingSummary(),
+  };
 }
 
-async function selectCandidate(req: Request, body: Record<string, unknown>): Promise<Record<string, unknown>> {
+async function markExistingSelection(req: Request, existing: Row): Promise<Row> {
+  if (existing.user_selected === true) return { selection: existing, duplicate: true };
+  const hash = await enforceMutationRateLimit(req, "select");
+  const updated = await rest(`ip_selected_candidates?candidate_id=eq.${String(existing.candidate_id)}`, {
+    method: "PATCH",
+    headers: { prefer: "return=representation" },
+    body: JSON.stringify({
+      user_selected: true,
+      user_selected_at: new Date().toISOString(),
+      metadata: {
+        ...(existing.metadata && typeof existing.metadata === "object" ? existing.metadata as Row : {}),
+        user_selection_source: "public-scanner-select-button",
+        public_client_hash: hash,
+      },
+    }),
+  });
+  return { selection: first<Row>(updated), duplicate: false };
+}
+
+async function selectCandidate(req: Request, body: Row): Promise<Row> {
   const candidateId = String(body.candidate_id ?? "");
   if (!INTEGER_RE.test(candidateId) || Number(candidateId) <= 0) {
     const error = new Error("Invalid candidate ID") as ApiError;
     error.status = 400;
     throw error;
   }
-  const existing = first<Record<string, unknown>>(
-    await rest(`ip_selected_candidates?select=*&candidate_id=eq.${candidateId}&limit=1`),
-  );
-  if (existing) return { selection: existing, duplicate: true };
+  const existing = first<Row>(await rest(
+    `ip_selected_candidates?select=*&candidate_id=eq.${candidateId}&limit=1`,
+  ));
+  if (existing) return markExistingSelection(req, existing);
 
   const hash = await enforceMutationRateLimit(req, "select");
-  const candidate = first<Record<string, unknown>>(
-    await rest(`ip_candidates?select=*&id=eq.${candidateId}&limit=1`),
-  );
+  const candidate = first<Row>(await rest(`ip_candidates?select=*&id=eq.${candidateId}&limit=1`));
   if (!candidate) {
     const error = new Error("Candidate not found") as ApiError;
     error.status = 404;
     throw error;
   }
-  const scan = first<Record<string, unknown>>(
-    await rest(
-      `ip_scans?select=id,status,evidence_cutoff,market_close&id=eq.${encodeURIComponent(String(candidate.scan_id))}&limit=1`,
-    ),
-  );
+  const scan = first<Row>(await rest(
+    `ip_scans?select=id,status,evidence_cutoff,horizon_end,market_close&id=eq.${encodeURIComponent(String(candidate.scan_id))}&limit=1`,
+  ));
   if (!scan || scan.status !== "completed" || !scan.evidence_cutoff || !scan.market_close) {
     const error = new Error("Only candidates from a completed scan with a known market close can be selected") as ApiError;
     error.status = 409;
     throw error;
   }
 
-  const evidence = candidate.evidence as Record<string, unknown> | null;
+  const evidence = candidate.evidence as Row | null;
+  const now = new Date().toISOString();
   const payload = {
     candidate_id: Number(candidate.id),
     scan_id: candidate.scan_id,
@@ -305,8 +346,14 @@ async function selectCandidate(req: Request, body: Record<string, unknown>): Pro
     scan_at: scan.evidence_cutoff,
     market_close_at: scan.market_close,
     market_date: String(scan.evidence_cutoff).slice(0, 10),
+    selected_at: now,
+    user_selected: true,
+    user_selected_at: now,
+    auto_enrolled_at: now,
+    horizon_end_at: scan.horizon_end,
+    tracking_version: "ip-tracking-v3",
     metadata: {
-      source: "public-scanner-select-button",
+      source: "public-scanner-select-button-fallback-enrolment",
       public_client_hash: hash,
       scoring_version: evidence?.scoring_version || null,
       original_initial_view: candidate.initial_view,
@@ -319,13 +366,13 @@ async function selectCandidate(req: Request, body: Record<string, unknown>): Pro
       headers: { prefer: "return=representation" },
       body: JSON.stringify(payload),
     });
-    return { selection: first<Record<string, unknown>>(inserted), duplicate: false };
+    return { selection: first<Row>(inserted), duplicate: false };
   } catch (error) {
     if ((error as ApiError).status === 409) {
-      const concurrent = first<Record<string, unknown>>(
-        await rest(`ip_selected_candidates?select=*&candidate_id=eq.${candidateId}&limit=1`),
-      );
-      if (concurrent) return { selection: concurrent, duplicate: true };
+      const concurrent = first<Row>(await rest(
+        `ip_selected_candidates?select=*&candidate_id=eq.${candidateId}&limit=1`,
+      ));
+      if (concurrent) return markExistingSelection(req, concurrent);
     }
     throw error;
   }
@@ -344,7 +391,7 @@ Deno.serve(async (req: Request) => {
     return out(req, {
       status: "ok",
       service: "intraday-profitability-api",
-      version: "3.0-public",
+      version: "4.0-reliability",
       credentials_required: false,
       time: new Date().toISOString(),
     });
@@ -352,22 +399,24 @@ Deno.serve(async (req: Request) => {
 
   if (action === "readiness") {
     try {
-      const [scans, requests, selections, rateLimits] = await Promise.all([
+      const [scans, requests, selections, rateLimits, audits] = await Promise.all([
         rest("ip_scans?select=id&limit=1"),
         rest("ip_scan_requests?select=id&limit=1"),
         rest("ip_selected_candidates?select=id&limit=1"),
         rest("ip_public_api_requests?select=id&limit=1"),
+        rest("ip_model_audits?select=model_version&active=eq.true&limit=1"),
       ]);
       return out(req, {
         status: "ready",
         service: "intraday-profitability-api",
-        version: "3.0-public",
+        version: "4.0-reliability",
         credentials_required: false,
         database: "ok",
         scan_table: Array.isArray(scans),
         request_table: Array.isArray(requests),
-        selection_table: Array.isArray(selections),
+        tracking_table: Array.isArray(selections),
         public_rate_limit_table: Array.isArray(rateLimits),
+        active_model_audit: Array.isArray(audits) && audits.length === 1,
         time: new Date().toISOString(),
       });
     } catch (error) {
@@ -387,7 +436,19 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (req.method === "GET" && action === "latest") return out(req, await latestPayload());
-    if (req.method === "GET" && action === "selections") return out(req, { selections: await selectedRows() });
+    if (req.method === "GET" && action === "selections") {
+      return out(req, {
+        selections: await selectedRows(),
+        model_audit: await activeModelAudit(),
+        tracking_summary: await trackingSummary(),
+      });
+    }
+    if (req.method === "GET" && action === "audit") {
+      return out(req, {
+        model_audit: await activeModelAudit(),
+        tracking_summary: await trackingSummary(),
+      });
+    }
     if (req.method === "GET" && action === "scan") {
       const detail = await scanDetail(url.searchParams.get("scan_id") || "");
       return detail.scan ? out(req, detail) : out(req, { error: "not_found" }, 404);
@@ -397,12 +458,12 @@ Deno.serve(async (req: Request) => {
     }
     if (req.method === "POST" && action === "run") {
       const raw = await req.json().catch(() => ({}));
-      const body = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
+      const body = raw && typeof raw === "object" ? raw as Row : {};
       return out(req, await createRequest(req, body), 202);
     }
     if (req.method === "POST" && action === "select") {
       const raw = await req.json().catch(() => ({}));
-      const body = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
+      const body = raw && typeof raw === "object" ? raw as Row : {};
       return out(req, await selectCandidate(req, body), 201);
     }
     return out(req, { error: "not_found" }, 404);
