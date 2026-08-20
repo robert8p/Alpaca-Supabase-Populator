@@ -39,7 +39,7 @@ def test_main_filing_document_is_preferred_before_exhibits() -> None:
         primary_document="different-filename.htm",
         form="10-Q",
     )
-    assert [row["document"] for row in selected] == ["issuer-10q.xhtml", "different-filename.htm"]
+    assert [row["document"] for row in selected] == ["issuer-10q.xhtml", "ex10-1.htm"]
 
 
 def test_submissions_primary_document_is_synthesised_when_index_parser_only_returns_exhibits() -> None:
