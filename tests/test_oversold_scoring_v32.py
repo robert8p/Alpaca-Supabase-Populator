@@ -116,7 +116,7 @@ def test_model_is_explicitly_versioned_v32() -> None:
         [],
     )
     assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_2"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v3"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v4"
     assert result["scoring_model_version"] == SCORING_MODEL_VERSION
     assert result["scoring_config_version"] == SCORING_CONFIG_VERSION
     assert result["catalyst_analysis"]["analysis_method"] == "rules_v3_2_point_in_time"
