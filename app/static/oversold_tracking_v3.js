@@ -14,7 +14,9 @@
             load('/static/oversold_v33_explainability.js?v=1', () => {
               load('/static/oversold_primary_evidence_ui.js?v=1', () => {
                 load('/static/oversold_v34_reliability_ui.js?v=1', () => {
-                  load('/static/oversold_chatgpt_v34.js?v=1');
+                  load('/static/oversold_execution_quote_ui.js?v=1', () => {
+                    load('/static/oversold_chatgpt_v34.js?v=1');
+                  });
                 });
               });
             });
