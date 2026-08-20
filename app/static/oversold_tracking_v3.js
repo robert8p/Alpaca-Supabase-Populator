@@ -7,6 +7,8 @@
     document.head.appendChild(script);
   };
   load('/static/oversold_tracking_v3_base.js?v=1', () => {
-    load('/static/oversold_day3_ui.js?v=1');
+    load('/static/oversold_day3_ui.js?v=1', () => {
+      load('/static/oversold_fundamentals_rating_v2.js?v=1');
+    });
   });
 })();
