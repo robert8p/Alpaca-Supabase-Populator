@@ -8,6 +8,54 @@ from app.oversold_outcomes import calculate_outcome_metrics, refine_intraday_eve
 from app.oversold_scoring import evidence_snapshot_hash, final_score, score_candidate
 
 
+SIGNAL = datetime(2026, 8, 19, 20, 0, tzinfo=UTC)
+
+
+def _history(base: float = 15.0) -> list[dict]:
+    rows: list[dict] = []
+    for index in range(60):
+        ts = SIGNAL - timedelta(days=60 - index)
+        close = base + ((index % 7) - 3) * 0.018
+        rows.append(
+            {
+                "t": ts.isoformat().replace("+00:00", "Z"),
+                "o": close - 0.03,
+                "h": close + 0.12,
+                "l": close - 0.12,
+                "c": close,
+                "v": 5_000_000 + (index % 5) * 60_000,
+                "vw": close,
+            }
+        )
+    rows[-1]["c"] = base
+    return rows
+
+
+def _healthy_fundamentals() -> dict:
+    return {
+        "source": "research_pid_fundamental.filing_events_v1",
+        "accession_number": "000-test",
+        "form": "10-Q",
+        "available_from": "2026-07-01",
+        "report_period_end": "2026-06-30",
+        "age_calendar_days": 49,
+        "metric_coverage_count": 8,
+        "revenue_yoy": 0.08,
+        "net_margin": 0.08,
+        "net_margin_yoy_delta": 0.01,
+        "operating_margin": 0.10,
+        "gross_margin": 0.48,
+        "eps_change_symmetric": 0.12,
+        "net_income_change_symmetric": 0.10,
+        "diluted_shares_yoy": 0.02,
+        "cash_to_assets": 0.24,
+        "liabilities_to_assets": 0.52,
+        "equity_to_assets": 0.48,
+        "source_definition_hash": "test",
+        "point_in_time_rule": "available_from_strictly_before_signal_date",
+    }
+
+
 def candidate(*, drop=-25.0, last=11.5, prev=15.0, spread=0.35, dollar_volume=80_000_000):
     return {
         "symbol": "TEST",
@@ -19,10 +67,13 @@ def candidate(*, drop=-25.0, last=11.5, prev=15.0, spread=0.35, dollar_volume=80
         "prev_dollar_volume": dollar_volume,
         "spread_pct": spread,
         "latest_trade_ts": "2026-08-19T20:00:00Z",
+        "evidence_cutoff": "2026-08-19T20:00:00Z",
         "raw_snapshot": {
             "prevDailyBar": {"o": 14.5, "h": 15.4, "l": 14.1, "c": prev, "v": 5_000_000},
-            "dailyBar": {"o": 9.5, "h": 12.0, "l": 8.8, "c": last, "v": 12_000_000},
+            "dailyBar": {"o": 9.5, "h": 12.0, "l": 8.8, "c": last, "v": 12_000_000, "vw": 10.6},
         },
+        "history_bars": _history(prev),
+        "fundamentals": _healthy_fundamentals(),
     }
 
 
@@ -82,7 +133,9 @@ def test_analyst_downgrade_without_operating_failure_can_be_reversible():
     news = [article("Broker downgrade cuts price target", "Analyst rating changed; no new company operating announcement cited.", "Broker note")]
     result = score_candidate(c, news, "A", ["analyst_only"])
     assert result["catalyst_score"] >= 65
-    assert result["damage_risk"] <= 25
+    # A target cut is a small piece of negative valuation evidence even when no
+    # new operating impairment is identified, so v3 does not force Damage near zero.
+    assert result["damage_risk"] <= 30
     assert result["catalyst_analysis"]["analyst_reaction"]["coverage_available"] is True
 
 

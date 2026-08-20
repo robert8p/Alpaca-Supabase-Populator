@@ -41,28 +41,70 @@ def persist_original_score(
     apply_active_calibration(score, active_calibration)
 
     analysis = score.get("catalyst_analysis") or {}
+    enrichment = score.get("point_in_time_enrichment") or {}
     sector_hint = ((analysis.get("sector_assessment") or {}).get("sector_hint") or "unknown")
     news_items = item.get("headlines") or []
+    fundamentals = enrichment.get("fundamentals") if isinstance(enrichment.get("fundamentals"), dict) else None
+    filing_refs: list[dict[str, Any]] = []
+    if fundamentals:
+        filing_refs.append(
+            {
+                "source": fundamentals.get("source"),
+                "accession_number": fundamentals.get("accession_number"),
+                "form": fundamentals.get("form"),
+                "available_from": fundamentals.get("available_from"),
+                "report_period_end": fundamentals.get("report_period_end"),
+                "source_definition_hash": fundamentals.get("source_definition_hash"),
+                "point_in_time_rule": fundamentals.get("point_in_time_rule"),
+            }
+        )
+
     technical_inputs = {
         "setup": (score.get("calculation_trace") or {}).get("setup") or {},
         "confirmation": (score.get("calculation_trace") or {}).get("confirmation") or {},
         "market_data_completeness": (score.get("calculation_trace") or {}).get("market_data_completeness"),
+        "confidence_inputs": (score.get("calculation_trace") or {}).get("confidence_inputs") or {},
+        "fundamentals": fundamentals or {},
     }
     market_data = {
-        "prev_close": item.get("prev_close"), "last_price": item.get("last_price"), "drop_pct": item.get("drop_pct"),
-        "prev_volume": item.get("prev_volume"), "prev_dollar_volume": item.get("prev_dollar_volume"),
-        "bid": item.get("bid"), "ask": item.get("ask"), "spread_pct": item.get("spread_pct"),
-        "latest_trade_ts": item.get("latest_trade_ts"), "raw_snapshot": item.get("raw_snapshot") or {},
+        "prev_close": item.get("prev_close"),
+        "last_price": item.get("last_price"),
+        "drop_pct": item.get("drop_pct"),
+        "prev_volume": item.get("prev_volume"),
+        "prev_dollar_volume": item.get("prev_dollar_volume"),
+        "bid": item.get("bid"),
+        "ask": item.get("ask"),
+        "spread_pct": item.get("spread_pct"),
+        "latest_trade_ts": item.get("latest_trade_ts"),
+        "raw_snapshot": item.get("raw_snapshot") or {},
+        "history_bars": enrichment.get("history_bars") or [],
+        "benchmark_context": enrichment.get("benchmark_context") or {},
     }
     source_quality = {
-        "missing_inputs": score.get("missing_inputs") or [], "evidence_confidence": score.get("evidence_confidence"),
-        "cause_verified": analysis.get("cause_verified"), "analysis_method": analysis.get("analysis_method"),
+        "missing_inputs": score.get("missing_inputs") or [],
+        "evidence_confidence": score.get("evidence_confidence"),
+        "cause_verified": analysis.get("cause_verified"),
+        "analysis_method": analysis.get("analysis_method"),
+        "event_evidence_quality": analysis.get("evidence_quality_trace") or {},
+        "fundamental_evidence_confidence": analysis.get("fundamental_evidence_confidence"),
+        "enrichment_mode": enrichment.get("mode"),
+        "enrichment_errors": enrichment.get("errors") or [],
+        "history_requests": enrichment.get("history_requests") or 0,
+        "benchmark_requests": enrichment.get("benchmark_requests") or 0,
     }
     hash_payload = {
-        "candidate_id": candidate_id, "scan_id": str(scan_id), "symbol": item.get("symbol"),
-        "signal_timestamp": evidence_cutoff, "evidence_cutoff": evidence_cutoff,
-        "signal_price": item.get("last_price"), "market_data": market_data,
-        "technical_inputs": technical_inputs, "news_items": news_items, "sector_hint": sector_hint,
+        "candidate_id": candidate_id,
+        "scan_id": str(scan_id),
+        "symbol": item.get("symbol"),
+        "signal_timestamp": evidence_cutoff,
+        "evidence_cutoff": evidence_cutoff,
+        "signal_price": item.get("last_price"),
+        "market_data": market_data,
+        "technical_inputs": technical_inputs,
+        "news_items": news_items,
+        "filing_refs": filing_refs,
+        "source_quality": source_quality,
+        "sector_hint": sector_hint,
     }
     snapshot_hash = evidence_snapshot_hash(hash_payload)
     analyst_events = (analysis.get("analyst_reaction") or {}).get("post_event_updates") or []
@@ -73,21 +115,36 @@ def persist_original_score(
             candidate_id,scan_id,symbol,company_name,signal_timestamp,evidence_cutoff,signal_price,
             sector_hint,market_data,technical_inputs,news_items,filing_refs,analyst_events,
             source_quality,snapshot_hash,snapshot_kind
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'[]'::jsonb,%s,%s,%s,'original')
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'original')
         ON CONFLICT (candidate_id,snapshot_kind,evidence_cutoff) DO NOTHING
         RETURNING id
         """,
         (
-            candidate_id, scan_id, item.get("symbol"), item.get("name"), evidence_cutoff, evidence_cutoff,
-            item.get("last_price"), sector_hint, Jsonb(market_data), Jsonb(technical_inputs), Jsonb(news_items),
-            Jsonb(analyst_events), Jsonb(source_quality), snapshot_hash,
+            candidate_id,
+            scan_id,
+            item.get("symbol"),
+            item.get("name"),
+            evidence_cutoff,
+            evidence_cutoff,
+            item.get("last_price"),
+            sector_hint,
+            Jsonb(market_data),
+            Jsonb(technical_inputs),
+            Jsonb(news_items),
+            Jsonb(filing_refs),
+            Jsonb(analyst_events),
+            Jsonb(source_quality),
+            snapshot_hash,
         ),
     )
     row = cur.fetchone()
     if row:
         evidence_snapshot_id = int(row["id"])
     else:
-        cur.execute("SELECT id FROM or_evidence_snapshots WHERE candidate_id=%s AND snapshot_kind='original' AND evidence_cutoff=%s", (candidate_id, evidence_cutoff))
+        cur.execute(
+            "SELECT id FROM or_evidence_snapshots WHERE candidate_id=%s AND snapshot_kind='original' AND evidence_cutoff=%s",
+            (candidate_id, evidence_cutoff),
+        )
         evidence_snapshot_id = int(cur.fetchone()["id"])
 
     cur.execute(
@@ -106,14 +163,34 @@ def persist_original_score(
         RETURNING id
         """,
         (
-            candidate_id, evidence_snapshot_id, score["scoring_model_version"], score["scoring_config_version"],
-            score["catalyst_prompt_version"], score["catalyst_schema_version"], score.get("calibration_model_version"),
-            score["model_status"], score["target_definition"], score["setup_score"], score["catalyst_score"],
-            score["resilience_score"], score["confirmation_score"], score["damage_risk"], score["evidence_confidence"],
-            score["core_score"], score["confidence_adjusted_score"], score["damage_penalty"], score["damage_cap"],
-            score["final_score"], score.get("calibrated_probability"), score["verdict"], score["hard_veto"], score.get("hard_veto_reason"),
-            Jsonb(score.get("missing_inputs") or []), Jsonb(score.get("catalyst_analysis") or {}),
-            Jsonb(score.get("calculation_trace") or {}), score.get("explanation"),
+            candidate_id,
+            evidence_snapshot_id,
+            score["scoring_model_version"],
+            score["scoring_config_version"],
+            score["catalyst_prompt_version"],
+            score["catalyst_schema_version"],
+            score.get("calibration_model_version"),
+            score["model_status"],
+            score["target_definition"],
+            score["setup_score"],
+            score["catalyst_score"],
+            score["resilience_score"],
+            score["confirmation_score"],
+            score["damage_risk"],
+            score["evidence_confidence"],
+            score["core_score"],
+            score["confidence_adjusted_score"],
+            score["damage_penalty"],
+            score["damage_cap"],
+            score["final_score"],
+            score.get("calibrated_probability"),
+            score["verdict"],
+            score["hard_veto"],
+            score.get("hard_veto_reason"),
+            Jsonb(score.get("missing_inputs") or []),
+            Jsonb(score.get("catalyst_analysis") or {}),
+            Jsonb(score.get("calculation_trace") or {}),
+            score.get("explanation"),
         ),
     )
     row = cur.fetchone()
@@ -135,14 +212,21 @@ def persist_original_score(
         ON CONFLICT (candidate_id) DO NOTHING
         """,
         (
-            candidate_id, evidence_snapshot_id, model_run_id, item.get("symbol"), evidence_cutoff,
-            item.get("last_price"), evidence_cutoff + timedelta(weeks=6),
-            Jsonb({
-                "target": "plus_5pct_within_6_weeks",
-                "source": "alpaca_sip",
-                "price_adjustment": "raw",
-                "calibration_exclusion": "pending_corporate_action_review",
-            }),
+            candidate_id,
+            evidence_snapshot_id,
+            model_run_id,
+            item.get("symbol"),
+            evidence_cutoff,
+            item.get("last_price"),
+            evidence_cutoff + timedelta(weeks=6),
+            Jsonb(
+                {
+                    "target": "plus_5pct_within_6_weeks",
+                    "source": "alpaca_sip",
+                    "price_adjustment": "raw",
+                    "calibration_exclusion": "pending_corporate_action_review",
+                }
+            ),
         ),
     )
     return evidence_snapshot_id, model_run_id
