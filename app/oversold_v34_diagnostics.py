@@ -43,6 +43,12 @@ def _reliability_summary() -> dict[str, Any]:
                   count(*) FILTER (
                     WHERE COALESCE((catalyst_analysis->>'independent_causal_source_count')::int,0) >= 2
                   ) AS signals_with_independent_causal_evidence,
+                  count(*) FILTER (
+                    WHERE catalyst_analysis#>>'{reliability_assessment,execution_friction,quote_state}'='off_hours_liquidity_proxy'
+                  ) AS off_hours_proxy_signals,
+                  count(*) FILTER (
+                    WHERE catalyst_analysis#>>'{reliability_assessment,execution_friction,live_execution_recheck_required}'='true'
+                  ) AS live_execution_rechecks_required,
                   round(avg((calculation_trace#>>'{v3_4_reliability,base_v33_score}')::numeric),2) AS average_base_v33_score,
                   round(avg(final_score)::numeric,2) AS average_conservative_score,
                   round(avg(
@@ -81,9 +87,30 @@ def _reliability_summary() -> dict[str, Any]:
                 (SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION),
             )
             stability_buckets = [dict(row) for row in cur.fetchall()]
+            cur.execute(
+                """
+                WITH current_runs AS (
+                  SELECT DISTINCT ON (evidence_snapshot_id) *
+                  FROM or_model_runs
+                  WHERE scoring_model_version=%s
+                    AND scoring_config_version=%s
+                    AND run_kind IN ('original','rescore')
+                  ORDER BY evidence_snapshot_id,
+                           CASE WHEN run_kind='original' THEN 0 ELSE 1 END,
+                           created_at DESC,id DESC
+                )
+                SELECT COALESCE(catalyst_analysis#>>'{reliability_assessment,version}','unknown') AS reliability_version,
+                       count(*) AS signals
+                FROM current_runs
+                GROUP BY 1 ORDER BY signals DESC,reliability_version
+                """,
+                (SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION),
+            )
+            reliability_versions = [dict(row) for row in cur.fetchall()]
         conn.rollback()
     summary["stability_buckets"] = stability_buckets
-    summary["reliability_version"] = "reliability_scenarios_v1"
+    summary["reliability_versions"] = reliability_versions
+    summary["scoring_config_version"] = SCORING_CONFIG_VERSION
     return summary
 
 
@@ -109,6 +136,8 @@ def patch_module(target_module: Any) -> None:
             "execution_friction_failures",
             "signals_with_primary_causal_evidence",
             "signals_with_independent_causal_evidence",
+            "off_hours_proxy_signals",
+            "live_execution_rechecks_required",
             "average_base_v33_score",
             "average_conservative_score",
             "average_reliability_haircut",
