@@ -28,10 +28,11 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'No login required' static_intraday/index.html
-          grep -q 'No validated generic trading edge' static_intraday/index.html
           grep -q 'Trade gate blocked' static_intraday/index.html
+          grep -q 'Research only' static_intraday/index.html
           grep -q 'data-select-candidate' static_intraday/app.js
           grep -q 'ip-reliability-v3.0' static_intraday/app.js
+          grep -q 'NO VALIDATED EDGE' static_intraday/app.js
           grep -q "searchParams.set('prompt'" static_intraday/prompt.js
           grep -q 'app trade gate is blocked' static_intraday/prompt.js
           ! grep -q 'loginModal' static_intraday/index.html
