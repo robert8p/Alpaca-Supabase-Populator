@@ -111,6 +111,13 @@ if "pytest" not in sys.modules:
     _patch_outcomes_v33(_oversold_outcomes)
     _install_three_session_runtime()
     _patch_target_outcomes(_oversold_outcomes)
+
+    # oversold_outcome_scheduler imports this function by value before runtime
+    # patches are installed. Rebind it to the fully wrapped collector so worker
+    # bootstraps and daily runs include JSON-safe long-horizon updates, explicit
+    # three-session MFE/MAE paths and target maturity.
+    _oversold_outcome_scheduler.capture_signal_outcomes = _oversold_outcomes.capture_signal_outcomes
+
     _patch_v33_diagnostics(_oversold_target)
     _patch_primary_evidence_diagnostics(_oversold_target)
     _patch_v34_diagnostics(_oversold_target)
