@@ -38,7 +38,7 @@ jobs:
           node tests/test_intraday_prompt_handoff.js
           grep -q 'mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api' /tmp/app.js
           grep -q 'https://chatgpt.com/' /tmp/prompt.js
-          grep -q 'searchParams.set' /tmp/prompt.js
+          grep -q "searchParams.set('prompt'" /tmp/prompt.js
           if grep -Eiq 'oxzabweahkoimtevbbny|api\.openai\.com|OPENAI_API_KEY|ALPACA_(API|SECRET)_KEY|DATABASE_URL|service_role' /tmp/app.js /tmp/prompt.js; then
             echo 'A forbidden backend endpoint or secret identifier reached the browser bundle.' >&2
             exit 1
@@ -145,7 +145,7 @@ jobs:
             await page.locator('#openChat').click();
             const popup = await popupPromise;
             await popup.waitForURL(url => url.hostname === 'chatgpt.com', { timeout: 10000 });
-            const populated = new URL(popup.url()).searchParams.get('q');
+            const populated = new URL(popup.url()).searchParams.get('prompt');
             assert(populated && populated.includes('SMOKE1') && populated.includes('SMOKE10'), 'ChatGPT new chat was not populated with all Top 10 candidates.');
             await popup.close();
             await page.screenshot({path:'artifacts/intraday-profitability-production-smoke.png',fullPage:true});
