@@ -15,6 +15,7 @@ from . import oversold_scoring_v33 as _oversold_v33_impl
 from . import oversold_sec_fundamentals as _oversold_sec
 from . import oversold_three_session_target as _oversold_target
 from . import oversold_tracking as _oversold_tracking
+from .oversold_primary_evidence_scoring import patch_module as _patch_primary_evidence_scoring
 from .oversold_scoring_v32_compat import patch_module as _patch_v32
 from .oversold_scoring_v33 import patch_module as _patch_v33
 from .oversold_scoring_v33_compat import patch_module as _patch_v33_compat
@@ -52,36 +53,43 @@ for _helper_name in (
 
 _patch_v33_runtime(_oversold_scoring)
 _patch_v33_contract(_oversold_scoring)
+_patch_primary_evidence_scoring(_oversold_scoring)
 
 # Install one defensive normalization boundary before the scanner imports the
 # persistence function. Provider timestamps remain native for database columns,
 # while all nested evidence/model JSON is guaranteed serializable.
 from . import oversold_score_store as _oversold_score_store
+from .oversold_primary_evidence_store import patch_module as _patch_primary_evidence_store
 from .oversold_score_store_json_compat import patch_module as _patch_score_store_json
 
 _patch_score_store_json(_oversold_score_store)
+_patch_primary_evidence_store(_oversold_score_store)
 _patch_tracking_day3(_oversold_tracking)
 
 # Production runtime modules read required settings at import time.  Keep them out
 # of pure pytest collection, matching the existing application's isolation model.
 if "pytest" not in sys.modules:
     from . import oversold as _oversold_scan
+    from .oversold_primary_evidence_runtime import patch_module as _patch_primary_evidence_runtime
     from .oversold_scan_v33 import patch_module as _patch_scan_v33
     from .oversold_scan_v33_compat import patch_module as _patch_scan_v33_compat
 
     _patch_scan_v33_compat(_oversold_scan)
     _patch_scan_v33(_oversold_scan)
+    _patch_primary_evidence_runtime(_oversold_scan)
 
     # Add explicit three-session path metrics before the target runtime wraps the
     # outcome collector and publishes the public router bindings.
     from . import oversold_outcomes as _oversold_outcomes
     from .oversold_outcomes_v33 import install_patch as _patch_outcomes_v33
+    from .oversold_primary_evidence_diagnostics import patch_module as _patch_primary_evidence_diagnostics
     from .oversold_three_session_target import install_runtime_patches as _install_three_session_runtime
     from .oversold_v33_diagnostics import patch_module as _patch_v33_diagnostics
 
     _patch_outcomes_v33(_oversold_outcomes)
     _install_three_session_runtime()
     _patch_v33_diagnostics(_oversold_target)
+    _patch_primary_evidence_diagnostics(_oversold_target)
 
     from .oversold_v2_fundamental_patch import install_patch as _install_oversold_v2_fundamental_patch
 
