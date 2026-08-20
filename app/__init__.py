@@ -13,6 +13,7 @@ import sys
 from . import oversold_primary_evidence as _oversold_primary_evidence
 from . import oversold_scoring_v32 as _oversold_scoring
 from . import oversold_scoring_v33 as _oversold_v33_impl
+from . import oversold_scoring_v34 as _oversold_v34_impl
 from . import oversold_sec_fundamentals as _oversold_sec
 from . import oversold_three_session_target as _oversold_target
 from . import oversold_tracking as _oversold_tracking
@@ -25,6 +26,7 @@ from .oversold_scoring_v33_compat import patch_module as _patch_v33_compat
 from .oversold_scoring_v33_contract import patch_module as _patch_v33_contract
 from .oversold_scoring_v33_runtime import patch_module as _patch_v33_runtime
 from .oversold_scoring_v34 import patch_module as _patch_v34
+from .oversold_scoring_v34_detector_tuning import patch_module as _patch_v34_detector
 from .oversold_scoring_v34_tuning import patch_module as _patch_v34_tuning
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
@@ -60,6 +62,7 @@ for _helper_name in (
 _patch_v33_runtime(_oversold_scoring)
 _patch_v33_contract(_oversold_scoring)
 _patch_primary_evidence_scoring(_oversold_scoring)
+_patch_v34_detector(_oversold_v34_impl)
 _patch_v34(_oversold_scoring)
 _patch_v34_tuning(_oversold_scoring)
 
