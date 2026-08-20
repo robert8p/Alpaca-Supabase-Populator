@@ -21,6 +21,7 @@ from app.config import get_settings
 from app.db import connection
 from app.oversold_score_store import persist_original_score
 from app.oversold_scoring import MODEL_STATUS, SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION, TARGET_DEFINITION, score_candidate
+from app.oversold_v3_hardening import classify_news_for_candidate
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -40,7 +41,7 @@ NEWS_LOOKBACK_HOURS = 72
 NEWS_SYMBOL_BATCH_SIZE = 20
 NEWS_MAX_PAGES = 2
 NON_OPERATING_INSTRUMENT_RE = re.compile(
-    r"\b(etf|exchange[- ]traded fund|warrants?|rights?|units?|preferred|proshares|direxion|tradr|leverage shares|t-rex|defiance|graniteshares|yieldmax|roundhill|rex shares)\b",
+    r"\b(etf|etn|exchange[- ]traded fund|exchange[- ]traded note|warrants?|rights?|units?|preferred|inverse|leveraged|microsectors|proshares|direxion|tradr|leverage shares|t-rex|defiance|graniteshares|yieldmax|roundhill|rex shares)\b",
     re.IGNORECASE,
 )
 
@@ -306,7 +307,7 @@ async def execute_scan(scan_id: UUID, *, min_drop_pct: float = DEFAULT_MIN_DROP_
             enriched: list[dict[str, Any]] = []
             for item in raw_candidates:
                 articles = news_map.get(item["symbol"], [])
-                catalyst_class, catalyst_summary, risk_flags = _classify_news(articles)
+                catalyst_class, catalyst_summary, risk_flags = classify_news_for_candidate(item, articles)
                 legacy_score = _score_candidate(drop_pct=item["drop_pct"], prev_dollar_volume=item["prev_dollar_volume"], spread_pct=item["spread_pct"], catalyst_class=catalyst_class, headline_count=len(articles))
                 item.update(catalyst_class=catalyst_class, catalyst_summary=catalyst_summary, risk_flags=risk_flags, headlines=articles, headline_count=len(articles), heuristic_score=legacy_score)
                 model = score_candidate(item, articles, catalyst_class, risk_flags)

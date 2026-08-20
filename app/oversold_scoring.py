@@ -8,11 +8,15 @@ from typing import Any
 
 from app.oversold_features import technical_features
 from app.oversold_live_enrichment import load_runtime_enrichment
+from app.oversold_v3_hardening import (
+    apply_quantified_event_hardening, direct_news_risk_flags, filter_causal_articles,
+    setup_post_spike_cap,
+)
 
-SCORING_MODEL_VERSION = "oversold_reversion_score_v3"
-SCORING_CONFIG_VERSION = "or_score_config_2026_08_20_v1"
-CATALYST_PROMPT_VERSION = "catalyst_rules_prompt_v2"
-CATALYST_SCHEMA_VERSION = "catalyst_schema_v2"
+SCORING_MODEL_VERSION = "oversold_reversion_score_v3_1"
+SCORING_CONFIG_VERSION = "or_score_config_2026_08_20_v2"
+CATALYST_PROMPT_VERSION = "catalyst_rules_prompt_v3"
+CATALYST_SCHEMA_VERSION = "catalyst_schema_v3"
 CALIBRATION_MODEL_VERSION: str | None = None
 MODEL_STATUS = "uncalibrated"
 TARGET_DEFINITION = "hit_plus_5pct_within_6_weeks"
@@ -534,13 +538,18 @@ def setup_score(candidate: dict[str, Any], tech: dict[str, Any]) -> tuple[float,
         "tradability": tradability,
     }
     weights = SCORING_CONFIG["setup_feature_weights"]
-    score = sum(components[key] * float(weights[key]) for key in weights)
+    raw_score = sum(components[key] * float(weights[key]) for key in weights)
+    setup_cap, setup_cap_reasons = setup_post_spike_cap(tech)
+    score = min(raw_score, setup_cap)
     return round(clamp(score), 1), {
         "component_scores": {key: round(value, 1) for key, value in components.items()},
         "weights": weights,
         "technical_features": tech,
         "liquidity_score": round(liquidity, 1),
         "spread_quality_score": round(spread, 1),
+        "raw_setup_score": round(clamp(raw_score), 1),
+        "setup_cap": round(setup_cap, 1),
+        "setup_cap_reasons": setup_cap_reasons,
         "dislocation_strength": round(_dislocation_strength(tech, _number(candidate.get("drop_pct"))), 1),
     }
 
@@ -626,19 +635,26 @@ def structured_catalyst_analysis(
     tech: dict[str, Any],
     fundamentals: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    text = _article_text(articles)
-    sector_hint = infer_sector_hint(articles)
-    signals = _event_signals(text, risk_flags, sector_hint)
-    profile = _event_profile(signals, catalyst_class)
+    causal_articles, news_relevance_trace = filter_causal_articles(candidate, articles)
+    text = _article_text(causal_articles)
+    sector_hint = infer_sector_hint(causal_articles)
+    filing_risk_flags = list((fundamentals or {}).get("derived_risk_flags") or [])
+    effective_risk_flags = sorted(set(filing_risk_flags + direct_news_risk_flags(text)))
+    signals = _event_signals(text, effective_risk_flags, sector_hint)
+    profile = _event_profile(signals, catalyst_class if causal_articles else "U")
+    profile, event_metrics, quantitative_adjustments = apply_quantified_event_hardening(
+        signals=signals, profile=profile, text=text, tech=tech
+    )
     recognised_signals = [name for name, value in signals.items() if value and name not in {"analyst_action", "analyst_target_cut", "analyst_target_raise", "primary_endpoint_success", "guidance_reaffirmed"}]
-    cause_recognised = bool(recognised_signals) or signals["analyst_only"] or signals["guidance_reaffirmed"]
-    has_news = bool(articles)
+    custom_cause = bool(event_metrics.get("quantitative_earnings_event") or event_metrics.get("control_transaction") or event_metrics.get("post_spike_context"))
+    cause_recognised = bool(recognised_signals) or signals["analyst_only"] or signals["guidance_reaffirmed"] or custom_cause
+    has_news = bool(causal_articles)
     conflicting = bool((signals["temporary_operational"] or signals["operations_resumed"] or signals["broad_sector_risk_off"] or signals["analyst_only"]) and (signals["structural_impairment"] or signals["existential_or_solvency"] or signals["guidance_cut"] or signals["primary_endpoint_failure"] or signals["fda_rejection_or_crl"]))
 
     reversibility = float(profile["reversibility"])
     horizon_fit = float(profile["horizon"])
     event_damage = float(profile["damage"])
-    resilience, fundamental_confidence, fundamental_trace = _fundamental_resilience(fundamentals, signals, risk_flags)
+    resilience, fundamental_confidence, fundamental_trace = _fundamental_resilience(fundamentals, signals, effective_risk_flags)
 
     if signals["guidance_reaffirmed"] and not signals["guidance_cut"]:
         reversibility = max(reversibility, 76.0)
@@ -652,11 +668,11 @@ def structured_catalyst_analysis(
         reversibility = min(reversibility, 35.0)
         event_damage = max(event_damage, 72.0)
 
-    if "clinical_regulatory" in risk_flags and sector_hint == "biotechnology" and not signals["primary_endpoint_success"]:
+    if "clinical_regulatory" in effective_risk_flags and sector_hint == "biotechnology" and not signals["primary_endpoint_success"]:
         event_damage = max(event_damage, 60.0)
-    if "dilution" in risk_flags:
+    if "dilution" in effective_risk_flags:
         event_damage = max(event_damage, 55.0)
-    if "solvency" in risk_flags:
+    if "solvency" in effective_risk_flags:
         event_damage = max(event_damage, 90.0)
 
     dislocation = _dislocation_strength(tech, _number(candidate.get("drop_pct")))
@@ -666,7 +682,7 @@ def structured_catalyst_analysis(
     if not cause_verified:
         catalyst_score = min(catalyst_score, float(SCORING_CONFIG["cause_unknown"]["catalyst_cap"]))
 
-    source_confidence, source_trace = _source_evidence_quality(candidate, articles, cause_recognised=cause_recognised, conflicting=conflicting)
+    source_confidence, source_trace = _source_evidence_quality(candidate, causal_articles, cause_recognised=cause_recognised, conflicting=conflicting)
     supporting: list[str] = []
     contradictory: list[str] = []
     if signals["operations_resumed"]:
@@ -689,12 +705,12 @@ def structured_catalyst_analysis(
         contradictory.append("Financing/dilution risk is present in the retained evidence.")
     if signals["legal_or_regulatory"] or signals["fraud_or_accounting_credibility"]:
         contradictory.append("Legal/regulatory/accounting credibility risk is present in the retained evidence.")
-    if not articles:
-        contradictory.append("No company-specific news evidence was retained at the signal cutoff; causal attribution is weak.")
+    if not causal_articles:
+        contradictory.append("No ticker-specific causal article survived the relevance filter at the signal cutoff; causal attribution is weak.")
     if conflicting:
         contradictory.append("The retained evidence contains both reversible and structural signals; the model treats this conflict conservatively.")
 
-    analyst_articles = [article for article in articles if _contains_any(f"{article.get('headline') or ''} {article.get('summary') or ''}".lower(), ANALYST_WORDS)]
+    analyst_articles = [article for article in causal_articles if _contains_any(f"{article.get('headline') or ''} {article.get('summary') or ''}".lower(), ANALYST_WORDS)]
     if analyst_articles:
         if signals["analyst_target_raise"] and not signals["analyst_target_cut"]:
             analyst_direction = "supportive"
@@ -707,7 +723,7 @@ def structured_catalyst_analysis(
     else:
         analyst_direction = "unavailable"
 
-    primary = articles[0].get("headline") if articles else "No independently retained company-specific news at the signal cutoff"
+    primary = causal_articles[0].get("headline") if causal_articles else "No independently verified ticker-specific catalyst at the signal cutoff"
     catalyst_type = "structural" if event_damage >= 70 else "temporary" if event_damage <= 30 and reversibility >= 70 else "mixed" if cause_verified else "unknown"
     hard_veto_reason = profile.get("hard_veto_reason")
 
@@ -728,8 +744,11 @@ def structured_catalyst_analysis(
         "evidence_quality_trace": source_trace,
         "supporting_evidence": supporting,
         "contradictory_evidence": contradictory,
-        "red_flags": sorted(set(risk_flags)),
-        "source_claims": _evidence_items(articles),
+        "red_flags": sorted(set(effective_risk_flags)),
+        "source_claims": _evidence_items(causal_articles),
+        "news_relevance_trace": news_relevance_trace,
+        "event_metrics": event_metrics,
+        "quantitative_adjustments": quantitative_adjustments,
         "sector_assessment": {
             "sector_hint": sector_hint,
             "rubric": SCORING_CONFIG["sector_rubrics"].get(sector_hint, []),
@@ -830,7 +849,8 @@ def final_score(
 
 
 def score_candidate(candidate: dict[str, Any], articles: list[dict[str, Any]], catalyst_class: str, risk_flags: list[str]) -> dict[str, Any]:
-    sector_hint = infer_sector_hint(articles)
+    causal_for_sector, _ = filter_causal_articles(candidate, articles)
+    sector_hint = infer_sector_hint(causal_for_sector)
     enrichment = load_runtime_enrichment(candidate, sector_hint)
     scoring_candidate = dict(candidate)
     scoring_candidate["evidence_cutoff"] = enrichment.get("cutoff")
@@ -859,6 +879,8 @@ def score_candidate(candidate: dict[str, Any], articles: list[dict[str, Any]], c
     missing_inputs = list(missing_market)
     if not articles:
         missing_inputs.append("company_specific_news")
+    if not analysis.get("news_relevance_trace", {}).get("causal_article_count"):
+        missing_inputs.append("verified_ticker_specific_catalyst")
     if enrichment.get("fundamentals") is None:
         missing_inputs.append("point_in_time_fundamentals")
     if enrichment.get("errors"):
