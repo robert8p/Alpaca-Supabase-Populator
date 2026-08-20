@@ -31,6 +31,7 @@ from .oversold_scoring_v34_tuning import patch_module as _patch_v34_tuning
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
+from .oversold_three_session_target_compat import patch_module as _patch_target_marker
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
 
 _patch_primary_evidence_compat(_oversold_primary_evidence)
@@ -109,6 +110,7 @@ if "pytest" not in sys.modules:
 
     _patch_outcomes_json(_oversold_outcomes)
     _patch_outcomes_v33(_oversold_outcomes)
+    _patch_target_marker(_oversold_target)
     _install_three_session_runtime()
     _patch_target_outcomes(_oversold_outcomes)
 
