@@ -3,7 +3,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const EXPECTED_USER = "admin";
-const EXPECTED_KEY_SHA256 = "056975cd5cd9fdbeb538524c6d2775f364333cb693a1e2a9d445e207a028559f";
+const EXPECTED_KEY_SHA256 = "aa289bfb642af7983e0ede601048d54dfe9c82c3365303a1ab2b4889752c7de8";
 const ALLOWED_ORIGINS = new Set([
   "https://alpaca-intraday-profitability-app.onrender.com",
   "https://alpaca-rapid-discovery-web.onrender.com",
