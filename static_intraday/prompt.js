@@ -73,7 +73,7 @@
     const text = String(compactPrompt || '').trim();
     if (!text) throw new Error('The compact ChatGPT prompt is empty.');
     const target = new URL('https://chatgpt.com/');
-    target.searchParams.set('q', text);
+    target.searchParams.set('prompt', text);
     return target.toString();
   }
 
