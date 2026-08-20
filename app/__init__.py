@@ -11,6 +11,7 @@ from __future__ import annotations
 import sys
 
 from . import oversold_scoring_v32 as _oversold_scoring
+from . import oversold_scoring_v33 as _oversold_v33_impl
 from . import oversold_tracking as _oversold_tracking
 from .oversold_scoring_v32_compat import patch_module as _patch_v32
 from .oversold_scoring_v33 import patch_module as _patch_v33
@@ -24,6 +25,26 @@ sys.modules[f"{__name__}.oversold_scoring"] = _oversold_scoring
 _patch_three_session_target(_oversold_scoring)
 _patch_v33(_oversold_scoring)
 _patch_v33_compat(_oversold_scoring)
+
+# The additive v3.3 patch intentionally changes the public scorer but keeps its
+# economic helper functions private to the implementation module.  Export the
+# exact helpers required by the final runtime pass so the second calculation uses
+# one canonical formula rather than duplicating or guessing business logic.
+for _helper_name in (
+    "_num",
+    "_clamp",
+    "_geometric",
+    "_three_session_fit",
+    "_fundamental_trace",
+    "_survivability",
+    "_overreaction_quality",
+    "_tail_risk",
+    "_confidence_state",
+    "_price_session_context",
+    "_cap_score",
+):
+    setattr(_oversold_scoring, _helper_name, getattr(_oversold_v33_impl, _helper_name))
+
 _patch_v33_runtime(_oversold_scoring)
 _patch_tracking_day3(_oversold_tracking)
 
