@@ -112,7 +112,8 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto(site, { waitUntil: 'networkidle', timeout: 60000 });
+  await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.locator('#loginModal.open').waitFor({ state: 'visible', timeout: 10000 });
   assert(await page.locator('#loginModal').evaluate((node) => node.classList.contains('open')), 'Login modal did not open.');
   await page.locator('#loginUser').fill('admin');
   await page.locator('#loginKey').fill('browser-smoke-key-not-a-secret');
