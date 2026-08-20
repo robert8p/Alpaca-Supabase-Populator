@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oversold Reversion V2</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{background:#0b0f14;color:#e8edf3;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .wrap{max-width:1500px;margin:0 auto;padding:28px 20px 60px}.hero{display:flex;gap:24px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}.eyebrow{color:#8ea0b5;font-size:12px;text-transform:uppercase;letter-spacing:.12em}.title{font-size:34px;font-weight:760;margin:4px 0}.sub{color:#9baabc;max-width:820px}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid #344355;border-radius:9px;padding:10px 14px;background:#17202b;color:#f7f9fb;font-weight:650;cursor:pointer}.btn.primary{background:#f3f6fa;color:#10151b}.btn:disabled{opacity:.5;cursor:not-allowed}.stats{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px;margin:18px 0}.stat{background:#111923;border:1px solid #243140;border-radius:10px;padding:13px}.stat .k{font-size:11px;color:#8ea0b5;text-transform:uppercase;letter-spacing:.08em}.stat .v{font-size:18px;font-weight:700;margin-top:4px}.notice{border:1px solid #324257;border-radius:10px;background:#101923;padding:12px 14px;color:#b9c5d1;margin:12px 0}.error{border-color:#713b43;color:#ffbcc3;background:#211216}.table-wrap{overflow:auto;border:1px solid #263444;border-radius:12px;background:#0f161e}table{width:100%;border-collapse:collapse;min-width:1120px}th,td{padding:12px 11px;border-bottom:1px solid #202c39;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#131d27;color:#94a5b8;font-size:11px;text-transform:uppercase;letter-spacing:.06em}td{font-size:13px}.ticker{font-size:15px;font-weight:750}.muted{color:#91a0b1}.score{font-size:18px;font-weight:760}.good{color:#7ee2a8}.mid{color:#ffd479}.bad{color:#ff9b9b}.pill{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid #35475b;font-size:11px}.details{max-width:340px}.empty{padding:36px;text-align:center;color:#91a0b1}.foot{margin-top:14px;color:#7f8d9c;font-size:12px}@media(max-width:800px){.hero{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.title{font-size:28px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Oversold Reversion</div>
+      <div class="title">Today’s US equity losers, ranked by oversold potential</div>
+      <div class="sub">The app screens and prioritises. ChatGPT independently audits the top 10. A high score means the sell-off appears more severe than the likely permanent economic damage — not that a rebound is guaranteed.</div>
+    </div>
+    <div class="actions">
+      <button id="scanBtn" class="btn primary">Run scan</button>
+      <button id="chatBtn" class="btn" disabled>Analyse Top 10 in ChatGPT</button>
+    </div>
+  </div>
+
+  <div id="notice" class="notice">Loading latest scan…</div>
+  <div class="stats">
+    <div class="stat"><div class="k">Last scan</div><div id="lastScan" class="v">—</div></div>
+    <div class="stat"><div class="k">Equities screened</div><div id="screened" class="v">—</div></div>
+    <div class="stat"><div class="k">Candidates</div><div id="count" class="v">—</div></div>
+    <div class="stat"><div class="k">Evidence cutoff</div><div id="cutoff" class="v">—</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Rank</th><th>Ticker / company</th><th>Day move</th><th>Oversold score</th><th>Fundamental quality</th><th>Cause</th><th>Initial view</th><th>Why it ranks here</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="foot">Score components: 30% dislocation · 30% fundamental survivability · 25% catalyst reversibility · 15% inverse permanent-impairment risk. Low evidence confidence compresses scores toward neutral. Existential, structural and material dilution risks impose hard caps.</div>
+</div>
+<script src="/static/oversold_v2.js?v=1"></script>
+</body>
+</html>
