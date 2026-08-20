@@ -61,7 +61,7 @@ def article(symbol: str, headline: str, summary: str = "", *, symbols=None, sour
 
 
 def test_hardening_uses_new_model_lineage():
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_1"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_2"
 
 
 def test_leveraged_inverse_etn_is_not_operating_company():

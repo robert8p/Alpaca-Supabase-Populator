@@ -4,19 +4,23 @@
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
-      .or-model-score { min-width:265px; }
+      .or-model-score { min-width:285px; }
       .or-score-primary { font-size:22px; font-weight:900; line-height:1.1; letter-spacing:-.02em; }
       .or-score-secondary { margin-top:2px; color:var(--muted); font-size:10px; font-weight:700; }
       .or-score-name { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
       .or-model-status { display:inline-block; margin-top:5px; padding:2px 7px; border:1px solid #506070; border-radius:999px; color:#bed2e6; font-size:10px; font-weight:800; }
+      .or-model-badges { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+      .or-mini-badge { display:inline-block; padding:2px 6px; border:1px solid #44515d; border-radius:999px; color:#b8c5d0; font-size:9px; font-weight:800; }
+      .or-mini-badge.risk { color:#ffb0b0; border-color:#754848; }
+      .or-mini-badge.good { color:#94e7b8; border-color:#37634a; }
       .or-components { display:grid; grid-template-columns:repeat(2,minmax(96px,1fr)); gap:4px 9px; margin-top:8px; font-size:10px; }
       .or-component { display:flex; justify-content:space-between; gap:8px; color:var(--muted); }
       .or-component strong { color:var(--text); }
       .or-damage strong,.or-danger { color:#ff9a9a; }
-      .or-score-explanation { margin-top:7px; max-width:320px; color:#c4ced8; font-size:10px; line-height:1.35; }
+      .or-score-explanation { margin-top:7px; max-width:340px; color:#c4ced8; font-size:10px; line-height:1.35; }
       .or-score-details { margin-top:8px; }
       .or-score-details summary { cursor:pointer; color:var(--accent); font-size:10px; font-weight:800; }
-      .or-detail-body { margin-top:8px; min-width:420px; max-width:650px; padding:10px; border:1px solid var(--line); border-radius:8px; background:#0c1116; font-size:11px; line-height:1.45; }
+      .or-detail-body { margin-top:8px; min-width:440px; max-width:720px; padding:10px; border:1px solid var(--line); border-radius:8px; background:#0c1116; font-size:11px; line-height:1.45; }
       .or-detail-section { margin-bottom:10px; }
       .or-detail-section:last-child { margin-bottom:0; }
       .or-detail-section b { display:block; margin-bottom:3px; color:#dce7f1; }
@@ -24,6 +28,9 @@
       .or-evidence-grid { display:grid; grid-template-columns:repeat(2,minmax(150px,1fr)); gap:4px 12px; }
       .or-evidence-grid span { color:var(--muted); }
       .or-evidence-grid strong { color:var(--text); float:right; margin-left:8px; }
+      .or-gates { display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:3px 10px; }
+      .or-gate-pass { color:#72dc9e; }
+      .or-gate-fail { color:#ff9a9a; }
       .or-model-banner { margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
       .or-diagnostics-button { padding:5px 9px; font-size:11px; }
       #or-model-dialog { width:min(950px,92vw); max-height:85vh; overflow:auto; border:1px solid #44515d; border-radius:12px; background:#11171d; color:var(--text); padding:18px; }
@@ -33,7 +40,7 @@
       .or-diag-card strong { display:block; margin-top:3px; font-size:18px; }
       .or-diag-table { width:100%; min-width:0; margin-top:10px; font-size:11px; }
       .or-diag-table th,.or-diag-table td { padding:6px; }
-      @media(max-width:900px){ .or-diag-grid{grid-template-columns:repeat(2,minmax(120px,1fr));} .or-evidence-grid{grid-template-columns:1fr;} }
+      @media(max-width:900px){ .or-diag-grid{grid-template-columns:repeat(2,minmax(120px,1fr));} .or-evidence-grid,.or-gates{grid-template-columns:1fr;} }
     `;
     document.head.appendChild(style);
   }
@@ -65,12 +72,23 @@
     return `<span>${html(label)} <strong>${formatter(value)}</strong></span>`;
   }
 
+  function gatesHtml(gates) {
+    if (!gates || typeof gates !== 'object' || !Object.keys(gates).length) return '<span class="muted">Legacy model: explicit eligibility gates unavailable.</span>';
+    return `<div class="or-gates">${Object.entries(gates).map(([name, passed]) => `<span class="${passed ? 'or-gate-pass' : 'or-gate-fail'}">${passed ? '✓' : '✕'} ${html(name.replaceAll('_',' '))}</span>`).join('')}</div>`;
+  }
+
+  function sourceHierarchyHtml(items) {
+    if (!Array.isArray(items) || !items.length) return '<span class="muted">No source hierarchy items retained.</span>';
+    return items.slice(0,6).map(item => `${html(item.source_type || 'unknown')} ${html(item.source_quality_score ?? '—')}/100 · relevance ${html(item.ticker_relevance ?? '—')} · ${html(item.source || 'unknown source')}`).join('<br>');
+  }
+
   function scoreCell(c) {
     if (c.reversion_score == null || c.model_run_id == null) {
       return `<div class="or-model-score"><div class="or-score-name">Legacy result</div><div class="or-score-primary">${html(c.heuristic_score ?? '—')}</div><span class="or-model-status">Current model unavailable</span><div class="or-score-explanation">Historic record preserved. No point-in-time Evidence Snapshot was manufactured retrospectively.</div></div>`;
     }
     const a = c.catalyst_analysis || {};
     const trace = c.calculation_trace || {};
+    const v32 = trace.v3_2 || {};
     const setup = trace.setup || {};
     const tech = setup.technical_features || {};
     const confirmation = trace.confirmation || {};
@@ -83,13 +101,21 @@
     const flags = a.red_flags || c.risk_flags || [];
     const missing = c.missing_inputs || [];
     const analyst = a.analyst_reaction || {};
+    const spike = a.spike_adjustment || v32.price_path || {};
+    const dilution = a.dilution_analysis || v32.financing || {};
+    const gates = a.eligibility_gates || v32.eligibility_gates || {};
+    const causeStatus = a.cause_verification_status || (a.cause_verified ? 'VERIFIED' : 'UNVERIFIED');
+    const damageClass = a.economic_damage_class || (Number(c.damage_risk) >= 80 ? 'STRUCTURAL_OR_EXISTENTIAL' : Number(c.damage_risk) >= 55 ? 'HIGH' : Number(c.damage_risk) >= 30 ? 'MODERATE' : 'LOW');
     const isCalibrated = c.model_status === 'calibrated' && c.calibrated_probability != null;
     const probabilityPct = isCalibrated ? Number(c.calibrated_probability) * 100 : null;
     const versions = `${c.scoring_model_version || '—'} / ${c.scoring_config_version || '—'}`;
+    const penalties = v32.penalties || {};
     const calc = [
       `Core = ${num(c.core_score,2)}`,
       `Confidence-adjusted = ${num(c.confidence_adjusted_score,2)}`,
       `Damage penalty = -${num(c.damage_penalty,2)}`,
+      `Post-spike penalty = -${num(penalties.post_spike ?? trace.final?.post_spike_penalty,2)}`,
+      `Dilution penalty = -${num(penalties.dilution ?? trace.final?.dilution_penalty,2)}`,
       `Damage cap = ${num(c.damage_cap,0)}`,
       c.hard_veto ? `Hard veto = YES (${c.hard_veto_reason || 'unspecified'})` : 'Hard veto = no',
       `Raw final score = ${num(c.reversion_score,1)} (${c.model_verdict || '—'})`,
@@ -124,12 +150,19 @@
           ${metric('Equity/assets', rawFund.equity_to_assets == null ? null : Number(rawFund.equity_to_assets) * 100, v => pct(v,1))}
         </div><div class="muted" style="margin-top:4px">${html(fundamentals.form || 'filing')} · available ${html(fundamentals.available_from || '—')} · ${html(fundamentals.metric_coverage_count ?? 0)} metrics</div>`
       : `<span class="muted">No cutoff-valid periodic filing fundamentals were available. Resilience is intentionally conservative and Confidence records the missing evidence.</span>`;
+    const spikeText = spike.post_spike_unwind
+      ? `<div class="or-evidence-grid">${metric('Max prior run-up', spike.max_prior_runup_pct, v => pct(v,1))}${metric('Run-up window', spike.runup_window_sessions, v => v == null ? '—' : `${num(v,0)} sessions`)}${metric('Pre-spike baseline', spike.pre_spike_baseline_price, v => v == null ? '—' : '$'+num(v,2))}${metric('Current vs baseline', spike.current_vs_pre_spike_baseline_pct, v => pct(v,1))}${metric('Spike retraced', spike.spike_retraced_pct, v => pct(v,0))}${metric('Penalty', spike.penalty, v => '-'+num(v,0))}</div><span class="muted">${listText(spike.reasons, 'No spike-specific reason retained.')}</span>`
+      : '<span class="muted">No qualifying speculative run-up detected in the configured pre-signal windows.</span>';
+    const dilutionText = dilution.is_financing_event
+      ? `<div class="or-evidence-grid">${metric('Classification', dilution.classification, html)}${metric('Severity', dilution.severity_score, v => `${num(v,0)}/100`)}${metric('Offer discount', dilution.discount_to_previous_close_pct, v => pct(v,1))}${metric('Shares YoY', dilution.diluted_shares_yoy == null ? null : Number(dilution.diluted_shares_yoy)*100, v => pct(v,1))}${metric('Penalty', dilution.penalty, v => '-'+num(v,0))}${metric('Hard veto', dilution.hard_veto, v => v ? 'yes' : 'no')}</div><span class="muted">${listText(dilution.reasons, 'No severity reasons retained.')}</span>`
+      : '<span class="muted">No financing/dilution event identified in cutoff-valid evidence.</span>';
 
     return `<div class="or-model-score">
       <div class="or-score-name">${isCalibrated ? 'Reversion Probability' : 'Reversion Score'}</div>
       <div class="or-score-primary">${isCalibrated ? num(probabilityPct,1)+'%' : num(c.reversion_score,1)}</div>
       ${isCalibrated ? `<div class="or-score-secondary">Raw Reversion Score ${num(c.reversion_score,1)}</div>` : ''}
       <span class="or-model-status">Model status: ${html(isCalibrated ? 'Calibrated' : 'Uncalibrated')}</span>
+      <div class="or-model-badges"><span class="or-mini-badge ${causeStatus === 'VERIFIED' ? 'good' : 'risk'}">Cause ${html(causeStatus)}</span><span class="or-mini-badge ${damageClass === 'LOW' || damageClass === 'MODERATE' ? '' : 'risk'}">Damage ${html(damageClass)}</span><span class="or-mini-badge">${html(a.event_profile || 'unknown')}</span></div>
       <div class="or-components">
         <div class="or-component"><span>Setup</span><strong>${num(c.setup_score,0)}</strong></div>
         <div class="or-component"><span>Catalyst</span><strong>${num(c.catalyst_score,0)}</strong></div>
@@ -141,12 +174,16 @@
       <div class="or-score-explanation">${html(c.explanation || '')}</div>
       <details class="or-score-details"><summary>Scoring breakdown</summary><div class="or-detail-body">
         <div class="or-detail-section"><b>Reversion thesis</b>${html(c.explanation || 'No thesis summary available.')}</div>
-        <div class="or-detail-section"><b>Primary catalyst / event profile</b>${html(a.primary_catalyst || c.catalyst_summary || 'Unknown')}<br><span class="muted">${html(a.event_profile || a.catalyst_type || 'unknown')} · cause verified: ${a.cause_verified ? 'yes' : 'no'}</span></div>
+        <div class="or-detail-section"><b>Cause / event / damage</b>${html(a.primary_catalyst || c.catalyst_summary || 'Unknown')}<br><span class="muted">event ${html(a.event_profile || a.catalyst_type || 'unknown')} · cause ${html(causeStatus)} · economic damage ${html(damageClass)}</span></div>
+        <div class="or-detail-section"><b>Pre-signal price path / spike adjustment</b>${spikeText}</div>
+        <div class="or-detail-section"><b>Financing / dilution severity</b>${dilutionText}</div>
+        <div class="or-detail-section"><b>INVESTIGATE eligibility gates</b>${gatesHtml(gates)}</div>
         <div class="or-detail-section"><b>Why it may be temporary</b>${listText(supporting, 'No strong supporting evidence retained.')}</div>
         <div class="or-detail-section"><b>Damage risks</b><span class="or-danger">${listText(contradictory.length ? contradictory : flags, 'No explicit damage evidence retained.')}</span></div>
         <div class="or-detail-section"><b>Technical dislocation at cutoff</b><div class="or-evidence-grid">${technicalGrid}</div></div>
         <div class="or-detail-section"><b>Price confirmation at cutoff</b><div class="or-evidence-grid">${confirmationGrid}</div></div>
         <div class="or-detail-section"><b>Point-in-time fundamentals</b>${fundamentalText}</div>
+        <div class="or-detail-section"><b>Source-quality hierarchy</b>${sourceHierarchyHtml(a.source_quality_items)}</div>
         <div class="or-detail-section"><b>Evidence quality</b>${num(c.evidence_confidence,0)}/100 · ${html(quality.independent_source_count ?? '—')} independent source(s) · authoritative/direct source: ${quality.authoritative_source_present ? 'yes' : 'no'} · freshest ${quality.freshest_age_hours == null ? '—' : num(quality.freshest_age_hours,1)+'h'}<br><span class="muted">Missing: ${missing.length ? missing.map(html).join(', ') : 'none flagged'}</span></div>
         <div class="or-detail-section"><b>Analyst evidence</b>${html(analyst.direction || 'unavailable')}; retained cutoff-valid analyst items: ${Array.isArray(analyst.post_event_updates) ? analyst.post_event_updates.length : 0}. Consensus is not a standalone score.</div>
         <div class="or-detail-section"><b>Exact scoring calculation</b><div class="or-calc">${html(calc)}</div></div>
@@ -188,7 +225,7 @@
       const d = await res.json();
       const calibrated = d.model_status === 'calibrated';
       status.textContent = `Model status: ${calibrated ? 'Calibrated' : 'Uncalibrated'}`;
-      text.textContent = calibrated ? 'Target: +5% from signal price within 6 weeks. New signals receive the passed empirical probability mapping.' : 'Target: +5% from signal price within 6 weeks. No % probability is shown until temporal calibration and corporate-action quality gates pass.';
+      text.textContent = calibrated ? 'Target: +5% from signal price within 6 weeks. New signals receive the passed empirical probability mapping.' : 'Target: +5% from signal price within 6 weeks. Score v3.2 uses explicit cause, spike, dilution and structural-risk gates; no % probability is shown until calibration quality gates pass.';
     } catch (_) {
       status.textContent = 'Model status: unavailable';
       text.textContent = 'Target: +5% from signal price within 6 weeks.';
