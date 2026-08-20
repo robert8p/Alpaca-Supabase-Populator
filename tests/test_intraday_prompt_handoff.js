@@ -44,9 +44,10 @@ const target = new URL(prompt.chatGptUrl(compact));
 
 assert.ok(compact.length <= prompt.COMPACT_LIMIT, 'compact prompt exceeds prefill budget');
 assert.equal(target.hostname, 'chatgpt.com');
-assert.ok(target.searchParams.has('q'), 'ChatGPT URL has no populated q parameter');
-assert.ok(target.searchParams.get('q').includes('TEST1'));
-assert.ok(target.searchParams.get('q').includes('TEST10'));
+assert.ok(target.searchParams.has('prompt'), 'ChatGPT URL has no populated prompt parameter');
+assert.ok(target.searchParams.get('prompt').includes('TEST1'));
+assert.ok(target.searchParams.get('prompt').includes('TEST10'));
+assert.equal(target.searchParams.has('q'), false, 'Legacy q parameter should not be used for the mobile handoff');
 assert.ok(full.includes('TEST10'));
 assert.ok(full.includes('Shared evidence cutoff:'));
 assert.throws(() => prompt.chatGptUrl(''), /empty/i);
