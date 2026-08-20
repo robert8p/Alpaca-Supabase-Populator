@@ -32,6 +32,54 @@ services:
       - key: INTRADAY_PROFITABILITY_RELEASE
         value: "2026-08-20.1"
 
+  - type: web
+    name: alpaca-intraday-profitability
+    runtime: python
+    region: frankfurt
+    plan: free
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: DATABASE_URL
+        fromService:
+          type: web
+          name: alpaca-rapid-discovery-web
+          envVarKey: DATABASE_URL
+      - key: ALPACA_API_KEY
+        fromService:
+          type: web
+          name: alpaca-rapid-discovery-web
+          envVarKey: ALPACA_API_KEY
+      - key: ALPACA_SECRET_KEY
+        fromService:
+          type: web
+          name: alpaca-rapid-discovery-web
+          envVarKey: ALPACA_SECRET_KEY
+      - key: APP_USERNAME
+        fromService:
+          type: web
+          name: alpaca-rapid-discovery-web
+          envVarKey: APP_USERNAME
+      - key: APP_PASSWORD
+        fromService:
+          type: web
+          name: alpaca-rapid-discovery-web
+          envVarKey: APP_PASSWORD
+      - key: AUTO_MIGRATE
+        value: "false"
+      - key: ALPACA_DATA_BASE_URL
+        value: https://data.alpaca.markets
+      - key: ALPACA_TRADING_BASE_URL
+        value: https://paper-api.alpaca.markets
+      - key: LOG_LEVEL
+        value: INFO
+      - key: INTRADAY_PROFITABILITY_RELEASE
+        value: "2026-08-20.1"
+
   - type: worker
     name: alpaca-rapid-discovery-worker
     runtime: python
