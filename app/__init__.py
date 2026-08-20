@@ -14,6 +14,7 @@ from . import oversold_scoring_v32 as _oversold_scoring
 from . import oversold_tracking as _oversold_tracking
 from .oversold_scoring_v32_compat import patch_module as _patch_v32
 from .oversold_scoring_v33 import patch_module as _patch_v33
+from .oversold_scoring_v33_compat import patch_module as _patch_v33_compat
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
 
@@ -21,6 +22,7 @@ _patch_v32(_oversold_scoring)
 sys.modules[f"{__name__}.oversold_scoring"] = _oversold_scoring
 _patch_three_session_target(_oversold_scoring)
 _patch_v33(_oversold_scoring)
+_patch_v33_compat(_oversold_scoring)
 _patch_tracking_day3(_oversold_tracking)
 
 # Production runtime modules read required settings at import time.  Keep them out
