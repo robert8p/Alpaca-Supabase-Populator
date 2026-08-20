@@ -159,6 +159,9 @@ async def _ensure_current_tracks(limit: int = 100) -> int:
 
 
 def _model_diagnostics() -> dict[str, Any]:
+    versions = SCORING_CONFIG["versions"]
+    model_version = versions["scoring_model_version"]
+    config_version = versions["scoring_config_version"]
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -167,8 +170,10 @@ def _model_diagnostics() -> dict[str, Any]:
                     count(*) AS scored_signals,
                     count(*) FILTER (WHERE mr.model_status='calibrated') AS calibrated_predictions,
                     count(*) FILTER (WHERE mr.missing_inputs @> '[\"company_specific_news\"]'::jsonb) AS missing_news_count,
+                    count(*) FILTER (WHERE mr.missing_inputs @> '[\"point_in_time_fundamentals\"]'::jsonb) AS missing_fundamentals_count,
+                    count(*) FILTER (WHERE mr.missing_inputs @> '[\"enrichment_partial_failure\"]'::jsonb) AS enrichment_failure_count,
                     count(*) FILTER (WHERE mr.hard_veto) AS hard_veto_count,
-                    count(*) FILTER (WHERE (mr.catalyst_analysis->>'analysis_method')='rules_v2_no_llm') AS rules_without_llm_count,
+                    count(*) FILTER (WHERE (mr.catalyst_analysis->>'analysis_method') LIKE 'rules_%') AS rules_without_llm_count,
                     count(*) FILTER (WHERE so.status='matured') AS matured_outcomes,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS calibration_eligible_matured,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=true) AS eligible_hits,
@@ -181,7 +186,10 @@ def _model_diagnostics() -> dict[str, Any]:
                 FROM or_model_runs mr
                 LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
                 WHERE mr.run_kind='original'
-                """
+                  AND mr.scoring_model_version=%s
+                  AND mr.scoring_config_version=%s
+                """,
+                (model_version, config_version),
             )
             summary = cur.fetchone() or {}
             cur.execute(
@@ -196,8 +204,11 @@ def _model_diagnostics() -> dict[str, Any]:
                 FROM or_model_runs mr
                 LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
                 WHERE mr.run_kind='original'
+                  AND mr.scoring_model_version=%s
+                  AND mr.scoring_config_version=%s
                 GROUP BY 1 ORDER BY 1
-                """
+                """,
+                (model_version, config_version),
             )
             buckets = cur.fetchall()
             cur.execute(
@@ -210,8 +221,11 @@ def _model_diagnostics() -> dict[str, Any]:
                 JOIN or_evidence_snapshots es ON es.id=mr.evidence_snapshot_id
                 LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
                 WHERE mr.run_kind='original'
+                  AND mr.scoring_model_version=%s
+                  AND mr.scoring_config_version=%s
                 GROUP BY 1 ORDER BY sample_count DESC
-                """
+                """,
+                (model_version, config_version),
             )
             sectors = cur.fetchall()
             cur.execute(
@@ -223,11 +237,21 @@ def _model_diagnostics() -> dict[str, Any]:
                 FROM or_model_runs mr
                 LEFT JOIN or_signal_outcomes so ON so.model_run_id=mr.id
                 WHERE mr.run_kind='original'
+                  AND mr.scoring_model_version=%s
+                  AND mr.scoring_config_version=%s
                 GROUP BY 1 ORDER BY sample_count DESC
-                """
+                """,
+                (model_version, config_version),
             )
             catalysts = cur.fetchall()
-            cur.execute("SELECT * FROM or_calibration_runs ORDER BY created_at DESC,id DESC LIMIT 1")
+            cur.execute(
+                """
+                SELECT * FROM or_calibration_runs
+                WHERE scoring_model_version=%s AND scoring_config_version=%s
+                ORDER BY created_at DESC,id DESC LIMIT 1
+                """,
+                (model_version, config_version),
+            )
             latest_calibration = cur.fetchone()
             active_calibration = active_calibration_from_cursor(cur)
         conn.rollback()
@@ -244,7 +268,7 @@ def _model_diagnostics() -> dict[str, Any]:
     if negatives < cfg["minimum_negatives"]:
         reasons.append(f"Need {cfg['minimum_negatives']} negative outcomes; have {negatives}.")
     if not active_calibration:
-        reasons.append("No temporal calibration run has passed the configured quality checks.")
+        reasons.append("No temporal calibration run has passed the configured quality checks for the current score version.")
     calibrated = bool(active_calibration)
     return {
         "model_status": "calibrated" if calibrated else "uncalibrated",
@@ -265,8 +289,8 @@ def _model_diagnostics() -> dict[str, Any]:
         "active_calibration_run": active_calibration,
         "active_calibration_model_version": active_calibration.get("calibration_model_version") if active_calibration else None,
         "contract": public_scoring_contract(),
-        "catalyst_backend": "rules_v2_no_llm",
-        "calibration_guard": "Matured outcomes become calibration-eligible only after the delayed corporate-action review clears them; cleared cases are rechecked for late vendor updates.",
+        "catalyst_backend": "rules_v3_point_in_time",
+        "calibration_guard": "Diagnostics and calibration are version-scoped. Matured outcomes become eligible only after delayed corporate-action review; missing fundamentals and enrichment failures remain explicit uncertainty.",
     }
 
 
@@ -277,9 +301,9 @@ def oversold_page(request: Request):
     html = html.replace(
         "</body>",
         '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_score_ui.js?v=2"></script>\n'
+        '<script src="/static/oversold_score_ui.js?v=3"></script>\n'
         '<script src="/static/oversold_top5.js?v=4"></script>\n'
-        '<script src="/static/oversold_chatgpt_score.js?v=2"></script>\n</body>',
+        '<script src="/static/oversold_chatgpt_score.js?v=3"></script>\n</body>',
     )
     return HTMLResponse(content=html)
 
