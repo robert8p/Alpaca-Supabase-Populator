@@ -112,15 +112,17 @@ def article(symbol: str, headline: str, summary: str, source: str = "Company IR"
     }
 
 
-def test_v33_contract_is_purpose_aligned_and_versioned() -> None:
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_3"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v5"
+def test_v34_contract_is_purpose_aligned_and_versioned() -> None:
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_4"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v6"
     contract = public_scoring_contract()
     assert "verified price damage" in contract["purpose"]
     assert contract["opportunity_architecture"]["aggregation"] == "weighted_geometric_mean"
+    assert contract["score_semantics"]["name"] == "Conservative Opportunity Score"
+    assert contract["reliability_architecture"]["minimum_stability_score"] == 70.0
 
 
-def test_confidence_can_only_reduce_raw_opportunity() -> None:
+def test_confidence_and_reliability_can_only_reduce_raw_opportunity() -> None:
     c = candidate()
     result = score_candidate(
         c,
@@ -130,6 +132,7 @@ def test_confidence_can_only_reduce_raw_opportunity() -> None:
     )
     assert result["confidence_adjusted_score"] <= result["core_score"]
     assert result["calculation_trace"]["v3_3"]["confidence_multiplier"] <= 1.0
+    assert result["final_score"] <= result["calculation_trace"]["v3_4_reliability"]["base_v33_score"]
 
 
 def test_catastrophic_capital_distress_cannot_rank_high() -> None:
@@ -187,6 +190,7 @@ def test_unknown_cause_is_uncertainty_not_bullishness() -> None:
     assert result["catalyst_analysis"]["assessment_confidence_state"] == "UNKNOWN"
     assert result["final_score"] <= 45.0
     assert result["catalyst_analysis"]["eligibility_gates"]["cause_verified_or_strong_partial"] is False
+    assert result["catalyst_analysis"]["eligibility_gates"]["causal_evidence_independence"] is False
 
 
 def test_critical_event_without_fundamentals_fails_gate() -> None:
