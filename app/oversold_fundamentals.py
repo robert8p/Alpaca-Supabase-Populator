@@ -1,11 +1,53 @@
 from __future__ import annotations
 
+import math
 from datetime import datetime
 from typing import Any
 
 from app.db import connection
 
 FUNDAMENTAL_SOURCE = "research_pid_fundamental.filing_events_v1"
+
+
+def _number(value: Any) -> float | None:
+    try:
+        number = float(value)
+        return number if math.isfinite(number) else None
+    except (TypeError, ValueError):
+        return None
+
+
+def fundamental_risk_flags(fundamentals: dict[str, Any] | None) -> list[str]:
+    """Derive only high-confidence risk flags from cutoff-valid periodic filings.
+
+    These flags feed the same structural-risk rules as news evidence. They are
+    intentionally conservative: weak profitability alone does not become a
+    solvency claim, and missing fundamentals produce no favourable or adverse flag.
+    """
+    if not fundamentals:
+        return []
+    flags: list[str] = []
+    diluted_shares_yoy = _number(fundamentals.get("diluted_shares_yoy"))
+    cash_to_assets = _number(fundamentals.get("cash_to_assets"))
+    liabilities_to_assets = _number(fundamentals.get("liabilities_to_assets"))
+    equity_to_assets = _number(fundamentals.get("equity_to_assets"))
+
+    if diluted_shares_yoy is not None and diluted_shares_yoy >= 0.20:
+        flags.append("dilution")
+
+    # Only label filing-derived solvency risk when multiple balance-sheet ratios
+    # simultaneously indicate an extreme condition. This is a risk flag, not a
+    # declaration of bankruptcy or going-concern status.
+    if (
+        cash_to_assets is not None
+        and liabilities_to_assets is not None
+        and equity_to_assets is not None
+        and cash_to_assets <= 0.01
+        and liabilities_to_assets >= 1.00
+        and equity_to_assets <= 0.00
+    ):
+        flags.append("solvency")
+    return flags
 
 
 def load_point_in_time_fundamentals(symbols: list[str], cutoff: datetime) -> dict[str, dict[str, Any]]:
@@ -47,5 +89,6 @@ def load_point_in_time_fundamentals(symbols: list[str], cutoff: datetime) -> dic
         row["source"] = FUNDAMENTAL_SOURCE
         row["point_in_time_rule"] = "available_from_strictly_before_signal_date"
         row["age_calendar_days"] = age_days
+        row["derived_risk_flags"] = fundamental_risk_flags(row)
         output[str(row["symbol"]).upper()] = row
     return output
