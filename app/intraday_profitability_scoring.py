@@ -11,3 +11,4 @@ TARGET_DEFINITION = (
     "Positive net directional return over the next 120 regular-session minutes "
     "after all signal inputs are complete."
 )
+parse_timestamp = _impl._parse_dt
