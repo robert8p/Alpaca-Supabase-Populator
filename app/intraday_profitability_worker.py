@@ -10,6 +10,8 @@ from psycopg.types.json import Jsonb
 
 from app.db import connection
 from app.intraday_profitability import _create_scan, _ensure_schema, execute_scan
+from app.intraday_profitability_scoring import SCORING_VERSION
+from app.intraday_profitability_tracking import run_selected_candidate_tracker
 
 logger = logging.getLogger(__name__)
 POLL_SECONDS = 2.0
@@ -127,6 +129,32 @@ def _scan_state(scan_id: UUID) -> dict[str, Any] | None:
     return dict(row) if row else None
 
 
+def _mark_scan_provenance(scan_id: UUID) -> None:
+    """Stamp completed scans with the scorer that actually produced candidates."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE ip_scans
+                SET scoring_version=%s,
+                    metadata=metadata || %s::jsonb
+                WHERE id=%s AND status='completed'
+                """,
+                (
+                    SCORING_VERSION,
+                    Jsonb(
+                        {
+                            "heuristic_review": "robust-v2",
+                            "score_interpretation": "unvalidated research ranking, not probability",
+                            "outcome_tracking": "selectable point-in-time SIP tracking",
+                        }
+                    ),
+                    scan_id,
+                ),
+            )
+        conn.commit()
+
+
 async def _wait_for_scan(scan_id: UUID, stop_event: asyncio.Event) -> dict[str, Any]:
     waited = 0.0
     while not stop_event.is_set() and waited < MAX_SCAN_WAIT_SECONDS:
@@ -142,7 +170,13 @@ async def _wait_for_scan(scan_id: UUID, stop_event: asyncio.Event) -> dict[str, 
     raise TimeoutError(f"Intraday profitability scan {scan_id} exceeded the worker wait limit")
 
 
-def _finish_request(request_id: UUID, *, status: str, error: str | None = None, metadata: dict[str, Any] | None = None) -> None:
+def _finish_request(
+    request_id: UUID,
+    *,
+    status: str,
+    error: str | None = None,
+    metadata: dict[str, Any] | None = None,
+) -> None:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -179,6 +213,7 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
             state = _scan_state(scan_id) or {"status": "failed", "error": "Scan result was not persisted."}
 
         if state.get("status") == "completed":
+            await asyncio.to_thread(_mark_scan_provenance, scan_id)
             _finish_request(
                 request_id,
                 status="completed",
@@ -201,14 +236,13 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
         )
 
 
-async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event) -> None:
-    """Claim static-app scan requests and execute them on the existing Alpaca worker."""
+async def _run_request_queue(stop_event: asyncio.Event) -> None:
     ensure_request_schema()
     worker_name = f"intraday-profitability:{socket.gethostname()}"
     logger.info("Intraday profitability request scheduler started as %s", worker_name)
     while not stop_event.is_set():
         try:
-            request = _claim_request(worker_name)
+            request = await asyncio.to_thread(_claim_request, worker_name)
             if request:
                 await _process_request(request, stop_event)
                 continue
@@ -220,3 +254,15 @@ async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event
             await asyncio.wait_for(stop_event.wait(), timeout=POLL_SECONDS)
         except TimeoutError:
             pass
+
+
+async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event) -> None:
+    """Run the SIP scan queue and selected-candidate outcome tracker independently."""
+    request_task = asyncio.create_task(_run_request_queue(stop_event), name="intraday-profitability-request-queue")
+    tracker_task = asyncio.create_task(run_selected_candidate_tracker(stop_event), name="intraday-selected-outcomes")
+    try:
+        await asyncio.gather(request_task, tracker_task)
+    finally:
+        request_task.cancel()
+        tracker_task.cancel()
+        await asyncio.gather(request_task, tracker_task, return_exceptions=True)

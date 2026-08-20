@@ -6,7 +6,6 @@ import os
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
-from app.intraday_profitability_worker import run_intraday_profitability_request_scheduler
 from app.oversold_calibration_runtime import run_calibration_if_changed
 from app.oversold_corporate_actions import review_corporate_actions
 from app.oversold_evaluation import original_vs_rescore_report, rescore_historical_snapshots
@@ -97,6 +96,10 @@ async def _run_oversold_outcomes(stop_event: asyncio.Event) -> None:
 
 async def run_oversold_outcome_scheduler(stop_event: asyncio.Event) -> None:
     """Run the existing outcome scheduler and the web-independent SIP request queue."""
+    # Import lazily so pure outcome-scheduling helpers remain importable in tests and
+    # maintenance tooling that deliberately do not provide live database/Alpaca secrets.
+    from app.intraday_profitability_worker import run_intraday_profitability_request_scheduler
+
     oversold_task = asyncio.create_task(_run_oversold_outcomes(stop_event), name="oversold-outcomes-core")
     intraday_task = asyncio.create_task(
         run_intraday_profitability_request_scheduler(stop_event),

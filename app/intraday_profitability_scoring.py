@@ -1,11 +1,426 @@
-# Generated release wrapper: executes the checksum-verified source bundled below.
-# The embedded payload is zlib-compressed UTF-8 Python source.
+"""Stable public contract for the robust Intraday Profitability v2 scorer.
+
+The scanner was originally released against the v1 field contract. The v2
+implementation deliberately lives in a separate module; this adapter preserves
+all scanner-facing names and evidence fields while delegating the actual
+liquidity, feature and ranking logic to the hardened implementation.
+"""
 from __future__ import annotations
-import base64 as _b64, zlib as _zlib
-_SOURCE_SHA256 = 'bf9cdb9aff43ad761eadc7f995febba6eaa3fa94338d39887ea65ab864a12318'
-_PAYLOAD = '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'
-_source = _zlib.decompress(_b64.b64decode(_PAYLOAD))
-import hashlib as _hashlib
-if _hashlib.sha256(_source).hexdigest() != _SOURCE_SHA256:
-    raise RuntimeError('Embedded release source checksum mismatch')
-exec(compile(_source, __file__, 'exec'), globals(), globals())
+
+import math
+from datetime import UTC, datetime
+from typing import Any, Iterable
+
+from . import intraday_profitability_scoring_v2 as _impl
+
+SCORING_VERSION = _impl.SCORING_VERSION
+TARGET_DEFINITION = (
+    "Positive net directional return over the next 120 regular-session minutes "
+    "after all signal inputs are complete."
+)
+MIN_BARS = _impl.MIN_BARS
+MAX_BAR_GAP_RATIO = _impl.MAX_BAR_GAP_RATIO
+MAX_EFFECTIVE_QUOTE_AGE_SECONDS = 60.0
+MAX_EFFECTIVE_TRADE_AGE_SECONDS = 90.0
+parse_timestamp = _impl._parse_dt
+benchmark_returns = _impl.benchmark_returns
+
+
+def clamp(value: float, low: float = 0.0, high: float = 100.0) -> float:
+    return _impl._clip(float(value), float(low), float(high))
+
+
+def _section(snapshot: dict[str, Any], *names: str) -> dict[str, Any]:
+    for name in names:
+        value = snapshot.get(name)
+        if isinstance(value, dict):
+            return value
+    return {}
+
+
+def _pick(section: dict[str, Any], short: str, long: str) -> Any:
+    return section.get(short) if short in section else section.get(long)
+
+
+def _asset_bool(asset: dict[str, Any], key: str) -> bool | None:
+    value = asset.get(key)
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        normalised = value.strip().lower()
+        if normalised in {"true", "1", "yes", "y"}:
+            return True
+        if normalised in {"false", "0", "no", "n"}:
+            return False
+    return None
+
+
+def _normalised_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
+    previous = _section(snapshot, "prevDailyBar", "prev_daily_bar")
+    daily = _section(snapshot, "dailyBar", "daily_bar")
+    minute = _section(snapshot, "minuteBar", "minute_bar")
+    trade = _section(snapshot, "latestTrade", "latest_trade")
+    quote = _section(snapshot, "latestQuote", "latest_quote")
+    return {
+        "prevDailyBar": {
+            "c": _pick(previous, "c", "close"),
+            "v": _pick(previous, "v", "volume"),
+        },
+        "dailyBar": {
+            "c": _pick(daily, "c", "close"),
+            "h": _pick(daily, "h", "high"),
+            "l": _pick(daily, "l", "low"),
+            "v": _pick(daily, "v", "volume"),
+            "n": _pick(daily, "n", "trade_count"),
+        },
+        "minuteBar": {"c": _pick(minute, "c", "close")},
+        "latestTrade": {
+            "p": _pick(trade, "p", "price"),
+            "t": _pick(trade, "t", "timestamp"),
+        },
+        "latestQuote": {
+            "bp": _pick(quote, "bp", "bid_price"),
+            "ap": _pick(quote, "ap", "ask_price"),
+            "t": _pick(quote, "t", "timestamp"),
+        },
+    }
+
+
+def normalise_bars(
+    raw_bars: Iterable[dict[str, Any]],
+    *,
+    evidence_cutoff: datetime | None = None,
+) -> list[dict[str, Any]]:
+    """Expose the original public bar schema for compatibility and audits."""
+    cutoff = evidence_cutoff or datetime.max.replace(tzinfo=UTC)
+    compact: list[dict[str, Any]] = []
+    for raw in raw_bars:
+        compact.append(
+            {
+                "t": raw.get("t") if "t" in raw else raw.get("timestamp"),
+                "o": raw.get("o") if "o" in raw else raw.get("open"),
+                "h": raw.get("h") if "h" in raw else raw.get("high"),
+                "l": raw.get("l") if "l" in raw else raw.get("low"),
+                "c": raw.get("c") if "c" in raw else raw.get("close"),
+                "v": raw.get("v") if "v" in raw else raw.get("volume"),
+                "vw": raw.get("vw") if "vw" in raw else raw.get("vwap"),
+                "n": raw.get("n") if "n" in raw else raw.get("trade_count"),
+            }
+        )
+    bars, _ = _impl._clean_bars(compact, cutoff)
+    return [
+        {
+            "timestamp": bar["t"],
+            "open": bar["o"],
+            "high": bar["h"],
+            "low": bar["l"],
+            "close": bar["c"],
+            "volume": bar["v"],
+            "vwap": bar["vw"],
+            "trade_count": int(bar["n"]),
+        }
+        for bar in bars
+    ]
+
+
+def snapshot_liquidity_record(
+    *,
+    symbol: str,
+    asset: dict[str, Any],
+    snapshot: dict[str, Any],
+    evidence_cutoff: datetime,
+    elapsed_minutes: float,
+    min_price: float,
+    min_prev_dollar_volume: float,
+    min_current_dollar_volume: float,
+    max_spread_bps: float,
+    max_quote_age_seconds: float,
+) -> dict[str, Any] | None:
+    normalised = _normalised_snapshot(snapshot)
+    record = _impl.snapshot_liquidity_record(
+        symbol=symbol,
+        asset=asset,
+        snapshot=normalised,
+        evidence_cutoff=evidence_cutoff,
+        elapsed_minutes=elapsed_minutes,
+        min_price=min_price,
+        min_prev_dollar_volume=min_prev_dollar_volume,
+        min_current_dollar_volume=min_current_dollar_volume,
+        max_spread_bps=max_spread_bps,
+        max_quote_age_seconds=min(
+            float(max_quote_age_seconds),
+            MAX_EFFECTIVE_QUOTE_AGE_SECONDS,
+        ),
+    )
+    if record is None:
+        return None
+
+    if float(record.get("trade_age_seconds") or math.inf) > MAX_EFFECTIVE_TRADE_AGE_SECONDS:
+        return None
+    midpoint = (float(record["bid"]) + float(record["ask"])) / 2.0
+    trade_midpoint_dislocation_bps = (
+        abs(float(record["last_price"]) - midpoint) / midpoint * 10_000.0
+        if midpoint > 0
+        else math.inf
+    )
+    dislocation_limit_bps = max(50.0, float(record["spread_bps"]) * 8.0)
+    if trade_midpoint_dislocation_bps > dislocation_limit_bps:
+        return None
+
+    previous = normalised["prevDailyBar"]
+    daily = normalised["dailyBar"]
+    trade = normalised["latestTrade"]
+    quote = normalised["latestQuote"]
+    prev_volume = _impl._finite(previous.get("v"), 0.0) or 0.0
+    current_volume = _impl._finite(daily.get("v"), 0.0) or 0.0
+    daily_high = _impl._finite(daily.get("h"), record["last_price"]) or record["last_price"]
+    daily_low = _impl._finite(daily.get("l"), record["last_price"]) or record["last_price"]
+    daily_range_pct = (
+        (daily_high - daily_low) / float(record["last_price"]) * 100.0
+        if daily_high >= daily_low and float(record["last_price"]) > 0
+        else 0.0
+    )
+    record.update(
+        {
+            "prev_volume": prev_volume,
+            "current_volume": current_volume,
+            "daily_range_pct": daily_range_pct,
+            "daily_trade_count": int(record.get("day_trade_count") or 0),
+            "quote_timestamp": parse_timestamp(quote.get("t")),
+            "latest_trade_timestamp": parse_timestamp(trade.get("t")),
+            "trade_midpoint_dislocation_bps": trade_midpoint_dislocation_bps,
+            "session_elapsed_minutes": float(elapsed_minutes),
+            "shortable": _asset_bool(asset, "shortable"),
+            "easy_to_borrow": _asset_bool(asset, "easy_to_borrow"),
+            "fractionable": _asset_bool(asset, "fractionable"),
+            "coarse_liquidity_score": round(_impl._liquidity_score(record), 6),
+        }
+    )
+    return record
+
+
+def _realized_window_pct(closes: list[float], window: int) -> float:
+    if len(closes) < 3:
+        return 0.0
+    values = closes[-min(len(closes), window + 1) :]
+    returns = [
+        _impl._log_return(values[index], values[index - 1])
+        for index in range(1, len(values))
+        if values[index - 1] > 0
+    ]
+    return _impl._robust_stdev(returns) * math.sqrt(max(1, len(returns))) * 100.0
+
+
+def _compat_setup_scores(features: dict[str, Any]) -> dict[str, float]:
+    scores: dict[str, float] = {}
+    for direction_name, sign in (("LONG", 1), ("SHORT", -1)):
+        for setup_type in ("CONTINUATION", "REVERSION"):
+            directional, confirmation, _ = _impl._setup_scores(features, sign, setup_type)
+            scores[f"{direction_name}_{setup_type}"] = round(
+                0.58 * directional + 0.42 * confirmation,
+                6,
+            )
+    return scores
+
+
+def build_market_features(
+    *,
+    liquidity_record: dict[str, Any],
+    raw_bars: Iterable[dict[str, Any]],
+    benchmark_returns: dict[str, float | None],
+    evidence_cutoff: datetime,
+) -> dict[str, Any] | None:
+    raw_list = list(raw_bars)
+    result = _impl.build_market_features(
+        liquidity_record=liquidity_record,
+        raw_bars=raw_list,
+        benchmark_returns={key: float(value or 0.0) for key, value in benchmark_returns.items()},
+        evidence_cutoff=evidence_cutoff,
+    )
+    if result is None:
+        return None
+
+    compact: list[dict[str, Any]] = []
+    for raw in raw_list:
+        compact.append(
+            {
+                "t": raw.get("t") if "t" in raw else raw.get("timestamp"),
+                "o": raw.get("o") if "o" in raw else raw.get("open"),
+                "h": raw.get("h") if "h" in raw else raw.get("high"),
+                "l": raw.get("l") if "l" in raw else raw.get("low"),
+                "c": raw.get("c") if "c" in raw else raw.get("close"),
+                "v": raw.get("v") if "v" in raw else raw.get("volume"),
+                "vw": raw.get("vw") if "vw" in raw else raw.get("vwap"),
+                "n": raw.get("n") if "n" in raw else raw.get("trade_count"),
+            }
+        )
+    bars, _ = _impl._clean_bars(compact, evidence_cutoff)
+    closes = [float(bar["c"]) for bar in bars]
+    highs = [float(bar["h"]) for bar in bars]
+    lows = [float(bar["l"]) for bar in bars]
+    last_price = float(result["last_price"])
+    observed_range_pct = (
+        (max(highs) - min(lows)) / last_price * 100.0
+        if highs and lows and last_price > 0
+        else 0.0
+    )
+    result.update(
+        {
+            "bar_start": bars[0]["t"] if bars else None,
+            "bar_end": bars[-1]["t"] if bars else None,
+            "realized_vol_30m_pct": _realized_window_pct(closes, 30),
+            "realized_vol_60m_pct": _realized_window_pct(closes, 60),
+            "window_vwap": result.get("vwap"),
+            "intraday_range_pct": max(
+                observed_range_pct,
+                float(result.get("daily_range_pct") or 0.0),
+            ),
+            "trend_efficiency": float(result.get("trend_efficiency_30") or 0.0),
+            "benchmark_return_5m_pct": benchmark_returns.get("return_5m_pct"),
+            "benchmark_return_15m_pct": benchmark_returns.get("return_15m_pct"),
+            "benchmark_return_30m_pct": benchmark_returns.get("return_30m_pct"),
+            "benchmark_return_60m_pct": benchmark_returns.get("return_60m_pct"),
+        }
+    )
+    result["setup_scores"] = _compat_setup_scores(result)
+    return result
+
+
+def _additional_execution_penalties(
+    record: dict[str, Any],
+    row: dict[str, Any],
+) -> list[tuple[str, float]]:
+    penalties: list[tuple[str, float]] = []
+    elapsed = float(record.get("session_elapsed_minutes") or 390.0)
+    if elapsed < 15.0:
+        penalties.append(("opening price discovery remains unusually unstable", 12.0))
+    elif elapsed < 30.0:
+        penalties.append(("opening price discovery is not yet fully settled", 6.0))
+
+    if row.get("direction") == "SHORT":
+        shortable = record.get("shortable")
+        easy_to_borrow = record.get("easy_to_borrow")
+        if shortable is None:
+            penalties.append(("shortability is not confirmed by the broker asset record", 8.0))
+        if easy_to_borrow is False:
+            penalties.append(("the stock is not marked easy to borrow", 12.0))
+        elif easy_to_borrow is None:
+            penalties.append(("easy-to-borrow status is not confirmed", 4.0))
+    return penalties
+
+
+def _apply_additional_penalties(
+    record: dict[str, Any],
+    row: dict[str, Any],
+) -> dict[str, Any]:
+    row = dict(row)
+    evidence = dict(row.get("evidence") or {})
+    existing_labels = list(evidence.get("penalties") or [])
+    extra = _additional_execution_penalties(record, row)
+    extra_total = sum(value for _, value in extra)
+    if extra_total:
+        row["profitability_score"] = clamp(
+            float(row.get("profitability_score") or 0.0) - extra_total
+        )
+        labels = existing_labels + [label for label, _ in extra]
+        evidence["penalties"] = list(dict.fromkeys(labels))
+        evidence["penalty_total"] = float(evidence.get("penalty_total") or 0.0) + extra_total
+        evidence["execution_reliability_penalty"] = extra_total
+        row["rationale"] = (
+            str(row.get("rationale") or "").rstrip(".")
+            + ". Execution cautions: "
+            + "; ".join(label for label, _ in extra)
+            + "."
+        )
+
+    score = float(row.get("profitability_score") or 0.0)
+    data_quality = float(evidence.get("data_quality_score") or record.get("data_quality_score") or 0.0)
+    edge_to_cost = float(evidence.get("edge_to_cost_ratio") or 0.0)
+    setup_margin = float(evidence.get("setup_margin") or 0.0)
+    if score >= 76.0 and data_quality >= 90.0 and edge_to_cost >= 5.0 and setup_margin >= 2.0 and extra_total < 10.0:
+        row["initial_view"] = "INVESTIGATE"
+    elif score >= 62.0:
+        row["initial_view"] = "WATCH"
+    else:
+        row["initial_view"] = "PASS"
+    row["evidence"] = evidence
+    return row
+
+
+def _rank_record_options(
+    record: dict[str, Any],
+    direction_filter: str,
+) -> list[dict[str, Any]]:
+    options: list[dict[str, Any]] = []
+    if direction_filter in {"both", "long"}:
+        options.extend(
+            _apply_additional_penalties(record, row)
+            for row in _impl.rank_market_records([record], direction_filter="long")
+        )
+    if direction_filter in {"both", "short"} and record.get("shortable") is not False:
+        options.extend(
+            _apply_additional_penalties(record, row)
+            for row in _impl.rank_market_records([record], direction_filter="short")
+        )
+    return options
+
+
+def rank_market_records(
+    records: list[dict[str, Any]],
+    *,
+    direction_filter: str = "both",
+) -> list[dict[str, Any]]:
+    if direction_filter not in {"both", "long", "short"}:
+        raise ValueError("direction_filter must be 'both', 'long', or 'short'")
+
+    ranked: list[dict[str, Any]] = []
+    for record in records:
+        options = _rank_record_options(record, direction_filter)
+        if not options:
+            continue
+        options.sort(
+            key=lambda row: (
+                float(row.get("profitability_score") or 0.0),
+                float(row.get("execution_score") or 0.0),
+            ),
+            reverse=True,
+        )
+        ranked.append(options[0])
+
+    ranked.sort(
+        key=lambda row: (
+            float(row.get("profitability_score") or 0.0),
+            float(row.get("execution_score") or 0.0),
+            float(row.get("prev_dollar_volume") or 0.0),
+        ),
+        reverse=True,
+    )
+
+    for rank, row in enumerate(ranked, start=1):
+        row["rank"] = rank
+        evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
+        row.update(
+            {
+                "edge_to_cost_ratio": round(float(evidence.get("edge_to_cost_ratio") or 0.0), 6),
+                "data_quality_score": round(
+                    float(evidence.get("data_quality_score") or row.get("data_quality_score") or 0.0),
+                    6,
+                ),
+                "penalties": {
+                    "labels": list(evidence.get("penalties") or []),
+                    "penalty_total": round(float(evidence.get("penalty_total") or 0.0), 6),
+                    "ambiguity_penalty": round(float(evidence.get("ambiguity_penalty") or 0.0), 6),
+                    "chase_ratio": round(float(evidence.get("chase_ratio") or 0.0), 6),
+                    "vwap_sigma": round(float(evidence.get("vwap_sigma") or 0.0), 6),
+                    "execution_reliability_penalty": round(
+                        float(evidence.get("execution_reliability_penalty") or 0.0),
+                        6,
+                    ),
+                },
+                "scoring_version": SCORING_VERSION,
+                "target_definition": TARGET_DEFINITION,
+            }
+        )
+    return ranked
