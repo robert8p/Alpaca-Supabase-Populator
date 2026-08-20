@@ -1,0 +1,230 @@
+name: Intraday Profitability production smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - static_intraday/**
+      - supabase/functions/intraday-profitability-api/**
+      - .github/workflows/intraday-static-production-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: https://alpaca-intraday-profitability-app.onrender.com
+      API_URL: https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify live page, assets, API boundary and CORS
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 \
+            "$SITE_URL/" -o /tmp/index.html
+          grep -q 'Intraday Profitability' /tmp/index.html
+          grep -q 'id="loginModal"' /tmp/index.html
+          grep -q 'Analyse Top 10 in ChatGPT' /tmp/index.html
+          grep -q 'id="promptModal"' /tmp/index.html
+
+          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 \
+            "$SITE_URL/app.js" -o /tmp/app.js
+          node --check /tmp/app.js
+          grep -q 'mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api' /tmp/app.js
+          grep -q 'https://chatgpt.com/' /tmp/app.js
+          if grep -Eiq 'oxzabweahkoimtevbbny|api\.openai\.com|OPENAI_API_KEY|ALPACA_(API|SECRET)_KEY|DATABASE_URL|service_role' /tmp/app.js; then
+            echo 'A forbidden backend endpoint or secret identifier reached the browser bundle.' >&2
+            exit 1
+          fi
+
+          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 \
+            "$API_URL?action=health" -o /tmp/health.json
+          grep -q '"status":"ok"' /tmp/health.json
+
+          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 \
+            "$API_URL?action=readiness" -o /tmp/readiness.json
+          grep -q '"status":"ready"' /tmp/readiness.json
+          grep -q '"database":"ok"' /tmp/readiness.json
+
+          unauth_status="$(curl -sS --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 \
+            -o /tmp/unauth.json -w '%{http_code}' "$API_URL?action=latest")"
+          test "$unauth_status" = '401'
+          grep -q '"error":"unauthorised"' /tmp/unauth.json
+
+          curl -sS --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 \
+            -D /tmp/cors.headers -o /tmp/cors.body -X OPTIONS \
+            -H "Origin: $SITE_URL" \
+            -H 'Access-Control-Request-Method: POST' \
+            -H 'Access-Control-Request-Headers: content-type,x-app-user,x-app-key' \
+            "$API_URL?action=run"
+          grep -qi "access-control-allow-origin: $SITE_URL" /tmp/cors.headers
+          grep -qi 'access-control-allow-methods:.*POST' /tmp/cors.headers
+          grep -qi 'access-control-allow-headers:.*x-app-key' /tmp/cors.headers
+
+      - name: Install Chromium smoke runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Exercise production browser surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+          };
+
+          (async () => {
+            const site = process.env.SITE_URL;
+            const api = process.env.API_URL;
+            const browser = await chromium.launch({ headless: true });
+            const context = await browser.newContext({ viewport: { width: 1500, height: 1050 } });
+            await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: site });
+
+            const candidates = Array.from({ length: 10 }, (_, index) => ({
+              rank: index + 1,
+              symbol: `SMOKE${index + 1}`,
+              name: `Production browser smoke candidate ${index + 1}`,
+              exchange: index % 2 ? 'NYSE' : 'NASDAQ',
+              direction: index % 3 ? 'SHORT' : 'LONG',
+              setup_type: 'CONTINUATION',
+              profitability_score: 82 - index,
+              initial_view: index < 2 ? 'INVESTIGATE' : 'WATCH',
+              last_price: 100 + index,
+              bid: 99.99 + index,
+              ask: 100.01 + index,
+              spread_bps: 2 + index / 10,
+              prev_close: 99 + index,
+              day_move_pct: index % 2 ? -1.2 : 1.1,
+              prev_dollar_volume: 500000000 + index * 1000000,
+              current_dollar_volume: 100000000 + index * 1000000,
+              return_5m_pct: index % 2 ? -0.4 : 0.4,
+              return_15m_pct: index % 2 ? -0.8 : 0.8,
+              return_30m_pct: index % 2 ? -1.1 : 1.1,
+              return_60m_pct: index % 2 ? -1.4 : 1.4,
+              vwap_distance_pct: index % 2 ? -0.5 : 0.5,
+              relative_volume_pace: 2.5,
+              relative_return_15m_pct: index % 2 ? -0.6 : 0.6,
+              move_capacity_120m_pct: 1.25,
+              cost_estimate_bps: 7.5,
+              liquidity_score: 90,
+              opportunity_score: 80,
+              directional_score: 78,
+              confirmation_score: 76,
+              execution_score: 92,
+              rationale: 'Synthetic browser-only fixture used to exercise the deployed rendering and prompt workflow.',
+              evidence: { bars_used: 120, edge_to_cost_ratio: 16.7 },
+              evidence_cutoff: '2026-08-20T17:41:57.596801Z',
+              horizon_end: '2026-08-20T19:41:57.596801Z',
+            }));
+            const fixture = {
+              scan: {
+                id: '0f17ebc8-9b9c-4656-a7f7-266013fe8d0e',
+                status: 'completed',
+                asset_count: 6357,
+                snapshot_count: 6356,
+                liquid_count: 1320,
+                enriched_count: 300,
+                candidate_count: 50,
+                evidence_cutoff: '2026-08-20T17:41:57.596801Z',
+                horizon_end: '2026-08-20T19:41:57.596801Z',
+                started_at: '2026-08-20T17:41:54.304539Z',
+                completed_at: '2026-08-20T17:42:03.408579Z',
+              },
+              candidates,
+              active_request: null,
+            };
+
+            await context.route(`${api}?action=latest`, async (route) => {
+              const headers = route.request().headers();
+              assert(headers['x-app-user'] === 'admin', 'Login request omitted the app username.');
+              assert(headers['x-app-key'] === 'browser-smoke-key-not-a-secret', 'Login request omitted the app key.');
+              await route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify(fixture),
+              });
+            });
+            await context.route('https://chatgpt.com/**', async (route) => {
+              await route.fulfill({
+                status: 200,
+                contentType: 'text/html',
+                body: '<!doctype html><title>ChatGPT handoff smoke</title><h1>ChatGPT handoff reached</h1>',
+              });
+            });
+
+            const page = await context.newPage();
+            const pageErrors = [];
+            page.on('pageerror', (error) => pageErrors.push(error.message));
+            page.on('console', (message) => {
+              if (message.type() === 'error') pageErrors.push(message.text());
+            });
+
+            await page.goto(site, { waitUntil: 'networkidle', timeout: 60000 });
+            assert((await page.title()).includes('Intraday Profitability'), 'Unexpected production page title.');
+            assert(await page.locator('#loginModal').evaluate((node) => node.classList.contains('open')), 'Login modal did not open.');
+            assert(await page.locator('#scanBtn').isDisabled(), 'Scan button should be locked before login.');
+            assert((await page.locator('body').innerText()).includes('Analyse Top 10 in ChatGPT'), 'ChatGPT analysis control is missing.');
+
+            await page.locator('#loginUser').fill('admin');
+            await page.locator('#loginKey').fill('browser-smoke-key-not-a-secret');
+            await page.locator('#loginBtn').click();
+            await page.locator('#loginModal').waitFor({ state: 'hidden', timeout: 10000 });
+            await page.waitForFunction(() => document.querySelectorAll('#rows tr').length === 10);
+
+            assert((await page.locator('#rows tr').count()) === 10, 'Top 10 fixture did not render.');
+            assert(!(await page.locator('#scanBtn').isDisabled()), 'Scan button did not unlock after login.');
+            assert(!(await page.locator('#chatBtn').isDisabled()), 'ChatGPT button did not unlock after results rendered.');
+            assert(!(await page.locator('#promptBtn').isDisabled()), 'Prompt-review button did not unlock after results rendered.');
+            assert((await page.locator('#screened').innerText()) === '6357', 'Scan summary did not render.');
+            assert((await page.locator('#rows').innerText()).includes('SMOKE10'), 'Tenth candidate is missing.');
+
+            await page.locator('#promptBtn').click();
+            await page.locator('#promptModal.open').waitFor({ state: 'visible', timeout: 10000 });
+            const prompt = await page.locator('#promptText').inputValue();
+            assert(prompt.includes('Audit these Intraday Profitability candidates as ORIGINAL signals.'), 'Prepared prompt heading is missing.');
+            assert(prompt.includes('Shared evidence cutoff:'), 'Evidence cutoff is missing from the prompt.');
+            assert(prompt.includes('SMOKE1'), 'First candidate is missing from the prompt.');
+            assert(prompt.includes('SMOKE10'), 'Tenth candidate is missing from the prompt.');
+            assert(prompt.includes('TRADE LONG / TRADE SHORT / WATCH / PASS'), 'Required verdict schema is missing.');
+
+            await page.screenshot({ path: 'artifacts/intraday-profitability-production-smoke.png', fullPage: true });
+
+            const popupPromise = context.waitForEvent('page');
+            await page.locator('#openChat').click();
+            const popup = await popupPromise;
+            await popup.waitForURL((url) => url.hostname === 'chatgpt.com', { timeout: 10000 });
+            assert(popup.url().startsWith('https://chatgpt.com/'), 'ChatGPT handoff did not reach chatgpt.com.');
+            await popup.close();
+
+            assert(pageErrors.length === 0, `Browser errors: ${pageErrors.join(' | ')}`);
+            await browser.close();
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intraday-profitability-production-smoke
+          path: artifacts/intraday-profitability-production-smoke.png
+          if-no-files-found: ignore
+          retention-days: 14
