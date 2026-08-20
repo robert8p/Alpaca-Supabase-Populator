@@ -190,7 +190,7 @@ async def plan_job(job: dict[str, Any], worker_id: str) -> None:
                     """,
                     task_rows,
                 )
-                next_status = "paused" if control == "pause_requested" else "running"
+                next_status = "paused" if control in {"pause_requested", "paused"} else "running"
                 cur.execute(
                     """
                     UPDATE rd_jobs SET status=%s, symbol_count=%s,
