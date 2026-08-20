@@ -1,3 +1,5 @@
 # Intraday Profitability static frontend
 
-A dependency-free HTML/JavaScript frontend for Render Static Sites. It stores the dedicated app credential in `sessionStorage`, calls the authenticated Supabase Edge Function, polls the worker-backed request queue, renders the ranked candidates, and opens ChatGPT with a frozen point-in-time prompt. It contains no Alpaca, database or OpenAI API secret.
+A dependency-free HTML/JavaScript frontend for Render Static Sites. It requires no login or user-entered credential, calls the origin-restricted public Supabase Edge Function, polls the worker-backed request queue, renders ranked candidates and tracked outcomes, and opens ChatGPT with a frozen point-in-time prompt.
+
+The browser bundle contains no Alpaca key, database credential, Supabase service-role key or OpenAI API secret.
