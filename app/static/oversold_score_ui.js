@@ -43,6 +43,14 @@
   const pct = (value, digits = 1) => value == null || Number.isNaN(Number(value)) ? '—' : `${Number(value).toFixed(digits)}%`;
   const listText = (values, fallback) => Array.isArray(values) && values.length ? values.map(html).join('<br>') : html(fallback);
 
+  async function fetchWithTimeout(url, options={}, timeoutMs=12000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try { return await fetch(url, {...options, signal:controller.signal}); }
+    catch (error) { if (error?.name === 'AbortError') throw new Error('Request timed out'); throw error; }
+    finally { clearTimeout(timer); }
+  }
+
   function visibleCandidates() {
     if (typeof state === 'undefined' || !Array.isArray(state.candidates)) return [];
     const q = document.getElementById('search')?.value.trim().toLowerCase() || '';
@@ -175,7 +183,7 @@
     const text = document.getElementById('or-banner-text');
     if (!status || !text) return;
     try {
-      const res = await fetch('/api/oversold/diagnostics', {cache:'no-store'});
+      const res = await fetchWithTimeout('/api/oversold/diagnostics', {cache:'no-store'});
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const d = await res.json();
       const calibrated = d.model_status === 'calibrated';
@@ -221,7 +229,7 @@
     if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open','');
     body.textContent = 'Loading diagnostics…';
     try {
-      const res = await fetch('/api/oversold/diagnostics', {cache:'no-store'});
+      const res = await fetchWithTimeout('/api/oversold/diagnostics', {cache:'no-store'});
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const d = await res.json();
       const s = d.summary || {};

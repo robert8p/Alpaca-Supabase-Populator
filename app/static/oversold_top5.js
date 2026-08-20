@@ -5,6 +5,14 @@
   const fmt = (value, digits = 2) => value == null ? 'unknown' : Number(value).toLocaleString(undefined, { maximumFractionDigits: digits });
   const money = (value) => value == null ? 'unknown' : Number(value).toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
 
+  async function fetchWithTimeout(url, options={}, timeoutMs=15000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try { return await fetch(url, {...options, signal:controller.signal}); }
+    catch (error) { if (error?.name === 'AbortError') throw new Error('Request timed out. Please retry.'); throw error; }
+    finally { clearTimeout(timer); }
+  }
+
   async function copyText(text) {
     try { await navigator.clipboard.writeText(text); return true; }
     catch (_) {
@@ -143,7 +151,8 @@ After the table, list only material app-vs-audit disagreements and the cutoff-va
     button.disabled = true;
     button.textContent = `Preparing Top ${limit}…`;
     try {
-      const response = await fetch('/api/oversold/latest', {cache:'no-store'});
+      window.open('https://chatgpt.com/', '_blank', 'noopener');
+      const response = await fetchWithTimeout('/api/oversold/latest', {cache:'no-store'});
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       const candidates = [...(data.candidates || [])]
@@ -152,9 +161,8 @@ After the table, list only material app-vs-audit disagreements and the cutoff-va
       if (!candidates.length) throw new Error('No candidates are available in the latest scan');
       const prompt = buildPrompt(candidates);
       const copied = await copyText(prompt);
-      window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, '_blank', 'noopener');
       const status = statusLine();
-      if (status) status.textContent = copied ? `Top ${candidates.length}: point-in-time v3 audit prompt copied; ChatGPT opened.` : `Top ${candidates.length}: ChatGPT opened. If the prompt is not prefilled, copy the scanner context manually.`;
+      if (status) status.textContent = copied ? `Top ${candidates.length}: audit prompt copied; ChatGPT opened. Paste it into the new chat.` : `Top ${candidates.length}: ChatGPT opened, but automatic copy was blocked.`;
     } catch (error) {
       const status = statusLine(); if (status) status.textContent = `Top ${limit} analysis failed: ${error.message}`;
     } finally { button.disabled=false; button.textContent=originalText; }
