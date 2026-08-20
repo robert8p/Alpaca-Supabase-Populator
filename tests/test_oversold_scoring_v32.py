@@ -108,18 +108,18 @@ def article(headline: str, summary: str = "", *, source: str = "Company IR", sym
     }
 
 
-def test_model_is_explicitly_versioned_v32() -> None:
+def test_model_is_explicitly_versioned_v33() -> None:
     result = score_candidate(
         candidate(),
         [article("Test Industrial reports temporary outage", "Operations are expected to resume tomorrow after a short-term technical issue.")],
         "B",
         [],
     )
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_2"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v4"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_3"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v5"
     assert result["scoring_model_version"] == SCORING_MODEL_VERSION
     assert result["scoring_config_version"] == SCORING_CONFIG_VERSION
-    assert result["catalyst_analysis"]["analysis_method"] == "rules_v3_2_point_in_time"
+    assert result["catalyst_analysis"]["analysis_method"] == "rules_v3_3_point_in_time"
 
 
 def test_xos_type_prior_spike_is_measured_against_real_pre_spike_baseline() -> None:
