@@ -1,10 +1,9 @@
-name: Intraday Profitability v2 CI
+name: Intraday Reliability v3 CI
 
 on:
   push:
     branches:
-      - feature/intraday-handoff-tracker-heuristic-v2
-      - feature/remove-intraday-app-credentials
+      - feature/intraday-reliability-v3
     paths:
       - app/intraday_profitability_scoring.py
       - app/intraday_profitability_tracking.py
@@ -15,7 +14,8 @@ on:
       - tests/test_intraday_profitability_tracking.py
       - tests/test_intraday_profitability_split_deploy.py
       - tests/test_intraday_prompt_handoff.js
-      - docs/intraday_profitability_heuristic_v2.md
+      - tests/intraday_production_browser_smoke.js
+      - docs/intraday_profitability_reliability_v3.md
       - .github/workflows/intraday-v2-ci.yml
   pull_request:
     branches:
@@ -30,7 +30,8 @@ on:
       - tests/test_intraday_profitability_tracking.py
       - tests/test_intraday_profitability_split_deploy.py
       - tests/test_intraday_prompt_handoff.js
-      - docs/intraday_profitability_heuristic_v2.md
+      - tests/intraday_production_browser_smoke.js
+      - docs/intraday_profitability_reliability_v3.md
       - .github/workflows/intraday-v2-ci.yml
   workflow_dispatch:
 
@@ -40,7 +41,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -54,7 +55,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --only-binary=:all: -r requirements.txt pytest
 
-      - name: Run scorer, tracker and deployment-contract tests
+      - name: Run reliability, tracker and deployment-contract tests
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/postgres
           ALPACA_API_KEY: test
@@ -62,18 +63,25 @@ jobs:
           APP_PASSWORD: test
         run: |
           pytest -q \
+            tests/test_intraday_profitability_contract.py \
             tests/test_intraday_profitability_scoring.py \
             tests/test_intraday_profitability_tracking.py \
             tests/test_intraday_profitability_split_deploy.py
-          python -m py_compile app/intraday_profitability_scoring.py app/intraday_profitability_tracking.py app/intraday_profitability_worker.py
+          python -m py_compile \
+            app/intraday_profitability_scoring.py \
+            app/intraday_profitability_tracking.py \
+            app/intraday_profitability_worker.py
 
-      - name: Verify credential-free browser JavaScript and populated ChatGPT URL
+      - name: Verify credential-free reliability-aware browser bundle
         run: |
           node --check static_intraday/prompt.js
           node --check static_intraday/app.js
           node tests/test_intraday_prompt_handoff.js
           grep -q "searchParams.set('prompt'" static_intraday/prompt.js
           grep -q 'data-select-candidate' static_intraday/app.js
+          grep -q 'NO VALIDATED EDGE' static_intraday/app.js
+          grep -q 'Trade gate blocked' static_intraday/index.html
+          grep -q 'ip-reliability-v3.0' static_intraday/app.js
           ! grep -q 'x-app-user' static_intraday/app.js
           ! grep -q 'x-app-key' static_intraday/app.js
           ! grep -q 'sessionStorage' static_intraday/app.js
@@ -87,7 +95,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Type-check public Edge API
+      - name: Type-check reliability Edge API
         run: |
           cd supabase/functions/intraday-profitability-api
           deno check index.ts
