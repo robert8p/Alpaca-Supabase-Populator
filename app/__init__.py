@@ -11,12 +11,14 @@ from __future__ import annotations
 import sys
 
 from . import oversold_primary_evidence as _oversold_primary_evidence
+from . import oversold_regulatory_evidence_v2 as _oversold_regulatory_v2
 from . import oversold_scoring_v32 as _oversold_scoring
 from . import oversold_scoring_v33 as _oversold_v33_impl
 from . import oversold_scoring_v34 as _oversold_v34_impl
 from . import oversold_sec_fundamentals as _oversold_sec
 from . import oversold_three_session_target as _oversold_target
 from . import oversold_tracking as _oversold_tracking
+from .oversold_clinicaltrials_search_compat import patch_module as _patch_clinicaltrials_search
 from .oversold_primary_evidence_compat import patch_module as _patch_primary_evidence_compat
 from .oversold_primary_evidence_scoring import patch_module as _patch_primary_evidence_scoring
 from .oversold_regulatory_evidence_v2 import patch_module as _patch_regulatory_evidence_v2
@@ -35,6 +37,7 @@ from .oversold_three_session_target_compat import patch_module as _patch_target_
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
 
 _patch_primary_evidence_compat(_oversold_primary_evidence)
+_patch_clinicaltrials_search(_oversold_regulatory_v2)
 _patch_regulatory_evidence_v2(_oversold_primary_evidence)
 _patch_sec_json(_oversold_sec)
 _patch_v32(_oversold_scoring)
