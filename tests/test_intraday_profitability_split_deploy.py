@@ -51,10 +51,11 @@ class SplitDeploymentContractTests(unittest.TestCase):
             "loginModal",
             "loginKey",
             "logoutBtn",
+            "Unlock Intraday Profitability",
         ):
             self.assertNotIn(forbidden, browser)
         self.assertIn("No login required", browser)
-        self.assertIn("credentials are required", browser.lower()) is False
+        self.assertIn("No user credentials are required", browser)
 
     def test_public_edge_api_uses_origin_and_mutation_rate_controls(self) -> None:
         edge = EDGE.read_text(encoding="utf-8")
@@ -65,7 +66,7 @@ class SplitDeploymentContractTests(unittest.TestCase):
         self.assertIn("ip_public_api_requests", edge)
         self.assertIn("enforceMutationRateLimit", edge)
         self.assertIn("GLOBAL_RUN_COOLDOWN_MS", edge)
-        self.assertIn('credentials_required: false', edge)
+        self.assertIn("credentials_required: false", edge)
 
     def test_rate_limit_schema_is_private_and_rls_enabled(self) -> None:
         schema = SCHEMA.read_text(encoding="utf-8")
