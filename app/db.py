@@ -16,17 +16,48 @@ logger = logging.getLogger(__name__)
 _pool: ConnectionPool | None = None
 
 
+def _pool_budget() -> dict[str, int | float | str]:
+    settings = get_settings()
+    min_size = max(0, int(settings.db_pool_min_size))
+    max_size = max(min_size or 1, int(settings.db_pool_max_size))
+    return {
+        "min_size": min_size,
+        "max_size": max_size,
+        "timeout": max(1.0, float(settings.db_pool_timeout_seconds)),
+        "max_idle": max(30.0, float(settings.db_pool_max_idle_seconds)),
+        "max_lifetime": max(120.0, float(settings.db_pool_max_lifetime_seconds)),
+        "max_waiting": max(1, int(settings.db_pool_max_waiting)),
+        "application_name": str(settings.db_application_name or "alpaca-rapid-discovery")[:63],
+    }
+
+
 def get_pool() -> ConnectionPool:
     global _pool
     if _pool is None:
         settings = get_settings()
+        budget = _pool_budget()
+        logger.info(
+            "Opening PostgreSQL pool application=%s min=%s max=%s max_idle=%ss max_lifetime=%ss",
+            budget["application_name"],
+            budget["min_size"],
+            budget["max_size"],
+            budget["max_idle"],
+            budget["max_lifetime"],
+        )
         _pool = ConnectionPool(
             conninfo=settings.database_url,
-            min_size=1,
-            max_size=max(4, settings.max_global_concurrency + 3),
-            kwargs={"row_factory": dict_row, "autocommit": False},
+            min_size=int(budget["min_size"]),
+            max_size=int(budget["max_size"]),
+            kwargs={
+                "row_factory": dict_row,
+                "autocommit": False,
+                "application_name": budget["application_name"],
+            },
             open=True,
-            timeout=30,
+            timeout=float(budget["timeout"]),
+            max_idle=float(budget["max_idle"]),
+            max_lifetime=float(budget["max_lifetime"]),
+            max_waiting=int(budget["max_waiting"]),
         )
     return _pool
 

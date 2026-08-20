@@ -4,7 +4,7 @@ services:
     runtime: python
     region: frankfurt
     plan: free
-    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo oversold-primary-evidence-web-20260820-3"
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo bounded-db-pools-20260820-1"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeployTrigger: commit
@@ -29,6 +29,16 @@ services:
         value: https://paper-api.alpaca.markets
       - key: LOG_LEVEL
         value: INFO
+      - key: DB_POOL_MIN_SIZE
+        value: "1"
+      - key: DB_POOL_MAX_SIZE
+        value: "2"
+      - key: DB_POOL_MAX_IDLE_SECONDS
+        value: "60"
+      - key: DB_POOL_MAX_LIFETIME_SECONDS
+        value: "600"
+      - key: DB_APPLICATION_NAME
+        value: rapid-discovery-web
       - key: INTRADAY_PROFITABILITY_RELEASE
         value: "2026-08-20.1"
       - key: OVERSOLD_PRIMARY_EVIDENCE_RELEASE
@@ -47,7 +57,7 @@ services:
     runtime: python
     region: frankfurt
     plan: free
-    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo oversold-primary-evidence-failover-20260820-3"
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo bounded-db-pools-failover-20260820-1"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeployTrigger: commit
@@ -87,6 +97,16 @@ services:
         value: https://paper-api.alpaca.markets
       - key: LOG_LEVEL
         value: INFO
+      - key: DB_POOL_MIN_SIZE
+        value: "1"
+      - key: DB_POOL_MAX_SIZE
+        value: "2"
+      - key: DB_POOL_MAX_IDLE_SECONDS
+        value: "60"
+      - key: DB_POOL_MAX_LIFETIME_SECONDS
+        value: "600"
+      - key: DB_APPLICATION_NAME
+        value: intraday-profitability-web
       - key: INTRADAY_PROFITABILITY_RELEASE
         value: "2026-08-20.1"
       - key: OVERSOLD_PRIMARY_EVIDENCE_RELEASE
@@ -105,7 +125,7 @@ services:
     runtime: python
     region: frankfurt
     plan: starter
-    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo bounded-db-pools-worker-20260820-1"
     startCommand: python -m app.worker
     autoDeployTrigger: commit
     disk:
@@ -139,6 +159,16 @@ services:
         value: "9000"
       - key: LOG_LEVEL
         value: INFO
+      - key: DB_POOL_MIN_SIZE
+        value: "1"
+      - key: DB_POOL_MAX_SIZE
+        value: "4"
+      - key: DB_POOL_MAX_IDLE_SECONDS
+        value: "90"
+      - key: DB_POOL_MAX_LIFETIME_SECONDS
+        value: "600"
+      - key: DB_APPLICATION_NAME
+        value: rapid-discovery-worker
       - key: OVERSOLD_PRIMARY_EVIDENCE_RELEASE
         value: "2026-08-20.1"
       - key: OVERSOLD_PRIMARY_LOOKBACK_DAYS
