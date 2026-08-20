@@ -11,7 +11,9 @@
       load('/static/oversold_fundamentals_rating_v2.js?v=1', () => {
         load('/static/oversold_v33_ui.js?v=1', () => {
           load('/static/oversold_chatgpt_v33.js?v=1', () => {
-            load('/static/oversold_v33_explainability.js?v=1');
+            load('/static/oversold_v33_explainability.js?v=1', () => {
+              load('/static/oversold_primary_evidence_ui.js?v=1');
+            });
           });
         });
       });
