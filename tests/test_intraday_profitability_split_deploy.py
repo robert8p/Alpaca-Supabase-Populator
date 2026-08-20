@@ -62,7 +62,8 @@ class SplitDeploymentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, browser)
         self.assertIn("No login required", browser)
-        self.assertIn("No validated generic trading edge", browser)
+        self.assertIn("Trade gate blocked", browser)
+        self.assertIn("NO VALIDATED EDGE", browser)
 
     def test_reliability_contract_is_explicit_at_every_layer(self) -> None:
         scorer = SCORER.read_text(encoding="utf-8")
