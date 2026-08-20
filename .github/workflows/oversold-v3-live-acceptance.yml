@@ -1,9 +1,11 @@
 name: oversold-v3-live-acceptance
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/oversold-v3-live-acceptance
+      - main
+    paths:
+      - .github/workflows/oversold-v3-live-acceptance.yml
 
 jobs:
   acceptance-scan:
@@ -23,13 +25,14 @@ jobs:
           data=json.load(open('/tmp/oversold-v3.json'))
           scan=data.get('scan') or {}
           candidates=data.get('candidates') or []
+          scores=[c.get('reversion_score') for c in candidates if c.get('reversion_score') is not None]
           print(json.dumps({
               'scan_id': scan.get('id'),
               'status': scan.get('status'),
               'candidate_count': len(candidates),
               'model_versions': sorted({c.get('scoring_model_version') for c in candidates}),
-              'min_score': min((c.get('reversion_score') for c in candidates if c.get('reversion_score') is not None), default=None),
-              'max_score': max((c.get('reversion_score') for c in candidates if c.get('reversion_score') is not None), default=None),
+              'min_score': min(scores, default=None),
+              'max_score': max(scores, default=None),
           }, default=str))
           if scan.get('status') != 'completed': raise SystemExit('scan not completed')
           if not candidates: raise SystemExit('no candidates')
