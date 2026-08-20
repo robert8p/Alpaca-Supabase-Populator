@@ -99,12 +99,14 @@ if "pytest" not in sys.modules:
     from .oversold_three_session_reliability import patch_outcomes as _patch_target_outcomes
     from .oversold_three_session_target import install_runtime_patches as _install_three_session_runtime
     from .oversold_v33_diagnostics import patch_module as _patch_v33_diagnostics
+    from .oversold_v34_diagnostics import patch_module as _patch_v34_diagnostics
 
     _patch_outcomes_v33(_oversold_outcomes)
     _install_three_session_runtime()
     _patch_target_outcomes(_oversold_outcomes)
     _patch_v33_diagnostics(_oversold_target)
     _patch_primary_evidence_diagnostics(_oversold_target)
+    _patch_v34_diagnostics(_oversold_target)
     _patch_target_scheduler(_oversold_outcome_scheduler)
     _patch_worker_scan_scheduler(_oversold_outcome_scheduler)
 
