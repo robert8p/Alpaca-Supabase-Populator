@@ -142,6 +142,19 @@ const compactMoney = (v) => {
 const badgeClass = (label) => label === "INVESTIGATE NOW" ? "now" : label === "REVIEW" ? "review" : label.startsWith("PASS") ? "pass" : "";
 const decisionTitle = (decision) => ({investigate:"Investigate",watch:"Watch",pass:"Pass",traded:"Traded"}[decision] || "");
 
+async function fetchWithTimeout(url, options={}, timeoutMs=15000) {
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try {
+    return await fetch(url,{...options,signal:controller.signal});
+  } catch (error) {
+    if (error?.name === "AbortError") throw new Error("Request timed out. Please retry.");
+    throw error;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function renderMeta() {
   const s=state.scan;
   document.getElementById("scan-status").textContent=s?.status ?? "No scan";
@@ -223,12 +236,11 @@ function analyseInChatGPT(id) {
   const c=state.candidates.find(item => Number(item.id)===Number(id));
   if (!c) return;
   const prompt=buildChatGPTPrompt(c);
-  const target=`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
-  window.open(target,"_blank","noopener");
+  window.open("https://chatgpt.com/","_blank","noopener");
   copyText(prompt).then(ok => {
     document.getElementById("status-line").textContent=ok
-      ? `${c.symbol}: analysis prompt copied; ChatGPT opened in a new tab.`
-      : `${c.symbol}: ChatGPT opened. If the prompt is not prefilled, copy the row context manually.`;
+      ? `${c.symbol}: audit prompt copied; ChatGPT opened. Paste the prompt into the new chat.`
+      : `${c.symbol}: ChatGPT opened, but automatic copy was blocked. Use your browser copy action on the row context.`;
   });
 }
 
@@ -285,7 +297,7 @@ function renderRows() {
 
 async function load() {
   try {
-    const res=await fetch("/api/oversold/latest",{cache:"no-store"});
+    const res=await fetchWithTimeout("/api/oversold/latest",{cache:"no-store"});
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     state=await res.json();
     renderMeta(); renderRows();
@@ -305,7 +317,7 @@ async function runScan() {
   const button=document.getElementById("run");
   button.disabled=true; button.textContent="Starting…";
   try {
-    const res=await fetch("/api/oversold/run?background=true",{method:"POST"});
+    const res=await fetchWithTimeout("/api/oversold/run?background=true",{method:"POST"},20000);
     const data=await res.json();
     if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
     button.textContent="Scan running…";
@@ -332,11 +344,11 @@ async function saveCommentary(id) {
   if (button) button.disabled=true;
   if (statusEl) statusEl.textContent="Saving…";
   try {
-    const res=await fetch(`/api/oversold/candidates/${id}`,{
+    const res=await fetchWithTimeout(`/api/oversold/candidates/${id}`,{
       method:"PATCH",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({decision:candidate.decision || "unreviewed",review_notes:candidate.review_notes || ""})
-    });
+    },15000);
     if (!res.ok) {
       let detail=`HTTP ${res.status}`;
       try { detail=(await res.json()).detail || detail; } catch (_) {}
@@ -361,11 +373,11 @@ async function setDecision(id, decision) {
     document.getElementById("status-line").textContent=`${candidate.symbol}: saving ${decisionTitle(decision)} decision…`;
   }
   try {
-    const res=await fetch(`/api/oversold/candidates/${id}`,{
+    const res=await fetchWithTimeout(`/api/oversold/candidates/${id}`,{
       method:"PATCH",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({decision,review_notes:candidate?.review_notes || ""})
-    });
+    },15000);
     if (!res.ok) {
       let detail=`HTTP ${res.status}`;
       try { detail=(await res.json()).detail || detail; } catch (_) {}

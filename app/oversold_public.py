@@ -173,7 +173,7 @@ def _model_diagnostics() -> dict[str, Any]:
                     count(*) FILTER (WHERE mr.missing_inputs @> '[\"point_in_time_fundamentals\"]'::jsonb) AS missing_fundamentals_count,
                     count(*) FILTER (WHERE mr.missing_inputs @> '[\"enrichment_partial_failure\"]'::jsonb) AS enrichment_failure_count,
                     count(*) FILTER (WHERE mr.hard_veto) AS hard_veto_count,
-                    count(*) FILTER (WHERE (mr.catalyst_analysis->>'analysis_method') LIKE 'rules_%') AS rules_without_llm_count,
+                    count(*) FILTER (WHERE (mr.catalyst_analysis->>'analysis_method') LIKE 'rules_%%') AS rules_without_llm_count,
                     count(*) FILTER (WHERE so.status='matured') AS matured_outcomes,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration) AS calibration_eligible_matured,
                     count(*) FILTER (WHERE so.status='matured' AND so.eligible_for_calibration AND so.hit_plus_5pct_within_6_weeks=true) AS eligible_hits,
@@ -301,11 +301,11 @@ def oversold_page(request: Request):
     html = html.replace(
         "</body>",
         '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_score_ui.js?v=3"></script>\n'
-        '<script src="/static/oversold_top5.js?v=4"></script>\n'
-        '<script src="/static/oversold_chatgpt_score.js?v=3"></script>\n</body>',
+        '<script src="/static/oversold_score_ui.js?v=4"></script>\n'
+        '<script src="/static/oversold_top5.js?v=5"></script>\n'
+        '<script src="/static/oversold_chatgpt_score.js?v=4"></script>\n</body>',
     )
-    return HTMLResponse(content=html)
+    return HTMLResponse(content=html, headers={"Cache-Control": "no-store"})
 
 
 @router.get("/api/oversold/latest")
@@ -425,8 +425,15 @@ async def run_scan(
     return _enrich_scan_calibration(_scan_detail(scan_id))
 
 
+async def _sync_candidate_tracking_background(candidate_id: int, decision: str) -> None:
+    try:
+        await sync_candidate_tracking(candidate_id, decision)
+    except Exception:
+        logger.exception("Background tracking sync failed for candidate %s", candidate_id)
+
+
 @router.patch("/api/oversold/candidates/{candidate_id}")
-async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, Any]:
+async def update_candidate(candidate_id: int, payload: dict[str, Any], background_tasks: BackgroundTasks) -> dict[str, Any]:
     decision = str(payload.get("decision") or "").lower()
     if decision not in {"unreviewed", "watch", "investigate", "pass", "reject", "traded"}:
         raise HTTPException(400, "Invalid decision")
@@ -446,10 +453,9 @@ async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[s
                     (candidate_id,),
                 )
         conn.commit()
-    try:
-        track = await sync_candidate_tracking(candidate_id, decision)
-        row["tracking"] = {"active": bool(track and track.get("active")), "decision": track.get("decision") if track else None, "track_id": track.get("id") if track else None}
-    except Exception as exc:
-        logger.exception("Decision saved but tracking sync failed for candidate %s", candidate_id)
-        row["tracking_error"] = str(exc)[:1000]
+    if decision in TRACKED_DECISIONS:
+        background_tasks.add_task(_sync_candidate_tracking_background, candidate_id, decision)
+        row["tracking"] = {"pending": True, "decision": decision}
+    else:
+        row["tracking"] = {"pending": False, "decision": None}
     return row
