@@ -3,6 +3,7 @@ name: Expand and verify intraday profitability release
 on:
   push:
     branches:
+      - main
       - feature/intraday-profitability-scanner
     paths:
       - .release/intraday_chunk_*
@@ -61,4 +62,4 @@ jobs:
             tests/test_intraday_profitability_scoring.py \
             tests/test_intraday_entrypoint_wrapper.py
           git commit -m "Add intraday profitability scanner"
-          git push origin HEAD:feature/intraday-profitability-scanner
+          git push origin HEAD:"${GITHUB_REF_NAME}"
