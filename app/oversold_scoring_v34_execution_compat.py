@@ -7,9 +7,15 @@ is useful context but is not a reliable estimate of the next regular-session
 round trip. Outside regular hours, ranking therefore uses a conservative liquidity
 proxy derived from previous-day dollar volume and micro-cap risk, preserves the
 observed quote separately, and marks the estimate for live pre-trade recheck.
+
+This changes score semantics, so it advances the v3.4 configuration lineage rather
+than silently rewriting v6 history.
 """
 
 from typing import Any
+
+SCORING_CONFIG_VERSION = "or_score_config_2026_08_20_v7"
+RELIABILITY_VERSION = "reliability_scenarios_v2"
 
 
 def _num(value: Any) -> float | None:
@@ -43,6 +49,8 @@ def patch_module(module: Any) -> None:
     if getattr(module, "_session_aware_execution_friction_installed", False):
         return
     original = module.estimate_execution_friction
+    module.SCORING_CONFIG_VERSION = SCORING_CONFIG_VERSION
+    module.RELIABILITY_VERSION = RELIABILITY_VERSION
 
     def estimate_execution_friction(candidate: dict[str, Any], analysis: dict[str, Any]) -> dict[str, Any]:
         result = dict(original(candidate, analysis))
