@@ -40,14 +40,42 @@ def patch_module(module: Any) -> None:
         primary_document: str | None,
         form: str,
     ) -> list[dict[str, Any]]:
+        available_rows = list(rows)
+        normalized_primary = str(primary_document or "").strip()
+        if (
+            normalized_primary
+            and normalized_primary.lower().endswith(module.DOCUMENT_EXTENSIONS)
+            and not any(
+                str(row.get("document") or "").lower() == normalized_primary.lower()
+                for row in available_rows
+            )
+        ):
+            # SEC submissions.json explicitly designates the canonical filing
+            # body. Some filing-index HTML pages omit that row from the parsed
+            # document table while still listing exhibits. Synthesising the row
+            # from authoritative submissions metadata is deterministic and avoids
+            # treating an agreement/certification as the filing narrative.
+            available_rows.insert(
+                0,
+                {
+                    "sequence": "1",
+                    "description": f"Canonical Form {form} filing document",
+                    "document": normalized_primary,
+                    "href": normalized_primary,
+                    "type": form.upper().strip(),
+                    "size": None,
+                    "source": "SEC submissions primaryDocument",
+                },
+            )
+
         selected = original_select_documents(
-            rows,
-            primary_document=primary_document,
+            available_rows,
+            primary_document=normalized_primary or None,
             form=form,
         )
         exact_form = next(
             (
-                row for row in rows
+                row for row in available_rows
                 if module._document_is_textual(row)
                 and str(row.get("type") or "").upper().strip() == form.upper().strip()
             ),
