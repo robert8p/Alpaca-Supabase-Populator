@@ -58,15 +58,39 @@ def _fundamentals() -> dict:
 
 
 def _article(headline: str, summary: str, source: str, hours_before: float) -> dict:
-    return {
+    created_at = (SIGNAL_TS - timedelta(hours=hours_before)).isoformat().replace("+00:00", "Z")
+    row = {
         "id": f"{source}:{headline}",
         "headline": headline,
         "summary": summary,
         "source": source,
         "symbols": ["TEMP"],
-        "created_at": (SIGNAL_TS - timedelta(hours=hours_before)).isoformat().replace("+00:00", "Z"),
+        "created_at": created_at,
         "url": "https://example.test/evidence",
     }
+    if source == "SEC filing":
+        row.update(
+            {
+                "is_primary_evidence": True,
+                "source_kind": "sec_filing",
+                "source_authority": "SEC EDGAR",
+                "primary_evidence": {
+                    "source_kind": "sec_filing",
+                    "source_authority": "SEC EDGAR",
+                    "external_id": "000-positive-control-8k",
+                    "available_at": created_at,
+                    "source_url": row["url"],
+                    "summary": summary,
+                    "content_excerpt": summary,
+                    "content_hash": "a" * 64,
+                    "metadata": {
+                        "context_only": False,
+                        "point_in_time_rule": "accepted before signal cutoff",
+                    },
+                },
+            }
+        )
+    return row
 
 
 def test_verified_transient_event_with_strong_finances_can_reach_investigate() -> None:
@@ -128,6 +152,8 @@ def test_verified_transient_event_with_strong_finances_can_reach_investigate() -
     assert analysis["survivability_score"] >= 55.0
     assert analysis["three_session_fit_score"] >= 55.0
     assert analysis["tail_risk_score"] <= 60.0
+    assert analysis["primary_causal_evidence_count"] >= 1
+    assert analysis["independent_causal_source_count"] >= 2
     assert result["final_score"] >= 72.0
     assert result["verdict"] == "INVESTIGATE"
     assert all(analysis["eligibility_gates"].values())
