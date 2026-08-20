@@ -10,6 +10,7 @@ from psycopg.types.json import Jsonb
 
 from app.db import connection
 from app.intraday_profitability import _create_scan, _ensure_schema, execute_scan
+from app.intraday_profitability_tracking import run_selected_candidate_tracker
 
 logger = logging.getLogger(__name__)
 POLL_SECONDS = 2.0
@@ -166,12 +167,7 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
     try:
         scan_id, duplicate = _create_scan(**params)
         _set_scan_id(request_id, scan_id, duplicate=duplicate)
-        logger.info(
-            "Intraday profitability request %s attached to scan %s (duplicate=%s)",
-            request_id,
-            scan_id,
-            duplicate,
-        )
+        logger.info("Intraday profitability request %s attached to scan %s (duplicate=%s)", request_id, scan_id, duplicate)
         if duplicate:
             state = await _wait_for_scan(scan_id, stop_event)
         else:
@@ -179,11 +175,7 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
             state = _scan_state(scan_id) or {"status": "failed", "error": "Scan result was not persisted."}
 
         if state.get("status") == "completed":
-            _finish_request(
-                request_id,
-                status="completed",
-                metadata={"candidate_count": int(state.get("candidate_count") or 0)},
-            )
+            _finish_request(request_id, status="completed", metadata={"candidate_count": int(state.get("candidate_count") or 0)})
             logger.info("Intraday profitability request %s completed with scan %s", request_id, scan_id)
         else:
             message = str(state.get("error") or f"Scan ended with status {state.get('status')}")
@@ -193,22 +185,16 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
         raise
     except Exception as exc:
         logger.exception("Intraday profitability request %s crashed", request_id)
-        _finish_request(
-            request_id,
-            status="failed",
-            error=str(exc),
-            metadata={"scan_id": str(scan_id) if scan_id else None},
-        )
+        _finish_request(request_id, status="failed", error=str(exc), metadata={"scan_id": str(scan_id) if scan_id else None})
 
 
-async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event) -> None:
-    """Claim static-app scan requests and execute them on the existing Alpaca worker."""
+async def _run_request_queue(stop_event: asyncio.Event) -> None:
     ensure_request_schema()
     worker_name = f"intraday-profitability:{socket.gethostname()}"
     logger.info("Intraday profitability request scheduler started as %s", worker_name)
     while not stop_event.is_set():
         try:
-            request = _claim_request(worker_name)
+            request = await asyncio.to_thread(_claim_request, worker_name)
             if request:
                 await _process_request(request, stop_event)
                 continue
@@ -220,3 +206,15 @@ async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event
             await asyncio.wait_for(stop_event.wait(), timeout=POLL_SECONDS)
         except TimeoutError:
             pass
+
+
+async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event) -> None:
+    """Run the SIP scan queue and selected-candidate outcome tracker independently."""
+    request_task = asyncio.create_task(_run_request_queue(stop_event), name="intraday-profitability-request-queue")
+    tracker_task = asyncio.create_task(run_selected_candidate_tracker(stop_event), name="intraday-selected-outcomes")
+    try:
+        await asyncio.gather(request_task, tracker_task)
+    finally:
+        request_task.cancel()
+        tracker_task.cancel()
+        await asyncio.gather(request_task, tracker_task, return_exceptions=True)
