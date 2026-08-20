@@ -2,8 +2,9 @@
 
 Oversold Reversion keeps every prior model reproducible. New imports resolve
 through the v3.2 economic-risk layer, the three-session target, v3.3 opportunity
-quality, v3.4 deterministic downside scenarios and the v3.5 robust ensemble.
-Original Evidence Snapshots and prior model runs remain immutable.
+quality, v3.4 deterministic downside scenarios, the v3.5 robust ensemble and
+v3.6 subject-aware causal attribution. Original Evidence Snapshots and prior
+model runs remain immutable.
 """
 
 from __future__ import annotations
@@ -32,6 +33,7 @@ from .oversold_scoring_v34_detector_tuning import patch_module as _patch_v34_det
 from .oversold_scoring_v34_tuning import patch_module as _patch_v34_tuning
 from .oversold_scoring_v35 import patch_module as _patch_v35
 from .oversold_scoring_v35_compat import patch_module as _patch_v35_compat
+from .oversold_scoring_v36_subject_attribution import patch_module as _patch_v36_subject_attribution
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
@@ -73,6 +75,7 @@ _patch_v34(_oversold_scoring)
 _patch_v34_tuning(_oversold_scoring)
 _patch_v35(_oversold_scoring)
 _patch_v35_compat(_oversold_scoring)
+_patch_v36_subject_attribution(_oversold_scoring)
 
 # Install defensive JSON normalization, primary-evidence persistence and the
 # explicit three-session target before the scanner imports the store function.
