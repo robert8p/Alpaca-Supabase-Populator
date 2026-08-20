@@ -112,9 +112,9 @@ def article(symbol: str, headline: str, summary: str, source: str = "Company IR"
     }
 
 
-def test_v36_contract_is_purpose_aligned_and_versioned() -> None:
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_6"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v8"
+def test_v37_contract_is_purpose_aligned_and_versioned() -> None:
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_7"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
     contract = public_scoring_contract()
     assert "verified price damage" in contract["purpose"]
     assert contract["opportunity_architecture"]["aggregation"] == "weighted_geometric_mean"
@@ -123,6 +123,7 @@ def test_v36_contract_is_purpose_aligned_and_versioned() -> None:
     assert contract["robustness_architecture"]["minimum_robust_score"] == 72.0
     assert contract["robustness_architecture"]["minimum_causal_clusters"] == 2
     assert contract["subject_attribution"]["version"] == "subject_attribution_v1"
+    assert contract["local_attribution"]["version"] == "local_clause_attribution_v1"
 
 
 def test_confidence_and_reliability_can_only_reduce_raw_opportunity() -> None:

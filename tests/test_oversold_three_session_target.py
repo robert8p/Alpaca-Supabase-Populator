@@ -7,7 +7,7 @@ from app.oversold_three_session_target import TARGET_TRADING_SESSIONS
 
 def test_calibration_contract_is_three_trading_sessions() -> None:
     assert TARGET_DEFINITION == "hit_reversion_within_3_trading_sessions"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v8"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
     assert SCORING_CONFIG["target"]["horizon_trading_sessions"] == 3
     assert SCORING_CONFIG["calibration"]["target_horizon_trading_sessions"] == 3
     assert TARGET_CONTRACT_VERSION == "three_session_target_v2"
