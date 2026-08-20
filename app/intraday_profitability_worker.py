@@ -10,8 +10,8 @@ from psycopg.types.json import Jsonb
 
 from app.db import connection
 from app.intraday_profitability import _create_scan, _ensure_schema, execute_scan
-from app.intraday_profitability_scoring import SCORING_VERSION
-from app.intraday_profitability_tracking import run_selected_candidate_tracker
+from app.intraday_profitability_scoring import MODEL_AUDIT_VERSION, SCORING_VERSION
+from app.intraday_profitability_tracking import TRACKING_VERSION, run_selected_candidate_tracker
 
 logger = logging.getLogger(__name__)
 POLL_SECONDS = 2.0
@@ -47,12 +47,85 @@ GRANT SELECT, INSERT, UPDATE ON TABLE ip_scan_requests TO service_role;
 """
 
 
+def _enrol_scan_candidates(scan_id: UUID) -> int:
+    """Enroll every ranked candidate so calibration is not selection-biased."""
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO ip_selected_candidates (
+                    candidate_id,scan_id,symbol,name,exchange,direction,setup_type,
+                    selected_rank,profitability_score,scan_price,scan_at,market_close_at,
+                    market_date,selected_at,user_selected,user_selected_at,auto_enrolled_at,
+                    horizon_end_at,status,horizon_status,tracking_version,metadata
+                )
+                SELECT
+                    c.id,c.scan_id,c.symbol,c.name,c.exchange,c.direction,c.setup_type,
+                    c.rank,c.profitability_score,c.last_price,s.evidence_cutoff,s.market_close,
+                    (s.evidence_cutoff AT TIME ZONE 'UTC')::date,now(),false,NULL,now(),
+                    s.horizon_end,'tracking','pending',%s,
+                    jsonb_build_object(
+                        'source','automatic-all-candidate-calibration',
+                        'model_version',s.scoring_version,
+                        'original_initial_view',c.initial_view,
+                        'original_rationale',c.rationale,
+                        'calibration_population','all persisted ranked candidates'
+                    )
+                FROM ip_candidates c
+                JOIN ip_scans s ON s.id=c.scan_id
+                WHERE c.scan_id=%s
+                  AND s.status='completed'
+                ON CONFLICT (candidate_id) DO UPDATE SET
+                    horizon_end_at=COALESCE(ip_selected_candidates.horizon_end_at,EXCLUDED.horizon_end_at),
+                    auto_enrolled_at=COALESCE(ip_selected_candidates.auto_enrolled_at,EXCLUDED.auto_enrolled_at),
+                    tracking_version=EXCLUDED.tracking_version,
+                    metadata=ip_selected_candidates.metadata || jsonb_build_object(
+                        'automatic_calibration_enrolment_confirmed_at',now(),
+                        'calibration_population','all persisted ranked candidates'
+                    )
+                RETURNING id
+                """,
+                (TRACKING_VERSION, scan_id),
+            )
+            count = len(cur.fetchall())
+        conn.commit()
+    return count
+
+
+def _backfill_completed_scans() -> int:
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT s.id
+                FROM ip_scans s
+                WHERE s.status='completed'
+                  AND EXISTS (SELECT 1 FROM ip_candidates c WHERE c.scan_id=s.id)
+                  AND EXISTS (
+                      SELECT 1 FROM ip_candidates c
+                      WHERE c.scan_id=s.id
+                        AND NOT EXISTS (
+                            SELECT 1 FROM ip_selected_candidates t WHERE t.candidate_id=c.id
+                        )
+                  )
+                ORDER BY s.started_at DESC
+                LIMIT 50
+                """
+            )
+            scan_ids = [row["id"] for row in cur.fetchall()]
+        conn.rollback()
+    return sum(_enrol_scan_candidates(scan_id) for scan_id in scan_ids)
+
+
 def ensure_request_schema() -> None:
     _ensure_schema()
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(REQUEST_SCHEMA_SQL)
         conn.commit()
+    enrolled = _backfill_completed_scans()
+    if enrolled:
+        logger.info("Backfilled %s historical intraday candidate tracking row(s)", enrolled)
 
 
 def _claim_request(worker_name: str) -> dict[str, Any] | None:
@@ -130,7 +203,6 @@ def _scan_state(scan_id: UUID) -> dict[str, Any] | None:
 
 
 def _mark_scan_provenance(scan_id: UUID) -> None:
-    """Stamp completed scans with the scorer that actually produced candidates."""
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -144,9 +216,11 @@ def _mark_scan_provenance(scan_id: UUID) -> None:
                     SCORING_VERSION,
                     Jsonb(
                         {
-                            "heuristic_review": "robust-v2",
-                            "score_interpretation": "unvalidated research ranking, not probability",
-                            "outcome_tracking": "selectable point-in-time SIP tracking",
+                            "heuristic_review": "reliability-v3",
+                            "model_audit_version": MODEL_AUDIT_VERSION,
+                            "score_interpretation": "analysis priority only; not probability or validated edge",
+                            "trade_gate": "blocked",
+                            "outcome_tracking": "all ranked candidates; next-minute entry, 120-minute horizon and close",
                         }
                     ),
                     scan_id,
@@ -200,12 +274,7 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
     try:
         scan_id, duplicate = _create_scan(**params)
         _set_scan_id(request_id, scan_id, duplicate=duplicate)
-        logger.info(
-            "Intraday profitability request %s attached to scan %s (duplicate=%s)",
-            request_id,
-            scan_id,
-            duplicate,
-        )
+        logger.info("Intraday request %s attached to scan %s (duplicate=%s)", request_id, scan_id, duplicate)
         if duplicate:
             state = await _wait_for_scan(scan_id, stop_event)
         else:
@@ -214,20 +283,25 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
 
         if state.get("status") == "completed":
             await asyncio.to_thread(_mark_scan_provenance, scan_id)
+            enrolled = await asyncio.to_thread(_enrol_scan_candidates, scan_id)
             _finish_request(
                 request_id,
                 status="completed",
-                metadata={"candidate_count": int(state.get("candidate_count") or 0)},
+                metadata={
+                    "candidate_count": int(state.get("candidate_count") or 0),
+                    "automatic_tracking_rows": enrolled,
+                    "model_audit_version": MODEL_AUDIT_VERSION,
+                },
             )
-            logger.info("Intraday profitability request %s completed with scan %s", request_id, scan_id)
+            logger.info("Intraday request %s completed with scan %s; tracking rows=%s", request_id, scan_id, enrolled)
         else:
             message = str(state.get("error") or f"Scan ended with status {state.get('status')}")
             _finish_request(request_id, status="failed", error=message)
-            logger.warning("Intraday profitability request %s failed: %s", request_id, message)
+            logger.warning("Intraday request %s failed: %s", request_id, message)
     except asyncio.CancelledError:
         raise
     except Exception as exc:
-        logger.exception("Intraday profitability request %s crashed", request_id)
+        logger.exception("Intraday request %s crashed", request_id)
         _finish_request(
             request_id,
             status="failed",
@@ -239,7 +313,7 @@ async def _process_request(request: dict[str, Any], stop_event: asyncio.Event) -
 async def _run_request_queue(stop_event: asyncio.Event) -> None:
     ensure_request_schema()
     worker_name = f"intraday-profitability:{socket.gethostname()}"
-    logger.info("Intraday profitability request scheduler started as %s", worker_name)
+    logger.info("Intraday reliability-first request scheduler started as %s", worker_name)
     while not stop_event.is_set():
         try:
             request = await asyncio.to_thread(_claim_request, worker_name)
@@ -249,7 +323,7 @@ async def _run_request_queue(stop_event: asyncio.Event) -> None:
         except asyncio.CancelledError:
             raise
         except Exception:
-            logger.exception("Intraday profitability request scheduler loop error")
+            logger.exception("Intraday request scheduler loop error")
         try:
             await asyncio.wait_for(stop_event.wait(), timeout=POLL_SECONDS)
         except TimeoutError:
@@ -257,9 +331,8 @@ async def _run_request_queue(stop_event: asyncio.Event) -> None:
 
 
 async def run_intraday_profitability_request_scheduler(stop_event: asyncio.Event) -> None:
-    """Run the SIP scan queue and selected-candidate outcome tracker independently."""
     request_task = asyncio.create_task(_run_request_queue(stop_event), name="intraday-profitability-request-queue")
-    tracker_task = asyncio.create_task(run_selected_candidate_tracker(stop_event), name="intraday-selected-outcomes")
+    tracker_task = asyncio.create_task(run_selected_candidate_tracker(stop_event), name="intraday-all-candidate-outcomes")
     try:
         await asyncio.gather(request_task, tracker_task)
     finally:
