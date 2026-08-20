@@ -14,6 +14,13 @@
   const fmt = (value, digits = 1) => value == null ? '—' : Number(value).toFixed(digits);
   const when = (value) => value ? new Date(value).toLocaleString() : '—';
   const scoreClass = (value) => Number(value) >= 70 ? 'good' : Number(value) >= 55 ? 'mid' : 'bad';
+  const initialViewClass = (value) => {
+    const view = String(value || '').trim().toLowerCase();
+    if (view === 'pass') return 'good';
+    if (view === 'watch') return 'mid';
+    if (view === 'fail') return 'bad';
+    return '';
+  };
 
   function setNotice(text, isError = false) {
     notice.textContent = text;
@@ -61,7 +68,7 @@
         <td><span class="score ${scoreClass(row.oversold_score)}">${fmt(row.oversold_score)}</span><div class="muted">/100</div></td>
         <td><span class="pill">${esc(row.fundamental_quality)}</span></td>
         <td class="details"><strong>${esc(row.catalyst_class)}</strong><div class="muted">${esc(row.catalyst_summary)}</div></td>
-        <td><span class="pill ${row.initial_view === 'Investigate' ? 'good' : row.initial_view === 'Watch' ? 'mid' : 'bad'}">${esc(row.initial_view)}</span></td>
+        <td><span class="pill ${initialViewClass(row.initial_view)}">${esc(row.initial_view)}</span></td>
         <td class="details muted">${esc(explanation(row))}</td>
       </tr>`).join('') : '<tr><td colspan="8" class="empty">No qualifying losers in this scan.</td></tr>';
   }
