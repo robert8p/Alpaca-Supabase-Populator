@@ -1,0 +1,104 @@
+name: oversold-ui-hotfix-patch
+
+on:
+  push:
+    branches:
+      - agent/oversold-ui-hotfix
+    paths:
+      - .github/workflows/oversold-ui-hotfix-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/oversold-ui-hotfix
+      - name: Apply production responsiveness hotfix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          public = Path('app/oversold_public.py')
+          text = public.read_text()
+          text = text.replace("LIKE 'rules_%'", "LIKE 'rules_%%'", 1)
+          text = text.replace(
+              'def oversold_page(request: Request):\n',
+              'def oversold_page(request: Request):\n',
+              1,
+          )
+          text = text.replace(
+              '    return HTMLResponse(content=html)\n',
+              '    return HTMLResponse(content=html, headers={"Cache-Control": "no-store"})\n',
+              1,
+          )
+          text = text.replace('/static/oversold_score_ui.js?v=3', '/static/oversold_score_ui.js?v=4')
+          text = text.replace('/static/oversold_top5.js?v=4', '/static/oversold_top5.js?v=5')
+          text = text.replace('/static/oversold_chatgpt_score.js?v=3', '/static/oversold_chatgpt_score.js?v=4')
+          marker = 'async def update_candidate(candidate_id: int, payload: dict[str, Any]) -> dict[str, Any]:\n'
+          replacement = 'async def update_candidate(candidate_id: int, payload: dict[str, Any], background_tasks: BackgroundTasks) -> dict[str, Any]:\n'
+          if marker not in text:
+              raise SystemExit('update_candidate signature not found')
+          text = text.replace(marker, replacement, 1)
+          old_tail = '''    try:\n        track = await sync_candidate_tracking(candidate_id, decision)\n        row["tracking"] = {"active": bool(track and track.get("active")), "decision": track.get("decision") if track else None, "track_id": track.get("id") if track else None}\n    except Exception as exc:\n        logger.exception("Decision saved but tracking sync failed for candidate %s", candidate_id)\n        row["tracking_error"] = str(exc)[:1000]\n    return row\n'''
+          new_tail = '''    if decision in TRACKED_DECISIONS:\n        background_tasks.add_task(_sync_candidate_tracking_background, candidate_id, decision)\n        row["tracking"] = {"pending": True, "decision": decision}\n    else:\n        row["tracking"] = {"pending": False, "decision": None}\n    return row\n'''
+          if old_tail not in text:
+              raise SystemExit('update_candidate tracking tail not found')
+          text = text.replace(old_tail, new_tail, 1)
+          helper_marker = '\n\n@router.patch("/api/oversold/candidates/{candidate_id}")\n'
+          helper = '''\n\nasync def _sync_candidate_tracking_background(candidate_id: int, decision: str) -> None:\n    try:\n        await sync_candidate_tracking(candidate_id, decision)\n    except Exception:\n        logger.exception("Background tracking sync failed for candidate %s", candidate_id)\n\n\n@router.patch("/api/oversold/candidates/{candidate_id}")\n'''
+          if helper_marker not in text:
+              raise SystemExit('candidate route marker not found')
+          text = text.replace(helper_marker, helper, 1)
+          public.write_text(text)
+
+          template = Path('app/templates/oversold.html')
+          text = template.read_text()
+          fetch_helper_marker = 'const decisionTitle = (decision) => ({investigate:"Investigate",watch:"Watch",pass:"Pass",traded:"Traded"}[decision] || "");\n'
+          fetch_helper = fetch_helper_marker + '''\nasync function fetchWithTimeout(url, options={}, timeoutMs=15000) {\n  const controller=new AbortController();\n  const timer=setTimeout(()=>controller.abort(),timeoutMs);\n  try {\n    return await fetch(url,{...options,signal:controller.signal});\n  } catch (error) {\n    if (error?.name === "AbortError") throw new Error("Request timed out. Please retry.");\n    throw error;\n  } finally {\n    clearTimeout(timer);\n  }\n}\n'''
+          if fetch_helper_marker not in text:
+              raise SystemExit('template helper marker not found')
+          text = text.replace(fetch_helper_marker, fetch_helper, 1)
+          old_chat = '''  const target=`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;\n  window.open(target,"_blank","noopener");\n  copyText(prompt).then(ok => {\n    document.getElementById("status-line").textContent=ok\n      ? `${c.symbol}: analysis prompt copied; ChatGPT opened in a new tab.`\n      : `${c.symbol}: ChatGPT opened. If the prompt is not prefilled, copy the row context manually.`;\n  });\n'''
+          new_chat = '''  window.open("https://chatgpt.com/","_blank","noopener");\n  copyText(prompt).then(ok => {\n    document.getElementById("status-line").textContent=ok\n      ? `${c.symbol}: audit prompt copied; ChatGPT opened. Paste the prompt into the new chat.`\n      : `${c.symbol}: ChatGPT opened, but automatic copy was blocked. Use your browser copy action on the row context.`;\n  });\n'''
+          if old_chat not in text:
+              raise SystemExit('row ChatGPT launcher not found')
+          text = text.replace(old_chat, new_chat, 1)
+          text = text.replace('await fetch("/api/oversold/latest",{cache:"no-store"})', 'await fetchWithTimeout("/api/oversold/latest",{cache:"no-store"})')
+          text = text.replace('await fetch("/api/oversold/run?background=true",{method:"POST"})', 'await fetchWithTimeout("/api/oversold/run?background=true",{method:"POST"},20000)')
+          text = text.replace('await fetch(`/api/oversold/candidates/${id}`,{', 'await fetchWithTimeout(`/api/oversold/candidates/${id}`,{')
+          # Both PATCH calls now need the closing timeout argument.
+          text = text.replace('body:JSON.stringify({decision:candidate.decision || "unreviewed",review_notes:candidate.review_notes || ""})\n    });', 'body:JSON.stringify({decision:candidate.decision || "unreviewed",review_notes:candidate.review_notes || ""})\n    },15000);')
+          text = text.replace('body:JSON.stringify({decision,review_notes:candidate?.review_notes || ""})\n    });', 'body:JSON.stringify({decision,review_notes:candidate?.review_notes || ""})\n    },15000);')
+          template.write_text(text)
+
+          top5 = Path('app/static/oversold_top5.js')
+          text = top5.read_text()
+          marker = "  const money = (value) => value == null ? 'unknown' : Number(value).toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });\n"
+          helper = marker + '''\n  async function fetchWithTimeout(url, options={}, timeoutMs=15000) {\n    const controller = new AbortController();\n    const timer = setTimeout(() => controller.abort(), timeoutMs);\n    try { return await fetch(url, {...options, signal:controller.signal}); }\n    catch (error) { if (error?.name === 'AbortError') throw new Error('Request timed out. Please retry.'); throw error; }\n    finally { clearTimeout(timer); }\n  }\n'''
+          if marker not in text:
+              raise SystemExit('top5 helper marker not found')
+          text = text.replace(marker, helper, 1)
+          text = text.replace("      const response = await fetch('/api/oversold/latest', {cache:'no-store'});", "      window.open('https://chatgpt.com/', '_blank', 'noopener');\n      const response = await fetchWithTimeout('/api/oversold/latest', {cache:'no-store'});")
+          text = text.replace("      window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, '_blank', 'noopener');\n", '')
+          text = text.replace("copied ? `Top ${candidates.length}: point-in-time v3 audit prompt copied; ChatGPT opened.` : `Top ${candidates.length}: ChatGPT opened. If the prompt is not prefilled, copy the scanner context manually.`", "copied ? `Top ${candidates.length}: audit prompt copied; ChatGPT opened. Paste it into the new chat.` : `Top ${candidates.length}: ChatGPT opened, but automatic copy was blocked.`")
+          top5.write_text(text)
+
+          score_ui = Path('app/static/oversold_score_ui.js')
+          text = score_ui.read_text()
+          marker = "  const listText = (values, fallback) => Array.isArray(values) && values.length ? values.map(html).join('<br>') : html(fallback);\n"
+          helper = marker + '''\n  async function fetchWithTimeout(url, options={}, timeoutMs=12000) {\n    const controller = new AbortController();\n    const timer = setTimeout(() => controller.abort(), timeoutMs);\n    try { return await fetch(url, {...options, signal:controller.signal}); }\n    catch (error) { if (error?.name === 'AbortError') throw new Error('Request timed out'); throw error; }\n    finally { clearTimeout(timer); }\n  }\n'''
+          if marker not in text:
+              raise SystemExit('score ui helper marker not found')
+          text = text.replace(marker, helper, 1)
+          text = text.replace("await fetch('/api/oversold/diagnostics', {cache:'no-store'})", "await fetchWithTimeout('/api/oversold/diagnostics', {cache:'no-store'})")
+          score_ui.write_text(text)
+          PY
+          git config user.name "oversold-hotfix-bot"
+          git config user.email "oversold-hotfix-bot@users.noreply.github.com"
+          git add app/oversold_public.py app/templates/oversold.html app/static/oversold_top5.js app/static/oversold_score_ui.js
+          git commit -m "Fix Oversold UI hangs and diagnostics"
+          git push origin HEAD:agent/oversold-ui-hotfix
