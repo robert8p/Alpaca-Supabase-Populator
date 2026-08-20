@@ -23,3 +23,7 @@ sys.modules[f"{__name__}.oversold_scoring"] = _oversold_scoring_v32
 _patch_three_session_target(_oversold_scoring_v32)
 _patch_tracking_day3(_oversold_tracking)
 _install_three_session_runtime()
+
+from .oversold_v2_fundamental_patch import install_patch as _install_oversold_v2_fundamental_patch
+
+_install_oversold_v2_fundamental_patch()
