@@ -344,7 +344,7 @@ async def execute_scan(scan_id: UUID, *, min_drop_pct: float = DEFAULT_MIN_DROP_
                         """
                         UPDATE or_scans SET status='completed',asset_count=%s,snapshot_count=%s,candidate_count=%s,completed_at=now(),metadata=%s WHERE id=%s
                         """,
-                        (len(eligible_assets), len(snapshots), len(enriched), Jsonb({"snapshot_requests": snapshot_requests, "news_requests": news_requests, "feed": "sip", "news_lookback_hours": NEWS_LOOKBACK_HOURS, "min_price": MIN_PRICE, "min_prev_dollar_volume": MIN_PREV_DOLLAR_VOLUME, "instrument_filter": "operating_company_v1_1", "legacy_scoring_model": "heuristic_v1", "scoring_model": SCORING_MODEL_VERSION, "scoring_config": SCORING_CONFIG_VERSION, "model_status": MODEL_STATUS, "target_definition": TARGET_DEFINITION, "evidence_cutoff": evidence_cutoff.isoformat()}), scan_id),
+                        (len(eligible_assets), len(snapshots), len(enriched), Jsonb({"snapshot_requests": snapshot_requests, "news_requests": news_requests, "feed": "sip", "news_lookback_hours": NEWS_LOOKBACK_HOURS, "min_price": MIN_PRICE, "min_prev_dollar_volume": MIN_PREV_DOLLAR_VOLUME, "instrument_filter": "operating_company_v1_2", "legacy_scoring_model": "heuristic_v1", "scoring_model": SCORING_MODEL_VERSION, "scoring_config": SCORING_CONFIG_VERSION, "model_status": MODEL_STATUS, "target_definition": TARGET_DEFINITION, "evidence_cutoff": evidence_cutoff.isoformat()}), scan_id),
                     )
                 conn.commit()
         except Exception as exc:
