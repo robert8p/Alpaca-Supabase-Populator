@@ -88,15 +88,19 @@ def article(headline, summary="", source="Company IR"):
     }
 
 
-def test_high_quality_temporary_rebound_candidate_scores_high():
+def test_high_quality_temporary_rebound_candidate_retains_strong_economics_but_requires_source_independence():
     c = candidate()
     news = [article("Temporary production outage", "Operations resume tomorrow after a short-term technical issue.")]
     result = score_candidate(c, news, "B", [])
+    reliability = result["catalyst_analysis"]["reliability_assessment"]
     assert result["setup_score"] >= 70
     assert result["catalyst_score"] >= 70
     assert result["damage_risk"] < 30
     assert result["confirmation_score"] >= 65
-    assert result["final_score"] >= 70
+    assert reliability["base_v33_score"] >= result["final_score"]
+    assert result["final_score"] >= 55
+    assert result["catalyst_analysis"]["eligibility_gates"]["causal_evidence_independence"] is False
+    assert result["verdict"] != "INVESTIGATE"
     assert result["hard_veto"] is False
 
 

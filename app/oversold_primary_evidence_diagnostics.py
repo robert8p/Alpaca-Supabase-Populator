@@ -25,9 +25,13 @@ def _coverage() -> dict[str, Any]:
                     count(pe.id) AS evidence_items,
                     count(DISTINCT pe.symbol) AS symbols_with_primary_evidence,
                     count(pe.id) FILTER (WHERE pe.source_kind='sec_filing') AS sec_filings,
-                    count(pe.id) FILTER (WHERE pe.source_kind='clinical_trial_registry') AS clinical_trial_records,
-                    count(pe.id) FILTER (WHERE pe.source_kind='fda_regulatory_record') AS fda_records,
+                    count(pe.id) FILTER (WHERE pe.source_kind='clinical_trial_registry') AS exact_clinical_trial_records,
+                    count(pe.id) FILTER (WHERE pe.source_kind='clinical_trial_sponsor_match') AS sponsor_matched_trial_records,
+                    count(pe.id) FILTER (WHERE pe.source_kind='fda_regulatory_record') AS exact_fda_application_records,
+                    count(pe.id) FILTER (WHERE pe.source_kind='fda_drug_enforcement') AS fda_drug_enforcement_records,
+                    count(pe.id) FILTER (WHERE pe.source_kind='fda_device_enforcement') AS fda_device_enforcement_records,
                     count(pe.id) FILTER (WHERE pe.available_at > pe.evidence_cutoff) AS cutoff_violations,
+                    count(pe.id) FILTER (WHERE pe.content_excerpt IS NULL OR length(trim(pe.content_excerpt))=0) AS empty_excerpts,
                     max(pe.available_at) AS freshest_available_at
                 FROM latest
                 LEFT JOIN or_primary_evidence pe ON pe.scan_id=latest.id
@@ -53,6 +57,14 @@ def _coverage() -> dict[str, Any]:
             by_source = [dict(row) for row in cur.fetchall()]
         conn.rollback()
     summary["version"] = PRIMARY_EVIDENCE_VERSION
+    summary["clinical_trial_records"] = int(summary.get("exact_clinical_trial_records") or 0) + int(
+        summary.get("sponsor_matched_trial_records") or 0
+    )
+    summary["fda_records"] = (
+        int(summary.get("exact_fda_application_records") or 0)
+        + int(summary.get("fda_drug_enforcement_records") or 0)
+        + int(summary.get("fda_device_enforcement_records") or 0)
+    )
     summary["by_source"] = by_source
     return summary
 
@@ -82,6 +94,11 @@ def patch_module(target_module: Any) -> None:
         summary["primary_evidence_items"] = coverage.get("evidence_items")
         summary["primary_evidence_symbols"] = coverage.get("symbols_with_primary_evidence")
         summary["primary_evidence_cutoff_violations"] = coverage.get("cutoff_violations")
+        summary["fda_enforcement_records"] = (
+            int(coverage.get("fda_drug_enforcement_records") or 0)
+            + int(coverage.get("fda_device_enforcement_records") or 0)
+        )
+        summary["sponsor_matched_trial_records"] = coverage.get("sponsor_matched_trial_records")
         output["summary"] = summary
         return output
 
