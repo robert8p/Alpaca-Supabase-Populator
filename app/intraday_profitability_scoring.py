@@ -1,6 +1,6 @@
 """Stable public contract for the robust Intraday Profitability v2 scorer.
 
-The scanner was originally released against the v1 field contract.  The v2
+The scanner was originally released against the v1 field contract. The v2
 implementation deliberately lives in a separate module; this adapter preserves
 all scanner-facing names and evidence fields while delegating the actual
 liquidity, feature and ranking logic to the hardened implementation.
@@ -20,6 +20,8 @@ TARGET_DEFINITION = (
 )
 MIN_BARS = _impl.MIN_BARS
 MAX_BAR_GAP_RATIO = _impl.MAX_BAR_GAP_RATIO
+MAX_EFFECTIVE_QUOTE_AGE_SECONDS = 60.0
+MAX_EFFECTIVE_TRADE_AGE_SECONDS = 90.0
 parse_timestamp = _impl._parse_dt
 benchmark_returns = _impl.benchmark_returns
 
@@ -38,6 +40,21 @@ def _section(snapshot: dict[str, Any], *names: str) -> dict[str, Any]:
 
 def _pick(section: dict[str, Any], short: str, long: str) -> Any:
     return section.get(short) if short in section else section.get(long)
+
+
+def _asset_bool(asset: dict[str, Any], key: str) -> bool | None:
+    value = asset.get(key)
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        normalised = value.strip().lower()
+        if normalised in {"true", "1", "yes", "y"}:
+            return True
+        if normalised in {"false", "0", "no", "n"}:
+            return False
+    return None
 
 
 def _normalised_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
@@ -132,9 +149,24 @@ def snapshot_liquidity_record(
         min_prev_dollar_volume=min_prev_dollar_volume,
         min_current_dollar_volume=min_current_dollar_volume,
         max_spread_bps=max_spread_bps,
-        max_quote_age_seconds=max_quote_age_seconds,
+        max_quote_age_seconds=min(
+            float(max_quote_age_seconds),
+            MAX_EFFECTIVE_QUOTE_AGE_SECONDS,
+        ),
     )
     if record is None:
+        return None
+
+    if float(record.get("trade_age_seconds") or math.inf) > MAX_EFFECTIVE_TRADE_AGE_SECONDS:
+        return None
+    midpoint = (float(record["bid"]) + float(record["ask"])) / 2.0
+    trade_midpoint_dislocation_bps = (
+        abs(float(record["last_price"]) - midpoint) / midpoint * 10_000.0
+        if midpoint > 0
+        else math.inf
+    )
+    dislocation_limit_bps = max(50.0, float(record["spread_bps"]) * 8.0)
+    if trade_midpoint_dislocation_bps > dislocation_limit_bps:
         return None
 
     previous = normalised["prevDailyBar"]
@@ -158,6 +190,11 @@ def snapshot_liquidity_record(
             "daily_trade_count": int(record.get("day_trade_count") or 0),
             "quote_timestamp": parse_timestamp(quote.get("t")),
             "latest_trade_timestamp": parse_timestamp(trade.get("t")),
+            "trade_midpoint_dislocation_bps": trade_midpoint_dislocation_bps,
+            "session_elapsed_minutes": float(elapsed_minutes),
+            "shortable": _asset_bool(asset, "shortable"),
+            "easy_to_borrow": _asset_bool(asset, "easy_to_borrow"),
+            "fractionable": _asset_bool(asset, "fractionable"),
             "coarse_liquidity_score": round(_impl._liquidity_score(record), 6),
         }
     )
@@ -251,6 +288,85 @@ def build_market_features(
     return result
 
 
+def _additional_execution_penalties(
+    record: dict[str, Any],
+    row: dict[str, Any],
+) -> list[tuple[str, float]]:
+    penalties: list[tuple[str, float]] = []
+    elapsed = float(record.get("session_elapsed_minutes") or 390.0)
+    if elapsed < 15.0:
+        penalties.append(("opening price discovery remains unusually unstable", 12.0))
+    elif elapsed < 30.0:
+        penalties.append(("opening price discovery is not yet fully settled", 6.0))
+
+    if row.get("direction") == "SHORT":
+        shortable = record.get("shortable")
+        easy_to_borrow = record.get("easy_to_borrow")
+        if shortable is None:
+            penalties.append(("shortability is not confirmed by the broker asset record", 8.0))
+        if easy_to_borrow is False:
+            penalties.append(("the stock is not marked easy to borrow", 12.0))
+        elif easy_to_borrow is None:
+            penalties.append(("easy-to-borrow status is not confirmed", 4.0))
+    return penalties
+
+
+def _apply_additional_penalties(
+    record: dict[str, Any],
+    row: dict[str, Any],
+) -> dict[str, Any]:
+    row = dict(row)
+    evidence = dict(row.get("evidence") or {})
+    existing_labels = list(evidence.get("penalties") or [])
+    extra = _additional_execution_penalties(record, row)
+    extra_total = sum(value for _, value in extra)
+    if extra_total:
+        row["profitability_score"] = clamp(
+            float(row.get("profitability_score") or 0.0) - extra_total
+        )
+        labels = existing_labels + [label for label, _ in extra]
+        evidence["penalties"] = list(dict.fromkeys(labels))
+        evidence["penalty_total"] = float(evidence.get("penalty_total") or 0.0) + extra_total
+        evidence["execution_reliability_penalty"] = extra_total
+        row["rationale"] = (
+            str(row.get("rationale") or "").rstrip(".")
+            + ". Execution cautions: "
+            + "; ".join(label for label, _ in extra)
+            + "."
+        )
+
+    score = float(row.get("profitability_score") or 0.0)
+    data_quality = float(evidence.get("data_quality_score") or record.get("data_quality_score") or 0.0)
+    edge_to_cost = float(evidence.get("edge_to_cost_ratio") or 0.0)
+    setup_margin = float(evidence.get("setup_margin") or 0.0)
+    if score >= 76.0 and data_quality >= 90.0 and edge_to_cost >= 5.0 and setup_margin >= 2.0 and extra_total < 10.0:
+        row["initial_view"] = "INVESTIGATE"
+    elif score >= 62.0:
+        row["initial_view"] = "WATCH"
+    else:
+        row["initial_view"] = "PASS"
+    row["evidence"] = evidence
+    return row
+
+
+def _rank_record_options(
+    record: dict[str, Any],
+    direction_filter: str,
+) -> list[dict[str, Any]]:
+    options: list[dict[str, Any]] = []
+    if direction_filter in {"both", "long"}:
+        options.extend(
+            _apply_additional_penalties(record, row)
+            for row in _impl.rank_market_records([record], direction_filter="long")
+        )
+    if direction_filter in {"both", "short"} and record.get("shortable") is not False:
+        options.extend(
+            _apply_additional_penalties(record, row)
+            for row in _impl.rank_market_records([record], direction_filter="short")
+        )
+    return options
+
+
 def rank_market_records(
     records: list[dict[str, Any]],
     *,
@@ -258,8 +374,32 @@ def rank_market_records(
 ) -> list[dict[str, Any]]:
     if direction_filter not in {"both", "long", "short"}:
         raise ValueError("direction_filter must be 'both', 'long', or 'short'")
-    ranked = _impl.rank_market_records(records, direction_filter=direction_filter)
-    for row in ranked:
+
+    ranked: list[dict[str, Any]] = []
+    for record in records:
+        options = _rank_record_options(record, direction_filter)
+        if not options:
+            continue
+        options.sort(
+            key=lambda row: (
+                float(row.get("profitability_score") or 0.0),
+                float(row.get("execution_score") or 0.0),
+            ),
+            reverse=True,
+        )
+        ranked.append(options[0])
+
+    ranked.sort(
+        key=lambda row: (
+            float(row.get("profitability_score") or 0.0),
+            float(row.get("execution_score") or 0.0),
+            float(row.get("prev_dollar_volume") or 0.0),
+        ),
+        reverse=True,
+    )
+
+    for rank, row in enumerate(ranked, start=1):
+        row["rank"] = rank
         evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
         row.update(
             {
@@ -274,6 +414,10 @@ def rank_market_records(
                     "ambiguity_penalty": round(float(evidence.get("ambiguity_penalty") or 0.0), 6),
                     "chase_ratio": round(float(evidence.get("chase_ratio") or 0.0), 6),
                     "vwap_sigma": round(float(evidence.get("vwap_sigma") or 0.0), 6),
+                    "execution_reliability_penalty": round(
+                        float(evidence.get("execution_reliability_penalty") or 0.0),
+                        6,
+                    ),
                 },
                 "scoring_version": SCORING_VERSION,
                 "target_definition": TARGET_DEFINITION,
