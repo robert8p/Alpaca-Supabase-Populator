@@ -10,11 +10,13 @@ from __future__ import annotations
 
 import sys
 
+from . import oversold_primary_evidence as _oversold_primary_evidence
 from . import oversold_scoring_v32 as _oversold_scoring
 from . import oversold_scoring_v33 as _oversold_v33_impl
 from . import oversold_sec_fundamentals as _oversold_sec
 from . import oversold_three_session_target as _oversold_target
 from . import oversold_tracking as _oversold_tracking
+from .oversold_primary_evidence_compat import patch_module as _patch_primary_evidence_compat
 from .oversold_primary_evidence_scoring import patch_module as _patch_primary_evidence_scoring
 from .oversold_scoring_v32_compat import patch_module as _patch_v32
 from .oversold_scoring_v33 import patch_module as _patch_v33
@@ -25,6 +27,7 @@ from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
 
+_patch_primary_evidence_compat(_oversold_primary_evidence)
 _patch_sec_json(_oversold_sec)
 _patch_v32(_oversold_scoring)
 sys.modules[f"{__name__}.oversold_scoring"] = _oversold_scoring
