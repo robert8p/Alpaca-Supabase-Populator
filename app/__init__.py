@@ -83,9 +83,11 @@ if "pytest" not in sys.modules:
 
     # Add explicit three-session path metrics before the target runtime wraps the
     # outcome collector and publishes the public router bindings.
+    from . import oversold_outcome_scheduler as _oversold_outcome_scheduler
     from . import oversold_outcomes as _oversold_outcomes
     from .oversold_outcomes_v33 import install_patch as _patch_outcomes_v33
     from .oversold_primary_evidence_diagnostics import patch_module as _patch_primary_evidence_diagnostics
+    from .oversold_scan_scheduler_runtime import patch_module as _patch_worker_scan_scheduler
     from .oversold_three_session_target import install_runtime_patches as _install_three_session_runtime
     from .oversold_v33_diagnostics import patch_module as _patch_v33_diagnostics
 
@@ -93,6 +95,7 @@ if "pytest" not in sys.modules:
     _install_three_session_runtime()
     _patch_v33_diagnostics(_oversold_target)
     _patch_primary_evidence_diagnostics(_oversold_target)
+    _patch_worker_scan_scheduler(_oversold_outcome_scheduler)
 
     from .oversold_v2_fundamental_patch import install_patch as _install_oversold_v2_fundamental_patch
 
