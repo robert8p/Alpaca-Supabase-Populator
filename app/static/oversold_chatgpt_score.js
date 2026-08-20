@@ -163,14 +163,41 @@ Return a concise markdown component-audit table followed by: App-score assessmen
 
   function relabelRowButtons() {
     document.querySelectorAll('#rows .chatgpt-button').forEach((button) => {
-      button.textContent = 'Audit ↗';
-      button.title = 'Open ChatGPT to audit this exact point-in-time Evidence Snapshot against the same scoring contract';
+      if (button.textContent !== 'Audit ↗') button.textContent = 'Audit ↗';
+      const title = 'Open ChatGPT to audit this exact point-in-time Evidence Snapshot against the same scoring contract';
+      if (button.title !== title) button.title = title;
       const helper = button.parentElement && button.parentElement.querySelector('.muted');
-      if (helper) helper.textContent = 'same cutoff';
+      if (helper && helper.textContent !== 'same cutoff') helper.textContent = 'same cutoff';
     });
   }
 
   relabelRowButtons();
   const rows = document.getElementById('rows');
-  if (rows) new MutationObserver(relabelRowButtons).observe(rows, { childList: true, subtree: true });
+  if (rows) {
+    let relabelScheduled = false;
+    new MutationObserver(() => {
+      if (relabelScheduled) return;
+      relabelScheduled = true;
+      queueMicrotask(() => {
+        relabelScheduled = false;
+        relabelRowButtons();
+      });
+    }).observe(rows, { childList: true, subtree: true });
+  }
+
+  let latestRefreshInFlight = false;
+  async function refreshLatestView() {
+    if (document.visibilityState !== 'visible' || latestRefreshInFlight || typeof load !== 'function') return;
+    if (typeof state !== 'undefined' && state.scan?.status === 'running') return;
+    latestRefreshInFlight = true;
+    try {
+      await load();
+    } catch (error) {
+      console.warn('Periodic latest-scan refresh failed', error);
+    } finally {
+      latestRefreshInFlight = false;
+    }
+  }
+
+  setInterval(refreshLatestView, 30000);
 })();
