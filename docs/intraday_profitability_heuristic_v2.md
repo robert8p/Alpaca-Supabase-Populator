@@ -14,18 +14,21 @@ This remains an **unvalidated research ranking**, not a calibrated probability o
 6. **Execution capacity was not dominant enough.** Move capacity had to be evaluated relative to estimated spread and slippage rather than in isolation.
 7. **Market opposition was underweighted.** Continuation against a materially opposing broad-market move needed an explicit penalty.
 8. **Outlier volatility could inflate capacity.** Raw standard deviation was vulnerable to isolated bad prints.
+9. **Borrowability was ignored.** A short could rank highly even when the broker asset record said it was not shortable or not easy to borrow.
+10. **Opening-regime instability was untreated.** Signals during the first minutes of regular trading received no penalty for auction and price-discovery noise.
 
 ## v2 hard gates
 
 - Positive, non-crossed SIP bid and ask.
-- Quote freshness within the scanner threshold.
-- Trade freshness within the stricter of the practical limit and 1.5 times the quote threshold.
-- Last trade reasonably close to the contemporaneous midpoint.
+- SIP quote no more than 60 seconds old, even when the UI allows a looser operational threshold.
+- Latest trade no more than 90 seconds old.
+- Last trade within the greater of 50 basis points or eight quoted spreads from the contemporaneous midpoint.
 - Minimum price, previous-day dollar volume and current-session dollar volume.
 - Spread below the configured maximum.
 - At least 35 valid one-minute bars.
 - No more than 18% missing minutes in the observed bar interval.
 - Positive, internally coherent OHLC values.
+- Short candidates are eliminated when the broker asset record explicitly marks the stock non-shortable.
 
 ## v2 features
 
@@ -40,6 +43,8 @@ This remains an **unvalidated research ranking**, not a calibrated probability o
 - Position within the recent 30-minute range.
 - Bar completeness and data-quality score.
 - Liquidity, spread, current activity and estimated execution cost.
+- Broker shortable and easy-to-borrow flags.
+- Minutes elapsed since the regular-session open.
 
 ## Four competing setup hypotheses
 
@@ -60,6 +65,9 @@ Continuation requires multi-horizon directional agreement and is reduced by a fi
 - Continuation unusually extended from VWAP.
 - Broad-market regime opposing continuation.
 - Small score margin between the best and second-best setup.
+- Twelve points during the first 15 regular-session minutes; six points during minutes 15–30.
+- Twelve points for a short that is explicitly not easy to borrow.
+- Smaller penalties when shortable or easy-to-borrow status is unavailable rather than confirmed.
 
 ## Score composition
 
@@ -70,9 +78,9 @@ The selected setup combines:
 - 20% opportunity/capacity;
 - 16% liquidity;
 - 12% execution quality;
-- minus explicit reliability penalties.
+- minus explicit reliability and executability penalties.
 
-`INVESTIGATE` additionally requires high data quality, a minimum capacity-to-cost ratio and enough separation from the runner-up setup. `WATCH` and `PASS` are research triage labels only.
+`INVESTIGATE` additionally requires high data quality, a minimum capacity-to-cost ratio, enough separation from the runner-up setup and no large unresolved execution penalty. `WATCH` and `PASS` are research triage labels only.
 
 ## Outcome tracker integrity
 
@@ -85,8 +93,9 @@ Selection stores the original candidate ID, scan price, scan timestamp, directio
 - Bar highs and lows show reachability, not guaranteed fills.
 - Catalyst interpretation remains external to the quantitative ranker.
 - Execution estimates are conservative approximations, not order-level simulations.
+- Easy-to-borrow status can change intraday and is not a guarantee that stock will be available at order time.
 - Selection is discretionary, so selected-only outcomes cannot by themselves measure the whole ranking universe without selection-bias controls.
 
 ## Required next validation
 
-Persist every scan and selected signal unchanged. Once enough matured observations exist, test monotonicity by score decile, setup and direction; compare against time-of-day, liquidity and volatility baselines; use purged walk-forward splits; include spread/slippage; and measure whether ChatGPT upgrades or vetoes add incremental information over the v2 ranker.
+Persist every scan and selected signal unchanged. Once enough matured observations exist, test monotonicity by score decile, setup and direction; compare against time-of-day, liquidity and volatility baselines; use purged walk-forward splits; include spread/slippage and borrowability; and measure whether ChatGPT upgrades or vetoes add incremental information over the v2 ranker.
