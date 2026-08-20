@@ -10,7 +10,7 @@ import httpx
 
 from app.config import get_settings
 from app.oversold_features import MARKET_BENCHMARK, SECTOR_BENCHMARKS
-from app.oversold_fundamentals import load_point_in_time_fundamentals
+from app.oversold_fundamentals import fundamental_risk_flags, load_point_in_time_fundamentals
 
 NY = ZoneInfo("America/New_York")
 HISTORY_CALENDAR_DAYS = 125
@@ -48,6 +48,18 @@ def _candidate_cutoff(candidate: dict[str, Any]) -> datetime:
 
 def _headers() -> dict[str, str]:
     return get_settings().alpaca_headers
+
+
+def _apply_fundamental_flags(candidate: dict[str, Any], fundamentals: dict[str, Any] | None) -> list[str]:
+    flags = fundamental_risk_flags(fundamentals)
+    if fundamentals is not None:
+        fundamentals["derived_risk_flags"] = flags
+    existing = candidate.get("risk_flags")
+    if isinstance(existing, list):
+        for flag in flags:
+            if flag not in existing:
+                existing.append(flag)
+    return flags
 
 
 def _fetch_history(symbols: list[str], cutoff: datetime) -> tuple[dict[str, list[dict[str, Any]]], int]:
@@ -127,15 +139,18 @@ def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) 
     provided_context = candidate.get("benchmark_context")
     provided_fundamentals = candidate.get("fundamentals")
     if isinstance(provided_history, list) or isinstance(provided_context, dict) or isinstance(provided_fundamentals, dict):
+        fundamentals = provided_fundamentals if isinstance(provided_fundamentals, dict) else None
+        _apply_fundamental_flags(candidate, fundamentals)
+        meta = candidate.get("enrichment_meta") if isinstance(candidate.get("enrichment_meta"), dict) else {}
         return {
             "cutoff": cutoff,
             "history_bars": provided_history if isinstance(provided_history, list) else [],
             "benchmark_context": provided_context if isinstance(provided_context, dict) else {},
-            "fundamentals": provided_fundamentals if isinstance(provided_fundamentals, dict) else None,
-            "history_requests": 0,
-            "benchmark_requests": 0,
-            "errors": [],
-            "mode": "provided",
+            "fundamentals": fundamentals,
+            "history_requests": int(meta.get("history_requests") or 0),
+            "benchmark_requests": int(meta.get("benchmark_requests") or 0),
+            "errors": list(meta.get("errors") or []),
+            "mode": str(meta.get("mode") or "provided"),
         }
 
     if not _runtime_fetch_enabled() or not symbol:
@@ -176,6 +191,7 @@ def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) 
     fundamentals: dict[str, Any] | None = None
     try:
         fundamentals = load_point_in_time_fundamentals([symbol], cutoff).get(symbol)
+        _apply_fundamental_flags(candidate, fundamentals)
     except Exception as exc:
         errors.append(f"fundamentals:{type(exc).__name__}:{str(exc)[:240]}")
 
