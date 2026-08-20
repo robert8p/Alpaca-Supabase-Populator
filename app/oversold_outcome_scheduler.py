@@ -6,6 +6,8 @@ import os
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
+from app.oversold_calibration_runtime import run_calibration_if_changed
+from app.oversold_corporate_actions import review_corporate_actions
 from app.oversold_outcomes import capture_signal_outcomes
 from app.oversold_tracking import capture_due_checkpoints
 
@@ -41,12 +43,16 @@ async def run_oversold_outcome_scheduler(stop_event: asyncio.Event) -> None:
             if outcome_capture_due(now_et, last_run_date):
                 decision_result = await capture_due_checkpoints()
                 signal_result = await capture_signal_outcomes()
+                corporate_action_result = await review_corporate_actions()
+                calibration_result = await asyncio.to_thread(run_calibration_if_changed)
                 last_run_date = now_et.date()
                 logger.info(
-                    "Oversold Reversion outcomes refreshed for %s: decision=%s signal=%s",
+                    "Oversold Reversion outcomes refreshed for %s: decision=%s signal=%s corporate_actions=%s calibration=%s",
                     last_run_date,
                     decision_result,
                     signal_result,
+                    corporate_action_result,
+                    calibration_result,
                 )
         except asyncio.CancelledError:
             raise

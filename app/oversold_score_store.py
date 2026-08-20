@@ -6,7 +6,26 @@ from uuid import UUID
 
 from psycopg.types.json import Jsonb
 
+from app.oversold_calibration import active_calibration_from_cursor, calibrated_probability
 from app.oversold_scoring import evidence_snapshot_hash
+
+
+def apply_active_calibration(score: dict[str, Any], calibration: dict[str, Any] | None) -> dict[str, Any]:
+    """Attach the latest already-passed calibration without changing the raw score."""
+    probability = calibrated_probability(float(score["final_score"]), calibration)
+    if probability is None:
+        return score
+    score["model_status"] = "calibrated"
+    score["calibration_model_version"] = calibration.get("calibration_model_version") if calibration else None
+    score["calibrated_probability"] = probability
+    trace = score.setdefault("calculation_trace", {})
+    trace["calibration"] = {
+        "calibration_model_version": score["calibration_model_version"],
+        "raw_reversion_score": score["final_score"],
+        "calibrated_probability": probability,
+        "mapping": "regularized_logistic_raw_score",
+    }
+    return score
 
 
 def persist_original_score(
@@ -18,6 +37,9 @@ def persist_original_score(
     score: dict[str, Any],
     evidence_cutoff: Any,
 ) -> tuple[int, int]:
+    active_calibration = active_calibration_from_cursor(cur)
+    apply_active_calibration(score, active_calibration)
+
     analysis = score.get("catalyst_analysis") or {}
     sector_hint = ((analysis.get("sector_assessment") or {}).get("sector_hint") or "unknown")
     news_items = item.get("headlines") or []
@@ -78,7 +100,7 @@ def persist_original_score(
             verdict,hard_veto,hard_veto_reason,missing_inputs,catalyst_analysis,calculation_trace,explanation
         ) VALUES (
             %s,%s,'original',%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NULL,%s,%s,%s,%s,%s,%s,%s
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s
         )
         ON CONFLICT (candidate_id,evidence_snapshot_id,run_kind,scoring_model_version,scoring_config_version) DO NOTHING
         RETURNING id
@@ -89,7 +111,7 @@ def persist_original_score(
             score["model_status"], score["target_definition"], score["setup_score"], score["catalyst_score"],
             score["resilience_score"], score["confirmation_score"], score["damage_risk"], score["evidence_confidence"],
             score["core_score"], score["confidence_adjusted_score"], score["damage_penalty"], score["damage_cap"],
-            score["final_score"], score["verdict"], score["hard_veto"], score.get("hard_veto_reason"),
+            score["final_score"], score.get("calibrated_probability"), score["verdict"], score["hard_veto"], score.get("hard_veto_reason"),
             Jsonb(score.get("missing_inputs") or []), Jsonb(score.get("catalyst_analysis") or {}),
             Jsonb(score.get("calculation_trace") or {}), score.get("explanation"),
         ),
@@ -115,7 +137,12 @@ def persist_original_score(
         (
             candidate_id, evidence_snapshot_id, model_run_id, item.get("symbol"), evidence_cutoff,
             item.get("last_price"), evidence_cutoff + timedelta(weeks=6),
-            Jsonb({"target": "plus_5pct_within_6_weeks", "source": "alpaca_sip", "price_adjustment": "raw", "calibration_exclusion": "corporate_action_status_unchecked"}),
+            Jsonb({
+                "target": "plus_5pct_within_6_weeks",
+                "source": "alpaca_sip",
+                "price_adjustment": "raw",
+                "calibration_exclusion": "pending_corporate_action_review",
+            }),
         ),
     )
     return evidence_snapshot_id, model_run_id

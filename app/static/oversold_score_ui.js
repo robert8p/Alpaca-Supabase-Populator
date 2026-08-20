@@ -6,6 +6,7 @@
     style.textContent = `
       .or-model-score { min-width:250px; }
       .or-score-primary { font-size:22px; font-weight:900; line-height:1.1; letter-spacing:-.02em; }
+      .or-score-secondary { margin-top:2px; color:var(--muted); font-size:10px; font-weight:700; }
       .or-score-name { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
       .or-model-status { display:inline-block; margin-top:5px; padding:2px 7px; border:1px solid #506070; border-radius:999px; color:#bed2e6; font-size:10px; font-weight:800; }
       .or-components { display:grid; grid-template-columns:repeat(2,minmax(92px,1fr)); gap:4px 9px; margin-top:8px; font-size:10px; }
@@ -62,6 +63,8 @@
     const missing = c.missing_inputs || [];
     const confirmation = trace.confirmation || {};
     const analyst = a.analyst_reaction || {};
+    const isCalibrated = c.model_status === 'calibrated' && c.calibrated_probability != null;
+    const probabilityPct = isCalibrated ? Number(c.calibrated_probability) * 100 : null;
     const versions = `${c.scoring_model_version || '—'} / ${c.scoring_config_version || '—'}`;
     const calc = [
       `Core = ${num(c.core_score,2)}`,
@@ -69,12 +72,14 @@
       `Damage penalty = -${num(c.damage_penalty,2)}`,
       `Damage cap = ${num(c.damage_cap,0)}`,
       c.hard_veto ? `Hard veto = YES (${c.hard_veto_reason || 'unspecified'})` : 'Hard veto = no',
-      `Final = ${num(c.reversion_score,1)} (${c.model_verdict || '—'})`,
+      `Raw final score = ${num(c.reversion_score,1)} (${c.model_verdict || '—'})`,
+      isCalibrated ? `Calibrated probability = ${num(probabilityPct,1)}% (${c.calibration_model_version || '—'})` : 'Calibrated probability = unavailable',
     ].join('\n');
     return `<div class="or-model-score">
-      <div class="or-score-name">Reversion Score</div>
-      <div class="or-score-primary">${num(c.reversion_score,1)}</div>
-      <span class="or-model-status">Model status: ${html(c.model_status === 'calibrated' ? 'Calibrated' : 'Uncalibrated')}</span>
+      <div class="or-score-name">${isCalibrated ? 'Reversion Probability' : 'Reversion Score'}</div>
+      <div class="or-score-primary">${isCalibrated ? num(probabilityPct,1)+'%' : num(c.reversion_score,1)}</div>
+      ${isCalibrated ? `<div class="or-score-secondary">Raw Reversion Score ${num(c.reversion_score,1)}</div>` : ''}
+      <span class="or-model-status">Model status: ${html(isCalibrated ? 'Calibrated' : 'Uncalibrated')}</span>
       <div class="or-components">
         <div class="or-component"><span>Setup</span><strong>${num(c.setup_score,0)}</strong></div>
         <div class="or-component"><span>Catalyst</span><strong>${num(c.catalyst_score,0)}</strong></div>
@@ -95,7 +100,7 @@
         <div class="or-detail-section"><b>Analyst evidence</b>${html(analyst.direction || 'unavailable')}; post-event retained events: ${Array.isArray(analyst.post_event_updates) ? analyst.post_event_updates.length : 0}. Consensus is not a standalone score.</div>
         <div class="or-detail-section"><b>Exact scoring calculation</b><div class="or-calc">${html(calc)}</div></div>
         <div class="or-detail-section"><b>Point-in-time evidence</b>Signal ${html(c.signal_timestamp || '—')} at ${html(c.signal_price == null ? '—' : '$'+Number(c.signal_price).toFixed(2))}; cutoff ${html(c.evidence_cutoff || '—')}; snapshot ${html(c.evidence_snapshot_id || '—')}.</div>
-        <div class="or-detail-section"><b>Versions</b>${html(versions)} · catalyst schema ${html(c.catalyst_schema_version || '—')} · target ${html(c.target_definition || '—')}</div>
+        <div class="or-detail-section"><b>Versions</b>${html(versions)} · catalyst schema ${html(c.catalyst_schema_version || '—')} · calibration ${html(c.calibration_model_version || 'not active at signal time')} · target ${html(c.target_definition || '—')}</div>
       </div></details>
     </div>`;
   }
@@ -107,7 +112,7 @@
     [...tbody.querySelectorAll(':scope > tr')].forEach((tr, index) => {
       const c = candidates[index];
       if (!c || !tr.cells[6]) return;
-      const key = `${c.id}:${c.model_run_id || 'legacy'}:${c.reversion_score ?? c.heuristic_score}`;
+      const key = `${c.id}:${c.model_run_id || 'legacy'}:${c.reversion_score ?? c.heuristic_score}:${c.calibrated_probability ?? 'raw'}`;
       if (tr.dataset.scoreV2Key === key) return;
       tr.dataset.scoreV2Key = key;
       tr.dataset.candidateId = c.id;
@@ -115,10 +120,32 @@
       tr.cells[6].className = 'score or-model-score-cell';
     });
     const th = document.querySelector('thead th:nth-child(7)');
-    if (th && th.dataset.scoreV2 !== '1') {
+    if (th) {
+      const calibrated = candidates.some(c => c.model_status === 'calibrated' && c.calibrated_probability != null);
       th.dataset.scoreV2 = '1';
-      th.innerHTML = 'Reversion<span class="th-hint">model score</span>';
-      th.title = 'Uncalibrated 0–100 Reversion Score until empirical calibration quality gates pass.';
+      th.innerHTML = `Reversion<span class="th-hint">${calibrated ? 'probability / score' : 'model score'}</span>`;
+      th.title = calibrated
+        ? 'Calibrated probability is shown for signals created after a passed calibration became active; raw Reversion Score remains available in the breakdown.'
+        : 'Uncalibrated 0–100 Reversion Score until empirical calibration quality gates pass.';
+    }
+  }
+
+  async function refreshModelBanner() {
+    const status = document.getElementById('or-banner-status');
+    const text = document.getElementById('or-banner-text');
+    if (!status || !text) return;
+    try {
+      const res = await fetch('/api/oversold/diagnostics', {cache:'no-store'});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const d = await res.json();
+      const calibrated = d.model_status === 'calibrated';
+      status.textContent = `Model status: ${calibrated ? 'Calibrated' : 'Uncalibrated'}`;
+      text.textContent = calibrated
+        ? 'Target: +5% from signal price within 6 weeks. New signals receive the passed empirical probability mapping; historic pre-calibration signals remain raw scores.'
+        : 'Target: +5% from signal price within 6 weeks. No % probability is shown until temporal calibration and corporate-action quality gates pass.';
+    } catch (_) {
+      status.textContent = 'Model status: unavailable';
+      text.textContent = 'Target: +5% from signal price within 6 weeks.';
     }
   }
 
@@ -128,9 +155,10 @@
     const banner = document.createElement('div');
     banner.id = 'or-model-banner';
     banner.className = 'or-model-banner';
-    banner.innerHTML = `<span class="or-model-status">Model status: Uncalibrated</span><span class="muted">Target: +5% from signal price within 6 weeks. No % probability is shown until calibration passes.</span><button class="or-diagnostics-button" id="or-open-diagnostics">Model diagnostics</button>`;
+    banner.innerHTML = `<span class="or-model-status" id="or-banner-status">Model status: Checking…</span><span class="muted" id="or-banner-text">Target: +5% from signal price within 6 weeks.</span><button class="or-diagnostics-button" id="or-open-diagnostics">Model diagnostics</button>`;
     notice.appendChild(banner);
     document.getElementById('or-open-diagnostics')?.addEventListener('click', openDiagnostics);
+    refreshModelBanner();
   }
 
   function ensureDialog() {
@@ -159,16 +187,19 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const d = await res.json();
       const s = d.summary || {};
+      const calibrated = d.model_status === 'calibrated';
       body.innerHTML = `<div><strong>Calibration status: ${html(d.calibration_status)}</strong></div>
         <div class="or-diag-grid">
           <div class="or-diag-card">Scored signals<strong>${html(s.scored_signals || 0)}</strong></div>
           <div class="or-diag-card">Matured outcomes<strong>${html(s.matured_outcomes || 0)}</strong></div>
           <div class="or-diag-card">Calibration eligible<strong>${html(s.calibration_eligible_matured || 0)}</strong></div>
+          <div class="or-diag-card">CA exclusions<strong>${html(s.corporate_action_exclusions || 0)}</strong></div>
+          <div class="or-diag-card">CA unchecked<strong>${html(s.corporate_action_unchecked || 0)}</strong></div>
           <div class="or-diag-card">Missing-news cases<strong>${html(s.missing_news_count || 0)}</strong></div>
         </div>
-        <div><b>Why probability is not enabled</b><br>${listText(d.calibration_reasons, 'Configured calibration gates have passed.')}</div>
+        <div><b>${calibrated ? 'Calibration state' : 'Why probability is not enabled'}</b><br>${listText(d.calibration_reasons, calibrated ? 'A passed calibration is active for new signals.' : 'Configured calibration gates have passed.')}</div>
         <div style="margin-top:12px"><b>Performance by score bucket</b>${diagnosticTable(d.score_buckets)}</div>
-        <div style="margin-top:12px"><b>Current versions</b><br>${html(d.contract?.versions?.scoring_model_version || '—')} · ${html(d.contract?.versions?.scoring_config_version || '—')}</div>
+        <div style="margin-top:12px"><b>Current versions</b><br>${html(d.contract?.versions?.scoring_model_version || '—')} · ${html(d.contract?.versions?.scoring_config_version || '—')} · calibration ${html(d.active_calibration_model_version || 'not active')}</div>
         <div style="margin-top:8px"><b>Catalyst backend</b><br>${html(d.catalyst_backend || '—')}. ${html(d.calibration_guard || '')}</div>`;
     } catch (error) {
       body.textContent = `Diagnostics failed: ${error.message}`;
