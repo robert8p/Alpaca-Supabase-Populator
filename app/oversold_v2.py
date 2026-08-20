@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
-from datetime import UTC, datetime
+import math
+import re
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID
 
@@ -12,435 +13,561 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from psycopg.types.json import Jsonb
 
-from app.alpaca import AlpacaClient
 from app.db import connection
 from app.oversold import (
     DEFAULT_CANDIDATE_LIMIT,
     DEFAULT_MIN_DROP_PCT,
+    LONDON,
     MAX_CANDIDATE_LIMIT,
-    _extract_candidate,
-    _fetch_news_map,
-    _fetch_snapshots,
-    _is_operating_company_asset,
+    _scan_detail as canonical_scan_detail,
+    execute_scan as execute_canonical_scan,
 )
-from app.oversold_fundamentals import load_point_in_time_fundamentals
-from app.oversold_v3_hardening import classify_news_for_candidate
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
-_scan_lock = asyncio.Lock()
 
-SCORING_VERSION = "oversold-v2-simple-1"
-SCHEMA_SQL = """
-CREATE TABLE IF NOT EXISTS or2_scans (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    status text NOT NULL DEFAULT 'running' CHECK (status IN ('running','completed','failed')),
-    min_drop_pct double precision NOT NULL,
-    candidate_limit integer NOT NULL,
-    asset_count integer NOT NULL DEFAULT 0,
-    snapshot_count integer NOT NULL DEFAULT 0,
-    candidate_count integer NOT NULL DEFAULT 0,
-    evidence_cutoff timestamptz,
-    metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
-    error text,
-    started_at timestamptz NOT NULL DEFAULT now(),
-    completed_at timestamptz
-);
-CREATE INDEX IF NOT EXISTS or2_scans_started_idx ON or2_scans(started_at DESC);
+PUBLIC_MANUAL_COOLDOWN_SECONDS = 300
+STALE_SCAN_MINUTES = 30
+CHATGPT_LAUNCH_MAX_CHARS = 4_000
+V2_ADAPTER_VERSION = "oversold-v2-canonical-adapter-2"
 
-CREATE TABLE IF NOT EXISTS or2_candidates (
-    id bigserial PRIMARY KEY,
-    scan_id uuid NOT NULL REFERENCES or2_scans(id) ON DELETE CASCADE,
-    rank integer NOT NULL,
-    symbol text NOT NULL,
-    name text,
-    exchange text,
-    prev_close double precision,
-    last_price double precision,
-    drop_pct double precision,
-    prev_dollar_volume double precision,
-    spread_pct double precision,
-    dislocation_score double precision NOT NULL,
-    fundamental_survivability double precision NOT NULL,
-    catalyst_reversibility double precision NOT NULL,
-    impairment_risk double precision NOT NULL,
-    confidence double precision NOT NULL,
-    oversold_score double precision NOT NULL,
-    fundamental_quality text NOT NULL,
-    catalyst_class text NOT NULL,
-    catalyst_summary text NOT NULL,
-    initial_view text NOT NULL,
-    risk_flags text[] NOT NULL DEFAULT '{}',
-    fundamentals jsonb,
-    headlines jsonb NOT NULL DEFAULT '[]'::jsonb,
-    explanation jsonb NOT NULL DEFAULT '{}'::jsonb,
-    evidence_cutoff timestamptz NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT now(),
-    UNIQUE(scan_id, symbol)
-);
-CREATE INDEX IF NOT EXISTS or2_candidates_scan_rank_idx ON or2_candidates(scan_id, rank);
-"""
+# The canonical scanner already excludes most non-operating instruments. This
+# final presentation filter removes shell/SPAC-like rows that can still be
+# technically tradable common equity but do not fit a fundamental-reversion
+# workflow.
+NON_OPERATING_RESULT_RE = re.compile(
+    r"\b(etf|etn|exchange[- ]traded|warrants?|rights?|preferred|units?|"
+    r"blank check|special purpose acquisition|acquisition (?:corp|corporation|company)|"
+    r"capital investment corp(?:oration)?|closed[- ]end fund)\b",
+    re.IGNORECASE,
+)
+NON_COMMON_SYMBOL_RE = re.compile(r"(?:\.(?:U|WS?|W|R|RT)|-(?:U|WS?|W|R|RT))$", re.IGNORECASE)
+
+FUNDAMENTAL_KEYS = (
+    "revenue_yoy",
+    "net_margin",
+    "operating_margin",
+    "gross_margin",
+    "cash_to_assets",
+    "current_ratio",
+    "liabilities_to_assets",
+    "equity_to_assets",
+    "debt_to_assets",
+    "cash_runway_months",
+    "diluted_shares_yoy",
+    "free_cash_flow",
+    "operating_cash_flow",
+    "cash_and_equivalents",
+    "market_cap",
+    "price_to_sales",
+)
 
 
-def _ensure_schema() -> None:
-    with connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute(SCHEMA_SQL)
-        conn.commit()
+def _dict(value: Any) -> dict[str, Any]:
+    return dict(value) if isinstance(value, dict) else {}
 
 
-def _clamp(value: float, low: float = 0.0, high: float = 100.0) -> float:
-    return max(low, min(high, float(value)))
+def _list(value: Any) -> list[Any]:
+    return list(value) if isinstance(value, (list, tuple)) else []
 
 
 def _number(value: Any) -> float | None:
     try:
-        return None if value is None else float(value)
+        number = float(value)
+        return number if math.isfinite(number) else None
     except (TypeError, ValueError):
         return None
 
 
-def _fundamental_assessment(fundamentals: dict[str, Any] | None) -> tuple[float, str, list[str]]:
-    if not fundamentals:
-        return 35.0, "Unknown", ["point_in_time_fundamentals_missing"]
-
-    score = 50.0
-    reasons: list[str] = []
-    revenue_yoy = _number(fundamentals.get("revenue_yoy"))
-    net_margin = _number(fundamentals.get("net_margin"))
-    cash_to_assets = _number(fundamentals.get("cash_to_assets"))
-    liabilities_to_assets = _number(fundamentals.get("liabilities_to_assets"))
-    equity_to_assets = _number(fundamentals.get("equity_to_assets"))
-    diluted_shares_yoy = _number(fundamentals.get("diluted_shares_yoy"))
-
-    if cash_to_assets is not None:
-        if cash_to_assets >= 0.20:
-            score += 15
-            reasons.append("strong_cash_buffer")
-        elif cash_to_assets >= 0.10:
-            score += 8
-        elif cash_to_assets <= 0.03:
-            score -= 15
-            reasons.append("thin_cash_buffer")
-    if liabilities_to_assets is not None:
-        if liabilities_to_assets <= 0.50:
-            score += 10
-        elif liabilities_to_assets >= 1.00:
-            score -= 20
-            reasons.append("liabilities_exceed_assets")
-        elif liabilities_to_assets >= 0.80:
-            score -= 10
-    if equity_to_assets is not None:
-        if equity_to_assets >= 0.40:
-            score += 10
-        elif equity_to_assets <= 0.0:
-            score -= 20
-            reasons.append("non_positive_equity")
-    if revenue_yoy is not None:
-        if revenue_yoy >= 0.10:
-            score += 8
-        elif revenue_yoy <= -0.20:
-            score -= 10
-            reasons.append("sharp_revenue_contraction")
-    if net_margin is not None:
-        if net_margin >= 0.10:
-            score += 8
-        elif net_margin < 0:
-            score -= 8
-        if net_margin <= -0.20:
-            score -= 7
-            reasons.append("deep_negative_margin")
-    if diluted_shares_yoy is not None and diluted_shares_yoy >= 0.20:
-        score -= 15
-        reasons.append("high_dilution_rate")
-
-    score = _clamp(score)
-    quality = "Strong" if score >= 70 else "Adequate" if score >= 55 else "Weak" if score >= 40 else "Fragile"
-    return score, quality, reasons
+def _boolean(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value or "").strip().lower() in {"1", "true", "yes"}
 
 
-def _score_candidate(item: dict[str, Any], fundamentals: dict[str, Any] | None, catalyst_class: str, risk_flags: list[str], headline_count: int) -> dict[str, Any]:
-    drop = abs(min(float(item.get("drop_pct") or 0.0), 0.0))
-    dislocation = _clamp(25.0 + max(0.0, drop - 15.0) * 2.0)
-    survivability, fundamental_quality, fundamental_reasons = _fundamental_assessment(fundamentals)
+def _humanise(value: Any, fallback: str = "Unknown") -> str:
+    text = str(value or "").strip().replace("_", " ").replace("-", " ")
+    return text.title() if text else fallback
 
-    reversibility = {"A": 82.0, "B": 88.0, "C": 48.0, "D": 20.0, "E": 5.0, "U": 45.0}.get(catalyst_class, 45.0)
-    impairment = {"A": 18.0, "B": 22.0, "C": 55.0, "D": 82.0, "E": 98.0, "U": 50.0}.get(catalyst_class, 50.0)
 
-    flags = set(risk_flags or [])
-    if "dilution" in flags:
-        reversibility -= 15
-        impairment += 18
-    if "solvency" in flags:
-        reversibility -= 35
-        impairment += 35
-    if "clinical_regulatory" in flags:
-        reversibility -= 10
-        impairment += 12
-    if "legal" in flags:
-        reversibility -= 10
-        impairment += 12
-    if "delisting" in flags:
-        reversibility -= 25
-        impairment += 30
-    if "analyst_only" in flags:
-        reversibility += 5
-        impairment -= 5
+def _truncate(value: Any, length: int) -> str:
+    text = " ".join(str(value or "").split())
+    return text if len(text) <= length else text[: max(1, length - 1)].rstrip() + "…"
 
-    reversibility = _clamp(reversibility)
-    impairment = _clamp(impairment)
 
-    confidence = 20.0
-    confidence += 35.0 if fundamentals else 0.0
-    confidence += 30.0 if headline_count else 5.0
-    confidence += 10.0 if item.get("prev_dollar_volume") is not None else 0.0
-    confidence += 5.0 if item.get("spread_pct") is not None else 0.0
-    confidence = _clamp(confidence)
+def _is_researchable_equity(row: dict[str, Any]) -> bool:
+    symbol = str(row.get("symbol") or "").upper().strip()
+    name = str(row.get("name") or "")
+    if not symbol or NON_COMMON_SYMBOL_RE.search(symbol):
+        return False
+    return not bool(NON_OPERATING_RESULT_RE.search(name))
 
-    raw = (
-        0.30 * dislocation
-        + 0.30 * survivability
-        + 0.25 * reversibility
-        + 0.15 * (100.0 - impairment)
-    )
-    confidence_factor = 0.45 + 0.55 * (confidence / 100.0)
-    final = 50.0 + (raw - 50.0) * confidence_factor
 
-    hard_cap: float | None = None
-    hard_reason: str | None = None
-    if catalyst_class == "E" or "solvency" in flags or "delisting" in flags:
-        hard_cap, hard_reason = 20.0, "existential_or_solvency_risk"
-    elif catalyst_class == "D":
-        hard_cap, hard_reason = 40.0, "structural_impairment_risk"
-    elif "dilution" in flags:
-        hard_cap, hard_reason = 55.0, "material_dilution_risk"
-    if hard_cap is not None:
-        final = min(final, hard_cap)
+def _analysis(row: dict[str, Any]) -> dict[str, Any]:
+    return _dict(row.get("catalyst_analysis"))
 
-    final = round(_clamp(final), 1)
-    if hard_cap == 20.0 or final < 45:
-        view = "Pass"
-    elif final >= 70:
-        view = "Investigate"
-    elif final >= 55:
-        view = "Watch"
+
+def _calculation_trace(row: dict[str, Any]) -> dict[str, Any]:
+    return _dict(row.get("calculation_trace"))
+
+
+def _fundamental_payload(row: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    analysis = _analysis(row)
+    trace = _dict(analysis.get("fundamental_trace"))
+    raw = _dict(trace.get("raw_metrics"))
+
+    technical_inputs = _dict(row.get("technical_inputs"))
+    technical_fundamentals = _dict(technical_inputs.get("fundamentals"))
+    if not raw:
+        raw = technical_fundamentals
+
+    selected = {key: raw.get(key) for key in FUNDAMENTAL_KEYS if raw.get(key) is not None}
+    metadata = {
+        "available": bool(trace.get("available")) or bool(selected),
+        "source": trace.get("source") or technical_fundamentals.get("source"),
+        "form": trace.get("form") or technical_fundamentals.get("form"),
+        "available_from": trace.get("available_from") or technical_fundamentals.get("available_from"),
+        "report_period_end": trace.get("report_period_end") or technical_fundamentals.get("report_period_end"),
+        "age_calendar_days": trace.get("age_calendar_days") or technical_fundamentals.get("age_calendar_days"),
+        "metric_coverage_count": trace.get("metric_coverage_count") or technical_fundamentals.get("metric_coverage_count"),
+        "data_quality_score": analysis.get("fundamental_data_quality_score"),
+        "evidence_confidence": analysis.get("fundamental_evidence_confidence"),
+        "evidence_state": analysis.get("fundamental_evidence_state"),
+    }
+    return selected, metadata
+
+
+def _fundamental_quality(row: dict[str, Any]) -> tuple[str, dict[str, Any], dict[str, Any]]:
+    metrics, metadata = _fundamental_payload(row)
+    resilience = _number(row.get("resilience_score"))
+    damage = _number(row.get("damage_risk"))
+    analysis = _analysis(row)
+    dilution = _dict(analysis.get("dilution_analysis"))
+    hard_veto = _boolean(row.get("hard_veto")) or _boolean(analysis.get("hard_veto"))
+    capital_distress = dilution.get("classification") == "capital_distress"
+
+    score = resilience if resilience is not None else 0.0
+    if hard_veto or capital_distress or (damage is not None and damage >= 85):
+        label = "Fragile"
+    elif score >= 75:
+        label = "Strong"
+    elif score >= 60:
+        label = "Good"
+    elif score >= 45:
+        label = "Mixed"
+    elif score >= 30:
+        label = "Weak"
     else:
-        view = "Pass"
+        label = "Fragile"
+
+    data_quality = _number(metadata.get("data_quality_score"))
+    if metadata.get("available") and (data_quality is None or data_quality >= 60):
+        prefix = "Verified"
+    elif metadata.get("available"):
+        prefix = "Partial"
+    else:
+        prefix = "Limited"
+    return f"{prefix} · {label}", metrics, metadata
+
+
+def _price_context(row: dict[str, Any]) -> dict[str, Any]:
+    analysis = _analysis(row)
+    context = _dict(analysis.get("price_session_context"))
+    if not context:
+        context = _dict(_dict(row.get("raw_snapshot")).get("price_session_context"))
+    return context
+
+
+def _project_candidate(row: dict[str, Any]) -> dict[str, Any]:
+    analysis = _analysis(row)
+    trace = _calculation_trace(row)
+    final_trace = _dict(trace.get("final"))
+    robustness = _dict(analysis.get("robustness_assessment"))
+    price_context = _price_context(row)
+    quality, fundamentals, fundamental_metadata = _fundamental_quality(row)
+
+    score = _number(row.get("reversion_score"))
+    if score is None:
+        score = _number(row.get("final_score"))
+    model_missing = score is None
+    score = round(score if score is not None else 0.0, 1)
+
+    verdict = str(row.get("model_verdict") or row.get("verdict") or "PASS").upper()
+    if model_missing:
+        verdict = "PASS"
+    initial_view = verdict.title()
+
+    cause_verified = _boolean(analysis.get("cause_verified"))
+    cause_status = str(analysis.get("cause_verification_status") or ("VERIFIED" if cause_verified else "UNVERIFIED"))
+    event_profile = str(analysis.get("event_profile") or analysis.get("event_taxonomy_primary") or row.get("catalyst_class") or "unknown")
+    primary_catalyst = str(analysis.get("primary_catalyst") or row.get("catalyst_summary") or "No independently verified catalyst")
+
+    regular_move = _number(price_context.get("regular_session_move_pct"))
+    latest_move = _number(price_context.get("current_move_pct"))
+    stored_move = _number(row.get("drop_pct"))
+    price_session = str(price_context.get("price_session") or "unknown")
+    display_move = regular_move if price_session != "regular" and regular_move is not None else stored_move
+    if display_move is None:
+        display_move = latest_move
+
+    failed_gates = _list(analysis.get("failed_eligibility_gates"))
+    if not failed_gates:
+        failed_gates = _list(final_trace.get("failed_eligibility_gates"))
+
+    source_claims = [
+        {
+            "headline": claim.get("headline"),
+            "source": claim.get("source") or claim.get("source_authority"),
+            "published_at": claim.get("published_at") or claim.get("available_at"),
+            "url": claim.get("url") or claim.get("source_url"),
+        }
+        for claim in _list(analysis.get("source_claims"))[:5]
+        if isinstance(claim, dict)
+    ]
+
+    overreaction = _number(analysis.get("overreaction_quality_score"))
+    if overreaction is None:
+        overreaction = _number(analysis.get("market_overreaction_score"))
+
+    evidence_cutoff = row.get("evidence_cutoff") or _dict(row.get("evidence_snapshot")).get("evidence_cutoff")
+    model_status = str(row.get("model_status") or "uncalibrated")
 
     return {
-        "dislocation_score": round(dislocation, 1),
-        "fundamental_survivability": round(survivability, 1),
-        "catalyst_reversibility": round(reversibility, 1),
-        "impairment_risk": round(impairment, 1),
-        "confidence": round(confidence, 1),
-        "oversold_score": final,
-        "fundamental_quality": fundamental_quality,
-        "initial_view": view,
-        "explanation": {
-            "formula": "30% dislocation + 30% survivability + 25% reversibility + 15% inverse impairment, compressed toward 50 when evidence confidence is low",
-            "fundamental_reasons": fundamental_reasons,
-            "risk_flags": sorted(flags),
-            "hard_cap": hard_cap,
-            "hard_cap_reason": hard_reason,
-            "scoring_version": SCORING_VERSION,
+        "id": row.get("id"),
+        "rank": row.get("rank"),
+        "symbol": row.get("symbol"),
+        "name": row.get("name"),
+        "exchange": row.get("exchange"),
+        "prev_close": row.get("prev_close"),
+        "last_price": row.get("last_price"),
+        "drop_pct": round(display_move, 3) if display_move is not None else None,
+        "latest_move_pct": round(latest_move, 3) if latest_move is not None else stored_move,
+        "regular_session_move_pct": regular_move,
+        "extended_hours_move_pct": _number(price_context.get("extended_hours_move_pct")),
+        "price_session": price_session,
+        "extended_hours_only": _boolean(price_context.get("extended_hours_only")),
+        "prev_dollar_volume": row.get("prev_dollar_volume"),
+        "spread_pct": row.get("spread_pct"),
+        "oversold_score": score,
+        "initial_view": initial_view,
+        "model_status": model_status,
+        "calibrated_probability": row.get("calibrated_probability"),
+        "scoring_model_version": row.get("scoring_model_version"),
+        "scoring_config_version": row.get("scoring_config_version"),
+        "target_definition": row.get("target_definition"),
+        "setup_score": _number(row.get("setup_score")),
+        "dislocation_score": overreaction if overreaction is not None else _number(row.get("setup_score")),
+        "fundamental_survivability": _number(row.get("resilience_score")),
+        "catalyst_reversibility": _number(analysis.get("reversibility_score")),
+        "confirmation_score": _number(row.get("confirmation_score")),
+        "three_session_fit_score": _number(analysis.get("three_session_fit_score")),
+        "impairment_risk": _number(row.get("damage_risk")),
+        "tail_risk_score": _number(analysis.get("tail_risk_score")),
+        "confidence": _number(row.get("evidence_confidence")),
+        "fundamental_quality": quality,
+        "fundamentals": fundamentals,
+        "fundamental_metadata": fundamental_metadata,
+        "cause_verified": cause_verified,
+        "cause_status": cause_status,
+        "catalyst_class": _humanise(event_profile),
+        "event_profile": event_profile,
+        "catalyst_type": analysis.get("catalyst_type"),
+        "catalyst_summary": primary_catalyst,
+        "risk_flags": sorted({str(flag) for flag in _list(analysis.get("red_flags")) or _list(row.get("risk_flags"))}),
+        "hard_veto": _boolean(row.get("hard_veto")) or _boolean(analysis.get("hard_veto")),
+        "hard_veto_reason": row.get("hard_veto_reason") or analysis.get("hard_veto_reason"),
+        "failed_gates": [str(value) for value in failed_gates],
+        "execution_friction_pct": _number(analysis.get("estimated_round_trip_friction_pct")),
+        "source_dependency_risk": _number(analysis.get("source_dependency_risk")),
+        "source_claims": source_claims,
+        "headline_count": row.get("headline_count"),
+        "headlines": _list(row.get("headlines"))[:10],
+        "evidence_cutoff": evidence_cutoff,
+        "model_explanation": row.get("explanation"),
+        "model_missing": model_missing,
+        "adapter_version": V2_ADAPTER_VERSION,
+        "robustness_summary": {
+            "ensemble_median": _number(_dict(robustness.get("ensemble")).get("ensemble_median")),
+            "weight_stability_score": _number(analysis.get("weight_stability_score")),
+            "event_alignment_score": _number(analysis.get("event_alignment_score")),
+            "fundamental_data_quality_score": _number(analysis.get("fundamental_data_quality_score")),
         },
     }
 
 
-def _create_scan(min_drop_pct: float, candidate_limit: int) -> UUID:
-    _ensure_schema()
+def _project_scan(detail: dict[str, Any], *, limit: int | None = None) -> dict[str, Any]:
+    scan = dict(detail.get("scan") or {})
+    raw_candidates = [dict(row) for row in detail.get("candidates") or []]
+    filtered = [row for row in raw_candidates if _is_researchable_equity(row)]
+    candidates = [_project_candidate(row) for row in filtered]
+
+    verdict_order = {"Investigate": 3, "Watch": 2, "Pass": 1, "Fail": 0}
+    candidates.sort(
+        key=lambda row: (
+            -verdict_order.get(str(row.get("initial_view") or "Pass"), 0),
+            -float(row.get("oversold_score") or 0.0),
+            -float(row.get("confidence") or 0.0),
+            float(row.get("drop_pct") or 0.0),
+        )
+    )
+    if limit is not None:
+        candidates = candidates[: max(0, int(limit))]
+    for rank, candidate in enumerate(candidates, 1):
+        candidate["rank"] = rank
+
+    metadata = _dict(scan.get("metadata"))
+    scan["canonical_candidate_count"] = int(scan.get("candidate_count") or len(raw_candidates))
+    scan["candidate_count"] = len(candidates)
+    scan["excluded_non_operating_count"] = len(raw_candidates) - len(filtered)
+    scan["evidence_cutoff"] = metadata.get("evidence_cutoff") or scan.get("completed_at")
+    scan["model_status"] = candidates[0].get("model_status") if candidates else metadata.get("model_status")
+    scan["scoring_model_version"] = candidates[0].get("scoring_model_version") if candidates else metadata.get("scoring_model")
+    scan["target_definition"] = candidates[0].get("target_definition") if candidates else metadata.get("target_definition")
+    scan["selection_method"] = metadata.get("selection_method")
+    scan["adapter_version"] = V2_ADAPTER_VERSION
+    return {"scan": scan or None, "candidates": candidates}
+
+
+def _latest_scan_id() -> UUID | None:
     with connection() as conn:
         with conn.cursor() as cur:
+            cur.execute("SELECT id FROM or_scans ORDER BY started_at DESC LIMIT 1")
+            row = cur.fetchone()
+        conn.rollback()
+    return row["id"] if row else None
+
+
+def _load_projected_scan(scan_id: UUID, *, limit: int | None = None) -> dict[str, Any]:
+    return _project_scan(canonical_scan_detail(scan_id), limit=limit)
+
+
+def _create_or_reuse_scan(min_drop_pct: float, candidate_limit: int) -> tuple[UUID, str, bool]:
+    cutoff = datetime.now(UTC) - timedelta(seconds=PUBLIC_MANUAL_COOLDOWN_SECONDS)
+    stale_cutoff = datetime.now(UTC) - timedelta(minutes=STALE_SCAN_MINUTES)
+    with connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT pg_try_advisory_xact_lock(hashtext('oversold_v2_manual_scan')) AS locked")
+            locked = bool(cur.fetchone()["locked"])
+            if not locked:
+                cur.execute("SELECT id,status FROM or_scans WHERE status='running' ORDER BY started_at DESC LIMIT 1")
+                active = cur.fetchone()
+                conn.rollback()
+                if active:
+                    return active["id"], active["status"], True
+                raise HTTPException(409, "Another Oversold scan is being started. Refresh shortly.")
+
             cur.execute(
-                "INSERT INTO or2_scans(min_drop_pct,candidate_limit,status) VALUES (%s,%s,'running') RETURNING id",
-                (min_drop_pct, candidate_limit),
+                """
+                UPDATE or_scans
+                SET status='failed',completed_at=now(),error=COALESCE(error,'Marked stale by Oversold V2 recovery.')
+                WHERE status='running' AND started_at < %s
+                """,
+                (stale_cutoff,),
+            )
+            cur.execute(
+                """
+                SELECT id,status FROM or_scans
+                WHERE started_at >= %s AND status IN ('running','completed')
+                ORDER BY started_at DESC LIMIT 1
+                """,
+                (cutoff,),
+            )
+            recent = cur.fetchone()
+            if recent:
+                conn.commit()
+                return recent["id"], recent["status"], True
+
+            cur.execute(
+                """
+                INSERT INTO or_scans(trigger_source,scan_date,min_drop_pct,candidate_limit,status,metadata)
+                VALUES ('manual',%s,%s,%s,'running',%s)
+                RETURNING id
+                """,
+                (
+                    datetime.now(LONDON).date(),
+                    min_drop_pct,
+                    candidate_limit,
+                    Jsonb({"requested_by": "oversold_v2", "adapter_version": V2_ADAPTER_VERSION}),
+                ),
             )
             scan_id = cur.fetchone()["id"]
         conn.commit()
-    return scan_id
+    return scan_id, "running", False
 
 
-def _scan_detail(scan_id: UUID) -> dict[str, Any]:
-    _ensure_schema()
-    with connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT * FROM or2_scans WHERE id=%s", (scan_id,))
-            scan = cur.fetchone()
-            if not scan:
-                raise HTTPException(404, "Scan not found")
-            cur.execute("SELECT * FROM or2_candidates WHERE scan_id=%s ORDER BY rank", (scan_id,))
-            candidates = cur.fetchall()
-        conn.rollback()
-    return {"scan": scan, "candidates": candidates}
+def _selected_fundamentals(candidate: dict[str, Any]) -> dict[str, Any]:
+    fundamentals = _dict(candidate.get("fundamentals"))
+    return {key: fundamentals.get(key) for key in FUNDAMENTAL_KEYS if fundamentals.get(key) is not None}
 
 
-async def execute_scan(scan_id: UUID, *, min_drop_pct: float, candidate_limit: int) -> None:
-    async with _scan_lock:
-        try:
-            async with AlpacaClient(target_rpm=3000, max_retries=4, backoff_seconds=0.8) as client:
-                assets = await client.list_assets(status="active")
-                eligible_assets = [
-                    asset for asset in assets
-                    if asset.get("tradable") is True
-                    and str(asset.get("asset_class") or "").lower() == "us_equity"
-                    and "otc" not in str(asset.get("exchange") or "").lower()
-                    and _is_operating_company_asset(asset)
-                ]
-                asset_by_symbol = {str(asset["symbol"]).upper(): asset for asset in eligible_assets if asset.get("symbol")}
-                snapshots, snapshot_requests = await _fetch_snapshots(client, sorted(asset_by_symbol))
-                evidence_cutoff = datetime.now(UTC)
-                raw_candidates = [
-                    candidate
-                    for symbol, snapshot in snapshots.items()
-                    if symbol in asset_by_symbol and isinstance(snapshot, dict)
-                    if (candidate := _extract_candidate(symbol, snapshot, asset_by_symbol[symbol], min_drop_pct)) is not None
-                ]
-                raw_candidates.sort(key=lambda row: row["drop_pct"])
-                raw_candidates = raw_candidates[:candidate_limit]
-                symbols = [row["symbol"] for row in raw_candidates]
-                news_map, news_requests = await _fetch_news_map(client, symbols, end_at=evidence_cutoff)
-
-            fundamentals_map = await asyncio.to_thread(load_point_in_time_fundamentals, symbols, evidence_cutoff)
-            enriched: list[dict[str, Any]] = []
-            for item in raw_candidates:
-                symbol = item["symbol"]
-                articles = news_map.get(symbol, [])
-                catalyst_class, catalyst_summary, risk_flags = classify_news_for_candidate(item, articles)
-                fundamentals = fundamentals_map.get(symbol)
-                if fundamentals:
-                    risk_flags = sorted(set(risk_flags or []).union(fundamentals.get("derived_risk_flags") or []))
-                model = _score_candidate(item, fundamentals, catalyst_class, risk_flags, len(articles))
-                enriched.append({
-                    **item,
-                    **model,
-                    "catalyst_class": catalyst_class,
-                    "catalyst_summary": catalyst_summary,
-                    "risk_flags": risk_flags,
-                    "fundamentals": fundamentals,
-                    "headlines": articles,
-                })
-
-            enriched.sort(key=lambda row: (-row["oversold_score"], -row["confidence"], row["drop_pct"]))
-            with connection() as conn:
-                with conn.cursor() as cur:
-                    for rank, item in enumerate(enriched, 1):
-                        cur.execute(
-                            """
-                            INSERT INTO or2_candidates(
-                                scan_id,rank,symbol,name,exchange,prev_close,last_price,drop_pct,prev_dollar_volume,spread_pct,
-                                dislocation_score,fundamental_survivability,catalyst_reversibility,impairment_risk,confidence,
-                                oversold_score,fundamental_quality,catalyst_class,catalyst_summary,initial_view,risk_flags,
-                                fundamentals,headlines,explanation,evidence_cutoff
-                            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                            """,
-                            (
-                                scan_id, rank, item["symbol"], item.get("name"), item.get("exchange"), item.get("prev_close"),
-                                item.get("last_price"), item.get("drop_pct"), item.get("prev_dollar_volume"), item.get("spread_pct"),
-                                item["dislocation_score"], item["fundamental_survivability"], item["catalyst_reversibility"],
-                                item["impairment_risk"], item["confidence"], item["oversold_score"], item["fundamental_quality"],
-                                item["catalyst_class"], item["catalyst_summary"], item["initial_view"], item["risk_flags"],
-                                Jsonb(item["fundamentals"]) if item["fundamentals"] else None, Jsonb(item["headlines"]),
-                                Jsonb(item["explanation"]), evidence_cutoff,
-                            ),
-                        )
-                    cur.execute(
-                        """
-                        UPDATE or2_scans SET status='completed',asset_count=%s,snapshot_count=%s,candidate_count=%s,
-                            evidence_cutoff=%s,metadata=%s,completed_at=now() WHERE id=%s
-                        """,
-                        (
-                            len(eligible_assets), len(snapshots), len(enriched), evidence_cutoff,
-                            Jsonb({"snapshot_requests": snapshot_requests, "news_requests": news_requests, "feed": "sip", "scoring_version": SCORING_VERSION}),
-                            scan_id,
-                        ),
-                    )
-                conn.commit()
-        except Exception as exc:
-            logger.exception("Oversold V2 scan failed: %s", scan_id)
-            with connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("UPDATE or2_scans SET status='failed',error=%s,completed_at=now() WHERE id=%s", (str(exc)[:4000], scan_id))
-                conn.commit()
+def _source_summary(candidate: dict[str, Any], *, limit: int = 4) -> list[str]:
+    output: list[str] = []
+    for claim in _list(candidate.get("source_claims"))[:limit]:
+        if not isinstance(claim, dict):
+            continue
+        output.append(
+            f"{claim.get('published_at') or 'time unknown'} | {claim.get('source') or 'source unknown'} | "
+            f"{_truncate(claim.get('headline'), 220)}"
+        )
+    return output
 
 
-def _build_chatgpt_prompt(detail: dict[str, Any]) -> str:
+def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> str:
     candidates = list(detail.get("candidates") or [])[:10]
+    scan = _dict(detail.get("scan"))
     lines = [
-        "Audit these Oversold Reversion candidates as ORIGINAL signals. Do not use hindsight.",
-        "Use only information published on or before each candidate's stored evidence_cutoff.",
-        "Independently challenge the app score; do not assume its ranking is correct.",
-        "",
-        "For each stock assess: why it fell; evidence strength; whether the cause is temporary/reversible/uncertain/structural; likely permanent economic damage; whether the price move is disproportionate; balance-sheet survivability; mean-reversion mechanism; contradictory evidence; further downside risk; risk/reward asymmetry; and whether it is a credible profit opportunity.",
-        "Return an independent best-to-worst ranking and give each stock INVESTIGATE, WATCH or PASS. Explicitly call out material disagreements with the app score.",
+        "Audit these Oversold Reversion candidates as ORIGINAL, point-in-time signals. Do not use hindsight.",
+        "Use only evidence available on or before each stored evidence cutoff. Independently challenge the app; the robust score is an uncalibrated research-priority score, not a probability or a buy recommendation.",
+        "For every stock determine: why it fell; causal-evidence strength; temporary versus structural damage; financial survivability; whether the price move exceeds likely permanent damage; plausible three-session reversion mechanism; contradictory evidence; execution/liquidity risk; another-leg-down risk; and whether a credible, asymmetric profit opportunity exists.",
+        "Return an independent best-to-worst ranking with INVESTIGATE, WATCH or PASS, and explicitly explain every material disagreement with the app.",
+        f"Scanner model: {scan.get('scoring_model_version') or 'unknown'} | model status: {scan.get('model_status') or 'unknown'} | evidence cutoff: {scan.get('evidence_cutoff')}",
         "",
     ]
-    for row in candidates:
-        fundamentals = row.get("fundamentals") or {}
-        headline_bits = [
-            f"{h.get('created_at')}: {h.get('headline')}" for h in (row.get("headlines") or [])[:5]
+
+    for candidate in candidates:
+        fundamentals = _selected_fundamentals(candidate)
+        risk_flags = ", ".join(candidate.get("risk_flags") or []) or "none"
+        failed_gates = ", ".join(candidate.get("failed_gates") or []) or "none"
+        session = candidate.get("price_session") or "unknown"
+        source_lines = _source_summary(candidate, limit=2 if compact else 5)
+        if compact:
+            lines.extend(
+                [
+                    (
+                        f"{candidate['rank']}. {candidate['symbol']} — move {candidate.get('drop_pct')}% regular / "
+                        f"{candidate.get('latest_move_pct')}% latest ({session}); robust score {candidate.get('oversold_score')}/100; "
+                        f"app view {candidate.get('initial_view')}; cause {candidate.get('cause_status')} / {candidate.get('catalyst_class')}; "
+                        f"survivability {candidate.get('fundamental_survivability')}, reversibility {candidate.get('catalyst_reversibility')}, "
+                        f"damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}; "
+                        f"fundamentals {candidate.get('fundamental_quality')}; risks {risk_flags}; failed gates {failed_gates}."
+                    ),
+                    f"Catalyst: {_truncate(candidate.get('catalyst_summary'), 240)}",
+                    f"Key fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
+                    ("Evidence: " + " || ".join(source_lines)) if source_lines else "Evidence: no retained primary/source claims.",
+                    f"Evidence cutoff: {candidate.get('evidence_cutoff')}",
+                    "",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    f"{candidate['rank']}. {candidate['symbol']} ({candidate.get('name') or candidate['symbol']})",
+                    f"Price: regular-session move {candidate.get('drop_pct')}%; latest move {candidate.get('latest_move_pct')}%; session {session}; spread {candidate.get('spread_pct')}%; prior dollar volume {candidate.get('prev_dollar_volume')}",
+                    f"App: robust score {candidate.get('oversold_score')}/100; view {candidate.get('initial_view')}; model {candidate.get('scoring_model_version')} ({candidate.get('model_status')})",
+                    f"Components: setup {candidate.get('setup_score')}; overreaction/dislocation {candidate.get('dislocation_score')}; survivability {candidate.get('fundamental_survivability')}; reversibility {candidate.get('catalyst_reversibility')}; confirmation {candidate.get('confirmation_score')}; three-session fit {candidate.get('three_session_fit_score')}; damage {candidate.get('impairment_risk')}; tail risk {candidate.get('tail_risk_score')}; evidence confidence {candidate.get('confidence')}",
+                    f"Cause: {candidate.get('cause_status')} | profile {candidate.get('catalyst_class')} | type {candidate.get('catalyst_type')} | {_truncate(candidate.get('catalyst_summary'), 500)}",
+                    f"Fundamental assessment: {candidate.get('fundamental_quality')} | metadata {json.dumps(candidate.get('fundamental_metadata') or {}, default=str, separators=(',', ':'))}",
+                    f"Fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
+                    f"Risk flags: {risk_flags} | hard veto: {candidate.get('hard_veto')} ({candidate.get('hard_veto_reason') or 'none'}) | failed eligibility gates: {failed_gates}",
+                    f"Execution/provenance: estimated round-trip friction {candidate.get('execution_friction_pct')}%; source dependency risk {candidate.get('source_dependency_risk')}; robust summary {json.dumps(candidate.get('robustness_summary') or {}, default=str, separators=(',', ':'))}",
+                    f"Evidence cutoff: {candidate.get('evidence_cutoff')}",
+                    "Evidence claims: " + (" || ".join(source_lines) if source_lines else "none retained"),
+                    "",
+                ]
+            )
+
+    lines.extend(
+        [
+            "Finish with: the strongest candidate; the strongest reason to avoid it; any statistically oversold stock that should clearly be rejected; the single most important missing fact for each non-PASS candidate; and the evidence that must be checked before risking capital.",
+            "Do not describe profit, a rebound or any forecast as certain. State uncertainty plainly.",
         ]
-        lines.extend([
-            f"{row['rank']}. {row['symbol']} ({row.get('name') or row['symbol']})",
-            f"Day move: {float(row.get('drop_pct') or 0):.1f}% | Oversold Score: {float(row.get('oversold_score') or 0):.1f}/100 | Initial view: {row.get('initial_view')}",
-            f"Components: dislocation {row.get('dislocation_score')}, survivability {row.get('fundamental_survivability')}, reversibility {row.get('catalyst_reversibility')}, impairment risk {row.get('impairment_risk')}, confidence {row.get('confidence')}",
-            f"Fundamental quality: {row.get('fundamental_quality')} | Catalyst: {row.get('catalyst_summary')} | Risk flags: {', '.join(row.get('risk_flags') or []) or 'none'}",
-            f"Fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
-            f"Evidence cutoff: {row.get('evidence_cutoff')}",
-            "News: " + (" || ".join(headline_bits) if headline_bits else "none retained"),
-            "",
-        ])
-    lines.extend([
-        "Finish with: strongest candidate; strongest reason to avoid it; any statistically oversold candidate that should clearly be rejected; and the key evidence to verify before risking capital.",
-        "Do not describe any speculative profit as certain or guaranteed.",
-    ])
+    )
     return "\n".join(lines)
+
+
+def _build_launch_prompt(detail: dict[str, Any]) -> str:
+    prompt = _build_chatgpt_prompt(detail, compact=True)
+    if len(prompt) <= CHATGPT_LAUNCH_MAX_CHARS:
+        return prompt
+
+    candidates = list(detail.get("candidates") or [])[:10]
+    lines = [
+        "Audit these original Oversold Reversion signals without hindsight. The score is uncalibrated, not a probability. Independently rank them and give INVESTIGATE/WATCH/PASS. For each: cause, evidence strength, permanent damage, survivability, reversion mechanism, downside and risk/reward.",
+        "",
+    ]
+    for candidate in candidates:
+        lines.append(
+            f"{candidate['rank']}. {candidate['symbol']}: move {candidate.get('drop_pct')}%, score {candidate.get('oversold_score')}, "
+            f"view {candidate.get('initial_view')}, cause {candidate.get('cause_status')}/{candidate.get('catalyst_class')}, "
+            f"survival {candidate.get('fundamental_survivability')}, reversal {candidate.get('catalyst_reversibility')}, "
+            f"damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}, "
+            f"fundamentals {candidate.get('fundamental_quality')}, cutoff {candidate.get('evidence_cutoff')}. "
+            f"Catalyst: {_truncate(candidate.get('catalyst_summary'), 140)}"
+        )
+    lines.append("Identify disagreements with the app and the facts to verify before capital is at risk.")
+    return "\n".join(lines)[:CHATGPT_LAUNCH_MAX_CHARS]
 
 
 @router.get("/oversold-v2", response_class=HTMLResponse)
 def oversold_v2_page(request: Request):
-    _ensure_schema()
     return templates.TemplateResponse("oversold_v2.html", {"request": request})
 
 
 @router.get("/api/oversold-v2/latest")
 def latest_scan() -> dict[str, Any]:
-    _ensure_schema()
-    with connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT id FROM or2_scans ORDER BY started_at DESC LIMIT 1")
-            row = cur.fetchone()
-        conn.rollback()
-    return {"scan": None, "candidates": []} if not row else _scan_detail(row["id"])
+    scan_id = _latest_scan_id()
+    return {"scan": None, "candidates": []} if scan_id is None else _load_projected_scan(scan_id)
 
 
 @router.get("/api/oversold-v2/scans/{scan_id}")
 def scan_detail(scan_id: UUID) -> dict[str, Any]:
-    return _scan_detail(scan_id)
+    return _load_projected_scan(scan_id)
 
 
 @router.post("/api/oversold-v2/run", status_code=202)
 async def run_scan(
     background_tasks: BackgroundTasks,
+    background: bool = Query(True),
     min_drop_pct: float = Query(DEFAULT_MIN_DROP_PCT, ge=5, le=90),
     candidate_limit: int = Query(DEFAULT_CANDIDATE_LIMIT, ge=1, le=MAX_CANDIDATE_LIMIT),
 ) -> dict[str, Any]:
-    scan_id = _create_scan(min_drop_pct, candidate_limit)
-    background_tasks.add_task(execute_scan, scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
-    return {"status": "running", "scan_id": scan_id}
+    scan_id, status, duplicate = _create_or_reuse_scan(min_drop_pct, candidate_limit)
+    if duplicate:
+        return {
+            "status": status,
+            "scan_id": scan_id,
+            "duplicate": True,
+            "cooldown_seconds": PUBLIC_MANUAL_COOLDOWN_SECONDS,
+        }
+    if background:
+        background_tasks.add_task(
+            execute_canonical_scan,
+            scan_id,
+            min_drop_pct=min_drop_pct,
+            candidate_limit=candidate_limit,
+        )
+        return {"status": "running", "scan_id": scan_id, "duplicate": False}
+    await execute_canonical_scan(scan_id, min_drop_pct=min_drop_pct, candidate_limit=candidate_limit)
+    return _load_projected_scan(scan_id)
 
 
 @router.get("/api/oversold-v2/chatgpt-prompt")
 def chatgpt_prompt(scan_id: UUID | None = None) -> dict[str, Any]:
-    _ensure_schema()
     if scan_id is None:
         with connection() as conn:
             with conn.cursor() as cur:
-                cur.execute("SELECT id FROM or2_scans WHERE status='completed' ORDER BY started_at DESC LIMIT 1")
+                cur.execute("SELECT id FROM or_scans WHERE status='completed' ORDER BY started_at DESC LIMIT 1")
                 row = cur.fetchone()
             conn.rollback()
         if not row:
-            raise HTTPException(404, "No completed Oversold V2 scan available")
+            raise HTTPException(404, "No completed Oversold scan is available")
         scan_id = row["id"]
-    detail = _scan_detail(scan_id)
-    return {"scan_id": scan_id, "candidate_count": min(10, len(detail.get("candidates") or [])), "prompt": _build_chatgpt_prompt(detail)}
+
+    detail = _load_projected_scan(scan_id, limit=10)
+    if not detail.get("scan") or detail["scan"].get("status") != "completed":
+        raise HTTPException(409, "The selected scan is not complete")
+    if not detail.get("candidates"):
+        raise HTTPException(404, "The completed scan has no researchable candidates")
+
+    full_prompt = _build_chatgpt_prompt(detail)
+    launch_prompt = _build_launch_prompt(detail)
+    return {
+        "scan_id": scan_id,
+        "candidate_count": min(10, len(detail.get("candidates") or [])),
+        "prompt": full_prompt,
+        "launch_prompt": launch_prompt,
+        "prompt_length": len(full_prompt),
+        "launch_prompt_length": len(launch_prompt),
+        "launch_prompt_limit": CHATGPT_LAUNCH_MAX_CHARS,
+    }
