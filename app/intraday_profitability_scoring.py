@@ -1,9 +1,9 @@
-"""Stable public contract for the robust Intraday Profitability v2 scorer.
+"""Reliability-first public contract for the Intraday Opportunity scanner.
 
-The scanner was originally released against the v1 field contract. The v2
-implementation deliberately lives in a separate module; this adapter preserves
-all scanner-facing names and evidence fields while delegating the actual
-liquidity, feature and ranking logic to the hardened implementation.
+The underlying feature engine remains intentionally transparent.  This adapter
+adds execution gates, preserves the established scanner/database contract and,
+most importantly, prevents an unvalidated structural score from being presented
+as a probability or a demonstrated trading edge.
 """
 from __future__ import annotations
 
@@ -13,21 +13,66 @@ from typing import Any, Iterable
 
 from . import intraday_profitability_scoring_v2 as _impl
 
-SCORING_VERSION = _impl.SCORING_VERSION
+SCORING_VERSION = "ip-reliability-v3.0"
+MODEL_AUDIT_VERSION = "ip-reliability-v3.0"
 TARGET_DEFINITION = (
-    "Positive net directional return over the next 120 regular-session minutes "
-    "after all signal inputs are complete."
+    "Research-only prioritisation of executable directional hypotheses over the "
+    "next 120 regular-session minutes; no calibrated probability or validated "
+    "positive net edge is claimed."
 )
 MIN_BARS = _impl.MIN_BARS
 MAX_BAR_GAP_RATIO = _impl.MAX_BAR_GAP_RATIO
 MAX_EFFECTIVE_QUOTE_AGE_SECONDS = 60.0
 MAX_EFFECTIVE_TRADE_AGE_SECONDS = 90.0
+ANALYSIS_PRIORITY_CAP = 74.0
 parse_timestamp = _impl._parse_dt
 benchmark_returns = _impl.benchmark_returns
+
+# Frozen audit evidence.  These are not fitted return forecasts: they are the
+# external-holdout results used to prevent the scanner from overstating itself.
+_AUDIT_BY_SETUP: dict[tuple[str, str], dict[str, Any]] = {
+    ("LONG", "CONTINUATION"): {
+        "holdout_n": 6_311,
+        "holdout_days": 40,
+        "holdout_hit_rate": 0.4204,
+        "holdout_mean_net_pct": -0.1340,
+        "empirical_penalty": 16.0,
+        "status": "FAILED_EXTERNAL_HOLDOUT",
+    },
+    ("SHORT", "CONTINUATION"): {
+        "holdout_n": 6_885,
+        "holdout_days": 40,
+        "holdout_hit_rate": 0.4688,
+        "holdout_mean_net_pct": -0.0283,
+        "empirical_penalty": 11.0,
+        "status": "FAILED_EXTERNAL_HOLDOUT",
+    },
+    ("LONG", "REVERSION"): {
+        "holdout_n": 12,
+        "holdout_days": 9,
+        "holdout_hit_rate": 0.0,
+        "holdout_mean_net_pct": -0.6204,
+        "empirical_penalty": 24.0,
+        "status": "INSUFFICIENT_AND_UNSTABLE",
+    },
+    ("SHORT", "REVERSION"): {
+        "holdout_n": 18,
+        "holdout_days": 15,
+        "holdout_hit_rate": 0.5556,
+        "holdout_mean_net_pct": 0.1632,
+        "empirical_penalty": 21.0,
+        "status": "INSUFFICIENT_AND_UNSTABLE",
+    },
+}
 
 
 def clamp(value: float, low: float = 0.0, high: float = 100.0) -> float:
     return _impl._clip(float(value), float(low), float(high))
+
+
+def _finite(value: Any, default: float = 0.0) -> float:
+    number = _impl._finite(value, default)
+    return float(default if number is None else number)
 
 
 def _section(snapshot: dict[str, Any], *names: str) -> dict[str, Any]:
@@ -93,7 +138,6 @@ def normalise_bars(
     *,
     evidence_cutoff: datetime | None = None,
 ) -> list[dict[str, Any]]:
-    """Expose the original public bar schema for compatibility and audits."""
     cutoff = evidence_cutoff or datetime.max.replace(tzinfo=UTC)
     compact: list[dict[str, Any]] = []
     for raw in raw_bars:
@@ -149,23 +193,19 @@ def snapshot_liquidity_record(
         min_prev_dollar_volume=min_prev_dollar_volume,
         min_current_dollar_volume=min_current_dollar_volume,
         max_spread_bps=max_spread_bps,
-        max_quote_age_seconds=min(
-            float(max_quote_age_seconds),
-            MAX_EFFECTIVE_QUOTE_AGE_SECONDS,
-        ),
+        max_quote_age_seconds=min(float(max_quote_age_seconds), MAX_EFFECTIVE_QUOTE_AGE_SECONDS),
     )
     if record is None:
         return None
 
-    if float(record.get("trade_age_seconds") or math.inf) > MAX_EFFECTIVE_TRADE_AGE_SECONDS:
+    trade_age = _finite(record.get("trade_age_seconds"), math.inf)
+    if trade_age > MAX_EFFECTIVE_TRADE_AGE_SECONDS:
         return None
-    midpoint = (float(record["bid"]) + float(record["ask"])) / 2.0
-    trade_midpoint_dislocation_bps = (
-        abs(float(record["last_price"]) - midpoint) / midpoint * 10_000.0
-        if midpoint > 0
-        else math.inf
-    )
-    dislocation_limit_bps = max(50.0, float(record["spread_bps"]) * 8.0)
+    midpoint = (_finite(record.get("bid")) + _finite(record.get("ask"))) / 2.0
+    if midpoint <= 0:
+        return None
+    trade_midpoint_dislocation_bps = abs(_finite(record.get("last_price")) - midpoint) / midpoint * 10_000.0
+    dislocation_limit_bps = max(50.0, _finite(record.get("spread_bps")) * 8.0)
     if trade_midpoint_dislocation_bps > dislocation_limit_bps:
         return None
 
@@ -173,17 +213,16 @@ def snapshot_liquidity_record(
     daily = normalised["dailyBar"]
     trade = normalised["latestTrade"]
     quote = normalised["latestQuote"]
-    prev_volume = _impl._finite(previous.get("v"), 0.0) or 0.0
-    current_volume = _impl._finite(daily.get("v"), 0.0) or 0.0
-    daily_high = _impl._finite(daily.get("h"), record["last_price"]) or record["last_price"]
-    daily_low = _impl._finite(daily.get("l"), record["last_price"]) or record["last_price"]
-    daily_range_pct = (
-        (daily_high - daily_low) / float(record["last_price"]) * 100.0
-        if daily_high >= daily_low and float(record["last_price"]) > 0
-        else 0.0
-    )
+    prev_volume = _finite(previous.get("v"))
+    current_volume = _finite(daily.get("v"))
+    daily_high = _finite(daily.get("h"), _finite(record.get("last_price")))
+    daily_low = _finite(daily.get("l"), _finite(record.get("last_price")))
+    last_price = _finite(record.get("last_price"))
+    daily_range_pct = (daily_high - daily_low) / last_price * 100.0 if last_price > 0 and daily_high >= daily_low else 0.0
     record.update(
         {
+            "observed_trade_price": last_price,
+            "midpoint_price": midpoint,
             "prev_volume": prev_volume,
             "current_volume": current_volume,
             "daily_range_pct": daily_range_pct,
@@ -218,10 +257,7 @@ def _compat_setup_scores(features: dict[str, Any]) -> dict[str, float]:
     for direction_name, sign in (("LONG", 1), ("SHORT", -1)):
         for setup_type in ("CONTINUATION", "REVERSION"):
             directional, confirmation, _ = _impl._setup_scores(features, sign, setup_type)
-            scores[f"{direction_name}_{setup_type}"] = round(
-                0.58 * directional + 0.42 * confirmation,
-                6,
-            )
+            scores[f"{direction_name}_{setup_type}"] = round(0.58 * directional + 0.42 * confirmation, 6)
     return scores
 
 
@@ -260,12 +296,8 @@ def build_market_features(
     closes = [float(bar["c"]) for bar in bars]
     highs = [float(bar["h"]) for bar in bars]
     lows = [float(bar["l"]) for bar in bars]
-    last_price = float(result["last_price"])
-    observed_range_pct = (
-        (max(highs) - min(lows)) / last_price * 100.0
-        if highs and lows and last_price > 0
-        else 0.0
-    )
+    last_price = _finite(result.get("last_price"))
+    observed_range_pct = (max(highs) - min(lows)) / last_price * 100.0 if highs and lows and last_price > 0 else 0.0
     result.update(
         {
             "bar_start": bars[0]["t"] if bars else None,
@@ -273,11 +305,8 @@ def build_market_features(
             "realized_vol_30m_pct": _realized_window_pct(closes, 30),
             "realized_vol_60m_pct": _realized_window_pct(closes, 60),
             "window_vwap": result.get("vwap"),
-            "intraday_range_pct": max(
-                observed_range_pct,
-                float(result.get("daily_range_pct") or 0.0),
-            ),
-            "trend_efficiency": float(result.get("trend_efficiency_30") or 0.0),
+            "intraday_range_pct": max(observed_range_pct, _finite(result.get("daily_range_pct"))),
+            "trend_efficiency": _finite(result.get("trend_efficiency_30")),
             "benchmark_return_5m_pct": benchmark_returns.get("return_5m_pct"),
             "benchmark_return_15m_pct": benchmark_returns.get("return_15m_pct"),
             "benchmark_return_30m_pct": benchmark_returns.get("return_30m_pct"),
@@ -288,12 +317,9 @@ def build_market_features(
     return result
 
 
-def _additional_execution_penalties(
-    record: dict[str, Any],
-    row: dict[str, Any],
-) -> list[tuple[str, float]]:
+def _execution_penalties(record: dict[str, Any], row: dict[str, Any]) -> list[tuple[str, float]]:
     penalties: list[tuple[str, float]] = []
-    elapsed = float(record.get("session_elapsed_minutes") or 390.0)
+    elapsed = _finite(record.get("session_elapsed_minutes"), 390.0)
     if elapsed < 15.0:
         penalties.append(("opening price discovery remains unusually unstable", 12.0))
     elif elapsed < 30.0:
@@ -311,79 +337,129 @@ def _additional_execution_penalties(
     return penalties
 
 
-def _apply_additional_penalties(
-    record: dict[str, Any],
-    row: dict[str, Any],
-) -> dict[str, Any]:
-    row = dict(row)
-    evidence = dict(row.get("evidence") or {})
-    existing_labels = list(evidence.get("penalties") or [])
-    extra = _additional_execution_penalties(record, row)
-    extra_total = sum(value for _, value in extra)
-    if extra_total:
-        row["profitability_score"] = clamp(
-            float(row.get("profitability_score") or 0.0) - extra_total
-        )
-        labels = existing_labels + [label for label, _ in extra]
-        evidence["penalties"] = list(dict.fromkeys(labels))
-        evidence["penalty_total"] = float(evidence.get("penalty_total") or 0.0) + extra_total
-        evidence["execution_reliability_penalty"] = extra_total
-        row["rationale"] = (
-            str(row.get("rationale") or "").rstrip(".")
-            + ". Execution cautions: "
-            + "; ".join(label for label, _ in extra)
-            + "."
-        )
+def _structural_priority(row: dict[str, Any], data_quality: float) -> tuple[float, float, float]:
+    directional_floor = min(_finite(row.get("directional_score")), _finite(row.get("confirmation_score")))
+    execution_floor = min(_finite(row.get("liquidity_score")), _finite(row.get("execution_score")))
+    movement_opportunity = _finite(row.get("opportunity_score"))
+    structural = (
+        0.42 * directional_floor
+        + 0.25 * movement_opportunity
+        + 0.23 * execution_floor
+        + 0.10 * data_quality
+    )
+    return clamp(structural), clamp(directional_floor), clamp(execution_floor)
 
-    score = float(row.get("profitability_score") or 0.0)
-    data_quality = float(evidence.get("data_quality_score") or record.get("data_quality_score") or 0.0)
-    edge_to_cost = float(evidence.get("edge_to_cost_ratio") or 0.0)
-    setup_margin = float(evidence.get("setup_margin") or 0.0)
-    if score >= 76.0 and data_quality >= 90.0 and edge_to_cost >= 5.0 and setup_margin >= 2.0 and extra_total < 10.0:
-        row["initial_view"] = "INVESTIGATE"
-    elif score >= 62.0:
-        row["initial_view"] = "WATCH"
+
+def _apply_reliability_policy(record: dict[str, Any], raw_row: dict[str, Any]) -> dict[str, Any]:
+    row = dict(raw_row)
+    evidence = dict(row.get("evidence") or {})
+    labels = list(evidence.get("penalties") or [])
+    data_quality = _finite(evidence.get("data_quality_score"), _finite(record.get("data_quality_score")))
+    setup_key = (str(row.get("direction")), str(row.get("setup_type")))
+    audit = dict(_AUDIT_BY_SETUP.get(setup_key) or {})
+    execution_penalties = _execution_penalties(record, row)
+    execution_penalty = sum(value for _, value in execution_penalties)
+    empirical_penalty = _finite(audit.get("empirical_penalty"), 25.0)
+
+    structural, directional_evidence, execution_quality = _structural_priority(row, data_quality)
+    setup_margin = _finite(evidence.get("setup_margin"))
+    ambiguity_penalty = max(0.0, 6.0 - setup_margin) * 1.25
+    priority = clamp(
+        structural - execution_penalty - empirical_penalty - ambiguity_penalty,
+        0.0,
+        ANALYSIS_PRIORITY_CAP,
+    )
+
+    if row.get("direction") == "LONG":
+        executable_reference = _finite(record.get("ask"), _finite(record.get("last_price")))
+        reference_definition = "current SIP ask; next-minute open tracked separately"
     else:
-        row["initial_view"] = "PASS"
+        executable_reference = _finite(record.get("bid"), _finite(record.get("last_price")))
+        reference_definition = "current SIP bid; next-minute open tracked separately"
+    if executable_reference > 0:
+        row["last_price"] = executable_reference
+
+    labels.extend(label for label, _ in execution_penalties)
+    labels.append("no registered generic rule passed the frozen robustness gate")
+    if audit.get("status") == "FAILED_EXTERNAL_HOLDOUT":
+        labels.append("the matching generic setup family had negative mean net return in the external holdout")
+    else:
+        labels.append("the matching reversal family had insufficient and unstable historical support")
+
+    if priority >= 55.0 and data_quality >= 90.0 and execution_quality >= 75.0 and setup_margin >= 4.0:
+        initial_view = "ANALYSE ONLY"
+    elif priority >= 38.0:
+        initial_view = "LOW PRIORITY"
+    else:
+        initial_view = "PASS"
+
+    evidence.update(
+        {
+            "scoring_version": SCORING_VERSION,
+            "model_audit_version": MODEL_AUDIT_VERSION,
+            "score_interpretation": "analysis priority, not probability or expected return",
+            "analysis_priority_score": priority,
+            "movement_opportunity_score": _finite(row.get("opportunity_score")),
+            "directional_evidence_score": directional_evidence,
+            "execution_quality_score": execution_quality,
+            "data_quality_score": data_quality,
+            "empirical_reliability_score": 0.0,
+            "reliability_label": "NO VALIDATED EDGE",
+            "validation_status": "RESEARCH_ONLY",
+            "trade_gate": "BLOCKED",
+            "trade_gate_reason": "zero robust registered candidates passed; generic families failed or lacked sufficient external-holdout support",
+            "registered_robust_candidates_tested": 23,
+            "registered_robust_candidates_passed": 0,
+            "historical_holdout_n": int(audit.get("holdout_n") or 0),
+            "historical_holdout_days": int(audit.get("holdout_days") or 0),
+            "historical_holdout_hit_rate": audit.get("holdout_hit_rate"),
+            "historical_holdout_mean_net_pct": audit.get("holdout_mean_net_pct"),
+            "historical_setup_status": audit.get("status", "UNSUPPORTED"),
+            "empirical_penalty": empirical_penalty,
+            "execution_reliability_penalty": execution_penalty,
+            "ambiguity_penalty_v3": ambiguity_penalty,
+            "reference_price_definition": reference_definition,
+            "observed_trade_price": _finite(record.get("observed_trade_price"), _finite(record.get("last_price"))),
+            "reference_price": executable_reference,
+            "penalties": list(dict.fromkeys(labels)),
+            "penalty_total": _finite(evidence.get("penalty_total")) + execution_penalty + empirical_penalty + ambiguity_penalty,
+        }
+    )
+    row["profitability_score"] = priority
+    row["initial_view"] = initial_view
     row["evidence"] = evidence
+    row["rationale"] = (
+        f"Research priority {priority:.1f}/100: directional evidence {directional_evidence:.0f}, "
+        f"movement opportunity {_finite(row.get('opportunity_score')):.0f}, execution quality {execution_quality:.0f} "
+        f"and data quality {data_quality:.0f}. The {row.get('direction')} {str(row.get('setup_type')).lower()} "
+        "is a hypothesis for catalyst review only; the matching generic family has no validated positive net two-hour edge."
+    )
     return row
 
 
-def _rank_record_options(
-    record: dict[str, Any],
-    direction_filter: str,
-) -> list[dict[str, Any]]:
+def _rank_direction_options(record: dict[str, Any], direction_filter: str) -> list[dict[str, Any]]:
     options: list[dict[str, Any]] = []
     if direction_filter in {"both", "long"}:
-        options.extend(
-            _apply_additional_penalties(record, row)
-            for row in _impl.rank_market_records([record], direction_filter="long")
-        )
+        options.extend(_apply_reliability_policy(record, row) for row in _impl.rank_market_records([record], direction_filter="long"))
     if direction_filter in {"both", "short"} and record.get("shortable") is not False:
-        options.extend(
-            _apply_additional_penalties(record, row)
-            for row in _impl.rank_market_records([record], direction_filter="short")
-        )
+        options.extend(_apply_reliability_policy(record, row) for row in _impl.rank_market_records([record], direction_filter="short"))
     return options
 
 
-def rank_market_records(
-    records: list[dict[str, Any]],
-    *,
-    direction_filter: str = "both",
-) -> list[dict[str, Any]]:
+def rank_market_records(records: list[dict[str, Any]], *, direction_filter: str = "both") -> list[dict[str, Any]]:
     if direction_filter not in {"both", "long", "short"}:
         raise ValueError("direction_filter must be 'both', 'long', or 'short'")
 
     ranked: list[dict[str, Any]] = []
     for record in records:
-        options = _rank_record_options(record, direction_filter)
+        options = _rank_direction_options(record, direction_filter)
         if not options:
             continue
         options.sort(
             key=lambda row: (
-                float(row.get("profitability_score") or 0.0),
-                float(row.get("execution_score") or 0.0),
+                _finite(row.get("profitability_score")),
+                _finite((row.get("evidence") or {}).get("directional_evidence_score")),
+                _finite(row.get("execution_score")),
             ),
             reverse=True,
         )
@@ -391,9 +467,10 @@ def rank_market_records(
 
     ranked.sort(
         key=lambda row: (
-            float(row.get("profitability_score") or 0.0),
-            float(row.get("execution_score") or 0.0),
-            float(row.get("prev_dollar_volume") or 0.0),
+            _finite(row.get("profitability_score")),
+            _finite((row.get("evidence") or {}).get("directional_evidence_score")),
+            _finite(row.get("execution_score")),
+            _finite(row.get("prev_dollar_volume")),
         ),
         reverse=True,
     )
@@ -403,21 +480,16 @@ def rank_market_records(
         evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
         row.update(
             {
-                "edge_to_cost_ratio": round(float(evidence.get("edge_to_cost_ratio") or 0.0), 6),
-                "data_quality_score": round(
-                    float(evidence.get("data_quality_score") or row.get("data_quality_score") or 0.0),
-                    6,
-                ),
+                "edge_to_cost_ratio": round(_finite(evidence.get("edge_to_cost_ratio")), 6),
+                "data_quality_score": round(_finite(evidence.get("data_quality_score")), 6),
                 "penalties": {
                     "labels": list(evidence.get("penalties") or []),
-                    "penalty_total": round(float(evidence.get("penalty_total") or 0.0), 6),
-                    "ambiguity_penalty": round(float(evidence.get("ambiguity_penalty") or 0.0), 6),
-                    "chase_ratio": round(float(evidence.get("chase_ratio") or 0.0), 6),
-                    "vwap_sigma": round(float(evidence.get("vwap_sigma") or 0.0), 6),
-                    "execution_reliability_penalty": round(
-                        float(evidence.get("execution_reliability_penalty") or 0.0),
-                        6,
-                    ),
+                    "penalty_total": round(_finite(evidence.get("penalty_total")), 6),
+                    "ambiguity_penalty": round(_finite(evidence.get("ambiguity_penalty_v3")), 6),
+                    "chase_ratio": round(_finite(evidence.get("chase_ratio")), 6),
+                    "vwap_sigma": round(_finite(evidence.get("vwap_sigma")), 6),
+                    "execution_reliability_penalty": round(_finite(evidence.get("execution_reliability_penalty")), 6),
+                    "empirical_penalty": round(_finite(evidence.get("empirical_penalty")), 6),
                 },
                 "scoring_version": SCORING_VERSION,
                 "target_definition": TARGET_DEFINITION,

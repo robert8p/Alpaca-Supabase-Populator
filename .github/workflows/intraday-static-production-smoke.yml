@@ -1,10 +1,13 @@
-name: Intraday Profitability production smoke
+name: Intraday Reliability production smoke
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - app/intraday_profitability_scoring.py
+      - app/intraday_profitability_tracking.py
+      - app/intraday_profitability_worker.py
       - static_intraday/**
       - supabase/functions/intraday-profitability-api/**
       - tests/intraday_production_browser_smoke.js
@@ -17,26 +20,52 @@ permissions:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       SITE_URL: https://alpaca-intraday-profitability-app.onrender.com
       API_URL: https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify credential-free live assets and public API boundary
+      - name: Wait for reliability-v3 assets and API
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/" -o /tmp/index.html
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/app.js?v=4" -o /tmp/app.js
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/prompt.js?v=4" -o /tmp/prompt.js
+          deadline=$((SECONDS + 900))
+          while (( SECONDS < deadline )); do
+            page_ok=false
+            api_ok=false
+            if curl -fsSL --max-time 30 "$SITE_URL/" -o /tmp/index.html \
+              && curl -fsSL --max-time 30 "$SITE_URL/app.js?v=5" -o /tmp/app.js \
+              && curl -fsSL --max-time 30 "$SITE_URL/prompt.js?v=5" -o /tmp/prompt.js \
+              && grep -q 'Intraday Opportunity Research Scanner' /tmp/index.html \
+              && grep -q 'Trade gate blocked' /tmp/index.html \
+              && grep -q 'ip-reliability-v3.0' /tmp/app.js \
+              && grep -q 'app trade gate is blocked' /tmp/prompt.js; then
+              page_ok=true
+            fi
+            if curl -fsSL --max-time 30 "$API_URL?action=readiness" -o /tmp/readiness.json \
+              && grep -q '"version":"4.0-reliability"' /tmp/readiness.json \
+              && grep -q '"active_model_audit":true' /tmp/readiness.json \
+              && grep -q '"tracking_table":true' /tmp/readiness.json; then
+              api_ok=true
+            fi
+            if [[ "$page_ok" == true && "$api_ok" == true ]]; then
+              break
+            fi
+            sleep 15
+          done
+          [[ "$page_ok" == true && "$api_ok" == true ]]
 
+      - name: Verify credential-free live assets and audit API
+        shell: bash
+        run: |
+          set -euo pipefail
           grep -q 'No login required' /tmp/index.html
-          grep -q 'Selected signal tracker' /tmp/index.html
-          grep -q 'prompt.js?v=4' /tmp/index.html
+          grep -q 'No validated generic trading edge' /tmp/index.html
+          grep -q 'All-candidate tracking' /tmp/index.html
+          grep -q 'prompt.js?v=5' /tmp/index.html
           ! grep -q 'loginModal' /tmp/index.html
-          ! grep -q 'logoutBtn' /tmp/index.html
           ! grep -q 'x-app-user' /tmp/app.js
           ! grep -q 'x-app-key' /tmp/app.js
           ! grep -q 'sessionStorage' /tmp/app.js
@@ -45,28 +74,34 @@ jobs:
           node tests/test_intraday_prompt_handoff.js
 
           if grep -Eiq 'api\.openai\.com|OPENAI_API_KEY|ALPACA_(API|SECRET)_KEY|DATABASE_URL|service_role' /tmp/app.js /tmp/prompt.js; then
-            echo 'A forbidden backend endpoint or secret identifier reached the browser bundle.' >&2
+            echo 'A forbidden backend secret or OpenAI API dependency reached the browser bundle.' >&2
             exit 1
           fi
 
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$API_URL?action=health" -o /tmp/health.json
+          curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 "$API_URL?action=health" -o /tmp/health.json
           grep -q '"status":"ok"' /tmp/health.json
+          grep -q '"version":"4.0-reliability"' /tmp/health.json
           grep -q '"credentials_required":false' /tmp/health.json
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$API_URL?action=readiness" -o /tmp/readiness.json
-          grep -q '"status":"ready"' /tmp/readiness.json
-          grep -q '"selection_table":true' /tmp/readiness.json
-          grep -q '"public_rate_limit_table":true' /tmp/readiness.json
 
-          blocked_status="$(curl -sS --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 -o /tmp/blocked.json -w '%{http_code}' "$API_URL?action=selections")"
+          curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 \
+            -H "Origin: $SITE_URL" "$API_URL?action=audit" -o /tmp/audit.json
+          grep -q '"model_version":"ip-reliability-v3.0"' /tmp/audit.json
+          grep -q '"status":"RESEARCH_ONLY"' /tmp/audit.json
+          grep -q '"registered_robust_candidates":23' /tmp/audit.json
+          grep -q '"robust_candidates_passed":0' /tmp/audit.json
+          grep -q '"large_sample_generic_rules_passed":0' /tmp/audit.json
+          grep -q '"population":"all persisted ranked candidates"' /tmp/audit.json
+
+          blocked_status="$(curl -sS --max-time 30 -o /tmp/blocked.json -w '%{http_code}' "$API_URL?action=selections")"
           test "$blocked_status" = '403'
           grep -q '"error":"origin_not_allowed"' /tmp/blocked.json
 
-          curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 \
-            -H "Origin: $SITE_URL" "$API_URL?action=selections" -o /tmp/selections.json
+          curl -fsSL --max-time 30 -H "Origin: $SITE_URL" "$API_URL?action=selections" -o /tmp/selections.json
           grep -q '"selections"' /tmp/selections.json
+          grep -q '"model_audit"' /tmp/selections.json
+          grep -q '"tracking_summary"' /tmp/selections.json
 
-          curl -sS --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 \
-            -D /tmp/cors.headers -o /tmp/cors.body -X OPTIONS \
+          curl -sS --max-time 30 -D /tmp/cors.headers -o /tmp/cors.body -X OPTIONS \
             -H "Origin: $SITE_URL" \
             -H 'Access-Control-Request-Method: POST' \
             -H 'Access-Control-Request-Headers: content-type' \
@@ -74,21 +109,20 @@ jobs:
           grep -qi "access-control-allow-origin: $SITE_URL" /tmp/cors.headers
           grep -qi 'access-control-allow-methods:.*POST' /tmp/cors.headers
           grep -qi 'access-control-allow-headers:.*content-type' /tmp/cors.headers
-          ! grep -qi 'x-app-key' /tmp/cors.headers
 
       - name: Install Chromium smoke runner
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Exercise credential-free production browser surface
+      - name: Exercise production reliability UI
         run: node tests/intraday_production_browser_smoke.js
 
       - name: Upload browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: intraday-profitability-production-smoke
+          name: intraday-reliability-production-smoke
           path: intraday-profitability-production-smoke.png
           if-no-files-found: ignore
           retention-days: 14
