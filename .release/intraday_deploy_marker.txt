@@ -1,3 +1,4 @@
 Intraday Profitability production deployment
 Bootstrap commit: 23bee976aac3258119f8a0c4e54c970100798434
 Release SHA256: 23ffef7166d98824a9baec443fa589417d6a13137c0668ba5497a1de693f2bfb
+Deployment path: conventional PR merge webhook
