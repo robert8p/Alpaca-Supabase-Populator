@@ -1,0 +1,61 @@
+name: Intraday Profitability production smoke
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - app/intraday_profitability.py
+      - app/intraday_profitability_scoring.py
+      - app/templates/intraday_profitability.html
+      - app/static/intraday_profitability.js
+      - app/main/**
+      - render.yaml
+      - .github/workflows/intraday-production-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: intraday-profitability-production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_URL: https://alpaca-rapid-discovery-web.onrender.com
+    steps:
+      - name: Verify health, protected route, and released JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          deadline=$((SECONDS + 1080))
+          headers="$(mktemp)"
+          body="$(mktemp)"
+          trap 'rm -f "$headers" "$body"' EXIT
+
+          while (( SECONDS < deadline )); do
+            health_code="$(curl -sS --connect-timeout 10 --max-time 30 -o /dev/null -w '%{http_code}' "$BASE_URL/health" || true)"
+            route_code="$(curl -sS --connect-timeout 10 --max-time 30 -D "$headers" -o "$body" -w '%{http_code}' "$BASE_URL/intraday-profitability" || true)"
+            static_code="$(curl -sS --connect-timeout 10 --max-time 30 -o /dev/null -w '%{http_code}' "$BASE_URL/static/intraday_profitability.js" || true)"
+
+            printf 'health=%s route=%s static=%s\n' "$health_code" "$route_code" "$static_code"
+
+            if [[ "$health_code" == "200" \
+               && "$route_code" == "401" \
+               && "$static_code" == "200" ]] \
+               && grep -qi '^www-authenticate: Basic' "$headers"; then
+              echo "Intraday Profitability is operational and protected in production."
+              exit 0
+            fi
+
+            sleep 15
+          done
+
+          echo "Production smoke test did not pass before the deadline." >&2
+          echo "Last route response:" >&2
+          cat "$body" >&2 || true
+          exit 1
