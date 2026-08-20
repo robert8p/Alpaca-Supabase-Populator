@@ -10,6 +10,38 @@ def test_legacy_sec_acceptance_timestamp_is_eastern_not_utc() -> None:
     assert parsed == datetime(2026, 8, 20, 20, 0, tzinfo=UTC)
 
 
+def test_main_filing_document_is_preferred_before_exhibits() -> None:
+    rows = [
+        {
+            "sequence": "2",
+            "description": "Material agreement",
+            "document": "ex10-1.htm",
+            "href": "ex10-1.htm",
+            "type": "EX-10.1",
+        },
+        {
+            "sequence": "1",
+            "description": "Quarterly report",
+            "document": "issuer-10q.xhtml",
+            "href": "issuer-10q.xhtml",
+            "type": "10-Q",
+        },
+        {
+            "sequence": "3",
+            "description": "Certification",
+            "document": "ex31-1.htm",
+            "href": "ex31-1.htm",
+            "type": "EX-31.1",
+        },
+    ]
+    selected = evidence._select_documents(
+        rows,
+        primary_document="different-filename.htm",
+        form="10-Q",
+    )
+    assert [row["document"] for row in selected] == ["issuer-10q.xhtml", "ex10-1.htm"]
+
+
 def test_fda_summary_uses_only_cutoff_dated_submission_history() -> None:
     payload = {
         "results": [
