@@ -39,6 +39,7 @@ from .oversold_three_session_reliability import patch_score_store as _patch_thre
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
 from .oversold_three_session_target_compat import patch_module as _patch_target_marker
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
+from .oversold_v2_session_filter import patch_module as _patch_v2_session_filter
 
 _patch_primary_evidence_compat(_oversold_primary_evidence)
 _patch_clinicaltrials_search(_oversold_regulatory_v2)
@@ -92,6 +93,7 @@ _patch_tracking_day3(_oversold_tracking)
 # of pure pytest collection, matching the existing application's isolation model.
 if "pytest" not in sys.modules:
     from . import oversold as _oversold_scan
+    from . import oversold_v2 as _oversold_v2
     from .oversold_primary_evidence_runtime import patch_module as _patch_primary_evidence_runtime
     from .oversold_scan_v33 import patch_module as _patch_scan_v33
     from .oversold_scan_v33_compat import patch_module as _patch_scan_v33_compat
@@ -99,6 +101,7 @@ if "pytest" not in sys.modules:
     _patch_scan_v33_compat(_oversold_scan)
     _patch_scan_v33(_oversold_scan)
     _patch_primary_evidence_runtime(_oversold_scan)
+    _patch_v2_session_filter(_oversold_v2)
 
     # Patch evaluation before the scheduler imports its function references.
     from . import oversold_evaluation as _oversold_evaluation
