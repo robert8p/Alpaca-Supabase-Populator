@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-"""Point-in-time evaluation utilities for Oversold Reversion scoring models.
+"""Point-in-time evaluation utilities for Oversold Reversion.
 
-Original evidence snapshots are immutable.  Historical v3.2 comparisons write a
-separate ``run_kind='rescore'`` model run against the same evidence snapshot and
-never mutate the original candidate/model/evidence rows.
+Historical comparisons are append-only: v3.2 rescores the immutable Evidence
+Snapshot used by the original signal, never today's data and never the original
+model row. Snapshots whose ORIGINAL run is already v3.2 are deliberately skipped;
+there is no analytical value in storing a duplicate v3.2 rescore of a v3.2 signal.
 """
 
 from collections import defaultdict
@@ -59,8 +60,7 @@ def _pr_auc(rows: list[dict[str, Any]], score_key: str = "score") -> float | Non
     if not positives:
         return None
     ordered = sorted(rows, key=lambda row: float(row[score_key]), reverse=True)
-    tp = 0
-    fp = 0
+    tp = fp = 0
     previous_recall = 0.0
     area = 0.0
     for row in ordered:
@@ -87,13 +87,18 @@ def _bucket_metrics(rows: list[dict[str, Any]], key: str) -> dict[str, dict[str,
             "n": len(values),
             "plus_5_hit_rate": hits / len(values) if values else None,
             "plus_10_hit_rate": plus10 / len(values) if values else None,
-            "mean_mfe_6w": _mean([value for row in values if (value := _num(row.get("mfe_6w"))) is not None]),
-            "mean_mae_6w": _mean([value for row in values if (value := _num(row.get("mae_6w"))) is not None]),
+            "mean_mfe_6w": _mean([v for row in values if (v := _num(row.get("mfe_6w"))) is not None]),
+            "mean_mae_6w": _mean([v for row in values if (v := _num(row.get("mae_6w"))) is not None]),
         }
     return output
 
 
-def evaluation_report(*, model_version: str = SCORING_MODEL_VERSION, config_version: str = SCORING_CONFIG_VERSION, run_kind: str = "original") -> dict[str, Any]:
+def evaluation_report(
+    *,
+    model_version: str = SCORING_MODEL_VERSION,
+    config_version: str = SCORING_CONFIG_VERSION,
+    run_kind: str = "original",
+) -> dict[str, Any]:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -117,7 +122,7 @@ def evaluation_report(*, model_version: str = SCORING_MODEL_VERSION, config_vers
 
     for row in rows:
         analysis = row.get("catalyst_analysis") or {}
-        row["event_profile"] = analysis.get("event_profile") or "unknown"
+        row["event_profile"] = analysis.get("event_taxonomy_primary") or analysis.get("event_profile") or "unknown"
         row["cause_status"] = analysis.get("cause_verification_status") or ("VERIFIED" if analysis.get("cause_verified") else "UNVERIFIED")
         spike = analysis.get("spike_adjustment") or {}
         financing = analysis.get("dilution_analysis") or {}
@@ -130,13 +135,10 @@ def evaluation_report(*, model_version: str = SCORING_MODEL_VERSION, config_vers
     watch = [row for row in rows if row.get("verdict") == "WATCH"]
     passed = [row for row in rows if row.get("verdict") == "PASS"]
     calibrated = [row for row in rows if _num(row.get("calibrated_probability")) is not None]
-    brier = None
-    if calibrated:
-        brier = _mean([
-            (float(row["calibrated_probability"]) - (1.0 if row["target"] else 0.0)) ** 2
-            for row in calibrated
-        ])
-
+    brier = _mean([
+        (float(row["calibrated_probability"]) - (1.0 if row["target"] else 0.0)) ** 2
+        for row in calibrated
+    ]) if calibrated else None
     return {
         "scoring_model_version": model_version,
         "scoring_config_version": config_version,
@@ -144,9 +146,9 @@ def evaluation_report(*, model_version: str = SCORING_MODEL_VERSION, config_vers
         "sample_size": len(rows),
         "plus_5_hit_rate": hits / len(rows) if rows else None,
         "plus_10_hit_rate": plus10 / len(rows) if rows else None,
-        "mean_mfe_6w": _mean([value for row in rows if (value := _num(row.get("mfe_6w"))) is not None]),
-        "mean_mae_6w": _mean([value for row in rows if (value := _num(row.get("mae_6w"))) is not None]),
-        "mean_close_6w": _mean([value for row in rows if (value := _num(row.get("return_6w"))) is not None]),
+        "mean_mfe_6w": _mean([v for row in rows if (v := _num(row.get("mfe_6w"))) is not None]),
+        "mean_mae_6w": _mean([v for row in rows if (v := _num(row.get("mae_6w"))) is not None]),
+        "mean_close_6w": _mean([v for row in rows if (v := _num(row.get("return_6w"))) is not None]),
         "roc_auc_raw_score": _auc(rows),
         "pr_auc_raw_score": _pr_auc(rows),
         "brier_score_if_calibrated": brier,
@@ -181,11 +183,6 @@ def _reconstruct_candidate(row: dict[str, Any]) -> tuple[dict[str, Any], list[di
 
 
 def rescore_historical_snapshots(*, limit: int = 500) -> dict[str, int]:
-    """Append v3.2 rescores against immutable original snapshots.
-
-    This function is deliberately explicit/manual; it never runs as part of a live
-    signal creation transaction and therefore cannot rewrite original rankings.
-    """
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -193,7 +190,11 @@ def rescore_historical_snapshots(*, limit: int = 500) -> dict[str, int]:
                 SELECT es.*,c.catalyst_class,c.risk_flags
                 FROM or_evidence_snapshots es
                 JOIN or_candidates c ON c.id=es.candidate_id
+                JOIN or_model_runs original
+                  ON original.evidence_snapshot_id=es.id AND original.candidate_id=es.candidate_id
+                 AND original.run_kind='original'
                 WHERE es.snapshot_kind='original'
+                  AND NOT (original.scoring_model_version=%s AND original.scoring_config_version=%s)
                   AND NOT EXISTS (
                     SELECT 1 FROM or_model_runs mr
                     WHERE mr.candidate_id=es.candidate_id AND mr.evidence_snapshot_id=es.id
@@ -201,7 +202,7 @@ def rescore_historical_snapshots(*, limit: int = 500) -> dict[str, int]:
                   )
                 ORDER BY es.signal_timestamp,es.id LIMIT %s
                 """,
-                (SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION, limit),
+                (SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION, limit),
             )
             snapshots = [dict(row) for row in cur.fetchall()]
         conn.rollback()
@@ -228,13 +229,13 @@ def rescore_historical_snapshots(*, limit: int = 500) -> dict[str, int]:
                         ON CONFLICT (candidate_id,evidence_snapshot_id,run_kind,scoring_model_version,scoring_config_version) DO NOTHING
                         """,
                         (
-                            snapshot["candidate_id"],snapshot["id"],SCORING_MODEL_VERSION,SCORING_CONFIG_VERSION,
-                            CATALYST_PROMPT_VERSION,CATALYST_SCHEMA_VERSION,TARGET_DEFINITION,
-                            score["setup_score"],score["catalyst_score"],score["resilience_score"],score["confirmation_score"],
-                            score["damage_risk"],score["evidence_confidence"],score["core_score"],score["confidence_adjusted_score"],
-                            score["damage_penalty"],score["damage_cap"],score["final_score"],score["verdict"],score["hard_veto"],
-                            score.get("hard_veto_reason"),Jsonb(score.get("missing_inputs") or []),Jsonb(score.get("catalyst_analysis") or {}),
-                            Jsonb(score.get("calculation_trace") or {}),score.get("explanation"),
+                            snapshot["candidate_id"], snapshot["id"], SCORING_MODEL_VERSION, SCORING_CONFIG_VERSION,
+                            CATALYST_PROMPT_VERSION, CATALYST_SCHEMA_VERSION, TARGET_DEFINITION,
+                            score["setup_score"], score["catalyst_score"], score["resilience_score"], score["confirmation_score"],
+                            score["damage_risk"], score["evidence_confidence"], score["core_score"], score["confidence_adjusted_score"],
+                            score["damage_penalty"], score["damage_cap"], score["final_score"], score["verdict"], score["hard_veto"],
+                            score.get("hard_veto_reason"), Jsonb(score.get("missing_inputs") or []), Jsonb(score.get("catalyst_analysis") or {}),
+                            Jsonb(score.get("calculation_trace") or {}), score.get("explanation"),
                         ),
                     )
                     inserted += max(0, cur.rowcount or 0)
@@ -253,13 +254,15 @@ def original_vs_rescore_report(*, new_model_version: str = SCORING_MODEL_VERSION
                        new.final_score AS new_score,new.verdict AS new_verdict,new.catalyst_analysis AS new_analysis,
                        so.status AS outcome_status,so.hit_plus_5pct_within_6_weeks AS target,so.mfe_6w,so.mae_6w
                 FROM or_model_runs old
-                JOIN or_model_runs new ON new.candidate_id=old.candidate_id AND new.evidence_snapshot_id=old.evidence_snapshot_id
+                JOIN or_model_runs new
+                  ON new.candidate_id=old.candidate_id AND new.evidence_snapshot_id=old.evidence_snapshot_id
                 LEFT JOIN or_signal_outcomes so ON so.candidate_id=old.candidate_id
                 WHERE old.run_kind='original' AND new.run_kind='rescore'
                   AND new.scoring_model_version=%s AND new.scoring_config_version=%s
+                  AND NOT (old.scoring_model_version=%s AND old.scoring_config_version=%s)
                 ORDER BY old.candidate_id
                 """,
-                (new_model_version, new_config_version),
+                (new_model_version, new_config_version, new_model_version, new_config_version),
             )
             rows = [dict(row) for row in cur.fetchall()]
         conn.rollback()
@@ -276,5 +279,5 @@ def original_vs_rescore_report(*, new_model_version: str = SCORING_MODEL_VERSION
         "moved_up": sum(1 for row in rows if float(row["new_score"]) > float(row["old_score"])),
         "verdict_changes": sum(1 for row in rows if row["new_verdict"] != row["old_verdict"]),
         "rows": rows,
-        "limitation": None if matured else "Paired point-in-time rescores may exist, but six-week outcomes have not matured yet; no performance superiority claim is valid yet.",
+        "limitation": None if matured else "Point-in-time rescores exist, but six-week outcomes have not matured yet; no performance-superiority claim is valid yet.",
     }
