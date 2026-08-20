@@ -278,16 +278,17 @@ def test_fundamental_quality_is_event_specific_and_checks_consistency() -> None:
     assert missing["score"] == 0
 
 
-def test_v35_positive_control_survives_robust_ensemble() -> None:
+def test_v36_positive_control_survives_robust_ensemble() -> None:
     result = score_candidate(candidate(), strong_evidence(), "B", [])
     analysis = result["catalyst_analysis"]
     robustness = analysis["robustness_assessment"]
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_5"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v7"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_6"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v8"
     assert analysis["causal_provenance_cluster_count"] >= 2
     assert analysis["event_alignment_score"] >= 60
     assert analysis["fundamental_data_quality_score"] >= 60
     assert analysis["weight_stability_score"] >= 70
+    assert analysis["subject_attribution_version"] == "subject_attribution_v1"
     assert robustness["ensemble"]["ensemble_member_count"] >= 30
     assert result["final_score"] >= 72
     assert result["verdict"] == "INVESTIGATE"

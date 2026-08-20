@@ -21,18 +21,22 @@ from app import oversold
 from app import oversold_calibration
 from app import oversold_outcome_scheduler
 from app import oversold_outcomes
+from app import oversold_v2
 from app.oversold_scoring import SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
 
-assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_5"
-assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v7"
+assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_6"
+assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v8"
 assert hasattr(oversold, "_parse_ts")
 assert getattr(oversold, "_v33_scan_installed", False) is True
 assert getattr(oversold_outcomes, "_v33_outcome_path_installed", False) is True
 assert getattr(oversold_outcomes, "_three_session_target_reliability_installed", False) is True
 assert getattr(oversold_outcome_scheduler, "_three_session_outcome_bootstrap_installed", False) is True
 assert getattr(oversold_calibration, "_v35_calibration_robustness_installed", False) is True
+assert getattr(oversold_v2, "_session_filter_installed", False) is True
 from app.oversold_scoring import public_scoring_contract
-assert public_scoring_contract()["score_semantics"]["name"] == "Robust Opportunity Score"
+contract = public_scoring_contract()
+assert contract["score_semantics"]["name"] == "Robust Opportunity Score"
+assert contract["subject_attribution"]["version"] == "subject_attribution_v1"
 print("production-bootstrap-ok")
 '''
     completed = subprocess.run(

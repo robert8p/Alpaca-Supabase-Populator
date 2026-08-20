@@ -2,8 +2,9 @@
 
 Oversold Reversion keeps every prior model reproducible. New imports resolve
 through the v3.2 economic-risk layer, the three-session target, v3.3 opportunity
-quality, v3.4 deterministic downside scenarios and the v3.5 robust ensemble.
-Original Evidence Snapshots and prior model runs remain immutable.
+quality, v3.4 deterministic downside scenarios, the v3.5 robust ensemble and
+v3.6 subject-aware causal attribution. Original Evidence Snapshots and prior
+model runs remain immutable.
 """
 
 from __future__ import annotations
@@ -32,11 +33,13 @@ from .oversold_scoring_v34_detector_tuning import patch_module as _patch_v34_det
 from .oversold_scoring_v34_tuning import patch_module as _patch_v34_tuning
 from .oversold_scoring_v35 import patch_module as _patch_v35
 from .oversold_scoring_v35_compat import patch_module as _patch_v35_compat
+from .oversold_scoring_v36_subject_attribution import patch_module as _patch_v36_subject_attribution
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
 from .oversold_three_session_target_compat import patch_module as _patch_target_marker
 from .oversold_tracking_day3 import patch_module as _patch_tracking_day3
+from .oversold_v2_session_filter import patch_module as _patch_v2_session_filter
 
 _patch_primary_evidence_compat(_oversold_primary_evidence)
 _patch_clinicaltrials_search(_oversold_regulatory_v2)
@@ -73,6 +76,7 @@ _patch_v34(_oversold_scoring)
 _patch_v34_tuning(_oversold_scoring)
 _patch_v35(_oversold_scoring)
 _patch_v35_compat(_oversold_scoring)
+_patch_v36_subject_attribution(_oversold_scoring)
 
 # Install defensive JSON normalization, primary-evidence persistence and the
 # explicit three-session target before the scanner imports the store function.
@@ -89,6 +93,7 @@ _patch_tracking_day3(_oversold_tracking)
 # of pure pytest collection, matching the existing application's isolation model.
 if "pytest" not in sys.modules:
     from . import oversold as _oversold_scan
+    from . import oversold_v2 as _oversold_v2
     from .oversold_primary_evidence_runtime import patch_module as _patch_primary_evidence_runtime
     from .oversold_scan_v33 import patch_module as _patch_scan_v33
     from .oversold_scan_v33_compat import patch_module as _patch_scan_v33_compat
@@ -96,6 +101,7 @@ if "pytest" not in sys.modules:
     _patch_scan_v33_compat(_oversold_scan)
     _patch_scan_v33(_oversold_scan)
     _patch_primary_evidence_runtime(_oversold_scan)
+    _patch_v2_session_filter(_oversold_v2)
 
     # Patch evaluation before the scheduler imports its function references.
     from . import oversold_evaluation as _oversold_evaluation
