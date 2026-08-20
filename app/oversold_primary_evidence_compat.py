@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-"""Point-in-time compatibility hardening for primary event evidence."""
+"""Point-in-time and document-selection hardening for primary event evidence."""
 
 import re
 from datetime import UTC, datetime
@@ -16,6 +16,11 @@ def patch_module(module: Any) -> None:
 
     original_parse_ts = module._parse_ts
     original_fda_article = module._fda_article_from_payload
+    original_select_documents = module._select_documents
+
+    # Inline XBRL filing documents may use either .htm/.html or .xhtml. The main
+    # filing must not be excluded merely because an issuer chose the latter.
+    module.DOCUMENT_EXTENSIONS = tuple(dict.fromkeys((*module.DOCUMENT_EXTENSIONS, ".xhtml")))
 
     def parse_ts(value: Any) -> datetime | None:
         text = str(value or "").strip()
@@ -28,6 +33,30 @@ def patch_module(module: Any) -> None:
             except ValueError:
                 return None
         return original_parse_ts(value)
+
+    def select_documents(
+        rows: list[dict[str, Any]],
+        *,
+        primary_document: str | None,
+        form: str,
+    ) -> list[dict[str, Any]]:
+        selected = original_select_documents(
+            rows,
+            primary_document=primary_document,
+            form=form,
+        )
+        exact_form = next(
+            (
+                row for row in rows
+                if module._document_is_textual(row)
+                and str(row.get("type") or "").upper().strip() == form.upper().strip()
+            ),
+            None,
+        )
+        if exact_form is None:
+            return selected
+        max_documents = 4 if form.upper().startswith(("8-K", "6-K")) else 2
+        return [exact_form, *(row for row in selected if row != exact_form)][:max_documents]
 
     def fda_article_from_payload(
         *,
@@ -75,5 +104,6 @@ def patch_module(module: Any) -> None:
         return article
 
     module._parse_ts = parse_ts
+    module._select_documents = select_documents
     module._fda_article_from_payload = fda_article_from_payload
     module._point_in_time_compat_installed = True
