@@ -10,9 +10,9 @@ def signals(text: str, *, sector: str = "consumer") -> dict[str, bool]:
     return oversold_scoring._event_signals(text.lower(), [], sector)
 
 
-def test_model_version_advances_for_subject_attribution_semantics() -> None:
-    assert oversold_scoring.SCORING_MODEL_VERSION == "oversold_reversion_score_v3_6"
-    assert oversold_scoring.SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v8"
+def test_subject_attribution_semantics_are_preserved_in_v37() -> None:
+    assert oversold_scoring.SCORING_MODEL_VERSION == "oversold_reversion_score_v3_7"
+    assert oversold_scoring.SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
 
 
 def test_vendor_chapter_11_does_not_hard_veto_candidate() -> None:
