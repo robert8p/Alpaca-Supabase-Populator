@@ -1,0 +1,148 @@
+'use strict';
+
+const { chromium } = require('playwright');
+const assert = (condition, message) => { if (!condition) throw new Error(message); };
+
+(async () => {
+  const site = process.env.SITE_URL || 'https://alpaca-intraday-profitability-app.onrender.com';
+  const api = process.env.API_URL || 'https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api';
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({ viewport: { width: 1500, height: 1050 } });
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: site });
+
+  const candidates = Array.from({ length: 10 }, (_, index) => ({
+    id: 1001 + index,
+    rank: index + 1,
+    symbol: `SMOKE${index + 1}`,
+    name: `Production browser smoke candidate ${index + 1}`,
+    exchange: index % 2 ? 'NYSE' : 'NASDAQ',
+    direction: index % 3 ? 'SHORT' : 'LONG',
+    setup_type: 'CONTINUATION',
+    profitability_score: 82 - index,
+    initial_view: index < 2 ? 'INVESTIGATE' : 'WATCH',
+    last_price: 100 + index,
+    bid: 99.99 + index,
+    ask: 100.01 + index,
+    spread_bps: 2 + index / 10,
+    prev_close: 99 + index,
+    day_move_pct: index % 2 ? -1.2 : 1.1,
+    prev_dollar_volume: 500000000 + index * 1000000,
+    current_dollar_volume: 100000000 + index * 1000000,
+    return_5m_pct: index % 2 ? -0.4 : 0.4,
+    return_15m_pct: index % 2 ? -0.8 : 0.8,
+    return_30m_pct: index % 2 ? -1.1 : 1.1,
+    return_60m_pct: index % 2 ? -1.4 : 1.4,
+    vwap_distance_pct: index % 2 ? -0.5 : 0.5,
+    relative_volume_pace: 2.5,
+    relative_return_15m_pct: index % 2 ? -0.6 : 0.6,
+    move_capacity_120m_pct: 1.25,
+    cost_estimate_bps: 7.5,
+    liquidity_score: 90,
+    opportunity_score: 80,
+    directional_score: 78,
+    confirmation_score: 76,
+    execution_score: 92,
+    rationale: 'Synthetic browser-only fixture used to exercise the deployed rendering and prompt workflow.',
+    evidence: { bars_used: 120, edge_to_cost_ratio: 16.7, data_quality_score: 98 },
+  }));
+  const scan = {
+    id: '0f17ebc8-9b9c-4656-a7f7-266013fe8d0e',
+    status: 'completed',
+    asset_count: 6357,
+    snapshot_count: 6356,
+    liquid_count: 1320,
+    enriched_count: 300,
+    candidate_count: 50,
+    evidence_cutoff: '2026-08-20T17:41:57.596801Z',
+    horizon_end: '2026-08-20T19:41:57.596801Z',
+    market_close: '2026-08-20T20:00:00Z',
+    started_at: '2026-08-20T17:41:54.304539Z',
+    completed_at: '2026-08-20T17:42:03.408579Z',
+  };
+  let selections = [];
+
+  const authorised = (route) => {
+    const headers = route.request().headers();
+    assert(headers['x-app-user'] === 'admin', 'App username omitted.');
+    assert(headers['x-app-key'] === 'browser-smoke-key-not-a-secret', 'App key omitted.');
+  };
+
+  await context.route(`${api}?action=latest`, async (route) => {
+    authorised(route);
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ scan, candidates, active_request: null, selected_candidate_ids: selections.map((row) => row.candidate_id) }),
+    });
+  });
+  await context.route(`${api}?action=selections`, async (route) => {
+    authorised(route);
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ selections }) });
+  });
+  await context.route(`${api}?action=select`, async (route) => {
+    authorised(route);
+    const body = route.request().postDataJSON();
+    const candidate = candidates.find((row) => row.id === body.candidate_id);
+    assert(candidate, 'Select endpoint received an unknown candidate.');
+    const selection = {
+      id: '11111111-1111-4111-8111-111111111111',
+      candidate_id: candidate.id,
+      scan_id: scan.id,
+      symbol: candidate.symbol,
+      name: candidate.name,
+      exchange: candidate.exchange,
+      direction: candidate.direction,
+      setup_type: candidate.setup_type,
+      selected_rank: candidate.rank,
+      profitability_score: candidate.profitability_score,
+      scan_price: candidate.last_price,
+      scan_at: scan.evidence_cutoff,
+      market_close_at: scan.market_close,
+      selected_at: '2026-08-20T17:42:10Z',
+      status: 'tracking',
+    };
+    selections = [selection];
+    await route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ selection, duplicate: false }) });
+  });
+  await context.route('https://chatgpt.com/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>ChatGPT handoff smoke</title>' });
+  });
+
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.locator('#loginModal.open').waitFor({ state: 'visible', timeout: 10000 });
+  assert(await page.locator('#loginModal').evaluate((node) => node.classList.contains('open')), 'Login modal did not open.');
+  await page.locator('#loginUser').fill('admin');
+  await page.locator('#loginKey').fill('browser-smoke-key-not-a-secret');
+  await page.locator('#loginBtn').click();
+  await page.locator('#loginModal').waitFor({ state: 'hidden', timeout: 10000 });
+  await page.waitForFunction(() => document.querySelectorAll('#rows tr').length === 10);
+  assert((await page.locator('[data-select-candidate]').count()) === 10, 'Select column did not render.');
+
+  await page.locator('[data-select-candidate="1001"]').click();
+  await page.locator('#selectedPanel.active').waitFor({ state: 'visible' });
+  assert((await page.locator('#selectedRows').innerText()).includes('SMOKE1'), 'Selected signal did not move to tracker tab.');
+  assert((await page.locator('#selectedRows').innerText()).includes('$100.00'), 'Price at scan was not displayed.');
+
+  await page.locator('#scannerTab').click();
+  await page.locator('#promptBtn').click();
+  const fullPrompt = await page.locator('#promptText').inputValue();
+  assert(fullPrompt.includes('SMOKE10'), 'Full prompt omitted the tenth candidate.');
+  const popupPromise = context.waitForEvent('page');
+  await page.locator('#openChat').click();
+  const popup = await popupPromise;
+  await popup.waitForURL((url) => url.hostname === 'chatgpt.com', { timeout: 10000 });
+  const populated = new URL(popup.url()).searchParams.get('prompt');
+  assert(populated && populated.includes('SMOKE1') && populated.includes('SMOKE10'), 'ChatGPT new chat was not populated with all Top 10 candidates.');
+  await popup.close();
+
+  await page.screenshot({ path: 'intraday-profitability-production-smoke.png', fullPage: true });
+  assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
+  await browser.close();
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
