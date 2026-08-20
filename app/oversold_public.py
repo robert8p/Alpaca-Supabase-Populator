@@ -289,7 +289,7 @@ def _model_diagnostics() -> dict[str, Any]:
         "active_calibration_run": active_calibration,
         "active_calibration_model_version": active_calibration.get("calibration_model_version") if active_calibration else None,
         "contract": public_scoring_contract(),
-        "catalyst_backend": "rules_v3_point_in_time",
+        "catalyst_backend": "rules_v3_1_point_in_time",
         "calibration_guard": "Diagnostics and calibration are version-scoped. Matured outcomes become eligible only after delayed corporate-action review; missing fundamentals and enrichment failures remain explicit uncertainty.",
     }
 
@@ -379,8 +379,16 @@ async def tracked_outcomes() -> dict[str, Any]:
     return list_tracked()
 
 
+@router.post("/api/oversold/checkpoints/run")
+async def run_checkpoint_capture(request: Request) -> dict[str, int]:
+    """Frequent lightweight capture for decision-time +1h/midpoint/close checkpoints."""
+    _require_scheduled_token(request)
+    return await capture_due_checkpoints()
+
+
 @router.post("/api/oversold/outcomes/run")
 async def run_outcome_capture(request: Request) -> dict[str, Any]:
+    """Full recovery cycle; the worker normally runs this expensive chain once per US weekday."""
     _require_scheduled_token(request)
     decision_checkpoints = await capture_due_checkpoints()
     signal_outcomes = await capture_signal_outcomes()
