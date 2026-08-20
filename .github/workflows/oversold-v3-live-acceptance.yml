@@ -1,0 +1,37 @@
+name: oversold-v3-live-acceptance
+
+on:
+  push:
+    branches:
+      - agent/oversold-v3-live-acceptance
+
+jobs:
+  acceptance-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Trigger synchronous production v3 scan
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --show-error --silent \
+            --max-time 600 \
+            -X POST \
+            'https://alpaca-rapid-discovery-web.onrender.com/api/oversold/run?background=false&candidate_limit=20' \
+            -o /tmp/oversold-v3.json
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/oversold-v3.json'))
+          scan=data.get('scan') or {}
+          candidates=data.get('candidates') or []
+          print(json.dumps({
+              'scan_id': scan.get('id'),
+              'status': scan.get('status'),
+              'candidate_count': len(candidates),
+              'model_versions': sorted({c.get('scoring_model_version') for c in candidates}),
+              'min_score': min((c.get('reversion_score') for c in candidates if c.get('reversion_score') is not None), default=None),
+              'max_score': max((c.get('reversion_score') for c in candidates if c.get('reversion_score') is not None), default=None),
+          }, default=str))
+          if scan.get('status') != 'completed': raise SystemExit('scan not completed')
+          if not candidates: raise SystemExit('no candidates')
+          if any(c.get('scoring_model_version') != 'oversold_reversion_score_v3' for c in candidates): raise SystemExit('non-v3 model row')
+          PY
