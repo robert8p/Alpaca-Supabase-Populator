@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intraday Profitability Scanner</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#081019;--panel:#0e1824;--panel-2:#111e2c;--line:#23354a;--line-2:#2f4560;
+      --text:#ecf3f9;--muted:#91a4b7;--soft:#b9c7d4;--good:#6de3a5;--mid:#ffd16d;--bad:#ff8f98;
+      --long:#72c7ff;--short:#e7a7ff;--accent:#f6f8fb;--ink:#111820;
+    }
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 16% -10%,#14283d 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select,textarea{font:inherit}.wrap{max-width:1580px;margin:0 auto;padding:28px 20px 64px}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:26px}.eyebrow{display:flex;gap:8px;flex-wrap:wrap}.tag{font-size:10px;letter-spacing:.11em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:999px;padding:5px 8px;color:#a8bbcc;background:#0c1722}.title{font-size:36px;line-height:1.08;font-weight:800;letter-spacing:-.025em;margin:10px 0 8px}.sub{max-width:900px;color:var(--soft);line-height:1.55}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line-2);border-radius:10px;padding:11px 15px;background:#142131;color:var(--text);font-weight:700;cursor:pointer;transition:transform .12s ease,border-color .12s ease}.btn:hover:not(:disabled){transform:translateY(-1px);border-color:#567493}.btn.primary{background:var(--accent);color:var(--ink);border-color:var(--accent)}.btn.ghost{background:transparent}.btn:disabled{opacity:.46;cursor:not-allowed}.controls{display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:10px;margin:22px 0 12px;padding:13px;border:1px solid var(--line);border-radius:13px;background:rgba(12,22,33,.84)}.field label{display:block;color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:8px;background:#09131e;color:var(--text);padding:9px 10px;outline:none}.field input:focus,.field select:focus{border-color:#6387ac}.notice{border:1px solid #2e4660;border-radius:11px;background:#0d1a27;padding:12px 14px;color:#c4d0dc;margin:12px 0}.notice.error{border-color:#7c3b45;color:#ffc2c7;background:#241219}.notice.success{border-color:#245b43;color:#a9f2c9;background:#0d2118}.stats{display:grid;grid-template-columns:repeat(6,minmax(125px,1fr));gap:10px;margin:12px 0 18px}.stat{background:linear-gradient(180deg,#111d2a,#0d1721);border:1px solid var(--line);border-radius:11px;padding:13px}.stat .k{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.stat .v{font-size:18px;font-weight:760;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.method{display:flex;justify-content:space-between;gap:16px;align-items:center;margin:14px 0;padding:13px 14px;border:1px solid #3d4b28;border-radius:11px;background:#171b0d;color:#dce9b5}.method strong{color:#f0f7d5}.method .fine{font-size:12px;color:#bac694;line-height:1.5}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;background:#0b141e;box-shadow:0 18px 48px rgba(0,0,0,.18)}table{width:100%;min-width:1470px;border-collapse:collapse}th,td{padding:12px 11px;border-bottom:1px solid #1d2c3c;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#111d2a;color:#8fa5b9;font-size:10px;text-transform:uppercase;letter-spacing:.06em;z-index:2}td{font-size:12.5px}.rank{font-size:16px;font-weight:800;color:#8da4b8}.ticker{font-size:16px;font-weight:800}.company{color:var(--muted);max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.score{font-size:20px;font-weight:820}.good{color:var(--good)}.mid{color:var(--mid)}.bad{color:var(--bad)}.long{color:var(--long)}.short{color:var(--short)}.pill{display:inline-block;padding:4px 8px;border:1px solid var(--line-2);border-radius:999px;font-size:10px;font-weight:750;letter-spacing:.04em}.pill.long{border-color:#315a73;background:#102333}.pill.short{border-color:#654374;background:#24172c}.pill.good{border-color:#2a6148;background:#10251c}.pill.mid{border-color:#685a30;background:#2a2412}.pill.bad{border-color:#6c3d43;background:#271419}.number{font-variant-numeric:tabular-nums}.muted{color:var(--muted)}.tiny{font-size:10.5px;color:var(--muted);line-height:1.45}.components{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;min-width:240px}.component{background:#101b27;border:1px solid #203247;border-radius:6px;padding:5px;text-align:center}.component b{display:block;font-size:12px}.component span{font-size:8px;color:#8498aa;text-transform:uppercase}.rationale{max-width:360px;color:#aebdca;line-height:1.45}.empty{padding:42px;text-align:center;color:var(--muted)}.foot{margin-top:14px;color:#7f92a4;font-size:11px;line-height:1.55}.modal{position:fixed;inset:0;background:rgba(2,7,12,.82);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.open{display:flex}.modal-card{width:min(980px,100%);max-height:88vh;display:flex;flex-direction:column;background:#0d1721;border:1px solid #36506b;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.55)}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:15px 16px;border-bottom:1px solid var(--line)}.modal-title{font-weight:800}.modal-body{padding:14px 16px;overflow:auto}.modal textarea{width:100%;min-height:430px;resize:vertical;border:1px solid var(--line);border-radius:9px;background:#07111a;color:#dce6ee;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;line-height:1.45}.modal-actions{display:flex;justify-content:flex-end;gap:9px;padding:13px 16px;border-top:1px solid var(--line)}
+    @media(max-width:1100px){.controls{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:760px){.wrap{padding:20px 12px 48px}.hero{align-items:flex-start;flex-direction:column}.title{font-size:29px}.controls{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.method{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .btn{flex:1}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow"><span class="tag">Alpaca SIP</span><span class="tag">120-minute horizon</span><span class="tag">Long + short</span><span class="tag">Point-in-time evidence</span></div>
+      <h1 class="title">Intraday Profitability Scanner</h1>
+      <div class="sub">Screens US equities for real execution quality, enriches the strongest liquid names with SIP minute bars, and ranks long or short continuation and reversal setups by potential net profitability over the next two regular-session hours.</div>
+    </div>
+    <div class="actions">
+      <button id="scanBtn" class="btn primary">Run SIP scan</button>
+      <button id="chatBtn" class="btn" disabled>Analyse Top 10 in ChatGPT</button>
+      <button id="promptBtn" class="btn ghost" disabled>View prompt</button>
+    </div>
+  </header>
+
+  <section class="controls" aria-label="Scanner settings">
+    <div class="field"><label for="direction">Direction</label><select id="direction"><option value="both">Long + short</option><option value="long">Long only</option><option value="short">Short only</option></select></div>
+    <div class="field"><label for="minPrice">Minimum price ($)</label><input id="minPrice" type="number" value="5" min="1" step="1"></div>
+    <div class="field"><label for="prevDv">Previous-day $ volume</label><input id="prevDv" type="number" value="50000000" min="1000000" step="1000000"></div>
+    <div class="field"><label for="currentDv">Current $ volume</label><input id="currentDv" type="number" value="5000000" min="100000" step="100000"></div>
+    <div class="field"><label for="spread">Maximum spread (bps)</label><input id="spread" type="number" value="25" min="1" max="200" step="1"></div>
+    <div class="field"><label for="prefilter">Minute-bar enrichments</label><input id="prefilter" type="number" value="300" min="25" max="500" step="25"></div>
+  </section>
+
+  <div id="notice" class="notice">Loading the latest scan…</div>
+
+  <section class="stats" aria-label="Scan statistics">
+    <div class="stat"><div class="k">Last scan</div><div id="lastScan" class="v">—</div></div>
+    <div class="stat"><div class="k">Equities screened</div><div id="screened" class="v">—</div></div>
+    <div class="stat"><div class="k">Passed liquidity gate</div><div id="liquid" class="v">—</div></div>
+    <div class="stat"><div class="k">Bar-enriched</div><div id="enriched" class="v">—</div></div>
+    <div class="stat"><div class="k">Evidence cutoff</div><div id="cutoff" class="v">—</div></div>
+    <div class="stat"><div class="k">Two-hour horizon</div><div id="horizon" class="v">—</div></div>
+  </section>
+
+  <div class="method">
+    <div><strong>Research ranking—not a probability.</strong><div class="fine">The score combines directional structure, move capacity, liquidity, confirmation and execution quality, then subtracts cost, data-quality and late-chasing penalties.</div></div>
+    <span class="pill mid">Unvalidated heuristic v1</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Rank</th><th>Ticker / company</th><th>Direction / setup</th><th>Potential profitability</th><th>Price / day</th><th>Momentum</th><th>Liquidity</th><th>Capacity / cost</th><th>Components</th><th>Initial view</th><th>Why it ranks</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="11" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="foot">Primary universe: active, tradable US operating companies; no OTC, ETFs, ETNs, warrants, preferreds or leveraged products. Hard default gates: price ≥ $5, previous-day dollar volume ≥ $50m, current dollar volume ≥ $5m, SIP NBBO spread ≤ 25 bps and quote age ≤ 180 seconds. A scan is rejected unless a complete 120-minute regular-session horizon remains.</div>
+</div>
+
+<div id="promptModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="promptTitle">
+  <div class="modal-card">
+    <div class="modal-head"><div><div id="promptTitle" class="modal-title">Prepared ChatGPT analysis prompt</div><div id="promptMeta" class="tiny"></div></div><button id="closePrompt" class="btn ghost" aria-label="Close prompt">Close</button></div>
+    <div class="modal-body"><textarea id="promptText" readonly></textarea></div>
+    <div class="modal-actions"><button id="copyPrompt" class="btn">Copy prompt</button><button id="openChat" class="btn primary">Open ChatGPT</button></div>
+  </div>
+</div>
+
+<script src="/static/intraday_profitability.js?v=1"></script>
+</body>
+</html>
