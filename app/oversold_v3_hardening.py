@@ -69,7 +69,8 @@ def article_relevance(candidate: dict[str, Any], article: dict[str, Any]) -> dic
     lower = text.lower()
     headline_lower = headline.lower()
     symbol = str(candidate.get("symbol") or "").upper()
-    symbols = {str(item).upper() for item in article.get("symbols", []) if item}
+    symbol_metadata_present = "symbols" in article
+    symbols = {str(item).upper() for item in article.get("symbols", []) if item} if symbol_metadata_present else set()
     symbol_count = len(symbols)
     ticker_mentioned = bool(symbol and re.search(rf"(?<![A-Z0-9]){re.escape(symbol)}(?![A-Z0-9])", text, re.IGNORECASE))
     company_tokens = _company_tokens(candidate.get("name"))
@@ -78,7 +79,15 @@ def article_relevance(candidate: dict[str, Any], article: dict[str, Any]) -> dic
     generic = any(pattern in headline_lower for pattern in GENERIC_HEADLINE_PATTERNS)
     event_term = any(term in lower for term in EVENT_TERMS)
 
-    if symbol_count == 1 and symbol in symbols:
+    # Alpaca/Benzinga production articles carry an explicit symbols list, so use
+    # it as the strongest attribution signal. Older/internal callers may pass an
+    # article that is already associated with the candidate but has no symbols
+    # field at all; preserve that direct-context contract instead of silently
+    # demoting every such article to ambient. An explicit symbols field that
+    # does not match the candidate remains strict and receives no fallback.
+    if not symbol_metadata_present:
+        relevance = 55.0
+    elif symbol_count == 1 and symbol in symbols:
         relevance = 78.0
     elif symbol in symbols and symbol_count <= 3:
         relevance = 48.0
@@ -111,6 +120,7 @@ def article_relevance(candidate: dict[str, Any], article: dict[str, Any]) -> dic
         "generic": generic,
         "ticker_mentioned": ticker_mentioned,
         "company_token_hits": company_hits,
+        "symbol_metadata_present": symbol_metadata_present,
         "symbol_count": symbol_count,
         "event_term": event_term,
     }
