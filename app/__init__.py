@@ -97,6 +97,7 @@ if "pytest" not in sys.modules:
 
     from . import oversold_outcome_scheduler as _oversold_outcome_scheduler
     from . import oversold_outcomes as _oversold_outcomes
+    from .oversold_outcomes_json_compat import patch_module as _patch_outcomes_json
     from .oversold_outcomes_v33 import install_patch as _patch_outcomes_v33
     from .oversold_primary_evidence_diagnostics import patch_module as _patch_primary_evidence_diagnostics
     from .oversold_scan_scheduler_runtime import patch_module as _patch_worker_scan_scheduler
@@ -106,6 +107,7 @@ if "pytest" not in sys.modules:
     from .oversold_v33_diagnostics import patch_module as _patch_v33_diagnostics
     from .oversold_v34_diagnostics import patch_module as _patch_v34_diagnostics
 
+    _patch_outcomes_json(_oversold_outcomes)
     _patch_outcomes_v33(_oversold_outcomes)
     _install_three_session_runtime()
     _patch_target_outcomes(_oversold_outcomes)
