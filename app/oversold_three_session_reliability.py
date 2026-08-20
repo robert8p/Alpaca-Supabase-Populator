@@ -24,15 +24,15 @@ def backfill_target_metadata() -> dict[str, int]:
                 """
                 UPDATE or_signal_outcomes
                 SET metadata = COALESCE(metadata,'{}'::jsonb) || jsonb_build_object(
-                    'calibration_target_definition', %s,
+                    'calibration_target_definition', %s::text,
                     'calibration_window_sessions', 3,
-                    'target_contract_version', %s,
+                    'target_contract_version', %s::text,
                     'calibration_target_matured',
                         COALESCE(metadata->>'three_session_path_matured','false')='true',
                     'hit_reversion_within_3_sessions',
                         CASE
                           WHEN COALESCE(metadata->>'three_session_path_matured','false')='true'
-                            THEN COALESCE(mfe_3d >= %s,false)
+                            THEN COALESCE(mfe_3d >= %s::double precision,false)
                           ELSE NULL
                         END,
                     'calibration_window_end_ts',
@@ -46,8 +46,8 @@ def backfill_target_metadata() -> dict[str, int]:
                         )
                 ),
                 updated_at=now()
-                WHERE metadata->>'calibration_target_definition' IS DISTINCT FROM %s
-                   OR metadata->>'target_contract_version' IS DISTINCT FROM %s
+                WHERE metadata->>'calibration_target_definition' IS DISTINCT FROM %s::text
+                   OR metadata->>'target_contract_version' IS DISTINCT FROM %s::text
                    OR metadata->>'calibration_target_matured' IS NULL
                    OR (
                         COALESCE(metadata->>'three_session_path_matured','false')='true'
@@ -66,13 +66,13 @@ def backfill_target_metadata() -> dict[str, int]:
             cur.execute(
                 """
                 SELECT
-                  count(*) FILTER (WHERE metadata->>'calibration_target_definition'=%s) AS target_rows,
+                  count(*) FILTER (WHERE metadata->>'calibration_target_definition'=%s::text) AS target_rows,
                   count(*) FILTER (
-                    WHERE metadata->>'calibration_target_definition'=%s
+                    WHERE metadata->>'calibration_target_definition'=%s::text
                       AND metadata->>'calibration_target_matured'='true'
                   ) AS matured_rows,
                   count(*) FILTER (
-                    WHERE metadata->>'calibration_target_definition'=%s
+                    WHERE metadata->>'calibration_target_definition'=%s::text
                       AND metadata->>'calibration_target_matured'='true'
                       AND (metadata->>'hit_reversion_within_3_sessions')::boolean=true
                   ) AS hits
