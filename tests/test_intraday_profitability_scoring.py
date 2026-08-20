@@ -72,15 +72,22 @@ def liquidity(
     volume_pace: float = 1.5,
     quote_age_seconds: int = 1,
     trade_age_seconds: int = 1,
+    shortable: bool | None = True,
+    easy_to_borrow: bool | None = True,
+    elapsed_minutes: float = 150.0,
 ) -> dict[str, object] | None:
     midpoint = last
     half_spread = midpoint * (spread_bps / 10_000) / 2
     previous_volume = 2_000_000
-    elapsed = 150
-    current_volume = previous_volume * volume_pace * elapsed / 390
+    current_volume = previous_volume * volume_pace * elapsed_minutes / 390
+    asset: dict[str, object] = {"name": f"{symbol} Corp", "exchange": "NASDAQ"}
+    if shortable is not None:
+        asset["shortable"] = shortable
+    if easy_to_borrow is not None:
+        asset["easy_to_borrow"] = easy_to_borrow
     return snapshot_liquidity_record(
         symbol=symbol,
-        asset={"name": f"{symbol} Corp", "exchange": "NASDAQ"},
+        asset=asset,
         snapshot=make_snapshot(
             last=last,
             prev_close=last * 0.99,
@@ -92,7 +99,7 @@ def liquidity(
             trade_age_seconds=trade_age_seconds,
         ),
         evidence_cutoff=NOW,
-        elapsed_minutes=elapsed,
+        elapsed_minutes=elapsed_minutes,
         min_price=5,
         min_prev_dollar_volume=50_000_000,
         min_current_dollar_volume=5_000_000,
@@ -113,14 +120,31 @@ class LiquidityGateTests(unittest.TestCase):
         self.assertEqual(record["symbol"], "LIQD")
         self.assertLess(record["spread_bps"], 3.0)
         self.assertGreater(record["prev_dollar_volume"], 50_000_000)
+        self.assertTrue(record["shortable"])
+        self.assertTrue(record["easy_to_borrow"])
 
-    def test_rejects_wide_spread_and_stale_market_data(self):
-        self.assertIsNone(liquidity("STALEQUOTE", quote_age_seconds=181))
-        self.assertIsNone(liquidity("STALETRADE", trade_age_seconds=300))
+    def test_rejects_wide_spread_and_market_data_older_than_execution_limits(self):
+        self.assertIsNone(liquidity("STALEQUOTE", quote_age_seconds=61))
+        self.assertIsNone(liquidity("STALETRADE", trade_age_seconds=91))
         record = snapshot_liquidity_record(
             symbol="WIDE",
             asset={"name": "Wide Corp", "exchange": "NASDAQ"},
             snapshot=make_snapshot(bid=99.5, ask=100.5),
+            evidence_cutoff=NOW,
+            elapsed_minutes=150,
+            min_price=5,
+            min_prev_dollar_volume=50_000_000,
+            min_current_dollar_volume=5_000_000,
+            max_spread_bps=25,
+            max_quote_age_seconds=180,
+        )
+        self.assertIsNone(record)
+
+    def test_rejects_a_last_trade_materially_dislocated_from_nbbo(self):
+        record = snapshot_liquidity_record(
+            symbol="BADPRINT",
+            asset={"name": "Bad Print Corp", "exchange": "NASDAQ"},
+            snapshot=make_snapshot(last=101.0, bid=99.99, ask=100.01),
             evidence_cutoff=NOW,
             elapsed_minutes=150,
             min_price=5,
@@ -146,8 +170,19 @@ class RankingTests(unittest.TestCase):
         volume_pace: float = 1.5,
         accelerate: bool = False,
         raw_bars: list[dict[str, object]] | None = None,
+        shortable: bool | None = True,
+        easy_to_borrow: bool | None = True,
+        elapsed_minutes: float = 150.0,
     ) -> dict[str, object]:
-        liquidity_record = liquidity(symbol, last=prices[-1], spread_bps=spread_bps, volume_pace=volume_pace)
+        liquidity_record = liquidity(
+            symbol,
+            last=prices[-1],
+            spread_bps=spread_bps,
+            volume_pace=volume_pace,
+            shortable=shortable,
+            easy_to_borrow=easy_to_borrow,
+            elapsed_minutes=elapsed_minutes,
+        )
         self.assertIsNotNone(liquidity_record)
         result = build_market_features(
             liquidity_record=liquidity_record,
@@ -189,6 +224,32 @@ class RankingTests(unittest.TestCase):
             direction_filter="short",
         )
         self.assertTrue(all(row["direction"] == "SHORT" for row in ranked))
+
+    def test_known_non_shortable_asset_is_excluded_from_short_ranking(self):
+        falling = [103 - index * 0.04 for index in range(70)]
+        record = self.features("NOBORROW", falling, shortable=False, easy_to_borrow=False)
+        self.assertEqual(rank_market_records([record], direction_filter="short"), [])
+        both = rank_market_records([record], direction_filter="both")
+        self.assertEqual(len(both), 1)
+        self.assertEqual(both[0]["direction"], "LONG")
+
+    def test_hard_to_borrow_short_receives_execution_penalty(self):
+        falling = [103 - index * 0.04 for index in range(70)]
+        easy = self.features("EASY", falling, shortable=True, easy_to_borrow=True)
+        hard = self.features("HARD", falling, shortable=True, easy_to_borrow=False)
+        easy_row = rank_market_records([easy], direction_filter="short")[0]
+        hard_row = rank_market_records([hard], direction_filter="short")[0]
+        self.assertGreater(easy_row["profitability_score"], hard_row["profitability_score"])
+        self.assertIn("the stock is not marked easy to borrow", hard_row["penalties"]["labels"])
+
+    def test_opening_price_discovery_receives_penalty(self):
+        trend = [100 + index * 0.03 for index in range(70)]
+        settled = self.features("SETTLED", trend, elapsed_minutes=150)
+        opening = self.features("OPENING", trend, elapsed_minutes=10)
+        settled_row = rank_market_records([settled], direction_filter="long")[0]
+        opening_row = rank_market_records([opening], direction_filter="long")[0]
+        self.assertGreater(settled_row["profitability_score"], opening_row["profitability_score"])
+        self.assertIn("opening price discovery remains unusually unstable", opening_row["penalties"]["labels"])
 
     def test_score_is_bounded_and_contains_execution_cost(self):
         prices = [100 + index * 0.02 for index in range(70)]
