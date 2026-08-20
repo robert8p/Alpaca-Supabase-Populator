@@ -9,9 +9,9 @@ from app.oversold_v33_diagnostics import decorate_diagnostics
 ROOT = Path("app/static")
 
 
-def test_public_contract_exposes_current_v34_semantics() -> None:
+def test_public_contract_exposes_current_v35_semantics() -> None:
     contract = public_scoring_contract()
-    assert contract["score_semantics"]["name"] == "Conservative Opportunity Score"
+    assert contract["score_semantics"]["name"] == "Robust Opportunity Score"
     assert contract["weights"] == contract["opportunity_architecture"]["weights"]
     assert "overreaction" in contract["weights"]
     assert "setup" not in contract["weights"]
@@ -20,6 +20,8 @@ def test_public_contract_exposes_current_v34_semantics() -> None:
     assert contract["investigate_gates"]["maximum_spread_pct"] == 3.0
     assert contract["confidence"]["minimum_multiplier"] == 0.35
     assert contract["reliability_architecture"]["maximum_round_trip_friction_pct"] == 1.5
+    assert contract["robustness_architecture"]["minimum_robust_score"] == 72.0
+    assert contract["robustness_architecture"]["minimum_causal_clusters"] == 2
     assert "legacy_feature_context" in contract
     assert "cause_unknown" not in contract
 
@@ -56,7 +58,7 @@ def test_v33_base_ui_preserves_economic_components() -> None:
     assert "new MutationObserver(schedule).observe(rows, {childList:true, subtree:true})" in source
 
 
-def test_loader_orders_base_primary_reliability_and_v34_prompt() -> None:
+def test_loader_orders_base_primary_v34_and_v35_bundles() -> None:
     source = (ROOT / "oversold_tracking_v3.js").read_text(encoding="utf-8")
     for filename in (
         "oversold_v33_ui.js",
@@ -65,6 +67,8 @@ def test_loader_orders_base_primary_reliability_and_v34_prompt() -> None:
         "oversold_primary_evidence_ui.js",
         "oversold_v34_reliability_ui.js",
         "oversold_chatgpt_v34.js",
+        "oversold_v35_robustness_ui.js",
+        "oversold_chatgpt_v35.js",
     ):
         assert filename in source
     assert (
@@ -74,4 +78,6 @@ def test_loader_orders_base_primary_reliability_and_v34_prompt() -> None:
         < source.index("oversold_primary_evidence_ui.js")
         < source.index("oversold_v34_reliability_ui.js")
         < source.index("oversold_chatgpt_v34.js")
+        < source.index("oversold_v35_robustness_ui.js")
+        < source.index("oversold_chatgpt_v35.js")
     )

@@ -32,5 +32,7 @@ jobs:
           node --check app/static/oversold_primary_evidence_ui.js
           node --check app/static/oversold_v34_reliability_ui.js
           node --check app/static/oversold_chatgpt_v34.js
+          node --check app/static/oversold_v35_robustness_ui.js
+          node --check app/static/oversold_chatgpt_v35.js
       - name: Unit tests
         run: pytest -q
