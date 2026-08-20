@@ -1,0 +1,57 @@
+name: Expand and verify intraday static-worker release
+
+on:
+  push:
+    branches:
+      - feature/intraday-static-worker-failover
+    paths:
+      - .release_static/iwchunk_*
+      - .github/workflows/expand-intraday-static-worker.yml
+
+permissions:
+  contents: write
+
+jobs:
+  expand-and-test:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and verify release bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .release_static/iwchunk_* > /tmp/intraday-static-worker.b64
+          base64 --decode /tmp/intraday-static-worker.b64 > /tmp/intraday-static-worker.zip
+          echo "aa4dee9a6b9de0d86e5e98057252999614b2033ef225852e8e9efac67eaed54e  /tmp/intraday-static-worker.zip" | sha256sum --check
+          unzip -o /tmp/intraday-static-worker.zip -d .
+
+      - name: Verify Python, JavaScript, and deployment contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile app/intraday_profitability_worker.py app/oversold_outcome_scheduler.py
+          node --check static_intraday/app.js
+          PYTHONPATH=. python -m unittest tests/test_intraday_profitability_split_deploy.py -v
+
+      - name: Commit verified release source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .release_static/iwchunk_*
+          rmdir .release_static 2>/dev/null || true
+          git add -- \
+            app/intraday_profitability_worker.py \
+            app/oversold_outcome_scheduler.py \
+            static_intraday \
+            supabase/functions/intraday-profitability-api \
+            tests/test_intraday_profitability_split_deploy.py
+          git commit -m "Add worker-backed Intraday Profitability static app"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
