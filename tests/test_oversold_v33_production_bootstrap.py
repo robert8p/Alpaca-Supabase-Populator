@@ -23,7 +23,7 @@ from app import oversold_outcomes
 from app.oversold_scoring import SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
 
 assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_4"
-assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v6"
+assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v7"
 assert hasattr(oversold, "_parse_ts")
 assert getattr(oversold, "_v33_scan_installed", False) is True
 assert getattr(oversold_outcomes, "_v33_outcome_path_installed", False) is True
