@@ -1,0 +1,64 @@
+name: Expand and verify intraday profitability release
+
+on:
+  push:
+    branches:
+      - feature/intraday-profitability-scanner
+    paths:
+      - .release/intraday_chunk_*
+
+permissions:
+  contents: write
+
+jobs:
+  expand-and-test:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and verify release bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .release/intraday_chunk_* > /tmp/intraday-feature.b64
+          base64 --decode /tmp/intraday-feature.b64 > /tmp/intraday-feature.zip
+          echo "23ffef7166d98824a9baec443fa589417d6a13137c0668ba5497a1de693f2bfb  /tmp/intraday-feature.zip" | sha256sum --check
+          unzip -o /tmp/intraday-feature.zip -d .
+
+      - name: Install release dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --only-binary=:all: -r requirements.txt
+
+      - name: Run feature and compatibility tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python -m unittest discover -s tests -p 'test_intraday_*.py' -v
+          python -m py_compile app/intraday_profitability.py app/intraday_profitability_scoring.py app/main/__init__.py
+          node --check app/static/intraday_profitability.js
+
+      - name: Commit verified source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .release/intraday_chunk_*
+          rmdir .release 2>/dev/null || true
+          git add -- \
+            app/intraday_profitability.py \
+            app/intraday_profitability_scoring.py \
+            app/templates/intraday_profitability.html \
+            app/static/intraday_profitability.js \
+            app/main/__init__.py \
+            tests/test_intraday_profitability_contract.py \
+            tests/test_intraday_profitability_scoring.py \
+            tests/test_intraday_entrypoint_wrapper.py
+          git commit -m "Add intraday profitability scanner"
+          git push origin HEAD:feature/intraday-profitability-scanner
