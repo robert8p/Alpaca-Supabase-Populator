@@ -1,10 +1,11 @@
-name: Intraday Profitability production browser gate
+name: Intraday Profitability browser gate
 
 on:
   pull_request:
     branches: [main]
     paths:
       - static_intraday/**
+      - supabase/functions/intraday-profitability-api/**
       - tests/intraday_production_browser_smoke.js
       - .github/workflows/intraday-production-browser-pr.yml
   workflow_dispatch:
@@ -17,32 +18,50 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SITE_URL: https://alpaca-intraday-profitability-app.onrender.com
+      SITE_URL: http://127.0.0.1:8000
       API_URL: https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api
     steps:
       - uses: actions/checkout@v4
-      - name: Verify live static assets and API readiness
+
+      - name: Verify branch assets are credential-free
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/" -o /tmp/index.html
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/app.js" -o /tmp/app.js
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$SITE_URL/prompt.js" -o /tmp/prompt.js
-          grep -q 'Selected signal tracker' /tmp/index.html
-          grep -q 'data-select-candidate' /tmp/app.js
-          grep -q "searchParams.set('prompt'" /tmp/prompt.js
-          curl -fsSL --retry 12 --retry-delay 5 --retry-all-errors --max-time 30 "$API_URL?action=readiness" | grep -q '"selection_table":true'
+          grep -q 'No login required' static_intraday/index.html
+          grep -q 'data-select-candidate' static_intraday/app.js
+          grep -q "searchParams.set('prompt'" static_intraday/prompt.js
+          ! grep -q 'loginModal' static_intraday/index.html
+          ! grep -q 'x-app-user' static_intraday/app.js
+          ! grep -q 'x-app-key' static_intraday/app.js
+          ! grep -q 'sessionStorage' static_intraday/app.js
+          node --check static_intraday/app.js
+          node --check static_intraday/prompt.js
+          node tests/test_intraday_prompt_handoff.js
+          curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors --max-time 30 "$API_URL?action=readiness" | grep -q '"selection_table":true'
+
       - name: Install Chromium
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Exercise live browser UI
-        run: node tests/intraday_production_browser_smoke.js
+
+      - name: Serve branch frontend and exercise browser UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8000 --directory static_intraday >/tmp/intraday-static.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do
+            curl -fsS "$SITE_URL/" >/dev/null && break
+            sleep 1
+          done
+          node tests/intraday_production_browser_smoke.js
+
       - name: Upload screenshot
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: intraday-production-browser-smoke
+          name: intraday-browser-smoke
           path: intraday-profitability-production-smoke.png
           if-no-files-found: ignore
           retention-days: 14
