@@ -1,18 +1,30 @@
 from __future__ import annotations
 
-"""Normalize SEC fallback payloads before JSONB persistence."""
+"""Normalize nested runtime payloads before JSONB persistence."""
 
 from datetime import date, datetime
+from decimal import Decimal
+from enum import Enum
 from typing import Any
+from uuid import UUID
 
 
 def json_safe(value: Any) -> Any:
+    """Return a deterministic structure accepted by the standard JSON encoder."""
     if isinstance(value, (date, datetime)):
         return value.isoformat()
+    if isinstance(value, UUID):
+        return str(value)
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, Enum):
+        return json_safe(value.value)
     if isinstance(value, dict):
         return {str(key): json_safe(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):
         return [json_safe(item) for item in value]
+    if isinstance(value, (set, frozenset)):
+        return [json_safe(item) for item in sorted(value, key=lambda item: str(item))]
     return value
 
 

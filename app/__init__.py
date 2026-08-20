@@ -49,6 +49,14 @@ for _helper_name in (
     setattr(_oversold_scoring, _helper_name, getattr(_oversold_v33_impl, _helper_name))
 
 _patch_v33_runtime(_oversold_scoring)
+
+# Install one defensive normalization boundary before the scanner imports the
+# persistence function. Provider timestamps remain native for database columns,
+# while all nested evidence/model JSON is guaranteed serializable.
+from . import oversold_score_store as _oversold_score_store
+from .oversold_score_store_json_compat import patch_module as _patch_score_store_json
+
+_patch_score_store_json(_oversold_score_store)
 _patch_tracking_day3(_oversold_tracking)
 
 # Production runtime modules read required settings at import time.  Keep them out
