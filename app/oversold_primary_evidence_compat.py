@@ -42,9 +42,15 @@ def patch_module(module: Any) -> None:
     ) -> list[dict[str, Any]]:
         available_rows = list(rows)
         normalized_primary = str(primary_document or "").strip()
+        exact_form_exists = any(
+            module._document_is_textual(row)
+            and str(row.get("type") or "").upper().strip() == form.upper().strip()
+            for row in available_rows
+        )
         if (
             normalized_primary
             and normalized_primary.lower().endswith(module.DOCUMENT_EXTENSIONS)
+            and not exact_form_exists
             and not any(
                 str(row.get("document") or "").lower() == normalized_primary.lower()
                 for row in available_rows
