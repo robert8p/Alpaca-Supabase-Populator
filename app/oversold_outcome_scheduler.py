@@ -6,6 +6,7 @@ import os
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
+from app.intraday_profitability_worker import run_intraday_profitability_request_scheduler
 from app.oversold_calibration_runtime import run_calibration_if_changed
 from app.oversold_corporate_actions import review_corporate_actions
 from app.oversold_evaluation import original_vs_rescore_report, rescore_historical_snapshots
@@ -35,10 +36,11 @@ async def _refresh_point_in_time_rescores() -> tuple[dict[str, int], dict[str, o
     return rescore, comparison
 
 
-async def run_oversold_outcome_scheduler(stop_event: asyncio.Event) -> None:
+async def _run_oversold_outcomes(stop_event: asyncio.Event) -> None:
     enabled = os.getenv("OVERSOLD_OUTCOME_CAPTURE_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
     if not enabled:
         logger.info("Oversold Reversion outcome scheduler disabled")
+        await stop_event.wait()
         return
 
     poll_seconds = max(300.0, float(os.getenv("OVERSOLD_OUTCOME_CAPTURE_POLL_SECONDS", str(DEFAULT_POLL_SECONDS))))
@@ -91,3 +93,18 @@ async def run_oversold_outcome_scheduler(stop_event: asyncio.Event) -> None:
             await asyncio.wait_for(stop_event.wait(), timeout=poll_seconds)
         except TimeoutError:
             pass
+
+
+async def run_oversold_outcome_scheduler(stop_event: asyncio.Event) -> None:
+    """Run the existing outcome scheduler and the web-independent SIP request queue."""
+    oversold_task = asyncio.create_task(_run_oversold_outcomes(stop_event), name="oversold-outcomes-core")
+    intraday_task = asyncio.create_task(
+        run_intraday_profitability_request_scheduler(stop_event),
+        name="intraday-profitability-requests",
+    )
+    try:
+        await asyncio.gather(oversold_task, intraday_task)
+    finally:
+        oversold_task.cancel()
+        intraday_task.cancel()
+        await asyncio.gather(oversold_task, intraday_task, return_exceptions=True)
