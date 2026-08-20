@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - feature/intraday-handoff-tracker-heuristic-v2
-    paths: &intraday_paths
+    paths:
       - app/intraday_profitability_scoring.py
       - app/intraday_profitability_tracking.py
       - app/intraday_profitability_worker.py
@@ -18,7 +18,17 @@ on:
   pull_request:
     branches:
       - main
-    paths: *intraday_paths
+    paths:
+      - app/intraday_profitability_scoring.py
+      - app/intraday_profitability_tracking.py
+      - app/intraday_profitability_worker.py
+      - static_intraday/**
+      - supabase/functions/intraday-profitability-api/**
+      - tests/test_intraday_profitability_scoring.py
+      - tests/test_intraday_profitability_tracking.py
+      - tests/test_intraday_prompt_handoff.js
+      - docs/intraday_profitability_heuristic_v2.md
+      - .github/workflows/intraday-v2-ci.yml
   workflow_dispatch:
 
 permissions:
