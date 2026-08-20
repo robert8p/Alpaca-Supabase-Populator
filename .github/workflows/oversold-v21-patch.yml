@@ -1,0 +1,40 @@
+name: oversold-v21-patch
+
+on:
+  push:
+    branches:
+      - agent/oversold-score-v2-1
+    paths:
+      - .github/workflows/oversold-v21-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/oversold-score-v2-1
+      - name: Bind public scanner to V2.1
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/main.py')
+          text = path.read_text()
+          marker = 'from app.oversold import router as oversold_router\n'
+          block = '''from app.oversold_scan_v21 import execute_scan_v21 as _execute_scan_v21\nimport app.oversold as _oversold_module\nimport app.oversold_public as _oversold_public_module\n\n_oversold_module.execute_scan = _execute_scan_v21\n_oversold_public_module.execute_scan = _execute_scan_v21\n'''
+          if block not in text:
+              if marker not in text:
+                  raise SystemExit('main.py import marker not found')
+              text = text.replace(marker, marker + block, 1)
+              path.write_text(text)
+          PY
+          git config user.name "oversold-v21-bot"
+          git config user.email "oversold-v21-bot@users.noreply.github.com"
+          git add app/main.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Bind production scanner to Reversion Score v2.1"
+            git push origin HEAD:agent/oversold-score-v2-1
+          fi
