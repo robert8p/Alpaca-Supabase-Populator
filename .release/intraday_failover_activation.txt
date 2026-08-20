@@ -1,0 +1,4 @@
+Intraday Profitability failover activation
+Service: alpaca-intraday-profitability
+Source commit: abf8e0b4e9687917320394f8fcdc5f0512e443ef
+Release SHA256: 23ffef7166d98824a9baec443fa589417d6a13137c0668ba5497a1de693f2bfb
