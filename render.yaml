@@ -4,7 +4,7 @@ services:
     runtime: python
     region: frankfurt
     plan: free
-    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo oversold-primary-evidence-web-20260820-3"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeployTrigger: commit
@@ -32,7 +32,7 @@ services:
       - key: INTRADAY_PROFITABILITY_RELEASE
         value: "2026-08-20.1"
       - key: OVERSOLD_PRIMARY_EVIDENCE_RELEASE
-        value: "2026-08-20.1"
+        value: "2026-08-20.3"
       - key: OVERSOLD_PRIMARY_LOOKBACK_DAYS
         value: "10"
       - key: OVERSOLD_PRIMARY_MAX_SYMBOLS
@@ -47,7 +47,7 @@ services:
     runtime: python
     region: frankfurt
     plan: free
-    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt && echo oversold-primary-evidence-failover-20260820-3"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeployTrigger: commit
@@ -90,7 +90,7 @@ services:
       - key: INTRADAY_PROFITABILITY_RELEASE
         value: "2026-08-20.1"
       - key: OVERSOLD_PRIMARY_EVIDENCE_RELEASE
-        value: "2026-08-20.1"
+        value: "2026-08-20.3"
       - key: OVERSOLD_PRIMARY_LOOKBACK_DAYS
         value: "10"
       - key: OVERSOLD_PRIMARY_MAX_SYMBOLS
