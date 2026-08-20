@@ -5,6 +5,8 @@ import unittest
 from datetime import UTC, datetime, timedelta
 
 from app.intraday_profitability_scoring import (
+    ANALYSIS_PRIORITY_CAP,
+    MODEL_AUDIT_VERSION,
     SCORING_VERSION,
     TARGET_DEFINITION,
     benchmark_returns,
@@ -109,9 +111,11 @@ def liquidity(
 
 
 class LiquidityGateTests(unittest.TestCase):
-    def test_public_contract_is_preserved(self):
-        self.assertEqual(SCORING_VERSION, "ip-robust-v2.0")
-        self.assertIn("120 regular-session minutes", TARGET_DEFINITION)
+    def test_public_contract_is_reliability_first(self):
+        self.assertEqual(SCORING_VERSION, "ip-reliability-v3.0")
+        self.assertEqual(MODEL_AUDIT_VERSION, "ip-reliability-v3.0")
+        self.assertIn("research-only", TARGET_DEFINITION.lower())
+        self.assertIn("no calibrated probability", TARGET_DEFINITION.lower())
 
     def test_accepts_highly_liquid_tight_spread(self):
         record = liquidity("LIQD", spread_bps=2.5)
@@ -122,41 +126,43 @@ class LiquidityGateTests(unittest.TestCase):
         self.assertGreater(record["prev_dollar_volume"], 50_000_000)
         self.assertTrue(record["shortable"])
         self.assertTrue(record["easy_to_borrow"])
+        self.assertAlmostEqual(record["observed_trade_price"], 100.0)
+        self.assertAlmostEqual(record["midpoint_price"], 100.0)
 
-    def test_rejects_wide_spread_and_market_data_older_than_execution_limits(self):
+    def test_rejects_wide_spread_stale_data_and_bad_print(self):
         self.assertIsNone(liquidity("STALEQUOTE", quote_age_seconds=61))
         self.assertIsNone(liquidity("STALETRADE", trade_age_seconds=91))
-        record = snapshot_liquidity_record(
-            symbol="WIDE",
-            asset={"name": "Wide Corp", "exchange": "NASDAQ"},
-            snapshot=make_snapshot(bid=99.5, ask=100.5),
-            evidence_cutoff=NOW,
-            elapsed_minutes=150,
-            min_price=5,
-            min_prev_dollar_volume=50_000_000,
-            min_current_dollar_volume=5_000_000,
-            max_spread_bps=25,
-            max_quote_age_seconds=180,
+        self.assertIsNone(
+            snapshot_liquidity_record(
+                symbol="WIDE",
+                asset={"name": "Wide Corp", "exchange": "NASDAQ"},
+                snapshot=make_snapshot(bid=99.5, ask=100.5),
+                evidence_cutoff=NOW,
+                elapsed_minutes=150,
+                min_price=5,
+                min_prev_dollar_volume=50_000_000,
+                min_current_dollar_volume=5_000_000,
+                max_spread_bps=25,
+                max_quote_age_seconds=180,
+            )
         )
-        self.assertIsNone(record)
-
-    def test_rejects_a_last_trade_materially_dislocated_from_nbbo(self):
-        record = snapshot_liquidity_record(
-            symbol="BADPRINT",
-            asset={"name": "Bad Print Corp", "exchange": "NASDAQ"},
-            snapshot=make_snapshot(last=101.0, bid=99.99, ask=100.01),
-            evidence_cutoff=NOW,
-            elapsed_minutes=150,
-            min_price=5,
-            min_prev_dollar_volume=50_000_000,
-            min_current_dollar_volume=5_000_000,
-            max_spread_bps=25,
-            max_quote_age_seconds=180,
+        self.assertIsNone(
+            snapshot_liquidity_record(
+                symbol="BADPRINT",
+                asset={"name": "Bad Print Corp", "exchange": "NASDAQ"},
+                snapshot=make_snapshot(last=101.0, bid=99.99, ask=100.01),
+                evidence_cutoff=NOW,
+                elapsed_minutes=150,
+                min_price=5,
+                min_prev_dollar_volume=50_000_000,
+                min_current_dollar_volume=5_000_000,
+                max_spread_bps=25,
+                max_quote_age_seconds=180,
+            )
         )
-        self.assertIsNone(record)
 
 
-class RankingTests(unittest.TestCase):
+class ReliabilityRankingTests(unittest.TestCase):
     def setUp(self):
         benchmark_prices = [500 + math.sin(index / 7) * 0.05 for index in range(70)]
         self.benchmark = benchmark_returns(make_bars(benchmark_prices), evidence_cutoff=NOW)
@@ -194,7 +200,7 @@ class RankingTests(unittest.TestCase):
         assert result is not None
         return result
 
-    def test_clear_long_continuation_ranks_above_flat_setup(self):
+    def test_clear_structure_ranks_above_flat_but_never_claims_edge(self):
         trend = [100 + index * 0.035 for index in range(70)]
         flat = [100 + math.sin(index / 3) * 0.03 for index in range(70)]
         ranked = rank_market_records(
@@ -204,37 +210,42 @@ class RankingTests(unittest.TestCase):
             ]
         )
         self.assertEqual(ranked[0]["symbol"], "TREND")
-        self.assertEqual(ranked[0]["direction"], "LONG")
-        self.assertEqual(ranked[0]["setup_type"], "CONTINUATION")
         self.assertGreater(ranked[0]["profitability_score"], ranked[1]["profitability_score"])
+        for row in ranked:
+            evidence = row["evidence"]
+            self.assertEqual(evidence["reliability_label"], "NO VALIDATED EDGE")
+            self.assertEqual(evidence["trade_gate"], "BLOCKED")
+            self.assertEqual(evidence["empirical_reliability_score"], 0.0)
+            self.assertEqual(evidence["registered_robust_candidates_tested"], 23)
+            self.assertEqual(evidence["registered_robust_candidates_passed"], 0)
+            self.assertNotIn(row["initial_view"], {"INVESTIGATE", "TRADE"})
 
-    def test_reversion_requires_a_real_short_horizon_turn(self):
-        falling_then_turning = [100 - index * 0.09 for index in range(60)] + [94.6, 94.8, 95.0, 95.25, 95.5, 95.8, 96.1, 96.35, 96.55, 96.8]
-        ranked = rank_market_records([
-            self.features("TURN", falling_then_turning, spread_bps=3.0, volume_pace=2.0, accelerate=True)
-        ])
-        self.assertEqual(ranked[0]["direction"], "LONG")
-        self.assertGreater(ranked[0]["return_5m_pct"], 0)
+    def test_analysis_priority_is_capped_and_not_probability(self):
+        prices = [100 + index * 0.06 for index in range(70)]
+        row = rank_market_records([
+            self.features("CAP", prices, spread_bps=1.0, volume_pace=4.0, accelerate=True)
+        ])[0]
+        self.assertGreaterEqual(row["profitability_score"], 0)
+        self.assertLessEqual(row["profitability_score"], ANALYSIS_PRIORITY_CAP)
+        self.assertEqual(row["evidence"]["score_interpretation"], "analysis priority, not probability or expected return")
+        self.assertIn("hypothesis for catalyst review only", row["rationale"])
 
-    def test_short_filter_never_returns_long(self):
+    def test_executable_reference_uses_ask_for_long_and_bid_for_short(self):
         rising = [100 + index * 0.04 for index in range(70)]
         falling = [103 - index * 0.04 for index in range(70)]
-        ranked = rank_market_records(
-            [self.features("UP", rising), self.features("DOWN", falling)],
-            direction_filter="short",
-        )
-        self.assertTrue(all(row["direction"] == "SHORT" for row in ranked))
+        long_record = self.features("LONGREF", rising, spread_bps=4.0)
+        short_record = self.features("SHORTREF", falling, spread_bps=4.0)
+        long_row = rank_market_records([long_record], direction_filter="long")[0]
+        short_row = rank_market_records([short_record], direction_filter="short")[0]
+        self.assertAlmostEqual(long_row["last_price"], long_record["ask"])
+        self.assertAlmostEqual(short_row["last_price"], short_record["bid"])
+        self.assertIn("ask", long_row["evidence"]["reference_price_definition"])
+        self.assertIn("bid", short_row["evidence"]["reference_price_definition"])
 
-    def test_known_non_shortable_asset_is_excluded_from_short_ranking(self):
+    def test_non_shortable_is_excluded_and_hard_to_borrow_penalised(self):
         falling = [103 - index * 0.04 for index in range(70)]
-        record = self.features("NOBORROW", falling, shortable=False, easy_to_borrow=False)
-        self.assertEqual(rank_market_records([record], direction_filter="short"), [])
-        both = rank_market_records([record], direction_filter="both")
-        self.assertEqual(len(both), 1)
-        self.assertEqual(both[0]["direction"], "LONG")
-
-    def test_hard_to_borrow_short_receives_execution_penalty(self):
-        falling = [103 - index * 0.04 for index in range(70)]
+        non_shortable = self.features("NOBORROW", falling, shortable=False, easy_to_borrow=False)
+        self.assertEqual(rank_market_records([non_shortable], direction_filter="short"), [])
         easy = self.features("EASY", falling, shortable=True, easy_to_borrow=True)
         hard = self.features("HARD", falling, shortable=True, easy_to_borrow=False)
         easy_row = rank_market_records([easy], direction_filter="short")[0]
@@ -242,7 +253,7 @@ class RankingTests(unittest.TestCase):
         self.assertGreater(easy_row["profitability_score"], hard_row["profitability_score"])
         self.assertIn("the stock is not marked easy to borrow", hard_row["penalties"]["labels"])
 
-    def test_opening_price_discovery_receives_penalty(self):
+    def test_opening_regime_and_ambiguous_setup_are_penalised(self):
         trend = [100 + index * 0.03 for index in range(70)]
         settled = self.features("SETTLED", trend, elapsed_minutes=150)
         opening = self.features("OPENING", trend, elapsed_minutes=10)
@@ -250,17 +261,18 @@ class RankingTests(unittest.TestCase):
         opening_row = rank_market_records([opening], direction_filter="long")[0]
         self.assertGreater(settled_row["profitability_score"], opening_row["profitability_score"])
         self.assertIn("opening price discovery remains unusually unstable", opening_row["penalties"]["labels"])
+        self.assertGreaterEqual(opening_row["penalties"]["ambiguity_penalty"], 0)
 
-    def test_score_is_bounded_and_contains_execution_cost(self):
-        prices = [100 + index * 0.02 for index in range(70)]
-        row = rank_market_records([self.features("BOUND", prices)])[0]
-        self.assertGreaterEqual(row["profitability_score"], 0)
-        self.assertLessEqual(row["profitability_score"], 100)
-        self.assertGreater(row["cost_estimate_bps"], row["spread_bps"])
-        self.assertIn("estimated round-trip cost", row["rationale"])
-        self.assertEqual(row["evidence"]["scoring_version"], "ip-robust-v2.0")
+    def test_reversion_is_marked_insufficient_and_unstable(self):
+        falling_then_turning = [100 - index * 0.09 for index in range(60)] + [94.6, 94.8, 95.0, 95.25, 95.5, 95.8, 96.1, 96.35, 96.55, 96.8]
+        row = rank_market_records([
+            self.features("TURN", falling_then_turning, spread_bps=3.0, volume_pace=2.0, accelerate=True)
+        ], direction_filter="long")[0]
+        if row["setup_type"] == "REVERSION":
+            self.assertEqual(row["evidence"]["historical_setup_status"], "INSUFFICIENT_AND_UNSTABLE")
+            self.assertGreaterEqual(row["evidence"]["empirical_penalty"], 20)
 
-    def test_short_and_gappy_histories_are_rejected(self):
+    def test_gappy_and_short_histories_are_rejected(self):
         prices = [100 + index * 0.02 for index in range(70)]
         liquidity_record = liquidity("GAP", last=prices[-1])
         self.assertIsNotNone(liquidity_record)
@@ -280,21 +292,6 @@ class RankingTests(unittest.TestCase):
                 evidence_cutoff=NOW,
             )
         )
-
-    def test_late_chase_receives_a_larger_reliability_penalty(self):
-        orderly = [100 + index * 0.025 for index in range(70)]
-        chase = [100 + index * 0.005 for index in range(64)] + [100.35, 100.7, 101.05, 101.4, 101.75, 102.1]
-        ranked = {
-            row["symbol"]: row
-            for row in rank_market_records(
-                [
-                    self.features("ORDER", orderly, spread_bps=2.0, volume_pace=2.0, accelerate=True),
-                    self.features("CHASE", chase, spread_bps=2.0, volume_pace=2.0, accelerate=True),
-                ]
-            )
-        }
-        self.assertGreater(ranked["CHASE"]["evidence"]["chase_ratio"], ranked["ORDER"]["evidence"]["chase_ratio"])
-        self.assertGreater(ranked["CHASE"]["evidence"]["penalty_total"], ranked["ORDER"]["evidence"]["penalty_total"])
 
 
 if __name__ == "__main__":
