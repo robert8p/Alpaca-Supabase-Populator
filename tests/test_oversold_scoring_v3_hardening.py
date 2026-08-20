@@ -1,6 +1,13 @@
 from __future__ import annotations
 
+import os
 from datetime import UTC, datetime, timedelta
+
+# app.oversold reads required runtime settings at import time. These tests only
+# exercise pure scoring/universe helpers, so provide inert values before import.
+os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost:5432/test")
+os.environ.setdefault("ALPACA_API_KEY", "test")
+os.environ.setdefault("ALPACA_SECRET_KEY", "test")
 
 from app.oversold import _is_operating_company_asset
 from app.oversold_scoring import SCORING_MODEL_VERSION, score_candidate, setup_score
