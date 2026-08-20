@@ -22,6 +22,7 @@ from app.core import estimate_for, filter_assets
 from app.models import EstimateRequest, JobCreateRequest
 from app.oversold_public import router as oversold_public_router
 from app.oversold import router as oversold_router
+from app.oversold_v2 import router as oversold_v2_router
 
 VERSION = "1.1.1"
 logger = logging.getLogger(__name__)
@@ -43,6 +44,7 @@ app = FastAPI(title="Alpaca Rapid Discovery Loader", version=VERSION, lifespan=l
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(oversold_public_router)
 app.include_router(oversold_router)
+app.include_router(oversold_v2_router)
 
 
 def require_auth(credentials: HTTPBasicCredentials = Depends(security)) -> str:
