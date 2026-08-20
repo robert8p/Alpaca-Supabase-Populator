@@ -69,6 +69,16 @@ _ANALYST_ACTION_PATTERNS = tuple(
         r"\b(?:analyst|broker|research firm)\b.{0,80}\b(?:raises?|lowers?|cuts?|maintains?|upgrades?|downgrades?|initiates?|reiterates?)\b",
     )
 )
+_TARGET_RAISE_ACTION_RE = re.compile(
+    r"(?:\b(?:raises?|raised|boosts?|boosted|increases?|increased)\b.{0,45}\b(?:its\s+)?price target\b|"
+    r"\bprice target\b.{0,45}\b(?:raised|boosted|increased|higher|to\s+\$?[0-9]))",
+    re.IGNORECASE | re.DOTALL,
+)
+_TARGET_CUT_ACTION_RE = re.compile(
+    r"(?:\b(?:lowers?|lowered|cuts?|cut|trims?|trimmed|reduces?|reduced)\b.{0,45}\b(?:its\s+)?price target\b|"
+    r"\bprice target\b.{0,45}\b(?:lowered|cut|trimmed|reduced|lower|to\s+\$?[0-9]))",
+    re.IGNORECASE | re.DOTALL,
+)
 _SEASONAL_CURTAILMENT_PATTERNS = tuple(
     re.compile(pattern, re.IGNORECASE | re.DOTALL)
     for pattern in (
@@ -119,10 +129,12 @@ def _subject_aware_event_signals(original: Any):
         analyst = _direct_analyst_action(text)
         existential = _direct_existential_event(text, risk_flags)
         temporary = bool(signals.get("temporary_operational")) or _seasonal_temporary_event(text)
+        target_raise = analyst and bool(_TARGET_RAISE_ACTION_RE.search(text))
+        target_cut = analyst and bool(_TARGET_CUT_ACTION_RE.search(text))
 
         signals["analyst_action"] = analyst
-        signals["analyst_target_cut"] = bool(signals.get("analyst_target_cut")) and analyst
-        signals["analyst_target_raise"] = bool(signals.get("analyst_target_raise")) and analyst
+        signals["analyst_target_cut"] = target_cut
+        signals["analyst_target_raise"] = target_raise
         signals["existential_or_solvency"] = existential
         signals["temporary_operational"] = temporary
         signals["catastrophic_financing"] = bool(signals.get("dilution_or_financing")) and existential
