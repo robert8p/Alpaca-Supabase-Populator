@@ -22,6 +22,12 @@ from app.core import estimate_for, filter_assets
 from app.models import EstimateRequest, JobCreateRequest
 from app.oversold_public import router as oversold_public_router
 from app.oversold import router as oversold_router
+from app.oversold_scan_v21 import execute_scan_v21 as _execute_scan_v21
+import app.oversold as _oversold_module
+import app.oversold_public as _oversold_public_module
+
+_oversold_module.execute_scan = _execute_scan_v21
+_oversold_public_module.execute_scan = _execute_scan_v21
 
 VERSION = "1.1.1"
 logger = logging.getLogger(__name__)
