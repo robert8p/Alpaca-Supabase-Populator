@@ -15,7 +15,7 @@ jobs:
           python-version: "3.12.7"
           cache: pip
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && python -m pip install -r requirements-dev.txt
+        run: python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements-dev.txt
       - name: Compile
         run: python -m compileall -q app tests
       - name: JavaScript syntax
@@ -24,5 +24,6 @@ jobs:
           node --check app/static/oversold_chatgpt_score.js
           node --check app/static/oversold_top5.js
           node --check app/static/oversold_tracking_v3.js
+          node --check app/static/oversold_v2.js
       - name: Unit tests
         run: pytest -q
