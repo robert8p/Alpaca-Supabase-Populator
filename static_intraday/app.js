@@ -11,12 +11,10 @@
   const scanBtn = $('scanBtn');
   const chatBtn = $('chatBtn');
   const promptBtn = $('promptBtn');
-  const loginModal = $('loginModal');
   const promptModal = $('promptModal');
   const promptText = $('promptText');
   const promptMeta = $('promptMeta');
 
-  let credentials = null;
   let currentScan = null;
   let currentCandidates = [];
   let currentSelections = [];
@@ -27,20 +25,22 @@
   let pollTimer = null;
   let selectionTimer = null;
 
-  const esc = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+  const esc = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+  }[char]));
   const num = (value, digits = 1) => value == null || Number.isNaN(Number(value)) ? '—' : Number(value).toFixed(digits);
-  const signed = (value, digits = 2) => value == null ? '—' : `${Number(value) >= 0 ? '+' : ''}${Number(value).toFixed(digits)}%`;
-  const price = (value) => value == null ? '—' : `$${Number(value).toFixed(Number(value) < 10 ? 3 : 2)}`;
+  const signed = (value, digits = 2) => value == null || Number.isNaN(Number(value)) ? '—' : `${Number(value) >= 0 ? '+' : ''}${Number(value).toFixed(digits)}%`;
+  const price = (value) => value == null || Number.isNaN(Number(value)) ? '—' : `$${Number(value).toFixed(Number(value) < 10 ? 3 : 2)}`;
   const money = (value) => {
-    if (value == null) return '—';
+    if (value == null || Number.isNaN(Number(value))) return '—';
     const number = Number(value);
     if (number >= 1e9) return `$${(number / 1e9).toFixed(1)}b`;
     if (number >= 1e6) return `$${(number / 1e6).toFixed(1)}m`;
     if (number >= 1e3) return `$${(number / 1e3).toFixed(0)}k`;
     return `$${number.toFixed(0)}`;
   };
-  const when = (value) => value ? new Date(value).toLocaleString([], {dateStyle:'short', timeStyle:'medium'}) : '—';
-  const timeOnly = (value) => value ? new Date(value).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'}) : '—';
+  const when = (value) => value ? new Date(value).toLocaleString([], { dateStyle: 'short', timeStyle: 'medium' }) : '—';
+  const timeOnly = (value) => value ? new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '—';
   const scoreClass = (value) => Number(value) >= 76 ? 'good' : Number(value) >= 62 ? 'mid' : 'bad';
 
   function setNotice(text, state = '') {
@@ -50,15 +50,15 @@
   }
 
   function setActions(enabled, running = false) {
-    scanBtn.disabled = !credentials || running;
-    chatBtn.disabled = !credentials || !enabled || running;
-    promptBtn.disabled = !credentials || !enabled || running;
+    scanBtn.disabled = running;
+    chatBtn.disabled = !enabled || running;
+    promptBtn.disabled = !enabled || running;
   }
 
   function switchTab(panelId) {
     document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.panel === panelId));
     document.querySelectorAll('.panel').forEach((panel) => panel.classList.toggle('active', panel.id === panelId));
-    if (panelId === 'selectedPanel' && credentials) loadSelections({quiet: true});
+    if (panelId === 'selectedPanel') loadSelections({ quiet: true });
   }
 
   function components(row) {
@@ -66,6 +66,15 @@
       ['Liq', row.liquidity_score], ['Opp', row.opportunity_score], ['Dir', row.directional_score],
       ['Conf', row.confirmation_score], ['Exec', row.execution_score],
     ].map(([label, value]) => `<div class="component"><b>${num(value, 0)}</b><span>${label}</span></div>`).join('');
+  }
+
+  function updateSelectButtons() {
+    document.querySelectorAll('[data-select-candidate]').forEach((button) => {
+      const selected = selectedCandidateIds.has(Number(button.dataset.selectCandidate));
+      button.disabled = selected;
+      button.classList.toggle('selected', selected);
+      button.textContent = selected ? 'Selected' : 'Select';
+    });
   }
 
   function render(payload) {
@@ -136,7 +145,7 @@
     $('selectionCount').textContent = String(currentSelections.length);
     if (!currentSelections.length) {
       selectedRows.innerHTML = '<tr><td colspan="10" class="empty">No stocks have been selected. Use Select beside a scanner candidate to create an immutable tracking record.</td></tr>';
-      render({scan: currentScan, candidates: currentCandidates});
+      updateSelectButtons();
       return;
     }
     selectedRows.innerHTML = currentSelections.map((row) => {
@@ -158,11 +167,10 @@
         <td><span class="pill ${statusClass}">${esc(row.status)}</span><div class="tiny" style="margin-top:6px">${row.last_refreshed_at ? `Refreshed ${when(row.last_refreshed_at)}` : 'Awaiting first post-scan bar'}</div>${row.refresh_error ? `<div class="tiny bad">${esc(row.refresh_error)}</div>` : ''}</td>
       </tr>`;
     }).join('');
-    render({scan: currentScan, candidates: currentCandidates});
+    updateSelectButtons();
   }
 
-  async function api(action, {method = 'GET', body = null, params = {}} = {}) {
-    if (!credentials) throw new Error('The app is locked.');
+  async function api(action, { method = 'GET', body = null, params = {} } = {}) {
     const url = new URL(API_URL);
     url.searchParams.set('action', action);
     Object.entries(params).forEach(([key, value]) => {
@@ -171,22 +179,20 @@
     const response = await fetch(url, {
       method,
       cache: 'no-store',
-      headers: {'content-type':'application/json','x-app-user':credentials.user,'x-app-key':credentials.key},
+      headers: { 'content-type': 'application/json' },
       body: body == null ? null : JSON.stringify(body),
     });
     const text = await response.text();
     let payload = null;
-    try { payload = text ? JSON.parse(text) : null; } catch (_) { payload = {detail:text}; }
-    if (response.status === 401) {
-      lockApp('The credentials were rejected.');
-      throw new Error('Unauthorised');
+    try { payload = text ? JSON.parse(text) : null; } catch (_) { payload = { detail: text }; }
+    if (!response.ok) {
+      const retry = payload?.retry_after_seconds ? ` Try again in about ${payload.retry_after_seconds} seconds.` : '';
+      throw new Error(`${payload?.detail || payload?.error || `Request failed (${response.status})`}${retry}`);
     }
-    if (!response.ok) throw new Error(payload?.detail || payload?.error || `Request failed (${response.status})`);
     return payload;
   }
 
-  async function loadSelections({quiet = false} = {}) {
-    if (!credentials) return;
+  async function loadSelections({ quiet = false } = {}) {
     try {
       const payload = await api('selections');
       renderSelections(payload?.selections || []);
@@ -196,7 +202,7 @@
     }
   }
 
-  async function testCredentials() {
+  async function loadInitialState() {
     const [latest, selections] = await Promise.all([api('latest'), api('selections')]);
     renderSelections(selections?.selections || []);
     render(latest);
@@ -207,72 +213,95 @@
     scheduleSelectionRefresh();
   }
 
-  function openLogin(message = '') {
-    $('loginError').textContent = message;
-    loginModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => $('loginKey').focus(), 0);
-  }
-  function closeLogin() { loginModal.classList.remove('open'); document.body.style.overflow = ''; }
-  function lockApp(message = '') {
-    credentials = null;
-    sessionStorage.removeItem('ip_user'); sessionStorage.removeItem('ip_key');
-    currentRequestId = null; currentScan = null; currentCandidates = []; currentSelections = [];
-    selectedCandidateIds = new Set(); currentPrompt = ''; currentCompactPrompt = '';
-    if (pollTimer) clearTimeout(pollTimer); if (selectionTimer) clearTimeout(selectionTimer);
-    setActions(false, false); openLogin(message);
+  function scheduleRequestPoll() {
+    if (pollTimer) clearTimeout(pollTimer);
+    pollTimer = setTimeout(pollRequest, 2500);
   }
 
-  async function unlock() {
-    const user = $('loginUser').value.trim(); const key = $('loginKey').value;
-    if (!user || !key) { $('loginError').textContent = 'Enter the username and access key.'; return; }
-    credentials = {user, key}; $('loginBtn').disabled = true; $('loginError').textContent = 'Checking credentials…';
-    try {
-      await testCredentials();
-      sessionStorage.setItem('ip_user', user); sessionStorage.setItem('ip_key', key);
-      $('loginKey').value = ''; closeLogin();
-    } catch (error) {
-      credentials = null;
-      $('loginError').textContent = error.message === 'Unauthorised' ? 'Incorrect username or access key.' : `Could not reach the API: ${error.message}`;
-    } finally { $('loginBtn').disabled = false; }
+  function scheduleSelectionRefresh() {
+    if (selectionTimer) clearTimeout(selectionTimer);
+    selectionTimer = setTimeout(async () => {
+      await loadSelections({ quiet: true });
+      scheduleSelectionRefresh();
+    }, 30000);
   }
-
-  function scheduleRequestPoll() { if (pollTimer) clearTimeout(pollTimer); pollTimer = setTimeout(pollRequest, 2500); }
-  function scheduleSelectionRefresh() { if (selectionTimer) clearTimeout(selectionTimer); selectionTimer = setTimeout(async () => { await loadSelections({quiet:true}); scheduleSelectionRefresh(); }, 30000); }
 
   async function pollRequest() {
-    if (!currentRequestId || !credentials) return;
+    if (!currentRequestId) return;
     try {
-      const payload = await api('request', {params:{request_id:currentRequestId}});
+      const payload = await api('request', { params: { request_id: currentRequestId } });
       const request = payload.request || {};
       if (payload.scan) render(payload);
-      if (request.status === 'queued') { setNotice('Scan request queued on the existing Alpaca worker.'); setActions(false, true); scheduleRequestPoll(); }
-      else if (request.status === 'running') { setNotice(payload.scan?.status === 'running' ? 'SIP scan running on the existing Alpaca worker…' : 'The worker has claimed the scan request.'); setActions(false, true); scheduleRequestPoll(); }
-      else if (request.status === 'completed') { currentRequestId = null; render(payload); await loadSelections({quiet:true}); }
-      else if (request.status === 'failed') { currentRequestId = null; render(payload); setNotice(request.error || payload.scan?.error || 'The scan request failed.', 'error'); setActions(false, false); }
-    } catch (error) { setNotice(`Could not refresh the scan request: ${error.message}`, 'error'); scheduleRequestPoll(); }
+      if (request.status === 'queued') {
+        setNotice('Scan request queued on the existing Alpaca worker.');
+        setActions(false, true);
+        scheduleRequestPoll();
+      } else if (request.status === 'running') {
+        setNotice(payload.scan?.status === 'running' ? 'SIP scan running on the existing Alpaca worker…' : 'The worker has claimed the scan request.');
+        setActions(false, true);
+        scheduleRequestPoll();
+      } else if (request.status === 'completed') {
+        currentRequestId = null;
+        render(payload);
+        await loadSelections({ quiet: true });
+      } else if (request.status === 'failed') {
+        currentRequestId = null;
+        render(payload);
+        setNotice(request.error || payload.scan?.error || 'The scan request failed.', 'error');
+        setActions(false, false);
+      }
+    } catch (error) {
+      setNotice(`Could not refresh the scan request: ${error.message}`, 'error');
+      scheduleRequestPoll();
+    }
   }
 
   function scanBody() {
-    return {direction:$('direction').value,min_price:Number($('minPrice').value),min_prev_dollar_volume:Number($('prevDv').value),min_current_dollar_volume:Number($('currentDv').value),max_spread_bps:Number($('spread').value),prefilter_limit:Number($('prefilter').value),candidate_limit:50};
+    return {
+      direction: $('direction').value,
+      min_price: Number($('minPrice').value),
+      min_prev_dollar_volume: Number($('prevDv').value),
+      min_current_dollar_volume: Number($('currentDv').value),
+      max_spread_bps: Number($('spread').value),
+      prefilter_limit: Number($('prefilter').value),
+      candidate_limit: 50,
+    };
   }
 
   async function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(text); return true; } catch (_) {} }
-    const area = document.createElement('textarea'); area.value = text; area.setAttribute('readonly',''); area.style.position='fixed'; area.style.opacity='0'; document.body.appendChild(area); area.select();
-    let copied = false; try { copied = document.execCommand('copy'); } catch (_) {} document.body.removeChild(area); return copied;
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); return true; } catch (_) {}
+    }
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch (_) {}
+    document.body.removeChild(area);
+    return copied;
   }
 
   function preparePrompt() {
     currentPrompt = window.IPPrompt.buildFullPrompt(currentScan, currentCandidates);
     currentCompactPrompt = window.IPPrompt.buildCompactPrompt(currentScan, currentCandidates);
     promptText.value = currentPrompt;
-    promptMeta.textContent = `${Math.min(10,currentCandidates.length)} candidates · evidence cutoff ${when(currentScan.evidence_cutoff)} · full ${currentPrompt.length.toLocaleString()} chars · populated handoff ${currentCompactPrompt.length.toLocaleString()} chars`;
+    promptMeta.textContent = `${Math.min(10, currentCandidates.length)} candidates · evidence cutoff ${when(currentScan.evidence_cutoff)} · full ${currentPrompt.length.toLocaleString()} chars · populated handoff ${currentCompactPrompt.length.toLocaleString()} chars`;
     return currentPrompt;
   }
 
-  function openPromptModal() { promptModal.classList.add('open'); document.body.style.overflow='hidden'; }
-  function closePromptModal() { promptModal.classList.remove('open'); document.body.style.overflow=''; }
+  function openPromptModal() {
+    promptModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePromptModal() {
+    promptModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
   function openChatGPT() {
     if (!currentPrompt || !currentCompactPrompt) preparePrompt();
@@ -286,15 +315,18 @@
   }
 
   async function selectCandidate(candidateId, button) {
-    button.disabled = true; button.textContent = 'Selecting…';
+    button.disabled = true;
+    button.textContent = 'Selecting…';
     try {
-      const payload = await api('select', {method:'POST',body:{candidate_id:Number(candidateId)}});
-      await loadSelections({quiet:true});
-      button.classList.add('selected'); button.textContent = 'Selected';
+      const payload = await api('select', { method: 'POST', body: { candidate_id: Number(candidateId) } });
+      await loadSelections({ quiet: true });
+      button.classList.add('selected');
+      button.textContent = 'Selected';
       switchTab('selectedPanel');
       setNotice(payload?.duplicate ? 'That signal was already selected; its tracker is open.' : 'Signal selected. Post-scan SIP highs/lows and the regular-session close will update automatically.', 'success');
     } catch (error) {
-      button.disabled = false; button.textContent = 'Select';
+      button.disabled = false;
+      button.textContent = 'Select';
       setNotice(`Could not select the signal: ${error.message}`, 'error');
     }
   }
@@ -306,27 +338,56 @@
   document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => switchTab(tab.dataset.panel)));
   $('refreshSelections').addEventListener('click', () => loadSelections());
   scanBtn.addEventListener('click', async () => {
-    setActions(false,true); setNotice('Submitting the SIP scan request to the existing Alpaca worker…');
+    setActions(false, true);
+    setNotice('Submitting the SIP scan request to the existing Alpaca worker…');
     try {
-      const payload = await api('run',{method:'POST',body:scanBody()}); currentRequestId=payload.request?.id||null; currentPrompt=''; currentCompactPrompt='';
-      setNotice(payload.duplicate ? 'An existing scan request is already active; following it now.' : 'Scan request accepted by the queue.'); scheduleRequestPoll();
-    } catch (error) { setNotice(`Could not start the scan: ${error.message}`,'error'); setActions(false,false); }
+      const payload = await api('run', { method: 'POST', body: scanBody() });
+      currentRequestId = payload.request?.id || null;
+      currentPrompt = '';
+      currentCompactPrompt = '';
+      setNotice(payload.duplicate ? 'An existing scan request is already active; following it now.' : 'Scan request accepted by the queue.');
+      scheduleRequestPoll();
+    } catch (error) {
+      setNotice(`Could not start the scan: ${error.message}`, 'error');
+      setActions(false, false);
+    }
   });
-  chatBtn.addEventListener('click', () => { try { openChatGPT(); } catch (error) { setNotice(`Could not prepare the ChatGPT analysis: ${error.message}`,'error'); } });
-  promptBtn.addEventListener('click', () => { try { preparePrompt(); openPromptModal(); } catch (error) { setNotice(`Could not prepare the prompt: ${error.message}`,'error'); } });
-  $('loginBtn').addEventListener('click',unlock); $('loginKey').addEventListener('keydown',(event)=>{if(event.key==='Enter')unlock();}); $('logoutBtn').addEventListener('click',()=>lockApp());
-  $('closePrompt').addEventListener('click',closePromptModal); promptModal.addEventListener('click',(event)=>{if(event.target===promptModal)closePromptModal();}); document.addEventListener('keydown',(event)=>{if(event.key==='Escape'&&promptModal.classList.contains('open'))closePromptModal();});
-  $('copyPrompt').addEventListener('click',async()=>{const copied=await copyText(promptText.value);setNotice(copied?'Full prompt copied to the clipboard.':'Clipboard access was blocked; select and copy the visible prompt.',copied?'success':'error');});
-  $('openChat').addEventListener('click',()=>{try{openChatGPT();}catch(error){setNotice(`Could not open ChatGPT: ${error.message}`,'error');}});
+  chatBtn.addEventListener('click', () => {
+    try { openChatGPT(); } catch (error) { setNotice(`Could not prepare the ChatGPT analysis: ${error.message}`, 'error'); }
+  });
+  promptBtn.addEventListener('click', () => {
+    try { preparePrompt(); openPromptModal(); } catch (error) { setNotice(`Could not prepare the prompt: ${error.message}`, 'error'); }
+  });
+  $('closePrompt').addEventListener('click', closePromptModal);
+  promptModal.addEventListener('click', (event) => { if (event.target === promptModal) closePromptModal(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && promptModal.classList.contains('open')) closePromptModal(); });
+  $('copyPrompt').addEventListener('click', async () => {
+    const copied = await copyText(promptText.value);
+    setNotice(copied ? 'Full prompt copied to the clipboard.' : 'Clipboard access was blocked; select and copy the visible prompt.', copied ? 'success' : 'error');
+  });
+  $('openChat').addEventListener('click', () => {
+    try { openChatGPT(); } catch (error) { setNotice(`Could not open ChatGPT: ${error.message}`, 'error'); }
+  });
 
   async function bootstrap() {
-    try { const health=await fetch(`${API_URL}?action=health`,{cache:'no-store'}); if(!health.ok)throw new Error(`health ${health.status}`); backendDot.classList.add('ok'); }
-    catch (_) { setNotice('The API health check is not responding.','error'); }
-    const user=sessionStorage.getItem('ip_user'); const key=sessionStorage.getItem('ip_key');
-    if(user&&key){ credentials={user,key}; try{await testCredentials();closeLogin();return;}catch(_){credentials=null;sessionStorage.removeItem('ip_user');sessionStorage.removeItem('ip_key');} }
-    openLogin();
+    setNotice('Loading the latest scan and selected outcomes…');
+    try {
+      const health = await fetch(`${API_URL}?action=health`, { cache: 'no-store' });
+      if (!health.ok) throw new Error(`health ${health.status}`);
+      backendDot.classList.add('ok');
+      await loadInitialState();
+    } catch (error) {
+      setNotice(`The public scanner API is not ready: ${error.message}`, 'error');
+      setActions(false, false);
+    }
   }
 
-  window.__IP_TEST__ = {buildCompactPrompt: () => window.IPPrompt.buildCompactPrompt(currentScan,currentCandidates), buildFullPrompt: () => window.IPPrompt.buildFullPrompt(currentScan,currentCandidates), openChatGPT: () => openChatGPT(), compactLimit: window.IPPrompt.COMPACT_LIMIT};
+  window.__IP_TEST__ = {
+    buildCompactPrompt: () => window.IPPrompt.buildCompactPrompt(currentScan, currentCandidates),
+    buildFullPrompt: () => window.IPPrompt.buildFullPrompt(currentScan, currentCandidates),
+    openChatGPT: () => openChatGPT(),
+    compactLimit: window.IPPrompt.COMPACT_LIMIT,
+  };
+
   bootstrap();
 })();

@@ -61,14 +61,15 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
   };
   let selections = [];
 
-  const authorised = (route) => {
+  const assertCredentialFree = (route) => {
     const headers = route.request().headers();
-    assert(headers['x-app-user'] === 'admin', 'App username omitted.');
-    assert(headers['x-app-key'] === 'browser-smoke-key-not-a-secret', 'App key omitted.');
+    assert(!headers['x-app-user'], 'Browser unexpectedly sent an app username.');
+    assert(!headers['x-app-key'], 'Browser unexpectedly sent an app access key.');
+    assert(!headers.authorization, 'Browser unexpectedly sent an authorization credential.');
   };
 
   await context.route(`${api}?action=latest`, async (route) => {
-    authorised(route);
+    assertCredentialFree(route);
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -76,11 +77,11 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
     });
   });
   await context.route(`${api}?action=selections`, async (route) => {
-    authorised(route);
+    assertCredentialFree(route);
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ selections }) });
   });
   await context.route(`${api}?action=select`, async (route) => {
-    authorised(route);
+    assertCredentialFree(route);
     const body = route.request().postDataJSON();
     const candidate = candidates.find((row) => row.id === body.candidate_id);
     assert(candidate, 'Select endpoint received an unknown candidate.');
@@ -113,14 +114,11 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.locator('#loginModal.open').waitFor({ state: 'visible', timeout: 10000 });
-  assert(await page.locator('#loginModal').evaluate((node) => node.classList.contains('open')), 'Login modal did not open.');
-  await page.locator('#loginUser').fill('admin');
-  await page.locator('#loginKey').fill('browser-smoke-key-not-a-secret');
-  await page.locator('#loginBtn').click();
-  await page.locator('#loginModal').waitFor({ state: 'hidden', timeout: 10000 });
+  assert((await page.locator('#loginModal').count()) === 0, 'A login modal is still present.');
+  assert((await page.locator('#logoutBtn').count()) === 0, 'A lock/logout control is still present.');
   await page.waitForFunction(() => document.querySelectorAll('#rows tr').length === 10);
   assert((await page.locator('[data-select-candidate]').count()) === 10, 'Select column did not render.');
+  assert(!(await page.locator('#scanBtn').isDisabled()), 'Scan button did not become available without credentials.');
 
   await page.locator('[data-select-candidate="1001"]').click();
   await page.locator('#selectedPanel.active').waitFor({ state: 'visible' });

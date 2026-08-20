@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/intraday-handoff-tracker-heuristic-v2
+      - feature/remove-intraday-app-credentials
     paths:
       - app/intraday_profitability_scoring.py
       - app/intraday_profitability_tracking.py
@@ -12,6 +13,7 @@ on:
       - supabase/functions/intraday-profitability-api/**
       - tests/test_intraday_profitability_scoring.py
       - tests/test_intraday_profitability_tracking.py
+      - tests/test_intraday_profitability_split_deploy.py
       - tests/test_intraday_prompt_handoff.js
       - docs/intraday_profitability_heuristic_v2.md
       - .github/workflows/intraday-v2-ci.yml
@@ -26,6 +28,7 @@ on:
       - supabase/functions/intraday-profitability-api/**
       - tests/test_intraday_profitability_scoring.py
       - tests/test_intraday_profitability_tracking.py
+      - tests/test_intraday_profitability_split_deploy.py
       - tests/test_intraday_prompt_handoff.js
       - docs/intraday_profitability_heuristic_v2.md
       - .github/workflows/intraday-v2-ci.yml
@@ -51,23 +54,30 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --only-binary=:all: -r requirements.txt pytest
 
-      - name: Run scorer and tracking regression tests
+      - name: Run scorer, tracker and deployment-contract tests
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/postgres
           ALPACA_API_KEY: test
           ALPACA_SECRET_KEY: test
           APP_PASSWORD: test
         run: |
-          pytest -q tests/test_intraday_profitability_scoring.py tests/test_intraday_profitability_tracking.py
+          pytest -q \
+            tests/test_intraday_profitability_scoring.py \
+            tests/test_intraday_profitability_tracking.py \
+            tests/test_intraday_profitability_split_deploy.py
           python -m py_compile app/intraday_profitability_scoring.py app/intraday_profitability_tracking.py app/intraday_profitability_worker.py
 
-      - name: Verify browser JavaScript and populated ChatGPT URL
+      - name: Verify credential-free browser JavaScript and populated ChatGPT URL
         run: |
           node --check static_intraday/prompt.js
           node --check static_intraday/app.js
           node tests/test_intraday_prompt_handoff.js
-          grep -q 'searchParams.set' static_intraday/prompt.js
+          grep -q "searchParams.set('prompt'" static_intraday/prompt.js
           grep -q 'data-select-candidate' static_intraday/app.js
+          ! grep -q 'x-app-user' static_intraday/app.js
+          ! grep -q 'x-app-key' static_intraday/app.js
+          ! grep -q 'sessionStorage' static_intraday/app.js
+          ! grep -q 'loginModal' static_intraday/index.html
           if grep -Eiq 'api\.openai\.com|OPENAI_API_KEY|ALPACA_(API|SECRET)_KEY|DATABASE_URL|service_role' static_intraday/app.js static_intraday/prompt.js; then
             echo 'A backend secret or prohibited OpenAI API dependency reached the browser bundle.' >&2
             exit 1
@@ -77,7 +87,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Type-check protected Edge API
+      - name: Type-check public Edge API
         run: |
           cd supabase/functions/intraday-profitability-api
           deno check index.ts
