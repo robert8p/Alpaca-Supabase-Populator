@@ -126,7 +126,8 @@
     const c = typeof state !== 'undefined' ? state.candidates.find(item => Number(item.id) === Number(id)) : null;
     if (!c) return;
     const compactPrompt = compactSinglePrompt(c);
-    const fullPrompt = typeof buildChatGPTPrompt === 'function' ? sanitizeTargetCopy(buildChatGPTPrompt(c)) : compactPrompt;
+    const fullPromptRaw = typeof buildChatGPTPrompt === 'function' ? buildChatGPTPrompt(c) : compactPrompt;
+    const fullPrompt = sanitizeTargetCopy(fullPromptRaw);
     const opened = window.open(chatGPTUrl(compactPrompt), '_blank', 'noopener');
     copyText(fullPrompt).then(copied => {
       const status = statusLine();
