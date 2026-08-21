@@ -1,0 +1,59 @@
+# Reference configuration for the isolated E003C prospective-capture worker.
+# Create as a new Render Background Worker; do not apply this file as a replacement
+# for the existing Rapid Discovery Blueprint.
+services:
+  - type: worker
+    name: alpaca-e003c-prospective-worker
+    runtime: python
+    region: frankfurt
+    plan: starter
+    branch: release/e003c-prospective-20260813
+    autoDeployTrigger: off
+    maxShutdownDelaySeconds: 120
+    buildCommand: "python --version && python -m pip install --upgrade pip && python -m pip install --only-binary=:all: -r requirements.txt"
+    startCommand: python -m app.e003c_worker
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: DATABASE_URL
+        sync: false
+      - key: ALPACA_API_KEY
+        sync: false
+      - key: ALPACA_SECRET_KEY
+        sync: false
+      - key: AUTO_MIGRATE
+        value: "false"
+      - key: ALPACA_DATA_BASE_URL
+        value: https://data.alpaca.markets
+      - key: ALPACA_TRADING_BASE_URL
+        value: https://paper-api.alpaca.markets
+      - key: LOG_LEVEL
+        value: INFO
+      - key: E003C_RUNTIME_MODE
+        value: readiness
+      - key: E003C_RELEASE_SHA
+        sync: false
+      - key: E003C_EXPECTED_BRANCH
+        value: release/e003c-prospective-20260813
+      - key: E003C_EXPECTED_SERVICE_NAME
+        value: alpaca-e003c-prospective-worker
+      - key: E003C_EXPECTED_SERVICE_ID
+        sync: false
+      - key: E003C_DEPLOYMENT_ID
+        sync: false
+      - key: E003C_BASELINE_CHECKPOINT_JOB_ID
+        value: 9c19eea7-2401-481a-a9f3-1d75a75a07f6
+      - key: E003C_BASELINE_CHECKPOINT_EVENT_ID
+        value: "275"
+      - key: E003C_BASELINE_AUDIT_HASH
+        value: 29e2168dd128e60ed7e454acce9b973b
+      - key: E003C_CAPTURE_POLL_SECONDS
+        value: "30"
+      - key: E003C_HEARTBEAT_SECONDS
+        value: "30"
+      - key: E003C_LEASE_TTL_SECONDS
+        value: "120"
+      - key: E003C_SIGNAL_FREEZE_ENABLED
+        value: "true"
+      - key: E003C_SIGNAL_FREEZE_POLL_SECONDS
+        value: "900"

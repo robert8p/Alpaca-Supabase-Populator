@@ -1,0 +1,22 @@
+name: Verify E003C release identity
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -B -m pip install -r requirements.txt pytest ruff
+      - run: |
+          python -B -m pytest -q tests/test_e003c_runtime.py
+          ruff check app/e003c_runtime.py tests/test_e003c_runtime.py
