@@ -207,11 +207,13 @@ def ensure_monthly_partitions(cur, start: datetime, end: datetime) -> None:
             nxt = datetime(cursor.year, cursor.month + 1, 1, tzinfo=UTC)
         partition_name = f"rd_bars_{cursor:%Y%m}"
         cur.execute("SELECT pg_advisory_xact_lock(hashtext(%s))", (partition_name,))
-        cur.execute(
-            sql.SQL("CREATE TABLE IF NOT EXISTS {} PARTITION OF rd_bars FOR VALUES FROM ({}) TO ({})").format(
-                sql.Identifier(partition_name), sql.Literal(cursor), sql.Literal(nxt)
+        cur.execute("SELECT to_regclass(%s)", (f"public.{partition_name}",))
+        if cur.fetchone()["to_regclass"] is None:
+            cur.execute(
+                sql.SQL("CREATE TABLE {} PARTITION OF rd_bars FOR VALUES FROM ({}) TO ({})").format(
+                    sql.Identifier(partition_name), sql.Literal(cursor), sql.Literal(nxt)
+                )
             )
-        )
         cursor = nxt
 
 
