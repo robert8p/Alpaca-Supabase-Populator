@@ -174,6 +174,8 @@ def _write_page(writer: csv.DictWriter, bars_payload: dict[str, list[dict[str, A
     for symbol, bars in bars_payload.items():
         for bar in bars:
             ts = parse_timestamp(bar["t"])
+            if ts < task["window_start"] or ts >= task["window_end"]:
+                continue
             if not in_selected_session(ts, config):
                 continue
             writer.writerow(
