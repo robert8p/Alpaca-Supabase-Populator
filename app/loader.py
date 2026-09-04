@@ -223,7 +223,7 @@ def bulk_load(task: dict[str, Any], config: JobConfig, path: Path) -> int:
     with connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SET LOCAL statement_timeout = '30min'")
-            ensure_monthly_partitions(cur, task["window_start"], task["window_end"] + timedelta(seconds=1))
+            ensure_monthly_partitions(cur, task["window_start"], task["window_end"])
             cur.execute(
                 """
                 CREATE TEMP TABLE temp_rd_bars (
