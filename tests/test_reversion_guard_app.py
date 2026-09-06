@@ -58,8 +58,10 @@ def test_latest_endpoint_enriches_upstream_payload(monkeypatch):
         response = client.get("/api/reversion-guard/latest")
     assert response.status_code == 200
     body = response.json()
-    assert body["candidates"][0]["guard_assessment"]["gate_code"] == "INVESTIGATE_CONFIRMED"
-    assert body["portfolio"]["candidate_counts"]["investigate"] == 1
+    # A high numerical confidence without any cited catalyst is insufficient.
+    assert body["candidates"][0]["guard_assessment"]["gate_code"] == "WAIT_FOR_EVIDENCE"
+    assert body["portfolio"]["candidate_counts"]["wait"] == 1
+    assert body["candidates"][0]["guard_assessment"]["profit_probability"] is None
 
 
 def test_position_endpoint_uses_latest_price_when_current_is_omitted(monkeypatch):
@@ -79,6 +81,9 @@ def test_position_endpoint_uses_latest_price_when_current_is_omitted(monkeypatch
     body = response.json()
     assert body["current_price_usd"] == 16
     assert body["recovery_to_break_even_pct"] == 25
+    assert body["price_source"] == "stored_scan"
+    assert body["price_is_current"] is False
+    assert body["action"] == "REVIEW_STALE_DATA"
 
 
 def test_policy_endpoint_exposes_non_negotiable_rules():

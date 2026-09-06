@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 import math
+from datetime import UTC, datetime
 from typing import Any
+
+from app.reversion_guard_evidence import (
+    execution_evidence,
+    higher_low_evidence,
+    market_data,
+    source_evidence,
+    technical_inputs,
+)
 
 from app.reversion_guard_policy import (
     DEFAULT_SETTINGS,
@@ -9,6 +18,7 @@ from app.reversion_guard_policy import (
     GUARD_VERSION,
     _clamp,
     _num,
+    _parse_ts,
     _round,
     classify_event,
     infer_theme,
@@ -17,7 +27,7 @@ from app.reversion_guard_policy import (
 
 
 def confirmation_assessment(candidate: dict[str, Any], session: dict[str, Any] | None = None) -> dict[str, Any]:
-    technical = candidate.get("technical_inputs") if isinstance(candidate.get("technical_inputs"), dict) else {}
+    technical = technical_inputs(candidate)
     direct: list[tuple[str, bool | None, float]] = []
 
     range_position = _num(technical.get("session_range_position"))
@@ -44,9 +54,17 @@ def confirmation_assessment(candidate: dict[str, Any], session: dict[str, Any] |
         score = normalised * 0.75 + upstream * 0.25
 
     session = session or signal_session(candidate)
+    pattern = higher_low_evidence(candidate)
+    reclaim = vwap_distance is not None and vwap_distance >= 0
     if not session.get("is_regular") or not session.get("after_1000_et"):
         score = min(score, 45.0)
         status = "extended_hours_or_too_early"
+    elif not pattern["confirmed"]:
+        score = min(score, 62.0)
+        status = pattern["status"]
+    elif not reclaim:
+        score = min(score, 62.0)
+        status = "waiting_for_reclaim"
     elif score >= 68:
         status = "confirmed"
     elif score >= 45:
@@ -62,13 +80,16 @@ def confirmation_assessment(candidate: dict[str, Any], session: dict[str, Any] |
             for label, passed, weight in direct
         ],
         "available_check_count": len(available),
+        "higher_low_evidence": pattern,
+        "reclaim_observed": reclaim,
         "required_pattern": "A higher low after the regular-session open plus reclaim of VWAP or a prior intraday pivot.",
         "averaging_rule": "Never average down into a falling price. Recalculate only after a higher low and a confirmed reclaim.",
     }
 
 
-def execution_quality(candidate: dict[str, Any]) -> dict[str, Any]:
-    spread = _num(candidate.get("spread_pct"))
+def execution_quality(candidate: dict[str, Any], *, as_of: datetime | None = None) -> dict[str, Any]:
+    evidence = execution_evidence(candidate, as_of=as_of)
+    spread = evidence["spread_pct"]
     liquidity = _num(candidate.get("prev_dollar_volume")) or 0.0
     if spread is None:
         spread_score = 35.0
@@ -96,6 +117,8 @@ def execution_quality(candidate: dict[str, Any]) -> dict[str, Any]:
     else:
         liquidity_score = 10.0
     score = spread_score * 0.55 + liquidity_score * 0.45
+    if not evidence["ready"]:
+        score = min(score, 44.0)
     return {
         "score": round(score, 1),
         "spread_pct": _round(spread, 3),
@@ -103,11 +126,14 @@ def execution_quality(candidate: dict[str, Any]) -> dict[str, Any]:
         "spread_score": spread_score,
         "liquidity_score": liquidity_score,
         "limit_orders_only": True,
+        "evidence": evidence,
+        "ready": evidence["ready"],
     }
 
 
 def _snapshot_bar(candidate: dict[str, Any]) -> dict[str, Any]:
-    snapshot = candidate.get("raw_snapshot") if isinstance(candidate.get("raw_snapshot"), dict) else {}
+    values = market_data(candidate)
+    snapshot = values.get("raw_snapshot") if isinstance(values.get("raw_snapshot"), dict) else {}
     daily = snapshot.get("dailyBar") if isinstance(snapshot.get("dailyBar"), dict) else {}
     return daily
 
@@ -117,7 +143,7 @@ def risk_plan(candidate: dict[str, Any], settings: dict[str, Any], entry_allowed
     if price is None or price <= 0:
         return {"available": False, "reason": "No valid reference price."}
 
-    technical = candidate.get("technical_inputs") if isinstance(candidate.get("technical_inputs"), dict) else {}
+    technical = technical_inputs(candidate)
     atr = _num(technical.get("atr20"))
     daily = _snapshot_bar(candidate)
     day_low = _num(daily.get("l"))
@@ -180,11 +206,17 @@ def risk_plan(candidate: dict[str, Any], settings: dict[str, Any], entry_allowed
         "one_r_target_usd": round(target_1r, 4),
         "one_point_five_r_target_usd": round(target_15r, 4),
         "profit_zone_usd": [round(target_4, 4), round(target_6, 4)],
+        "target_basis": "Illustrative +1R/+1.5R and +4–6% planning levels; no estimated probability of reaching them.",
+        "profit_probability": None,
+        "expected_net_return_pct": None,
+        "reward_risk_status": "UNESTIMATED: no independent valuation target or complete execution-cost estimate",
+        "stop_loss_is_guaranteed": False,
+        "gap_risk_note": "A stop defines intended invalidation; gaps and slippage can exceed the planned loss.",
         "entry_trigger": ", ".join(entry_trigger_parts),
         "time_stop": "Exit by the close of the second full regular session if the stock has not formed a higher low and reclaimed a key level.",
         "too_wide_to_size": too_wide,
         "too_tight_to_trust": too_tight,
-        "sizing_rule": "Risk-based sizing: the smaller of risk-budget shares and maximum-position shares. Equal cash allocations are prohibited.",
+        "sizing_rule": "Illustrative sizing uses the smaller of the saved risk-budget and maximum-position settings; review execution costs before trading.",
     }
 
 
@@ -202,12 +234,30 @@ def _base_opportunity(candidate: dict[str, Any]) -> float:
     return _clamp(sum(values) / len(values)) if values else 35.0
 
 
-def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None = None) -> dict[str, Any]:
+def assess_candidate(
+    candidate: dict[str, Any], settings: dict[str, Any] | None = None,
+    *, as_of: datetime | None = None, historical: bool = False,
+) -> dict[str, Any]:
     settings = {**DEFAULT_SETTINGS, **(settings or {})}
-    event = classify_event(candidate)
+    now = _parse_ts(as_of) or datetime.now(UTC)
+    if historical:
+        now = _parse_ts(candidate.get("evidence_cutoff") or candidate.get("signal_timestamp")) or now
+    evidence = source_evidence(candidate)
+    eligible = evidence.pop("eligible_articles")
+    source_text = " ".join(" ".join(str(item.get(key) or "") for key in ("headline", "summary", "content")) for item in eligible)
+    event = classify_event({**candidate, "classification_text": source_text or "No eligible catalyst source", "headlines": eligible})
+    # Structured benign labels still need matching economic source content.
+    source_event = classify_event({"classification_text": source_text or "No eligible catalyst source", "headlines": eligible})
+    benign = {"temporary_operational_issue", "analyst_or_sentiment_only"}
+    source_supports_event = bool(eligible and source_event["bucket"] == event["bucket"])
+    cause_verified = evidence["upstream_cause_verified"] and source_supports_event
+    evidence["source_supports_event"] = source_supports_event
+    evidence["cause_verified"] = cause_verified
+    if event["bucket"] in benign and not cause_verified:
+        event = classify_event({"classification_text": "No eligible verified catalyst source", "headlines": []})
     session = signal_session(candidate)
     confirmation = confirmation_assessment(candidate, session)
-    execution = execution_quality(candidate)
+    execution = execution_quality(candidate, as_of=now)
     base = _base_opportunity(candidate)
     resilience = _num(candidate.get("resilience_score"))
     if resilience is None:
@@ -232,7 +282,7 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         caps.append((42.0, "Open legal/compliance risk is not a clean short-horizon reversion catalyst"))
     elif event["bucket"] == "unknown_or_unverified":
         caps.append((52.0, "Unknown cause cannot be treated as transient"))
-    if confidence < 45:
+    if confidence < 45 or not cause_verified:
         caps.append((45.0, "Low evidence confidence"))
     if confirmation["status"] != "confirmed":
         caps.append((62.0, "Price confirmation absent"))
@@ -248,10 +298,11 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         gates.append({"name": name, "passed": bool(passed), "detail": detail, "severity": severity})
 
     gate("No structural hard veto", not event["hard_reject_new_entry"], EVENT_LABELS[event["bucket"]])
-    gate("Cause sufficiently verified", confidence >= 55 and event["bucket"] != "unknown_or_unverified", f"Evidence confidence {confidence:.1f}/100")
+    gate("Cause sufficiently verified", cause_verified and confidence >= 55, f"Source support: {source_supports_event}; cutoff-valid sources: {evidence['eligible_source_count']}; confidence {confidence:.1f}/100 (heuristic)")
     gate("Regular-session timing", bool(session["is_regular"] and session["after_1000_et"]), f"Signal/evidence cutoff session: {session['label']}")
     gate("Price confirmation", confirmation["status"] == "confirmed", f"Confirmation {confirmation['score']:.1f}/100 ({confirmation['status']})")
-    gate("Execution quality", execution["score"] >= 55, f"Execution quality {execution['score']:.1f}/100")
+    gate("Current execution evidence", execution["ready"], "; ".join(execution["evidence"]["issues"]) or "Current non-crossed bid/ask and trade at or before cutoff")
+    gate("Execution quality", execution["ready"] and execution["score"] >= 55, f"Execution quality {execution['score']:.1f}/100")
     gate("Opportunity quality", score >= 68 and base >= 60, f"Guard score {score:.1f}; upstream opportunity {base:.1f}")
 
     if event["hard_reject_new_entry"]:
@@ -266,7 +317,7 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         gate_code = "WAIT_FOR_RISK_RESOLUTION"
         gate_label = "Wait for legal/compliance clarity"
         action = "WAIT"
-    elif event["bucket"] == "unknown_or_unverified" or confidence < 55:
+    elif event["bucket"] == "unknown_or_unverified" or confidence < 55 or not cause_verified:
         gate_code = "WAIT_FOR_EVIDENCE"
         gate_label = "Wait for verified catalyst"
         action = "WAIT"
@@ -274,13 +325,17 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         gate_code = "WAIT_FOR_REGULAR_SESSION"
         gate_label = "Wait until 10:00 ET+"
         action = "WAIT"
+    elif not execution["ready"]:
+        gate_code = "WAIT_FOR_CURRENT_MARKET_DATA"
+        gate_label = "Wait for current quote and trade"
+        action = "WAIT"
     elif confirmation["status"] != "confirmed":
         gate_code = "WAIT_FOR_CONFIRMATION"
         gate_label = "Wait for higher low + reclaim"
         action = "WAIT"
     elif execution["score"] < 55 or score < 68 or base < 60:
         gate_code = "PASS_LOW_QUALITY"
-        gate_label = "Pass — insufficient asymmetry"
+        gate_label = "Pass — insufficient setup quality"
         action = "PASS"
     else:
         gate_code = "INVESTIGATE_CONFIRMED"
@@ -298,6 +353,9 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         gate_label = "Wait — stop structure unreliable"
         action = "WAIT"
         plan["recommended_shares_now"] = 0
+    if historical:
+        plan["recommended_shares_now"] = 0
+        plan["historical_only"] = True
 
     reasons: list[str] = []
     reasons.append(f"Catalyst: {EVENT_LABELS[event['bucket']]}")
@@ -311,6 +369,12 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
     theme = infer_theme(candidate)
     return {
         "guard_version": GUARD_VERSION,
+        "model_status": "UNCALIBRATED_HEURISTIC",
+        "profit_probability": None,
+        "expected_net_return_pct": None,
+        "score_meaning": "Research and evidence ranking, not the probability of a profitable trade.",
+        "assessment_context": "historical_at_cutoff" if historical else "current_entry_review",
+        "assessed_at": now.isoformat(),
         "candidate_id": candidate.get("id"),
         "scan_id": candidate.get("scan_id"),
         "symbol": candidate.get("symbol"),
@@ -321,14 +385,16 @@ def assess_candidate(candidate: dict[str, Any], settings: dict[str, Any] | None 
         "session": session,
         "confirmation": confirmation,
         "execution": execution,
+        "evidence": evidence,
         "upstream_opportunity_score": round(base, 1),
         "guard_score": score,
         "gate_code": gate_code,
         "gate_label": gate_label,
         "recommended_action": action,
+        "research_action": "PASS" if event["hard_reject_new_entry"] else "INVESTIGATE" if cause_verified and event["bucket"] in benign and base >= 60 else "WATCH",
         "gates": gates,
         "risk_plan": plan,
         "reasons": reasons,
         "anti_thesis_drift": "A failed short-term trade must not become a long-term investment without a fresh, explicit investment thesis.",
-        "no_hindsight": "Assessment uses only evidence stored at or before the signal cutoff.",
+        "no_hindsight": "Source attribution and price-pattern checks use eligible records at or before cutoff; current execution review also checks quote/trade age at assessment time.",
     }

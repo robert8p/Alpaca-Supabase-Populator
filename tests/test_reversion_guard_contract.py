@@ -6,7 +6,7 @@ from app.reversion_guard_main import app
 
 def test_guard_service_identity_is_stable() -> None:
     assert app.title == "Oversold Reversion Guard"
-    assert GUARD_VERSION == "oversold_reversion_guard_v1_0"
+    assert GUARD_VERSION == "oversold_reversion_guard_v1_1"
 
 
 def test_guard_default_risk_controls_are_non_zero_and_constrained() -> None:

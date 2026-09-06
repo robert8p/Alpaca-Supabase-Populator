@@ -257,9 +257,12 @@
     const reasons = Array.isArray(guard.reasons) ? guard.reasons : [];
     const matched = Array.isArray(event.matched_terms) ? event.matched_terms : [];
     const session = guard.session || {};
+    const evidence = guard.evidence || {};
+    const marketEvidence = execution.evidence || {};
+    const scoreText = (value) => value === null || value === undefined ? "—" : `${number(value).toFixed(0)}/100`;
 
     const shareText = plan.recommended_shares_now > 0
-      ? `<span class="risk-ready">${escapeHtml(plan.recommended_shares_now)} shares now</span>`
+      ? `<span class="risk-ready">Sizing preview: ${escapeHtml(plan.recommended_shares_now)} shares</span>`
       : `<span class="risk-zero">0 shares now</span><div class="micro">Preview after confirmation: ${escapeHtml(plan.preview_shares_after_confirmation ?? 0)}</div>`;
 
     const detailItems = [...reasons, ...gates.filter((gate) => !gate.passed).map((gate) => `Failed gate: ${gate.name} — ${gate.detail}`)];
@@ -281,6 +284,7 @@
         <td data-label="Catalyst gate">
           <div class="event-label">${escapeHtml(event.label || "Unknown catalyst")}</div>
           <span class="gate-pill gate-pill--${actionCss}">${escapeHtml(guard.gate_label || action)}</span>
+          <div class="micro">Research: ${escapeHtml(guard.research_action || "WATCH")}</div>
           <div class="micro">${escapeHtml(session.label || "unknown")} signal · ${escapeHtml(matched.join(", ") || candidate.catalyst_summary || "No verified cause")}</div>
           <details><summary>Why this gate?</summary><ul class="details-list">${detailItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details>
         </td>
@@ -289,21 +293,23 @@
             <div class="score-number">${score.toFixed(1)}<small>/100</small></div>
             <div class="score-bar"><i style="width:${Math.max(0, Math.min(100, score))}%"></i></div>
             <div class="upstream-score">Upstream ${upstream.toFixed(1)} · ${escapeHtml(candidate.model_verdict || "unrated")}</div>
+            <div class="micro">Uncalibrated heuristic<br>Profit probability unavailable</div>
           </div>
         </td>
         <td data-label="Confirmation">
           <div class="confirmation-status ${escapeHtml(confirmationClass)}">${escapeHtml(confirmationLabel)}</div>
-          <div class="micro">${formatPct(confirmation.score, 1)} score<br>${escapeHtml(session.is_regular && session.after_1000_et ? "Timing gate open" : "Wait until 10:00 ET+")}</div>
+          <div class="micro">${scoreText(confirmation.score)}<br>${escapeHtml(session.is_regular && session.after_1000_et ? "Signal after 10:00 ET" : "Wait until 10:00 ET+")}<br>${escapeHtml(confirmation.higher_low_evidence?.status?.replaceAll("_", " ") || "Pattern evidence unavailable")}</div>
           <details><summary>Checks</summary><ul class="details-list">${(confirmation.checks || []).map((check) => `<li>${check.passed === true ? "✓" : check.passed === false ? "✕" : "—"} ${escapeHtml(check.label)}</li>`).join("")}</ul></details>
         </td>
         <td data-label="Risk plan">
           <div class="risk-plan">${shareText}</div>
-          <div class="micro">Ref. ${formatMoney(plan.reference_price_usd)}<br>Stop ${formatMoney(plan.provisional_stop_usd)} (${formatPct(plan.risk_distance_pct, 1)})<br>1R ${formatMoney(plan.one_r_target_usd)} · 4–6% ${Array.isArray(plan.profit_zone_usd) ? `${formatMoney(plan.profit_zone_usd[0])}–${formatMoney(plan.profit_zone_usd[1])}` : "—"}</div>
-          <details><summary>Entry and exit rules</summary><ul class="details-list"><li>${escapeHtml(plan.entry_trigger || "Higher low + reclaim")}</li><li>${escapeHtml(plan.time_stop || "Two-session time stop")}</li><li>${escapeHtml(plan.sizing_rule || "Risk-based sizing")}</li></ul></details>
+          <div class="micro">${plan.historical_only ? "Historical planning only<br>" : ""}Ref. ${formatMoney(plan.reference_price_usd)}<br>Provisional stop ${formatMoney(plan.provisional_stop_usd)} (${formatPct(plan.risk_distance_pct, 1)})<br>Illustrative +1R ${formatMoney(plan.one_r_target_usd)}<br>Net risk/reward unestimated</div>
+          <details><summary>Entry and exit assumptions</summary><ul class="details-list"><li>${escapeHtml(plan.entry_trigger || "Higher low + reclaim")}</li><li>${escapeHtml(plan.time_stop || "Two-session time stop")}</li><li>${escapeHtml(plan.sizing_rule || "Risk-based sizing")}</li><li>${escapeHtml(plan.target_basis || "Targets are illustrative")}</li><li>${escapeHtml(plan.gap_risk_note || "Stops can slip")}</li></ul></details>
         </td>
         <td data-label="Evidence">
-          <div class="evidence-grid"><span>Confidence</span><strong>${formatPct(candidate.evidence_confidence, 0)}</strong><span>Damage risk</span><strong>${formatPct(candidate.damage_risk, 0)}</strong><span>Execution</span><strong>${formatPct(execution.score, 0)}</strong><span>Headlines</span><strong>${escapeHtml(candidate.headline_count ?? 0)}</strong></div>
-          <details><summary>Point-in-time news</summary>${renderNews(candidate)}</details>
+          <div class="evidence-grid"><span>Evidence score</span><strong>${scoreText(candidate.evidence_confidence)}</strong><span>Damage score</span><strong>${scoreText(candidate.damage_risk)}</strong><span>Execution score</span><strong>${scoreText(execution.score)}</strong><span>Eligible sources</span><strong>${escapeHtml(evidence.eligible_source_count ?? 0)}</strong></div>
+          <div class="micro">Cause ${evidence.cause_verified ? "supported" : "unverified"}<br>${escapeHtml(marketEvidence.status?.replaceAll("_", " ") || "Market data unavailable")}${marketEvidence.quote_age_seconds == null ? "" : `<br>Quote age ${escapeHtml(Math.round(marketEvidence.quote_age_seconds))}s`}</div>
+          <details><summary>Recorded news</summary>${renderNews(candidate)}</details>
         </td>
         <td data-label="Review" class="review-cell">
           <button class="button button--chatgpt chat-button" type="button" data-action="chatgpt">Challenge in ChatGPT</button>
@@ -439,6 +445,10 @@
       event: guard.event?.label,
       event_bucket: guard.event?.bucket,
       guard_score: guard.guard_score,
+      score_status: "UNCALIBRATED_HEURISTIC",
+      profit_probability: null,
+      evidence_integrity: guard.evidence,
+      execution_evidence: guard.execution?.evidence,
       gate: guard.gate_label,
       confirmation: guard.confirmation?.status,
       upstream_score: guard.upstream_opportunity_score,
@@ -446,7 +456,7 @@
       damage_risk: candidate.damage_risk,
       evidence_confidence: candidate.evidence_confidence,
       catalyst_summary: candidate.catalyst_summary,
-      latest_headlines: (candidate.headlines || []).slice(0, 3).map((item) => ({ headline: item.headline, source: item.source, created_at: item.created_at })),
+      latest_headlines: (candidate.headlines || []).slice(0, 3).map((item) => ({ headline: item.headline, source: item.source, created_at: item.created_at, url: item.url })),
       risk_plan: {
         stop: guard.risk_plan?.provisional_stop_usd,
         risk_pct: guard.risk_plan?.risk_distance_pct,
@@ -467,10 +477,11 @@ Required method:
 3. Assess economic severity, survivability, cash conversion, dilution, customer concentration, legal/compliance tail risk and whether fair value has changed.
 4. Explain whether a reversion within two to three regular sessions is plausible.
 5. Enforce entry timing: no extended-hours entry; require a higher low plus VWAP or intraday-pivot reclaim after 10:00 ET.
-6. Challenge the provisional stop, risk sizing, +1R/4–6% profit zone and two-session time stop.
+6. Challenge the provisional stop, saved risk sizing, illustrative +1R/+4–6% planning levels and two-session time stop. These levels do not establish achievable returns or favourable net risk/reward.
 7. State a decisive action: REJECT, WAIT, INVESTIGATE, HOLD, TRIM, EXIT or TAKE PROFIT.
 8. Give the strongest bear case and the exact evidence that would falsify your conclusion.
-9. Prefer primary filings/company releases and reputable reporting that existed by the cutoff. Cite sources.
+9. Prefer primary filings/company releases and reputable reporting that existed by the cutoff. Cite sources. Exclude sources flagged by the evidence-integrity checks until independently resolved.
+10. Treat guard/upstream scores as uncalibrated heuristics; profit probability and expected net return are unknown.
 
 Evidence packet:
 ${JSON.stringify(packet, null, 2)}`;
@@ -553,7 +564,8 @@ ${JSON.stringify(candidates.map(compactTopPacket), null, 2)}`;
     const pnlClass = number(review.pnl_pct) >= 0 ? "gain" : "loss";
     return `<article class="position-card" data-position-symbol="${escapeHtml(review.symbol)}">
       <div class="position-card__symbol"><strong>${escapeHtml(review.symbol)}</strong><span>${escapeHtml(review.theme || review.event_label || "Other / unknown")}</span></div>
-      <div class="position-stat"><span>Market value</span><strong>${formatMoney(review.market_value_gbp, "GBP")}</strong></div>
+      <div class="position-stat"><span>${review.price_is_current === false ? "Value at stored price" : "Reference value"}</span><strong>${formatMoney(review.market_value_gbp, "GBP")}</strong></div>
+      <div class="micro">${escapeHtml(review.price_source === "stored_scan" ? `Stored scan price as of ${review.price_as_of || "unknown"}` : "Using the price entered in this review")}</div>
       <div class="position-stat"><span>P/L</span><strong class="${pnlClass}">${formatPct(review.pnl_pct, 2, true)} · ${formatMoney(review.pnl_gbp, "GBP")}</strong></div>
       <div class="position-stat"><span>Recovery to break even</span><strong>${formatPct(review.recovery_to_break_even_pct, 2)}</strong></div>
       <div class="position-stat"><span>Provisional invalidation</span><strong>${formatMoney(review.provisional_invalidation_usd)}</strong></div>

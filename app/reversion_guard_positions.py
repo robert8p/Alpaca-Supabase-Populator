@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Iterable
 
 from app.reversion_guard_execution import assess_candidate
+from app.reversion_guard_evidence import source_evidence
 from app.reversion_guard_policy import (
     DEFAULT_SETTINGS,
     EVENT_LABELS,
@@ -38,7 +39,11 @@ def review_position(position: dict[str, Any], candidate: dict[str, Any] | None =
     hard_reject = bool(candidate_assessment and candidate_assessment["event"]["hard_reject_new_entry"])
     damage_risk = _num(candidate.get("damage_risk")) if candidate else None
 
-    if pnl_pct >= 6:
+    if event_bucket in {"existential_or_structural_damage", "financing_or_dilution", "failed_clinical_or_regulatory_event", "parabolic_momentum_unwind"} or hard_reject:
+        action = "EXIT"
+        action_label = "Exit — original reversion thesis is invalid"
+        sizing = "Do not average down. A bounce is an exit opportunity, not evidence that the original thesis was sound."
+    elif pnl_pct >= 6:
         action = "TAKE_PROFIT"
         action_label = "Take profit / close the reversion trade"
         sizing = "Close or retain only a small pre-planned runner with a raised stop."
@@ -46,10 +51,6 @@ def review_position(position: dict[str, Any], candidate: dict[str, Any] | None =
         action = "TRIM_WINNER"
         action_label = "Trim into the 4–6% profit zone"
         sizing = "Take at least half off and move the remainder to a defined trailing invalidation."
-    elif event_bucket in {"existential_or_structural_damage", "financing_or_dilution", "failed_clinical_or_regulatory_event", "parabolic_momentum_unwind"} or hard_reject:
-        action = "EXIT"
-        action_label = "Exit — original reversion thesis is invalid"
-        sizing = "Do not average down. A bounce is an exit opportunity, not evidence that the original thesis was sound."
     elif event_bucket == "guidance_or_earnings_quality_reset":
         action = "EXIT_OR_HEAVY_TRIM"
         action_label = "Exit or heavily trim — valuation has reset"
@@ -77,10 +78,21 @@ def review_position(position: dict[str, Any], candidate: dict[str, Any] | None =
     else:
         invalidation = round(current * 0.94, 4)
 
+    inferred_price = position.get("current_price_source") == "stored_scan"
+    current_scan_price = bool(candidate_assessment and candidate_assessment["execution"]["ready"])
+    price_as_of = (candidate or {}).get("latest_trade_ts") if inferred_price else None
+    if inferred_price and not current_scan_price:
+        action = "REVIEW_STALE_DATA"
+        action_label = "Refresh market data before acting"
+        sizing = "This P/L uses the stored scan price. The current market price and execution conditions have not been verified."
+
     return {
         "symbol": str(position.get("symbol") or (candidate or {}).get("symbol") or "").upper(),
         "entry_price_usd": round(entry, 4),
         "current_price_usd": round(current, 4),
+        "price_source": "stored_scan" if inferred_price else "user_entered",
+        "price_as_of": price_as_of,
+        "price_is_current": current_scan_price if inferred_price else None,
         "quantity": quantity,
         "pnl_pct": round(pnl_pct, 2),
         "pnl_usd": round(pnl_usd, 2),
@@ -156,7 +168,7 @@ def portfolio_summary(
 
 def compact_candidate_packet(candidate: dict[str, Any], assessment: dict[str, Any]) -> dict[str, Any]:
     """Create a bounded, point-in-time packet for the ChatGPT handoff."""
-    headlines = candidate.get("headlines") if isinstance(candidate.get("headlines"), list) else []
+    headlines = source_evidence(candidate)["eligible_articles"]
     compact_news = []
     for article in headlines[:8]:
         if not isinstance(article, dict):
@@ -180,6 +192,7 @@ def compact_candidate_packet(candidate: dict[str, Any], assessment: dict[str, An
         "spread_pct": candidate.get("spread_pct"),
         "previous_dollar_volume": candidate.get("prev_dollar_volume"),
         "upstream_score": candidate.get("reversion_score"),
+        "score_interpretation": "Uncalibrated research heuristic, not a profit probability",
         "upstream_verdict": candidate.get("model_verdict"),
         "damage_risk": candidate.get("damage_risk"),
         "evidence_confidence": candidate.get("evidence_confidence"),

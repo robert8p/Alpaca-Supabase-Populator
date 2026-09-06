@@ -18,7 +18,9 @@ from datetime import UTC, datetime, time
 from typing import Any, Iterable
 from zoneinfo import ZoneInfo
 
-GUARD_VERSION = "oversold_reversion_guard_v1_0"
+from app.oversold_scoring_v37_local_attribution import direct_candidate_existential_event
+
+GUARD_VERSION = "oversold_reversion_guard_v1_1"
 NY = ZoneInfo("America/New_York")
 
 DEFAULT_SETTINGS: dict[str, float | int] = {
@@ -72,7 +74,7 @@ EVENT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
         "regulatory_legal_or_compliance",
         (
             "subpoena", "investigation", "indict", "department of justice", "doj",
-            "securities and exchange commission", "sec probe", "export control",
+            "sec probe", "export control",
             "export restriction", "compliance investigation", "regulatory inquiry",
             "criminal charges", "sanctions", "lawsuit", "class action",
         ),
@@ -198,11 +200,45 @@ def candidate_text(candidate: dict[str, Any]) -> str:
 
 
 def classify_event(candidate: dict[str, Any]) -> dict[str, Any]:
-    text = candidate_text(candidate)
+    # Explanation objects contain cautions and scenario language, not source facts.
+    # The caller can supply cutoff-valid source content for the economic classification.
+    text = str(candidate.get("classification_text") or " ".join(
+        _flatten_text(candidate.get("catalyst_summary"))
+        + [" ".join(str(article.get(key) or "") for key in ("headline", "summary", "content"))
+           for article in candidate.get("headlines", []) if isinstance(article, dict)]
+    )).lower()
     risk_flags = {str(flag).lower() for flag in (candidate.get("risk_flags") or [])}
     catalyst = candidate.get("catalyst_analysis") if isinstance(candidate.get("catalyst_analysis"), dict) else {}
+    integrity = catalyst.get("evidence_integrity") if isinstance(catalyst.get("evidence_integrity"), dict) else {}
+    validated = integrity.get("version") == "evidence_integrity_v1" and isinstance(catalyst.get("event_signals"), dict)
+    signals = catalyst.get("event_signals") or {}
+    if validated:
+        # Scanner flags can predate the model's subject-attribution repair.
+        risk_flags = {str(flag).lower() for flag in (catalyst.get("red_flags") or [])}
     declared_type = str(catalyst.get("catalyst_type") or catalyst.get("event_type") or "").lower()
     declared = f"{declared_type} {text}"
+    local_solvency = direct_candidate_existential_event(text, [])
+    # A disclosed inability warning is an observed warning, even though its
+    # consequence is phrased as "may"; do not confuse it with boilerplate.
+    local_solvency = local_solvency or bool(re.search(
+        r"\b(?:the company|the issuer|we)\s+(?:warned|cautioned|disclosed)\s+(?:that\s+)?"
+        r"(?:it|we)\s+(?:may\s+be\s+|is\s+|are\s+)?unable to continue as a going concern\b", text,
+    ))
+    if "solvency" in risk_flags and not (signals.get("existential_or_solvency") if validated else local_solvency):
+        risk_flags.discard("solvency")
+
+    validated_buckets = {
+        "existential_or_structural_damage": ("existential_or_solvency", "fraud_or_accounting_credibility", "structural_impairment", "major_customer_loss"),
+        "financing_or_dilution": ("dilution_or_financing", "catastrophic_financing"),
+        "failed_clinical_or_regulatory_event": ("primary_endpoint_failure", "fda_rejection_or_crl", "clinical_hold", "safety_signal"),
+        "guidance_or_earnings_quality_reset": ("guidance_cut", "earnings_miss"),
+        "regulatory_legal_or_compliance": ("legal_or_regulatory", "security_breach"),
+        "temporary_operational_issue": ("temporary_operational",),
+        "analyst_or_sentiment_only": ("analyst_only",),
+    }
+
+    def supported_bucket(value: str) -> bool:
+        return not validated or value not in validated_buckets or any(signals.get(key) is True for key in validated_buckets[value])
 
     bucket = "unknown_or_unverified"
     matched_terms: list[str] = []
@@ -223,14 +259,23 @@ def classify_event(candidate: dict[str, Any]) -> dict[str, Any]:
         ),
     )
     for candidate_bucket, pattern, label in pattern_rules:
-        if re.search(pattern, declared):
+        if supported_bucket(candidate_bucket) and re.search(pattern, declared):
             bucket = candidate_bucket
             matched_terms = [label]
             break
 
     if bucket == "unknown_or_unverified":
         for candidate_bucket, terms in EVENT_RULES:
+            if not supported_bucket(candidate_bucket):
+                continue
             hits = [term for term in terms if term in declared]
+            if candidate_bucket == "existential_or_structural_damage" and not local_solvency:
+                # Context about a bankrupt vendor, hypothetical default or a
+                # negated going-concern event is not issuer-level insolvency.
+                hits = [term for term in hits if term not in {
+                    "bankruptcy", "chapter 11", "chapter 7", "insolven", "going concern",
+                    "debt default", "payment default", "liquidation",
+                }]
             if hits:
                 bucket = candidate_bucket
                 matched_terms = hits[:6]
@@ -246,9 +291,17 @@ def classify_event(candidate: dict[str, Any]) -> dict[str, Any]:
     elif declared_type in {"post_spike_unwind", "spike", "momentum_unwind"}:
         bucket = "parabolic_momentum_unwind"
         matched_terms = [f"declared type: {declared_type}"]
-    elif declared_type in {"temporary_operational", "temporary_disruption", "operations"} and bucket == "unknown_or_unverified":
+    elif declared_type in {"temporary_operational", "temporary_disruption", "operations"} and bucket == "unknown_or_unverified" and supported_bucket("temporary_operational_issue"):
         bucket = "temporary_operational_issue"
         matched_terms = [f"declared type: {declared_type}"]
+
+    if validated and bucket == "unknown_or_unverified":
+        for candidate_bucket, keys in validated_buckets.items():
+            asserted = [key for key in keys if signals.get(key) is True]
+            if asserted:
+                bucket = candidate_bucket
+                matched_terms = [f"validated issuer event: {key}" for key in asserted]
+                break
 
     technical = candidate.get("technical_inputs") if isinstance(candidate.get("technical_inputs"), dict) else {}
     drawdown_60d = _num(technical.get("drawdown_from_60d_high_pct"))

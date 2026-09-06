@@ -24,7 +24,7 @@ from app.reversion_guard_engine import (
     review_position,
 )
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 logger = logging.getLogger(__name__)
 SOURCE_BASE_URL = os.getenv("OVERSOLD_SOURCE_BASE_URL", "https://alpaca-rapid-discovery-web.onrender.com").rstrip("/")
 CACHE_SECONDS = max(5, int(os.getenv("REVERSION_GUARD_CACHE_SECONDS", "20")))
@@ -163,13 +163,13 @@ def _candidate_sort_key(row: dict[str, Any]) -> tuple[int, float, float, int]:
     )
 
 
-def _enrich(payload: dict[str, Any], settings: dict[str, Any], positions: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def _enrich(payload: dict[str, Any], settings: dict[str, Any], positions: list[dict[str, Any]] | None = None, *, historical: bool = False) -> dict[str, Any]:
     candidates = payload.get("candidates") if isinstance(payload.get("candidates"), list) else []
     enriched: list[dict[str, Any]] = []
     for candidate in candidates:
         if not isinstance(candidate, dict):
             continue
-        assessment = assess_candidate(candidate, settings)
+        assessment = assess_candidate(candidate, settings, historical=historical)
         row = {**candidate, "guard_assessment": assessment}
         enriched.append(row)
     enriched.sort(key=_candidate_sort_key)
@@ -184,6 +184,9 @@ def _enrich(payload: dict[str, Any], settings: dict[str, Any], positions: list[d
             "app_version": VERSION,
             "source_base_url": SOURCE_BASE_URL,
             "assessment_count": len(enriched),
+            "model_status": "UNCALIBRATED_HEURISTIC",
+            "profit_probability": None,
+            "historical_only": historical,
             "generated_at": datetime.now(UTC).isoformat(),
             "purpose": "Find verified, survivable overreactions that are tradable only after regular-session confirmation; reject structural damage and size every trade by invalidation risk.",
         },
@@ -280,7 +283,7 @@ async def scan_detail(
         max_open_risk_pct=max_open_risk_pct,
     ).model_dump()
     payload = await _cached_get(f"/api/oversold/scans/{scan_id}", force=True)
-    return _enrich(payload, settings)
+    return _enrich(payload, settings, historical=True)
 
 
 @app.post("/api/reversion-guard/run", status_code=202)
@@ -318,6 +321,7 @@ async def position_review(payload: PositionReviewRequest) -> dict[str, Any]:
     if position.get("current_price_usd") is None:
         if candidate and candidate.get("last_price") is not None:
             position["current_price_usd"] = candidate["last_price"]
+            position["current_price_source"] = "stored_scan"
         else:
             raise HTTPException(400, "Current price was not supplied and the symbol is not in the latest scan")
     try:
@@ -351,6 +355,7 @@ async def portfolio_review(payload: PortfolioReviewRequest) -> dict[str, Any]:
         if position.get("current_price_usd") is None:
             if candidate and candidate.get("last_price") is not None:
                 position["current_price_usd"] = candidate["last_price"]
+                position["current_price_source"] = "stored_scan"
             else:
                 reviews.append({"symbol": item.symbol, "error": "Current price missing and symbol is not in latest scan"})
                 continue
@@ -403,12 +408,15 @@ def policy() -> dict[str, Any]:
             "unknown or weakly verified catalysts",
         ],
         "entry_rule": "No extended-hours entry. Wait until at least 10:00 ET and require a higher low plus VWAP or intraday-pivot reclaim.",
-        "sizing_rule": "Size by the distance to invalidation and a fixed GBP risk budget; equal cash allocations are prohibited.",
+        "sizing_rule": "Sizing previews use your saved GBP risk budget and maximum-position settings. Stops can slip or gap beyond planned loss.",
         "portfolio_rule": "No more than three positions driven by the same theme by default.",
         "time_stop": "Exit by the close of the second full regular session if confirmation does not develop.",
-        "profit_rule": "Begin realising gains around +1R or the 4–6% reversion zone.",
+        "profit_rule": "+1R and +4–6% are illustrative planning levels, not forecasts or evidence of favourable net risk/reward.",
         "averaging_rule": "Never average down into a falling price.",
         "research_status": "Research prioritisation only; it does not place orders or provide personalised financial advice.",
+        "score_status": "Uncalibrated heuristic. Profit probability and expected net return are unavailable until independently validated after costs.",
+        "evidence_rule": "A VERIFIED label or high confidence score needs cutoff-valid, issuer-linked source content; a filing header alone cannot establish a cause.",
+        "execution_evidence_rule": "A current non-crossed bid/ask and trade are required. Missing or stale inputs cannot be offset by high liquidity or upstream scores.",
     }
 
 
