@@ -30,7 +30,7 @@ services:
       - key: LOG_LEVEL
         value: INFO
       - key: E003C_RUNTIME_MODE
-        value: readiness
+        value: retired
       - key: E003C_RELEASE_SHA
         sync: false
       - key: E003C_EXPECTED_BRANCH

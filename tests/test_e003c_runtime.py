@@ -11,6 +11,7 @@ from app.e003c_runtime import (
     phase_state,
     release_pin_readiness,
 )
+from app.e003c_worker import _mode
 
 
 def test_rule_hash_is_frozen() -> None:
@@ -132,6 +133,21 @@ def test_dedicated_worker_excludes_generic_rapid_maintenance() -> None:
     ).read_text()
     assert "queue_safe_missing_days" not in worker_source
     assert "app.live_maintenance" not in worker_source
+
+
+def test_dedicated_worker_accepts_fail_closed_retired_mode(monkeypatch) -> None:
+    monkeypatch.setenv("E003C_RUNTIME_MODE", "retired")
+    assert _mode() == "retired"
+
+
+def test_retired_mode_precedes_runtime_settings_and_database_access() -> None:
+    worker_source = (
+        Path(__file__).resolve().parents[1] / "app" / "e003c_worker.py"
+    ).read_text()
+    run_source = worker_source.split("async def run_dedicated_worker() -> None:", 1)[1]
+    retired_branch = run_source.split("settings = get_settings()", 1)[0]
+    assert 'mode == "retired"' in retired_branch
+    assert "assert_database_writable" not in retired_branch
 
 
 def test_release_pin_accepts_missing_render_deployment_id_with_strict_identity() -> (
