@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07131b">
+  <title>Oversold Reversion Guard</title>
+  <link rel="stylesheet" href="/static/reversion_guard.css?v={{ version }}">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true"><span>O</span><span>R</span></div>
+        <div>
+          <p class="eyebrow">Separate risk-controlled app</p>
+          <h1>Oversold Reversion <strong>Guard</strong></h1>
+          <p class="lede">Research sell-offs with supported causes and survivability evidence. Check current execution data and observed price confirmation before considering an entry.</p>
+        </div>
+      </div>
+      <div class="hero__badges">
+        <span class="badge">No extended-hours entry</span>
+        <span class="badge">No averaging down</span>
+        <span class="badge">Max 3 per theme</span>
+        <span class="badge">Uncalibrated research scores</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="panel control-panel" aria-labelledby="controls-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Risk first</p>
+          <h2 id="controls-title">Scan and sizing controls</h2>
+        </div>
+        <div id="sourceStatus" class="source-status" role="status">Connecting to scanner…</div>
+      </div>
+
+      <div class="controls-grid">
+        <label>Account value (£)
+          <input id="accountValue" type="number" min="1" step="100" value="10000" inputmode="decimal">
+        </label>
+        <label>Risk per trade (£)
+          <input id="riskBudget" type="number" min="1" step="5" value="50" inputmode="decimal">
+        </label>
+        <label>Maximum position (£)
+          <input id="maxPosition" type="number" min="1" step="50" value="500" inputmode="decimal">
+        </label>
+        <label>USD per GBP
+          <input id="usdPerGbp" type="number" min="0.1" max="10" step="0.01" value="1.30" inputmode="decimal">
+        </label>
+        <label>Max positions per theme
+          <input id="maxTheme" type="number" min="1" max="20" step="1" value="3" inputmode="numeric">
+        </label>
+        <label>Max open risk (% account)
+          <input id="maxOpenRisk" type="number" min="0.1" max="100" step="0.1" value="2.0" inputmode="decimal">
+        </label>
+        <label>Minimum daily fall (%)
+          <input id="minDrop" type="number" min="5" max="90" step="1" value="15" inputmode="decimal">
+        </label>
+        <label>Candidate limit
+          <input id="candidateLimit" type="number" min="1" max="100" step="1" value="50" inputmode="numeric">
+        </label>
+      </div>
+
+      <div class="action-row">
+        <button id="runScan" class="button button--primary" type="button">Run fresh scan</button>
+        <button id="refresh" class="button" type="button">Refresh assessment</button>
+        <button id="analyseTop" class="button button--chatgpt" type="button" disabled>Analyse top 10 in ChatGPT</button>
+        <button id="policyButton" class="button button--quiet" type="button">Show guard rules</button>
+      </div>
+      <p class="control-note">Scores rank research quality; they are not profit probabilities. Sizing and target levels are planning illustrations. Missing sources, stale quotes or an unobserved higher low keep entry status waiting. Saved risk settings remain editable.</p>
+    </section>
+
+    <section id="statusBanner" class="status-banner" hidden aria-live="polite"></section>
+
+    <section class="metric-grid" aria-label="Scan summary">
+      <article class="metric metric--investigate"><span>Confirmed to investigate</span><strong id="metricInvestigate">—</strong></article>
+      <article class="metric metric--wait"><span>Wait</span><strong id="metricWait">—</strong></article>
+      <article class="metric metric--pass"><span>Pass</span><strong id="metricPass">—</strong></article>
+      <article class="metric metric--reject"><span>Reject new entry</span><strong id="metricReject">—</strong></article>
+      <article class="metric"><span>Latest scan</span><strong id="metricScan">—</strong></article>
+      <article class="metric"><span>Evidence cutoff</span><strong id="metricCutoff">—</strong></article>
+    </section>
+
+    <section class="panel candidates-panel" aria-labelledby="candidates-title">
+      <div class="section-heading section-heading--wrap">
+        <div>
+          <p class="eyebrow">Ranked by trade quality, not fall size</p>
+          <h2 id="candidates-title">Guarded candidates</h2>
+        </div>
+        <div class="legend" aria-label="Action legend">
+          <span><i class="dot dot--investigate"></i>Investigate</span>
+          <span><i class="dot dot--wait"></i>Wait</span>
+          <span><i class="dot dot--pass"></i>Pass</span>
+          <span><i class="dot dot--reject"></i>Reject</span>
+        </div>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        <div class="spinner" aria-hidden="true"></div>
+        <h3>Loading the latest point-in-time scan</h3>
+        <p>The upstream Render service may take a few moments to wake.</p>
+      </div>
+
+      <div id="tableWrap" class="table-wrap" hidden>
+        <table class="candidate-table">
+          <thead>
+            <tr>
+              <th scope="col">Rank / stock</th>
+              <th scope="col">Move</th>
+              <th scope="col">Catalyst gate</th>
+              <th scope="col">Guard score</th>
+              <th scope="col">Confirmation</th>
+              <th scope="col">Risk plan</th>
+              <th scope="col">Evidence</th>
+              <th scope="col">Review</th>
+            </tr>
+          </thead>
+          <tbody id="candidateRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel position-panel" aria-labelledby="positions-title">
+      <div class="section-heading section-heading--wrap">
+        <div>
+          <p class="eyebrow">Cost basis is not a thesis</p>
+          <h2 id="positions-title">Existing position review</h2>
+          <p class="section-copy">Calculate loss asymmetry, the rebound needed to break even, thesis validity, time stop and portfolio concentration. Position inputs are stored only in this browser.</p>
+        </div>
+        <button id="clearPositions" class="button button--quiet" type="button">Clear saved positions</button>
+      </div>
+
+      <form id="positionForm" class="position-form">
+        <label>Symbol
+          <input id="positionSymbol" name="symbol" required maxlength="12" placeholder="AEHR" autocomplete="off">
+        </label>
+        <label>Entry price (USD)
+          <input id="positionEntry" name="entry" type="number" min="0.0001" step="0.0001" required inputmode="decimal">
+        </label>
+        <label>Current price (USD)
+          <input id="positionCurrent" name="current" type="number" min="0.0001" step="0.0001" placeholder="Auto if in latest scan" inputmode="decimal">
+        </label>
+        <label>Quantity
+          <input id="positionQuantity" name="quantity" type="number" min="0.0001" step="0.0001" required inputmode="decimal">
+        </label>
+        <label>Entry time
+          <input id="positionTime" name="entry_timestamp" type="datetime-local">
+        </label>
+        <label>Theme override
+          <input id="positionTheme" name="theme" maxlength="100" placeholder="AI / semiconductors">
+        </label>
+        <button class="button button--primary position-form__submit" type="submit">Review and save</button>
+      </form>
+
+      <div id="portfolioWarnings" class="portfolio-warnings" hidden></div>
+      <div id="positionResults" class="position-results"></div>
+    </section>
+
+    <section class="panel principles-panel">
+      <div>
+        <p class="eyebrow">The governing distinction</p>
+        <h2>Oversold is a price condition. Mispriced is an economic conclusion.</h2>
+      </div>
+      <div class="principles-grid">
+        <article><strong>Temporary issue</strong><p>Potential candidate, but only with intact demand, survivability and price confirmation.</p></article>
+        <article><strong>Guidance reset</strong><p>Rebuild fair value first. A strong historical quarter does not cancel a weaker forward path.</p></article>
+        <article><strong>Financing or compliance</strong><p>Changed economics or open tail risk. Do not call it “sentiment” merely because the fall is large.</p></article>
+        <article><strong>Parabolic unwind</strong><p>No reliable near-term valuation anchor. The absence of a new bad headline is not a bullish catalyst.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="policyDialog" class="policy-dialog">
+    <div class="policy-dialog__header">
+      <div><p class="eyebrow">Version {{ guard_version }}</p><h2>Guard policy</h2></div>
+      <button id="closePolicy" class="icon-button" aria-label="Close policy">×</button>
+    </div>
+    <div id="policyContent" class="policy-content"><div class="spinner"></div></div>
+  </dialog>
+
+  <footer>
+    <p>Research-prioritisation tool only. It does not place orders. Original evidence cutoffs are preserved; later outcomes must not be used to rewrite the original signal.</p>
+    <p>App {{ version }} · Engine {{ guard_version }} · Upstream scanner: {{ source_base_url }}</p>
+  </footer>
+
+  <script>
+    window.REVERSION_GUARD_CONFIG = {
+      version: {{ version | tojson }},
+      guardVersion: {{ guard_version | tojson }},
+      sourceBaseUrl: {{ source_base_url | tojson }}
+    };
+  </script>
+  <script src="/static/reversion_guard.js?v={{ version }}" defer></script>
+</body>
+</html>

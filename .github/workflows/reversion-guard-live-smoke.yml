@@ -1,0 +1,101 @@
+name: reversion-guard-live-smoke
+
+on:
+  push:
+    branches:
+      - agent/oversold-reversion-guard-v1
+    paths:
+      - "app/reversion_guard_*.py"
+      - "app/templates/reversion_guard.html"
+      - "app/static/reversion_guard.*"
+      - "tests/test_reversion_guard_*.py"
+      - "sitecustomize.py"
+      - ".github/workflows/reversion-guard-live-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reversion-guard-live-smoke
+  cancel-in-progress: true
+
+jobs:
+  validate-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+          cache: pip
+
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Compile Guard modules
+        run: python -m compileall -q app/reversion_guard_*.py tests/test_reversion_guard_*.py
+
+      - name: Check Guard JavaScript syntax
+        run: node --check app/static/reversion_guard.js
+
+      - name: Run Guard tests
+        run: PYTHONPATH=. pytest -q tests/test_reversion_guard_engine.py tests/test_reversion_guard_app.py
+
+      - name: Smoke-test deployed Guard service
+        env:
+          GUARD_BASE_URL: https://oversold-reversion-guard.onrender.com
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+
+          base = os.environ["GUARD_BASE_URL"].rstrip("/")
+
+          def fetch(path: str, attempts: int = 10) -> bytes:
+              last_error: Exception | None = None
+              for attempt in range(1, attempts + 1):
+                  try:
+                      request = urllib.request.Request(
+                          base + path,
+                          headers={"User-Agent": "reversion-guard-github-smoke/1.0"},
+                      )
+                      with urllib.request.urlopen(request, timeout=120) as response:
+                          if response.status != 200:
+                              raise RuntimeError(f"{path} returned HTTP {response.status}")
+                          return response.read()
+                  except Exception as exc:  # noqa: BLE001 - retries must include HTTP and network failures
+                      last_error = exc
+                      print(f"Attempt {attempt}/{attempts} for {path} failed: {exc}")
+                      if attempt < attempts:
+                          time.sleep(15)
+              raise RuntimeError(f"Unable to fetch {path}: {last_error}")
+
+          home = fetch("/")
+          assert b"Oversold Reversion" in home and b"Guard" in home
+
+          policy = json.loads(fetch("/api/reversion-guard/policy"))
+          assert policy["version"] == "oversold_reversion_guard_v1_0"
+          assert "No extended-hours entry" in policy["entry_rule"]
+
+          latest = json.loads(fetch("/api/reversion-guard/latest"))
+          assert latest["guard"]["version"] == "oversold_reversion_guard_v1_0"
+          assert isinstance(latest["candidates"], list)
+          assert isinstance(latest["portfolio"]["candidate_counts"], dict)
+
+          print(
+              "Live smoke passed:",
+              {
+                  "candidate_count": len(latest["candidates"]),
+                  "scan_status": (latest.get("scan") or {}).get("status"),
+                  "guard_version": latest["guard"]["version"],
+              },
+          )
+          PY
