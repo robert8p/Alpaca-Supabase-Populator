@@ -37,14 +37,14 @@ from app.e003c_runtime import (
     upsert_runtime_instance,
 )
 
-VERSION = "e003c-isolation-1.0.0"
+VERSION = "e003c-isolation-1.0.1"
 logger = logging.getLogger(__name__)
 stop_event = asyncio.Event()
 
 
 def _mode() -> str:
     value = os.getenv("E003C_RUNTIME_MODE", "readiness").strip().lower()
-    if value not in {"readiness", "writer", "standby"}:
+    if value not in {"readiness", "writer", "standby", "retired"}:
         raise RuntimeError(f"Unsupported E003C_RUNTIME_MODE={value!r}")
     return value
 
@@ -218,6 +218,18 @@ async def _heartbeat_loop(
 
 
 async def run_dedicated_worker() -> None:
+    mode = _mode()
+    if mode == "retired":
+        logging.basicConfig(
+            level=getattr(logging, os.getenv("LOG_LEVEL", "INFO").upper(), logging.INFO),
+            format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+        )
+        logger.info(
+            "E003C runtime is retired; database and provider connections are disabled"
+        )
+        await stop_event.wait()
+        return
+
     settings = get_settings()
     logging.basicConfig(
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
@@ -225,7 +237,6 @@ async def run_dedicated_worker() -> None:
     )
     assert_database_writable()
     identity = RuntimeIdentity.from_environment()
-    mode = _mode()
     ttl_seconds = int(_seconds("E003C_LEASE_TTL_SECONDS", 120.0, 60.0, 300.0))
 
     readiness, phase = await collect_readiness(identity, mode)
