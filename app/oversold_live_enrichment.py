@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import time
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime, time as wall_time, timedelta
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -129,6 +129,30 @@ def _fetch_benchmark_snapshots(symbols: list[str]) -> tuple[dict[str, dict[str, 
     return output, 1
 
 
+def _fetch_intraday_evidence(symbol: str, cutoff: datetime) -> tuple[list[dict[str, Any]], int]:
+    """Bounded completed-minute evidence for the Guard's observed swing pattern."""
+    local = cutoff.astimezone(NY)
+    if local.weekday() >= 5 or not wall_time(9, 30) < local.time() < wall_time(16):
+        return [], 0
+    opened = datetime.combine(local.date(), wall_time(9, 30), NY)
+    start = max(opened, local - timedelta(minutes=90))
+    end = cutoff - timedelta(minutes=1)
+    if end <= start:
+        return [], 0
+    settings = get_settings()
+    url = f"{settings.alpaca_data_base_url.rstrip('/')}/v2/stocks/bars"
+    params = {"symbols": symbol, "timeframe": "1Min", "start": start.isoformat(),
+              "end": end.isoformat(), "feed": "sip", "adjustment": "raw", "limit": 1000, "sort": "asc"}
+    with httpx.Client(headers=_headers(), timeout=httpx.Timeout(12.0, connect=6.0)) as client:
+        response = client.get(url, params=params)
+        response.raise_for_status()
+        payload = response.json()
+    rows = (payload.get("bars") or {}).get(symbol) or []
+    return [bar for bar in rows if isinstance(bar, dict)
+            and (ts := _parse_ts(bar.get("t"))) is not None
+            and start <= ts and ts + timedelta(minutes=1) <= cutoff], 1
+
+
 def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) -> dict[str, Any]:
     cutoff = _candidate_cutoff(candidate)
     symbol = str(candidate.get("symbol") or "").upper()
@@ -144,6 +168,7 @@ def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) 
         meta = candidate.get("enrichment_meta") if isinstance(candidate.get("enrichment_meta"), dict) else {}
         return {
             "cutoff": cutoff,
+            "intraday_bars": candidate.get("intraday_bars") if isinstance(candidate.get("intraday_bars"), list) else [],
             "history_bars": provided_history if isinstance(provided_history, list) else [],
             "benchmark_context": provided_context if isinstance(provided_context, dict) else {},
             "fundamentals": fundamentals,
@@ -166,6 +191,12 @@ def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) 
         }
 
     errors: list[str] = []
+    intraday_bars: list[dict[str, Any]] = []
+    intraday_requests = 0
+    try:
+        intraday_bars, intraday_requests = _fetch_intraday_evidence(symbol, cutoff)
+    except Exception as exc:
+        errors.append(f"intraday:{type(exc).__name__}:{str(exc)[:240]}")
     history_map: dict[str, list[dict[str, Any]]] = {}
     history_requests = 0
     try:
@@ -197,6 +228,8 @@ def load_runtime_enrichment(candidate: dict[str, Any], sector_hint: str | None) 
 
     return {
         "cutoff": cutoff,
+        "intraday_bars": intraday_bars,
+        "intraday_requests": intraday_requests,
         "history_bars": history_map.get(symbol) or [],
         "benchmark_context": benchmark_context,
         "fundamentals": fundamentals,

@@ -272,6 +272,7 @@ def patch_module(module: Any) -> None:
 
                 enriched: list[dict[str, Any]] = []
                 for item in analysis_pool:
+                    item["evidence_cutoff"] = evidence_cutoff
                     model = module.score_candidate(
                         item,
                         item["headlines"],

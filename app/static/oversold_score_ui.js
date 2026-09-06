@@ -96,6 +96,7 @@
     const fundamentals = a.fundamental_trace || {};
     const rawFund = fundamentals.raw_metrics || {};
     const quality = a.evidence_quality_trace || {};
+    const integrity = a.evidence_integrity || {};
     const supporting = a.supporting_evidence || [];
     const contradictory = a.contradictory_evidence || [];
     const flags = a.red_flags || c.risk_flags || [];
@@ -106,7 +107,7 @@
     const gates = a.eligibility_gates || v32.eligibility_gates || {};
     const causeStatus = a.cause_verification_status || (a.cause_verified ? 'VERIFIED' : 'UNVERIFIED');
     const damageClass = a.economic_damage_class || (Number(c.damage_risk) >= 80 ? 'STRUCTURAL_OR_EXISTENTIAL' : Number(c.damage_risk) >= 55 ? 'HIGH' : Number(c.damage_risk) >= 30 ? 'MODERATE' : 'LOW');
-    const isCalibrated = c.model_status === 'calibrated' && c.calibrated_probability != null;
+    const isCalibrated = c.model_status === 'calibrated' && c.calibration_model_version && c.calibrated_probability != null && Number.isFinite(Number(c.calibrated_probability)) && Number(c.calibrated_probability) >= 0 && Number(c.calibrated_probability) <= 1;
     const probabilityPct = isCalibrated ? Number(c.calibrated_probability) * 100 : null;
     const versions = `${c.scoring_model_version || '—'} / ${c.scoring_config_version || '—'}`;
     const penalties = v32.penalties || {};
@@ -162,6 +163,7 @@
       <div class="or-score-primary">${isCalibrated ? num(probabilityPct,1)+'%' : num(c.reversion_score,1)}</div>
       ${isCalibrated ? `<div class="or-score-secondary">Raw Reversion Score ${num(c.reversion_score,1)}</div>` : ''}
       <span class="or-model-status">Model status: ${html(isCalibrated ? 'Calibrated' : 'Uncalibrated')}</span>
+      <div class="or-score-explanation">Original model: ${html(c.scoring_model_version || 'not retained')} · cutoff ${html(c.evidence_cutoff || 'not retained')}. Component scores are uncalibrated indices /100, not survival or profit probabilities.</div>
       <div class="or-model-badges"><span class="or-mini-badge ${causeStatus === 'VERIFIED' ? 'good' : 'risk'}">Cause ${html(causeStatus)}</span><span class="or-mini-badge ${damageClass === 'LOW' || damageClass === 'MODERATE' ? '' : 'risk'}">Damage ${html(damageClass)}</span><span class="or-mini-badge">${html(a.event_profile || 'unknown')}</span></div>
       <div class="or-components">
         <div class="or-component"><span>Setup</span><strong>${num(c.setup_score,0)}</strong></div>
@@ -173,6 +175,8 @@
       </div>
       <div class="or-score-explanation">${html(c.explanation || '')}</div>
       <details class="or-score-details"><summary>Scoring breakdown</summary><div class="or-detail-body">
+        <div class="or-detail-section"><b>Net profit opportunity</b>Round-trip friction: ${a.estimated_round_trip_friction_pct == null ? 'unavailable' : num(a.estimated_round_trip_friction_pct,2)+'% estimated'}. An evidence-backed target and invalidation level are not stored with this ranking; net reward/risk is unestablished. A high score alone does not establish a profitable setup.</div>
+        <div class="or-detail-section"><b>Original evidence checks</b>${html(integrity.version || 'Not retained for this original model run')}${integrity.retained_article_count == null ? '' : ' · '+html(integrity.retained_article_count)+' usable articles'}${Array.isArray(integrity.excluded_articles) ? ' · '+html(integrity.excluded_articles.length)+' excluded' : ''}<br>${listText([...(Array.isArray(integrity.issues) ? integrity.issues : []), ...(Array.isArray(integrity.fundamentals?.reasons) ? integrity.fundamentals.reasons : [])], 'No check issues retained; this does not establish profitability.')}</div>
         <div class="or-detail-section"><b>Reversion thesis</b>${html(c.explanation || 'No thesis summary available.')}</div>
         <div class="or-detail-section"><b>Cause / event / damage</b>${html(a.primary_catalyst || c.catalyst_summary || 'Unknown')}<br><span class="muted">event ${html(a.event_profile || a.catalyst_type || 'unknown')} · cause ${html(causeStatus)} · economic damage ${html(damageClass)}</span></div>
         <div class="or-detail-section"><b>Pre-signal price path / spike adjustment</b>${spikeText}</div>

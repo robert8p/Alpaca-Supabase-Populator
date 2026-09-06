@@ -13,7 +13,7 @@ from app.db import connection
 
 logger = logging.getLogger(__name__)
 TARGET_DEFINITION = "hit_reversion_within_3_trading_sessions"
-TARGET_CONTRACT_VERSION = "three_session_target_v2"
+TARGET_CONTRACT_VERSION = "three_session_target_v3"
 TARGET_RETURN_PCT = 5.0  # internal calibration threshold; deliberately not UI copy
 
 
@@ -28,10 +28,14 @@ def backfill_target_metadata() -> dict[str, int]:
                     'calibration_window_sessions', 3,
                     'target_contract_version', %s::text,
                     'calibration_target_matured',
-                        COALESCE(metadata->>'three_session_path_matured','false')='true',
+                        (COALESCE(metadata->>'three_session_path_matured','false')='true'
+                          AND metadata->>'three_session_path_contract' IS NOT DISTINCT FROM 'completed_sessions_v2'
+                          AND metadata->>'three_session_calendar_verified' IS NOT DISTINCT FROM 'true'),
                     'hit_reversion_within_3_sessions',
                         CASE
-                          WHEN COALESCE(metadata->>'three_session_path_matured','false')='true'
+                          WHEN (COALESCE(metadata->>'three_session_path_matured','false')='true'
+                          AND metadata->>'three_session_path_contract' IS NOT DISTINCT FROM 'completed_sessions_v2'
+                          AND metadata->>'three_session_calendar_verified' IS NOT DISTINCT FROM 'true')
                             THEN COALESCE(mfe_3d >= %s::double precision,false)
                           ELSE NULL
                         END,
@@ -39,7 +43,9 @@ def backfill_target_metadata() -> dict[str, int]:
                         COALESCE(
                           NULLIF(metadata->>'calibration_window_end_ts',''),
                           CASE
-                            WHEN COALESCE(metadata->>'three_session_path_matured','false')='true'
+                            WHEN (COALESCE(metadata->>'three_session_path_matured','false')='true'
+                          AND metadata->>'three_session_path_contract' IS NOT DISTINCT FROM 'completed_sessions_v2'
+                          AND metadata->>'three_session_calendar_verified' IS NOT DISTINCT FROM 'true')
                               THEN (signal_timestamp + interval '7 days')::text
                             ELSE NULL
                           END
@@ -49,8 +55,14 @@ def backfill_target_metadata() -> dict[str, int]:
                 WHERE metadata->>'calibration_target_definition' IS DISTINCT FROM %s::text
                    OR metadata->>'target_contract_version' IS DISTINCT FROM %s::text
                    OR metadata->>'calibration_target_matured' IS NULL
+                   OR (metadata->>'calibration_target_matured'='true'
+                       AND (metadata->>'three_session_path_matured' IS DISTINCT FROM 'true'
+                            OR metadata->>'three_session_calendar_verified' IS DISTINCT FROM 'true'
+                            OR metadata->>'three_session_path_contract' IS DISTINCT FROM 'completed_sessions_v2'))
                    OR (
-                        COALESCE(metadata->>'three_session_path_matured','false')='true'
+                        (COALESCE(metadata->>'three_session_path_matured','false')='true'
+                          AND metadata->>'three_session_path_contract' IS NOT DISTINCT FROM 'completed_sessions_v2'
+                          AND metadata->>'three_session_calendar_verified' IS NOT DISTINCT FROM 'true')
                         AND metadata->>'hit_reversion_within_3_sessions' IS NULL
                       )
                 """,

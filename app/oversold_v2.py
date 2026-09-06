@@ -30,7 +30,7 @@ templates = Jinja2Templates(directory="app/templates")
 PUBLIC_MANUAL_COOLDOWN_SECONDS = 300
 STALE_SCAN_MINUTES = 30
 CHATGPT_LAUNCH_MAX_CHARS = 4_000
-V2_ADAPTER_VERSION = "oversold-v2-canonical-adapter-2"
+V2_ADAPTER_VERSION = "oversold-v2-canonical-adapter-3"
 
 # The canonical scanner already excludes most non-operating instruments. This
 # final presentation filter removes shell/SPAC-like rows that can still be
@@ -124,13 +124,13 @@ def _fundamental_payload(row: dict[str, Any]) -> tuple[dict[str, Any], dict[str,
 
     selected = {key: raw.get(key) for key in FUNDAMENTAL_KEYS if raw.get(key) is not None}
     metadata = {
-        "available": bool(trace.get("available")) or bool(selected),
+        "available": _boolean(trace.get("available")) or bool(selected),
         "source": trace.get("source") or technical_fundamentals.get("source"),
         "form": trace.get("form") or technical_fundamentals.get("form"),
         "available_from": trace.get("available_from") or technical_fundamentals.get("available_from"),
         "report_period_end": trace.get("report_period_end") or technical_fundamentals.get("report_period_end"),
-        "age_calendar_days": trace.get("age_calendar_days") or technical_fundamentals.get("age_calendar_days"),
-        "metric_coverage_count": trace.get("metric_coverage_count") or technical_fundamentals.get("metric_coverage_count"),
+        "age_calendar_days": trace.get("age_calendar_days", technical_fundamentals.get("age_calendar_days")),
+        "metric_coverage_count": trace.get("metric_coverage_count", technical_fundamentals.get("metric_coverage_count")),
         "data_quality_score": analysis.get("fundamental_data_quality_score"),
         "evidence_confidence": analysis.get("fundamental_evidence_confidence"),
         "evidence_state": analysis.get("fundamental_evidence_state"),
@@ -150,6 +150,8 @@ def _fundamental_quality(row: dict[str, Any]) -> tuple[str, dict[str, Any], dict
     score = resilience if resilience is not None else 0.0
     if hard_veto or capital_distress or (damage is not None and damage >= 85):
         label = "Fragile"
+    elif resilience is None or not metadata.get("available"):
+        label = "Unknown"
     elif score >= 75:
         label = "Strong"
     elif score >= 60:
@@ -162,8 +164,12 @@ def _fundamental_quality(row: dict[str, Any]) -> tuple[str, dict[str, Any], dict
         label = "Fragile"
 
     data_quality = _number(metadata.get("data_quality_score"))
-    if metadata.get("available") and (data_quality is None or data_quality >= 60):
-        prefix = "Verified"
+    evidence_state = str(metadata.get("evidence_state") or "").upper()
+    integrity = _dict(_dict(analysis.get("evidence_integrity")).get("fundamentals"))
+    if integrity.get("status") == "REJECTED":
+        prefix, label = "Rejected evidence", "Unknown"
+    elif metadata.get("available") and evidence_state == "VERIFIED_PRIMARY" and data_quality is not None and data_quality >= 60:
+        prefix = "Primary sourced"
     elif metadata.get("available"):
         prefix = "Partial"
     else:
@@ -232,6 +238,17 @@ def _project_candidate(row: dict[str, Any]) -> dict[str, Any]:
 
     evidence_cutoff = row.get("evidence_cutoff") or _dict(row.get("evidence_snapshot")).get("evidence_cutoff")
     model_status = str(row.get("model_status") or "uncalibrated")
+    probability = _number(row.get("calibrated_probability"))
+    if model_status.lower() != "calibrated" or not row.get("calibration_model_version") or probability is None or not 0 <= probability <= 1:
+        probability = None
+    evidence_integrity = _dict(analysis.get("evidence_integrity"))
+    missing_inputs = [str(value) for value in _list(row.get("missing_inputs"))]
+    execution_friction = _number(analysis.get("estimated_round_trip_friction_pct"))
+    opportunity_gaps = ["No evidence-backed price target or invalidation level stored; net reward/risk is unestablished."]
+    if execution_friction is None:
+        opportunity_gaps.append("Round-trip execution friction is unavailable.")
+    if not evidence_cutoff:
+        opportunity_gaps.append("Original evidence cutoff is unavailable.")
 
     return {
         "id": row.get("id"),
@@ -252,7 +269,8 @@ def _project_candidate(row: dict[str, Any]) -> dict[str, Any]:
         "oversold_score": score,
         "initial_view": initial_view,
         "model_status": model_status,
-        "calibrated_probability": row.get("calibrated_probability"),
+        "calibrated_probability": probability,
+        "calibration_model_version": row.get("calibration_model_version"),
         "scoring_model_version": row.get("scoring_model_version"),
         "scoring_config_version": row.get("scoring_config_version"),
         "target_definition": row.get("target_definition"),
@@ -274,16 +292,26 @@ def _project_candidate(row: dict[str, Any]) -> dict[str, Any]:
         "event_profile": event_profile,
         "catalyst_type": analysis.get("catalyst_type"),
         "catalyst_summary": primary_catalyst,
-        "risk_flags": sorted({str(flag) for flag in _list(analysis.get("red_flags")) or _list(row.get("risk_flags"))}),
+        "risk_flags": sorted({str(flag) for flag in _list(analysis.get("red_flags")) + _list(row.get("risk_flags"))}),
         "hard_veto": _boolean(row.get("hard_veto")) or _boolean(analysis.get("hard_veto")),
         "hard_veto_reason": row.get("hard_veto_reason") or analysis.get("hard_veto_reason"),
         "failed_gates": [str(value) for value in failed_gates],
-        "execution_friction_pct": _number(analysis.get("estimated_round_trip_friction_pct")),
+        "execution_friction_pct": execution_friction,
+        "net_risk_reward_status": "not_established",
+        "opportunity_gaps": opportunity_gaps,
+        "missing_inputs": missing_inputs,
+        "evidence_integrity": evidence_integrity,
+        "score_semantics": _dict(analysis.get("score_semantics")),
         "source_dependency_risk": _number(analysis.get("source_dependency_risk")),
         "source_claims": source_claims,
         "headline_count": row.get("headline_count"),
         "headlines": _list(row.get("headlines"))[:10],
         "evidence_cutoff": evidence_cutoff,
+        "signal_timestamp": row.get("signal_timestamp"),
+        "signal_price": row.get("signal_price"),
+        "latest_trade_ts": row.get("latest_trade_ts"),
+        "evidence_snapshot_id": row.get("evidence_snapshot_id"),
+        "snapshot_hash": row.get("snapshot_hash"),
         "model_explanation": row.get("explanation"),
         "model_missing": model_missing,
         "adapter_version": V2_ADAPTER_VERSION,
@@ -320,7 +348,7 @@ def _project_scan(detail: dict[str, Any], *, limit: int | None = None) -> dict[s
     scan["canonical_candidate_count"] = int(scan.get("candidate_count") or len(raw_candidates))
     scan["candidate_count"] = len(candidates)
     scan["excluded_non_operating_count"] = len(raw_candidates) - len(filtered)
-    scan["evidence_cutoff"] = metadata.get("evidence_cutoff") or scan.get("completed_at")
+    scan["evidence_cutoff"] = metadata.get("evidence_cutoff")
     scan["model_status"] = candidates[0].get("model_status") if candidates else metadata.get("model_status")
     scan["scoring_model_version"] = candidates[0].get("scoring_model_version") if candidates else metadata.get("scoring_model")
     scan["target_definition"] = candidates[0].get("target_definition") if candidates else metadata.get("target_definition")
@@ -408,7 +436,7 @@ def _source_summary(candidate: dict[str, Any], *, limit: int = 4) -> list[str]:
             continue
         output.append(
             f"{claim.get('published_at') or 'time unknown'} | {claim.get('source') or 'source unknown'} | "
-            f"{_truncate(claim.get('headline'), 220)}"
+            f"{_truncate(claim.get('headline'), 220)} | {claim.get('url') or 'URL not retained'}"
         )
     return output
 
@@ -418,10 +446,11 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
     scan = _dict(detail.get("scan"))
     lines = [
         "Audit these Oversold Reversion candidates as ORIGINAL, point-in-time signals. Do not use hindsight.",
-        "Use only evidence available on or before each stored evidence cutoff. Independently challenge the app; the robust score is an uncalibrated research-priority score, not a probability or a buy recommendation.",
-        "For every stock determine: why it fell; causal-evidence strength; temporary versus structural damage; financial survivability; whether the price move exceeds likely permanent damage; plausible three-session reversion mechanism; contradictory evidence; execution/liquidity risk; another-leg-down risk; and whether a credible, asymmetric profit opportunity exists.",
+        "Use only evidence available on or before each stored evidence cutoff; cite primary sources and publication times. If a cutoff is missing, point-in-time verification is unavailable. Independently challenge the app; the priority score and every component (including survivability, reversibility, damage and confidence) are uncalibrated indices, not probabilities or buy recommendations.",
+        "For every stock determine: why it fell; causal-evidence strength; temporary versus structural damage; financial survivability; whether the price move exceeds likely permanent damage; a reversion mechanism within the stored target horizon; contradictory evidence; execution/liquidity risk; another-leg-down risk; and whether a credible, asymmetric profit opportunity exists. A filed 8-K or analyst reaction alone does not prove the economic cause, temporary damage or mispricing.",
+        "Separate an oversold reading from an investable setup. State an evidence-supported target, thesis invalidation, time limit and upside/downside after spread, slippage and fees where supportable; otherwise mark net reward/risk unestablished and name the missing evidence. Do not invent return probabilities, price levels or a profitable backtest.",
         "Return an independent best-to-worst ranking with INVESTIGATE, WATCH or PASS, and explicitly explain every material disagreement with the app.",
-        f"Scanner model: {scan.get('scoring_model_version') or 'unknown'} | model status: {scan.get('model_status') or 'unknown'} | evidence cutoff: {scan.get('evidence_cutoff')}",
+        f"Scanner model: {scan.get('scoring_model_version') or 'unknown'} | model status: {scan.get('model_status') or 'unknown'} | target: {scan.get('target_definition') or 'not retained'} | evidence cutoff: {scan.get('evidence_cutoff')}",
         "",
     ]
 
@@ -438,14 +467,14 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
                         f"{candidate['rank']}. {candidate['symbol']} — move {candidate.get('drop_pct')}% regular / "
                         f"{candidate.get('latest_move_pct')}% latest ({session}); robust score {candidate.get('oversold_score')}/100; "
                         f"app view {candidate.get('initial_view')}; cause {candidate.get('cause_status')} / {candidate.get('catalyst_class')}; "
-                        f"survivability {candidate.get('fundamental_survivability')}, reversibility {candidate.get('catalyst_reversibility')}, "
+                        f"financial-strength index {candidate.get('fundamental_survivability')}, reversibility index {candidate.get('catalyst_reversibility')}, "
                         f"damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}; "
                         f"fundamentals {candidate.get('fundamental_quality')}; risks {risk_flags}; failed gates {failed_gates}."
                     ),
                     f"Catalyst: {_truncate(candidate.get('catalyst_summary'), 240)}",
                     f"Key fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
                     ("Evidence: " + " || ".join(source_lines)) if source_lines else "Evidence: no retained primary/source claims.",
-                    f"Evidence cutoff: {candidate.get('evidence_cutoff')}",
+                    f"Evidence cutoff: {candidate.get('evidence_cutoff')} | original signal: {candidate.get('signal_timestamp')} | model: {candidate.get('scoring_model_version')}",
                     "",
                 ]
             )
@@ -461,7 +490,9 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
                     f"Fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
                     f"Risk flags: {risk_flags} | hard veto: {candidate.get('hard_veto')} ({candidate.get('hard_veto_reason') or 'none'}) | failed eligibility gates: {failed_gates}",
                     f"Execution/provenance: estimated round-trip friction {candidate.get('execution_friction_pct')}%; source dependency risk {candidate.get('source_dependency_risk')}; robust summary {json.dumps(candidate.get('robustness_summary') or {}, default=str, separators=(',', ':'))}",
-                    f"Evidence cutoff: {candidate.get('evidence_cutoff')}",
+                    f"Opportunity gaps: {'; '.join(candidate.get('opportunity_gaps') or [])} | missing inputs: {', '.join(candidate.get('missing_inputs') or [])}",
+                    f"Evidence integrity: {json.dumps(candidate.get('evidence_integrity') or {}, default=str, separators=(',', ':'))}",
+                    f"Original signal: {candidate.get('signal_timestamp')} | signal price: {candidate.get('signal_price')} | evidence cutoff: {candidate.get('evidence_cutoff')}",
                     "Evidence claims: " + (" || ".join(source_lines) if source_lines else "none retained"),
                     "",
                 ]
@@ -482,21 +513,26 @@ def _build_launch_prompt(detail: dict[str, Any]) -> str:
         return prompt
 
     candidates = list(detail.get("candidates") or [])[:10]
+    scan = _dict(detail.get("scan"))
     lines = [
-        "Audit these original Oversold Reversion signals without hindsight. The score is uncalibrated, not a probability. Independently rank them and give INVESTIGATE/WATCH/PASS. For each: cause, evidence strength, permanent damage, survivability, reversion mechanism, downside and risk/reward.",
-        "",
+        "Audit original Oversold Reversion signals without hindsight. Use only evidence published by each cutoff and cite it. All scores, survival and reversal components are uncalibrated indices, not probabilities. Rank INVESTIGATE/WATCH/PASS by cause, lasting damage, financial strength, reversion mechanism and net reward/risk. A filing or analyst reaction alone does not establish temporary damage. If price target/invalidation/cost evidence is missing, say net reward/risk is unestablished.",
+        f"Original model: {_truncate(scan.get('scoring_model_version') or 'not retained', 70)}; target: {_truncate(scan.get('target_definition') or 'not retained', 80)}.",
     ]
+    # Allocate a bounded row budget before adding catalyst text so a long early
+    # headline cannot silently remove the tenth signal or its evidence cutoff.
+    row_budget = max(0, (CHATGPT_LAUNCH_MAX_CHARS - len("\n".join(lines)) - 2 * len(candidates)) // max(1, len(candidates)))
     for candidate in candidates:
-        lines.append(
+        core = (
             f"{candidate['rank']}. {candidate['symbol']}: move {candidate.get('drop_pct')}%, score {candidate.get('oversold_score')}, "
-            f"view {candidate.get('initial_view')}, cause {candidate.get('cause_status')}/{candidate.get('catalyst_class')}, "
-            f"survival {candidate.get('fundamental_survivability')}, reversal {candidate.get('catalyst_reversibility')}, "
-            f"damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}, "
-            f"fundamentals {candidate.get('fundamental_quality')}, cutoff {candidate.get('evidence_cutoff')}. "
-            f"Catalyst: {_truncate(candidate.get('catalyst_summary'), 140)}"
+            f"{candidate.get('initial_view')}, cause {_truncate(candidate.get('cause_status'), 28)}/{_truncate(candidate.get('catalyst_class'), 35)}, "
+            f"strength {candidate.get('fundamental_survivability')}, reversal {candidate.get('catalyst_reversibility')}, damage {candidate.get('impairment_risk')}, "
+            f"friction {candidate.get('execution_friction_pct')}%, cutoff {candidate.get('evidence_cutoff')}"
         )
-    lines.append("Identify disagreements with the app and the facts to verify before capital is at risk.")
-    return "\n".join(lines)[:CHATGPT_LAUNCH_MAX_CHARS]
+        remaining = row_budget - len(core) - len(". Catalyst: ")
+        if remaining > 5:
+            core += f". Catalyst: {_truncate(candidate.get('catalyst_summary'), remaining)}"
+        lines.append(core)
+    return "\n".join(lines)
 
 
 @router.get("/oversold-v2", response_class=HTMLResponse)

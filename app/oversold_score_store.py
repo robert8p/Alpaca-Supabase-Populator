@@ -8,6 +8,7 @@ from psycopg.types.json import Jsonb
 
 from app.oversold_calibration import active_calibration_from_cursor, calibrated_probability
 from app.oversold_scoring import evidence_snapshot_hash
+from app.oversold_features import execution_evidence
 
 
 def apply_active_calibration(score: dict[str, Any], calibration: dict[str, Any] | None) -> dict[str, Any]:
@@ -60,6 +61,8 @@ def persist_original_score(
         )
 
     technical_inputs = {
+        "execution_evidence": execution_evidence({**item, "evidence_cutoff": evidence_cutoff}),
+        "intraday_bars": enrichment.get("intraday_bars") or [],
         "setup": (score.get("calculation_trace") or {}).get("setup") or {},
         "confirmation": (score.get("calculation_trace") or {}).get("confirmation") or {},
         "market_data_completeness": (score.get("calculation_trace") or {}).get("market_data_completeness"),

@@ -3,6 +3,7 @@ from __future__ import annotations
 """Evaluation reports aligned to the live three-session target."""
 
 from collections import defaultdict
+import math
 from typing import Any
 
 from app.db import connection
@@ -12,13 +13,36 @@ TARGET_DEFINITION = "hit_reversion_within_3_trading_sessions"
 
 def _num(value: Any) -> float | None:
     try:
-        return float(value) if value is not None else None
+        number = float(value) if value is not None else None
+        return number if number is not None and math.isfinite(number) else None
     except (TypeError, ValueError):
         return None
 
 
 def _mean(values: list[float]) -> float | None:
     return sum(values) / len(values) if values else None
+
+
+def profit_proxy_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Report specified exits and cost scenarios separately from target touches."""
+    modeled = []
+    for row in rows:
+        proxy = row.get("profit_proxy") or {}
+        if not isinstance(proxy, dict) or proxy.get("status") != "modeled":
+            continue
+        base, stress = _num(proxy.get("net_return_pct")), _num(proxy.get("stress_net_return_pct"))
+        if base is not None and stress is not None:
+            modeled.append((base, stress))
+    return {
+        "sample_count": len(modeled),
+        "missing_proxy_count": len(rows) - len(modeled),
+        "mean_net_return_pct": _mean([base for base, _ in modeled]),
+        "mean_stress_net_return_pct": _mean([stress for _, stress in modeled]),
+        "positive_net_exit_rate": sum(base > 0 for base, _ in modeled) / len(modeled) if modeled else None,
+        "positive_stress_net_exit_rate": sum(stress > 0 for _, stress in modeled) / len(modeled) if modeled else None,
+        "profitable_strategy_validated": False,
+        "limitation": "Modeled next-session daily open to third-session close with assumed costs; unverified fills and portfolio returns. Target-touch hit rate is not profitable-trade probability.",
+    }
 
 
 def _bucket(rows: list[dict[str, Any]], key: str) -> dict[str, dict[str, Any]]:
@@ -29,6 +53,7 @@ def _bucket(rows: list[dict[str, Any]], key: str) -> dict[str, dict[str, Any]]:
     for label, values in sorted(grouped.items()):
         output[label] = {
             "n": len(values),
+            "exit_return_proxy": profit_proxy_metrics(values),
             "three_session_hit_rate": sum(1 for row in values if row["target"]) / len(values),
             "plus_10_mfe_rate": sum(1 for row in values if (_num(row.get("mfe_3d")) or -999.0) >= 10.0) / len(values),
             "mean_mfe_3d": _mean([value for row in values if (value := _num(row.get("mfe_3d"))) is not None]),
@@ -57,6 +82,7 @@ def patch_module(module: Any) -> None:
                            mr.damage_risk,
                            (so.metadata->>'hit_reversion_within_3_sessions')::boolean AS target,
                            so.mfe_3d,so.mae_3d,so.return_3d,
+                           so.metadata->'profit_proxy_3d' AS profit_proxy,
                            so.time_to_mfe_3d_sessions,so.time_to_mae_3d_sessions
                     FROM or_model_runs mr
                     JOIN or_signal_outcomes so ON so.evidence_snapshot_id=mr.evidence_snapshot_id
@@ -66,6 +92,8 @@ def patch_module(module: Any) -> None:
                       AND so.eligible_for_calibration=true
                       AND so.metadata->>'calibration_target_definition'=%s
                       AND so.metadata->>'calibration_target_matured'='true'
+                      AND so.metadata->>'three_session_path_contract'='completed_sessions_v2'
+                      AND so.metadata->>'three_session_calendar_verified'='true'
                       AND so.metadata->>'hit_reversion_within_3_sessions' IS NOT NULL
                     ORDER BY mr.id
                     """,
@@ -106,6 +134,9 @@ def patch_module(module: Any) -> None:
             "target_definition": TARGET_DEFINITION,
             "run_kind": run_kind,
             "sample_size": len(rows),
+            "target_is_profitability": False,
+            "exit_return_proxy": profit_proxy_metrics(rows),
+            "profitability_validation": "not_established",
             "three_session_hit_rate": hits / len(rows) if rows else None,
             "plus_10_mfe_rate": sum(1 for row in rows if (_num(row.get("mfe_3d")) or -999.0) >= 10.0) / len(rows) if rows else None,
             "mean_mfe_3d": _mean([value for row in rows if (value := _num(row.get("mfe_3d"))) is not None]),
@@ -122,7 +153,7 @@ def patch_module(module: Any) -> None:
             "investigate_precision": sum(1 for row in investigate if row["target"]) / len(investigate) if investigate else None,
             "watch_hit_rate": sum(1 for row in watch if row["target"]) / len(watch) if watch else None,
             "pass_hit_rate": sum(1 for row in passed if row["target"]) / len(passed) if passed else None,
-            "limitation": None if rows else "No corporate-action-cleared, matured three-session outcomes exist for this model/config yet.",
+            "limitation": "Target-touch event statistics are descriptive; no out-of-sample net profitability has been established." if rows else "No corporate-action-cleared, calendar-verified, matured three-session outcomes exist for this model/config yet.",
         }
 
     def original_vs_rescore_report(
@@ -140,6 +171,7 @@ def patch_module(module: Any) -> None:
                            new.catalyst_analysis AS new_analysis,
                            (so.metadata->>'hit_reversion_within_3_sessions')::boolean AS target,
                            so.mfe_3d,so.mae_3d,so.return_3d,
+                           so.metadata->'profit_proxy_3d' AS profit_proxy,
                            so.metadata->>'calibration_target_matured' AS target_matured,
                            so.eligible_for_calibration
                     FROM or_model_runs old
@@ -181,7 +213,7 @@ def patch_module(module: Any) -> None:
             "moved_up": sum(1 for row in rows if float(row["new_score"]) > float(row["old_score"])),
             "verdict_changes": sum(1 for row in rows if row["new_verdict"] != row["old_verdict"]),
             "rows": rows,
-            "limitation": None if matured else "Point-in-time rescores exist, but eligible three-session outcomes have not matured yet.",
+            "limitation": "Historical rescores are descriptive and may reflect model-design hindsight; they cannot establish out-of-sample superiority or profitable execution." if matured else "Point-in-time rescores exist, but eligible three-session outcomes have not matured yet.",
         }
 
     module.evaluation_report = evaluation_report

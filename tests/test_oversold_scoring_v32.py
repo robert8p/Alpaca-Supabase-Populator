@@ -115,11 +115,11 @@ def test_model_is_explicitly_versioned_v37() -> None:
         "B",
         [],
     )
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_7"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
     assert result["scoring_model_version"] == SCORING_MODEL_VERSION
     assert result["scoring_config_version"] == SCORING_CONFIG_VERSION
-    assert result["catalyst_analysis"]["analysis_method"] == "rules_v3_7_local_clause_point_in_time_robust_ensemble"
+    assert result["catalyst_analysis"]["analysis_method"] == "rules_v3_8_point_in_time_evidence_integrity_robust_ensemble"
     assert result["catalyst_analysis"]["reliability_version"] == "reliability_scenarios_v1"
     assert result["catalyst_analysis"]["robustness_version"] == "robust_weight_evidence_ensemble_v1"
     assert result["catalyst_analysis"]["subject_attribution_version"] == "subject_attribution_v1"

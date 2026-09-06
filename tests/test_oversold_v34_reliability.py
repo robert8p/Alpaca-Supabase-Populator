@@ -320,7 +320,7 @@ def test_new_source_kinds_and_target_contract_are_migrated() -> None:
     ):
         assert source_kind in migration
     assert TARGET_DEFINITION == "hit_reversion_within_3_trading_sessions"
-    assert TARGET_CONTRACT_VERSION == "three_session_target_v2"
+    assert TARGET_CONTRACT_VERSION == "three_session_target_v3"
 
 
 def test_score_store_wrapper_writes_target_metadata() -> None:

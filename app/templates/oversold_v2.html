@@ -9,14 +9,17 @@
     body{background:#0b0f14;color:#e8edf3;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     .wrap{max-width:1540px;margin:0 auto;padding:28px 20px 60px}.hero{display:flex;gap:24px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}.eyebrow{color:#8ea0b5;font-size:12px;text-transform:uppercase;letter-spacing:.12em}.title{font-size:34px;font-weight:760;margin:4px 0}.sub{color:#9baabc;max-width:900px;line-height:1.45}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid #344355;border-radius:9px;padding:10px 14px;background:#17202b;color:#f7f9fb;font-weight:650;cursor:pointer}.btn.primary{background:#f3f6fa;color:#10151b}.btn:disabled{opacity:.5;cursor:not-allowed}.stats{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px;margin:18px 0}.stat{background:#111923;border:1px solid #243140;border-radius:10px;padding:13px}.stat .k{font-size:11px;color:#8ea0b5;text-transform:uppercase;letter-spacing:.08em}.stat .v{font-size:18px;font-weight:700;margin-top:4px;overflow-wrap:anywhere}.notice{border:1px solid #324257;border-radius:10px;background:#101923;padding:12px 14px;color:#b9c5d1;margin:12px 0}.error{border-color:#713b43;color:#ffbcc3;background:#211216}.table-wrap{overflow:auto;border:1px solid #263444;border-radius:12px;background:#0f161e}table{width:100%;border-collapse:collapse;min-width:1240px}th,td{padding:12px 11px;border-bottom:1px solid #202c39;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#131d27;color:#94a5b8;font-size:11px;text-transform:uppercase;letter-spacing:.06em}td{font-size:13px}.ticker{font-size:15px;font-weight:750}.muted{color:#91a0b1}.score{font-size:18px;font-weight:760}.good{color:#7ee2a8}.mid{color:#ffd479}.bad{color:#ff9b9b}.pill{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid #35475b;font-size:11px;line-height:1.2}.pill.good{color:#7ee2a8;border-color:#276d48;background:#10271d}.pill.mid{color:#ffd479;border-color:#7b6328;background:#2b2411}.pill.bad{color:#ff9b9b;border-color:#7b343b;background:#2c1518}.pill.neutral{color:#c3ced9}.details{max-width:380px}.empty{padding:36px;text-align:center;color:#91a0b1}.foot{margin-top:14px;color:#7f8d9c;font-size:12px;line-height:1.45}.micro{font-size:11px;margin-top:5px}.cause-status{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-left:5px}.cause-status.verified{color:#7ee2a8}.cause-status.unverified{color:#ffd479}@media(max-width:900px){.hero{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.title{font-size:28px}}@media(max-width:520px){.stats{grid-template-columns:1fr}}
   </style>
+  <style>
+    .evidence{margin-top:9px;min-width:170px}.evidence summary{cursor:pointer;color:#c1d4ea;font-size:12px}.evidence p{line-height:1.5}.evidence ul{padding-left:18px;line-height:1.5}.evidence li+li{margin-top:7px}.evidence a{color:#a5ceff;overflow-wrap:anywhere}.evidence[open]{min-width:280px;max-width:440px}.model-version{font-size:11px;line-height:1.4;color:#91a0b1;margin-top:5px}summary:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid #a5ceff;outline-offset:4px}
+  </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
     <div>
       <div class="eyebrow">Oversold Reversion</div>
-      <div class="title">Today’s US equity losers, ranked by robust oversold potential</div>
-      <div class="sub">This simplified view uses the canonical point-in-time engine: Alpaca SIP market data, primary-event evidence, SEC fundamentals, causal-source provenance, permanent-damage analysis, execution friction and deterministic downside scenarios. ChatGPT independently audits the top 10.</div>
+      <div class="title">US equity losers, ranked for reversion research</div>
+      <div class="sub">Compare the reason for each fall, financial strength, lasting damage and trading costs using evidence available at the original signal. Investigate means research first; Watch means unresolved; Pass means skip this setup. Profitability has not been established by these scores.</div>
     </div>
     <div class="actions">
       <button id="scanBtn" class="btn primary">Run scan</button>
@@ -30,19 +33,19 @@
     <div class="stat"><div class="k">Equities screened</div><div id="screened" class="v">—</div></div>
     <div class="stat"><div class="k">Researchable candidates</div><div id="count" class="v">—</div></div>
     <div class="stat"><div class="k">Evidence cutoff</div><div id="cutoff" class="v">—</div></div>
-    <div class="stat"><div class="k">Model status</div><div id="modelStatus" class="v">—</div></div>
+    <div class="stat"><div class="k">Original model status</div><div id="modelStatus" class="v">—</div><div id="modelVersion" class="model-version">—</div></div>
   </div>
 
   <div class="table-wrap">
     <table>
       <thead><tr>
-        <th>Rank</th><th>Ticker / company</th><th>Day move</th><th>Robust score</th><th>Fundamental quality</th><th>Cause</th><th>Initial view</th><th>Why it ranks here</th>
+        <th>Rank</th><th>Ticker / company</th><th>Day move at scan</th><th>Priority score</th><th>Fundamental evidence</th><th>Cause</th><th>Research view</th><th>Costs / net opportunity</th><th>Evidence / uncertainty</th>
       </tr></thead>
-      <tbody id="rows"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+      <tbody id="rows"><tr><td colspan="9" class="empty">Loading…</td></tr></tbody>
     </table>
   </div>
-  <div class="foot"><strong>Interpretation:</strong> the score is a conservative research-priority score, not a rebound probability or a recommendation. It is ranked after point-in-time causal verification, SEC-fundamental survivability, three-session horizon fit, evidence-provenance checks, downside scenarios and estimated execution friction. “Uncalibrated” means no empirical probability should be inferred from the number.</div>
+  <div class="foot"><strong>Interpretation:</strong> priority, financial strength, event reversibility, damage and evidence confidence are uncalibrated indices. A financial-strength score of 97 does not mean a 97% survival probability. Primary-sourced accounts do not establish the cause of a fall or its reversibility. Estimated friction is a trading-cost estimate; an evidence-backed target, invalidation level and independently validated net returns are needed to establish profit potential. Saved scores retain their original model version and evidence cutoff.</div>
 </div>
-<script src="/static/oversold_v2.js?v=3"></script>
+<script src="/static/oversold_v2.js?v=4"></script>
 </body>
 </html>

@@ -300,8 +300,8 @@ def oversold_page(request: Request):
     html = html.replace('<a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>', "")
     html = html.replace(
         "</body>",
-        '<script src="/static/oversold_tracking_v3.js?v=1"></script>\n'
-        '<script src="/static/oversold_score_ui.js?v=4"></script>\n'
+        '<script src="/static/oversold_tracking_v3.js?v=2"></script>\n'
+        '<script src="/static/oversold_score_ui.js?v=5"></script>\n'
         '<script src="/static/oversold_top5.js?v=5"></script>\n'
         '<script src="/static/oversold_chatgpt_score.js?v=4"></script>\n</body>',
     )

@@ -20,7 +20,7 @@ TARGET_TRADING_SESSIONS = 3
 # Preserve the established internal reversion threshold. The user-facing UI no
 # longer exposes the threshold; calibration changes here are about the horizon.
 TARGET_RETURN_FRACTION = 0.05
-CALIBRATION_FAMILY_VERSION = "regularized_logistic_score_3session_v1"
+CALIBRATION_FAMILY_VERSION = "regularized_logistic_score_3session_purged_v2"
 
 
 def patch_scoring(module: Any) -> None:
@@ -87,9 +87,9 @@ def _mark_three_session_targets() -> int:
 def _calibration_samples() -> list[dict[str, Any]]:
     """Load one current-model score per immutable Evidence Snapshot.
 
-    Historical v3.2 evidence may contribute through an append-only current-config
-    rescore. If a current-config original run exists it wins over a rescore, so
-    each original signal contributes at most one calibration observation.
+    Probability calibration uses only scores recorded at the original decision.
+    Append-only historical rescores remain descriptive research, never holdout
+    evidence for a model designed after those outcomes were observable.
     """
     from app.oversold_scoring import SCORING_CONFIG_VERSION as CURRENT_CONFIG, SCORING_MODEL_VERSION
 
@@ -105,7 +105,7 @@ def _calibration_samples() -> list[dict[str, Any]]:
                     FROM or_model_runs mr
                     WHERE mr.scoring_model_version=%s
                       AND mr.scoring_config_version=%s
-                      AND mr.run_kind IN ('original','rescore')
+                      AND mr.run_kind='original'
                     ORDER BY mr.evidence_snapshot_id,
                              CASE WHEN mr.run_kind='original' THEN 0 ELSE 1 END,
                              mr.created_at DESC,
@@ -113,7 +113,10 @@ def _calibration_samples() -> list[dict[str, Any]]:
                 )
                 SELECT cr.score,
                        (so.metadata->>'hit_reversion_within_3_sessions')::boolean AS target,
-                       so.signal_timestamp,
+                       so.signal_timestamp,so.symbol,cr.evidence_snapshot_id,
+                       cr.model_run_id,
+                       (so.metadata->>'calibration_window_end_ts')::timestamptz AS outcome_end,
+                       'original' AS run_kind,
                        COALESCE(es.sector_hint,'unknown') AS sector
                 FROM current_runs cr
                 JOIN or_evidence_snapshots es ON es.id=cr.evidence_snapshot_id
@@ -121,6 +124,9 @@ def _calibration_samples() -> list[dict[str, Any]]:
                 WHERE so.eligible_for_calibration=true
                   AND so.metadata->>'calibration_target_definition'=%s
                   AND so.metadata->>'calibration_target_matured'='true'
+                  AND so.metadata->>'three_session_path_contract'='completed_sessions_v2'
+                  AND so.metadata->>'three_session_calendar_verified'='true'
+                  AND so.metadata->>'target_contract_version'='three_session_target_v3'
                   AND so.metadata->>'hit_reversion_within_3_sessions' IS NOT NULL
                 ORDER BY so.signal_timestamp,cr.model_run_id
                 """,
@@ -202,7 +208,7 @@ def _model_diagnostics() -> dict[str, Any]:
             FROM or_model_runs mr
             WHERE mr.scoring_model_version=%s
               AND mr.scoring_config_version=%s
-              AND mr.run_kind IN ('original','rescore')
+              AND mr.run_kind='original'
             ORDER BY mr.evidence_snapshot_id,
                      CASE WHEN mr.run_kind='original' THEN 0 ELSE 1 END,
                      mr.created_at DESC,mr.id DESC

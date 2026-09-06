@@ -113,8 +113,8 @@ def article(symbol: str, headline: str, summary: str, source: str = "Company IR"
 
 
 def test_v37_contract_is_purpose_aligned_and_versioned() -> None:
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_7"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
     contract = public_scoring_contract()
     assert "verified price damage" in contract["purpose"]
     assert contract["opportunity_architecture"]["aggregation"] == "weighted_geometric_mean"

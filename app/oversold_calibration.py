@@ -2,15 +2,19 @@ from __future__ import annotations
 
 import json
 import math
-from datetime import UTC, datetime
+import sys
+from datetime import UTC, datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from psycopg.types.json import Jsonb
 
 from app.db import connection
 from app.oversold_scoring import SCORING_CONFIG, SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
 
-CALIBRATION_FAMILY_VERSION = "regularized_logistic_score_v1"
+CALIBRATION_FAMILY_VERSION = "regularized_logistic_score_purged_v2"
+VALIDATION_CONTRACT = "original_scores_purged_sessions_v2"
+SIGNAL_ZONE = ZoneInfo("America/New_York")
 L2_PENALTY = 1.0
 MAX_ITERATIONS = 100
 CONVERGENCE_TOLERANCE = 1e-8
@@ -38,7 +42,13 @@ def calibrated_probability(raw_score: float, calibration: dict[str, Any] | None)
         slope = float(coefficients["score_slope"])
     except (KeyError, TypeError, ValueError):
         return None
-    x = (float(raw_score) - 50.0) / 10.0
+    try:
+        score = float(raw_score)
+    except (TypeError, ValueError):
+        return None
+    if not all(math.isfinite(value) for value in (intercept, slope, score)) or slope <= 0 or not 0 <= score <= 100:
+        return None
+    x = (score - 50.0) / 10.0
     return _sigmoid(intercept + slope * x)
 
 
@@ -165,7 +175,9 @@ def _load_samples() -> list[dict[str, Any]]:
             cur.execute(
                 """
                 SELECT mr.final_score AS score,so.hit_plus_5pct_within_6_weeks AS target,
-                       so.signal_timestamp,COALESCE(es.sector_hint,'unknown') AS sector
+                       so.signal_timestamp,so.horizon_deadline AS outcome_end,so.symbol,
+                       mr.run_kind,mr.evidence_snapshot_id,
+                       COALESCE(es.sector_hint,'unknown') AS sector
                 FROM or_model_runs mr
                 JOIN or_signal_outcomes so ON so.model_run_id=mr.id
                 JOIN or_evidence_snapshots es ON es.id=mr.evidence_snapshot_id
@@ -182,7 +194,74 @@ def _load_samples() -> list[dict[str, Any]]:
     return rows
 
 
+def _timestamp(value: Any) -> datetime | None:
+    try:
+        parsed = value if isinstance(value, datetime) else datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parsed.astimezone(UTC) if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+    except (TypeError, ValueError):
+        return None
+
+
+def prepare_calibration_samples(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Keep contemporaneous originals and one independent event per symbol/window.
+
+    Unknown legacy outcome ends use the longer six-week embargo, never the signal
+    timestamp. Exclusions are deterministic and do not inspect the target value.
+    """
+    cleaned = []
+    for row in samples:
+        ts = _timestamp(row.get("signal_timestamp"))
+        end = _timestamp(row.get("outcome_end") or row.get("horizon_deadline"))
+        try:
+            score = float(row.get("score"))
+        except (TypeError, ValueError):
+            continue
+        if ts is None or not math.isfinite(score) or not 0 <= score <= 100:
+            continue
+        if row.get("target") not in (True, False) or row.get("target") is None:
+            continue
+        if row.get("run_kind", "original") != "original":
+            continue
+        if end is None:
+            end = ts + timedelta(weeks=6)
+        if end <= ts:
+            continue
+        cleaned.append({**row, "score": score, "target": bool(row["target"]),
+                        "signal_timestamp": ts, "outcome_end": end,
+                        "sector": str(row.get("sector") or "unknown")})
+    cleaned.sort(key=lambda row: (row["signal_timestamp"], str(row.get("symbol") or ""), str(row.get("evidence_snapshot_id") or "")))
+    output = []
+    seen = set()
+    active_until: dict[str, datetime] = {}
+    for row in cleaned:
+        symbol = str(row.get("symbol") or "").upper()
+        identity = row.get("evidence_snapshot_id") or (symbol, row["signal_timestamp"], row["score"])
+        if identity in seen or (symbol and row["signal_timestamp"] <= active_until.get(symbol, datetime.min.replace(tzinfo=UTC))):
+            continue
+        seen.add(identity)
+        if symbol:
+            active_until[symbol] = row["outcome_end"]
+        output.append(row)
+    return output
+
+
+def purged_temporal_split(samples: list[dict[str, Any]], holdout_size: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Never divide a signal day; training labels must finish before test begins."""
+    ordered = prepare_calibration_samples(samples)
+    if len(ordered) < 2:
+        return [], ordered
+    split = max(1, len(ordered) - holdout_size)
+    boundary_day = ordered[split]["signal_timestamp"].astimezone(SIGNAL_ZONE).date()
+    while split > 0 and ordered[split - 1]["signal_timestamp"].astimezone(SIGNAL_ZONE).date() == boundary_day:
+        split -= 1
+    holdout = ordered[split:]
+    cutoff = holdout[0]["signal_timestamp"]
+    training = [row for row in ordered[:split] if row["outcome_end"] < cutoff]
+    return training, holdout
+
+
 def calibration_readiness(samples: list[dict[str, Any]]) -> dict[str, Any]:
+    samples = prepare_calibration_samples(samples)
     cfg = SCORING_CONFIG["calibration"]
     positives = sum(1 for row in samples if row["target"])
     negatives = len(samples) - positives
@@ -195,6 +274,8 @@ def calibration_readiness(samples: list[dict[str, Any]]) -> dict[str, Any]:
         reasons.append(f"negatives {negatives} < {cfg['minimum_negatives']}")
     if len(samples) < cfg["minimum_temporal_holdout"] + 2:
         reasons.append("insufficient observations for temporal training/holdout split")
+    if len({row["signal_timestamp"].astimezone(SIGNAL_ZONE).date() for row in samples}) < 30:
+        reasons.append("fewer than 30 independent signal days")
     return {"ready": not reasons, "sample_count": len(samples), "positive_count": positives, "negative_count": negatives, "reasons": reasons}
 
 
@@ -202,8 +283,9 @@ def run_calibration(
     samples: list[dict[str, Any]] | None = None,
     *,
     sample_hash: str | None = None,
+    robustness: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    samples = _load_samples() if samples is None else samples
+    samples = prepare_calibration_samples(_load_samples() if samples is None else samples)
     readiness = calibration_readiness(samples)
     if not readiness["ready"]:
         return {"status": "not_ready", **readiness}
@@ -211,8 +293,12 @@ def run_calibration(
     cfg = SCORING_CONFIG["calibration"]
     holdout_size = max(int(cfg["minimum_temporal_holdout"]), int(round(len(samples) * 0.20)))
     holdout_size = min(holdout_size, len(samples) - 2)
-    training = samples[:-holdout_size]
-    holdout = samples[-holdout_size:]
+    training, holdout = purged_temporal_split(samples, holdout_size)
+    if len(training) < 30 or len(holdout) < cfg["minimum_temporal_holdout"] or len({row["target"] for row in training}) < 2:
+        return {"status": "not_ready", "ready": False, "reasons": ["insufficient independent training/holdout observations after outcome embargo"], "training_count": len(training), "holdout_count": len(holdout)}
+    if robustness is None:
+        from app.oversold_calibration_v35 import calibration_robustness_checks
+        robustness = calibration_robustness_checks(sys.modules[__name__], samples)
     coefficients = _fit_regularized_logistic(training)
     training_base_rate = sum(1 for row in training if row["target"]) / len(training)
     probabilities = [_predict(coefficients, row["score"]) for row in holdout]
@@ -240,6 +326,9 @@ def run_calibration(
     quality_checks = {
         "sample_thresholds": readiness,
         "positive_score_slope": coefficients["score_slope"] > 0,
+        "outcome_embargo_verified": all(row["outcome_end"] < holdout[0]["signal_timestamp"] for row in training),
+        "holdout_has_both_classes": len({row["target"] for row in holdout}) == 2,
+        "robustness_passed_before_publication": bool(robustness.get("passed")),
         "positive_brier_skill": brier_skill is not None and brier_skill > 0,
         "calibration_error_acceptable": calibration_error <= MAX_CALIBRATION_ERROR,
         "temporal_halves_stable": all(item["brier_skill"] is not None and item["brier_skill"] >= MIN_HALF_HOLDOUT_BRIER_SKILL for item in halves),
@@ -248,6 +337,11 @@ def run_calibration(
     passed = all(value if isinstance(value, bool) else bool(value.get("ready")) for value in quality_checks.values())
     version = f"{CALIBRATION_FAMILY_VERSION}_{datetime.now(UTC).strftime('%Y%m%dT%H%M%SZ')}"
     metrics = {
+        "validation_contract": VALIDATION_CONTRACT,
+        "probability_target": "price_target_touch_event_not_net_profit",
+        "calibration_robustness": robustness,
+        "purged_count": len(samples) - len(training) - len(holdout),
+        "training_latest_outcome_end": max(row["outcome_end"] for row in training).isoformat(),
         "model_type": "regularized_logistic_regression",
         "feature": "raw_reversion_score",
         "feature_transform": "(score-50)/10",

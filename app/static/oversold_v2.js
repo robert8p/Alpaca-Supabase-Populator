@@ -8,13 +8,13 @@
   const count = document.getElementById('count');
   const cutoff = document.getElementById('cutoff');
   const modelStatus = document.getElementById('modelStatus');
+  const modelVersion = document.getElementById('modelVersion');
   let currentScanId = null;
   let pollTimer = null;
 
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const fmt = (value, digits = 1) => value == null || !Number.isFinite(Number(value)) ? '—' : Number(value).toFixed(digits);
-  const when = value => value ? new Date(value).toLocaleString() : '—';
-  const scoreClass = value => Number(value) >= 72 ? 'good' : Number(value) >= 48 ? 'mid' : 'bad';
+  const when = value => value && !Number.isNaN(new Date(value).getTime()) ? new Date(value).toLocaleString() : 'Not retained';
   const initialViewClass = value => {
     const view = String(value || '').trim().toLowerCase();
     if (view === 'pass') return 'good';
@@ -22,7 +22,18 @@
     if (view === 'fail' || view === 'investigate') return 'bad';
     return 'neutral';
   };
-  const causeStatusClass = value => String(value || '').toUpperCase().includes('VERIFIED') && !String(value || '').toUpperCase().includes('UNVERIFIED') ? 'verified' : 'unverified';
+  const causeStatusClass = row => row.cause_verified === true && String(row.cause_status).toUpperCase() === 'VERIFIED' ? 'verified' : 'unverified';
+  const items = value => Array.isArray(value) ? value : [];
+  const human = value => String(value || '').replaceAll('_', ' ');
+
+  function sourceLink(claim) {
+    const label = `${claim.source || 'Source'} · ${claim.headline || 'Evidence'} · ${when(claim.published_at)}`;
+    try {
+      const url = new URL(claim.url);
+      if (url.protocol === 'https:' || url.protocol === 'http:') return `<a href="${esc(url.href)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
+    } catch (_) {}
+    return esc(label);
+  }
 
   function setNotice(text, isError = false) {
     notice.textContent = text;
@@ -39,15 +50,35 @@
   }
 
   function explanation(row) {
-    const failed = Array.isArray(row.failed_gates) ? row.failed_gates : [];
-    const friction = row.execution_friction_pct == null ? '—' : `${fmt(row.execution_friction_pct, 2)}%`;
-    return `Setup ${fmt(row.setup_score,0)} · Overreaction ${fmt(row.dislocation_score,0)} · Survival ${fmt(row.fundamental_survivability,0)} · Reversal ${fmt(row.catalyst_reversibility,0)} · Confirm ${fmt(row.confirmation_score,0)} · Damage ${fmt(row.impairment_risk,0)} · Conf ${fmt(row.confidence,0)}. ${failed.length} failed gate${failed.length === 1 ? '' : 's'} · friction ${friction}.`;
+    const failed = items(row.failed_gates);
+    const integrity = row.evidence_integrity || {};
+    const issues = [...items(integrity.issues), ...items(integrity.fundamentals?.reasons), ...items(row.missing_inputs), ...items(row.risk_flags)];
+    const uniqueIssues = [...new Set(issues.map(human))];
+    const probability = row.calibrated_probability == null ? 'Profit probability: unavailable' : `Calibrated target probability: ${fmt(Number(row.calibrated_probability) * 100)}% · ${row.target_definition || 'target not retained'}`;
+    return `<div>${esc(probability)}</div>
+      <details class="evidence"><summary>Scores, risks and evidence</summary>
+        <p>Uncalibrated indices /100: setup ${fmt(row.setup_score, 0)} · overreaction ${fmt(row.dislocation_score, 0)} · financial strength ${fmt(row.fundamental_survivability, 0)} · event reversibility ${fmt(row.catalyst_reversibility, 0)} · confirmation ${fmt(row.confirmation_score, 0)} · damage ${fmt(row.impairment_risk, 0)} · evidence confidence ${fmt(row.confidence, 0)}. These are not probabilities.</p>
+        <p>Model: ${esc(row.scoring_model_version || 'Not retained')} · config: ${esc(row.scoring_config_version || 'Not retained')}</p>
+        <p>Original signal: ${esc(when(row.signal_timestamp))} · price $${fmt(row.signal_price, 2)}<br>Evidence cutoff: ${esc(when(row.evidence_cutoff))}<br>Price timestamp: ${esc(when(row.latest_trade_ts))}</p>
+        <p>${failed.length ? `Unmet model criteria: ${esc(failed.map(human).join('; '))}` : 'No unmet model criteria reported; this does not establish profitability.'}</p>
+        ${row.hard_veto ? `<p class="bad">Veto reason: ${esc(row.hard_veto_reason || 'Not retained')}</p>` : ''}
+        <p>Evidence checks: ${esc(integrity.version || 'Not retained for this original model run')}${integrity.retained_article_count != null ? ` · ${esc(integrity.retained_article_count)} usable articles` : ''}${items(integrity.excluded_articles).length ? ` · ${items(integrity.excluded_articles).length} excluded` : ''}</p>
+        ${uniqueIssues.length ? `<ul>${uniqueIssues.map(issue => `<li>${esc(issue)}</li>`).join('')}</ul>` : ''}
+        ${items(row.source_claims).length ? `<ul>${items(row.source_claims).map(claim => `<li>${sourceLink(claim)}</li>`).join('')}</ul>` : '<p>No retained source claims.</p>'}
+      </details>`;
+  }
+
+  function executionCell(row) {
+    return `<div>Round-trip friction: ${row.execution_friction_pct == null ? 'unavailable' : `${fmt(row.execution_friction_pct, 2)}% estimated`}</div>
+      <div class="micro">Spread ${row.spread_pct == null ? 'unavailable' : `${fmt(row.spread_pct, 2)}%`} · prior volume ${row.prev_dollar_volume == null ? 'unavailable' : `$${fmt(Number(row.prev_dollar_volume) / 1000000, 1)}m`}</div>
+      <div class="micro mid">Net reward/risk: unestablished</div>
+      <details class="evidence"><summary>What is missing?</summary><ul>${items(row.opportunity_gaps).map(gap => `<li>${esc(gap)}</li>`).join('')}</ul></details>`;
   }
 
   function moveCell(row) {
     const session = String(row.price_session || 'unknown').replaceAll('_', ' ');
-    const latest = Number(row.latest_move_pct);
-    const day = Number(row.drop_pct);
+    const latest = row.latest_move_pct == null ? NaN : Number(row.latest_move_pct);
+    const day = row.drop_pct == null ? NaN : Number(row.drop_pct);
     const different = Number.isFinite(latest) && Number.isFinite(day) && Math.abs(latest - day) >= 0.1;
     return `<span class="bad">${fmt(row.drop_pct)}%</span><div class="muted micro">${esc(session)}${different ? ` · latest ${fmt(latest)}%` : ''}</div>`;
   }
@@ -61,39 +92,41 @@
     count.textContent = scan?.candidate_count ?? candidates.length;
     cutoff.textContent = when(scan?.evidence_cutoff);
     modelStatus.textContent = scan?.model_status ? String(scan.model_status).replaceAll('_', ' ') : '—';
+    modelVersion.textContent = scan?.scoring_model_version || 'Version not retained';
     chatBtn.disabled = !(scan?.status === 'completed' && candidates.length);
 
     if (!scan) {
-      rows.innerHTML = '<tr><td colspan="8" class="empty">No completed or active scan exists. Run the first scan.</td></tr>';
+      rows.innerHTML = '<tr><td colspan="9" class="empty">No completed or active scan exists. Run the first scan.</td></tr>';
       setNotice('No scan has been run yet.');
       return;
     }
     if (scan.status === 'running') {
-      rows.innerHTML = '<tr><td colspan="8" class="empty">Canonical point-in-time scan running…</td></tr>';
+      rows.innerHTML = '<tr><td colspan="9" class="empty">Point-in-time scan running…</td></tr>';
       setNotice('Scanning the broad US loser universe, verifying causal evidence and applying robust downside analysis. Full enrichment can take several minutes.');
       schedulePoll();
       return;
     }
     if (scan.status === 'failed') {
-      rows.innerHTML = '<tr><td colspan="8" class="empty">The latest scan failed. The previous completed scan remains in history.</td></tr>';
+      rows.innerHTML = '<tr><td colspan="9" class="empty">The latest scan failed. The previous completed scan remains in history.</td></tr>';
       setNotice(scan.error || 'Scan failed.', true);
       return;
     }
 
     const exclusions = Number(scan.excluded_non_operating_count || 0);
     const calibration = String(scan.model_status || '').toLowerCase() === 'calibrated' ? '' : ' The score is uncalibrated and must not be read as a probability.';
-    setNotice(`Completed. ${candidates.length} researchable candidates ranked by the canonical robust model${exclusions ? `; ${exclusions} shell/non-operating instrument${exclusions === 1 ? '' : 's'} removed` : ''}.${calibration}`);
+    setNotice(`Saved scan completed ${when(scan.completed_at)}. ${candidates.length} researchable candidates${exclusions ? `; ${exclusions} shell/non-operating instrument${exclusions === 1 ? '' : 's'} removed` : ''}.${calibration} Prices and evidence are from the original scan; run a fresh scan for a new decision.`);
     rows.innerHTML = candidates.length ? candidates.map(row => `
       <tr>
         <td>${esc(row.rank)}</td>
         <td><div class="ticker">${esc(row.symbol)}</div><div class="muted">${esc(row.name || '')}</div></td>
         <td>${moveCell(row)}</td>
-        <td><span class="score ${scoreClass(row.oversold_score)}">${fmt(row.oversold_score)}</span><div class="muted micro">robust /100</div></td>
-        <td><span class="pill neutral">${esc(row.fundamental_quality)}</span><div class="muted micro">${esc(row.fundamental_metadata?.form || '')}${row.fundamental_metadata?.age_calendar_days != null ? ` · ${esc(row.fundamental_metadata.age_calendar_days)}d old` : ''}</div></td>
-        <td class="details"><strong>${esc(row.catalyst_class)}</strong><span class="cause-status ${causeStatusClass(row.cause_status)}">${esc(row.cause_status)}</span><div class="muted">${esc(row.catalyst_summary)}</div></td>
+        <td><span class="score">${row.model_missing ? '—' : fmt(row.oversold_score)}</span><div class="muted micro">priority /100<br>not a probability</div></td>
+        <td><span class="pill neutral">${esc(row.fundamental_quality)}</span><div class="muted micro">Financial-strength index<br>${esc(row.fundamental_metadata?.form || 'Filing unavailable')}${row.fundamental_metadata?.age_calendar_days != null ? ` · ${esc(row.fundamental_metadata.age_calendar_days)}d old at signal` : ''}</div></td>
+        <td class="details"><strong>${esc(row.catalyst_class)}</strong><span class="cause-status ${causeStatusClass(row)}">${esc(human(row.cause_status))}</span><div class="muted">${esc(row.catalyst_summary)}</div></td>
         <td><span class="pill ${initialViewClass(row.initial_view)}">${esc(row.initial_view)}</span>${row.hard_veto ? '<div class="bad micro">hard veto</div>' : ''}</td>
-        <td class="details muted">${esc(explanation(row))}</td>
-      </tr>`).join('') : '<tr><td colspan="8" class="empty">No researchable qualifying losers in this scan.</td></tr>';
+        <td class="details muted">${executionCell(row)}</td>
+        <td class="details muted">${explanation(row)}</td>
+      </tr>`).join('') : '<tr><td colspan="9" class="empty">No researchable qualifying losers in this scan.</td></tr>';
   }
 
   async function loadLatest() {

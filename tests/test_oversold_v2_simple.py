@@ -1,8 +1,14 @@
 from pathlib import Path
+import json
+import shutil
+import subprocess
+
+import pytest
 
 from app.oversold_v2 import (
     CHATGPT_LAUNCH_MAX_CHARS,
     _build_launch_prompt,
+    _build_chatgpt_prompt,
     _is_researchable_equity,
     _project_candidate,
     _project_scan,
@@ -95,7 +101,7 @@ def test_projection_uses_canonical_robust_score_and_verified_sec_fundamentals() 
     projected = _project_candidate(robust_row())
     assert projected["oversold_score"] == 61.2
     assert projected["initial_view"] == "Watch"
-    assert projected["fundamental_quality"].startswith("Verified ·")
+    assert projected["fundamental_quality"].startswith("Primary sourced ·")
     assert projected["fundamentals"]["cash_to_assets"] == 0.24
     assert projected["cause_verified"] is True
     assert projected["scoring_model_version"] == "oversold_reversion_score_v3_5"
@@ -167,3 +173,89 @@ def test_frontend_uses_compact_launch_prompt_and_requested_view_colours() -> Non
     assert "view === 'pass'" in source and "return 'good'" in source
     assert "view === 'watch'" in source and "return 'mid'" in source
     assert "view === 'fail' || view === 'investigate'" in source and "return 'bad'" in source
+
+
+def test_unknown_or_rejected_fundamentals_do_not_receive_a_strength_label() -> None:
+    row = robust_row()
+    row["resilience_score"] = None
+    assert _project_candidate(row)["fundamental_quality"].endswith("· Unknown")
+    row = robust_row()
+    row["catalyst_analysis"]["fundamental_trace"] = {}
+    assert _project_candidate(row)["fundamental_quality"] == "Limited · Unknown"
+    row = robust_row()
+    row["catalyst_analysis"]["evidence_integrity"] = {"fundamentals": {"status": "REJECTED", "reasons": ["after cutoff"]}}
+    assert _project_candidate(row)["fundamental_quality"] == "Rejected evidence · Unknown"
+
+
+def test_projection_preserves_original_provenance_and_evidence_gaps() -> None:
+    row = robust_row()
+    row.update(signal_timestamp="2026-08-20T18:59:00Z", signal_price=8.02, missing_inputs=["quote_age"])
+    row["catalyst_analysis"]["fundamental_trace"]["age_calendar_days"] = 0
+    row["risk_flags"] = ["persisted risk"]
+    row["catalyst_analysis"]["red_flags"] = ["model risk"]
+    row["catalyst_analysis"]["evidence_integrity"] = {"version": "evidence_integrity_v1", "issues": ["undated_article_excluded"]}
+    projected = _project_candidate(row)
+    assert projected["signal_timestamp"] == row["signal_timestamp"]
+    assert projected["signal_price"] == 8.02
+    assert projected["evidence_cutoff"] == row["evidence_cutoff"]
+    assert projected["fundamental_metadata"]["age_calendar_days"] == 0
+    assert projected["missing_inputs"] == ["quote_age"]
+    assert projected["risk_flags"] == ["model risk", "persisted risk"]
+    assert projected["evidence_integrity"]["issues"] == ["undated_article_excluded"]
+    assert projected["execution_friction_pct"] == 0.8
+    assert projected["net_risk_reward_status"] == "not_established"
+    prompt = _build_chatgpt_prompt({"scan": {}, "candidates": [projected]})
+    assert row["signal_timestamp"] in prompt
+    assert "https://example.invalid/evidence" in prompt
+    assert "undated_article_excluded" in prompt
+    assert "No evidence-backed price target" in prompt
+
+
+def test_completion_time_is_not_manufactured_as_an_evidence_cutoff() -> None:
+    projected = _project_scan({"scan": {"completed_at": "2026-08-20T19:10:00Z", "metadata": {}}, "candidates": []})
+    assert projected["scan"]["evidence_cutoff"] is None
+
+
+@pytest.mark.parametrize("status,version,probability,expected", [
+    ("uncalibrated", "cal_v1", 0.97, None),
+    ("calibrated", None, 0.97, None),
+    ("calibrated", "cal_v1", 97, None),
+    ("calibrated", "cal_v1", float("nan"), None),
+    ("calibrated", "cal_v1", 0.62, 0.62),
+])
+def test_only_valid_stored_calibrations_are_exposed_as_probabilities(status, version, probability, expected) -> None:
+    row = robust_row()
+    row.update(model_status=status, calibration_model_version=version, calibrated_probability=probability)
+    assert _project_candidate(row)["calibrated_probability"] == expected
+
+
+def test_frontend_renders_evidence_gaps_and_escapes_untrusted_source_urls() -> None:
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node is unavailable for frontend behavior verification")
+    row = _project_candidate(robust_row())
+    row["source_claims"] = [{"source": "<img src=x>", "headline": "Unsafe link", "url": "javascript:alert(1)", "published_at": None}]
+    row["evidence_integrity"] = {"version": "evidence_integrity_v1", "issues": ["missing_timestamp"]}
+    row["prev_dollar_volume"] = None
+    row["latest_move_pct"] = None
+    payload = {"scan": {"id": "test", "status": "completed", "completed_at": "2026-08-20T19:00:00Z", "scoring_model_version": "original-v1"}, "candidates": [row]}
+    harness = r"""
+const fs = require('fs');
+const vm = require('vm');
+const payload = JSON.parse(process.argv[1]);
+const nodes = {};
+const document = {getElementById: id => nodes[id] ||= {addEventListener(){}}};
+const context = {document, URL, setTimeout(){}, clearTimeout(){}, fetch: async () => ({ok:true, json:async () => payload})};
+vm.runInNewContext(fs.readFileSync('app/static/oversold_v2.js', 'utf8'), context);
+setImmediate(() => process.stdout.write(JSON.stringify({rows:nodes.rows.innerHTML, version:nodes.modelVersion.textContent})));
+"""
+    result = subprocess.run([node, "-e", harness, json.dumps(payload)], check=True, text=True, capture_output=True)
+    rendered = json.loads(result.stdout)
+    assert rendered["version"] == "original-v1"
+    assert "Profit probability: unavailable" in rendered["rows"]
+    assert "Net reward/risk: unestablished" in rendered["rows"]
+    assert "missing timestamp" in rendered["rows"]
+    assert "prior volume unavailable" in rendered["rows"]
+    assert "latest 0.0%" not in rendered["rows"]
+    assert "javascript:" not in rendered["rows"]
+    assert "&lt;img src=x&gt;" in rendered["rows"]

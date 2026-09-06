@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timedelta
+import math
+from datetime import UTC, datetime, time, timedelta
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -50,7 +51,7 @@ def _return_pct(price: Any, signal_price: float) -> float | None:
         p = float(price)
     except (TypeError, ValueError):
         return None
-    return ((p / signal_price) - 1.0) * 100.0 if signal_price > 0 else None
+    return ((p / signal_price) - 1.0) * 100.0 if signal_price > 0 and p > 0 and math.isfinite(p) else None
 
 
 def _first_daily_touch(eligible: list[tuple[datetime, dict[str, Any]]], *, field: str, threshold: float, comparator: str) -> tuple[int | None, datetime | None]:
@@ -78,11 +79,27 @@ def calculate_outcome_metrics(row: dict[str, Any], bars: list[dict[str, Any]], *
     if signal_ts is None or deadline is None:
         raise ValueError("Outcome row has invalid signal/deadline timestamp")
     signal_price = float(row["signal_price"])
+    if not math.isfinite(signal_price) or signal_price <= 0:
+        raise ValueError("invalid signal price")
     eligible: list[tuple[datetime, dict[str, Any]]] = []
-    for bar in bars:
+    seen_sessions = set()
+    for bar in sorted(bars, key=lambda bar: str(bar.get("t") or "")):
         ts = _parse_ts(bar.get("t"))
-        if ts is None or ts <= signal_ts or ts > deadline:
+        if ts is None or ts <= signal_ts or ts > deadline or ts > now:
             continue
+        day = ts.astimezone(NEW_YORK).date()
+        close_at = datetime.combine(day, time(16), tzinfo=NEW_YORK)
+        if day <= signal_ts.astimezone(NEW_YORK).date() or close_at + timedelta(minutes=1) > min(now, deadline):
+            continue
+        if day in seen_sessions:
+            continue
+        try:
+            high, low, close = (float(bar[field]) for field in ("h", "l", "c"))
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not all(math.isfinite(value) and value > 0 for value in (high, low, close)) or not low <= close <= high:
+            continue
+        seen_sessions.add(day)
         eligible.append((ts, bar))
     eligible.sort(key=lambda item: item[0])
     clean = [bar for _, bar in eligible]
@@ -118,8 +135,9 @@ def calculate_outcome_metrics(row: dict[str, Any], bars: list[dict[str, Any]], *
         else:
             downside_flags[label] = None
 
-    matured = now >= deadline
-    last_close_return = _return_pct(closes[-1], signal_price) if closes else None
+    matured = now >= deadline and bool(clean)
+    terminal_bar_observed = bool(timestamps and (deadline - timestamps[-1]).total_seconds() <= 4 * 86400)
+    last_close_return = _return_pct(closes[-1], signal_price) if closes and terminal_bar_observed else None
     existing_first_hit = _parse_ts(row.get("first_plus_5_ts"))
     existing_hours = row.get("hours_to_plus_5")
     if existing_first_hit:
@@ -136,7 +154,7 @@ def calculate_outcome_metrics(row: dict[str, Any], bars: list[dict[str, Any]], *
         "return_1d": close_at(0), "return_3d": close_at(2), "return_1w": close_at(4),
         "return_2w": close_at(9), "return_4w": close_at(19), "return_6w": last_close_return if matured else None,
         "mfe_6w": mfe, "mae_6w": mae,
-        "hit_plus_5pct_within_6_weeks": target_idx is not None if matured else None,
+        "hit_plus_5pct_within_6_weeks": (True if target_idx is not None else (False if timestamps and (deadline - timestamps[-1]).total_seconds() <= 4 * 86400 else None)) if matured else None,
         "first_plus_5_ts": first_hit_ts,
         "trading_days_to_plus_5": target_idx + 1 if target_idx is not None else None,
         "hours_to_plus_5": hours_to_target,
@@ -161,11 +179,15 @@ def refine_intraday_events(row: dict[str, Any], metrics: dict[str, Any], minute_
     if signal_ts is None or deadline is None or target_day is None:
         return metrics
     signal_price = float(row["signal_price"])
+    if not math.isfinite(signal_price) or signal_price <= 0:
+        raise ValueError("invalid signal price")
     target_price = signal_price * 1.05
     bars: list[tuple[datetime, dict[str, Any]]] = []
     for bar in minute_bars:
         ts = _parse_ts(bar.get("t"))
-        if ts is None or ts <= signal_ts or ts > deadline:
+        if ts is None or ts <= signal_ts or ts + timedelta(minutes=1) > deadline:
+            continue
+        if ts.astimezone(NEW_YORK).date() != target_day.astimezone(NEW_YORK).date():
             continue
         bars.append((ts, bar))
     bars.sort(key=lambda item: item[0])
@@ -204,7 +226,8 @@ def refine_intraday_events(row: dict[str, Any], metrics: dict[str, Any], minute_
             except (TypeError, ValueError):
                 continue
         if first_down_ts is None:
-            metrics[field] = False
+            # The daily low proves a touch; missing minute evidence cannot disprove it.
+            metrics[field] = None
         elif first_down_ts < first_target_ts:
             metrics[field] = True
         elif first_down_ts > first_target_ts:

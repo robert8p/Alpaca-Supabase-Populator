@@ -22,7 +22,7 @@
     .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:13px 14px; min-height:78px; }
     .label { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
     .value { margin-top:5px; font-size:20px; font-weight:700; }
-    .notice { border:1px solid var(--line); background:#10151a; border-radius:10px; padding:11px 14px; color:var(--muted); margin:12px 0 16px; }
+    .notice, .evidence-interpretation { border:1px solid var(--line); background:#10151a; border-radius:10px; padding:11px 14px; color:var(--muted); margin:12px 0 16px; }
     .toolbar { display:flex; align-items:center; gap:10px; margin:14px 0; flex-wrap:wrap; }
     .toolbar input, .toolbar select { background:#10151a; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
     .toolbar input { min-width:200px; }
@@ -80,6 +80,11 @@
       <a href="/" style="margin-left:8px;color:var(--muted)">Rapid Discovery</a>
     </div>
   </header>
+
+  <div class="evidence-interpretation" id="evidence-interpretation">
+    <strong>Research priority, not a profit probability.</strong> Financial strength, reversibility, damage and confidence are uncalibrated indices. Primary-sourced filings do not by themselves establish the cause of a fall or temporary damage. Compare expected upside with downside and round-trip costs; where a supported target or invalidation level is missing, net reward/risk is unestablished. Saved results retain their original model and evidence cutoff.
+    <strong>Investigate = research first · Watch = unresolved · Pass = skip this setup.</strong>
+  </div>
 
   <section class="cards">
     <div class="card"><div class="label">Scan status</div><div class="value" id="scan-status">—</div></div>

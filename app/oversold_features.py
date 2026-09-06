@@ -57,7 +57,7 @@ def _prior_history(candidate: dict[str, Any]) -> list[dict[str, Any]]:
     history = candidate.get("history_bars") or []
     cutoff = _parse_ts(candidate.get("evidence_cutoff"))
     cutoff_date = cutoff.astimezone(NY).date() if cutoff else None
-    rows: list[tuple[datetime, dict[str, Any]]] = []
+    rows: dict[datetime, dict[str, Any]] = {}
     for bar in history:
         if not isinstance(bar, dict):
             continue
@@ -66,11 +66,15 @@ def _prior_history(candidate: dict[str, Any]) -> list[dict[str, Any]]:
             continue
         if cutoff_date is not None and ts.astimezone(NY).date() >= cutoff_date:
             continue
-        if _number(bar.get("c")) is None:
+        close = _number(bar.get("c"))
+        if close is None or close <= 0:
             continue
-        rows.append((ts, bar))
-    rows.sort(key=lambda item: item[0])
-    return [bar for _, bar in rows][-80:]
+        high, low = _number(bar.get("h")), _number(bar.get("l"))
+        if high is not None and low is not None and not (0 < low <= close <= high):
+            continue
+        # API pagination/retries can repeat a daily bar; it is still one observation.
+        rows[ts] = bar
+    return [bar for _, bar in sorted(rows.items())][-80:]
 
 
 def _returns_from_closes(closes: list[float]) -> list[float]:
@@ -92,6 +96,8 @@ def _rsi14(prior_closes: list[float], current_price: float | None) -> float | No
     avg_loss = _mean(losses)
     if avg_gain is None or avg_loss is None:
         return None
+    if avg_gain == 0 and avg_loss == 0:
+        return 50.0
     if avg_loss == 0:
         return 100.0
     rs = avg_gain / avg_loss
@@ -121,7 +127,7 @@ def _atr20(prior_bars: list[dict[str, Any]]) -> float | None:
     return _mean(true_ranges[-20:])
 
 
-def _benchmark_return(context: dict[str, Any] | None) -> float | None:
+def _benchmark_return(context: dict[str, Any] | None, cutoff: datetime | None = None) -> float | None:
     if not context:
         return None
     snapshot = context.get("snapshot") or {}
@@ -129,10 +135,39 @@ def _benchmark_return(context: dict[str, Any] | None) -> float | None:
     latest_trade = snapshot.get("latestTrade") or {}
     daily = snapshot.get("dailyBar") or {}
     prev_close = _number(previous.get("c"))
-    last_price = _number(latest_trade.get("p")) or _number(daily.get("c"))
+    trade_ts = _parse_ts(latest_trade.get("t"))
+    # A benchmark fetched after the signal must not supply future relative strength.
+    if cutoff is not None and (trade_ts is None or trade_ts > cutoff):
+        return None
+    last_price = _number(latest_trade.get("p")) or (_number(daily.get("c")) if cutoff is None else None)
     if prev_close is None or last_price is None or prev_close <= 0:
         return None
     return ((last_price / prev_close) - 1.0) * 100.0
+
+
+def execution_evidence(candidate: dict[str, Any]) -> dict[str, Any]:
+    """Describe observed quote inputs; do not infer a fill from a last trade."""
+    snapshot = candidate.get("raw_snapshot") or {}
+    quote = snapshot.get("latestQuote") or {}
+    trade = snapshot.get("latestTrade") or {}
+    cutoff = _parse_ts(candidate.get("evidence_cutoff"))
+    trade_ts = _parse_ts(trade.get("t") or candidate.get("latest_trade_ts"))
+    quote_ts = _parse_ts(quote.get("t"))
+    bid, ask = _number(quote.get("bp")), _number(quote.get("ap"))
+    valid_quote = bid is not None and ask is not None and 0 < bid <= ask
+    point_in_time = bool(cutoff and quote_ts and trade_ts and quote_ts <= cutoff and trade_ts <= cutoff)
+    return {
+        "latest_trade_timestamp": trade_ts.isoformat() if trade_ts else None,
+        "latest_quote_timestamp": quote_ts.isoformat() if quote_ts else None,
+        "trade_age_seconds": (cutoff - trade_ts).total_seconds() if cutoff and trade_ts else None,
+        "quote_age_seconds": (cutoff - quote_ts).total_seconds() if cutoff and quote_ts else None,
+        "current_quote_valid": bool(valid_quote),
+        "point_in_time_valid": point_in_time,
+        "bid": bid,
+        "ask": ask,
+        "spread_pct": (ask - bid) / ((ask + bid) / 2) * 100 if valid_quote else None,
+        "execution_price_basis": "observed_quote_not_a_guaranteed_fill" if valid_quote else "unavailable",
+    }
 
 
 def technical_features(candidate: dict[str, Any], sector_hint: str | None = None) -> dict[str, Any]:
@@ -196,10 +231,11 @@ def technical_features(candidate: dict[str, Any], sector_hint: str | None = None
     vwap_distance_pct = ((current_price / day_vwap) - 1.0) * 100.0 if current_price and day_vwap and day_vwap > 0 else None
 
     benchmark_context = candidate.get("benchmark_context") or {}
-    market_return_pct = _benchmark_return(benchmark_context.get(MARKET_BENCHMARK))
+    cutoff = _parse_ts(candidate.get("evidence_cutoff"))
+    market_return_pct = _benchmark_return(benchmark_context.get(MARKET_BENCHMARK), cutoff)
     market_relative_move_pct = current_return_pct - market_return_pct if current_return_pct is not None and market_return_pct is not None else None
     sector_benchmark = SECTOR_BENCHMARKS.get(str(sector_hint or ""))
-    sector_return_pct = _benchmark_return(benchmark_context.get(sector_benchmark)) if sector_benchmark else None
+    sector_return_pct = _benchmark_return(benchmark_context.get(sector_benchmark), cutoff) if sector_benchmark else None
     sector_relative_move_pct = current_return_pct - sector_return_pct if current_return_pct is not None and sector_return_pct is not None else None
 
     available = {
@@ -221,6 +257,7 @@ def technical_features(candidate: dict[str, Any], sector_hint: str | None = None
     completeness = sum(1 for value in available.values() if value) / len(available) * 100.0
 
     return {
+        "execution_evidence": execution_evidence(candidate),
         "history_count": len(closes),
         "current_return_pct": round(current_return_pct, 4) if current_return_pct is not None else None,
         "mean20_return_pct": round((mean20 or 0.0) * 100.0, 4) if mean20 is not None else None,

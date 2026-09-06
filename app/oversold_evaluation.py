@@ -160,7 +160,8 @@ def evaluation_report(
         "investigate_precision": (sum(1 for row in investigate if row["target"]) / len(investigate)) if investigate else None,
         "watch_hit_rate": (sum(1 for row in watch if row["target"]) / len(watch)) if watch else None,
         "pass_hit_rate": (sum(1 for row in passed if row["target"]) / len(passed)) if passed else None,
-        "limitation": None if rows else "No matured calibration-eligible six-week outcomes exist for this model/config yet.",
+        "target_is_profitability": False,
+        "limitation": "Target-touch statistics are descriptive and do not establish executable net profitability." if rows else "No matured calibration-eligible six-week outcomes exist for this model/config yet.",
     }
 
 
@@ -279,5 +280,5 @@ def original_vs_rescore_report(*, new_model_version: str = SCORING_MODEL_VERSION
         "moved_up": sum(1 for row in rows if float(row["new_score"]) > float(row["old_score"])),
         "verdict_changes": sum(1 for row in rows if row["new_verdict"] != row["old_verdict"]),
         "rows": rows,
-        "limitation": None if matured else "Point-in-time rescores exist, but six-week outcomes have not matured yet; no performance-superiority claim is valid yet.",
+        "limitation": "Historical rescores cannot establish out-of-sample superiority or profitable execution." if matured else "Point-in-time rescores exist, but six-week outcomes have not matured yet; no performance-superiority claim is valid yet.",
     }

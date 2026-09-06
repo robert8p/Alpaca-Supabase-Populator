@@ -306,6 +306,7 @@ async def execute_scan(scan_id: UUID, *, min_drop_pct: float = DEFAULT_MIN_DROP_
 
             enriched: list[dict[str, Any]] = []
             for item in raw_candidates:
+                item["evidence_cutoff"] = evidence_cutoff
                 articles = news_map.get(item["symbol"], [])
                 catalyst_class, catalyst_summary, risk_flags = classify_news_for_candidate(item, articles)
                 legacy_score = _score_candidate(drop_pct=item["drop_pct"], prev_dollar_volume=item["prev_dollar_volume"], spread_pct=item["spread_pct"], catalyst_class=catalyst_class, headline_count=len(articles))
@@ -365,7 +366,7 @@ def _scan_detail(scan_id: UUID) -> dict[str, Any]:
             cur.execute(
                 """
                 SELECT c.id,c.rank,c.symbol,c.name,c.exchange,c.prev_close,c.last_price,c.drop_pct,
-                       c.prev_volume,c.prev_dollar_volume,c.bid,c.ask,c.spread_pct,c.latest_trade_ts,
+                       c.prev_volume,c.prev_dollar_volume,c.bid,c.ask,c.spread_pct,c.latest_trade_ts,c.raw_snapshot,
                        c.catalyst_class,c.catalyst_summary,c.risk_flags,c.headline_count,c.headlines,
                        c.heuristic_score,c.triage_label,c.decision,c.review_notes,c.reviewed_at,c.created_at,
                        mr.id AS model_run_id,mr.final_score AS reversion_score,mr.model_status,

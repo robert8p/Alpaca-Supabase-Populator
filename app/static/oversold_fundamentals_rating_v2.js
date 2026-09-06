@@ -8,8 +8,12 @@
     const raw = trace.raw_metrics || {};
     const signals = analysis.event_signals || {};
     const dilution = analysis.dilution_analysis || {};
-    const resilience = Number.isFinite(Number(candidate?.resilience_score)) ? Number(candidate.resilience_score) : 45;
-    const damage = Number.isFinite(Number(candidate?.damage_risk)) ? Number(candidate.damage_risk) : 50;
+    const rejected = analysis.evidence_integrity?.fundamentals?.status === 'REJECTED';
+    if (!trace.available || rejected || candidate?.resilience_score == null || candidate?.damage_risk == null || !Number.isFinite(Number(candidate.resilience_score)) || !Number.isFinite(Number(candidate.damage_risk))) {
+      return {grade:'—',label:'Unknown',css:'c',score:null,title:rejected ? 'Fundamental evidence was rejected by the original point-in-time checks.' : 'Insufficient fundamental evidence or component scores; financial strength is unknown.',limited:true};
+    }
+    const resilience = Number(candidate.resilience_score);
+    const damage = Number(candidate.damage_risk);
 
     let score = clamp(0.65 * resilience + 0.35 * (100 - damage));
     if (!trace.available) score = Math.min(score, 60);
@@ -26,6 +30,7 @@
     else [grade,label,css] = ['E','Fragile','e'];
 
     const details = [
+      'Uncalibrated financial-strength index; not a survival or profit probability',
       `Resilience: ${resilience.toFixed(0)}/100`,
       `Damage: ${damage.toFixed(0)}/100`,
       ['Revenue YoY', pct(raw.revenue_yoy)],
@@ -48,11 +53,11 @@
       const candidate = state.candidates.find(item => String(item.symbol) === symbol);
       if (!cell || !candidate) return;
       const value = rating(candidate);
-      const key = `${value.grade}:${value.score.toFixed(1)}:${value.limited}`;
+      const key = `${value.grade}:${value.score == null ? 'unknown' : value.score.toFixed(1)}:${value.limited}`;
       if (cell.dataset.ratingKey === key) return;
       cell.dataset.ratingKey = key;
       cell.title = value.title;
-      cell.innerHTML = `<span class="or-fund-grade ${value.css}">${value.grade} · ${value.label}</span><div class="muted" style="margin-top:4px">${value.score.toFixed(0)}/100${value.limited ? ' · limited data' : ''}</div>`;
+      cell.innerHTML = `<span class="or-fund-grade ${value.css}">${value.grade} · ${value.label}</span><div class="muted" style="margin-top:4px">${value.score == null ? 'insufficient evidence' : value.score.toFixed(0)+'/100 index'}</div>`;
     });
   }
 

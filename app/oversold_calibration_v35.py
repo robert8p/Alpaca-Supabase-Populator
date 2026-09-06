@@ -8,10 +8,12 @@ temporal folds before a probability mapping may become active.
 """
 
 import random
+from collections import defaultdict
 from statistics import median
 from typing import Any
+from zoneinfo import ZoneInfo
 
-from psycopg.types.json import Jsonb
+SIGNAL_ZONE = ZoneInfo("America/New_York")
 
 BOOTSTRAP_SEED = 3507
 BOOTSTRAP_REPETITIONS = 200
@@ -40,13 +42,19 @@ def _bootstrap_direction(rows: list[dict[str, Any]]) -> dict[str, Any]:
         return {"repetitions": 0, "valid_repetitions": 0, "positive_direction_rate": None, "median_direction": None}
     generator = random.Random(BOOTSTRAP_SEED)
     directions: list[float] = []
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row["signal_timestamp"].astimezone(SIGNAL_ZONE).date()].append(row)
+    clusters = list(grouped.values())
     for _ in range(BOOTSTRAP_REPETITIONS):
-        sample = [rows[generator.randrange(len(rows))] for _ in range(len(rows))]
+        sample = [row for _ in clusters for row in clusters[generator.randrange(len(clusters))]]
         direction = _direction(sample)
         if direction is not None:
             directions.append(direction)
     return {
         "repetitions": BOOTSTRAP_REPETITIONS,
+        "resampling_unit": "signal_day",
+        "independent_day_count": len(clusters),
         "valid_repetitions": len(directions),
         "positive_direction_rate": (
             sum(1 for value in directions if value > 0) / len(directions)
@@ -75,16 +83,19 @@ def _quartile_separation(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _temporal_folds(module: Any, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    ordered = sorted(rows, key=lambda row: (row["signal_timestamp"], float(row["score"])))
-    if len(ordered) < 60:
+    ordered = module.prepare_calibration_samples(rows)
+    days = sorted({row["signal_timestamp"].astimezone(SIGNAL_ZONE).date() for row in ordered})
+    if len(ordered) < 60 or len(days) < 12:
         return []
-    fold_size = max(20, len(ordered) // 6)
-    first_test_start = max(fold_size * 2, len(ordered) - fold_size * MIN_TEMPORAL_FOLDS)
+    fold_size = max(2, len(days) // 6)
+    first_test_start = max(fold_size * 2, len(days) - fold_size * MIN_TEMPORAL_FOLDS)
     folds: list[dict[str, Any]] = []
     start = first_test_start
-    while start < len(ordered) and len(folds) < 5:
-        training = ordered[:start]
-        holdout = ordered[start:min(len(ordered), start + fold_size)]
+    while start < len(days) and len(folds) < 5:
+        test_days = set(days[start:min(len(days), start + fold_size)])
+        holdout = [row for row in ordered if row["signal_timestamp"].astimezone(SIGNAL_ZONE).date() in test_days]
+        cutoff = holdout[0]["signal_timestamp"]
+        training = [row for row in ordered if row["signal_timestamp"] < cutoff and row["outcome_end"] < cutoff]
         start += fold_size
         if len(training) < 30 or len(holdout) < 10:
             continue
@@ -102,6 +113,8 @@ def _temporal_folds(module: Any, rows: list[dict[str, Any]]) -> list[dict[str, A
                 "training_count": len(training),
                 "holdout_count": len(holdout),
                 "training_end": str(training[-1]["signal_timestamp"]),
+                "training_latest_outcome_end": str(max(row["outcome_end"] for row in training)),
+                "purged": True,
                 "holdout_start": str(holdout[0]["signal_timestamp"]),
                 "holdout_end": str(holdout[-1]["signal_timestamp"]),
                 "score_slope": coefficients["score_slope"],
@@ -115,6 +128,7 @@ def _temporal_folds(module: Any, rows: list[dict[str, Any]]) -> list[dict[str, A
 
 
 def calibration_robustness_checks(module: Any, rows: list[dict[str, Any]]) -> dict[str, Any]:
+    rows = module.prepare_calibration_samples(rows)
     bootstrap = _bootstrap_direction(rows)
     quartiles = _quartile_separation(rows)
     folds = _temporal_folds(module, rows)
@@ -145,7 +159,7 @@ def calibration_robustness_checks(module: Any, rows: list[dict[str, Any]]) -> di
         ),
     }
     return {
-        "version": "calibration_robustness_v1",
+        "version": "calibration_robustness_purged_v2",
         "sample_count": len(rows),
         "bootstrap": bootstrap,
         "quartile_separation": quartiles,
@@ -178,35 +192,10 @@ def patch_module(module: Any, runtime_module: Any | None = None) -> None:
     ) -> dict[str, Any]:
         resolved = module._load_samples() if samples is None else samples
         robustness = calibration_robustness_checks(module, resolved)
-        result = original_run(samples=resolved, sample_hash=sample_hash)
-        output = dict(result)
-        output["calibration_robustness"] = robustness
-        run_id = output.get("calibration_run_id")
-        if run_id is None:
-            return output
-        passed = bool(output.get("passed")) and bool(robustness["passed"])
-        with module.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    UPDATE or_calibration_runs
-                    SET metrics=metrics || %s,
-                        quality_checks=quality_checks || %s,
-                        passed=%s
-                    WHERE id=%s
-                    """,
-                    (
-                        Jsonb({"calibration_robustness": robustness}),
-                        Jsonb({"v3_5_calibration_robustness": robustness["checks"]}),
-                        passed,
-                        run_id,
-                    ),
-                )
-            conn.commit()
-        output["passed"] = passed
-        if not passed:
-            output["status"] = "failed_robustness_checks"
-        return output
+        # Every gate is included in the INSERT. A reader can never activate the
+        # base mapping during a second, later robustness-demotion transaction.
+        result = original_run(samples=resolved, sample_hash=sample_hash, robustness=robustness)
+        return {**result, "calibration_robustness": robustness}
 
     module.run_calibration = run_calibration
     module._v35_calibration_robustness_installed = True

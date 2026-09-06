@@ -8,7 +8,7 @@
   };
   load('/static/oversold_tracking_v3_base.js?v=1', () => {
     load('/static/oversold_day3_ui.js?v=1', () => {
-      load('/static/oversold_fundamentals_rating_v2.js?v=1', () => {
+      load('/static/oversold_fundamentals_rating_v2.js?v=2', () => {
         load('/static/oversold_v33_ui.js?v=1', () => {
           load('/static/oversold_chatgpt_v33.js?v=1', () => {
             load('/static/oversold_v33_explainability.js?v=1', () => {

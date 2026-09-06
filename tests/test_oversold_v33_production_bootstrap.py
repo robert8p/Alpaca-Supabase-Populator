@@ -24,8 +24,8 @@ from app import oversold_outcomes
 from app import oversold_v2
 from app.oversold_scoring import SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
 
-assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_7"
-assert SCORING_CONFIG_VERSION == "or_score_config_2026_08_20_v9"
+assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
+assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
 assert hasattr(oversold, "_parse_ts")
 assert getattr(oversold, "_v33_scan_installed", False) is True
 assert getattr(oversold_outcomes, "_v33_outcome_path_installed", False) is True
@@ -33,6 +33,9 @@ assert getattr(oversold_outcomes, "_three_session_target_reliability_installed",
 assert getattr(oversold_outcome_scheduler, "_three_session_outcome_bootstrap_installed", False) is True
 assert getattr(oversold_calibration, "_v35_calibration_robustness_installed", False) is True
 assert getattr(oversold_v2, "_session_filter_installed", False) is True
+assert oversold_v2.execute_canonical_scan is oversold.execute_scan
+from app import oversold_public
+assert oversold_public.capture_signal_outcomes is oversold_outcomes.capture_signal_outcomes
 from app.oversold_scoring import public_scoring_contract
 contract = public_scoring_contract()
 assert contract["score_semantics"]["name"] == "Robust Opportunity Score"

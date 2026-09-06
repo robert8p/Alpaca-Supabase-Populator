@@ -35,6 +35,7 @@ from .oversold_scoring_v35 import patch_module as _patch_v35
 from .oversold_scoring_v35_compat import patch_module as _patch_v35_compat
 from .oversold_scoring_v36_subject_attribution import patch_module as _patch_v36_subject_attribution
 from .oversold_scoring_v37_local_attribution import patch_module as _patch_v37_local_attribution
+from .oversold_scoring_v38_evidence_integrity import patch_module as _patch_v38_evidence_integrity
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
@@ -79,6 +80,7 @@ _patch_v35(_oversold_scoring)
 _patch_v35_compat(_oversold_scoring)
 _patch_v36_subject_attribution(_oversold_scoring)
 _patch_v37_local_attribution(_oversold_scoring)
+_patch_v38_evidence_integrity(_oversold_scoring)
 
 # Install defensive JSON normalization, primary-evidence persistence and the
 # explicit three-session target before the scanner imports the store function.
@@ -103,6 +105,9 @@ if "pytest" not in sys.modules:
     _patch_scan_v33_compat(_oversold_scan)
     _patch_scan_v33(_oversold_scan)
     _patch_primary_evidence_runtime(_oversold_scan)
+    # V2 imports execute_scan by value before the scanner wrappers are installed.
+    # Rebind so every entry point uses the broad pool and primary-evidence engine.
+    _oversold_v2.execute_canonical_scan = _oversold_scan.execute_scan
     _patch_v2_session_filter(_oversold_v2)
 
     # Patch evaluation before the scheduler imports its function references.
@@ -139,6 +144,8 @@ if "pytest" not in sys.modules:
     # bootstraps and daily runs include JSON-safe long-horizon updates, explicit
     # three-session MFE/MAE paths and target maturity.
     _oversold_outcome_scheduler.capture_signal_outcomes = _oversold_outcomes.capture_signal_outcomes
+    from . import oversold_public as _oversold_public
+    _oversold_public.capture_signal_outcomes = _oversold_outcomes.capture_signal_outcomes
 
     _patch_v33_diagnostics(_oversold_target)
     _patch_primary_evidence_diagnostics(_oversold_target)
