@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const API_URL = 'https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api';
+  const API_URL = 'https://oxzabweahkoimtevbbny.supabase.co/functions/v1/intraday-profitability-api';
   const CURRENT_MODEL = 'ip-reliability-v3.0';
   const $ = (id) => document.getElementById(id);
   const rows = $('rows');

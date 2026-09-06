@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 15
     env:
       SITE_URL: http://127.0.0.1:8000
-      API_URL: https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api
+      API_URL: https://oxzabweahkoimtevbbny.supabase.co/functions/v1/intraday-profitability-api
     steps:
       - uses: actions/checkout@v4
 

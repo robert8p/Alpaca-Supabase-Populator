@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 20
     env:
       SITE_URL: https://alpaca-intraday-profitability-app.onrender.com
-      API_URL: https://mnmkxjirpwbptdnvjmpw.supabase.co/functions/v1/intraday-profitability-api
+      API_URL: https://oxzabweahkoimtevbbny.supabase.co/functions/v1/intraday-profitability-api
     steps:
       - uses: actions/checkout@v4
 

@@ -24,6 +24,7 @@ from app.models import JobConfig
 from app.oversold_outcome_scheduler import run_oversold_outcome_scheduler
 from app.planner import add_event, claim_job_for_planning, plan_job
 from app.rv30_quote_audit import run_rv30_quote_audit_batch
+from app.runtime_scope import RESEARCH_WORKER, canonical_schema_managed, runtime_mode
 
 VERSION = "1.0.14"
 logger = logging.getLogger(__name__)
@@ -261,6 +262,20 @@ def finalise_if_done(job_id: str, max_retries: int) -> None:
 async def run_worker() -> None:
     settings = get_settings()
     logging.basicConfig(level=getattr(logging, settings.log_level.upper(), logging.INFO), format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    mode = runtime_mode()
+    if mode == RESEARCH_WORKER:
+        if not canonical_schema_managed():
+            raise RuntimeError(
+                "research_worker mode requires CANONICAL_SCHEMA_MANAGED=true so runtime DDL stays disabled"
+            )
+        assert_database_writable()
+        logger.info("Canonical research worker started; legacy rd_* loader paths are disabled")
+        try:
+            await run_oversold_outcome_scheduler(stop_event)
+        finally:
+            close_pool()
+        return
+
     settings.staging_dir.mkdir(parents=True, exist_ok=True)
     if settings.auto_migrate:
         execute_schema()

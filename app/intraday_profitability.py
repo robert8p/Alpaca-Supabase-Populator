@@ -9,3 +9,12 @@ import hashlib as _hashlib
 if _hashlib.sha256(_source).hexdigest() != _SOURCE_SHA256:
     raise RuntimeError('Embedded release source checksum mismatch')
 exec(compile(_source, __file__, 'exec'), globals(), globals())
+
+# Canonical deployments install and validate this schema through audited database
+# migrations.  Suppress the embedded legacy runtime DDL while retaining every
+# established route and data operation.
+from app.runtime_scope import canonical_schema_managed as _canonical_schema_managed
+
+if _canonical_schema_managed():
+    def _ensure_schema() -> None:
+        return None
