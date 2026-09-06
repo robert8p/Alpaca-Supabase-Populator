@@ -9,7 +9,7 @@ from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -24,10 +24,12 @@ from app.oversold_public import router as oversold_public_router
 from app.oversold import router as oversold_router
 from app.oversold_v2 import router as oversold_v2_router
 from app.intraday_profitability import router as intraday_profitability_router
+from app.runtime_scope import request_is_in_scope, root_redirect_for, runtime_mode
 
-VERSION = "1.1.1"
+VERSION = "1.2.0"
 logger = logging.getLogger(__name__)
 settings = get_settings()
+deployment_mode = runtime_mode()
 security = HTTPBasic()
 templates = Jinja2Templates(directory="app/templates")
 
@@ -47,6 +49,23 @@ app.include_router(oversold_public_router)
 app.include_router(oversold_router)
 app.include_router(oversold_v2_router)
 app.include_router(intraday_profitability_router)
+
+
+@app.middleware("http")
+async def enforce_runtime_scope(request: Request, call_next):
+    if request.url.path == "/":
+        redirect = root_redirect_for(deployment_mode)
+        if redirect:
+            return RedirectResponse(redirect, status_code=307)
+    if not request_is_in_scope(deployment_mode, request.url.path):
+        return JSONResponse(
+            status_code=status.HTTP_410_GONE,
+            content={
+                "detail": "This legacy endpoint is retired on this deployment.",
+                "runtime_mode": deployment_mode,
+            },
+        )
+    return await call_next(request)
 
 
 def require_auth(credentials: HTTPBasicCredentials = Depends(security)) -> str:
@@ -76,12 +95,24 @@ def health() -> dict[str, Any]:
                 cur.execute("SELECT now() AS db_time")
                 db_time = cur.fetchone()["db_time"]
             conn.rollback()
-        return {"status": "ok", "version": VERSION, "database": "ok", "db_time": db_time}
+        return {
+            "status": "ok",
+            "version": VERSION,
+            "runtime_mode": deployment_mode,
+            "database": "ok",
+            "db_time": db_time,
+        }
     except Exception as exc:
         return JSONResponse(
             status_code=503,
             content=jsonable_encoder(
-                {"status": "degraded", "version": VERSION, "database": "error", "error": str(exc)}
+                {
+                    "status": "degraded",
+                    "version": VERSION,
+                    "runtime_mode": deployment_mode,
+                    "database": "error",
+                    "error": str(exc),
+                }
             ),
         )
 

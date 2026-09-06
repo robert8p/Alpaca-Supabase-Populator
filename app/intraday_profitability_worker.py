@@ -12,6 +12,7 @@ from app.db import connection
 from app.intraday_profitability import _create_scan, _ensure_schema, execute_scan
 from app.intraday_profitability_scoring import MODEL_AUDIT_VERSION, SCORING_VERSION
 from app.intraday_profitability_tracking import TRACKING_VERSION, run_selected_candidate_tracker
+from app.runtime_scope import canonical_schema_managed
 
 logger = logging.getLogger(__name__)
 POLL_SECONDS = 2.0
@@ -118,11 +119,12 @@ def _backfill_completed_scans() -> int:
 
 
 def ensure_request_schema() -> None:
-    _ensure_schema()
-    with connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute(REQUEST_SCHEMA_SQL)
-        conn.commit()
+    if not canonical_schema_managed():
+        _ensure_schema()
+        with connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(REQUEST_SCHEMA_SQL)
+            conn.commit()
     enrolled = _backfill_completed_scans()
     if enrolled:
         logger.info("Backfilled %s historical intraday candidate tracking row(s)", enrolled)
