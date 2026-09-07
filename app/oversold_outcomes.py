@@ -247,7 +247,8 @@ def _load_due(limit: int = 500) -> list[dict[str, Any]]:
                        corporate_action_status,eligible_for_calibration,first_plus_5_ts,hours_to_plus_5,
                        minus_5_before_plus_5,minus_10_before_plus_5,minus_20_before_plus_5
                 FROM or_signal_outcomes
-                WHERE status IN ('pending','error') ORDER BY signal_timestamp,id LIMIT %s
+                WHERE status IN ('pending','error')
+                ORDER BY last_evaluated_at ASC NULLS FIRST,signal_timestamp,id LIMIT %s
                 """,
                 (limit,),
             )

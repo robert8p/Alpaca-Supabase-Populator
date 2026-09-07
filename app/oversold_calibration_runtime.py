@@ -45,7 +45,7 @@ def _latest_calibration_sample_hash() -> str | None:
     return str(row["sample_hash"]) if row and row.get("sample_hash") else None
 
 
-def run_calibration_if_changed() -> dict[str, Any]:
+def _run_calibration_if_changed() -> dict[str, Any]:
     samples = prepare_calibration_samples(_load_samples())
     readiness = calibration_readiness(samples)
     if not readiness["ready"]:
@@ -56,3 +56,17 @@ def run_calibration_if_changed() -> dict[str, Any]:
         return {"status": "unchanged", "sample_hash": sample_hash, **readiness}
 
     return run_calibration(samples=samples, sample_hash=sample_hash)
+
+
+def run_calibration_if_changed() -> dict[str, Any]:
+    """Persist every check state, including not-ready and errors, separately from fits."""
+    from app.oversold_calibration_status import record_calibration_check
+
+    try:
+        result = _run_calibration_if_changed()
+    except Exception as exc:
+        record_calibration_check({"status": "error", "error_type": type(exc).__name__,
+                                  "reasons": ["Calibration processing failed; inspect the server log."]})
+        raise
+    record_calibration_check(result)
+    return result
