@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Package tracked source only
-        run: |
-          git archive --format=zip --output=oversold-source.zip HEAD
-          find app -type f | grep -E 'oversold|template' | sort
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Prepare isolated regression dependencies
+        run: python -m pip download --only-binary=:all: -r requirements-dev.txt -d wheels
       - uses: actions/upload-artifact@v4
         with:
-          name: oversold-source
-          path: oversold-source.zip
-          retention-days: 3
+          name: oversold-test-wheels
+          path: wheels/
+          retention-days: 1
