@@ -4,10 +4,12 @@ on:
     branches: [main]
     paths:
       - 'app/oversold_calibration*'
+      - 'app/oversold_outcome_scheduler.py'
       - 'app/oversold_three_session_target.py'
       - 'app/oversold_v34_diagnostics.py'
       - 'app/static/oversold_calibration_status.js'
       - 'app/templates/oversold*.html'
+      - 'sql/migrations/*oversold_calibration*'
       - '.github/workflows/reversion-calibration-live-smoke.yml'
   workflow_dispatch:
 permissions:
@@ -46,13 +48,14 @@ jobs:
               for attempt in range(30):
                   try:
                       status = get(endpoint)
-                      if status.get('version') == 'calibration_pipeline_health_v1':
+                      if status.get('version') == 'calibration_pipeline_health_v1' and status.get('last_scheduled_check'):
                           deployed = True; break
                   except Exception as exc:
                       report['last_poll_error'] = type(exc).__name__ + ': ' + str(exc)
                   time.sleep(10)
-              assert deployed, 'The new calibration endpoint was not observed within the bounded deployment check'
+              assert deployed, 'No live calibration endpoint with a recorded runtime check was observed within the bounded deployment check'
               report['status'] = status
+              assert status['last_scheduled_check']['result'].get('status') != 'error', 'The recorded calibration check failed'
               report['health'] = get('/health')
               diagnostics = get('/api/oversold/diagnostics')
               report['diagnostics'] = diagnostics
@@ -62,7 +65,7 @@ jobs:
               with sync_playwright() as p:
                   browser = p.chromium.launch()
                   for path in ['/oversold', '/oversold-v2']:
-                      page = browser.new_page(viewport={'width': 1280, 'height': 1000}, timezone_id='Europe/London')
+                      page = browser.new_page(viewport={'width': 1280, 'height': 1000}, timezone_id='Europe/London', locale='en-GB')
                       errors = []
                       page.on('pageerror', lambda error: errors.append(str(error)))
                       response = page.goto(base + path, wait_until='domcontentloaded', timeout=60000)
@@ -89,6 +92,7 @@ jobs:
                       page.unroute('**' + endpoint)
                       refresh.click()
                       expect(panel.locator('h3')).to_have_text('Calibration: ' + status['label'])
+                      assert not errors, f'Browser errors in {path}: {errors}'
                       report['views'].append({'path': path, 'http_status': response.status, 'panel': desktop_text,
                                               'refresh_passed': True, 'failure_and_recovery_passed': True,
                                               'page_errors': errors})
