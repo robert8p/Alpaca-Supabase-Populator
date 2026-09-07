@@ -1,0 +1,50 @@
+name: oversold-live-verification
+on:
+  push:
+    branches: [fix/oversold-robustness-v39]
+    paths: ['.github/workflows/oversold-live-verification.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read public version and prompt endpoints only
+        run: |
+          python - <<'PY'
+          import json, urllib.request, hashlib
+          from pathlib import Path
+          base = 'https://alpaca-rapid-discovery-web.onrender.com'
+          results = []
+          expected = hashlib.sha256(Path('app/static/oversold_audit_rules.txt').read_bytes()).hexdigest()
+          for path in ('/health', '/api/oversold/scoring-contract', '/static/oversold_audit_rules.txt'):
+              row = {'path': path}
+              try:
+                  request = urllib.request.Request(base + path, headers={'User-Agent':'Oversold-Release-Verification/3.9'})
+                  with urllib.request.urlopen(request, timeout=20) as response:
+                      content = response.read(150000)
+                      row['http_status'] = response.status
+                  if path.endswith('scoring-contract'):
+                      data = json.loads(content)
+                      row['scoring_model_version'] = data.get('scoring_model_version') or data.get('model_version')
+                      row['contains_v39'] = 'oversold_reversion_score_v3_9' in content.decode()
+                  elif path.endswith('.txt'):
+                      row['sha256'] = hashlib.sha256(content).hexdigest()
+                      row['matches_reviewed_prompt'] = row['sha256'] == expected
+                  else:
+                      row['healthy'] = row['http_status'] == 200
+              except Exception as exc:
+                  row['error'] = str(exc)
+              results.append(row)
+          report = {'origin':base, 'checked_at_utc':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(), 'checks':results}
+          text = json.dumps(report, indent=2)
+          print(text)
+          Path('oversold-live-verification.json').write_text(text)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oversold-live-verification
+          path: oversold-live-verification.json
+          retention-days: 7
