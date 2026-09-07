@@ -9,8 +9,8 @@ def signals(text: str) -> dict[str, bool]:
 
 
 def test_model_version_advances_for_local_clause_attribution() -> None:
-    assert oversold_scoring.SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
-    assert oversold_scoring.SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
+    assert oversold_scoring.SCORING_MODEL_VERSION == "oversold_reversion_score_v3_9"
+    assert oversold_scoring.SCORING_CONFIG_VERSION == "or_score_config_2026_09_07_v11"
 
 
 def test_realistic_long_aap_excerpt_does_not_attribute_vendor_bankruptcy_to_candidate() -> None:

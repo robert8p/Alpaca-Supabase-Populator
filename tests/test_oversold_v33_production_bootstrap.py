@@ -24,8 +24,8 @@ from app import oversold_outcomes
 from app import oversold_v2
 from app.oversold_scoring import SCORING_CONFIG_VERSION, SCORING_MODEL_VERSION
 
-assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
-assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
+assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_9"
+assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_07_v11"
 assert hasattr(oversold, "_parse_ts")
 assert getattr(oversold, "_v33_scan_installed", False) is True
 assert getattr(oversold_outcomes, "_v33_outcome_path_installed", False) is True
@@ -38,7 +38,7 @@ from app import oversold_public
 assert oversold_public.capture_signal_outcomes is oversold_outcomes.capture_signal_outcomes
 from app.oversold_scoring import public_scoring_contract
 contract = public_scoring_contract()
-assert contract["score_semantics"]["name"] == "Robust Opportunity Score"
+assert contract["score_semantics"]["name"] == "Deterministic sensitivity score"
 assert contract["subject_attribution"]["version"] == "subject_attribution_v1"
 assert contract["local_attribution"]["version"] == "local_clause_attribution_v1"
 print("production-bootstrap-ok")

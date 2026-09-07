@@ -36,6 +36,7 @@ from .oversold_scoring_v35_compat import patch_module as _patch_v35_compat
 from .oversold_scoring_v36_subject_attribution import patch_module as _patch_v36_subject_attribution
 from .oversold_scoring_v37_local_attribution import patch_module as _patch_v37_local_attribution
 from .oversold_scoring_v38_evidence_integrity import patch_module as _patch_v38_evidence_integrity
+from .oversold_scoring_v39 import patch_module as _patch_v39
 from .oversold_sec_json_compat import patch_module as _patch_sec_json
 from .oversold_three_session_reliability import patch_score_store as _patch_three_session_score_store
 from .oversold_three_session_target import patch_scoring as _patch_three_session_target
@@ -81,6 +82,7 @@ _patch_v35_compat(_oversold_scoring)
 _patch_v36_subject_attribution(_oversold_scoring)
 _patch_v37_local_attribution(_oversold_scoring)
 _patch_v38_evidence_integrity(_oversold_scoring)
+_patch_v39(_oversold_scoring)
 
 # Install defensive JSON normalization, primary-evidence persistence and the
 # explicit three-session target before the scanner imports the store function.

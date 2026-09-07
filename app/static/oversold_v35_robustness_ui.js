@@ -48,7 +48,9 @@
     const robustness=candidate?.catalyst_analysis?.robustness_assessment;
     if (!candidate || !cell || !robustness) return;
     const ensemble=robustness.ensemble || {};
-    const provenance=robustness.evidence_provenance || {};
+    const provenance=robustness.declared_origin_provenance || robustness.evidence_provenance || {};
+    const modern=ensemble.version==='auditable_sensitivity_v2';
+    const removal=robustness.source_removal||{};
     const alignment=robustness.event_alignment || {};
     const fundamentals=robustness.fundamental_data_quality || {};
     const key=[candidate.id,candidate.model_run_id,candidate.reversion_score,ensemble.ensemble_median,provenance.causal_cluster_count].join(':');
@@ -56,17 +58,17 @@
     cell.dataset.v35RobustnessKey=key;
 
     const name=cell.querySelector('.or-score-name');
-    if (name && candidate.model_status!=='calibrated') name.textContent='Robust Opportunity';
+    if (name && candidate.model_status!=='calibrated') name.textContent=modern?'Sensitivity score':'Historical opportunity';
 
     const badges=cell.querySelector('.or-model-badges');
     if (badges) {
       badges.querySelectorAll('[data-v35-badge]').forEach(element=>element.remove());
       const badgesData=[
         [`Median ${num(ensemble.ensemble_median,1)}`,'or-robust-badge'],
-        [`Weights ${num(ensemble.weight_stability_score,0)}`,Number(ensemble.weight_stability_score)>=70?'or-robust-badge':'or-robust-warn'],
+        [`Weights ${modern?num(ensemble.weight_stability_score,0):'legacy proxy'}`,modern&&Number(ensemble.weight_stability_score)>=70?'or-robust-badge':'or-robust-warn'],
         [`Causal roots ${provenance.causal_cluster_count ?? 0}`,Number(provenance.causal_cluster_count)>=2?'or-robust-badge':'or-robust-warn'],
-        [`Alignment ${num(alignment.score,0)}`,Number(alignment.score)>=60?'or-robust-badge':'or-robust-warn'],
-        [`Fund. quality ${num(fundamentals.score,0)}`,Number(fundamentals.score)>=60?'or-robust-badge':'or-robust-warn'],
+        [`Article recency ${num(alignment.score,0)}`,Number(alignment.score)>=60?'or-robust-badge':'or-robust-warn'],
+        [`Accounts coverage ${num(fundamentals.score,0)}`,Number(fundamentals.score)>=60?'or-robust-badge':'or-robust-warn'],
       ];
       for (const [text,klass] of badgesData) {
         const badge=document.createElement('span');
@@ -86,21 +88,23 @@
       body.insertAdjacentElement('afterbegin',section);
     }
     section.innerHTML=`
-      <b>v3.5 robust ensemble</b>
+      <b>${modern?'v3.9 auditable sensitivity':'Historical v3.5 sensitivity — mixed cost/cap bases'}</b>
+      <div class="or-meta">${esc(modern?ensemble.quantile_basis:'Historical p10/median are before friction; displayed lower score is after friction/caps. Not comparable percentiles.')}</div>
       <div class="or-robust-grid">
-        ${metric('Robust lower score',num(ensemble.robust_lower_score,1))}
+        ${metric('Case-grid p25',num(ensemble.robust_lower_score,1))}
         ${metric('Ensemble median',num(ensemble.ensemble_median,1))}
         ${metric('Ensemble p10',num(ensemble.ensemble_p10,1))}
         ${metric('Worst member',num(ensemble.ensemble_minimum,1))}
         ${metric('Weight stability',num(ensemble.weight_stability_score,0))}
         ${metric('Component dependency',num(ensemble.maximum_component_dependency,1))}
         ${metric('Causal roots',provenance.causal_cluster_count ?? 0)}
-        ${metric('Source dependency risk',num(provenance.single_cluster_dependency_risk,0))}
-        ${metric('Event alignment',num(alignment.score,0))}
+        ${metric('Source-removal worst',num(removal.worst_score,1))}
+        ${metric('Article recency',num(alignment.score,0))}
         ${metric('Nearest causal evidence',num(alignment.nearest_causal_age_hours,1),'h')}
-        ${metric('Fundamental quality',num(fundamentals.score,0))}
+        ${metric('Accounts coverage',num(fundamentals.score,0))}
         ${metric('Robust evidence',num(robustness.robust_evidence_confidence,0))}
       </div>
+      <div class="or-meta">Weight measurement: ${esc(ensemble.weight_sensitivity_status||'LEGACY CLIPPED PROXY')}. Source removal: ${esc(removal.status||'NOT RUN')}. Actual stress cases: ${esc(ensemble.scenario_policy_pass_count??'unknown')}/${esc(ensemble.scenario_policy_denominator??'unknown')}. Event alignment: ${esc(robustness.event_context?.timing_status||'UNKNOWN')}; event financial impact: ${esc(robustness.event_context?.event_financial_status||'NOT QUANTIFIED')}.</div>
       <div class="or-meta" style="margin-top:7px">${esc(ensemble.method || '')}</div>
       <div class="or-meta">Required financial coverage: ${esc((fundamentals.available_required_metrics || []).join(', ') || 'none retained')} / ${esc((fundamentals.required_metrics || []).join(', ') || 'not applicable')}</div>
       <div class="or-cluster-list">${clusterRows(provenance)}</div>

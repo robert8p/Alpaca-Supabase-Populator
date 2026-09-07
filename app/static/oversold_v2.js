@@ -52,12 +52,15 @@
   function explanation(row) {
     const failed = items(row.failed_gates);
     const integrity = row.evidence_integrity || {};
+    const audit=row.robustness_audit||{}, ensemble=audit.ensemble||{}, removal=audit.source_removal||{};
     const issues = [...items(integrity.issues), ...items(integrity.fundamentals?.reasons), ...items(row.missing_inputs), ...items(row.risk_flags)];
     const uniqueIssues = [...new Set(issues.map(human))];
     const probability = row.calibrated_probability == null ? 'Profit probability: unavailable' : `Calibrated target probability: ${fmt(Number(row.calibrated_probability) * 100)}% · ${row.target_definition || 'target not retained'}`;
     return `<div>${esc(probability)}</div>
       <details class="evidence"><summary>Scores, risks and evidence</summary>
         <p>Uncalibrated indices /100: setup ${fmt(row.setup_score, 0)} · overreaction ${fmt(row.dislocation_score, 0)} · financial strength ${fmt(row.fundamental_survivability, 0)} · event reversibility ${fmt(row.catalyst_reversibility, 0)} · confirmation ${fmt(row.confirmation_score, 0)} · damage ${fmt(row.impairment_risk, 0)} · evidence confidence ${fmt(row.confidence, 0)}. These are not probabilities.</p>
+        <p>Sensitivity basis: ${esc(ensemble.quantile_basis||'Legacy mixed or unavailable')}. p10 ${fmt(ensemble.ensemble_p10)} / p25 ${fmt(ensemble.robust_lower_score)} / median ${fmt(ensemble.ensemble_median)}. Weights: ${esc(ensemble.weight_sensitivity_status||'legacy proxy')}. Source removal: ${esc(removal.status||'NOT RUN')}, worst score ${fmt(removal.worst_score)}. Measured stress cases ${esc(ensemble.scenario_policy_pass_count??'unknown')}/${esc(ensemble.scenario_policy_denominator??'unknown')}.</p>
+        <p>Event alignment: ${esc(row.event_context?.timing_status||'UNKNOWN')}; shock-specific financial evidence: ${esc(row.event_context?.event_financial_status||'NOT QUANTIFIED')}. Accounting coverage is not damage quantification.</p>
         <p>Model: ${esc(row.scoring_model_version || 'Not retained')} · config: ${esc(row.scoring_config_version || 'Not retained')}</p>
         <p>Original signal: ${esc(when(row.signal_timestamp))} · price $${fmt(row.signal_price, 2)}<br>Evidence cutoff: ${esc(when(row.evidence_cutoff))}<br>Price timestamp: ${esc(when(row.latest_trade_ts))}</p>
         <p>${failed.length ? `Unmet model criteria: ${esc(failed.map(human).join('; '))}` : 'No unmet model criteria reported; this does not establish profitability.'}</p>

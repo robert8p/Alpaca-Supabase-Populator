@@ -99,7 +99,7 @@ def test_high_quality_temporary_rebound_candidate_retains_strong_economics_but_r
     assert result["confirmation_score"] >= 65
     assert reliability["base_v33_score"] >= result["final_score"]
     assert result["final_score"] >= 55
-    assert result["catalyst_analysis"]["eligibility_gates"]["causal_evidence_independence"] is False
+    assert result["catalyst_analysis"]["eligibility_gates"]["causal_provenance_independence"] is False
     assert result["verdict"] != "INVESTIGATE"
     assert result["hard_veto"] is False
 
