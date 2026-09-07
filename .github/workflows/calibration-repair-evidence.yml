@@ -1,0 +1,49 @@
+name: calibration-repair-evidence
+on:
+  push:
+    branches: [fix/reversion-calibration-20260907]
+    paths: [.github/workflows/calibration-repair-evidence.yml, .release/calibration-repair.patch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.7'
+          cache: pip
+      - name: Package tracked source for offline regression testing
+        run: |
+          mkdir -p calibration-evidence
+          git archive --format=zip -o calibration-evidence/source.zip HEAD
+          git rev-parse HEAD > calibration-evidence/source-sha.txt
+      - name: Read public calibration diagnostics
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          from pathlib import Path
+          base = 'https://alpaca-rapid-discovery-web.onrender.com'
+          report = {}
+          for path in ['/health', '/api/oversold/diagnostics', '/oversold', '/oversold-v2']:
+              try:
+                  with urllib.request.urlopen(base + path, timeout=40) as r:
+                      body = r.read().decode('utf-8')
+                      report[path] = {'status': r.status, 'body': body if path != '/api/oversold/diagnostics' else json.loads(body)}
+              except Exception as exc:
+                  report[path] = {'error': type(exc).__name__ + ': ' + str(exc)}
+          Path('calibration-evidence/public-readback.json').write_text(json.dumps(report, default=str))
+          print(json.dumps({k: {'status': v.get('status'), 'error': v.get('error')} for k,v in report.items()}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: calibration-repair-evidence
+          path: calibration-evidence/
+          retention-days: 3
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Baseline regression tests
+        run: python -m pytest -q
