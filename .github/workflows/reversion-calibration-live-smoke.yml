@@ -1,0 +1,107 @@
+name: reversion-calibration-live-smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/oversold_calibration*'
+      - 'app/oversold_three_session_target.py'
+      - 'app/oversold_v34_diagnostics.py'
+      - 'app/static/oversold_calibration_status.js'
+      - 'app/templates/oversold*.html'
+      - '.github/workflows/reversion-calibration-live-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  public-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.7'
+      - name: Install browser verification tools
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Read deployed API and test both calibration panels
+        run: |
+          python - <<'PY'
+          import json, time, urllib.request
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright, expect
+          base = 'https://alpaca-rapid-discovery-web.onrender.com'
+          endpoint = '/api/oversold/calibration/status'
+          out = Path('calibration-live-evidence'); out.mkdir(exist_ok=True)
+          report = {'release_commit': '${{ github.sha }}', 'base': base, 'views': [], 'read_only': True}
+          def get(path):
+              req = urllib.request.Request(base + path, headers={'Cache-Control': 'no-cache'})
+              with urllib.request.urlopen(req, timeout=20) as response:
+                  return json.loads(response.read())
+          try:
+              deployed = False
+              for attempt in range(30):
+                  try:
+                      status = get(endpoint)
+                      if status.get('version') == 'calibration_pipeline_health_v1':
+                          deployed = True; break
+                  except Exception as exc:
+                      report['last_poll_error'] = type(exc).__name__ + ': ' + str(exc)
+                  time.sleep(10)
+              assert deployed, 'The new calibration endpoint was not observed within the bounded deployment check'
+              report['status'] = status
+              report['health'] = get('/health')
+              diagnostics = get('/api/oversold/diagnostics')
+              report['diagnostics'] = diagnostics
+              assert 'function round(double precision' not in json.dumps(diagnostics)
+              assert diagnostics.get('score_reliability', {}).get('status') != 'unavailable', 'Reliability diagnostics are still unavailable'
+              assert diagnostics.get('calibration_pipeline', {}).get('version') == status['version']
+              with sync_playwright() as p:
+                  browser = p.chromium.launch()
+                  for path in ['/oversold', '/oversold-v2']:
+                      page = browser.new_page(viewport={'width': 1280, 'height': 1000}, timezone_id='Europe/London')
+                      errors = []
+                      page.on('pageerror', lambda error: errors.append(str(error)))
+                      response = page.goto(base + path, wait_until='domcontentloaded', timeout=60000)
+                      assert response and response.status == 200
+                      panel = page.locator('#or-calibration-panel')
+                      expect(panel).to_be_visible(timeout=30000)
+                      expect(panel.locator('h3')).to_have_text('Calibration: ' + status['label'], timeout=30000)
+                      expect(panel).to_contain_text('current-model original signals')
+                      refresh = panel.get_by_role('button', name='Refresh calibration status')
+                      with page.expect_response(lambda r: r.url.endswith(endpoint) and r.request.method == 'GET') as refreshed:
+                          refresh.click()
+                      assert refreshed.value.status == 200
+                      expect(refresh).to_be_enabled()
+                      panel.locator('summary').click()
+                      panel.screenshot(path=str(out / (path.strip('/') + '-desktop.png')))
+                      desktop_text = panel.inner_text()
+                      page.set_viewport_size({'width': 390, 'height': 844})
+                      panel.screenshot(path=str(out / (path.strip('/') + '-mobile.png')))
+                      # A mocked read failure must not be displayed as calibration success or zero evidence.
+                      page.route('**' + endpoint, lambda route: route.fulfill(status=503, body='verification failure fixture'))
+                      refresh.click()
+                      expect(panel.locator('h3')).to_have_text('Calibration: status unavailable')
+                      expect(panel).to_contain_text('This is not evidence of calibration success or failure')
+                      page.unroute('**' + endpoint)
+                      refresh.click()
+                      expect(panel.locator('h3')).to_have_text('Calibration: ' + status['label'])
+                      report['views'].append({'path': path, 'http_status': response.status, 'panel': desktop_text,
+                                              'refresh_passed': True, 'failure_and_recovery_passed': True,
+                                              'page_errors': errors})
+                      page.close()
+                  browser.close()
+              report['passed'] = True
+          finally:
+              (out / 'readback.json').write_text(json.dumps(report, indent=2, default=str))
+              print(json.dumps({k: report[k] for k in ['release_commit', 'passed'] if k in report}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reversion-calibration-live-evidence
+          path: calibration-live-evidence/
+          retention-days: 7
