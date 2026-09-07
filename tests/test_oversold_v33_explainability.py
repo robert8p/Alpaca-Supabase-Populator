@@ -11,7 +11,7 @@ ROOT = Path("app/static")
 
 def test_public_contract_exposes_current_v35_semantics() -> None:
     contract = public_scoring_contract()
-    assert contract["score_semantics"]["name"] == "Robust Opportunity Score"
+    assert contract["score_semantics"]["name"] == "Deterministic sensitivity score"
     assert contract["weights"] == contract["opportunity_architecture"]["weights"]
     assert "overreaction" in contract["weights"]
     assert "setup" not in contract["weights"]

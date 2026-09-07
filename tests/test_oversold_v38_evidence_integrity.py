@@ -168,7 +168,7 @@ def test_actual_earlier_financial_timestamp_is_valid_and_age_recomputed():
 
 def test_new_version_does_not_claim_calibrated_probability():
     result = score([])
-    assert result["scoring_model_version"] == "oversold_reversion_score_v3_8"
+    assert result["scoring_model_version"] == "oversold_reversion_score_v3_9"
     assert result["model_status"] == "uncalibrated"
     assert result["calibration_model_version"] is None
     assert "not survival probability" in result["catalyst_analysis"]["score_semantics"]["survivability"]

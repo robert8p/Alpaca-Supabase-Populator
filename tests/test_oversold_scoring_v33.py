@@ -113,12 +113,12 @@ def article(symbol: str, headline: str, summary: str, source: str = "Company IR"
 
 
 def test_v37_contract_is_purpose_aligned_and_versioned() -> None:
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_9"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_07_v11"
     contract = public_scoring_contract()
     assert "verified price damage" in contract["purpose"]
     assert contract["opportunity_architecture"]["aggregation"] == "weighted_geometric_mean"
-    assert contract["score_semantics"]["name"] == "Robust Opportunity Score"
+    assert contract["score_semantics"]["name"] == "Deterministic sensitivity score"
     assert contract["reliability_architecture"]["minimum_stability_score"] == 70.0
     assert contract["robustness_architecture"]["minimum_robust_score"] == 72.0
     assert contract["robustness_architecture"]["minimum_causal_clusters"] == 2
@@ -195,7 +195,7 @@ def test_unknown_cause_is_uncertainty_not_bullishness() -> None:
     assert result["catalyst_analysis"]["assessment_confidence_state"] == "UNKNOWN"
     assert result["final_score"] <= 45.0
     assert result["catalyst_analysis"]["eligibility_gates"]["cause_verified_or_strong_partial"] is False
-    assert result["catalyst_analysis"]["eligibility_gates"]["causal_evidence_independence"] is False
+    assert result["catalyst_analysis"]["eligibility_gates"]["causal_provenance_independence"] is False
     assert result["catalyst_analysis"]["eligibility_gates"]["causal_provenance_independence"] is False
 
 

@@ -13,11 +13,12 @@ from app.oversold_scoring import (
     score_candidate,
 )
 from app.oversold_scoring_v35 import (
-    ROBUSTNESS_VERSION,
     event_alignment_quality,
     evidence_provenance_clusters,
     fundamental_data_quality,
 )
+
+from app.oversold_scoring_v39 import ROBUSTNESS_VERSION
 
 SIGNAL = datetime(2026, 8, 20, 19, 0, tzinfo=UTC)
 
@@ -282,8 +283,8 @@ def test_v37_positive_control_survives_robust_ensemble() -> None:
     result = score_candidate(candidate(), strong_evidence(), "B", [])
     analysis = result["catalyst_analysis"]
     robustness = analysis["robustness_assessment"]
-    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_8"
-    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_06_v10"
+    assert SCORING_MODEL_VERSION == "oversold_reversion_score_v3_9"
+    assert SCORING_CONFIG_VERSION == "or_score_config_2026_09_07_v11"
     assert analysis["causal_provenance_cluster_count"] >= 2
     assert analysis["event_alignment_score"] >= 60
     assert analysis["fundamental_data_quality_score"] >= 60

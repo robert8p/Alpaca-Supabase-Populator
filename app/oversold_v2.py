@@ -7,6 +7,7 @@ import re
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID
+from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
@@ -30,7 +31,8 @@ templates = Jinja2Templates(directory="app/templates")
 PUBLIC_MANUAL_COOLDOWN_SECONDS = 300
 STALE_SCAN_MINUTES = 30
 CHATGPT_LAUNCH_MAX_CHARS = 4_000
-V2_ADAPTER_VERSION = "oversold-v2-canonical-adapter-3"
+V2_ADAPTER_VERSION = "oversold-v2-canonical-adapter-4"
+AUDIT_RULES = (Path(__file__).parent / "static" / "oversold_audit_rules.txt").read_text(encoding="utf-8")
 
 # The canonical scanner already excludes most non-operating instruments. This
 # final presentation filter removes shell/SPAC-like rows that can still be
@@ -315,6 +317,9 @@ def _project_candidate(row: dict[str, Any]) -> dict[str, Any]:
         "model_explanation": row.get("explanation"),
         "model_missing": model_missing,
         "adapter_version": V2_ADAPTER_VERSION,
+        "robustness_audit": robustness,
+        "execution_audit": _dict(analysis.get("execution_audit")),
+        "event_context": _dict(analysis.get("event_context")),
         "robustness_summary": {
             "ensemble_median": _number(_dict(robustness.get("ensemble")).get("ensemble_median")),
             "weight_stability_score": _number(analysis.get("weight_stability_score")),
@@ -445,6 +450,7 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
     candidates = list(detail.get("candidates") or [])[:10]
     scan = _dict(detail.get("scan"))
     lines = [
+        AUDIT_RULES,
         "Audit these Oversold Reversion candidates as ORIGINAL, point-in-time signals. Do not use hindsight.",
         "Use only evidence available on or before each stored evidence cutoff; cite primary sources and publication times. If a cutoff is missing, point-in-time verification is unavailable. Independently challenge the app; the priority score and every component (including survivability, reversibility, damage and confidence) are uncalibrated indices, not probabilities or buy recommendations.",
         "For every stock determine: why it fell; causal-evidence strength; temporary versus structural damage; financial survivability; whether the price move exceeds likely permanent damage; a reversion mechanism within the stored target horizon; contradictory evidence; execution/liquidity risk; another-leg-down risk; and whether a credible, asymmetric profit opportunity exists. A filed 8-K or analyst reaction alone does not prove the economic cause, temporary damage or mispricing.",
@@ -489,6 +495,7 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
                     f"Fundamental assessment: {candidate.get('fundamental_quality')} | metadata {json.dumps(candidate.get('fundamental_metadata') or {}, default=str, separators=(',', ':'))}",
                     f"Fundamentals: {json.dumps(fundamentals, default=str, separators=(',', ':'))}",
                     f"Risk flags: {risk_flags} | hard veto: {candidate.get('hard_veto')} ({candidate.get('hard_veto_reason') or 'none'}) | failed eligibility gates: {failed_gates}",
+                    f"Audited sensitivity: {json.dumps(candidate.get('robustness_audit') or {}, default=str, separators=(',', ':'))}",
                     f"Execution/provenance: estimated round-trip friction {candidate.get('execution_friction_pct')}%; source dependency risk {candidate.get('source_dependency_risk')}; robust summary {json.dumps(candidate.get('robustness_summary') or {}, default=str, separators=(',', ':'))}",
                     f"Opportunity gaps: {'; '.join(candidate.get('opportunity_gaps') or [])} | missing inputs: {', '.join(candidate.get('missing_inputs') or [])}",
                     f"Evidence integrity: {json.dumps(candidate.get('evidence_integrity') or {}, default=str, separators=(',', ':'))}",
@@ -518,6 +525,7 @@ def _build_launch_prompt(detail: dict[str, Any]) -> str:
         "Audit original Oversold Reversion signals without hindsight. Use only evidence published by each cutoff and cite it. All scores, survival and reversal components are uncalibrated indices, not probabilities. Rank INVESTIGATE/WATCH/PASS by cause, lasting damage, financial strength, reversion mechanism and net reward/risk. A filing or analyst reaction alone does not establish temporary damage. If price target/invalidation/cost evidence is missing, say net reward/risk is unestablished.",
         f"Original model: {_truncate(scan.get('scoring_model_version') or 'not retained', 70)}; target: {_truncate(scan.get('target_definition') or 'not retained', 80)}.",
     ]
+    lines.insert(0, "Hypothetical allocation requires dated as-of Buy-or-better consensus AND independent INVESTIGATE AND verified provenance, timing, event financial quality, weight/source stability and execution. Unknown mandatory facts get 0%. At most 3 exchange trading sessions. Qualifying stock sleeve sums to 100.0%; otherwise: No Buy-or-better robust INVESTIGATE candidates; no allocation. This compact handoff omits evidence; paste the copied full audit before reaching a conclusion.")
     # Allocate a bounded row budget before adding catalyst text so a long early
     # headline cannot silently remove the tenth signal or its evidence cutoff.
     row_budget = max(0, (CHATGPT_LAUNCH_MAX_CHARS - len("\n".join(lines)) - 2 * len(candidates)) // max(1, len(candidates)))
