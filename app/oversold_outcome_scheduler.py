@@ -46,6 +46,18 @@ async def _run_oversold_outcomes(stop_event: asyncio.Event) -> None:
     last_run_date: date | None = None
     logger.info("Oversold Reversion outcome scheduler enabled; daily cutoff=%s ET", CAPTURE_AFTER_ET.isoformat(timespec="minutes"))
 
+    # Readiness is independent of the slow decision-checkpoint/rescore cycle.
+    # The exact-model sample/quality gates and no-change hash still govern fits.
+    try:
+        bootstrap_calibration = await asyncio.to_thread(run_calibration_if_changed)
+        logger.info("Oversold calibration startup check: %s", bootstrap_calibration)
+    except asyncio.CancelledError:
+        raise
+    except Exception:
+        # The calibration runtime persists a sanitized error state. Do not prevent
+        # outcome recovery merely because this independent readiness check failed.
+        logger.exception("Oversold calibration startup check failed")
+
     # On worker start/deploy, create any missing point-in-time rescores immediately.
     # This is database-only and uses immutable Evidence Snapshots, so it is safe to
     # run before the six-week outcome cycle is due.
