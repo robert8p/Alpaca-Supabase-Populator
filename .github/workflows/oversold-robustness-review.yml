@@ -2,21 +2,61 @@ name: oversold-robustness-review
 on:
   push:
     branches: [fix/oversold-robustness-v39]
+    paths: ['.review/oversold-v39.patch.xz.b64']
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: oversold-v39-review
+  cancel-in-progress: false
 jobs:
   review:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-      - name: Prepare isolated regression dependencies
+          python-version: '3.12.7'
+          cache: pip
+      - name: Verify and apply exact reviewed patch
         run: |
-          python -m pip download --only-binary=:all: -r requirements-dev.txt -d wheels
+          python - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, lzma, re
+          patch = lzma.decompress(base64.b64decode(Path('.review/oversold-v39.patch.xz.b64').read_text().strip(), validate=True))
+          assert hashlib.sha256(patch).hexdigest() == '0a42b34419557acc817ae5a860e0b9260664ace5341e9d9858efbbc284da1bfd'
+          paths = re.findall(r'^\+\+\+ b/(.+)$', patch.decode(), flags=re.M)
+          assert paths and all(p.startswith(('app/', 'tests/')) or p == 'OVERSOLD_V39_REVIEW.md' for p in paths)
+          Path('/tmp/oversold-v39.patch').write_bytes(patch)
+          PY
+          git apply --index --unidiff-zero --check /tmp/oversold-v39.patch
+          git apply --index --unidiff-zero /tmp/oversold-v39.patch
+      - name: Install pinned test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify Python and JavaScript
+        run: |
+          python -m compileall -q app tests
+          node --check app/static/oversold_chatgpt_v35.js
+          node --check app/static/oversold_v35_robustness_ui.js
+          node --check app/static/oversold_v2.js
+          node --check app/static/oversold_tracking_v3.js
+      - name: Full regression suite
+        run: python -m pytest -q --disable-warnings | tee /tmp/oversold-v39-tests.txt
+      - name: Commit only the validated tree
+        run: |
+          rm .review/oversold-v39.patch.xz.b64 .github/workflows/oversold-robustness-review.yml
+          rmdir .review
+          git add -A
+          test "$(git write-tree)" = '2e9aab6b8cc770b191837135c00d8b81646ce97e'
+          git config user.name 'Oversold Release Automation'
+          git config user.email 'automation@users.noreply.github.com'
+          git commit -m 'Repair Oversold robustness diagnostics and cutoff-grounded audit prompts (v3.9)'
+          git push origin HEAD:refs/heads/fix/oversold-robustness-v39
+          printf 'commit=%s\ntree=%s\n' "$(git rev-parse HEAD)" "$(git rev-parse HEAD^{tree})" > /tmp/oversold-v39-receipt.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: oversold-test-wheels
-          path: wheels/
-          retention-days: 1
+          name: oversold-v39-validation
+          path: |
+            /tmp/oversold-v39-tests.txt
+            /tmp/oversold-v39-receipt.txt
+          retention-days: 14
