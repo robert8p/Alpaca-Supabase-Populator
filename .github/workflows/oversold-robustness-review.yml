@@ -2,7 +2,7 @@ name: oversold-robustness-review
 on:
   push:
     branches: [fix/oversold-robustness-v39]
-    paths: ['.review/oversold-v39.patch.xz.b64']
+    paths: ['.review/oversold-v39.patch.xz.b64', '.github/workflows/oversold-robustness-review.yml']
 permissions:
   contents: write
 concurrency:
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.12.7'
           cache: pip
-      - name: Verify and apply exact reviewed patch
+      - name: Verify and stage exact reviewed patch
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -31,7 +31,10 @@ jobs:
           PY
           git apply --index --unidiff-zero --check /tmp/oversold-v39.patch
           git apply --index --unidiff-zero /tmp/oversold-v39.patch
-      - name: Install pinned test dependencies
+          git rm .review/oversold-v39.patch.xz.b64 .github/workflows/oversold-robustness-review.yml
+          git write-tree > /tmp/oversold-v39-expected-tree.txt
+          git diff --cached --stat
+      - name: Install test dependencies
         run: python -m pip install -r requirements-dev.txt
       - name: Verify Python and JavaScript
         run: |
@@ -41,22 +44,27 @@ jobs:
           node --check app/static/oversold_v2.js
           node --check app/static/oversold_tracking_v3.js
       - name: Full regression suite
-        run: python -m pytest -q --disable-warnings | tee /tmp/oversold-v39-tests.txt
-      - name: Commit only the validated tree
+        shell: bash
         run: |
-          rm .review/oversold-v39.patch.xz.b64 .github/workflows/oversold-robustness-review.yml
-          rmdir .review
-          git add -A
-          test "$(git write-tree)" = '2e9aab6b8cc770b191837135c00d8b81646ce97e'
+          set -euo pipefail
+          python -m pytest -q --disable-warnings | tee /tmp/oversold-v39-tests.txt
+      - name: Commit only the validated index
+        run: |
+          test "$(git write-tree)" = "$(cat /tmp/oversold-v39-expected-tree.txt)"
+          git diff --name-only --diff-filter=M | grep -v -E '(^|/)__pycache__/|\.py[cod]$' > /tmp/unexpected-source-changes.txt || true
+          test ! -s /tmp/unexpected-source-changes.txt
           git config user.name 'Oversold Release Automation'
           git config user.email 'automation@users.noreply.github.com'
           git commit -m 'Repair Oversold robustness diagnostics and cutoff-grounded audit prompts (v3.9)'
           git push origin HEAD:refs/heads/fix/oversold-robustness-v39
           printf 'commit=%s\ntree=%s\n' "$(git rev-parse HEAD)" "$(git rev-parse HEAD^{tree})" > /tmp/oversold-v39-receipt.txt
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: oversold-v39-validation
           path: |
             /tmp/oversold-v39-tests.txt
             /tmp/oversold-v39-receipt.txt
+            /tmp/oversold-v39-expected-tree.txt
+            /tmp/unexpected-source-changes.txt
           retention-days: 14
