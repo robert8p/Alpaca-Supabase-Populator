@@ -1,0 +1,20 @@
+name: oversold-robustness-review
+on:
+  push:
+    branches: [fix/oversold-robustness-v39]
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package tracked source only
+        run: |
+          git archive --format=zip --output=oversold-source.zip HEAD
+          find app -type f | grep -E 'oversold|template' | sort
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oversold-source
+          path: oversold-source.zip
+          retention-days: 3
