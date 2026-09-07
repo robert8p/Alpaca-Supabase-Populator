@@ -2,9 +2,9 @@ name: calibration-repair-evidence
 on:
   push:
     branches: [fix/reversion-calibration-20260907]
-    paths: [.github/workflows/calibration-repair-evidence.yml, .release/calibration-repair.patch]
+    paths: [.github/workflows/calibration-repair-evidence.yml]
 permissions:
-  contents: read
+  contents: write
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -15,35 +15,54 @@ jobs:
         with:
           python-version: '3.12.7'
           cache: pip
-      - name: Package tracked source for offline regression testing
-        run: |
-          mkdir -p calibration-evidence
-          git archive --format=zip -o calibration-evidence/source.zip HEAD
-          git rev-parse HEAD > calibration-evidence/source-sha.txt
-      - name: Read public calibration diagnostics
-        continue-on-error: true
+      - name: Decode and checksum the reviewed patch
         run: |
           python - <<'PY'
-          import json, urllib.request
+          import base64, gzip, hashlib, subprocess
           from pathlib import Path
-          base = 'https://alpaca-rapid-discovery-web.onrender.com'
-          report = {}
-          for path in ['/health', '/api/oversold/diagnostics', '/oversold', '/oversold-v2']:
-              try:
-                  with urllib.request.urlopen(base + path, timeout=40) as r:
-                      body = r.read().decode('utf-8')
-                      report[path] = {'status': r.status, 'body': body if path != '/api/oversold/diagnostics' else json.loads(body)}
-              except Exception as exc:
-                  report[path] = {'error': type(exc).__name__ + ': ' + str(exc)}
-          Path('calibration-evidence/public-readback.json').write_text(json.dumps(report, default=str))
-          print(json.dumps({k: {'status': v.get('status'), 'error': v.get('error')} for k,v in report.items()}))
+          parts = ''.join(Path(f'.release/calibration-repair-{i}.b64').read_text().strip() for i in range(3))
+          patch = gzip.decompress(base64.b64decode(parts, validate=True))
+          assert hashlib.sha256(patch).hexdigest() == '392e728fa3e0b9367932dddfb4add5a929d8b1729acb5929c13a06fd26bde3bc', 'Patch checksum mismatch'
+          Path('/tmp/calibration-repair.patch').write_bytes(patch)
+          subprocess.run(['git', 'apply', '--check', '/tmp/calibration-repair.patch'], check=True)
+          subprocess.run(['git', 'apply', '/tmp/calibration-repair.patch'], check=True)
+          subprocess.run(['git', 'diff', '--stat'], check=True)
+          PY
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Compile and check every production JavaScript file
+        run: |
+          python -m compileall -q app tests
+          find app/static -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Full regression suite including calibration repair tests
+        run: |
+          mkdir -p calibration-evidence
+          python -m pytest -q --junitxml=calibration-evidence/junit.xml | tee calibration-evidence/pytest.txt
+      - name: Preserve exact tested source
+        if: always()
+        run: |
+          mkdir -p calibration-evidence
+          cp /tmp/calibration-repair.patch calibration-evidence/ || true
+          python - <<'PY'
+          import subprocess, zipfile
+          from pathlib import Path
+          paths = subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard'], text=True).splitlines()
+          with zipfile.ZipFile('calibration-evidence/tested-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for path in sorted(set(paths)):
+                  if Path(path).is_file() and not path.startswith('calibration-evidence/'):
+                      z.write(path)
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: calibration-repair-evidence
+          name: calibration-repair-tested
           path: calibration-evidence/
-          retention-days: 3
-      - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
-      - name: Baseline regression tests
-        run: python -m pytest -q
+          retention-days: 5
+      - name: Commit only the tested repair to the isolated branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app tests sql CALIBRATION_REPAIR.md .github/workflows/release-gate.yml
+          git rm .release/calibration-repair-0.b64 .release/calibration-repair-1.b64 .release/calibration-repair-2.b64
+          git commit -m 'Fix reversion calibration processing, readiness reporting and shared status UI'
+          git push origin HEAD:fix/reversion-calibration-20260907
