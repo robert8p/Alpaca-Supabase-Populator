@@ -122,6 +122,10 @@ def _calibration_samples() -> list[dict[str, Any]]:
                 JOIN or_evidence_snapshots es ON es.id=cr.evidence_snapshot_id
                 JOIN or_signal_outcomes so ON so.evidence_snapshot_id=cr.evidence_snapshot_id
                 WHERE so.eligible_for_calibration=true
+                  AND so.corporate_action_status='clear'
+                  AND so.metadata->>'three_session_path_matured'='true'
+                  AND NULLIF(so.metadata->>'calibration_window_end_ts','')::timestamptz <= now()
+                  AND NULLIF(so.metadata->>'calibration_window_end_ts','')::timestamptz > so.signal_timestamp
                   AND so.metadata->>'calibration_target_definition'=%s
                   AND so.metadata->>'calibration_target_matured'='true'
                   AND so.metadata->>'three_session_path_contract'='completed_sessions_v2'
@@ -307,11 +311,14 @@ def _model_diagnostics() -> dict[str, Any]:
     if not active_calibration:
         reasons.append("No temporal calibration run has passed the quality checks for the current 3-session target.")
 
+    from app.oversold_calibration_status import calibration_pipeline_status
+    pipeline = calibration_pipeline_status(latest_calibration=dict(latest_calibration) if latest_calibration else None)
     calibrated = bool(active_calibration)
     return {
+        "calibration_pipeline": pipeline,
         "model_status": "calibrated" if calibrated else "uncalibrated",
-        "calibration_status": "Calibrated" if calibrated else "Uncalibrated",
-        "calibration_reasons": reasons,
+        "calibration_status": "Calibrated" if calibrated else pipeline["label"],
+        "calibration_reasons": pipeline["reasons"],
         "summary": summary,
         "score_buckets": [
             {

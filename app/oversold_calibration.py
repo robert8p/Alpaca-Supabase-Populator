@@ -22,6 +22,7 @@ MAX_CALIBRATION_ERROR = 0.15
 MIN_HALF_HOLDOUT_BRIER_SKILL = -0.10
 MIN_SECTOR_SAMPLE_FOR_STABILITY = 20
 MIN_SECTOR_BRIER_SKILL = -0.25
+MIN_INDEPENDENT_SIGNAL_DAYS = 30
 
 
 def _sigmoid(value: float) -> float:
@@ -274,9 +275,20 @@ def calibration_readiness(samples: list[dict[str, Any]]) -> dict[str, Any]:
         reasons.append(f"negatives {negatives} < {cfg['minimum_negatives']}")
     if len(samples) < cfg["minimum_temporal_holdout"] + 2:
         reasons.append("insufficient observations for temporal training/holdout split")
-    if len({row["signal_timestamp"].astimezone(SIGNAL_ZONE).date() for row in samples}) < 30:
-        reasons.append("fewer than 30 independent signal days")
-    return {"ready": not reasons, "sample_count": len(samples), "positive_count": positives, "negative_count": negatives, "reasons": reasons}
+    independent_days = len({row["signal_timestamp"].astimezone(SIGNAL_ZONE).date() for row in samples})
+    if independent_days < MIN_INDEPENDENT_SIGNAL_DAYS:
+        reasons.append(f"fewer than {MIN_INDEPENDENT_SIGNAL_DAYS} independent signal days")
+    training, holdout = [], []
+    if len(samples) >= 3:
+        holdout_size = min(max(int(cfg["minimum_temporal_holdout"]), int(round(len(samples) * 0.20))), len(samples) - 2)
+        training, holdout = purged_temporal_split(samples, holdout_size)
+        if len(training) < 30 or len(holdout) < cfg["minimum_temporal_holdout"] or len({row["target"] for row in training}) < 2:
+            reasons.append("insufficient independent training/holdout observations after outcome embargo")
+    return {"ready": not reasons, "sample_count": len(samples), "positive_count": positives,
+            "negative_count": negatives, "independent_signal_days": independent_days,
+            "training_count": len(training), "holdout_count": len(holdout),
+            "requirements": {**cfg, "minimum_independent_signal_days": MIN_INDEPENDENT_SIGNAL_DAYS,
+                             "minimum_training_after_purge": 30}, "reasons": reasons}
 
 
 def run_calibration(

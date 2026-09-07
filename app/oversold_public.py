@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, Request
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, Request, Response
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -326,6 +326,14 @@ def scoring_contract() -> dict[str, Any]:
 @router.get("/api/oversold/diagnostics")
 def scoring_diagnostics() -> dict[str, Any]:
     return _model_diagnostics()
+
+
+@router.get("/api/oversold/calibration/status")
+def calibration_status(response: Response) -> dict[str, Any]:
+    """Read-only readiness; refreshing this panel never triggers training or data writes."""
+    from app.oversold_calibration_status import calibration_pipeline_status
+    response.headers["Cache-Control"] = "no-store"
+    return calibration_pipeline_status()
 
 
 @router.get("/api/oversold/scans")

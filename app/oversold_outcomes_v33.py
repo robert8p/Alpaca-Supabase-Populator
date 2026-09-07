@@ -133,8 +133,10 @@ def install_patch(module: Any) -> None:
                         mfe_3d IS NULL OR mae_3d IS NULL
                         OR COALESCE(NULLIF(metadata->>'three_session_path_bar_count','')::int,0) < 3
                         OR metadata->>'three_session_path_contract' IS DISTINCT FROM 'completed_sessions_v2'
+                        OR metadata->>'three_session_calendar_verified' IS DISTINCT FROM 'true'
+                        OR metadata->>'three_session_path_matured' IS DISTINCT FROM 'true'
                       )
-                    ORDER BY signal_timestamp,id
+                    ORDER BY NULLIF(metadata->>'three_session_path_evaluated_at','')::timestamptz ASC NULLS FIRST,signal_timestamp,id
                     LIMIT %s
                     """,
                     (limit,),
@@ -158,55 +160,74 @@ def install_patch(module: Any) -> None:
                     start=earliest.astimezone(NEW_YORK).date().isoformat(),
                     end=(latest + timedelta(days=14)).astimezone(NEW_YORK).date().isoformat(),
                 )
-        except Exception:
+        except Exception as exc:
             module.logger.exception("Three-session path bars request failed")
+            # Record attempts as well as successes so one unavailable batch cannot
+            # occupy every subsequent bounded run. Never mark a failed path mature.
+            with module.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        "UPDATE or_signal_outcomes SET metadata=metadata || %s,updated_at=now() WHERE id=ANY(%s)",
+                        (module.Jsonb({"three_session_path_evaluated_at": now.isoformat(),
+                                       "three_session_path_error": type(exc).__name__}),
+                         [row["id"] for row in rows]),
+                    )
+                conn.commit()
             return {"due": len(rows), "updated": 0, "matured": 0, "errors": len(rows)}
 
         with module.connection() as conn:
             with conn.cursor() as cur:
                 for row in rows:
                     try:
-                        metrics = calculate_three_session_path(
-                            row,
-                            bars_by_symbol.get(str(row["symbol"]).upper(), []),
-                            parse_ts=module._parse_ts, now=now, calendar=calendar,
-                        )
-                        cur.execute(
-                            """
-                            UPDATE or_signal_outcomes
-                            SET mfe_3d=%s,mae_3d=%s,mfe_3d_ts=%s,mae_3d_ts=%s,
-                                time_to_mfe_3d_sessions=%s,time_to_mae_3d_sessions=%s,
-                                metadata=metadata || %s,updated_at=now()
-                            WHERE id=%s
-                            """,
-                            (
-                                metrics["mfe_3d"],
-                                metrics["mae_3d"],
-                                metrics["mfe_3d_ts"],
-                                metrics["mae_3d_ts"],
-                                metrics["time_to_mfe_3d_sessions"],
-                                metrics["time_to_mae_3d_sessions"],
-                                module.Jsonb(
-                                    {
-                                        "three_session_path_bar_count": metrics["bar_count"],
-                                        "three_session_path_matured": metrics["matured"],
-                                        "three_session_path_resolution": "1Day",
-                                        "three_session_path_contract": PATH_CONTRACT_VERSION,
-                                        "three_session_calendar_verified": metrics["calendar_verified"],
-                                        "calibration_window_end_ts": metrics["window_end_ts"].isoformat() if metrics["window_end_ts"] else None,
-                                        "profit_proxy_3d": metrics["profit_proxy"],
-                                        "thesis_invalidation_status": "not_assessed",
-                                    }
+                        with conn.transaction():
+                            metrics = calculate_three_session_path(
+                                row,
+                                bars_by_symbol.get(str(row["symbol"]).upper(), []),
+                                parse_ts=module._parse_ts, now=now, calendar=calendar,
+                            )
+                            cur.execute(
+                                """
+                                UPDATE or_signal_outcomes
+                                SET mfe_3d=%s,mae_3d=%s,mfe_3d_ts=%s,mae_3d_ts=%s,
+                                    time_to_mfe_3d_sessions=%s,time_to_mae_3d_sessions=%s,
+                                    metadata=metadata || %s,updated_at=now()
+                                WHERE id=%s
+                                """,
+                                (
+                                    metrics["mfe_3d"],
+                                    metrics["mae_3d"],
+                                    metrics["mfe_3d_ts"],
+                                    metrics["mae_3d_ts"],
+                                    metrics["time_to_mfe_3d_sessions"],
+                                    metrics["time_to_mae_3d_sessions"],
+                                    module.Jsonb(
+                                        {
+                                            "three_session_path_evaluated_at": now.isoformat(),
+                                            "three_session_path_error": None,
+                                            "three_session_path_bar_count": metrics["bar_count"],
+                                            "three_session_path_matured": metrics["matured"],
+                                            "three_session_path_resolution": "1Day",
+                                            "three_session_path_contract": PATH_CONTRACT_VERSION,
+                                            "three_session_calendar_verified": metrics["calendar_verified"],
+                                            "calibration_window_end_ts": metrics["window_end_ts"].isoformat() if metrics["window_end_ts"] else None,
+                                            "profit_proxy_3d": metrics["profit_proxy"],
+                                            "thesis_invalidation_status": "not_assessed",
+                                        }
+                                    ),
+                                    row["id"],
                                 ),
-                                row["id"],
-                            ),
-                        )
-                        updated += 1
-                        matured += 1 if metrics["matured"] else 0
-                    except Exception:
+                            )
+                            updated += 1
+                            matured += 1 if metrics["matured"] else 0
+                    except Exception as exc:
                         module.logger.exception(
                             "Three-session path calculation failed for %s",
                             row.get("symbol"),
+                        )
+                        cur.execute(
+                            "UPDATE or_signal_outcomes SET metadata=metadata || %s,updated_at=now() WHERE id=%s",
+                            (module.Jsonb({"three_session_path_evaluated_at": now.isoformat(),
+                                           "three_session_path_error": type(exc).__name__}), row["id"]),
                         )
                         errors += 1
             conn.commit()

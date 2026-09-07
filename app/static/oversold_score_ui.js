@@ -229,10 +229,10 @@
       const d = await res.json();
       const calibrated = d.model_status === 'calibrated';
       status.textContent = `Model status: ${calibrated ? 'Calibrated' : 'Uncalibrated'}`;
-      text.textContent = calibrated ? 'Target: +5% from signal price within 6 weeks. New signals receive the passed empirical probability mapping.' : 'Target: +5% from signal price within 6 weeks. Score v3.2 uses explicit cause, spike, dilution and structural-risk gates; no % probability is shown until calibration quality gates pass.';
+      text.textContent = calibrated ? 'Target: reversion within 3 trading sessions. New signals receive the passed empirical probability mapping.' : 'Target: reversion within 3 trading sessions. The current research score is not a probability; no % probability is shown until calibration quality gates pass.';
     } catch (_) {
       status.textContent = 'Model status: unavailable';
-      text.textContent = 'Target: +5% from signal price within 6 weeks.';
+      text.textContent = 'Target: reversion within 3 trading sessions.';
     }
   }
 
@@ -242,7 +242,7 @@
     const banner = document.createElement('div');
     banner.id = 'or-model-banner';
     banner.className = 'or-model-banner';
-    banner.innerHTML = `<span class="or-model-status" id="or-banner-status">Model status: Checking…</span><span class="muted" id="or-banner-text">Target: +5% from signal price within 6 weeks.</span><button class="or-diagnostics-button" id="or-open-diagnostics">Model diagnostics</button>`;
+    banner.innerHTML = `<span class="or-model-status" id="or-banner-status">Model status: Checking…</span><span class="muted" id="or-banner-text">Target: reversion within 3 trading sessions.</span><button class="or-diagnostics-button" id="or-open-diagnostics">Model diagnostics</button>`;
     notice.appendChild(banner);
     document.getElementById('or-open-diagnostics')?.addEventListener('click', openDiagnostics);
     refreshModelBanner();
@@ -286,7 +286,7 @@
           <div class="or-diag-card">Missing fundamentals<strong>${html(s.missing_fundamentals_count || 0)}</strong></div>
           <div class="or-diag-card">Enrichment failures<strong>${html(s.enrichment_failure_count || 0)}</strong></div>
         </div>
-        <div><b>${calibrated ? 'Calibration state' : 'Why probability is not enabled'}</b><br>${listText(d.calibration_reasons, calibrated ? 'A passed calibration is active for new signals.' : 'Configured calibration gates have passed.')}</div>
+        <div><b>${calibrated ? 'Calibration state' : 'Why probability is not enabled'}</b><br>${listText(d.calibration_reasons, calibrated ? 'A passed calibration is active for new signals.' : 'A validated calibration is not yet available.')}</div>
         <div style="margin-top:12px"><b>Performance by score bucket</b>${diagnosticTable(d.score_buckets)}</div>
         <div style="margin-top:12px"><b>Current versions</b><br>${html(d.contract?.versions?.scoring_model_version || '—')} · ${html(d.contract?.versions?.scoring_config_version || '—')} · calibration ${html(d.active_calibration_model_version || 'not active')}</div>
         <div style="margin-top:8px"><b>Catalyst backend</b><br>${html(d.catalyst_backend || '—')}. ${html(d.calibration_guard || '')}</div>`;

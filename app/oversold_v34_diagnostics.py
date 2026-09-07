@@ -46,7 +46,7 @@ def _reliability_summary() -> dict[str, Any]:
                   round(avg((calculation_trace#>>'{v3_4_reliability,base_v33_score}')::numeric),2) AS average_base_v33_score,
                   round(avg(final_score)::numeric,2) AS average_conservative_score,
                   round(avg(
-                    (calculation_trace#>>'{v3_4_reliability,base_v33_score}')::numeric - final_score
+                    (calculation_trace#>>'{v3_4_reliability,base_v33_score}')::numeric - final_score::numeric
                   ),2) AS average_reliability_haircut,
                   count(*) FILTER (WHERE verdict='INVESTIGATE') AS investigate_signals,
                   count(*) FILTER (WHERE verdict='WATCH') AS watch_signals,
