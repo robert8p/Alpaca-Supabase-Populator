@@ -97,7 +97,8 @@
     refresh();
   }
   function loadResearchColumns() {
-    if (root.location?.pathname !== '/oversold' || root.document.getElementById('or-research-columns-script')) return;
+    const path = root.location?.pathname;
+    if (!['/oversold', '/oversold-v2'].includes(path) || root.document.getElementById('or-research-columns-script')) return;
     const script = root.document.createElement('script');
     script.id = 'or-research-columns-script';
     script.src = '/static/oversold_fundamental_columns.js?v=1';
