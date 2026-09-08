@@ -23,6 +23,11 @@ from .oversold_clinicaltrials_search_compat import patch_module as _patch_clinic
 from .oversold_primary_evidence_compat import patch_module as _patch_primary_evidence_compat
 from .oversold_primary_evidence_scoring import patch_module as _patch_primary_evidence_scoring
 from .oversold_regulatory_evidence_v2 import patch_module as _patch_regulatory_evidence_v2
+from .oversold_research_metrics import (
+    patch_scan_module as _patch_research_metrics_scan,
+    patch_scoring_module as _patch_research_metrics_scoring,
+    patch_v2_module as _patch_research_metrics_v2,
+)
 from .oversold_scoring_v32_compat import patch_module as _patch_v32
 from .oversold_scoring_v33 import patch_module as _patch_v33
 from .oversold_scoring_v33_compat import patch_module as _patch_v33_compat
@@ -83,6 +88,9 @@ _patch_v36_subject_attribution(_oversold_scoring)
 _patch_v37_local_attribution(_oversold_scoring)
 _patch_v38_evidence_integrity(_oversold_scoring)
 _patch_v39(_oversold_scoring)
+# Additive display/research metrics wrap the already-installed SEC enrichment.
+# They do not alter any scoring component or gate.
+_patch_research_metrics_scoring(_oversold_scoring)
 
 # Install defensive JSON normalization, primary-evidence persistence and the
 # explicit three-session target before the scanner imports the store function.
@@ -99,18 +107,21 @@ _patch_tracking_day3(_oversold_tracking)
 # of pure pytest collection, matching the existing application's isolation model.
 if "pytest" not in sys.modules:
     from . import oversold as _oversold_scan
+    from . import oversold_scan_v33 as _oversold_scan_v33_module
     from . import oversold_v2 as _oversold_v2
     from .oversold_primary_evidence_runtime import patch_module as _patch_primary_evidence_runtime
     from .oversold_scan_v33 import patch_module as _patch_scan_v33
     from .oversold_scan_v33_compat import patch_module as _patch_scan_v33_compat
 
     _patch_scan_v33_compat(_oversold_scan)
+    _patch_research_metrics_scan(_oversold_scan_v33_module, _oversold_sec)
     _patch_scan_v33(_oversold_scan)
     _patch_primary_evidence_runtime(_oversold_scan)
     # V2 imports execute_scan by value before the scanner wrappers are installed.
     # Rebind so every entry point uses the broad pool and primary-evidence engine.
     _oversold_v2.execute_canonical_scan = _oversold_scan.execute_scan
     _patch_v2_session_filter(_oversold_v2)
+    _patch_research_metrics_v2(_oversold_v2)
 
     # Patch evaluation before the scheduler imports its function references.
     from . import oversold_evaluation as _oversold_evaluation
