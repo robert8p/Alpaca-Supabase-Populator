@@ -96,6 +96,19 @@
     button.addEventListener('click', refresh);
     refresh();
   }
-  if (root.document.readyState === 'loading') root.document.addEventListener('DOMContentLoaded', boot, {once:true});
-  else boot();
+  function loadResearchColumns() {
+    if (root.location?.pathname !== '/oversold' || root.document.getElementById('or-research-columns-script')) return;
+    const script = root.document.createElement('script');
+    script.id = 'or-research-columns-script';
+    script.src = '/static/oversold_fundamental_columns.js?v=1';
+    script.defer = true;
+    root.document.head.appendChild(script);
+  }
+  if (root.document.readyState === 'loading') {
+    root.document.addEventListener('DOMContentLoaded', boot, {once:true});
+    root.document.addEventListener('DOMContentLoaded', loadResearchColumns, {once:true});
+  } else {
+    boot();
+    loadResearchColumns();
+  }
 })(typeof window === 'undefined' ? globalThis : window);
