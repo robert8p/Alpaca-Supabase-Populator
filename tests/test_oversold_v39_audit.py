@@ -150,10 +150,12 @@ def test_prompt_contains_critical_cutoff_and_allocation_constraints():
     root = Path(__file__).resolve().parents[1]
     rules = (root/'app/static/oversold_audit_rules.txt').read_text()
     assert 'Missing cutoff/source version' in rules
-    assert 'dated source required' in rules
+    assert 'THREE-SESSION REVERSION-PATH assessment' in rules
     assert '3 EXCHANGE trading sessions' in rules
-    assert 'No Buy-or-better robust INVESTIGATE candidates; no allocation.' in rules
+    assert 'No robust INVESTIGATE candidates with a credible three-session reversion path; no allocation.' in rules
     assert 'Unknown mandatory facts imply 0%' in rules
+    assert 'never mandatory and must not gate eligibility or allocation' in rules
+    assert 'Buy-or-better' not in rules
     assert 'not 35 independent observations' in rules
     for script in ['oversold_chatgpt_v35.js', '../oversold_v2.py']:
         assert 'oversold_audit_rules.txt' in (root/'app/static'/script).read_text()
@@ -175,9 +177,10 @@ vm.runInContext(fs.readFileSync('app/static/oversold_chatgpt_v35.js','utf8'),con
 (async()=>{
   await Promise.resolve();await Promise.resolve();await Promise.resolve();await Promise.resolve();
   const output=context.window.buildOversoldComparisonPrompt([{symbol:'TEST',evidence_cutoff:'2026-09-04T20:00:00Z',scoring_model_version:'v3_9'}, {symbol:'MISS'}]);
-  for(const required of ['2026-09-04T20:00:00Z','cutoff=MISSING','NOT VERIFIED IN EXPORT','No Buy-or-better robust INVESTIGATE candidates; no allocation.']){
+  for(const required of ['2026-09-04T20:00:00Z','cutoff=MISSING','three-session fit index=unknown','No robust INVESTIGATE candidates with a credible three-session reversion path; no allocation.']){
     if(!output.includes(required))throw Error('missing '+required);
   }
+  if(output.includes('Buy-or-better'))throw Error('deprecated analyst gate present');
   console.log('browser-prompt-ok');
 })().catch(e=>{console.error(e);process.exitCode=1;});
 '''

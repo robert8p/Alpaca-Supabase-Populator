@@ -2,10 +2,10 @@
   if (window.__orV39ChatGPTInstalled) return;
   window.__orV39ChatGPTInstalled = true;
   const CHATGPT='https://chatgpt.com/?q=';
-  const RULES='/static/oversold_audit_rules.txt?v=39';
+  const RULES='/static/oversold_audit_rules.txt?v=40';
   const fmt=(v,d=1)=>v==null||!Number.isFinite(Number(v))?'unknown':Number(v).toFixed(d);
   const clip=(v,n=220)=>String(v??'unknown').replace(/\s+/g,' ').slice(0,n);
-  const fallback='Audit original signals only at each stated cutoff. If cutoff or dated evidence is missing, do not reconstruct facts. Scores are uncalibrated, not probabilities. Require independently verified Buy-or-better as-of consensus, INVESTIGATE, provenance, event timing, financial impact, stability and execution before hypothetical allocation. Unknowns get 0%. Maximum hold 3 exchange trading sessions. If none qualify: No Buy-or-better robust INVESTIGATE candidates; no allocation.';
+  const fallback='Audit original signals only at each stated cutoff. If cutoff or dated evidence is missing, do not reconstruct facts. Scores are uncalibrated, not probabilities. Require independent INVESTIGATE, a credible cutoff-valid three-session reversion path, provenance, event timing, financial impact, stability and execution before hypothetical allocation. Analyst ratings/consensus are secondary context only and never an allocation gate. Unknowns get 0%. Maximum hold 3 exchange trading sessions. If none qualify: No robust INVESTIGATE candidates with a credible three-session reversion path; no allocation.';
   let rules=fallback;
   const ready=fetch(RULES,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.text();}).then(text=>{rules=text;}).catch(()=>{});
   const analysis=c=>c.catalyst_analysis||{};
@@ -17,7 +17,7 @@
       `move=${fmt(c.drop_pct)}%; score=${fmt(c.reversion_score??c.final_score)}; p10=${fmt(e.ensemble_p10)}; p25=${fmt(e.robust_lower_score)}; median=${fmt(e.ensemble_median)}; basis=${e.quantile_basis||'LEGACY MIXED / UNVERIFIED'}; app=${c.model_verdict||c.verdict||'unknown'}\n`+
       `weights=${fmt(e.weight_stability_score,0)} (${e.weight_sensitivity_status||'legacy clipped proxy'}); raw range=${fmt(e.base_weight_range)}; component adverse drop=${fmt(e.maximum_component_dependency)}; stress=${e.scenario_policy_pass_count??'untested'}/${e.scenario_policy_denominator??'unknown'}; source test=${source.status||'NOT RUN'} worst=${fmt(source.worst_score)} max loss=${fmt(source.maximum_score_drop)}\n`+
       `article recency index=${fmt(r.event_alignment?.score,0)}; event timing=${JSON.stringify(a.event_context||{timing_status:'UNKNOWN'})}; accounts coverage=${fmt(r.fundamental_data_quality?.score,0)}; financial-strength index=${fmt(a.survivability_score)}; tail=${fmt(a.tail_risk_score)}\n`+
-      `friction proxy=${fmt(a.estimated_round_trip_friction_pct,2)}%; execution=${JSON.stringify(execution)}; as-of analyst consensus=NOT VERIFIED IN EXPORT; unique model failures=${[...new Set(a.failed_eligibility_gates||[])].join(',')||'none reported'}\n`+
+      `friction proxy=${fmt(a.estimated_round_trip_friction_pct,2)}%; execution=${JSON.stringify(execution)}; three-session fit index=${fmt(a.three_session_fit_score)}; reversibility index=${fmt(a.reversibility_score)}; unique model failures=${[...new Set(a.failed_eligibility_gates||[])].join(',')||'none reported'}\n`+
       `Provenance: ${JSON.stringify(p.clusters||[])}\nRetained claims: ${JSON.stringify((a.source_claims||[]).slice(0,8))}`;
   }
   function build(candidates){return `${rules}\n\n${candidates.map(row).join('\n\n')}`;}
