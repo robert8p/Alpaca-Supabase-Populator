@@ -178,7 +178,6 @@ def _fundamental_quality(row: dict[str, Any]) -> tuple[str, dict[str, Any], dict
         prefix = "Limited"
     return f"{prefix} · {label}", metrics, metadata
 
-
 def _price_context(row: dict[str, Any]) -> dict[str, Any]:
     analysis = _analysis(row)
     context = _dict(analysis.get("price_session_context"))
@@ -474,7 +473,7 @@ def _build_chatgpt_prompt(detail: dict[str, Any], *, compact: bool = False) -> s
                         f"{candidate.get('latest_move_pct')}% latest ({session}); robust score {candidate.get('oversold_score')}/100; "
                         f"app view {candidate.get('initial_view')}; cause {candidate.get('cause_status')} / {candidate.get('catalyst_class')}; "
                         f"financial-strength index {candidate.get('fundamental_survivability')}, reversibility index {candidate.get('catalyst_reversibility')}, "
-                        f"damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}; "
+                        f"three-session fit {candidate.get('three_session_fit_score')}, damage {candidate.get('impairment_risk')}, confidence {candidate.get('confidence')}; "
                         f"fundamentals {candidate.get('fundamental_quality')}; risks {risk_flags}; failed gates {failed_gates}."
                     ),
                     f"Catalyst: {_truncate(candidate.get('catalyst_summary'), 240)}",
@@ -522,10 +521,10 @@ def _build_launch_prompt(detail: dict[str, Any]) -> str:
     candidates = list(detail.get("candidates") or [])[:10]
     scan = _dict(detail.get("scan"))
     lines = [
-        "Audit original Oversold Reversion signals without hindsight. Use only evidence published by each cutoff and cite it. All scores, survival and reversal components are uncalibrated indices, not probabilities. Rank INVESTIGATE/WATCH/PASS by cause, lasting damage, financial strength, reversion mechanism and net reward/risk. A filing or analyst reaction alone does not establish temporary damage. If price target/invalidation/cost evidence is missing, say net reward/risk is unestablished.",
+        "Audit original Oversold Reversion signals without hindsight. Use only evidence published by each cutoff and cite it. All scores, survival and reversal components are uncalibrated indices, not probabilities. Rank INVESTIGATE/WATCH/PASS by cause, lasting damage, financial strength, three-session reversion path and net reward/risk. Analyst ratings/consensus are secondary context only, never an eligibility or allocation gate. If price target/invalidation/cost evidence is missing, say net reward/risk is unestablished.",
         f"Original model: {_truncate(scan.get('scoring_model_version') or 'not retained', 70)}; target: {_truncate(scan.get('target_definition') or 'not retained', 80)}.",
     ]
-    lines.insert(0, "Hypothetical allocation requires dated as-of Buy-or-better consensus AND independent INVESTIGATE AND verified provenance, timing, event financial quality, weight/source stability and execution. Unknown mandatory facts get 0%. At most 3 exchange trading sessions. Qualifying stock sleeve sums to 100.0%; otherwise: No Buy-or-better robust INVESTIGATE candidates; no allocation. This compact handoff omits evidence; paste the copied full audit before reaching a conclusion.")
+    lines.insert(0, "Hypothetical allocation requires independent INVESTIGATE AND a credible cutoff-valid three-session reversion path AND verified provenance, timing, event financial quality, weight/source stability and execution. Unknown mandatory facts get 0%. At most 3 exchange trading sessions. Qualifying stock sleeve sums to 100.0%; otherwise: No robust INVESTIGATE candidates with a credible three-session reversion path; no allocation. This compact handoff omits evidence; paste the copied full audit before reaching a conclusion.")
     # Allocate a bounded row budget before adding catalyst text so a long early
     # headline cannot silently remove the tenth signal or its evidence cutoff.
     row_budget = max(0, (CHATGPT_LAUNCH_MAX_CHARS - len("\n".join(lines)) - 2 * len(candidates)) // max(1, len(candidates)))
@@ -533,7 +532,7 @@ def _build_launch_prompt(detail: dict[str, Any]) -> str:
         core = (
             f"{candidate['rank']}. {candidate['symbol']}: move {candidate.get('drop_pct')}%, score {candidate.get('oversold_score')}, "
             f"{candidate.get('initial_view')}, cause {_truncate(candidate.get('cause_status'), 28)}/{_truncate(candidate.get('catalyst_class'), 35)}, "
-            f"strength {candidate.get('fundamental_survivability')}, reversal {candidate.get('catalyst_reversibility')}, damage {candidate.get('impairment_risk')}, "
+            f"strength {candidate.get('fundamental_survivability')}, reversal {candidate.get('catalyst_reversibility')}, three-session fit {candidate.get('three_session_fit_score')}, damage {candidate.get('impairment_risk')}, "
             f"friction {candidate.get('execution_friction_pct')}%, cutoff {candidate.get('evidence_cutoff')}"
         )
         remaining = row_budget - len(core) - len(". Catalyst: ")
