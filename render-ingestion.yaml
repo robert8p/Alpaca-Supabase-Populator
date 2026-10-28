@@ -16,7 +16,7 @@ services:
     maxShutdownDelaySeconds: 60
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.16
+        value: 3.12.15
       - key: ASTRA_INGESTION_PROJECT_REF
         value: oxzabweahkoimtevbbny
       - key: ASTRA_INGESTION_DATABASE_URL
@@ -39,7 +39,7 @@ services:
     numInstances: 1
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.16
+        value: 3.12.15
       - key: ASTRA_INGESTION_PROJECT_REF
         value: oxzabweahkoimtevbbny
       - key: ASTRA_INGESTION_DATABASE_URL

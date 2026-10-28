@@ -49,6 +49,16 @@ certify full historical market coverage, historical identity resolution,
 financial reconstruction, point-in-time research suitability or strategy
 validity. Those remain separate mission stages.
 
+## CI qualification
+
+The ingestion workflow passed all 77 tests with zero skips on commit
+`a0932015ff1085607d22ee6b5c33b2d3c1cc0516`, including 10 PostgreSQL and 8 ASGI API
+tests. See [the retained CI evidence](evidence/ci-qualification.json) and
+[the successful run](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40762186249).
+The disposable CI database is not evidence of live Supabase role, TLS, provider
+or hosted recovery qualification. The deployment candidate pins Python 3.12.15,
+the interpreter version used by that successful run.
+
 ## Local qualification
 
 Python 3.12 is used for the candidate. The reference suite needs no third-party
@@ -139,6 +149,8 @@ render-ingestion.yaml proposes two new services in Frankfurt with automatic
 deployment disabled. It does not modify the existing render.yaml or reference
 the suspended loader services. Validate it using the current Render CLI/API,
 confirm current pricing and total commitments, and bind secrets before applying.
+Select the custom Blueprint path render-ingestion.yaml and set Blueprint Auto Sync
+to No; do not use the repository's legacy root render.yaml.
 The named branch is the isolated release branch. Its presence does not establish
 a successful deployment; retain the exact qualified commit and deployment result.
 

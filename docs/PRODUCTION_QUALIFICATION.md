@@ -25,6 +25,19 @@ Keep any later test result attached to its exact source revision and command.
 Do not carry these counts forward after changing the candidate without rerunning
 the affected checks.
 
+## Subsequent CI qualification
+
+The [ingestion CI run](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40762186249)
+completed successfully for commit `a0932015ff1085607d22ee6b5c33b2d3c1cc0516`.
+All **77 tests passed with zero skips**, including all **10 PostgreSQL** and
+**8 ASGI API** tests. Python was 3.12.15 and PostgreSQL was the disposable
+PostgreSQL 17 service supplied by the workflow. Retained machine-readable
+evidence is in `evidence/ci-qualification.json`.
+
+This supersedes the missing-adapter portion of the earlier local result. It does
+not establish live Supabase permissions, RLS/TLS, provider entitlement, hosting,
+useful-progress monitoring or completed live ingestion.
+
 ## Verified database identity
 
 The following metadata was returned by connected Supabase tools at approximately
@@ -85,9 +98,9 @@ Complete independent permitted work while those affected units remain held.
 
 | Gate | Required evidence | Current status |
 | --- | --- | --- |
-| Exact source publication | Repository commit and readback of the complete diff, followed by checks for that exact commit | Branch created; qualify the exact candidate commit and its CI checks |
-| PostgreSQL behaviour | All ten PostgreSQL tests run without skips against the explicit disposable local test database; CI job URL and complete result | Not run in this environment |
-| ASGI behaviour | All eight production API tests run without skips with the pinned runtime dependencies | Not run in this environment |
+| Exact source publication | Repository commit and readback of the complete diff, followed by checks for that exact commit | Candidate published; successful ingestion CI linked above |
+| PostgreSQL behaviour | All ten PostgreSQL tests run without skips against the explicit disposable local test database; CI job URL and complete result | Passed in the linked disposable CI run |
+| ASGI behaviour | All eight production API tests run without skips with the pinned runtime dependencies | Passed in the linked disposable CI run |
 | Target and scope | Explicit binding to the intended current project, exact manifest and retained current holds | Project identity observed; current business controls unverified |
 | Schema and role admission | Review and execution of the new isolated schema migration; schema-scoped runtime role; positive and negative permission probes | Not run against production |
 | Provider connectivity | Dedicated valid Alpaca credentials, SIP entitlement, bounded successful real API request, no secret disclosure | Not run |
