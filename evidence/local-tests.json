@@ -1,0 +1,88 @@
+{
+  "schema": "astra.ingestion.local-qualification/1",
+  "observed_at": "2026-10-28T18:57:37.527631+00:00",
+  "origin": "LOCAL_SYNTHETIC_REFERENCE",
+  "backend": "SQLite reference adapter",
+  "tests_discovered": 77,
+  "passed": 59,
+  "failed": 0,
+  "errors": 0,
+  "skipped": [
+    {
+      "test": "test_authentication_assets_and_duplicate_credentials (test_asgi.ASGITests.test_authentication_assets_and_duplicate_credentials)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_body_bounds_and_json_contract (test_asgi.ASGITests.test_body_bounds_and_json_contract)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_control_headers_and_origin_are_enforced (test_asgi.ASGITests.test_control_headers_and_origin_are_enforced)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_health_is_public_minimal_and_truthful (test_asgi.ASGITests.test_health_is_public_minimal_and_truthful)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_job_submission_is_idempotent_and_scope_bound (test_asgi.ASGITests.test_job_submission_is_idempotent_and_scope_bound)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_pause_resume_cancel_use_real_store_and_require_empty_objects (test_asgi.ASGITests.test_pause_resume_cancel_use_real_store_and_require_empty_objects)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_production_password_and_https_origin (test_asgi.ASGITests.test_production_password_and_https_origin)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_storage_errors_are_sanitized (test_asgi.ASGITests.test_storage_errors_are_sanitized)",
+      "reason": "ASGI qualification NOT_RUN: pinned FastAPI and httpx dependencies are unavailable"
+    },
+    {
+      "test": "test_changed_target_values_fail_despite_equal_record_counts (test_postgres.PostgreSQLQualificationTests.test_changed_target_values_fail_despite_equal_record_counts)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_corrupt_source_receipt_prevents_verification (test_postgres.PostgreSQLQualificationTests.test_corrupt_source_receipt_prevents_verification)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_expired_during_write_rolls_back_effects_and_checkpoint (test_postgres.PostgreSQLQualificationTests.test_expired_during_write_rolls_back_effects_and_checkpoint)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_idempotency_and_database_enforced_scope_immutability (test_postgres.PostgreSQLQualificationTests.test_idempotency_and_database_enforced_scope_immutability)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_missing_and_unexpected_target_keys_are_both_reported (test_postgres.PostgreSQLQualificationTests.test_missing_and_unexpected_target_keys_are_both_reported)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_page_effect_checkpoint_and_fresh_connection_readback (test_postgres.PostgreSQLQualificationTests.test_page_effect_checkpoint_and_fresh_connection_readback)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_pause_and_cancel_fence_inflight_claims (test_postgres.PostgreSQLQualificationTests.test_pause_and_cancel_fence_inflight_claims)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_primary_key_corruption_is_detected (test_postgres.PostgreSQLQualificationTests.test_primary_key_corruption_is_detected)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_process_crash_after_commit_recovers_without_source_replay (test_postgres.PostgreSQLQualificationTests.test_process_crash_after_commit_recovers_without_source_replay)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    },
+    {
+      "test": "test_replaced_owner_cannot_commit_or_record_a_late_failure (test_postgres.PostgreSQLQualificationTests.test_replaced_owner_cannot_commit_or_record_a_late_failure)",
+      "reason": "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set"
+    }
+  ],
+  "postgres_qualification": "NOT_RUN",
+  "asgi_runtime_qualification": "NOT_RUN",
+  "live_provider_qualification": "NOT_RUN",
+  "deployed": "NO"
+}

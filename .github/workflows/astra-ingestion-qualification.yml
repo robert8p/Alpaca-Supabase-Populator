@@ -1,0 +1,72 @@
+name: ASTRA ingestion qualification
+
+on:
+  pull_request:
+    paths:
+      - 'astra_ingestion/**'
+      - 'tests/ingestion/**'
+      - '.github/workflows/astra-ingestion-qualification.yml'
+      - 'requirements-ingestion*.txt'
+  push:
+    branches:
+      - main
+      - feat/astra-ingestion-service
+    paths:
+      - 'astra_ingestion/**'
+      - 'tests/ingestion/**'
+      - '.github/workflows/astra-ingestion-qualification.yml'
+      - 'requirements-ingestion*.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: astra-ingestion-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    name: Bounded ingestion and PostgreSQL recovery
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: astra_ingestion_qualification
+          POSTGRES_USER: astra_test
+          POSTGRES_PASSWORD: disposable-ci-test-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U astra_test -d astra_ingestion_qualification"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      # Disposable local service credentials only. No production secrets or
+      # remote database targets are read by this qualification workflow.
+      ASTRA_INGESTION_POSTGRES_TEST_URL: postgresql://astra_test:disposable-ci-test-password@127.0.0.1:5432/astra_ingestion_qualification
+    steps:
+      - name: Check out the candidate source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Set up Node for JavaScript syntax checks
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned runtime and ASGI test dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-ingestion-dev.txt
+      - name: Require production adapters before qualification
+        run: python -c "import fastapi, httpx, uvicorn, psycopg"
+      - name: Run all ingestion qualification tests
+        run: python -m unittest discover -s tests/ingestion -p 'test_*.py' -v
+      - name: Check application syntax
+        run: |
+          python -m compileall -q astra_ingestion
+          node --check astra_ingestion/static/app.js

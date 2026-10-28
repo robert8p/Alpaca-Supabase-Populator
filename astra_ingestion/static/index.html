@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ASTRA Ingestion</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div><p class="eyebrow">DATA OPERATIONS</p><h1>ASTRA Ingestion</h1><p class="subtitle">A clear account of what arrived, what passed verification and what needs attention.</p></div>
+      <div class="connection"><span id="connection-dot"></span><span id="connection-label">Connecting</span><button id="refresh" class="quiet" type="button">Refresh</button></div>
+    </header>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="metrics" aria-label="Workload summary">
+      <article><span>Jobs</span><strong id="metric-total">—</strong></article>
+      <article><span>In progress</span><strong id="metric-active">—</strong></article>
+      <article><span>Delivery verified</span><strong id="metric-verified">—</strong></article>
+      <article><span>Needs attention</span><strong id="metric-attention">—</strong></article>
+    </section>
+    <section class="panel" aria-labelledby="new-job-title">
+      <div class="panel-heading"><div><p class="eyebrow">BOUNDED WORKLOAD</p><h2 id="new-job-title">Start an ingestion job</h2></div><span class="tag">Alpaca · SIP · Raw</span></div>
+      <form id="job-form">
+        <div class="form-grid">
+          <label>Job name<input id="job-name" name="name" value="Historical bars verification" maxlength="120" required></label>
+          <label>Symbols<input id="symbols" name="symbols" value="AAPL, MSFT" required aria-describedby="symbol-help"><small id="symbol-help">Up to 10 explicit symbols, separated by commas.</small></label>
+          <label>Start · UTC<input id="start" name="start" type="datetime-local" value="2025-09-02T13:30" min="2025-09-01T00:00" max="2026-07-31T23:59" required></label>
+          <label>End · UTC, exclusive<input id="end" name="end" type="datetime-local" value="2025-09-02T20:00" min="2025-09-01T00:01" max="2026-08-01T00:00" required></label>
+          <label>Bar interval<select id="timeframe" name="timeframe"><option value="1Min">1 minute</option><option value="5Min" selected>5 minutes</option><option value="15Min">15 minutes</option><option value="1Hour">1 hour</option></select></label>
+          <div class="form-action"><button type="submit" id="submit-job" class="primary">Create job</button></div>
+        </div>
+        <p class="help">Each job covers at most seven days within 1 September 2025–31 July 2026. All returned bars inside the exact UTC window are retained; no trading-session filter is applied.</p>
+      </form>
+    </section>
+    <section class="panel" aria-labelledby="jobs-title">
+      <div class="panel-heading"><div><p class="eyebrow">DURABLE PROGRESS</p><h2 id="jobs-title">Ingestion jobs</h2></div><span id="last-refresh" class="muted">Waiting for first refresh</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Job</th><th>Execution</th><th>Verification</th><th>Records</th><th>Last progress</th></tr></thead><tbody id="jobs-body"><tr><td colspan="5" class="empty">Loading jobs…</td></tr></tbody></table></div>
+    </section>
+    <section id="detail" class="panel" aria-labelledby="detail-title" hidden>
+      <div class="panel-heading"><div><p class="eyebrow">SELECTED JOB</p><h2 id="detail-title"></h2><p id="detail-subtitle" class="muted"></p></div><div class="controls"><button data-control="pause" class="quiet" type="button">Pause</button><button data-control="resume" class="quiet" type="button">Resume</button><button data-control="cancel" class="danger" type="button">Cancel</button></div></div>
+      <div id="detail-error" class="notice warning" hidden></div>
+      <dl id="detail-facts" class="facts"></dl>
+      <p class="scope"><span>Scope fingerprint</span><code id="scope-hash"></code></p>
+      <h3>Partitions</h3>
+      <div class="table-wrap"><table><thead><tr><th>Symbol / window</th><th>Execution</th><th>Verification</th><th>Pages / records</th><th>Retry / blocker</th></tr></thead><tbody id="partitions-body"></tbody></table></div>
+      <h3>Recent events</h3><ol id="events" class="events"></ol>
+    </section>
+    <footer><strong>What verification means</strong><p>Delivery verification compares retained source evidence with the records stored for this job. It does not establish complete historical coverage, resolve security identities or certify a research dataset. Missing and held work remains visible.</p></footer>
+  </main>
+</body>
+</html>
