@@ -7,6 +7,10 @@ on:
       - 'tests/ingestion/**'
       - '.github/workflows/astra-ingestion-qualification.yml'
       - 'requirements-ingestion*.txt'
+      - 'sql/astra_ingestion_roles.sql'
+      - 'sql/astra_ingestion_schema_v1.sql'
+      - 'sql/astra_ingestion_rpc_v1.sql'
+      - 'sql/astra_ingestion_rpc_auth_context_v1.sql'
   push:
     branches:
       - main
@@ -16,6 +20,10 @@ on:
       - 'tests/ingestion/**'
       - '.github/workflows/astra-ingestion-qualification.yml'
       - 'requirements-ingestion*.txt'
+      - 'sql/astra_ingestion_roles.sql'
+      - 'sql/astra_ingestion_schema_v1.sql'
+      - 'sql/astra_ingestion_rpc_v1.sql'
+      - 'sql/astra_ingestion_rpc_auth_context_v1.sql'
 
 permissions:
   contents: read

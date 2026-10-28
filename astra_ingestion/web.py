@@ -230,7 +230,8 @@ def main():
     settings = Settings.from_env()
     if not settings.test_mode:
         raise SystemExit("Use python -m astra_ingestion.serve for production")
-    server = make_server(settings, Store(settings.database_url), host=settings.host, port=settings.port)
+    from .rpc_store import create_store
+    server = make_server(settings, create_store(settings), host=settings.host, port=settings.port)
     try:
         server.serve_forever(poll_interval=0.5)
     except KeyboardInterrupt:

@@ -109,7 +109,8 @@ def main():
     settings = Settings.from_env(require_web_auth=False)
     if not settings.api_key or not settings.secret_key:
         raise SystemExit("Dedicated provider credentials are required")
-    store = Store(settings.database_url, test_mode=settings.test_mode)
+    from .rpc_store import create_store
+    store = create_store(settings)
     store.health()
     worker = Worker(store, AlpacaSource(settings.api_key, settings.secret_key), lease_seconds=settings.lease_seconds)
     stop = threading.Event()

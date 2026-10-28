@@ -1,5 +1,5 @@
 # Candidate configuration. Requires qualified commit, scoped credentials,
-# database migration/role verification, financial admission and live canary.
+# restricted RPC verification, financial admission and live canary.
 # It creates two NEW services; it does not resume or change the legacy loader.
 services:
   - type: web
@@ -19,7 +19,11 @@ services:
         value: 3.12.15
       - key: ASTRA_INGESTION_PROJECT_REF
         value: oxzabweahkoimtevbbny
-      - key: ASTRA_INGESTION_DATABASE_URL
+      - key: ASTRA_INGESTION_API_URL
+        value: https://oxzabweahkoimtevbbny.supabase.co
+      - key: ASTRA_INGESTION_PUBLISHABLE_KEY
+        sync: false
+      - key: ASTRA_INGESTION_RPC_TOKEN
         sync: false
       - key: ASTRA_INGESTION_USERNAME
         value: rob
@@ -42,7 +46,11 @@ services:
         value: 3.12.15
       - key: ASTRA_INGESTION_PROJECT_REF
         value: oxzabweahkoimtevbbny
-      - key: ASTRA_INGESTION_DATABASE_URL
+      - key: ASTRA_INGESTION_API_URL
+        value: https://oxzabweahkoimtevbbny.supabase.co
+      - key: ASTRA_INGESTION_PUBLISHABLE_KEY
+        sync: false
+      - key: ASTRA_INGESTION_RPC_TOKEN
         sync: false
       - key: APCA_API_KEY_ID
         sync: false

@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from .config import Settings
 from .models import IngestionSpec
-from .store import Store
+from .rpc_store import create_store
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,8 +18,10 @@ def main():
     status.add_argument("job_id", nargs="?")
     args = parser.parse_args()
     settings = Settings.from_env(require_web_auth=False)
-    store = Store(settings.database_url, test_mode=settings.test_mode)
+    store = create_store(settings)
     if args.command == "migrate":
+        if not settings.test_mode:
+            raise SystemExit("Production schema changes require the separately reviewed SQL migration; runtime credentials cannot migrate")
         store.migrate()
         result = store.health()
     elif args.command == "submit":

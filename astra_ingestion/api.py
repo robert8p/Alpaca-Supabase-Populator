@@ -60,10 +60,10 @@ def create_app(settings=None, store=None):
 
     from .config import Settings
     from .models import IngestionSpec
-    from .store import Store
+    from .rpc_store import create_store
 
     settings = Settings.from_env() if settings is None else settings
-    store = Store(settings.database_url, test_mode=getattr(settings, "test_mode", False)) if store is None else store
+    store = create_store(settings) if store is None else store
     username = str(settings.username).encode("utf-8")
     password = str(settings.password).encode("utf-8")
     test_mode = bool(getattr(settings, "test_mode", False))

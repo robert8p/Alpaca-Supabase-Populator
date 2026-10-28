@@ -1,0 +1,182 @@
+{
+  "project_ref": "oxzabweahkoimtevbbny",
+  "migration": "astra_ingestion_rpc_v1_20261028",
+  "migration_sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a",
+  "verification": {
+    "jobs": 0,
+    "records": 0,
+    "receipts": 0,
+    "functions": [
+      {
+        "name": "rpc_ascii_string",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "53c6a96531cc6b32c667dc08aa1ea0a93bfdd6ca077fdd5b2576fb8264fff716",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_canonical",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "b09ba8350f6f78700c6ca2545a8cee77a06882d63ef767638c7fb36d56e9f4b5",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_dispatch",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": true,
+        "anon_execute": true,
+        "source_sha256": "3866c86c65b0f50cc932cfb300219918cd78a2d630d8bc7d028976beaa0e8a4c",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_event",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "0b2d4a6e9ad9ea5f44deb0bc6f9b4ccd4e4a6f531dd95ba28722884c08a91735",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_job",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "060e903f34b4e910212be62e8156a39bba075aa8ef1ea40f932cbc633dc44c1f",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_json_unique",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "debafb99c459d5d41547598d462ee475a7214f25d95e1ad54b2ebfd59b43ffb9",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_keys",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "351e1635e50437844eb8fd1d698c803151beae01202c80d6fcee3f0e246e10bf",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_number",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "05e8f0bb00e8bd9a4007b81045f37ff8212208826693bff45d440cec7b184712",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_owned",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "2c817e26336d679fb0e682ae08296a0151809240738489664f3e577648c55d7b",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_parse_source",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "3f1744786221a7d988b96ad78ff1cd9048591c480e6937b2f751413fd66c17e8",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_public_row",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "eeb3f6889ff5e6bd53ad790425f0f311e9bf7ee485a544fa9e05109c06f22170",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_refresh",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "fd9de1a651dd4d93869c893bb57bd4407f0d1c59b36db2e9189b772d5fd5f09d",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_source_timestamp",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "d15cea6dacb002181a38e4d862dff8acb9295aebe5678ae51a2c1987be0e5ffd",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_spec",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "6d21f613b240fe2f557531b55b2ca197d58fffbf01a1f5d135289869640fb6ee",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_time",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "3cad1f988443752129aff9829e44493bb93a4d6517c3c117bffceaae3f7dfc42",
+        "authenticated_execute": false
+      },
+      {
+        "name": "rpc_timestamp",
+        "owner": "astra_ingestion_rpc_owner_v1",
+        "schema": "astra_ingestion_v1",
+        "definer": false,
+        "anon_execute": false,
+        "source_sha256": "11d682f9cd42bcae5c17c1e0a889fd581f476ed728c78ccb636f9d956660fb44",
+        "authenticated_execute": false
+      },
+      {
+        "name": "astra_ingestion_rpc_v1",
+        "owner": "postgres",
+        "schema": "public",
+        "definer": false,
+        "anon_execute": true,
+        "source_sha256": "183273577e5902cf0d57ff3286a91f723d63e8c7590ae3c6fd8cffe6fd308a49",
+        "authenticated_execute": false
+      }
+    ],
+    "owner_role": {
+      "login": false,
+      "inherit": false,
+      "create_db": false,
+      "superuser": false,
+      "bypass_rls": false,
+      "create_role": false
+    },
+    "table_count": 10,
+    "schema_version": 1,
+    "rls_table_count": 10,
+    "credential_count": 0,
+    "owner_can_create": false,
+    "anon_table_grants": 0,
+    "owner_table_count": 0,
+    "owner_can_write_credentials": false
+  },
+  "https_qualification": "PENDING"
+}
