@@ -45,6 +45,10 @@ class DenominatorEvidence:
     eligibility_sha256: str
     unit_keys_sha256: str
     explicit_unit_keys: tuple[str, ...] = ()
+    # Exact descriptive unit literal from an ORIGINAL retained family contract.
+    # Never use it to infer a company/session basis: an independently proved,
+    # complete, explicit unit-key population is required when no basis exists.
+    original_expected_unit: str | None = None
 
 
 @dataclass(frozen=True)
@@ -142,9 +146,22 @@ def plan_expected_units(
         # Shared market/macro families cannot silently become 3,000 company jobs.
         if family in SHARED_FAMILIES and basis in {"company", "company_session"}:
             raise ScopeError("shared family cannot be multiplied by company population")
-        if contracts[family].get("expected_unit_basis") != basis:
+        original = contracts[family]
+        literal = original.get("expected_unit")
+        if (definition.original_expected_unit is not None and
+                definition.original_expected_unit != literal):
+            raise ScopeError("original expected-unit literal does not match pinned contract")
+        # The actual 24 retained contracts describe 'expected_unit' in precise
+        # domain terms; none grants permission to coarsen that population to a
+        # company/session grid. The only safe path without an explicit original
+        # basis is a completely enumerated external keyset bound to that literal.
+        has_original_basis = original.get("expected_unit_basis") == basis
+        verified_explicit_literal = (basis == "explicit" and isinstance(literal, str)
+                                     and bool(literal.strip()) and
+                                     definition.original_expected_unit == literal)
+        if not (has_original_basis or verified_explicit_literal):
             states.append(FamilyExpectedUnits(family, "UNKNOWN_DENOMINATOR", None, None,
-                                             "original family contract has no matching expected-unit-basis binding"))
+                                             "original contract has no proven keyset or enumeration basis"))
             continue
         if not _digest(definition.eligibility_sha256) or not _digest(definition.unit_keys_sha256):
             raise ScopeError("applicability and unit-list evidence hashes are mandatory")
@@ -184,6 +201,7 @@ def plan_expected_units(
         plan_sha = sha256_text(canonical({
             "capture": capture.original_receipt_sha256, "family": family,
             "contract": definition.contract_sha256, "basis": basis,
+            "original_expected_unit": definition.original_expected_unit,
             "eligibility": definition.eligibility_sha256, "keys": actual_units_sha,
             "count": count, "version": 1,
         }))
