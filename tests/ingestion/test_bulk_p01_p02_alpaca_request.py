@@ -37,6 +37,8 @@ class AlpacaSeptemberRequestTests(unittest.TestCase):
             "currency": "USD", "sort": "asc", "asof": "2026-09-02",
         })
         self.assertFalse(p.provider_submission_authorized)
+        with self.assertRaises(TypeError):
+            p.request["feed"] = "iex"  # immutable after validation
         self.assertFalse(p.worker_admission_authorized)
         self.assertIn("NOT_AUTHORIZED", p.status)
 
