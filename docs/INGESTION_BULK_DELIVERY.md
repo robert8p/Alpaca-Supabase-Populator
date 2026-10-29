@@ -6,8 +6,7 @@ Unattended operation and the previously paused Top-3,000 target are approved.
 Deliver 1 August–30 September 2026 through this isolated application, all 24
 original families. Preserve D06 only. Never restart the legacy controllers or
 release financial/identity/data-quality/scientific holds. No research/trading.
-No new services, new costs, main merge or campaign extension is admitted.
-The campaign ends 2026-11-05T02:00:00Z. Main stays unmerged.
+No new services, new costs or main merge are admitted. The programme has NO expiry under the direct 29 October 2026 user amendment; the former 2026-11-05T02:00:00Z cutoff is historical, not an operating stop. Every new job still has an immutable finite original deadline and explicit budgets, cancellation and retry limits. Main stays unmerged.
 
 The prior practical membership is accepted for reuse, not invented anew. Its
 snapshot is `2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec`;
@@ -20,7 +19,31 @@ to re-create an already accepted membership or quietly certify its other fields.
 Joint completion requires DATA_ACCEPTED AND EXECUTION_ACCEPTED AND
 INDEPENDENT_REVIEW_ACCEPTED AND DELIVERY_ACCEPTED for compatible exact revisions,
 manifests and complete applicable populations. None is implied by this capture.
-The three existing tasks use SHARED EXECUTION AND ACCEPTANCE CONTRACT v1.
+The three existing tasks are governed by SHARED EXECUTION AND ACCEPTANCE CONTRACT v2; disabled task states are not proof of acceptance or permission to restart.
+
+
+## Forward-only pending migrations (source tested separately; not installed by documentation)
+
+The historical one-time capture and catalogue-repair SQL remain unchanged and MUST NOT
+be replayed. The prepared new `sql/astra_ingestion_bulk_scope_no_campaign_cutoff_v2.sql`
+performs a single exact-source preimage check against the installed capture
+function, requires the immutable 4,136-document receipt and RLS/ACL invariants,
+then replaces only the withdrawn programme-cutoff conditional. Repeating the
+migration or observing drift fails closed. A passing synthetic/CI test DOES NOT
+prove that this new SQL is installed in production. Database application requires
+the normal admitted connector operation and exact production preflight.
+
+The prepared `sql/astra_ingestion_bulk_restricted_reader_v1.sql` defines a
+NOLOGIN, NOBYPASSRLS reader principal with EXECUTE on a single bounded keyset
+SECURITY DEFINER function, no direct table grants, no provider rights and no
+credential provisioning. It remains a staged component: the actual external
+read-only actor/transport and deployed runtime integration are NOT qualified.
+Tests on disposable Postgres do not establish production actor enforcement.
+
+These independent infrastructure slices do not constitute a complete 24-family
+manifest, durable bulk queue, source acquisition, data acceptance or automatic
+successor execution. Installation, transport, adapter, worker and hosted
+recovery gates remain separately OPEN.
 
 ## Implemented slice: retained evidence, not a bulk executor
 
