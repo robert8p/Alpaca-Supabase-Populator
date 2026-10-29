@@ -94,7 +94,7 @@ class ReviewedUnitCandidateTests(unittest.TestCase):
         corrupted[1]["point_in_time_sha256"]="unverified"
         with self.assertRaisesRegex(ScopeError,"unpinned"):
             self.make(read=self.reader(corrupted))
-        with self.assertRaisesRegex(ScopeError,"page"):
+        with self.assertRaisesRegex(ScopeError,"bounded family/source plan"):
             self.make(limit=0)
 
     def test_nonascii_and_malformed_order_cannot_silently_change_jsonb_digest(self):
