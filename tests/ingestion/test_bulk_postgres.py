@@ -20,6 +20,7 @@ URL = os.environ.get("ASTRA_INGESTION_POSTGRES_TEST_URL", "")
 ROOT = Path(__file__).resolve().parents[2]
 SCOPE_ID = "corrected_company_scope_8e6ca1178f03822c"
 SQL_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_v1.sql"
+REPAIR_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_catalogue_fix_v1.sql"
 
 
 def digest(text):
@@ -83,11 +84,13 @@ class BulkPostgreSQLTests(unittest.TestCase):
          SELECT %s,d::date,390,'{{}}',%s,'{{}}',%s
          FROM generate_series('2026-08-03'::timestamp,'2026-09-30'::timestamp,'1 day')d
          WHERE extract(isodow from d)<6 AND d::date != '2026-09-07'::date""",(SCOPE_ID,digest('{}'),digest('{}')))
-        self.conn.execute(f"INSERT INTO {self.src}.catalog_d06_preservation SELECT %s,'preserved-'||n,'{{}}',%s,'PENDING_EXACT_HASH_CATALOGUE' FROM generate_series(1,3)n",(SCOPE_ID,digest('{}')))
+        self.conn.execute(f"INSERT INTO {self.src}.catalog_d06_preservation SELECT %s,'preserved-'||n,'{{}}',%s,'PENDING_EXACT_HASH_CATALOGUE' FROM generate_series(1,1065)n",(SCOPE_ID,digest('{}')))
         self.conn.execute(f"INSERT INTO {self.src}.pipeline_event VALUES(24407,'ROOT_PRACTICAL_COHORT_MEMBERSHIP_ACCEPTANCE_V1',%s::jsonb),(23872,'synthetic-review','{{}}')",(json.dumps({"snapshot_sha256":cohort,"membership_only":True}),))
-        sql = SQL_PATH.read_text()
+        preservation_hash=digest("\n".join("preserved-"+str(n)+":"+digest('{}') for n in sorted(range(1,1066),key=lambda n:'preserved-'+str(n))))
+        sql = SQL_PATH.read_text() + "\n" + REPAIR_PATH.read_text()
         for old,new in (("astra_ingestion_v1",self.dst),("population_top3000_202608_202609_v1",self.src),
                         (COHORT_SHA256,cohort),(ACCEPTANCE_SHA256,acceptance),(CONTRACT_SET_SHA256,contract_hash),
+                        ("87e623c92ea90cc14c8ead2e6141184978542ba0876a9f603317f99f7e3daf4f",preservation_hash),
                         ("969bab3ac1a4348958e6c2cc501462f4ec1bb35cc500779b4327bab17a46835e",digest(source)),
                         ("2026-11-05T02:00:00Z","2099-11-05T02:00:00Z")):
             self.assertIn(old,sql)
@@ -117,18 +120,18 @@ class BulkPostgreSQLTests(unittest.TestCase):
 
     def test_atomic_full_capture_replay_preserves_receipt(self):
         first=self.capture()
-        self.assertEqual(first["evidence_rows"],3074)
+        self.assertEqual(first["evidence_rows"],4136)
         self.assertEqual(first["provider_requests"],0)
         self.assertEqual(first["state"],"CAPTURED_NOT_ADMITTED")
         self.assertEqual(first["historical_coverage"],"NOT_CERTIFIED")
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
         self.assertEqual(first,self.capture("synthetic-bulk-reconciliation"))
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
         kinds=dict(self.conn.execute(f"SELECT kind,count(*) FROM {self.dst}.bulk_scope_evidence_v1 GROUP BY kind").fetchall())
         self.assertEqual(kinds["company"],3000)
         self.assertEqual(kinds["contract"],24)
         self.assertEqual(kinds["calendar"],42)
-        self.assertEqual(kinds["preservation"],3)
+        self.assertEqual(kinds["preservation"],1065)
 
     def test_simulated_client_loss_after_commit_reconciles_without_replay(self):
         first=self.capture()
@@ -136,7 +139,7 @@ class BulkPostgreSQLTests(unittest.TestCase):
         self.conn.close()
         self.conn=self.pg.connect(URL,autocommit=True)
         self.assertEqual(first,self.capture("synthetic-replacement-run"))
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
 
     def test_inconsistent_transaction_denied(self):
         with self.assertRaisesRegex(Exception,"repeatable-read"):
@@ -157,6 +160,8 @@ class BulkPostgreSQLTests(unittest.TestCase):
           ("contract set drift",f"DELETE FROM {self.src}.catalog_family_contract WHERE family_id='CTX14'"),
           ("calendar count",f"UPDATE {self.src}.catalog_calendar SET source_record_text='bad' WHERE session_date='2026-08-03'"),
           ("preservation catalogue",f"UPDATE {self.src}.catalog_d06_preservation SET metadata_text='bad' WHERE relation_name='preserved-1'"),
+          ("preservation catalogue",f"DELETE FROM {self.src}.catalog_d06_preservation WHERE relation_name='preserved-1065'"),
+          ("preservation catalogue",f"UPDATE {self.src}.catalog_d06_preservation SET relation_name='re-keyed' WHERE relation_name='preserved-1'"),
           ("capture boundary",f"DELETE FROM {self.src}.pipeline_event WHERE event_id=23872"),
         ]
         for expected,query in changes:
@@ -167,6 +172,14 @@ class BulkPostgreSQLTests(unittest.TestCase):
                     self.conn.execute(f"SELECT {self.dst}.capture_retained_top3000_scope_v1('synthetic-negative-control')")
             self.assertEqual(self.counts(),(0,0))
 
+    def test_catalogue_patch_cannot_be_reapplied_after_capture(self):
+        self.capture()
+        # The migration guard is exercised without replacing function source.
+        guard=REPAIR_PATH.read_text().split('CREATE OR REPLACE FUNCTION')[0].replace('astra_ingestion_v1',self.dst)
+        with self.assertRaisesRegex(Exception,'requires empty reconciled destination'):
+            self.conn.execute(guard)
+        self.assertEqual(self.counts(),(1,4136))
+
     def test_changed_source_after_capture_never_overwrites_accepted_receipt(self):
         first=self.capture()
         self.conn.execute(f"UPDATE {self.src}.catalog_calendar SET source_receipt_text='changed' WHERE session_date='2026-08-03'")
@@ -174,7 +187,7 @@ class BulkPostgreSQLTests(unittest.TestCase):
             self.capture("synthetic-retry-after-drift")
         stored=self.conn.execute(f"SELECT to_jsonb(c) FROM {self.dst}.bulk_scope_capture_v1 c").fetchone()[0]
         self.assertEqual(first,stored)
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
 
     def test_no_update_delete_truncate_even_by_capture_owner(self):
         self.capture()
@@ -182,7 +195,7 @@ class BulkPostgreSQLTests(unittest.TestCase):
             for command in (f"UPDATE {self.dst}.{table} SET capture_key=capture_key",f"DELETE FROM {self.dst}.{table}",f"TRUNCATE {self.dst}.{table} CASCADE"):
                 with self.subTest(command=command),self.assertRaisesRegex(Exception,"immutable"):
                     self.conn.execute(command)
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
 
     def test_restricted_actor_cannot_read_insert_or_invoke(self):
         self.capture()
@@ -196,7 +209,7 @@ class BulkPostgreSQLTests(unittest.TestCase):
         with self.assertRaisesRegex(Exception,"permission denied"):
             self.conn.execute(f"INSERT INTO {self.dst}.bulk_scope_capture_v1(capture_key,first_run_id,evidence_rows,evidence_sha256) VALUES('bad','bad',1,%s)",('a'*64,))
         self.conn.execute("RESET ROLE")
-        self.assertEqual(self.counts(),(1,3074))
+        self.assertEqual(self.counts(),(1,4136))
 
     def test_forged_source_hash_fails_database_constraint(self):
         with self.assertRaisesRegex(Exception,"check constraint"):
