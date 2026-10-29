@@ -14,7 +14,7 @@ import unittest
 from urllib.parse import unquote, urlsplit
 import uuid
 
-from astra_ingestion.bulk_scope import FAMILIES, COHORT_SHA256, ACCEPTANCE_SHA256, CONTRACT_SET_SHA256
+from astra_ingestion.bulk_scope import FAMILIES, COHORT_SHA256, ACCEPTANCE_SHA256, CONTRACT_SET_SHA256, RETAINED_RECEIPT_SHA256
 
 URL = os.environ.get("ASTRA_INGESTION_POSTGRES_TEST_URL", "")
 ROOT = Path(__file__).resolve().parents[2]
@@ -126,6 +126,14 @@ class BulkPostgreSQLTests(unittest.TestCase):
         sql = FORWARD_PATH.read_text()
         for old,new in self.fixture_rewrites:
             sql = sql.replace(old,new)
+        # Production migration pins the original production receipt. The disposable
+        # test schema generates different 4,136 source bytes, so pin its actual
+        # captured receipt instead; no test may claim production evidence.
+        receipt = self.conn.execute(
+            f"SELECT evidence_sha256 FROM {self.dst}.bulk_scope_capture_v1 "
+            "WHERE capture_key='top3000-augsep2026-retained-scope-v1'"
+        ).fetchone()
+        sql = sql.replace(RETAINED_RECEIPT_SHA256,receipt[0] if receipt else "0"*64)
         return sql
 
     def test_forward_cutoff_removal_preserves_capture_and_reconciliation(self):
