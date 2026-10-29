@@ -79,8 +79,9 @@ class BulkLedgerPostgresTests(unittest.TestCase):
 
     def test_atomic_reservation_idempotency_and_dependency_successor(self):
         self.manifest()
-        a=self.reserve()
-        self.assertEqual(self.reserve()["work_key"],a["work_key"])
+        due=datetime.now(timezone.utc)+timedelta(minutes=20)
+        a=self.reserve(deadline=due)
+        self.assertEqual(self.reserve(deadline=due)["work_key"],a["work_key"])
         b=self.reserve(family="P01",unit="synthetic:b",predecessors=[a["work_key"]])
         self.assertEqual(self.conn.execute(f"SELECT reserved_records FROM {self.schema}.bulk_manifest_v1").fetchone()[0],20)
         claim=self.sql("bulk_claim_v1",(MANIFEST,"worker-one",90))
