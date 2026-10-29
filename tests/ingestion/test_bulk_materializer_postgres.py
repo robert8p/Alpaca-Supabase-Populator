@@ -206,9 +206,11 @@ class BulkAtomicMaterializerTests(unittest.TestCase):
   with self.assertRaises(self.pg.Error):
    self.conn.execute(f"DELETE FROM {self.schema}.bulk_retained_output_v1")
   self.assertFalse(self.conn.execute(f"""
-   SELECT bool_or(grantee=0 AND privilege_type='EXECUTE')
-   FROM information_schema.routine_privileges
-   WHERE specific_schema=%s AND routine_name='bulk_atomic_retained_page_v1'
+   SELECT coalesce(bool_or(a.grantee=0 AND a.privilege_type='EXECUTE'),false)
+   FROM pg_catalog.pg_proc p
+   JOIN pg_catalog.pg_namespace n ON n.oid=p.pronamespace
+   LEFT JOIN LATERAL pg_catalog.aclexplode(p.proacl) a ON true
+   WHERE n.nspname=%s AND p.proname='bulk_atomic_retained_page_v1'
   """,(self.schema,)).fetchone()[0] or False)
 
 
