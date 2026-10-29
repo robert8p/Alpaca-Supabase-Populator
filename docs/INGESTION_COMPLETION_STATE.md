@@ -1,10 +1,10 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 6 (2026-10-29 03:57 UTC; single-writer bounded gateway/recovery qualification claim)
+**Checkpoint version:** 7 (2026-10-29 04:00 UTC; admitted durable autonomous-monitor synthetic fixture)
 **Programme:** isolated ASTRA ingestion reliability; no bulk ingestion or scientific certification.
 **Owner:** scheduled implementation run `602a52aa-f638-8320-832c-3b20edb1d6f4`; this run is the sole admitted mutator; independent review tasks remain read-only.
 **Exclusive implementation lease:** CAS-acquired by this same commit, expires at **2026-10-29 04:40:00 UTC**. No takeover before verified expiry/terminal run; never assume task schedule grants exclusivity. Release this claim by a CAS successor checkpoint before concluding.
-**Operation:** reconcile current `bd7b5bed` production release and existing monitor/verifier; exercise external HTTPS gateway denial via public key only, with no write-capable token; evaluate bounded physical fault-test admissibility without changing the original canary, then record evidence. Any source/deployment changes require their own exact SHA tests and fresh checkpoint. Do not acquire new paid resources.
+**Operation:** one bounded, zero-provider-request test of *scheduled* monitor job602 detecting a persisted synthetic expired lease while the provider worker cannot claim it; external no-key HTTPS rejection already observed. The dedicated fixture is disposable and isolated; do not mutate the original canary. Follow with immediate cleanup and evidence.
 **Next run:** upon lease release or terminal failure, use final checkpoint and latest independent results; do not duplicate tests.
 **Campaign hard stop:** 2026-11-05 02:00 UTC or newer explicit stop.
 
@@ -85,3 +85,12 @@ Keep all original budgets, immutable-canary constraints, manual-deployment setti
 - Single writer obtained claim by expected-head CAS against `3ecfc3d649ede5df699f296ed1681724544433ad`; expiration 04:40:00 UTC. Start evidence: GitHub branch `3ecfc3d649ede5df699f296ed1681724544433ad`, both named Render services LIVE on `bd7b5bed714ef0afbd2015e6f6c1c0fd54b7d9fb`; original canary completed at 156 records/two receipts/two requests, zero active claims. Monitor job602 and independent verifier603 active every two minutes; 56 monitor ticks through 03:54, one prior synthetic fail-closed incident, two independent original-canary attestations. No new providers or paid resources.
 - Bound this run to an external HTTPS gateway actor-denial read-only test and a concrete feasibility assessment for physical post-commit death + zero-overlap proof. Do not falsely classify an unexecuted test as pass. Preserve main, paused loaders, inactive Top3k and prior scientific holds.
 - Reconcile other schedules' recorded results as of this run: independent verifier task completed 03:04 with a stale older-version blocker report, subsequently overtaken by the actual 03:22 deployed/verified release; final closeout task had not yet run. Fresh evidence supersedes stale reporting without erasing it.
+
+
+## Admitted autonomous-monitor fixture manifest (04:00 UTC)
+
+- Synthetic job ID `astra-observer-autocron-20261029-0400-job`, partition ID `astra-observer-autocron-20261029-0400-part`, unique key `astra-observer-autocron-20261029-0400`.
+- Clone the original job's immutable spec/scope hash and original AAPL partition scope **without modifying originals**. Synthetic job is `running`, deadline no more than 600 seconds from admission, and no source receipt/records or provider requests. Partition is `running`, lease expired by 120 seconds, `next_attempt_at` 7,200 seconds in future; worker `claim_next` explicitly requires `next_attempt_at <= now`, so cannot claim or fetch before fixture cleanup. Monitor job602 intentionally ignores `next_attempt_at` for expired-lease detection.
+- Only after full readback proves zero claimable fixture partitions: allow *existing* independent cron602 at the next two-minute scheduled tick to record a durable `lease_expired` incident under monitor owner's role. Do not manually invoke monitor as substitute for this autonomous proof. Verify the tick timestamps, one incident, no change to provider limits/request counts/records/original canary.
+- Cleanup only the two exact fixture IDs (partition before job) in one bounded transaction after monitor observation; **preserve the durable incident** (it has no FK to the synthetic job). If a failure occurs, clean on next authorised run after reconciling effects. Do not create another fixture/key to retry an uncertain result. No provider costs admitted.
+- External no-key gateway POST probes (without sending any project key to a third-party session) returned HTTP401 for private verifier RPC and public dispatcher. This confirms missing-key denial only; valid-anon key and authenticated HTTPS permission boundary remain separately unproven.
