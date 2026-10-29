@@ -48,6 +48,8 @@ class ExpectedUnitTests(unittest.TestCase):
         self.assertEqual(family.count, 3000)
         self.assertEqual(family.status, "READY_FOR_STAGING")
         self.assertIn("admission remain open", family.reason)
+        with self.assertRaises(TypeError):
+            result.source_bindings["P01"] = self.defn("P01")
         first, next_idx = result.page("P01", limit=128)
         self.assertEqual(len(first), 128)
         self.assertEqual(next_idx, 128)

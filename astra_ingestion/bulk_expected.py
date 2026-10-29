@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 from itertools import islice, product
+from types import MappingProxyType
 from typing import Mapping, Iterable
 
 from .bulk_scope import (
@@ -190,4 +191,4 @@ def plan_expected_units(
                                          "candidate unit keys only; independent coverage and worker admission remain open", basis))
         bindings[family] = definition
     return ExpectedUnitPlan(CAPTURE_KEY, capture.original_receipt_sha256,
-                            tuple(states), bindings, capture.company_ids_by_rank, capture.sessions)
+                            tuple(states), MappingProxyType(bindings), capture.company_ids_by_rank, capture.sessions)
