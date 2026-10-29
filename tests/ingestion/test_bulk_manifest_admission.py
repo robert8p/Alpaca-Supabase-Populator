@@ -105,13 +105,14 @@ class ManifestAdmissionTests(unittest.TestCase):
             self.review(pins=dict(self.pins(self.planner()), D06="not-a-family"))
 
     def test_missing_denominator_is_never_an_empty_or_accepted_family(self):
+        complete = self.planner()
+        pins = self.pins(complete)
         del self.denominators["REF01"]
         p = self.planner()
         called = []
         def reader(f, after, limit):
             called.append(f)
             return self.reader()(f, after, limit)
-        pins = self.pins(p)
         result = self.review(plan=p, pins=pins, reader=reader)
         self.assertEqual(result.status, "BLOCKED_INCOMPLETE_FAMILY_EVIDENCE")
         self.assertEqual(result.family_results[0].status, "BLOCKED_EXPECTED_POPULATION")
