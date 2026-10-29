@@ -123,6 +123,20 @@ class BulkReuseDispatchTests(unittest.TestCase):
                     self.make(port).run_one(now=NOW)
                 self.assertEqual(port.attempts, 0)
 
+    def test_no_programme_cutoff_but_each_job_keeps_its_original_deadline(self):
+        later = datetime(2026, 11, 6, 15, 0, tzinfo=timezone.utc)
+        port = SyntheticDurablePort()
+        port.work[0]["original_deadline"] = (later + timedelta(minutes=30)).isoformat()
+        port.work[0]["claim_until"] = (later + timedelta(seconds=45)).isoformat()
+        done = self.make(port).run_one(now=later)
+        self.assertEqual(done["state"], "committed_review_required")
+        expired = SyntheticDurablePort()
+        expired.work[0]["original_deadline"] = (later - timedelta(seconds=1)).isoformat()
+        expired.work[0]["claim_until"] = (later + timedelta(seconds=45)).isoformat()
+        with self.assertRaises(DispatchRefused):
+            self.make(expired).run_one(now=later)
+        self.assertEqual(expired.committed, [])
+
     def test_provider_job_rejected_before_materialisation(self):
         port = SyntheticDurablePort()
         port.work[0]["mode"] = "provider_acquisition"
