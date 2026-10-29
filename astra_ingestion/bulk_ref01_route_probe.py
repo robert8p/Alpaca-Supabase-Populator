@@ -13,6 +13,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
+from decimal import Decimal
+from uuid import UUID
 import re
 from typing import Any, Mapping, Sequence
 
@@ -178,12 +180,29 @@ def inspect_route_page(
     if (not isinstance(rows, (tuple, list)) or len(rows) > plan.limit
             or any(not isinstance(x, Mapping) for x in rows)):
         raise ScopeError("REF01 source response malformed or unbounded")
-    cutoff = datetime.fromisoformat(rank_date_cutoff.replace("Z", "+00:00"))
+    if not isinstance(rank_date_cutoff, str):
+        raise ScopeError("REF01 rank date cutoff must be an explicit UTC timestamp")
+    try:
+        cutoff = datetime.fromisoformat(rank_date_cutoff.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ScopeError("REF01 malformed rank date cutoff") from exc
     if cutoff.tzinfo is None or cutoff.utcoffset().total_seconds() != 0:
         raise ScopeError("REF01 cutoff must be exact UTC")
     spec = SPECS[plan.route]
     previous = plan.cursor
     witnessed: list[dict[str, Any]] = []
+    def json_primitive(value: Any) -> Any:
+        if isinstance(value, (date, datetime, UUID, Decimal)):
+            return str(value) if isinstance(value, (UUID, Decimal)) else value.isoformat()
+        if value is None or isinstance(value, (str, bool, int, float)):
+            return value
+        if isinstance(value, (tuple, list)):
+            return [json_primitive(v) for v in value]
+        if isinstance(value, Mapping):
+            if any(not isinstance(k, str) for k in value):
+                raise ScopeError("REF01 source JSON has non-string key")
+            return {k: json_primitive(v) for k, v in value.items()}
+        raise ScopeError("REF01 source contains unsupported native metadata type")
     window = 0
     available = 0
     late = 0
@@ -196,6 +215,14 @@ def inspect_route_page(
         previous = key
         observed_window = False
         if spec.window_field:
+            scoped = set(plan.params[0])
+            if (row.get("composite_figi") not in scoped
+                    and row.get("share_class_figi") not in scoped):
+                raise ScopeError("Massive row not joined to the accepted cohort FIGIs")
+            if (row.get("row_hash") is not None
+                    and (not isinstance(row["row_hash"], str)
+                         or not _SHA.fullmatch(row["row_hash"]))):
+                raise ScopeError("Massive row native hash invalid")
             raw_date = row.get(spec.window_field)
             if isinstance(raw_date, date) and not isinstance(raw_date, datetime):
                 raw_date = raw_date.isoformat()
@@ -230,10 +257,8 @@ def inspect_route_page(
             late += 1
         # Do not include provider raw_payload, prices or secrets in the receipt.
         # A canonical hash of projected metadata is not a source-provider seal.
-        witnessed.append({field: (
-            row[field].isoformat() if isinstance(row[field], (date, datetime))
-            else row[field]
-        ) for field in spec.selected_fields})
+        witnessed.append({field: json_primitive(row[field])
+                          for field in spec.selected_fields})
     return RoutePageEvidence(
         plan.route, len(rows), previous,
         sha256_text(canonical({"route": plan.route,
