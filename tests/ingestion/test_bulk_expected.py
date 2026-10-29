@@ -109,7 +109,7 @@ class ExpectedUnitTests(unittest.TestCase):
         })
         self.rows[1]["contract_sha256"] = b.sha256_text(self.rows[1]["contract_text"])
         self.hashes[f] = self.rows[1]["contract_sha256"]
-        self.pinned_set = b.sha256_text("\\n".join(k+":"+self.hashes[k] for k in sorted(self.hashes)))
+        self.pinned_set = b.sha256_text("\n".join(k+":"+self.hashes[k] for k in sorted(self.hashes)))
         self.assertEqual(self.planner({f: self.defn(f)}).family(f).status,
                          "UNKNOWN_DENOMINATOR")
         keys = ("security:synthetic/session:2026-08-03/minute:09:30/field:close",
