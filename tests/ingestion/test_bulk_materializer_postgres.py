@@ -214,5 +214,53 @@ class BulkAtomicMaterializerTests(unittest.TestCase):
   """,(self.schema,)).fetchone()[0] or False)
 
 
+ def test_python_dispatcher_to_real_disposable_postgres_automatic_successor(self):
+  # Exact SQL/Python integration with a separately simulated reviewer.
+  # This port has direct SQL ONLY inside a disposable loopback test database.
+  # No real JWT, role grant, source coverage or hosted execution is certified.
+  from astra_ingestion.bulk_reuse_dispatch import RetainedOnlyDispatcher
+
+  first=self.reserve("REF01:a")
+  second=self.reserve("REF01:b",predecessors=(first["work_key"],))
+  self.review_and_seal()
+  self.stage(first["work_key"],[{"row":"retained-a"}])
+
+  class DisposableSQLPort:
+   def __init__(port, fixture):
+    port.fixture=fixture
+   def admission(port, manifest):
+    return port.fixture.sql("bulk_runtime_admission_v1",manifest)
+   def claim_retained(port, manifest, owner, seconds):
+    return port.fixture.sql("bulk_runtime_claim_v1",manifest,owner,seconds)
+   def commit_retained_page(port, claim, page):
+    return port.fixture.sql("bulk_atomic_retained_page_v1",
+                            claim["work_key"],claim["claim_owner"],
+                            claim["claim_fence"],page)
+
+  worker=RetainedOnlyDispatcher(DisposableSQLPort(self),
+                               manifest_sha256=MANIFEST,
+                               worker_id="disposable-dispatcher",lease_seconds=60)
+  committed=worker.run_bounded(max_items=4)
+  self.assertEqual([x["work_key"] for x in committed],[first["work_key"]])
+  self.assertEqual(committed[0]["state"],"committed_review_required")
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_retained_output_v1").fetchone()[0],1)
+  self.assertEqual(worker.run_bounded(max_items=2),())
+
+  # Only a separate synthetic administrator can verify the predecessor.
+  fence=self.conn.execute(
+   f"SELECT claim_fence FROM {self.schema}.bulk_work_v1 WHERE work_key=%s",
+   (first["work_key"],)).fetchone()[0]
+  self.sql("bulk_verify_v1",first["work_key"],"disposable-dispatcher",fence,"f"*64)
+  self.stage(second["work_key"],[{"row":"retained-successor"}])
+  successor=worker.run_bounded(max_items=4)
+  self.assertEqual([x["work_key"] for x in successor],[second["work_key"]])
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],2)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_retained_output_v1").fetchone()[0],2)
+  self.assertTrue(self.sql("bulk_retained_receipt_readback_v1",second["work_key"],0)["consistent"])
+
+
 if __name__=="__main__":
  unittest.main()
