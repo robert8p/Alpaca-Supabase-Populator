@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 import json
 import re
 import ssl
+from time import monotonic
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import HTTPSHandler, Request, build_opener
@@ -105,6 +106,7 @@ class RestrictedBulkHttpPort:
             "Accept-Profile": _SCHEMA,
             "Cache-Control": "no-store",
         })
+        deadline = monotonic() + _TIMEOUT
         try:
             with self._opener.open(request, timeout=_TIMEOUT) as response:
                 if response.status != 200 or response.geturl() != url:
@@ -116,8 +118,21 @@ class RestrictedBulkHttpPort:
                 length = response.headers.get("Content-Length")
                 if length is not None and (not length.isdigit() or int(length) > _MAX_RESPONSE):
                     raise BulkPortError("Oversized restricted RPC response")
-                raw = response.read(_MAX_RESPONSE + 1)
-                if len(raw) > _MAX_RESPONSE or (length is not None and len(raw) != int(length)):
+                chunks, total = [], 0
+                while True:
+                    if monotonic() >= deadline:
+                        raise BulkPortError("Restricted RPC wall-time exceeded")
+                    chunk = response.read1(min(65536, _MAX_RESPONSE + 1 - total))
+                    if monotonic() >= deadline:
+                        raise BulkPortError("Restricted RPC wall-time exceeded")
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+                    total += len(chunk)
+                    if total > _MAX_RESPONSE:
+                        raise BulkPortError("Oversized restricted RPC response")
+                raw = b"".join(chunks)
+                if length is not None and len(raw) != int(length):
                     raise BulkPortError("Incomplete restricted RPC response")
         except HTTPError as exc:
             status = exc.code
