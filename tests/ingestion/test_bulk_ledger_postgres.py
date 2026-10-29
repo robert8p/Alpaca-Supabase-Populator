@@ -10,6 +10,7 @@ import os
 import unittest
 from urllib.parse import unquote, urlsplit
 import uuid
+import time
 
 URL = os.environ.get("ASTRA_INGESTION_POSTGRES_TEST_URL", "")
 ROOT = Path(__file__).resolve().parents[2]
@@ -187,15 +188,15 @@ class BulkLedgerPostgresTests(unittest.TestCase):
         # be reissued with a fresh idempotency key or fresh lease.
         another="b"*64
         self.sql("bulk_manifest_create_v1",(another,CAPTURE_KEY,RECEIPT,1,10))
-        due=datetime.now(timezone.utc)+timedelta(minutes=1)
+        due=datetime.now(timezone.utc)+timedelta(seconds=2)
         second=self.sql("bulk_reserve_v1",(another,"REF01","deadline-unit","retained_source_reuse",SOURCE,due,0,10,[]))
         own=self.sql("bulk_claim_v1",(another,"old-owner",30))
         self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET claim_until=clock_timestamp()-interval '1 second' WHERE work_key=%s",(second["work_key"],))
-        # Simulate the wall-clock deadline expiry in disposable Postgres without
-        # mutating the immutable original_deadline field.
-        self.conn.execute("SET statement_timeout='5s'")
-        self.conn.execute("SET LOCAL TIME ZONE 'UTC'")
+        # The original deadline must genuinely elapse; never rewrite its pin.
+        time.sleep(2.2)
         with self.assertRaises(self.pg.Error):
-            self.sql("bulk_recover_retained_v1",(second["work_key"],own["claim_fence"],"new-owner",0))
+            self.sql("bulk_recover_retained_v1",(second["work_key"],own["claim_fence"],"new-owner",60))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_claim_v1",(another,"new-owner",0))
 
 if __name__ == "__main__": unittest.main()
