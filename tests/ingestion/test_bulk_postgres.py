@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SCOPE_ID = "corrected_company_scope_8e6ca1178f03822c"
 SQL_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_v1.sql"
 REPAIR_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_catalogue_fix_v1.sql"
+FORWARD_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_no_campaign_cutoff_v2.sql"
 
 
 def digest(text):
@@ -88,11 +89,12 @@ class BulkPostgreSQLTests(unittest.TestCase):
         self.conn.execute(f"INSERT INTO {self.src}.pipeline_event VALUES(24407,'ROOT_PRACTICAL_COHORT_MEMBERSHIP_ACCEPTANCE_V1',%s::jsonb),(23872,'synthetic-review','{{}}')",(json.dumps({"snapshot_sha256":cohort,"membership_only":True}),))
         preservation_hash=digest("\n".join("preserved-"+str(n)+":"+digest('{}') for n in sorted(range(1,1066),key=lambda n:'preserved-'+str(n))))
         sql = SQL_PATH.read_text() + "\n" + REPAIR_PATH.read_text()
-        for old,new in (("astra_ingestion_v1",self.dst),("population_top3000_202608_202609_v1",self.src),
+        self.fixture_rewrites=(("astra_ingestion_v1",self.dst),("population_top3000_202608_202609_v1",self.src),
                         (COHORT_SHA256,cohort),(ACCEPTANCE_SHA256,acceptance),(CONTRACT_SET_SHA256,contract_hash),
                         ("87e623c92ea90cc14c8ead2e6141184978542ba0876a9f603317f99f7e3daf4f",preservation_hash),
                         ("969bab3ac1a4348958e6c2cc501462f4ec1bb35cc500779b4327bab17a46835e",digest(source)),
-                        ("2026-11-05T02:00:00Z","2099-11-05T02:00:00Z")):
+                        ("2026-11-05T02:00:00Z","2099-11-05T02:00:00Z"))
+        for old,new in self.fixture_rewrites:
             self.assertIn(old,sql)
             sql=sql.replace(old,new)
         self.conn.execute(sql)
@@ -117,6 +119,61 @@ class BulkPostgreSQLTests(unittest.TestCase):
 
     def counts(self):
         return self.conn.execute(f"SELECT (SELECT count(*) FROM {self.dst}.bulk_scope_capture_v1),(SELECT count(*) FROM {self.dst}.bulk_scope_evidence_v1)").fetchone()
+
+
+    def forward_migration_sql(self):
+        """Use identical throwaway schema/pins as the installed test function."""
+        sql = FORWARD_PATH.read_text()
+        for old,new in self.fixture_rewrites:
+            sql = sql.replace(old,new)
+        return sql
+
+    def test_forward_cutoff_removal_preserves_capture_and_reconciliation(self):
+        original_receipt = self.capture()
+        original_body = self.conn.execute(
+            f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
+        ).fetchone()[0]
+        old_guard = (" IF clock_timestamp() >= '2099-11-05T02:00:00Z'::timestamptz THEN\\n"
+                     "   RAISE EXCEPTION 'completion campaign deadline reached';\\n END IF;\\n")
+        self.assertEqual(original_body.count(old_guard),1)
+        self.conn.execute(self.forward_migration_sql())
+        changed_body = self.conn.execute(
+            f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
+        ).fetchone()[0]
+        self.assertEqual(changed_body,original_body.replace(old_guard,""))
+        self.assertEqual(self.counts(),(1,4136))
+        self.assertEqual(self.capture("synthetic-post-forward-reconcile"),original_receipt)
+        self.assertEqual(self.counts(),(1,4136))
+        with self.assertRaisesRegex(Exception,"body drift"):
+            self.conn.execute(self.forward_migration_sql())
+        self.conn.execute("ROLLBACK")
+        self.assertEqual(self.counts(),(1,4136))
+
+    def test_forward_cutoff_removal_refuses_uncaptured_destination(self):
+        with self.assertRaisesRegex(Exception,"required immutable capture receipt"):
+            self.conn.execute(self.forward_migration_sql())
+        self.conn.execute("ROLLBACK")
+        self.assertEqual(self.counts(),(0,0))
+
+    def test_forward_cutoff_removal_refuses_changed_installation(self):
+        self.capture()
+        original = self.conn.execute(
+            f"SELECT pg_get_functiondef('{self.dst}.capture_retained_top3000_scope_v1(text)'::regprocedure)"
+        ).fetchone()[0]
+        needle="capture requires a consistent repeatable-read transaction"
+        self.assertEqual(original.count(needle),1)
+        self.conn.execute(original.replace(needle,needle+" altered"))
+        before=self.conn.execute(
+            f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
+        ).fetchone()[0]
+        with self.assertRaisesRegex(Exception,"body drift"):
+            self.conn.execute(self.forward_migration_sql())
+        self.conn.execute("ROLLBACK")
+        after=self.conn.execute(
+            f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
+        ).fetchone()[0]
+        self.assertEqual(before,after)
+        self.assertEqual(self.counts(),(1,4136))
 
     def test_atomic_full_capture_replay_preserves_receipt(self):
         first=self.capture()
