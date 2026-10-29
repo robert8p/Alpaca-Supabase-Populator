@@ -39,12 +39,16 @@ class FakeResponse:
         self.status = status
         self._url = url or request.full_url
         self._body = json.dumps(answer, separators=(",", ":")).encode()
+        self._cursor = 0
         self.headers = {"Content-Type": content_type,
                         "Content-Length": str(len(self._body))}
     def geturl(self):
         return self._url
     def read(self, maximum):
-        return self._body[:maximum]
+        chunk = self._body[self._cursor:self._cursor + maximum]
+        self._cursor += len(chunk)
+        return chunk
+    read1 = read
     def __enter__(self):
         return self
     def __exit__(self, *args):
