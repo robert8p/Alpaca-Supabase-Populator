@@ -347,7 +347,7 @@ class RPCPostgreSQLTests(unittest.TestCase):
                    verifier_role,self.schema+'.independent_verifications',
                    self.gateway,self.schema+'.independent_verify_tick_v1()')).fetchone()
                 self.assertEqual(dict(check),dict(can_read_receipts=True,can_change_jobs=False,
-                  can_attest=True,can_read_attestations=False,gateway_call=False))
+                  can_attest=True,can_read_attestations=True,gateway_call=False))
                 fn='SELECT '+self.schema+'.independent_verify_tick_v1() AS value'
                 first=conn.execute(fn).fetchone()['value']
                 self.assertEqual((first['state'],first['result'],first['source_count'],
