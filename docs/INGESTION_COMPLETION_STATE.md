@@ -1,11 +1,11 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 5 (2026-10-29 03:22 UTC; scoped implementation verified and writer lease released)
+**Checkpoint version:** 6 (2026-10-29 03:57 UTC; single-writer bounded gateway/recovery qualification claim)
 **Programme:** isolated ASTRA ingestion reliability; no bulk ingestion or scientific certification.
-**Owner:** none after verified completion of this bounded run; previous sole writer run `8e5a5ad2-2570-8322-97bd-a1e22b9a8857` has released its finite CAS mutation lease.
-**Exclusive implementation lease:** released at this checkpoint. Next writer must inspect current task runs, branch head, deployed services and active claims and acquire a new atomic finite CAS lease; never assume schedule ordering proves ownership.
-**Operation:** completed one-time independent SQL verifier migration and scheduled cron603; original 156-row AAPL/MSFT attested PASS under restricted role; monitored fail-closed synthetic deadline incident durably recorded; hosted post-rollout new worker verification-only AAPL fixture PASS; fixture cleaned fully; both named services deployed and live on exact tested `bd7b5bed`. Remaining forced physical crash/zero-overlap and external HTTPS gateway actor acceptance stay open. This is not bulk-ingestion admission.
-**Next run:** scheduled implementation remains enabled but unowned until a fresh CAS lease; review the newest machine evidence and independent acceptance first. Do not needlessly replay the already installed migration, completed synthetic tests or existing canary.
+**Owner:** scheduled implementation run `602a52aa-f638-8320-832c-3b20edb1d6f4`; this run is the sole admitted mutator; independent review tasks remain read-only.
+**Exclusive implementation lease:** CAS-acquired by this same commit, expires at **2026-10-29 04:40:00 UTC**. No takeover before verified expiry/terminal run; never assume task schedule grants exclusivity. Release this claim by a CAS successor checkpoint before concluding.
+**Operation:** reconcile current `bd7b5bed` production release and existing monitor/verifier; exercise external HTTPS gateway denial via public key only, with no write-capable token; evaluate bounded physical fault-test admissibility without changing the original canary, then record evidence. Any source/deployment changes require their own exact SHA tests and fresh checkpoint. Do not acquire new paid resources.
+**Next run:** upon lease release or terminal failure, use final checkpoint and latest independent results; do not duplicate tests.
 **Campaign hard stop:** 2026-11-05 02:00 UTC or newer explicit stop.
 
 ## Ownership and dependency registry
@@ -78,3 +78,10 @@ Keep all original budgets, immutable-canary constraints, manual-deployment setti
 - Durable report: Library file `libfile_9b466ad815b48191ae49fd30233bd6c8`, `/ASTRA Ingestion/ASTRA_Ingestion_Reliability_Qualification_20261029.md`, SHA256 `0e03620134a0e96d0d1bbacc227363ec46233cfbcacc34b60af0488f4dedaa4d`. Machine evidence: `evidence/astra_ingestion_reliability_20261029.json` in this revision. Earlier independent 156-row report remains `libfile_dcfd71df63248191ba61293c51b84921`.
 - Remaining specific gates: *physical forced process death immediately after fresh atomic receipt commit*, *explicit old-instance cessation before successor startup rather than post-rollout only*, *external HTTPS restricted actor execution denial*, and *final independent release closeout*. Separate tasks are read-only and must not silently waive these.
 - **Next admissible action:** independently reconcile current deployed/source IDs, the report, actual role grants and cron ledger. Safely design a one-shot failpoint with bounded AAPL/MSFT provider scope only if it can meet the existing 10-request/1000-record cumulative allowance, ownership fencing, unchanged original deadline and no cost. Otherwise close the qualifying bounded result honestly with the remaining physical test unproven. No blanket bulk ingestion, trading or other mission resumes. Campaign stops 5 November as originally authorised.
+
+
+## Run 602a52aa — live qualification scope (03:57 UTC)
+
+- Single writer obtained claim by expected-head CAS against `3ecfc3d649ede5df699f296ed1681724544433ad`; expiration 04:40:00 UTC. Start evidence: GitHub branch `3ecfc3d649ede5df699f296ed1681724544433ad`, both named Render services LIVE on `bd7b5bed714ef0afbd2015e6f6c1c0fd54b7d9fb`; original canary completed at 156 records/two receipts/two requests, zero active claims. Monitor job602 and independent verifier603 active every two minutes; 56 monitor ticks through 03:54, one prior synthetic fail-closed incident, two independent original-canary attestations. No new providers or paid resources.
+- Bound this run to an external HTTPS gateway actor-denial read-only test and a concrete feasibility assessment for physical post-commit death + zero-overlap proof. Do not falsely classify an unexecuted test as pass. Preserve main, paused loaders, inactive Top3k and prior scientific holds.
+- Reconcile other schedules' recorded results as of this run: independent verifier task completed 03:04 with a stale older-version blocker report, subsequently overtaken by the actual 03:22 deployed/verified release; final closeout task had not yet run. Fresh evidence supersedes stale reporting without erasing it.
