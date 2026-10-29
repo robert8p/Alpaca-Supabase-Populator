@@ -156,3 +156,28 @@ Existing qualified v1 jobs and their budgets are immutable and separate. Current
 additional qualification consumption remains1/10 requests,78/1000 records and
 $0 incremental compute. New bulk reservations must be durable and finite within
 existing resources; they cannot be inferred from this evidence-capture receipt.
+
+
+## CI-qualified retained-only claim recovery (STAGED, NOT INSTALLED)
+
+Exact tested source revision: abef74e25dd1b5bb80618e5083658d22230467a0. The staged
+`sql/astra_ingestion_bulk_ledger_v1.sql` now contains
+`bulk_recover_retained_v1(work, expected_fence, new_owner, lease_seconds)`.
+It only reclaims previously claimed, expired `retained_source_reuse` work
+with zero provider requests. It preserves immutable original job deadlines,
+retained receipts, costs and cumulative attempt count; requires an expected
+fence and changed owner; takes a manifest lock before a work lock; and fails
+closed on stop, deadline, stale fence, attempt limit or provider acquisition.
+
+Lease expiry **does not** prove the former instance stopped. DB fencing protects
+the retained-only commit path, not hosted cross-instance cessation. Provider
+acquisition never automatically retries through this function. Independent
+review, restricted runtime rights, exact 24-family coverage, automatic
+successor execution, old-host cessation and hosted eviction are still OPEN.
+
+Disposable PostgreSQL regression passed: 163 ingestion tests, including two
+new retained-only recovery/stop/expiry cases and no-duplication evidence.
+CI: [ingestion PR qualification](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40898001985),
+[release PR gate](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40898002041)
+and [release push gate](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40897993666), all successful.
+This is source/disposable-database validation, NOT production installation or data acceptance.
