@@ -181,3 +181,52 @@ CI: [ingestion PR qualification](https://github.com/robert8p/Alpaca-Supabase-Pop
 [release PR gate](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40898002041)
 and [release push gate](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40897993666), all successful.
 This is source/disposable-database validation, NOT production installation or data acceptance.
+
+## Full-24-family source-witness preflight (CI-qualified, NOT runtime admission)
+
+Added `astra_ingestion/bulk_manifest_admission.py` and
+`tests/ingestion/test_bulk_manifest_admission.py` at executable candidate
+`10a755efa91b722a819c1ec457e10d563b7fabdd`. Both ingestion workflows
+[push](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40908820282)
+and [PR](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40908830654)
+PASS; both release gates
+[push](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40908820390)
+and [PR](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40908830668)
+PASS. The source and test use only synthetic evidence, have no provider/database
+writes and create no executable work.
+
+The preflight reconstructs all 24 expected family populations from the pinned
+4,136-record receipt, accepted company membership, original contract set and
+independent eligibility/keyset bindings. It refuses substituted or forged
+`ExpectedUnitPlan` objects; requires source snapshot/contract/expected-manifest
+hash bindings for each family; reads sorted, finite source-witness keyset pages;
+checks all expected versus witnessed keys; and distinguishes absent denominator,
+missing source proof, missing/extra units, duplicate rows and invalid provenance,
+identity or point-in-time witness metadata. D06 never becomes a work family.
+All-family structural reconciliation produces only
+`INDEPENDENT_REVIEW_REQUIRED`, NEVER permission to reserve, claim, fetch or
+certify full dataset coverage. The `worker_admission_authorized` property
+remains false by construction, and actual source bytes/point-in-time truth need
+independent external evidence and restricted runtime checks.
+
+This is one tested **engineering slice**, not the durable production admission
+barrier: the existing staged SQL ledger does not yet consume this fingerprint
+or enforce independent reviewer/manifest-source/worker admission. No real
+24-family source denominators or per-family proof records have been supplied;
+therefore none of the research families is DATA_ACCEPTED.
+Read-only production evidence at 2026-10-29T16:11:27Z still has 4,136 scope
+documents; Render web and worker still run revision
+`2c809b69e131f84e1778486e74c2f89a273f59f9`.
+No acquisition, migration, deployment, paid service or original-job mutation
+accompanied this slice.
+
+**Executable successor:** bind independently acquired exact 24-family source
+unit/temporal/identity proofs to this tested preflight and staged ledger;
+implement a restricted, fail-closed durable admission transition and retained
+reuse worker dispatch (with verified automatic successor). Develop against
+disposable PostgreSQL without assuming production RLS grants or bypassing any
+previous explicit source introspection refusal. Qualify the exact revised
+source/deployment before any production admission. The independent reviewer
+and closeout automations remain disabled with unexplained user-action flags,
+so neither review nor closeout acceptance may be presumed.
+
