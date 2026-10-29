@@ -133,8 +133,8 @@ class BulkPostgreSQLTests(unittest.TestCase):
         original_body = self.conn.execute(
             f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
         ).fetchone()[0]
-        old_guard = (" IF clock_timestamp() >= '2099-11-05T02:00:00Z'::timestamptz THEN\\n"
-                     "   RAISE EXCEPTION 'completion campaign deadline reached';\\n END IF;\\n")
+        old_guard = (" IF clock_timestamp() >= '2099-11-05T02:00:00Z'::timestamptz THEN\n"
+                     "   RAISE EXCEPTION 'completion campaign deadline reached';\n END IF;\n")
         self.assertEqual(original_body.count(old_guard),1)
         self.conn.execute(self.forward_migration_sql())
         changed_body = self.conn.execute(
