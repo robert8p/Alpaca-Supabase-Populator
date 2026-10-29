@@ -66,7 +66,6 @@ class PricePagePlan:
     family: str
     route: str
     query: str
-    params: tuple[Any, ...]
     instrument_keys: tuple[int, ...]
     start: datetime
     end: datetime
@@ -74,6 +73,15 @@ class PricePagePlan:
     after: tuple[int, datetime] | None
     source_snapshot_sha256: str
     status: str = "READ_ONLY_RETAINED_SOURCE_NOT_ADMISSION"
+
+    @property
+    def params(self) -> tuple[Any, ...]:
+        """Return fresh driver parameters; no mutable array persists in the sealed plan."""
+        values: list[Any] = [list(self.instrument_keys), self.start, self.end]
+        if self.after is not None:
+            values.extend(self.after)
+        values.append(self.limit)
+        return tuple(values)
 
     @property
     def worker_admission_authorized(self) -> bool:
@@ -123,17 +131,14 @@ def plan_price_page(
         if cursor[0] not in instrument_keys or not start <= cursor[1] < end:
             raise ScopeError("keyset cursor outside selected source partition")
     where = "instrument_key = ANY(%s) AND bar_ts >= %s AND bar_ts < %s"
-    params: list[Any] = [list(instrument_keys), start, end]
     if cursor is not None:
         where += " AND (instrument_key,bar_ts) > (%s,%s)"
-        params.extend(cursor)
     # Never substitute user-supplied SQL identifiers, never include raw payloads.
     query = (
         "SELECT " + ",".join(FIELDS) + " FROM " + SOURCE + " WHERE "
         + where + " ORDER BY instrument_key,bar_ts LIMIT %s"
     )
-    params.append(limit)
-    return PricePagePlan(family, route, query, tuple(params), instrument_keys,
+    return PricePagePlan(family, route, query, instrument_keys,
                          start, end, limit, cursor, source_snapshot_sha256)
 
 
