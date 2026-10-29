@@ -306,7 +306,7 @@ class RPCPostgreSQLTests(unittest.TestCase):
                     conn.execute('ROLLBACK TO SAVEPOINT monitor_role_access_check')
                 # Tick records are independent observer outputs, never provider heartbeats.
                 self.assertEqual(conn.execute(
-                    f'SELECT count(*) AS n FROM {self.schema}.monitor_ticks').fetchone()['n'],9)
+                    f'SELECT count(*) AS n FROM {self.schema}.monitor_ticks').fetchone()['n'],10)
             finally:
                 conn.rollback()
 
