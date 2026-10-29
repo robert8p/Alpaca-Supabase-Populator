@@ -1,16 +1,16 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 3 (interim repair publication; the containing Git commit records the authoritative timestamp)
+**Checkpoint version:** 4 (2026-10-29 03:10 UTC; scheduled writer admitted)
 **Programme:** isolated ASTRA ingestion reliability; no bulk ingestion or scientific certification.
-**Owner:** no continuing implementation owner after this atomic repair publication; last owner was originating conversation `interim-recovery-20261029T0230Z`.
-**Exclusive implementation lease:** root's bounded repair claim is released by publication of this checkpoint. The scheduled writer remains temporarily paused until the originating conversation has inspected the new CI result and handed it back. Its former run is terminal failed, not an active owner. A successor must inspect task state, exact branch head, this checkpoint and current runtime claims, then acquire a fresh finite lease by CAS; never overwrite newer work.
-**Operation:** SQL repair and focused regression extension published in the commit containing this checkpoint. Exact-revision GitHub qualification is pending at publication; inspect the actual result before activation. Root has made no database migration, provider request, runtime-job mutation or deployment in this interim repair.
-**Next scheduled implementation run:** original cadence is preserved; the task will be re-enabled after this repair is checkpointed. Next nominal implementation slot is 2026-10-29 04:00 UTC; timing is flexible and is not proof of a run.
+**Owner:** scheduled implementation writer `6ae2a4c96bbc819182133e17e9b7f779`, run `8e5a5ad2-2570-8322-97bd-a1e22b9a8857`, finite CAS lease `ingestion-qual-20261029T0310Z`.
+**Exclusive implementation lease:** expires 2026-10-29T03:52:00Z. Scope: install and verify the one-time independent SQL verifier in app-owned schema, bounded independent observer fault test, and decide hosted replacement admission using current evidence. Do not overwrite a newer CAS checkpoint or compete with active process claims. The scheduled task itself was confirmed enabled and its present run is in_progress at 03:07Z. Previous run terminal failed and root's claim released.
+**Operation:** exact 8f7463c9 candidate already passed 115 ingestion checks (including 33 PostgreSQL) and 465 generic release checks. Admission is limited to app-owned, one-time verifier migration and genuine bounded verification with safeguards; no new hosted provider job unless independently necessary and pre-prepared. CI: ingestion 40809523944, release 40809523938, both SUCCESS at 02:59Z. All original canary evidence preserved.
+**Next run:** this bounded run commenced 2026-10-29T03:07:17Z. Continuation requires releasing or expiring this finite lease; next scheduled time alone is not proof of execution.
 **Campaign hard stop:** 2026-11-05 02:00 UTC or newer explicit stop.
 
 ## Ownership and dependency registry
 
-- Scheduled implementation writer: `6ae2a4c96bbc819182133e17e9b7f779` — Complete ingestion reliability; temporarily disabled for this bounded originating-conversation recovery; original schedule is preserved.
+- Scheduled implementation writer: `6ae2a4c96bbc819182133e17e9b7f779` — Complete ingestion reliability; currently enabled, current in-progress run owns only the finite CAS lease above.
 - Read-only independent verifier: `6ae2a4df5e908191989eacee0a454141` — Verify ingestion independently.
 - Read-only readiness closeout: `6ae2a4f6b4ac8191813eb27ed33c5e1b` — Close ingestion readiness gates.
 - Former owner run `c256f0aa-43d8-8332-b4f1-c94d78854529` ended failed with no result message. Its former 03:45 lease is superseded only after terminal-run, paused-schedule and branch/state reconciliation. Do not blindly replay its mutations.
