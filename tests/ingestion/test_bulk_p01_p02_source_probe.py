@@ -51,6 +51,9 @@ class P01P02SourceTests(unittest.TestCase):
         self.assertEqual(x.params[-1], 128)
         self.assertNotIn("10,20", x.query)
         self.assertFalse(x.worker_admission_authorized)
+        mutating = x.params[0]
+        mutating.append(999)
+        self.assertEqual(x.params[0], [10, 20])  # fresh array on every access
         with self.assertRaises(ScopeError):
             plan(route=DERIVED_VIEW)
         with self.assertRaises(ScopeError):
