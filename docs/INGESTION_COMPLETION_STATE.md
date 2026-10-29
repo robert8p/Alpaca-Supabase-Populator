@@ -1,10 +1,10 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 9 (2026-10-29 04:11 UTC; forced process-death recovery verified, gateway probe candidate pending CI)
+**Checkpoint version:** 10 (2026-10-29 04:16 UTC; gateway probe correct-signature repair pending exact CI)
 **Programme:** isolated ASTRA ingestion reliability; no bulk ingestion or scientific certification.
 **Owner:** scheduled implementation run `602a52aa-f638-8320-832c-3b20edb1d6f4`; this run is the sole admitted mutator; independent review tasks remain read-only.
 **Exclusive implementation lease:** CAS-acquired by this same commit, expires at **2026-10-29 04:40:00 UTC**. No takeover before verified expiry/terminal run; never assume task schedule grants exclusivity. Release this claim by a CAS successor checkpoint before concluding.
-**Operation:** autonomous scheduled stall detection now passed and one controlled provider-backed, post-commit forced process-death test passed (one request/78 bars, real Render nonZeroExit87, automatic restart and independent verifier). Temporarily remove crash hook, deploy a no-token HTTPS gateway boundary probe under the protected runtime's existing public key, then restore clean worker code. Completion checks remain scoped to the release.
+**Operation:** real hosted process death and autonomous monitored stall already proven. Valid-public-key HTTPS probe denied private verifier (406 for private schema, 404 for default schema). First public-dispatch test returned 404 because the probe sent wrong argument names; repair exact parameter names to make a true unauthenticated capability test; never mistake a PGRST404 signature error for actor enforcement. No new provider work admitted.
 **Next run:** upon lease release or terminal failure, use final checkpoint and latest independent results; do not duplicate tests.
 **Campaign hard stop:** 2026-11-05 02:00 UTC or newer explicit stop.
 
@@ -114,3 +114,8 @@ Keep all original budgets, immutable-canary constraints, manual-deployment setti
 - Distinction: this is evidence of **forced process death followed by automatic process restart on the same Render instance**, with no overlapping old process. It is *not* physical host eviction or a zero-downtime deployment rollout proving no cross-instance overlap. Do not misstate the latter.
 - Original canary preserved. Campaign cumulative new provider requests **1 of 10**, new records **78 of 1000**; job-level limits max2 requests / 250 rows, no retries. Retain the completed test job and receipt for independent read-only reconciliation until final reviewer has consumed it; then scoped cleanup may be considered, not blind deletion.
 - External no-key HTTPS checks returned HTTP401; the remaining permission gate is a **real valid-publishable-key anonymous HTTPS denial**. Temporary gateway probe uses the *existing protected worker public key*, logs only status and denied flag and transmits **no worker capability token or service key**. No new infrastructure or secrets added. It must be removed from final worker code after evidence capture. Genuine authenticated user JWT testing remains a separate limit.
+
+
+## Gateway probe first-pass finding — 04:15 UTC
+
+- Worker-only Render release c84e5161 live at 2026-10-29T04:14:59.972842Z. It used *existing* Render-protected publishable key without disclosing it. Logs at 04:15:00.922067Z: private verifier via private schema HTTP406; private verifier via public schema HTTP404; public dispatcher without capability HTTP404. All were denied, but the dispatcher request used `p_operation,p_payload` instead of actual RPC signature `operation,payload`. Its 404 is *not* proof of application-level authentication rejection. This run corrected the request signature and added an exact-body test; require passing CI, a new worker-only deploy, and observed HTTP401/403 of correct invocation before counting dispatcher gateway permission as qualified.

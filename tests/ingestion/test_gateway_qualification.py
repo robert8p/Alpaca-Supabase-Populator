@@ -29,6 +29,7 @@ class GatewayQualificationUnitTests(unittest.TestCase):
         self.assertEqual([x["denied"] for x in result["results"]],[True,True,True])
         self.assertEqual([x["http_status"] for x in result["results"]],[406,404,401])
         self.assertEqual(len(opener.requests),3)
+        self.assertEqual(json.loads(opener.requests[2].data), {"operation": "health", "payload": {}})
         for req in opener.requests:
             self.assertEqual(req.get_method(),"POST")
             self.assertNotIn("X-astra-ingestion-token",dict(req.header_items()))

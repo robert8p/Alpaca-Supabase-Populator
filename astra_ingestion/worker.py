@@ -122,7 +122,7 @@ def _qualification_gateway_probe(settings):
         ("private_verifier_default_schema", "/rest/v1/rpc/independent_verify_tick_v1",
          b"{}", {}),
         ("public_dispatch_without_capability", "/rest/v1/rpc/astra_ingestion_rpc_v1",
-         b'{"p_operation":"health","p_payload":{}}', {}),
+         b'{"operation":"health","payload":{}}', {}),
     )
     results = []
     for name, path, data, extra in tests:
