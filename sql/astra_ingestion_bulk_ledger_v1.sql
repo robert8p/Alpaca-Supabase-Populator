@@ -151,10 +151,10 @@ BEGIN
    RETURN to_jsonb(existing);
  END IF;
  IF (SELECT count(*) FROM unnest(p_predecessors) AS d(k)) IS DISTINCT FROM
-    (SELECT count(DISTINCT k) FROM unnest(p_predecessors) AS d(k)) THEN
+    (SELECT count(DISTINCT d.k) FROM unnest(p_predecessors) AS d(k)) THEN
    RAISE EXCEPTION 'duplicate dependency';
  END IF;
- IF p_predecessors IS DISTINCT FROM COALESCE((SELECT array_agg(k ORDER BY k)
+ IF p_predecessors IS DISTINCT FROM COALESCE((SELECT array_agg(d.k ORDER BY d.k)
    FROM unnest(p_predecessors) AS d(k)),ARRAY[]::text[]) THEN
    RAISE EXCEPTION 'dependency keys must be deterministically sorted';
  END IF;
