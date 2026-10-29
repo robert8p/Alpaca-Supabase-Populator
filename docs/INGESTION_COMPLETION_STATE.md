@@ -1,5 +1,13 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 32 — 29 October 2026, run c9a7793b-51c0-832e-8a3b-15a498359018. **Owner:** writer-20261029-1604-manifest-admission, task 6ae2a4c96bbc819182133e17e9b7f779. **Finite coordination lease until:** 2026-10-29T16:55:00Z. This is coordination only; it does not prove old-host cessation, authorise a production job, or change original job deadlines. No programme expiry.
+
+**Claim operation:** implement a fail-closed full-24-family manifest admission validator and bounded evidence tests (without inventing source units or granting runtime capabilities). Read exact source, qualify candidate in GitHub CI, preserve previous evidence/stop/budget fences, document outcome and release claim. Run is the sole writer; read-only reviewer/closeout stay untouched.
+
+## Archived v31 checkpoint
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 31 — 29 October 2026, verified after 15:06 London. **Owner: RELEASED.** Finite claim `writer-20261029-1456-source-admission` (run `6763c331-5c90-8323-84ab-078582ab2487`) closed after testing, documenting and releasing the next bounded engineering slice. Claim's former 16:20Z limit is historical, not a programme deadline. No active production work created by this claim.
 
 **NEW SOURCE-SLICE VERIFIED:** executable SQL revision `abef74e25dd1b5bb80618e5083658d22230467a0` adds a tightly confined recovery operation for **expired retained-source-reuse work only**: zero provider requests; prior source receipts preserved, changed claimant and incremented fence, cumulative attempt maximum 2, original deadline and manifest-stop enforced, provider-backed acquisition excluded. This is a staged SQL component, **not installed**. Expired claims do not establish physical old-instance cessation; cross-instance takeover and genuine hosted eviction remain unproven.
