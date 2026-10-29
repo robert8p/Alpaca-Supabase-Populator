@@ -361,17 +361,141 @@ class RPCPostgreSQLTests(unittest.TestCase):
                    stored_count,expected_sha256,stored_sha256 FROM {self.schema}.independent_verifications""").fetchone()
                 self.assertEqual(result['coverage_certification'],'NOT_CERTIFIED')
                 self.assertEqual(result['expected_sha256'],result['stored_sha256'])
-                # Only the disposable fixture is tampered. Readback must fail independently.
-                conn.execute(f'DELETE FROM {self.schema}.independent_verifications')
+                # Every corruption is confined to the disposable fixture and rolled
+                # back separately. An exact diagnostic excludes an unrelated failure.
                 row=conn.execute(f'SELECT partition_id,record_key,payload FROM {self.schema}.records').fetchone()
+                receipt=conn.execute(f'SELECT * FROM {self.schema}.receipts WHERE partition_id=%s',
+                    (row['partition_id'],)).fetchone()
+                partition_id=row['partition_id']
+
+                def replace_payload(payload):
+                    conn.execute(f'''UPDATE {self.schema}.records SET payload=%s
+                        WHERE partition_id=%s AND record_key=%s''',
+                        (payload,partition_id,row['record_key']))
+
+                def duplicate_source_bar():
+                    body=json.loads(receipt['raw_body'])
+                    body['bars']['AAPL'].append(copy.deepcopy(body['bars']['AAPL'][0]))
+                    raw=json.dumps(body)
+                    # Keep the retained-byte digest valid: this must fail on raw
+                    # occurrence cardinality, not on a stale response checksum.
+                    conn.execute(f'''UPDATE {self.schema}.receipts SET raw_body=%s,body_sha256=%s
+                        WHERE partition_id=%s AND page_no=0''',
+                        (raw,hashlib.sha256(raw.encode('utf-8')).hexdigest(),partition_id))
+                    conn.execute(f'UPDATE {self.schema}.jobs SET receipt_bytes=%s WHERE id=%s',
+                        (len(raw.encode('utf-8')),job['id']))
+                    parsed=parse_page(raw,symbol='AAPL',start=claim['start'],end=claim['end'],timeframe='5Min')
+                    self.assertEqual(len(body['bars']['AAPL']),2)
+                    self.assertEqual(list(parsed.records),[json.loads(row['payload'])])
+
+                def replace_receipt_pages(tokens):
+                    # Distinct in-scope bars and identical source/target values keep
+                    # pagination corruption independent of content/duplicate checks.
+                    conn.execute(f'DELETE FROM {self.schema}.receipts WHERE partition_id=%s',(partition_id,))
+                    conn.execute(f'DELETE FROM {self.schema}.records WHERE partition_id=%s',(partition_id,))
+                    token_in=None
+                    receipt_bytes=0
+                    expected=[]
+                    for page_no,token_out in enumerate(tokens):
+                        bar=copy.deepcopy(json.loads(receipt['raw_body'])['bars']['AAPL'][0])
+                        bar['t']=f'2025-09-02T13:{30+5*page_no:02d}:00Z'
+                        raw=json.dumps({'bars':{'AAPL':[bar]},'next_page_token':token_out})
+                        parsed=parse_page(raw,symbol='AAPL',start=claim['start'],end=claim['end'],timeframe='5Min')
+                        self.assertEqual(len(parsed.records),1)
+                        payload=parsed.records[0]
+                        expected.append(payload)
+                        conn.execute(f'''INSERT INTO {self.schema}.receipts
+                            (partition_id,page_no,token_in,token_out,request_id,raw_body,body_sha256,received_at)
+                            VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''',
+                            (partition_id,page_no,token_in,token_out,'verifier-fixture-'+str(page_no),raw,
+                             hashlib.sha256(raw.encode('utf-8')).hexdigest(),receipt['received_at']+page_no))
+                        conn.execute(f'''INSERT INTO {self.schema}.records(partition_id,record_key,payload)
+                            VALUES(%s,%s,%s)''',(partition_id,payload['symbol']+'|'+payload['timestamp'],
+                            json.dumps(payload,sort_keys=True,separators=(',',':'))))
+                        receipt_bytes+=len(raw.encode('utf-8'))
+                        token_in=token_out
+                    conn.execute(f'''UPDATE {self.schema}.partitions SET page_count=%s,record_count=%s,
+                        request_count=%s,next_page_token=NULL WHERE id=%s''',
+                        (len(tokens),len(expected),len(tokens),partition_id))
+                    conn.execute(f'''UPDATE {self.schema}.jobs SET record_count=%s,request_count=%s,
+                        receipt_bytes=%s WHERE id=%s''',
+                        (len(expected),len(tokens),receipt_bytes,job['id']))
+                    actual=[json.loads(value['payload']) for value in conn.execute(
+                        f'SELECT payload FROM {self.schema}.records WHERE partition_id=%s ORDER BY record_key',
+                        (partition_id,)).fetchall()]
+                    self.assertEqual(actual,expected)
+                    self.assertEqual(len({value['timestamp'] for value in expected}),len(tokens))
+
+                def assert_rejected(name,mutate,message,sqlstate='P0001'):
+                    with self.subTest(corruption=name):
+                        conn.execute('SAVEPOINT verifier_corruption_case')
+                        try:
+                            conn.execute(f'DELETE FROM {self.schema}.independent_verifications WHERE partition_id=%s',
+                                (partition_id,))
+                            mutate()
+                            second=conn.execute(fn).fetchone()['value']
+                            self.assertEqual((second['state'],second['result']),('attested','failed'))
+                            rejected=conn.execute(f'''SELECT result,failure_code,coverage_certification
+                                FROM {self.schema}.independent_verifications WHERE partition_id=%s''',
+                                (partition_id,)).fetchone()
+                            self.assertEqual(rejected['result'],'failed')
+                            self.assertEqual(rejected['failure_code'],sqlstate+':'+message)
+                            self.assertEqual(rejected['coverage_certification'],'NOT_CERTIFIED')
+                            self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
+                        finally:
+                            conn.execute('ROLLBACK TO SAVEPOINT verifier_corruption_case')
+                            conn.execute('RELEASE SAVEPOINT verifier_corruption_case')
+                        self.assertEqual(conn.execute(f'''SELECT result FROM {self.schema}.independent_verifications
+                            WHERE partition_id=%s''',(partition_id,)).fetchone()['result'],'passed')
+
+                with self.subTest(pagination='valid three-page chain'):
+                    conn.execute('SAVEPOINT verifier_valid_pagination_case')
+                    try:
+                        conn.execute(f'DELETE FROM {self.schema}.independent_verifications WHERE partition_id=%s',
+                            (partition_id,))
+                        replace_receipt_pages(['page-2','page-3',None])
+                        valid=conn.execute(fn).fetchone()['value']
+                        self.assertEqual((valid['state'],valid['result'],valid['source_count'],
+                            valid['stored_count'],valid['receipt_count']),('attested','passed',3,3,3))
+                        attestation=conn.execute(f'''SELECT result,failure_code,expected_sha256,stored_sha256
+                            FROM {self.schema}.independent_verifications WHERE partition_id=%s''',
+                            (partition_id,)).fetchone()
+                        self.assertEqual(attestation['result'],'passed')
+                        self.assertIsNone(attestation['failure_code'])
+                        self.assertEqual(attestation['expected_sha256'],attestation['stored_sha256'])
+                        self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
+                    finally:
+                        conn.execute('ROLLBACK TO SAVEPOINT verifier_valid_pagination_case')
+                        conn.execute('RELEASE SAVEPOINT verifier_valid_pagination_case')
+                    restored=conn.execute(f'''SELECT result,coverage_certification,source_count,
+                        stored_count,expected_sha256,stored_sha256 FROM {self.schema}.independent_verifications
+                        WHERE partition_id=%s''',(partition_id,)).fetchone()
+                    self.assertEqual(restored,result)
+
                 bad=json.loads(row['payload']);bad['close']='9999'
-                conn.execute(f'''UPDATE {self.schema}.records SET payload=%s
-                    WHERE partition_id=%s AND record_key=%s''',(json.dumps(bad),row['partition_id'],row['record_key']))
-                second=conn.execute(fn).fetchone()['value']
-                self.assertEqual((second['state'],second['result']),('attested','failed'))
-                self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
-                self.assertEqual(conn.execute(f"""SELECT result FROM {self.schema}.independent_verifications
-                    WHERE partition_id=%s""",(row['partition_id'],)).fetchone()['result'],'failed')
+                assert_rejected('target value tamper',lambda:replace_payload(json.dumps(bad)),
+                    'Source-to-target readback is not identical')
+                assert_rejected('wrong page count',lambda:conn.execute(
+                    f'UPDATE {self.schema}.partitions SET page_count=page_count+1 WHERE id=%s',(partition_id,)),
+                    'Original source receipt chain is incomplete')
+                assert_rejected('nonterminal partition checkpoint',lambda:conn.execute(
+                    f'UPDATE {self.schema}.partitions SET next_page_token=%s WHERE id=%s',
+                    ('unconsumed-checkpoint',partition_id)),
+                    'Original source receipt chain is incomplete')
+                assert_rejected('receipt after terminal',lambda:replace_receipt_pages([None,None]),
+                    'Retained source pagination chain is incomplete')
+                assert_rejected('repeated continuation token',
+                    lambda:replace_receipt_pages(['repeated-token','repeated-token',None]),
+                    'Retained source repeats a pagination token')
+                assert_rejected('identical source bar within page',duplicate_source_bar,
+                    'Duplicate source bar within retained page')
+                # Repeating the same value leaves the jsonb value unchanged. Only
+                # validation of the original TEXT can distinguish this corruption.
+                original_payload=json.loads(row['payload'])
+                duplicate_payload='{"close":'+json.dumps(original_payload['close'])+','+row['payload'].lstrip()[1:]
+                self.assertEqual(json.loads(duplicate_payload),original_payload)
+                assert_rejected('duplicate target JSON key',lambda:replace_payload(duplicate_payload),
+                    'Duplicate source JSON object key','AI002')
             finally:
                 # Reverses all fixture objects/roles, tampering and attestations.
                 conn.rollback()

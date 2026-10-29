@@ -1,20 +1,22 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 2 (2026-10-29 02:30 UTC; reconciled interim recovery claim)
+**Checkpoint version:** 3 (interim repair publication; the containing Git commit records the authoritative timestamp)
 **Programme:** isolated ASTRA ingestion reliability; no bulk ingestion or scientific certification.
-**Owner:** originating user conversation, bounded interim repair `interim-recovery-20261029T0230Z`.
-**Exclusive implementation lease:** expires **2026-10-29 03:15 UTC**. The scheduled implementation task has been temporarily paused and read back as disabled; its last run is terminal **failed**, completed 2026-10-29T02:20:28.644931Z. This claim does not infer that an in-progress remote operation was cancelled. A successor must read the current owner, task state, branch head and exact content SHA, then use CAS; never overwrite newer work.
-**Operation:** repair the preserved SQL verifier candidate and add focused disposable PostgreSQL regressions; GitHub qualification follows. Root production access during this repair is read-only. No additional provider job, deployment or database migration is admitted by this claim.
+**Owner:** no continuing implementation owner after this atomic repair publication; last owner was originating conversation `interim-recovery-20261029T0230Z`.
+**Exclusive implementation lease:** root's bounded repair claim is released by publication of this checkpoint. The scheduled writer remains temporarily paused until the originating conversation has inspected the new CI result and handed it back. Its former run is terminal failed, not an active owner. A successor must inspect task state, exact branch head, this checkpoint and current runtime claims, then acquire a fresh finite lease by CAS; never overwrite newer work.
+**Operation:** SQL repair and focused regression extension published in the commit containing this checkpoint. Exact-revision GitHub qualification is pending at publication; inspect the actual result before activation. Root has made no database migration, provider request, runtime-job mutation or deployment in this interim repair.
 **Next scheduled implementation run:** original cadence is preserved; the task will be re-enabled after this repair is checkpointed. Next nominal implementation slot is 2026-10-29 04:00 UTC; timing is flexible and is not proof of a run.
 **Campaign hard stop:** 2026-11-05 02:00 UTC or newer explicit stop.
 
 ## Ownership and dependency registry
 
-- Scheduled implementation writer: `6ae2a4c96bbc819182133e17e9b7f779` — Complete ingestion reliability; temporarily disabled for this bounded originating-conversation recovery.
+- Scheduled implementation writer: `6ae2a4c96bbc819182133e17e9b7f779` — Complete ingestion reliability; temporarily disabled for this bounded originating-conversation recovery; original schedule is preserved.
 - Read-only independent verifier: `6ae2a4df5e908191989eacee0a454141` — Verify ingestion independently.
 - Read-only readiness closeout: `6ae2a4f6b4ac8191813eb27ed33c5e1b` — Close ingestion readiness gates.
 - Former owner run `c256f0aa-43d8-8332-b4f1-c94d78854529` ended failed with no result message. Its former 03:45 lease is superseded only after terminal-run, paused-schedule and branch/state reconciliation. Do not blindly replay its mutations.
 - Each independent task retains its own evidence; no unrelated or paused legacy schedule is changed.
+
+## Fixed scope and evidence
 
 - Repository `robert8p/Alpaca-Supabase-Populator`; branch `feat/astra-ingestion-service`; [PR 93](https://github.com/robert8p/Alpaca-Supabase-Populator/pull/93) remains draft, unmerged.
 - Initial qualified source and both deployed Render revisions: `1c3d9e860a22ea872fd0ce3fcfce27fd44d8eebe`. Web `srv-dbh85vl9fdbs7387rucg`; worker `srv-dbh9fko473hc739an8m0`; Render workspace `tea-d562ma4hg0os73aejnfg`. Blueprint `exs-dbh5qcetlv9c73fqqen0` uses `render-ingestion.yaml`. Service auto-deploy and Blueprint Auto Sync off. Normal compute $14/month.
@@ -35,7 +37,9 @@
 - At 02:26:34 UTC, 11 persisted monitor ticks ran from 02:06:55 through 02:26:00; all observed zero active jobs and zero new incidents. This proves installed idle observation, not live stall detection/recovery.
 - Runtime independent verifier objects/role are absent. Its migration was not observed installed.
 - Candidate ingestion CI failed: [PR run 40805713520](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40805713520), SQLSTATE42883 `operator does not exist: text ->> unknown`. Both key assignments need parenthesized JSON extraction.
-- Static review additionally found receipt-chain/cardinality and duplicate-normalization false-pass cases. Repair and regression tests are in progress; no pass or release claim yet.
+- Repaired both key expressions, rejected receipts after terminal pages and repeated continuation tokens, required exact receipt/page-count and terminal partition checkpoint, rejected within-page source duplicates before deduplication and rejected duplicate target JSON keys before jsonb conversion. The original successful verification, actor ACL, unchanged dispatcher and one-shot attestation tests are preserved.
+- Existing SQL verifier integration test now includes seven precise rejection subcases (value tamper, wrong page count, nonterminal checkpoint, receipt after terminal, repeated token, identical source duplicate, target duplicate JSON key), each rolled back independently, plus a valid three-page success case. Every negative case requires its intended SQLSTATE/message. Local Python AST/compile validation passed; PostgreSQL acceptance is the exact new GitHub workflow result, not a local execution claim.
+- Repaired SQL SHA256 `82038c484a0bc26234650fd087899353f2be09915702473760636ddf12a0cb8c`; regression file SHA256 `8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96`. Candidate source is the commit containing this checkpoint, descended from original failed candidate cda4177.
 - Two bounded attempts to read cron execution history timed out. No execution-history conclusion is claimed; actual tick ledger and current cron definition provide the observations above.
 
 ## Qualification gate ledger
@@ -59,6 +63,6 @@
 
 ## Next admissible step and change control
 
-Complete this bounded repair, publish with exact-head CAS, run the required PostgreSQL and release CI, record its result and release ownership before restoring the scheduled writer. Install any later verifier migration once, in one transaction, only after baseline/schema/ACL admission and exact-candidate CI; migration replay is deliberately rejected. A failed attestation is one-shot for its partition/version and cannot be silently retried or deleted to obtain a pass. Acceptance must require result=passed plus exact scope/counts; equal empty-map hashes alone prove nothing. SQL map hashes and worker/audit array hashes use different canonical containers and must not be compared as equal digests.
+Read the exact commit's PostgreSQL and release CI results; no deployment is admitted on failure or missing evidence. The originating conversation restores the scheduled writer after recording the result in its task handoff. The next writer acquires its own finite CAS lease, accepts the original-canary report, and completes the remaining deployed verifier and hosted recovery gates. Install any later verifier migration once, in one transaction, only after baseline/schema/ACL admission and exact-candidate CI; migration replay is deliberately rejected. A failed attestation is one-shot for its partition/version and cannot be silently retried or deleted to obtain a pass. Acceptance must require result=passed plus exact scope/counts; equal empty-map hashes alone prove nothing. SQL map hashes and worker/audit array hashes use different canonical containers and must not be compared as equal digests.
 
 Keep all original budgets, immutable-canary constraints, manual-deployment settings, legacy stops and scientific holds. No new provider allowance was consumed by this interim repair. Recheck current ownership and unresolved effects before every future mutation.

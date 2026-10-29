@@ -59,6 +59,7 @@ DECLARE
  v_actual_count integer:=0;
  v_pages integer:=0;
  v_token text:=NULL;
+ v_seen_tokens text[]:='{}'::text[];
  v_key text;
  v_state text:='passed';
  v_failure text:=NULL;
@@ -90,7 +91,8 @@ BEGIN
    FOR v_receipt IN SELECT * FROM astra_ingestion_v1.receipts
      WHERE partition_id=v_p.id ORDER BY page_no
    LOOP
-     IF v_receipt.page_no<>v_pages OR v_receipt.token_in IS DISTINCT FROM v_token THEN
+     IF v_receipt.page_no<>v_pages OR v_receipt.token_in IS DISTINCT FROM v_token
+        OR (v_pages>0 AND v_token IS NULL) THEN
         RAISE EXCEPTION 'Retained source pagination chain is incomplete'; END IF;
      IF pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
         v_receipt.raw_body,'UTF8')),'hex')<>v_receipt.body_sha256 THEN
@@ -99,21 +101,34 @@ BEGIN
        v_receipt.raw_body,v_p.symbol,v_p.start_at,v_p.end_at);
      IF (v_parsed->>'next_page_token') IS DISTINCT FROM v_receipt.token_out THEN
         RAISE EXCEPTION 'Stored continuation token differs from source page'; END IF;
+     IF v_receipt.token_out IS NOT NULL THEN
+       IF v_receipt.token_out=ANY(v_seen_tokens) THEN
+         RAISE EXCEPTION 'Retained source repeats a pagination token'; END IF;
+       v_seen_tokens:=pg_catalog.array_append(v_seen_tokens,v_receipt.token_out);
+     END IF;
+     -- The parser deduplicates identical bars. Preserve raw occurrence cardinality.
+     IF pg_catalog.jsonb_array_length(COALESCE(
+          (v_receipt.raw_body::jsonb)->'bars'->v_p.symbol,'[]'::jsonb))
+        <>pg_catalog.jsonb_array_length(v_parsed->'records') THEN
+       RAISE EXCEPTION 'Duplicate source bar within retained page'; END IF;
      FOR v_payload IN SELECT value FROM pg_catalog.jsonb_array_elements(v_parsed->'records')
      LOOP
-       v_key:=v_payload->>'symbol'||'|'||v_payload->>'timestamp';
+       v_key:=(v_payload->>'symbol')||'|'||(v_payload->>'timestamp');
        IF v_expected ? v_key THEN RAISE EXCEPTION 'Duplicate source bar across retained pages'; END IF;
        v_expected:=v_expected || pg_catalog.jsonb_build_object(v_key,v_payload);
      END LOOP;
      v_token:=v_receipt.token_out;
      v_pages:=v_pages+1;
    END LOOP;
-   IF v_pages=0 OR v_token IS NOT NULL THEN RAISE EXCEPTION 'Original source receipt chain is incomplete'; END IF;
+   IF v_pages=0 OR v_token IS NOT NULL OR v_pages<>v_p.page_count
+      OR v_p.next_page_token IS NOT NULL THEN
+     RAISE EXCEPTION 'Original source receipt chain is incomplete'; END IF;
    FOR v_row IN SELECT * FROM astra_ingestion_v1.records
       WHERE partition_id=v_p.id ORDER BY record_key
    LOOP
+     PERFORM astra_ingestion_v1.rpc_json_unique(v_row.payload::json);
      v_payload:=v_row.payload::jsonb;
-     v_key:=v_payload->>'symbol'||'|'||v_payload->>'timestamp';
+     v_key:=(v_payload->>'symbol')||'|'||(v_payload->>'timestamp');
      IF v_key IS NULL OR v_row.record_key<>v_key OR v_actual ? v_key THEN
         RAISE EXCEPTION 'Stored payload key or cardinality mismatch'; END IF;
      v_actual:=v_actual || pg_catalog.jsonb_build_object(v_key,v_payload);
@@ -206,3 +221,4 @@ BEGIN
 END $grant$;
 -- Schedule separately only after exact-source CI, role ACL readback and a
 -- bounded live dry-run. This verifier can never submit or alter ingestion jobs.
+
