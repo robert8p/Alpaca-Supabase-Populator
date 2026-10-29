@@ -151,6 +151,8 @@ class BoundedPartition:
             raise ScopeError("retained-source reuse cannot consume provider requests")
         if self.mode == "provider_acquisition" and self.max_requests == 0:
             raise ScopeError("provider reservation must be explicit")
+        # Always validate the original absolute UTC deadline, without a campaign cutoff.
+        _utc(self.original_deadline)
 
     @property
     def idempotency_key(self) -> str:
