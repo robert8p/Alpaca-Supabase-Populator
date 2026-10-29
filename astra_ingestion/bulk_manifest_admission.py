@@ -9,9 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Mapping, Any
 
-from .bulk_expected import ExpectedUnitPlan, MAX_UNIT_PAGE
+from .bulk_expected import ExpectedUnitPlan, MAX_UNIT_PAGE, plan_expected_units
 from .bulk_scope import (
-    CAPTURE_KEY, FAMILIES, RETAINED_RECEIPT_SHA256,
+    CAPTURE_KEY, FAMILIES, RETAINED_RECEIPT_SHA256, RetainedManifest,
     ScopeError, canonical, read_contracts, sha256_text,
 )
 
@@ -120,6 +120,7 @@ def _read_witness(
 
 
 def compile_manifest_preflight(
+    capture: RetainedManifest,
     plan: ExpectedUnitPlan,
     contract_rows: list[Mapping[str, object]],
     source_pins: Mapping[str, FamilySourcePin],
@@ -142,6 +143,14 @@ def compile_manifest_preflight(
             or any(f not in FAMILIES for f in source_pins)
             or not callable(read_page)):
         raise ScopeError("unbounded page, unknown family or missing source adapter")
+    # Recompute the entire planner from the original pinned capture and proofs;
+    # an arbitrarily constructed ExpectedUnitPlan object cannot pass this gate.
+    reconstructed = plan_expected_units(capture, contract_rows, plan.source_bindings)
+    if (reconstructed.families != plan.families
+            or reconstructed.companies != plan.companies
+            or reconstructed.sessions != plan.sessions):
+        raise ScopeError("expected-unit planner does not match the retained capture and original contracts")
+    plan = reconstructed
     contracts = read_contracts(contract_rows)
     hashes = {row["family_id"]: row["contract_sha256"] for row in contract_rows}
     results: list[FamilyPreflight] = []
