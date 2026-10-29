@@ -17,12 +17,11 @@ import re
 import ssl
 from time import monotonic
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlsplit
 from urllib.request import HTTPSHandler, Request, build_opener
 
 from .bulk_reuse_dispatch import DispatchRefused
 from .rpc_store import (
-    PROJECT_REF, PROJECT_URL, _NoRedirect, _invalid_constant,
+    PROJECT_URL, _NoRedirect, _invalid_constant,
     _unique_object, validate_public_key,
 )
 
@@ -91,6 +90,8 @@ class RestrictedBulkHttpPort:
     def _rpc(self, operation: str, arguments: dict):
         if operation not in _ALLOWED:
             raise BulkPortError("Unsupported restricted function")
+        # An access token can expire while a long-running worker is idle.
+        _jwt_claims(self._access_jwt)
         # No caller-supplied domain, path, SQL string or role header.
         url = PROJECT_URL + "/rest/v1/rpc/" + operation
         content = json.dumps(arguments, separators=(",", ":"), allow_nan=False).encode("utf-8")
