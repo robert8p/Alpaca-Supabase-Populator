@@ -66,7 +66,7 @@ class BulkReviewedUnitPostgresTests(unittest.TestCase):
     (CAPTURE, "contract", fam, self.contract(fam)))
   for filename in FILES:
    self.conn.execute((ROOT/"sql"/filename).read_text().replace("astra_ingestion_v1", self.schema))
-  self.sql("bulk_manifest_create_v1", MANIFEST, CAPTURE, RECEIPT, 0, 500)
+  self.sql("bulk_manifest_create_v1", MANIFEST, CAPTURE, RECEIPT, 1, 500)
 
  def cleanup(self):
   if hasattr(self, "conn"):
