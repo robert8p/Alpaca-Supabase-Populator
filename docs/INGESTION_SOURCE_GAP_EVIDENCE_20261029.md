@@ -1,3 +1,15 @@
+## Additional verified September P01/P02 source-reuse assessment — 29 October 2026, 22:00 London
+
+**Original source view is not independent:** Read-only `pg_get_viewdef` confirmed `market_fixed_20250901_20260831.us_equities_bars_1m` reads from `alpaca_sip_bars_1m_enriched`, which itself joins the *same* `market_fixed_20250901_20260831.alpaca_sip_bars_1m` parent to `reference.alpaca_fixed_window_instruments_v1`. The P01 view does not supply a separate September replacement. P02's original contract only declares the base parent.
+
+**Protected legacy Top-3,000 retained price rows (READ ONLY; no mutation/restart):** `population_top3000_202608_202609_v1.retained_price_observation_v2` contains **13,406** rows for **4** distinct companies, earliest 2026-08-03, latest 2026-08-31, **zero September rows**. `working_retained_price_observations_v2` also contains **13,406** rows for the same four-company cardinality, with **zero September rows** and **all 13,406 rows marked `family_accepted=false`**; all 13,406 rows have NULL `expected_minute_bars`. Do not assume these two stores are disjoint, accepted, complete, eligible or independent. These are read-only, narrow source diagnostics, not a source-backed complete denominator, a licensed price export or a new bulk job.
+
+**Actual original P01/P02 contract checks:** The retained `P01` contract SHA256 is `9eda239c37522ec884e090279220fd701b41f6140bf0a66674b2a3a4798fe387`; its expected unit is "eligible security-session-minute and required bar field", dependencies REF01/N03. The retained `P02` SHA256 is `ba96c9a04d15e88f0674278dd9ea789d61a7e62cd2e10da754d2c3426655c8bb`; expected unit is "eligible security-extended-session-minute and bar field", dependencies REF01/P01/N03. The original contracts demand provider-eligible trade/calendar validity and bar/field checks. Neither observed bars nor an empty source can prove eligible no-trade or non-applicability. Historical identity, source-feed, raw adjustment and publication/availability need separately verified evidence.
+
+**Next admissible source work:** Use a finite, read-only instrument-key plus timestamp keyset probe on the original SIP parent to reuse actual rows and record source receipt hashes, but keep the September denominator UNKNOWN and acquisition BLOCKED until a fully sealed, finite provider request manifest, verified historical identities and eligible calendar are in place. The existing 4-company August retained data may be considered only with independent verification and preserved holds. No provider request, cost, production DDL/DML or legacy restart was made in this inspection.
+
+---
+
 # ASTRA Missions 1+2 — source-backed gap evidence, 29 October 2026
 
 **Evidence version:** ref01-and-p01-temporal-gap-v1 (source-only; not ingestion or acceptance).  
