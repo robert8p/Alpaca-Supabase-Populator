@@ -51,6 +51,10 @@ class Ref01Tests(unittest.TestCase):
         self.assertTrue(any("2026-08-01:2026-10-01" in x for x in result.candidate_unit_keys))
         self.assertEqual(self.compile([eligible()]).metadata_fingerprint_sha256,
                          result.metadata_fingerprint_sha256)
+        changed = tuple([*MEMBERS[:-1], "different-company"])
+        candidate = compile_ref01_candidates(changed, [eligible()], snapshot_sha256="b" * 64)
+        self.assertNotEqual(result.membership_sha256, candidate.membership_sha256)
+        self.assertNotEqual(result.metadata_fingerprint_sha256, candidate.metadata_fingerprint_sha256)
 
     def test_empty_source_is_not_non_applicability(self):
         result = self.compile([])
