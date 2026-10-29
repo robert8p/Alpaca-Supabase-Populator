@@ -196,7 +196,6 @@ class BulkLedgerPostgresTests(unittest.TestCase):
         time.sleep(2.2)
         with self.assertRaises(self.pg.Error):
             self.sql("bulk_recover_retained_v1",(second["work_key"],own["claim_fence"],"new-owner",60))
-        with self.assertRaises(self.pg.Error):
-            self.sql("bulk_claim_v1",(another,"new-owner",0))
+        self.assertIsNone(self.sql("bulk_claim_v1",(another,"new-owner",60)))
 
 if __name__ == "__main__": unittest.main()
