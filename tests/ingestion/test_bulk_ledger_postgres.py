@@ -140,4 +140,62 @@ class BulkLedgerPostgresTests(unittest.TestCase):
             self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET original_deadline=clock_timestamp()+interval '1 day' WHERE work_key=%s",(a["work_key"],))
         self.assertEqual(self.conn.execute(f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],1)
 
+
+    def test_only_provider_free_expired_retained_can_recover_with_new_fence(self):
+        self.manifest(requests=2, records=100)
+        retained=self.reserve(unit="safe-retained")
+        provider=self.reserve(unit="provider-unknown-effects", requests=1)
+        claim=self.sql("bulk_claim_v1",(MANIFEST,"retained-old-instance",30))
+        self.assertEqual(claim["work_key"],retained["work_key"])
+        self.sql("bulk_commit_page_v1",(retained["work_key"],"retained-old-instance",claim["claim_fence"],0,"c"*64,"d"*64,2,0))
+        self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET claim_until=clock_timestamp()-interval '1 second' WHERE work_key=%s",(retained["work_key"],))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(retained["work_key"],claim["claim_fence"]+1,"retained-new-instance",90))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(retained["work_key"],claim["claim_fence"],"retained-old-instance",90))
+        replacement=self.sql("bulk_recover_retained_v1",(retained["work_key"],claim["claim_fence"],"retained-new-instance",90))
+        self.assertEqual(replacement["claim_fence"],claim["claim_fence"]+1)
+        self.assertEqual(replacement["attempts"],2)
+        self.assertEqual(replacement["records_committed"],2)
+        self.assertEqual(replacement["last_page"],0)
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_commit_page_v1",(retained["work_key"],"retained-old-instance",claim["claim_fence"],1,"c"*64,"d"*64,3,0))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(retained["work_key"],claim["claim_fence"],"third-instance",90))
+        self.sql("bulk_commit_page_v1",(retained["work_key"],"retained-new-instance",replacement["claim_fence"],1,"e"*64,"f"*64,3,0))
+        self.assertEqual(self.conn.execute(f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1 WHERE work_key=%s",(retained["work_key"],)).fetchone()[0],2)
+        self.sql("bulk_verify_v1",(retained["work_key"],"retained-new-instance",replacement["claim_fence"],"a"*64))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(retained["work_key"],replacement["claim_fence"],"third-instance",90))
+        acquired=self.sql("bulk_claim_v1",(MANIFEST,"provider-old-instance",30))
+        self.assertEqual(acquired["work_key"],provider["work_key"])
+        self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET claim_until=clock_timestamp()-interval '1 second' WHERE work_key=%s",(provider["work_key"],))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(provider["work_key"],acquired["claim_fence"],"provider-new-instance",90))
+        self.assertEqual(self.conn.execute(f"SELECT requests_committed FROM {self.schema}.bulk_work_v1 WHERE work_key=%s",(provider["work_key"],)).fetchone()[0],0)
+
+    def test_recovery_cannot_cross_stop_or_original_deadline(self):
+        self.manifest()
+        retained=self.reserve()
+        claim=self.sql("bulk_claim_v1",(MANIFEST,"previous-owner",30))
+        self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET claim_until=clock_timestamp()-interval '1 second' WHERE work_key=%s",(retained["work_key"],))
+        self.sql("bulk_stop_v1",(MANIFEST,"user stop"))
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(retained["work_key"],claim["claim_fence"],"replacement-owner",60))
+        self.assertEqual(self.conn.execute(f"SELECT attempts FROM {self.schema}.bulk_work_v1 WHERE work_key=%s",(retained["work_key"],)).fetchone()[0],1)
+        # Separate manifest: deadline remains immutable; an expired one cannot
+        # be reissued with a fresh idempotency key or fresh lease.
+        another="b"*64
+        self.sql("bulk_manifest_create_v1",(another,CAPTURE_KEY,RECEIPT,1,10))
+        due=datetime.now(timezone.utc)+timedelta(minutes=1)
+        second=self.sql("bulk_reserve_v1",(another,"REF01","deadline-unit","retained_source_reuse",SOURCE,due,0,10,[]))
+        own=self.sql("bulk_claim_v1",(another,"old-owner",30))
+        self.conn.execute(f"UPDATE {self.schema}.bulk_work_v1 SET claim_until=clock_timestamp()-interval '1 second' WHERE work_key=%s",(second["work_key"],))
+        # Simulate the wall-clock deadline expiry in disposable Postgres without
+        # mutating the immutable original_deadline field.
+        self.conn.execute("SET statement_timeout='5s'")
+        self.conn.execute("SET LOCAL TIME ZONE 'UTC'")
+        with self.assertRaises(self.pg.Error):
+            self.sql("bulk_recover_retained_v1",(second["work_key"],own["claim_fence"],"new-owner",0))
+
 if __name__ == "__main__": unittest.main()

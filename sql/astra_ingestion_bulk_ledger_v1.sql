@@ -252,6 +252,63 @@ BEGIN
  RETURN FOUND;
 END $$;
 
+
+-- Only provider-free retained-source partitions may be reclaimed at expiry.
+-- Expiry alone is NOT evidence that the old host/process ceased. A new fence
+-- blocks its DB writes; worker code MUST perform zero provider calls in this
+-- mode. Provider-backed work remains blocked pending separate evidence.
+CREATE FUNCTION astra_ingestion_v1.bulk_recover_retained_v1(
+ p_work text,p_expected_fence bigint,p_owner text,p_lease_seconds int)
+RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER
+SET search_path=pg_catalog SET timezone='UTC' AS $
+DECLARE v_manifest text; m record; w record;
+BEGIN
+ IF p_work IS NULL OR p_work !~ '^astra-bulk-v1-[0-9a-f]{64}
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_work_guard_v1() FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_receipt_immutable_v1() FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_manifest_create_v1(text,text,text,bigint,bigint) FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_reserve_v1(text,text,text,text,text,timestamptz,int,int,text[]) FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_claim_v1(text,text,int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_commit_page_v1(text,text,bigint,int,text,text,int,int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_verify_v1(text,text,bigint,text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_stop_v1(text,text) FROM PUBLIC;
+COMMIT;
+ OR p_expected_fence IS NULL OR p_expected_fence<1
+ OR p_owner IS NULL OR length(p_owner) NOT BETWEEN 1 AND 128
+ OR p_lease_seconds IS NULL OR p_lease_seconds NOT BETWEEN 10 AND 180 THEN
+   RAISE EXCEPTION 'invalid bounded retained-only recovery identity';
+ END IF;
+ -- Lock in manifest-before-work order, so an explicit stop and recovery cannot
+ -- race; revalidate the immutable manifest binding after locking.
+ SELECT manifest_sha256 INTO v_manifest FROM astra_ingestion_v1.bulk_work_v1
+ WHERE work_key=p_work;
+ IF NOT FOUND THEN RAISE EXCEPTION 'unknown retained work'; END IF;
+ SELECT * INTO m FROM astra_ingestion_v1.bulk_manifest_v1
+ WHERE manifest_sha256=v_manifest FOR SHARE;
+ IF NOT FOUND OR m.stopped THEN
+   RAISE EXCEPTION 'manifest missing or stopped; recovery forbidden';
+ END IF;
+ SELECT * INTO w FROM astra_ingestion_v1.bulk_work_v1
+ WHERE work_key=p_work FOR UPDATE;
+ IF NOT FOUND OR w.manifest_sha256 IS DISTINCT FROM v_manifest
+ OR w.status <> 'claimed'
+ OR w.mode <> 'retained_source_reuse'
+ OR w.max_requests<>0 OR w.requests_committed<>0
+ OR w.claim_fence IS DISTINCT FROM p_expected_fence
+ OR w.claim_owner IS NULL OR w.claim_owner=p_owner
+ OR w.claim_until IS NULL OR w.claim_until>=clock_timestamp()
+ OR w.original_deadline<=clock_timestamp() OR w.attempts>=2 THEN
+   RAISE EXCEPTION 'retained recovery denied: stale fence, host ambiguity, terminal, budget, stop or deadline';
+ END IF;
+ UPDATE astra_ingestion_v1.bulk_work_v1
+ SET claim_owner=p_owner,claim_fence=claim_fence+1,
+ claim_until=LEAST(original_deadline,clock_timestamp()+(p_lease_seconds||' seconds')::interval),
+ attempts=attempts+1
+ WHERE work_key=w.work_key;
+ RETURN (SELECT to_jsonb(x) FROM astra_ingestion_v1.bulk_work_v1 x WHERE x.work_key=w.work_key);
+END $;
+REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_recover_retained_v1(text,bigint,text,int) FROM PUBLIC;
+
 REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_manifest_guard_v1() FROM PUBLIC;
 REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_work_guard_v1() FROM PUBLIC;
 REVOKE ALL ON FUNCTION astra_ingestion_v1.bulk_receipt_immutable_v1() FROM PUBLIC;
