@@ -139,7 +139,7 @@ def compile_ref01_candidates(
         if classification == "HELD":
             held += 1
             continue
-        missing = [x for x in REQUIRED if x not in row or row[x] is None]
+        missing = [x for x in REQUIRED if x not in row or (row[x] is None and x != "listing_end")]
         if missing:
             held += 1
             continue
