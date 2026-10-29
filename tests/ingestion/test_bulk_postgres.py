@@ -233,7 +233,8 @@ class BulkPostgreSQLTests(unittest.TestCase):
             self.assertEqual(sum(r["kind"]=="contract" for r in rows),24)
             self.assertEqual(sum(r["kind"]=="preservation" for r in rows),1065)
             self.assertTrue(all(digest(r["source_text"])==r["source_sha256"] for r in rows))
-            self.assertEqual(self.counts(),(0,0))  # RLS: no direct table access
+            with self.assertRaisesRegex(Exception,"permission denied"):
+                self.counts()  # explicit table ACL denial; RLS remains enabled
             for bad in (("bad",None,None,1),
                         ("top3000-augsep2026-retained-scope-v1",None,None,0),
                         ("top3000-augsep2026-retained-scope-v1",None,None,257),
