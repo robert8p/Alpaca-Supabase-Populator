@@ -1,5 +1,11 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 30 — 29 October 2026, 14:57 UTC. **Owner:** `writer-20261029-1456-source-admission`, task `6ae2a4c96bbc819182133e17e9b7f779`, current run `6763c331-5c90-8323-84ab-078582ab2487`. **Finite coordination lease:** until `2026-10-29T16:20:00Z`; this does not certify worker cessation, permit production ingestion, or override any job-level deadline. **Operation:** complete next isolated source/admission or worker engineering slice; source/test CI; checkpoint and release. **Base branch commit:** `95d84ec88557b1f7c873ce8bfe66500206ada3ee`. Programme has no expiry, all four acceptance gates OPEN; no new cost, deploy or provider permission.
+
+## Archived v29 checkpoint
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 29 — 29 October 2026, 14:08 London/UTC. **Owner: RELEASED.** Finite claim `writer-20261029-1358-bulk-queue` (automation run `47b74d23-1a84-832c-8cdd-9da106bf4fdc`) closed after committing and qualifying the next source slices. Previous claim lease ending 15:28Z is historical only; no production bulk lease, job, provider request or deployment from this run. No programme expiry.
 
 **FULLY VERIFIED EXACT-CANDIDATE GITHUB CI:** source commit `eb56fda692ad1035cb4aaa687a468660c7346ea5` is the current qualified candidate. Ingestion qualification push `40888212851`, PR `40888227441` and release-gate push `40888212864`, PR `40888227679` all **COMPLETED SUCCESS**. Earlier repaired ledger revision `f1c339a54e3f68ee9c461a4e58fd280e52d6ab84` also passed all four CI workflows `40887016362`, `40887028695`, `40887016057`, `40887028824`. These are source/disposable-postgres qualifications, NOT production installation, runtime admission or data acceptance. Do not carry untested qualification to modified executable code.
