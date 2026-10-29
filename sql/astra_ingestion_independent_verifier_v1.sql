@@ -172,7 +172,7 @@ GRANT USAGE ON SCHEMA astra_ingestion_v1 TO astra_ingestion_verifier_owner_v1;
 GRANT SELECT ON astra_ingestion_v1.jobs,astra_ingestion_v1.partitions,
    astra_ingestion_v1.receipts,astra_ingestion_v1.records,
    astra_ingestion_v1.verifications TO astra_ingestion_verifier_owner_v1;
-GRANT INSERT ON astra_ingestion_v1.independent_verifications TO astra_ingestion_verifier_owner_v1;
+GRANT SELECT,INSERT ON astra_ingestion_v1.independent_verifications TO astra_ingestion_verifier_owner_v1;
 CREATE POLICY ingestion_verifier_read ON astra_ingestion_v1.jobs
  FOR SELECT TO astra_ingestion_verifier_owner_v1 USING(true);
 CREATE POLICY ingestion_verifier_read ON astra_ingestion_v1.partitions
@@ -182,6 +182,8 @@ CREATE POLICY ingestion_verifier_read ON astra_ingestion_v1.receipts
 CREATE POLICY ingestion_verifier_read ON astra_ingestion_v1.records
  FOR SELECT TO astra_ingestion_verifier_owner_v1 USING(true);
 CREATE POLICY ingestion_verifier_read ON astra_ingestion_v1.verifications
+ FOR SELECT TO astra_ingestion_verifier_owner_v1 USING(true);
+CREATE POLICY ingestion_verifier_attestation_read ON astra_ingestion_v1.independent_verifications
  FOR SELECT TO astra_ingestion_verifier_owner_v1 USING(true);
 CREATE POLICY ingestion_verifier_attest ON astra_ingestion_v1.independent_verifications
  FOR INSERT TO astra_ingestion_verifier_owner_v1 WITH CHECK(true);
