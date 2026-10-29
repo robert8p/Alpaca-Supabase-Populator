@@ -426,6 +426,77 @@ class RPCPostgreSQLTests(unittest.TestCase):
         self.assertFalse(self.rpc('commit_page',self.page(fetch_claim),actor='worker')['ok'])
         self.assertEqual(len(self.rows('records')),1)
 
+    def test_post_commit_lost_reply_and_expired_lease_resume_without_replay(self):
+        """Simulate lost HTTP acknowledgement after atomic SQL commit; replacement only verifies."""
+        from astra_ingestion.rpc_store import RpcStore, RpcPersistenceError, PROJECT_URL
+        from astra_ingestion.worker import Worker
+        test=self
+        class Reply:
+            status=200
+            def __init__(self,value,url):
+                self.data=json.dumps(value).encode()
+                self.pos=0
+                self.url=url
+                self.headers={'Content-Type':'application/json','Content-Length':str(len(self.data))}
+            def geturl(self):return self.url
+            def read1(self,n):
+                part=self.data[self.pos:self.pos+n]
+                self.pos+=len(part)
+                return part
+            def __enter__(self):return self
+            def __exit__(self,*a):pass
+        class FaultBridge:
+            dropped=False
+            def open(self,request,timeout):
+                msg=json.loads(request.data)
+                token=dict((k.lower(),v) for k,v in request.header_items())['x-astra-ingestion-token']
+                durable=test.rpc(msg['operation'],msg['payload'],token=token)
+                if msg['operation']=='commit_page' and not self.dropped:
+                    self.dropped=True
+                    raise OSError('simulated response lost AFTER transaction committed')
+                return Reply(durable,request.full_url)
+        bridge=FaultBridge()
+        key='sb_publishable_'+'p'*32
+        api=RpcStore(PROJECT_URL,key,self.tokens['api'],opener=bridge)
+        store=RpcStore(PROJECT_URL,key,self.tokens['worker'],opener=bridge)
+        spec=IngestionSpec.from_dict(BASE)
+        job=api.submit_job(spec,'rpc-lost-ack-commit-001')
+        class Source:
+            calls=0
+            def fetch_page(self,spec,claim,page_token):
+                self.calls+=1
+                return FetchResult(test.page(claim)['raw_body'],'simulated-request')
+        source=Source()
+        with self.assertRaises(RpcPersistenceError):
+            Worker(store,source,worker_id='crashed-after-write').run_once()
+        self.assertTrue(bridge.dropped)
+        self.assertEqual(source.calls,1)
+        self.assertEqual(len(self.rows('receipts')),1)
+        self.assertEqual(len(self.rows('records')),1)
+        initial=api.get_job(job['id'])
+        self.assertEqual(initial['partitions'][0]['status'],'loaded')
+        self.assertEqual((initial['request_count'],initial['record_count']),(1,1))
+        # Simulate a verifier dying while its lease is owned, then fencing it out.
+        old=store.claim_next('verifier-that-disappears',90)
+        self.assertEqual(old['phase'],'verify')
+        with self.admin() as conn:
+            conn.execute(f'''UPDATE {self.schema}.partitions
+                SET lease_until=extract(epoch from clock_timestamp())-1 WHERE id=%s''',(old['id'],))
+        replacement=store.claim_next('successor-verifier',90)
+        self.assertEqual(replacement['phase'],'verify')
+        self.assertGreater(replacement['generation'],old['generation'])
+        self.assertEqual(self.rpc('verification_material',{'claim':self.fence(old)},
+                                   actor='worker')['error']['code'],'lease_lost')
+        material=store.verification_material(replacement)
+        proof=verify_receipts(replacement,*material)
+        store.finish_verification(replacement,proof)
+        final=api.get_job(job['id'])
+        self.assertEqual((final['status'],final['verification_status']),('completed','passed'))
+        self.assertEqual((final['request_count'],final['record_count']),(1,1))
+        self.assertEqual((len(self.rows('receipts')),len(self.rows('records'))),(1,1))
+        self.assertEqual(source.calls,1)
+        self.assertIsNone(store.claim_next('should-be-idle',90))
+
     def test_incomplete_or_relabelled_verification_cannot_mark_success(self):
         self.loaded();claim=self.claim('verifier')
         material=self.ok('verification_material',{'claim':self.fence(claim)},actor='worker')
