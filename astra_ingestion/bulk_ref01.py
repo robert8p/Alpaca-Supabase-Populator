@@ -12,7 +12,7 @@ from datetime import date, datetime, timezone
 from typing import Mapping, Iterable
 import re
 
-from .bulk_scope import CAPTURE_KEY, ScopeError, canonical, sha256_text
+from .bulk_scope import CAPTURE_KEY, RETAINED_RECEIPT_SHA256, ScopeError, canonical, sha256_text
 
 ROUTES = frozenset({
     "reference.alpaca_fixed_window_instruments_v1",
@@ -41,6 +41,7 @@ class Ref01Candidate:
     held_record_count: int
     late_publication_count: int
     metadata_fingerprint_sha256: str
+    membership_sha256: str
     status: str = "DENOMINATOR_AND_REVIEW_UNRESOLVED"
 
     @property
@@ -171,6 +172,7 @@ def compile_ref01_candidates(
         lifecycles.setdefault(sec, []).append((start, stop, company))
         with_episode.add(company)
     company_keys = tuple(f"company:{id}" for id in accepted_company_ids)
+    membership_hash = sha256_text(canonical(list(accepted_company_ids)))
     keys = tuple(sorted((*company_keys, *episodes)))
     return Ref01Candidate(
         candidate_unit_keys=keys,
@@ -181,6 +183,8 @@ def compile_ref01_candidates(
         late_publication_count=late,
         metadata_fingerprint_sha256=sha256_text(canonical({
             "capture_key": CAPTURE_KEY,
+            "retained_receipt": RETAINED_RECEIPT_SHA256,
+            "membership_sha256": membership_hash,
             "snapshot": snapshot_sha256,
             "company_count": 3000,
             "source_rows": sorted(proof_rows),
@@ -190,4 +194,5 @@ def compile_ref01_candidates(
             "held": held,
             "late": late,
         })),
+        membership_sha256=membership_hash,
     )
