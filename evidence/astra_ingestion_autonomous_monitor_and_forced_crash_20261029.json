@@ -1,0 +1,68 @@
+{
+  "as_of": "2026-10-29T04:10:30Z",
+  "project": "oxzabweahkoimtevbbny",
+  "schema": "astra_ingestion_v1",
+  "owner_run": "602a52aa-f638-8320-832c-3b20edb1d6f4",
+  "monitor_cron602": {
+    "scheduled_tick": "2026-10-29T04:02:00.033187Z",
+    "incident_at": "2026-10-29T04:02:00.032486Z",
+    "reason": "lease_expired",
+    "disposition": "FAIL_CLOSED_MANUAL_REVIEW",
+    "requests": 0,
+    "records": 0,
+    "fixture_cleanup_at": "2026-10-29T04:02:25.408736Z",
+    "durable_incident_retained": true
+  },
+  "forced_process_death": {
+    "test_job": "astra-postcommit-crash-20261029-0410-job",
+    "scope_hash": "769d3b7d73e48778926e7467fc587e8c0e72e300d2fe5cc5dca7f3264d6f3d47",
+    "original_deadline": "2026-10-29T04:23:30.240014Z",
+    "admitted": "2026-10-29T04:08:30.250024Z",
+    "source_request_id": "b53863d401cfd5ac8d835545072cf79a",
+    "source_receipt_sha256": "dfee91a5e0d363adbed16429bfb4be6cc949051b042dd0d6f1250592993dc3f2",
+    "new_provider_requests": 1,
+    "source_rows": 78,
+    "atomic_page_committed": "2026-10-29T04:08:32.476100Z",
+    "after_commit_marker": "2026-10-29T04:08:32.576976Z",
+    "forced_exit": 87,
+    "render_instance": "srv-dbh9fko473hc739an8m0-9lwnw",
+    "render_server_failed_event": "evt-dbhcds60tbcc73dt4mb0",
+    "render_server_failed_reported_at": "2026-10-29T04:09:20.756401Z",
+    "process_restart_at": "2026-10-29T04:08:35.245562Z",
+    "successor_claim_generation": 2,
+    "successor_claim_phase": "verify",
+    "successor_claim_at": "2026-10-29T04:08:36.397451Z",
+    "verified_at": "2026-10-29T04:08:36.526370Z",
+    "independent_cron_verifier_at": "2026-10-29T04:10:00.165629Z",
+    "independent_verified_source_count": 78,
+    "independent_verified_stored_count": 78,
+    "independent_hash_equal": true,
+    "source_replayed": false,
+    "host_eviction_proven": false,
+    "nonoverlapping_rollout_proven": false
+  },
+  "original_canary": {
+    "job": "fab354f9-c8fc-4158-add9-4aff025594bf",
+    "status": "completed",
+    "requests": 2,
+    "records": 156,
+    "receipts": 2,
+    "unchanged": true
+  },
+  "campaign": {
+    "new_provider_requests": 1,
+    "allowed_requests": 10,
+    "new_records": 78,
+    "allowed_records": 1000,
+    "new_paid_resources": 0
+  },
+  "current_qualifier_source": "34a7495600620db15e9c3a17f4c5f63af65bed1b",
+  "final_clean_release_pending": true,
+  "remaining": [
+    "external valid-anon HTTPS runtime denial",
+    "final clean SHA deployment",
+    "independent closeout",
+    "actual host eviction not proven",
+    "authenticated JWT gateway boundary not tested"
+  ]
+}
