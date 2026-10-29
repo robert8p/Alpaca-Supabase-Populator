@@ -51,6 +51,7 @@ class SourceRouteInventoryTests(unittest.TestCase):
     def test_malformed_and_unknown_sources_fail_closed(self):
         with self.assertRaises(b.ScopeError):
             s.compile_route_inventory(self.rows[:-1])
+        original_first = dict(self.rows[0])
         for route in ["public.any;DROP TABLE x", "../secret", "public..table", "public.table--",
                       "https://elsewhere.example", "", "public.T*X"]:
             with self.subTest(route=route):
@@ -61,6 +62,7 @@ class SourceRouteInventoryTests(unittest.TestCase):
                 self.rows[0]["contract_sha256"] = b.sha256_text(body)
                 with self.assertRaises(b.ScopeError):
                     self.compile()
+        self.rows[0] = original_first
         with self.assertRaises(b.ScopeError):
             s.coverage_disposition(next(i for i in self.compile() if i.family == "REF01"),
                                    {"reference.equity_resolved_security_v5": "yes"})
