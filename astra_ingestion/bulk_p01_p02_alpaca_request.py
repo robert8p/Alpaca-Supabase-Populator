@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from typing import Mapping
+from types import MappingProxyType
 import re
 
 from .bulk_scope import ScopeError
@@ -140,7 +141,7 @@ def plan_september_alpaca_sip(
         "asof": day.isoformat(),
     }
     return AlpacaSIPRequestPlan(
-        family, instrument_key, dated_symbol, day, request,
+        family, instrument_key, dated_symbol, day, MappingProxyType(request),
         manifest_sha256, contract_sha256, identity_receipt_sha256,
         calendar_receipt_sha256, entitlement_receipt_sha256,
         reserved_request_count, reserved_record_count,
