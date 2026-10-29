@@ -1,9 +1,9 @@
 # ASTRA ingestion completion — durable coordination state
 
-**Checkpoint version:** 14 — 29 October 2026, user-approval handoff complete.
+**Checkpoint version:** 15 — 29 October 2026, 05:36 UTC, finite bulk-admission feasibility review.
 **Programme:** isolated ASTRA ingestion reliability and authorised unattended bulk ingestion; historical coverage NOT_CERTIFIED.
-**Current owner:** none. The document-only `user-approval-handoff-20261029T0527Z` claim is **RELEASED by this CAS publication**, before its 05:45 UTC expiry. It was an originating-conversation handoff, not an automation run or a competing runtime writer.
-**Active operation/deadline:** none. Approval propagation is complete; no ingestion job, provider operation, deployment or source-code mutation was initiated. A future writer must reconcile actual state and acquire a new finite CAS guard.
+**Current owner:** scheduled implementation run `a47d23bf-d9b4-8322-91b7-159fa59e8110` (sole writer). **Finite claim expiry:** 2026-10-29T05:50:00Z. This is only a scoped documentation/evidence review and does not authorise new market-data jobs.
+**Active operation/deadline:** reconcile exact live scope and feasible hosted tests; record genuinely missing bulk manifest and adapter limits; release claim by 05:50 UTC. No provider or deployment change.
 **Campaign hard stop:** **2026-11-05T02:00:00Z**, or a newer explicit stop; unchanged.
 
 ## Latest user instruction and its precise effect
