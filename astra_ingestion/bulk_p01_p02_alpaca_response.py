@@ -52,6 +52,8 @@ class SIPResponseWitness:
     bars: tuple[ObservedSIPBar, ...]
     next_page_token: str | None
     continuation_required: bool
+    excluded_end_bar_count: int
+    excluded_end_bar_sha256: str | None
     status: str = "OBSERVED_UNTRUSTED_NOT_COMMITTED_NOT_CALENDAR_COMPLETE"
 
     @property
@@ -175,12 +177,16 @@ def inspect_sip_response(
         raise ScopeError("previous page cursor outside original session")
     last = prior_stamp
     observed: list[ObservedSIPBar] = []
+    excluded_end: list[str] = []
     for raw in native:
         if not isinstance(raw, Mapping) or set(raw) != _REQUIRED_BAR_FIELDS:
             raise ScopeError("source bar missing or introducing unqualified fields")
         stamp = _minute(raw["t"])
-        if not start <= stamp < end:
-            raise ScopeError("source bar outside original half-open session")
+        # Alpaca documents an inclusive provider `end`; the original
+        # independently eligible minute calendar remains [start, end).
+        # Validate/fingerprint exactly the end boundary but never credit it.
+        if not start <= stamp <= end:
+            raise ScopeError("source bar outside bounded provider session")
         if last is not None and stamp <= last:
             raise ScopeError("duplicate, reordered or replayed source minute")
         last = stamp
@@ -199,6 +205,9 @@ def inspect_sip_response(
             "v": volume, "n": trade_count, "vw": format(vwap, "f"),
         }
         row_sha = sha256(canonical(values).encode("utf-8")).hexdigest()
+        if stamp == end:
+            excluded_end.append(row_sha)
+            continue
         observed.append(ObservedSIPBar(
             stamp.isoformat().replace("+00:00", "Z"),
             values["o"], values["h"], values["l"], values["c"],
@@ -216,6 +225,7 @@ def inspect_sip_response(
         "page_no": page_no, "prior_page_sha256": prior_page_sha256,
         "prior_bar_timestamp_utc": prior_bar_timestamp_utc,
         "record_sha256": [bar.record_sha256 for bar in observed],
+        "provider_inclusive_end_excluded_sha256": excluded_end,
         "continuation_token_sha256": (
             sha256(token.encode("ascii")).hexdigest() if token else None
         ),
@@ -226,4 +236,5 @@ def inspect_sip_response(
         prior_page_sha256,
         sha256(canonical(fingerprint).encode("utf-8")).hexdigest(),
         tuple(observed), token, token is not None,
+        len(excluded_end), excluded_end[0] if excluded_end else None,
     )
