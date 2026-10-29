@@ -326,6 +326,9 @@ class RPCPostgreSQLTests(unittest.TestCase):
         verifier_sql=(ROOT/'sql/astra_ingestion_independent_verifier_v1.sql').read_text()
         verifier_sql=verifier_sql.replace('astra_ingestion_v1',self.schema)
         verifier_sql=verifier_sql.replace('astra_ingestion_verifier_owner_v1',verifier_role)
+        # Fixture-only diagnostic: real migrations retain SQLSTATE-only failure recording.
+        verifier_sql=verifier_sql.replace('v_failure:=SQLSTATE;',
+            "v_failure:=SQLSTATE||':'||LEFT(SQLERRM,160);")
         with self.admin() as conn:
             try:
                 original=conn.execute(
