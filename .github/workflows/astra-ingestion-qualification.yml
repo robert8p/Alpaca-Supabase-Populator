@@ -13,6 +13,7 @@ on:
       - 'sql/astra_ingestion_rpc_auth_context_v1.sql'
       - 'sql/astra_ingestion_observer_v1.sql'
       - 'sql/astra_ingestion_independent_verifier_v1.sql'
+      - 'sql/astra_ingestion_bulk_scope_v1.sql'
   push:
     branches:
       - main
@@ -28,6 +29,7 @@ on:
       - 'sql/astra_ingestion_rpc_auth_context_v1.sql'
       - 'sql/astra_ingestion_observer_v1.sql'
       - 'sql/astra_ingestion_independent_verifier_v1.sql'
+      - 'sql/astra_ingestion_bulk_scope_v1.sql'
 
 permissions:
   contents: read
