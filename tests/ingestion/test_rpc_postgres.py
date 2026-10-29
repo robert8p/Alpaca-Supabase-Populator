@@ -210,6 +210,106 @@ class RPCPostgreSQLTests(unittest.TestCase):
                                (self.schema+'.rpc_dispatch(text,jsonb)',)).fetchone()['definition']
         self.assertEqual(before,after)
 
+    def test_independent_monitor_role_and_synthetic_stalls(self):
+        """An isolated transaction qualifies the observer with zero production/provider effects."""
+        suffix=self.schema.rsplit('_',1)[-1]
+        monitor_role='astra_rpc_monitor_'+suffix
+        migration=(ROOT/'sql/astra_ingestion_observer_v1.sql').read_text()
+        migration=migration.replace('astra_ingestion_v1',self.schema)
+        migration=migration.replace('astra_ingestion_monitor_owner_v1',monitor_role)
+        self.assertNotIn('cron.schedule',migration.split('-- pg_cron scheduling')[0])
+        with self.admin() as conn:
+            # Everything including CREATE ROLE is rolled back after this test.
+            try:
+                original=conn.execute(
+                    "SELECT prosrc,proowner,proacl FROM pg_proc WHERE oid=%s::regprocedure",
+                    (self.schema+'.rpc_dispatch(text,jsonb)',)).fetchone()
+                conn.execute(migration)
+                unchanged=conn.execute(
+                    "SELECT prosrc,proowner,proacl FROM pg_proc WHERE oid=%s::regprocedure",
+                    (self.schema+'.rpc_dispatch(text,jsonb)',)).fetchone()
+                self.assertEqual(original,unchanged)
+                perms=conn.execute(
+                    """SELECT has_table_privilege(%s,%s,'SELECT') AS can_read,
+                           has_table_privilege(%s,%s,'UPDATE') AS can_change_job,
+                           has_table_privilege(%s,%s,'INSERT') AS can_write_incident,
+                           has_table_privilege(%s,%s,'SELECT') AS can_read_incident,
+                           has_function_privilege(%s,%s,'EXECUTE') AS gateway_cannot_call""",
+                    (monitor_role,self.schema+'.jobs',monitor_role,self.schema+'.jobs',
+                     monitor_role,self.schema+'.monitor_incidents',monitor_role,
+                     self.schema+'.monitor_incidents',self.gateway,
+                     self.schema+'.monitor_tick_v1()')).fetchone()
+                self.assertEqual(dict(perms),dict(can_read=True,can_change_job=False,
+                    can_write_incident=True,can_read_incident=False,gateway_cannot_call=False))
+                fn='SELECT '+self.schema+'.monitor_tick_v1() AS value'
+                self.assertEqual(conn.execute(fn).fetchone()['value']['active_jobs'],0)
+                # Place only synthetic bounded ledger rows, never a provider request.
+                spec=IngestionSpec.from_dict(BASE)
+                conn.execute(
+                    f"""INSERT INTO {self.schema}.jobs
+                      (id,request_key,scope_hash,name,spec,status,created_at,
+                       updated_at,last_progress_at,deadline_at,request_count,record_count)
+                      VALUES ('observer-synthetic','observer-synthetic-01',%s,%s,%s,
+                              'running',extract(epoch from clock_timestamp())-500,
+                              extract(epoch from clock_timestamp())-500,
+                              extract(epoch from clock_timestamp())-500,
+                              extract(epoch from clock_timestamp())+1800,0,0)""",
+                    (spec.scope_hash,spec.name,json.dumps(spec.to_dict())))
+                conn.execute(
+                    f"""INSERT INTO {self.schema}.partitions
+                      (id,job_id,symbol,start_at,end_at,status,generation,lease_until,
+                       next_attempt_at,last_progress_at,request_count,record_count,page_count)
+                      VALUES ('observer-part','observer-synthetic','AAPL',%s,%s,
+                              'pending',0,NULL,
+                              extract(epoch from clock_timestamp())-500,
+                              extract(epoch from clock_timestamp())-500,0,0,0)""",
+                    (BASE['start'],BASE['end']))
+                # Provider not-before means a legitimate wait: no false stall.
+                conn.execute(f"""UPDATE {self.schema}.source_limits SET
+                     next_request_at=extract(epoch from clock_timestamp())+300 WHERE id='alpaca'""")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                conn.execute(f"UPDATE {self.schema}.source_limits SET next_request_at=0 WHERE id='alpaca'")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],1)
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                # A valid claim is not a stall; expired claim is, without takeover.
+                conn.execute(f"""UPDATE {self.schema}.partitions SET status='running',owner='synthetic-worker',
+                    generation=2,lease_until=extract(epoch from clock_timestamp())+120
+                    WHERE id='observer-part'""")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                conn.execute(f"""UPDATE {self.schema}.partitions SET
+                    lease_until=extract(epoch from clock_timestamp())-75
+                    WHERE id='observer-part'""")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],1)
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                # Paused jobs must not be diagnosed as stalled.
+                conn.execute(f"UPDATE {self.schema}.jobs SET status='paused' WHERE id='observer-synthetic'")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                # A deadline beyond its 60-second grace gets one durable incident.
+                conn.execute(f"""UPDATE {self.schema}.jobs SET status='running',
+                    deadline_at=extract(epoch from clock_timestamp())-80 WHERE id='observer-synthetic'""")
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],1)
+                self.assertEqual(conn.execute(fn).fetchone()['value']['new_incidents'],0)
+                incidents=conn.execute(f"""SELECT reason,disposition,partition_id,
+                      generation FROM {self.schema}.monitor_incidents
+                      WHERE job_id='observer-synthetic' ORDER BY reason""").fetchall()
+                self.assertEqual(len(incidents),3)
+                self.assertEqual({v['reason'] for v in incidents},
+                    {'eligible_unclaimed','lease_expired','deadline_overdue'})
+                self.assertTrue(all(v['disposition']=='FAIL_CLOSED_MANUAL_REVIEW' for v in incidents))
+                # The observer has no permission to mutate an ingestion job.
+                conn.execute('SAVEPOINT monitor_role_access_check')
+                try:
+                    conn.execute(f'SET LOCAL ROLE {monitor_role}')
+                    with self.assertRaises(self.psycopg.errors.InsufficientPrivilege):
+                        conn.execute(f"UPDATE {self.schema}.jobs SET status='cancelled' WHERE id='observer-synthetic'")
+                finally:
+                    conn.execute('ROLLBACK TO SAVEPOINT monitor_role_access_check')
+                # Tick records are independent observer outputs, never provider heartbeats.
+                self.assertEqual(conn.execute(
+                    f'SELECT count(*) AS n FROM {self.schema}.monitor_ticks').fetchone()['n'],9)
+            finally:
+                conn.rollback()
+
     def test_empty_health_and_capability_permissions(self):
         self.assertEqual(self.ok('health'),{'ready':True,'schema_version':1,'rpc_version':1})
         self.assertEqual(self.ok('health',actor='worker')['rpc_version'],1)
