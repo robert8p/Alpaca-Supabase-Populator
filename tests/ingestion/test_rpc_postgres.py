@@ -310,6 +310,68 @@ class RPCPostgreSQLTests(unittest.TestCase):
             finally:
                 conn.rollback()
 
+    def test_restricted_sql_verifier_agrees_with_source_and_detects_tampering(self):
+        """Independent SQL readback uses a separate NOLOGIN/RLS identity, not worker capabilities."""
+        job,_=self.loaded()
+        claim=self.claim('baseline-python-verifier')
+        material=self.ok('verification_material',{'claim':self.fence(claim)},actor='worker')
+        proof=verify_receipts(claim,material['receipts'],[x['payload'] for x in material['records']])
+        self.ok('finish_verification',{'claim':self.fence(claim),'result':proof},actor='worker')
+        suffix=self.schema.rsplit('_',1)[-1]
+        monitor_role='astra_rpc_monitor_'+suffix
+        verifier_role='astra_rpc_verifier_'+suffix
+        monitor_sql=(ROOT/'sql/astra_ingestion_observer_v1.sql').read_text()
+        monitor_sql=monitor_sql.replace('astra_ingestion_v1',self.schema)
+        monitor_sql=monitor_sql.replace('astra_ingestion_monitor_owner_v1',monitor_role)
+        verifier_sql=(ROOT/'sql/astra_ingestion_independent_verifier_v1.sql').read_text()
+        verifier_sql=verifier_sql.replace('astra_ingestion_v1',self.schema)
+        verifier_sql=verifier_sql.replace('astra_ingestion_verifier_owner_v1',verifier_role)
+        with self.admin() as conn:
+            try:
+                original=conn.execute(
+                  "SELECT prosrc,proowner,proacl FROM pg_proc WHERE oid=%s::regprocedure",
+                  (self.schema+'.rpc_dispatch(text,jsonb)',)).fetchone()
+                conn.execute(monitor_sql)
+                conn.execute(verifier_sql)
+                self.assertEqual(original,conn.execute(
+                  "SELECT prosrc,proowner,proacl FROM pg_proc WHERE oid=%s::regprocedure",
+                  (self.schema+'.rpc_dispatch(text,jsonb)',)).fetchone())
+                check=conn.execute(
+                  """SELECT has_table_privilege(%s,%s,'SELECT') can_read_receipts,
+                            has_table_privilege(%s,%s,'UPDATE') can_change_jobs,
+                            has_table_privilege(%s,%s,'INSERT') can_attest,
+                            has_table_privilege(%s,%s,'SELECT') can_read_attestations,
+                            has_function_privilege(%s,%s,'EXECUTE') gateway_call""",
+                  (verifier_role,self.schema+'.receipts',verifier_role,self.schema+'.jobs',
+                   verifier_role,self.schema+'.independent_verifications',
+                   verifier_role,self.schema+'.independent_verifications',
+                   self.gateway,self.schema+'.independent_verify_tick_v1()')).fetchone()
+                self.assertEqual(dict(check),dict(can_read_receipts=True,can_change_jobs=False,
+                  can_attest=True,can_read_attestations=False,gateway_call=False))
+                fn='SELECT '+self.schema+'.independent_verify_tick_v1() AS value'
+                first=conn.execute(fn).fetchone()['value']
+                self.assertEqual((first['state'],first['result'],first['source_count'],
+                   first['stored_count'],first['receipt_count']),('attested','passed',1,1,1))
+                self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
+                result=conn.execute(f"""SELECT result,coverage_certification,source_count,
+                   stored_count,expected_sha256,stored_sha256 FROM {self.schema}.independent_verifications""").fetchone()
+                self.assertEqual(result['coverage_certification'],'NOT_CERTIFIED')
+                self.assertEqual(result['expected_sha256'],result['stored_sha256'])
+                # Only the disposable fixture is tampered. Readback must fail independently.
+                conn.execute(f'DELETE FROM {self.schema}.independent_verifications')
+                row=conn.execute(f'SELECT partition_id,record_key,payload FROM {self.schema}.records').fetchone()
+                bad=json.loads(row['payload']);bad['close']='9999'
+                conn.execute(f'''UPDATE {self.schema}.records SET payload=%s
+                    WHERE partition_id=%s AND record_key=%s''',(json.dumps(bad),row['partition_id'],row['record_key']))
+                second=conn.execute(fn).fetchone()['value']
+                self.assertEqual((second['state'],second['result']),('attested','failed'))
+                self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
+                self.assertEqual(conn.execute(f"""SELECT result FROM {self.schema}.independent_verifications
+                    WHERE partition_id=%s""",(row['partition_id'],)).fetchone()['result'],'failed')
+            finally:
+                # Reverses all fixture objects/roles, tampering and attestations.
+                conn.rollback()
+
     def test_empty_health_and_capability_permissions(self):
         self.assertEqual(self.ok('health'),{'ready':True,'schema_version':1,'rpc_version':1})
         self.assertEqual(self.ok('health',actor='worker')['rpc_version'],1)
