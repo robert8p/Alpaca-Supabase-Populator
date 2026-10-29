@@ -17,6 +17,11 @@ explicitly does not certify exact global ranking, financial facts or full-period
 security mapping. Preserve those distinctions; do not spend the campaign trying
 to re-create an already accepted membership or quietly certify its other fields.
 
+Joint completion requires DATA_ACCEPTED AND EXECUTION_ACCEPTED AND
+INDEPENDENT_REVIEW_ACCEPTED AND DELIVERY_ACCEPTED for compatible exact revisions,
+manifests and complete applicable populations. None is implied by this capture.
+The three existing tasks use SHARED EXECUTION AND ACCEPTANCE CONTRACT v1.
+
 ## Implemented slice: retained evidence, not a bulk executor
 
 `sql/astra_ingestion_bulk_scope_v1.sql` creates two isolated immutable evidence
@@ -27,8 +32,10 @@ new runtime grant is present. This is a one-time migration, not startup DDL.
 The function requires a repeatable-read transaction, takes a nonblocking atomic
 transactional lock, validates pinned original scope/cohort/acceptance/contract
 hashes, root acceptance, 3,000 distinct companies/ranks and held qualifications,
-42 sessions/16,380 scheduled minutes, and three existing D06 catalogue records.
-It atomically retains 3,074 evidence documents and one receipt. Hashes use exact
+42 sessions/16,380 scheduled minutes, and the retained D06 catalogue inventory.
+The corrected source candidate `13cc5b0d6294c052333178031816a5ab764bd280`
+retains 1,065 D06 preservation entries, not the previously assumed three.
+It atomically retained 4,136 evidence documents and one receipt. Hashes use exact
 original UTF-8 text; aggregate receipts use ordered PostgreSQL JSONB arrays of
 (kind,key,source-hash). Do not compare those hashes to Python reserializations.
 Reconciliation with the same capture key validates the entire existing result
@@ -44,21 +51,46 @@ deterministic dependency waves, represents immutable bounded partition proposals
 and keeps unknown/incomplete/unavailable counts distinct from certified coverage.
 A proposal is NOT a durable reservation or permission to run acquisition.
 
-## Exact-revision admission of this slice
+## Installed capture and fresh readback
 
-1. Require the candidate's ingestion CI, including all new PostgreSQL tests with
-   the existing loopback PostgreSQL service; skip-free dedicated ingestion result.
-   Require existing release checks as regression evidence.
-2. Reconcile sole-writer task/run, current head, checkpoint/lease, runtime and
-   unresolved operations. Apply this migration once, transactionally, in the
-   isolated schema. Do not reinstall existing observer/verifier migrations.
-3. Call `capture_retained_top3000_scope_v1` in a repeatable-read transaction with
-   a local statement timeout of 15 seconds and a stable operation run identifier.
-4. Read back 3,000 company/24 contract/42 calendar/3 preservation documents and
-   original cohort/membership/scope/two acceptance-event documents, compare every
-   retained source digest and the aggregate receipt. Preserve NOT_CERTIFIED.
-   Confirm unchanged original two jobs, requests, records, claims and old controls.
-5. Publish exact results and release/advance the finite implementation lease.
+The one-time migration and capture already exist. Do not reinstall or recapture.
+Capture key: `top3000-augsep2026-retained-scope-v1`; captured at
+`2026-10-29T09:22:03.127374Z`, first run `origin-steps12-20261029-0853`.
+State remains `CAPTURED_NOT_ADMITTED`, with zero provider requests/cost.
+
+At `2026-10-29T10:07:30.325148Z`, an explicit READ ONLY transaction through
+`Supabase_Market_Data_Cloud.execute_sql` recomputed every retained content hash
+and the ordered aggregate hash: 4,136 rows, zero content-hash failures,
+receipt count and hash both matched. Aggregate SHA256:
+`ba13899b530288b6aae8d4af3a429efa3f4bd5ec305a7dc698f98c9d552f4496`.
+Composition:3,000 company,24 contract,42 calendar,1,065 preservation,
+2 acceptance-event,1 cohort,1 membership and1 scope documents.
+Original two jobs remain completed,234 records/3 requests,zero active claims.
+
+This validates retained scope evidence, NOT source-to-target completeness of
+all 24 research datasets, restricted-runtime verification or bulk admission.
+Review the exact published candidate and its regression results before new
+executable deployment. Do not carry source qualification to changed code.
+
+## Connector refusals: bounded diagnosis, not a permission bypass
+
+The scheduled writer reported blocked GitHub writes and read-only SQL in run
+`f4d582dd-258c-8328-ab9c-b4b43b7c015a`, completed10:04:12.155847Z.
+The subsequent user-requested diagnosis found both connectors already set to
+app-specific Allow all actions. No permission, OAuth, RLS or credential change
+was made. The ordinary SQL route passed two finite READ ONLY calls; GitHub
+`update_file` acquired checkpoint v20 using its current blob SHA, commit
+`575131f11c3492d3e0cf4d04884b19749fbfe5ee`, and the new blob was read back.
+
+These results prove current interactive access, not permanent scheduled-context
+recovery. Read the current checkpoint and actual task status before proceeding.
+If a new task-context operation is denied, preserve the exact error, task/run,
+operation, target and time; reconcile any uncertain destination effects. Do not
+cycle connectors, change identities, loosen policies or encode a request to
+circumvent an explicit safety block. Preserve prior failures and the maximum
+two materially identical failed attempts. A confirmed auth/approval requirement
+needs its supported flow; a safety refusal needs precise evidence/escalation,
+not another general request for authority already granted.
 
 ## Executable successors, not reminder-only handoffs
 
