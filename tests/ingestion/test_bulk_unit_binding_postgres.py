@@ -216,5 +216,23 @@ class BulkReviewedUnitPostgresTests(unittest.TestCase):
   self.assertIsNone(self.sql("bulk_runtime_claim_v1",MANIFEST,"worker",45))
 
 
+ def test_external_python_digest_matches_postgres_seal_exactly(self):
+  from astra_ingestion.bulk_unit_binding import pg_jsonb_reviewed_unit_sha256
+  self.family_reviews()
+  self.seal_all()
+  rows=self.conn.execute(f"""
+   SELECT unit_key,source_receipt_sha256,provenance_sha256,
+          identity_sha256,pit_sha256
+   FROM {self.schema}.bulk_reviewed_unit_v1
+   WHERE manifest_sha256=%s AND family=%s ORDER BY unit_key
+  """,(MANIFEST,"REF01")).fetchall()
+  independent=pg_jsonb_reviewed_unit_sha256(tuple(tuple(r) for r in rows))
+  self.assertEqual(independent,self.set_hash("REF01"))
+  self.assertEqual(independent,self.conn.execute(f"""
+   SELECT exact_unit_set_sha256 FROM {self.schema}.bulk_unit_seal_v1
+   WHERE manifest_sha256=%s AND family=%s
+  """,(MANIFEST,"REF01")).fetchone()[0])
+
+
 if __name__=="__main__":
  unittest.main()
