@@ -107,10 +107,14 @@ class BulkScopeTests(unittest.TestCase):
             p.require_current(datetime(2026,10,29,10,0,tzinfo=timezone.utc))
         with self.assertRaises(b.ScopeError):
             p.require_current(datetime(2026,10,29,9,59))
-        with self.assertRaises(b.ScopeError):
-            self.proposal(original_deadline="2026-11-05T02:00:01Z")
-        with self.assertRaises(b.ScopeError):
-            self.proposal(original_deadline="2026-11-05T02:00:00")
+        # No programme expiry: jobs remain subject to their own finite original deadline.
+        future = self.proposal(original_deadline="2027-01-15T03:15:00Z")
+        future.require_current(datetime(2027, 1, 15, 3, 14, tzinfo=timezone.utc))
+        with self.assertRaisesRegex(b.ScopeError, "expired"):
+            future.require_current(datetime(2027, 1, 15, 3, 15, tzinfo=timezone.utc))
+        with self.assertRaisesRegex(b.ScopeError, "deadline must specify UTC"):
+            self.proposal(original_deadline="2027-01-15T03:15:00")
+        self.assertNotEqual(p.idempotency_key, future.idempotency_key)
 
     def test_unknown_absent_unavailable_and_zero_not_certified(self):
         self.assertEqual(b.coverage_state(None, 100), "UNKNOWN_DENOMINATOR")
