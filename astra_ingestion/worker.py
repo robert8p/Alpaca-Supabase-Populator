@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import signal
 import sys
 import threading
@@ -105,6 +106,38 @@ class Worker:
         # a replacement reads the durable receipt/checkpoint after lease expiry.
 
 
+# Test-only post-commit death hook; delete this hook after hosted qualification.
+# Fixed IDs cannot be requested through the public submit API (which generates
+# random job IDs). No credential, provider payload or licensed data is logged.
+_QUALIFICATION_JOB = "astra-postcommit-crash-20261029-0410-job"
+_QUALIFICATION_PARTITION = "astra-postcommit-crash-20261029-0410-part"
+
+
+def _qualification_after_commit(claim):
+    """Kill this process only after one exact, manually admitted test page commit."""
+    spec = claim.get("spec") if isinstance(claim, dict) else None
+    if not (isinstance(spec, dict)
+            and claim.get("job_id") == _QUALIFICATION_JOB
+            and claim.get("id") == _QUALIFICATION_PARTITION
+            and claim.get("phase") == "fetch"
+            and claim.get("generation") == 1
+            and claim.get("symbol") == "AAPL"
+            and claim.get("start") == "2025-09-02T13:30:00Z"
+            and claim.get("end") == "2025-09-02T20:00:00Z"
+            and spec.get("name") == "ASTRA postcommit fault qualification 2026-10-29"
+            and spec.get("symbols") == ["AAPL"]
+            and spec.get("max_requests") == 2
+            and spec.get("max_records") == 250
+            and spec.get("deadline_seconds") == 900):
+        return
+    print(json.dumps({"state": "qual_forced_process_exit_after_durable_commit",
+                      "job_id": _QUALIFICATION_JOB, "partition_id": _QUALIFICATION_PARTITION,
+                      "generation": 1}), flush=True)
+    # os._exit bypasses signal handlers/cleanup; a new Render process must
+    # reconcile the committed receipt before the next worker claim.
+    os._exit(87)
+
+
 def main():
     settings = Settings.from_env(require_web_auth=False)
     if not settings.api_key or not settings.secret_key:
@@ -112,7 +145,8 @@ def main():
     from .rpc_store import create_store
     store = create_store(settings)
     store.health()
-    worker = Worker(store, AlpacaSource(settings.api_key, settings.secret_key), lease_seconds=settings.lease_seconds)
+    worker = Worker(store, AlpacaSource(settings.api_key, settings.secret_key), lease_seconds=settings.lease_seconds,
+                    after_commit=_qualification_after_commit)
     stop = threading.Event()
     for sig in (signal.SIGTERM, signal.SIGINT):
         signal.signal(sig, lambda *_: stop.set())
