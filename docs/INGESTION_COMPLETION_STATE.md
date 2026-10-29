@@ -1,5 +1,11 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 36 — 29 October 2026, ~17:20 London. **Owner:** writer-20261029-1720-review-gate, sole task 6ae2a4c96bbc819182133e17e9b7f779, current run 90746069-4688-8325-bcce-9e7406f1fde7. **Finite coordination lease:** until 2026-10-29T18:00:00Z. **Operation:** qualify already drafted isolated 24-family source-contract review and retained-only SQL claim gate at source commits 8a84c220/4e2cffd2, reconcile failures and full PostgreSQL tests, document exact limitations, release claim. No programme expiry, production mutation, provider traffic, task creation, or new spend. This is a second slice of the same writer automation run, not an independent engineer.
+
+## Archived v35 checkpoint
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 35 — 29 October 2026, after 17:15 London. **Owner: RELEASED.** Finite sole-writer claim `writer-20261029-1703-bulk-runtime` (automation run `90746069-4688-8325-bcce-9e7406f1fde7`) completed after two source-only executable slices, independently checked GitHub CI and source readback. Former 18:00 UTC claim lease is retired and **not** a programme deadline or production worker lease. No background job claimed.
 
 **SUBSTANTIVE EXECUTABLE SOURCE:** `astra_ingestion/bulk_reuse_dispatch.py` is a bounded provider-free, zero-request, retained-only dispatcher which requires a separate durably reviewed full-24-family admission and validates claim mode, manifest, owner/fence, resource counters, original deadline, finite lease and immutable receipt. It intentionally cannot self-attest. Its synthetic tests demonstrate a retained receipt and then dependent successor **only after an independent simulated reviewer advances the predecessor**; no actual hosted automatic successor is claimed. The post-5-November test preserves finite original job deadlines. `astra_ingestion/bulk_ref01.py` is a bounded effective-dated REF01 candidate normalizer for exactly five declared original source routes, explicitly holding missing fields, overlapping identity, and late publication; full accepted cohort fingerprint included. It does not yet bind actual retained source tables or certify REF01's source-backed listing denominator. Original 24-family preflight and 4,136-document source capture are unchanged.
