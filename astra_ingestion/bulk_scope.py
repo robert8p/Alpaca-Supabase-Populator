@@ -242,6 +242,7 @@ def read_retained_capture(
 
     counts = {kind: 0 for kind in RETAINED_COUNTS}
     companies: dict[int, str] = {}
+    company_keys: set[str] = set()
     sessions: dict[str, int] = {}
     preservation: set[str] = set()
     contracts = []
@@ -269,7 +270,8 @@ def read_retained_capture(
                 row.get("kind"), row.get("evidence_key"),
                 row.get("source_text"), row.get("source_sha256"),
             )
-            if (kind not in RETAINED_COUNTS or not isinstance(key, str) or not key
+            if (not isinstance(kind, str) or kind not in RETAINED_COUNTS
+                    or not isinstance(key, str) or not key
                     or not isinstance(body, str) or not isinstance(digest, str)
                     or not _HASH.fullmatch(digest)):
                 raise ScopeError("invalid source evidence kind/key/body/hash")
@@ -296,7 +298,7 @@ def read_retained_capture(
                     company_id = obj.get("company_id")
                     if (type(rank) is not int or not 1 <= rank <= 3000
                             or not isinstance(company_id, str) or company_id != key
-                            or rank in companies or company_id in companies.values()):
+                            or rank in companies or company_id in company_keys):
                         raise ScopeError("company membership key/rank invalid or duplicated")
                     if (obj.get("membership_accepted") is not True
                             or obj.get("exact_global_rank_certified") is not False
@@ -304,6 +306,7 @@ def read_retained_capture(
                             or obj.get("full_period_instrument_coverage_accepted") is not False):
                         raise ScopeError("retained company qualification flags drift")
                     companies[rank] = company_id
+                    company_keys.add(company_id)
                 elif kind == "calendar":
                     date_text = obj.get("session_date")
                     minutes = obj.get("regular_scheduled_minutes")
