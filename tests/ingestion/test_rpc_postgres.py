@@ -351,7 +351,8 @@ class RPCPostgreSQLTests(unittest.TestCase):
                 fn='SELECT '+self.schema+'.independent_verify_tick_v1() AS value'
                 first=conn.execute(fn).fetchone()['value']
                 self.assertEqual((first['state'],first['result'],first['source_count'],
-                   first['stored_count'],first['receipt_count']),('attested','passed',1,1,1))
+                   first['stored_count'],first['receipt_count']),('attested','passed',1,1,1),
+                   conn.execute(f'SELECT failure_code FROM {self.schema}.independent_verifications').fetchone())
                 self.assertEqual(conn.execute(fn).fetchone()['value']['state'],'idle')
                 result=conn.execute(f"""SELECT result,coverage_certification,source_count,
                    stored_count,expected_sha256,stored_sha256 FROM {self.schema}.independent_verifications""").fetchone()
