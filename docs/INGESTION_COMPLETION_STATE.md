@@ -1,5 +1,11 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 28 — 29 October 2026, 13:58 UTC. **Owner:** `writer-20261029-1358-bulk-queue`, task `6ae2a4c96bbc819182133e17e9b7f779`, live run `47b74d23-1a84-832c-8cdd-9da106bf4fdc`. **Finite CAS coordination lease until:** `2026-10-29T15:28:00Z`. Only this writer modifies branch checkpoint/code within scope. No active production bulk work claimed. **Operation:** qualify corrected ledger and build a bounded fail-closed worker/admission successor; inspect source/current owner and exact CI before any deployment. No campaign expiry, no job-deadline override. No provider requests or new costs authorised by ownership.
+
+## Archived v27 checkpoint
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 27 — 29 October 2026, 13:14 London. **Owner: RELEASED.** Finite writer claim `writer-20261029-1255-expected-units` closed after reconciling source and GitHub CI. Branch head before checkpoint: `e6904ad2f9d1d359db8473be2ee797ccf184c6d3`. **No active production bulk operation from this run.** No programme expiry. Immutable job deadlines/receipts and all existing budget/stop fences retained.
 
 **VERIFIED source slice:** contract-aware expected-unit staging and fail-closed synthetic checks in `astra_ingestion/bulk_expected.py`, `tests/ingestion/test_bulk_expected.py`, source revision `bfdf7e18107217615b2f12afb1a5360251b571ac`. Exact CI PASS: ingestion PR 40878697234, ingestion push 40878689000, release PR 40878697173, release push 40878689210. This stage does not certify missing original per-family source-unit denominators or authorise production acquisition.
