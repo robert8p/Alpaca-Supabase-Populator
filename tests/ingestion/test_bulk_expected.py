@@ -98,6 +98,37 @@ class ExpectedUnitTests(unittest.TestCase):
         with self.assertRaises(b.ScopeError):
             self.planner({f:replace(ev, explicit_unit_keys=("event:two","event:one"))})
 
+    def test_original_24_contract_shape_requires_literal_bound_explicit_population(self):
+        # Real retained contracts use descriptive 'expected_unit' and do not
+        # provide a blanket company/session enumeration basis. A complete,
+        # externally pinned key list is the only safe staging alternative.
+        f = "P01"
+        literal = "eligible security-session-minute and required bar field"
+        self.rows[1]["contract_text"] = b.canonical({
+            "dependencies": ["REF01"], "expected_unit": literal,
+        })
+        self.rows[1]["contract_sha256"] = b.sha256_text(self.rows[1]["contract_text"])
+        self.hashes[f] = self.rows[1]["contract_sha256"]
+        self.pinned_set = b.sha256_text("\\n".join(k+":"+self.hashes[k] for k in sorted(self.hashes)))
+        self.assertEqual(self.planner({f: self.defn(f)}).family(f).status,
+                         "UNKNOWN_DENOMINATOR")
+        keys = ("security:synthetic/session:2026-08-03/minute:09:30/field:close",
+                "security:synthetic/session:2026-08-03/minute:09:31/field:close")
+        ev = e.DenominatorEvidence(
+            f, self.hashes[f], "explicit", "f"*64,
+            b.sha256_text(b.canonical(keys)), keys, literal,
+        )
+        planned = self.planner({f: ev})
+        self.assertEqual(planned.family(f).status, "READY_FOR_STAGING")
+        self.assertEqual(planned.page(f), (keys, None))
+        with self.assertRaisesRegex(b.ScopeError, "original expected-unit literal"):
+            self.planner({f: replace(ev, original_expected_unit="unrelated unit")})
+        self.assertEqual(
+            self.planner({f: replace(ev, original_expected_unit=None)}).family(f).status,
+            "UNKNOWN_DENOMINATOR",
+        )
+        self.assertEqual(planned.family("REF01").status, "UNKNOWN_DENOMINATOR")
+
     def test_page_boundary_and_retained_capture_invariants(self):
         p = self.planner({"P01":self.defn("P01")})
         for invalid in (0, 257, True):
