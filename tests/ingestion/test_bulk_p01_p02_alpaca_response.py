@@ -46,6 +46,36 @@ class SIPResponseTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             result.bars[0].open = "99"
 
+    def test_inclusive_provider_end_excluded_not_lost_and_no_false_completeness(self):
+        # Alpaca's provider endpoint includes end, but original expected
+        # security-session minutes are [start,end), so 20:00 is never P01 RTH.
+        original = {"bars": {"AAPL": [
+            bar("2026-09-02T19:59:00Z"),
+            bar("2026-09-02T20:00:00Z"),
+        ]}, "next_page_token": None}
+        witnessed = inspect_sip_response(plan(), original)
+        self.assertEqual(len(witnessed.bars), 1)
+        self.assertEqual(witnessed.bars[0].timestamp_utc, "2026-09-02T19:59:00Z")
+        self.assertEqual(witnessed.excluded_end_bar_count, 1)
+        self.assertEqual(len(witnessed.excluded_end_bar_sha256), 64)
+        self.assertFalse(witnessed.coverage_certified)
+        other = inspect_sip_response(plan(), {"bars": {"AAPL": [
+            bar("2026-09-02T19:59:00Z"),
+            bar("2026-09-02T20:00:00Z", v=101),
+        ]}, "next_page_token": None})
+        self.assertNotEqual(witnessed.page_sha256, other.page_sha256)
+        boundary_only = inspect_sip_response(plan(), {"bars": {"AAPL": [
+            bar("2026-09-02T20:00:00Z"),
+        ]}, "next_page_token": None})
+        self.assertEqual(len(boundary_only.bars), 0)
+        self.assertEqual(boundary_only.excluded_end_bar_count, 1)
+        self.assertFalse(boundary_only.coverage_certified)
+        with self.assertRaises(ScopeError):
+            inspect_sip_response(plan(), {"bars": {"AAPL": [
+                bar("2026-09-02T20:00:00Z"),
+                bar("2026-09-02T20:00:00Z"),
+            ]}, "next_page_token": None})
+
     def test_strict_symbol_and_currency_scope(self):
         for raw in (
             {"bars": {"MSFT": [bar()]}, "next_page_token": None},
@@ -58,7 +88,7 @@ class SIPResponseTests(unittest.TestCase):
 
     def test_out_of_window_inclusive_end_and_duplicates_rejected(self):
         for rows in (
-            [bar("2026-09-02T20:00:00Z")],
+            [bar("2026-09-02T20:01:00Z")],
             [bar("2026-09-02T13:29:00Z")],
             [bar(), bar()],
             [bar("2026-09-02T13:31:00Z"), bar()],
