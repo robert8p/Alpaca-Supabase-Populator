@@ -66,8 +66,9 @@ BEGIN
     FROM astra_ingestion_v1.bulk_scope_evidence_v1
     WHERE capture_key=p_capture_key
       AND (p_after_kind IS NULL
-        OR (kind,evidence_key)>(p_after_kind,p_after_key))
-    ORDER BY kind,evidence_key
+        OR (kind COLLATE "C",evidence_key COLLATE "C")>
+           (p_after_kind COLLATE "C",p_after_key COLLATE "C"))
+    ORDER BY kind COLLATE "C",evidence_key COLLATE "C"
     LIMIT p_limit+1
  LOOP
     v_count:=v_count+1;
