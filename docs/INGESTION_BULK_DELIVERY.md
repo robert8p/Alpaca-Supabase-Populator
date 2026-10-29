@@ -1,5 +1,16 @@
 # ASTRA: complete dataset and reliable unattended ingestion
 
+
+## Restricted runtime admission/claim port — exact-source qualification (18:10 UTC, 29 October)
+
+**Qualified executable/test revision:** `5e09e38330ccf6146828c7e6f0a16d7a71f8bcb7`. New STAGED `sql/astra_ingestion_bulk_runtime_port_v1.sql` exposes a read-only, exact-shape manifest admission snapshot for the already staged Python retained dispatcher and a pending RETAINED-ONLY claim wrapper. It is **not installed**, has **no PUBLIC grants** and gives no production principal any new rights. Every admission readback rejects an absent/stopped manifest, incomplete 24-family review, changed original contract receipt, wrong source capture or unpinned report SHA. The only claim operation delegates to `bulk_claim_retained_v1` under finite lease/original deadline/attempt/dependency constraints; it does not access provider APIs.
+
+**Tests:** [ASTRA ingestion qualification PR run 40928124146](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40928124146) SUCCESS — **199 unit/disposable PostgreSQL tests**, including five new tests for source drift, exact dispatcher readback, synthetic successor after external simulated verification, user stop/provider exclusion and no PUBLIC EXECUTE. [Release gate 40928123963](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40928123963) SUCCESS. The first candidate's ACL test falsely matched the function owner's own `=X/` privilege; corrected at `5e09e383` to inspect ACL grantee OID 0. This was a test defect, not an ignored permission failure.
+
+**Important newly isolated admission gap:** a valid 24-family **count-based** review does NOT yet prove that *each queued work unit* belongs to the exact independently verified expected-unit set. The present claim gate must NOT receive an application grant until immutable per-unit manifest evidence is bound to every reserved partition and independently checked. A claim plus a receipt hash also does NOT prove atomic source-to-output materialisation. A separate fully restricted materializer and independent post-commit verification are still required. CI's synthetic reviewer and successor are NOT evidence of production auto-dispatch, data completeness, actual separate authenticated reviewer, external JWT HTTPS transport, physical eviction or cross-instance cessation.
+
+**Current live readback:** the original capture remains 4,136 retained documents (3,000 company rows, 24 original contracts, 42 calendars, 1,065 preserved D06 catalogue items, plus scope/acceptance/membership); live Render web/worker deployments are still `2c809b69e131f84e1778486e74c2f89a273f59f9`. No bulk manifest, SQL migration, hosted automatic successor, acquisition, new provider requests, production DB writes, additional costs, or changed legacy systems in this slice. Joint acceptance remains OPEN in all four parts and full-market coverage NOT_CERTIFIED. The reviewer and closeout automations remain disabled with unexplained user-action flags; do not re-enable silently. The programme has **no expiry**, but all new work must have finite immutable job deadlines, budgets, fencing and stop controls.
+
 ## Authority and target
 
 Unattended operation and the previously paused Top-3,000 target are approved.
