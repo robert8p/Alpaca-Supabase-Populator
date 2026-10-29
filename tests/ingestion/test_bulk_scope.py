@@ -204,7 +204,6 @@ class BulkScopeTests(unittest.TestCase):
         rows = self.evidence_fixture()
         cases = {}
         cases["missing"] = rows[:-1]
-        cases["duplicate"] = rows + [rows[-1]]
         changed = copy.deepcopy(rows)
         changed[0]["source_text"] += " "
         cases["changed_bytes"] = changed
@@ -214,7 +213,13 @@ class BulkScopeTests(unittest.TestCase):
             if after is None:
                 return {"rows": out_of_order[:limit], "has_more": True}
             return self.reader_from_rows(out_of_order)(after, limit)
+        def duplicate_page(after, limit):
+            if after is None:
+                return {"rows": rows[:limit-1] + [rows[limit-2]], "has_more": True}
+            return self.reader_from_rows(rows)(after, limit)
         with self.pin(self.rows()):
+            with self.assertRaisesRegex(b.ScopeError, "duplicate or out-of-order"):
+                b.read_retained_capture(self.fixture_receipt(), duplicate_page)
             for case, evidence in cases.items():
                 with self.subTest(case=case), self.assertRaises(b.ScopeError):
                     b.read_retained_capture(self.fixture_receipt(),
