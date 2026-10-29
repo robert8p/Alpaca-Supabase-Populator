@@ -51,9 +51,9 @@
   },
   "campaign": {
     "new_provider_requests": 1,
-    "allowed_requests": 10,
+    "max_new_provider_requests": 10,
     "new_records": 78,
-    "allowed_records": 1000,
+    "max_new_records": 1000,
     "new_paid_resources": 0
   },
   "current_qualifier_source": "34a7495600620db15e9c3a17f4c5f63af65bed1b",
@@ -64,5 +64,39 @@
     "independent closeout",
     "actual host eviction not proven",
     "authenticated JWT gateway boundary not tested"
-  ]
+  ],
+  "gateway": {
+    "valid_publishable_key_used_in_protected_render_runtime": true,
+    "token_or_user_jwt_sent": false,
+    "source_candidate": "73be1338f08ade48e22cee91ee27df673ea4f51d",
+    "worker_deployment": "dep-dbhchc67bikc73e8mrqg",
+    "worker_live": "2026-10-29T04:17:19.899647Z",
+    "observed_log": "2026-10-29T04:17:21.235204Z",
+    "tests": [
+      {
+        "name": "private_verifier_with_publishable",
+        "http_status": 406,
+        "denied": true
+      },
+      {
+        "name": "private_verifier_default_schema",
+        "http_status": 404,
+        "denied": true
+      },
+      {
+        "name": "public_dispatch_without_capability_correct_signature",
+        "http_status": 401,
+        "denied": true
+      }
+    ],
+    "prior_wrong_signature_404_not_counted": true,
+    "authenticated_user_jwt_https_tested": false,
+    "no_secrets_logged": true
+  },
+  "cleanup": {
+    "temporary_os_exit_hook_removed": true,
+    "temporary_gateway_probe_removed": true,
+    "original_worker_blob_sha": "9cfefdde070538f2fa26f5ab562efc1c8c63a253",
+    "clean_release_pending_ci_deploy": true
+  }
 }

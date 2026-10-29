@@ -105,46 +105,6 @@ class Worker:
         # a replacement reads the durable receipt/checkpoint after lease expiry.
 
 
-def _qualification_gateway_probe(settings):
-    """One-time anonymous HTTPS boundary check; never emit the public key."""
-    from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
-    from urllib.error import HTTPError, URLError
-    import ssl
-
-    class _NoRedirect(HTTPRedirectHandler):
-        def redirect_request(self, request, fp, code, msg, headers, newurl):
-            return None
-
-    opener = build_opener(_NoRedirect(), HTTPSHandler(context=ssl.create_default_context()))
-    tests = (
-        ("private_verifier_with_publishable", "/rest/v1/rpc/independent_verify_tick_v1",
-         b"{}", {"Accept-Profile": "astra_ingestion_v1", "Content-Profile": "astra_ingestion_v1"}),
-        ("private_verifier_default_schema", "/rest/v1/rpc/independent_verify_tick_v1",
-         b"{}", {}),
-        ("public_dispatch_without_capability", "/rest/v1/rpc/astra_ingestion_rpc_v1",
-         b'{"operation":"health","payload":{}}', {}),
-    )
-    results = []
-    for name, path, data, extra in tests:
-        # The public project key identifies the anonymous gateway actor.
-        # No worker RPC capability, service key or user JWT is transmitted.
-        req = Request(settings.api_url + path, data=data, method="POST",
-                      headers={"apikey": settings.publishable_key,
-                               "Content-Type": "application/json", **extra})
-        try:
-            with opener.open(req, timeout=7) as response:
-                status = response.status
-        except HTTPError as exc:
-            status = exc.code
-            exc.close()
-        except (URLError, TimeoutError, OSError):
-            status = None
-        results.append({"test": name, "http_status": status,
-                        "denied": status in (400, 401, 403, 404, 405, 406)})
-    print(json.dumps({"state": "gateway_qualification_completed",
-                      "results": results}, sort_keys=True), flush=True)
-
-
 def main():
     settings = Settings.from_env(require_web_auth=False)
     if not settings.api_key or not settings.secret_key:
@@ -152,7 +112,6 @@ def main():
     from .rpc_store import create_store
     store = create_store(settings)
     store.health()
-    _qualification_gateway_probe(settings)
     worker = Worker(store, AlpacaSource(settings.api_key, settings.secret_key), lease_seconds=settings.lease_seconds)
     stop = threading.Event()
     for sig in (signal.SIGTERM, signal.SIGINT):
