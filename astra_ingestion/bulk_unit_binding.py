@@ -98,6 +98,8 @@ def build_reviewed_unit_candidate(
     if (not isinstance(source_pin, FamilySourcePin)
             or source_pin.family != family
             or source_pin.expected_manifest_sha256 != state.manifest_sha256
+            or family not in plan.source_bindings
+            or source_pin.contract_sha256 != plan.source_bindings[family].contract_sha256
             or not all(_digest(v) for v in (
                 source_pin.contract_sha256, source_pin.source_snapshot_sha256,
                 source_pin.source_receipt_sha256))):
