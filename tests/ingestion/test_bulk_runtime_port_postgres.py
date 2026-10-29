@@ -145,13 +145,16 @@ class BulkRuntimePortPostgresTests(unittest.TestCase):
 
  def test_public_execute_explicitly_revoked(self):
   for name in ("bulk_runtime_admission_v1","bulk_runtime_claim_v1"):
-   acl=self.conn.execute("""
-    SELECT p.proacl::text FROM pg_proc p
+   # A function owner correctly retains EXECUTE. Inspect ACL grantee OID 0
+   # (PUBLIC) explicitly, rather than matching the owner's '=X/' substring.
+   public_exec=self.conn.execute("""
+    SELECT count(*) FROM pg_proc p
     JOIN pg_namespace n ON n.oid=p.pronamespace
+    CROSS JOIN LATERAL aclexplode(p.proacl) permission
     WHERE n.nspname=%s AND p.proname=%s
+    AND permission.grantee=0 AND permission.privilege_type='EXECUTE'
    """,(self.schema,name)).fetchone()[0]
-   self.assertIsNotNone(acl)
-   self.assertNotIn("=X/",acl)
+   self.assertEqual(public_exec,0)
   # There is deliberately NO grant to an application role in staged SQL.
 
 if __name__=="__main__":
