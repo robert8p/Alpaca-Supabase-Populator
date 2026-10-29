@@ -25,7 +25,6 @@ ACCEPTANCE_SHA256 = "20b9dac759857e9b510ccaeca33e4a94d8c748d588fb0cc27740cc66c38
 CONTRACT_SET_SHA256 = "e47a1e4152768418bd8e6187310b34cfc7b096edbc1e1de11fe243275e046dc0"
 START = "2026-08-01T04:00:00Z"
 END_EXCLUSIVE = "2026-10-01T04:00:00Z"
-CAMPAIGN_END = "2026-11-05T02:00:00Z"
 _HASH = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -152,8 +151,6 @@ class BoundedPartition:
             raise ScopeError("retained-source reuse cannot consume provider requests")
         if self.mode == "provider_acquisition" and self.max_requests == 0:
             raise ScopeError("provider reservation must be explicit")
-        if _utc(self.original_deadline) > _utc(CAMPAIGN_END):
-            raise ScopeError("partition exceeds campaign bound")
 
     @property
     def idempotency_key(self) -> str:
