@@ -1,7 +1,7 @@
 from __future__ import annotations
 import copy
 from dataclasses import replace
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 import unittest
 from unittest.mock import patch
@@ -130,5 +130,120 @@ class BulkScopeTests(unittest.TestCase):
         self.assertNotIn("P01", b.SHARED_FAMILIES)
         self.assertEqual(len(b.FAMILIES), 24)
         self.assertNotIn("D06", b.FAMILIES)
+
+
+    def evidence_fixture(self):
+        """Synthetic complete capture, never production data or a coverage claim."""
+        rows = []
+
+        def add(kind, key, value):
+            body = value if isinstance(value, str) else json.dumps(value, sort_keys=True)
+            rows.append({"kind": kind, "evidence_key": key,
+                         "source_text": body, "source_sha256": b.sha256_text(body)})
+
+        add("scope", "scope:one", {})
+        add("cohort", "cohort:one", {})
+        add("membership", "membership:one", {})
+        for key in ("23872", "24407"):
+            add("acceptance_event", key, {})
+        for rank in range(1, 3001):
+            add("company", f"synthetic-company-{rank:04d}",
+                {"company_id": f"synthetic-company-{rank:04d}",
+                 "selection_order": rank, "membership_accepted": True,
+                 "exact_global_rank_certified": False,
+                 "financial_capitalization_qualified": False,
+                 "full_period_instrument_coverage_accepted": False})
+        for contract in self.rows():
+            add("contract", contract["family_id"], contract["contract_text"])
+        day = datetime(2026, 8, 3, tzinfo=timezone.utc)
+        end = datetime(2026, 9, 30, tzinfo=timezone.utc)
+        while day <= end:
+            date = day.date().isoformat()
+            if day.weekday() < 5 and date != "2026-09-07":
+                add("calendar", date, {"session_date": date,
+                                       "regular_scheduled_minutes": 390})
+            day += timedelta(days=1)
+        for number in range(1, 1066):
+            key = f"synthetic-preserved-{number:04d}"
+            add("preservation", key, {"relation_name": key})
+        return sorted(rows, key=lambda r: (r["kind"], r["evidence_key"]))
+
+    @staticmethod
+    def reader_from_rows(rows):
+        def reader(after, limit):
+            rest = [r for r in rows if after is None
+                    or (r["kind"], r["evidence_key"]) > after]
+            return {"rows": rest[:limit], "has_more": len(rest) > limit}
+        return reader
+
+    @staticmethod
+    def fixture_receipt():
+        return {"capture_key": b.CAPTURE_KEY,
+                "evidence_sha256": b.RETAINED_RECEIPT_SHA256,
+                "evidence_rows": 4136, "state": "CAPTURED_NOT_ADMITTED",
+                "provider_requests": 0, "incremental_cost_microusd": 0}
+
+    def test_complete_keyset_retained_reader(self):
+        rows = self.evidence_fixture()
+        self.assertEqual(len(rows), 4136)
+        with self.pin(self.rows()):
+            result = b.read_retained_capture(self.fixture_receipt(),
+                                             self.reader_from_rows(rows),
+                                             page_limit=128)
+        self.assertEqual(result.checked_source_rows, 4136)
+        self.assertEqual(len(result.company_ids_by_rank), 3000)
+        self.assertEqual(result.company_ids_by_rank[0], "synthetic-company-0001")
+        self.assertEqual(len(result.sessions), 42)
+        self.assertEqual(result.scheduled_minutes, 16380)
+        self.assertEqual(len(result.preserved_d06_relations), 1065)
+        self.assertEqual(sum(map(len, result.family_dependency_waves)), 24)
+        self.assertFalse(result.aggregate_receipt_independently_verified)
+        self.assertFalse(result.research_dataset_coverage_certified)
+
+    def test_retained_reader_rejects_missing_tampered_duplicate_and_short_pages(self):
+        rows = self.evidence_fixture()
+        cases = {}
+        cases["missing"] = rows[:-1]
+        cases["duplicate"] = rows + [rows[-1]]
+        changed = copy.deepcopy(rows)
+        changed[0]["source_text"] += " "
+        cases["changed_bytes"] = changed
+        out_of_order = list(rows)
+        out_of_order[0], out_of_order[1] = out_of_order[1], out_of_order[0]
+        def bad_order(after, limit):
+            if after is None:
+                return {"rows": out_of_order[:limit], "has_more": True}
+            return self.reader_from_rows(out_of_order)(after, limit)
+        with self.pin(self.rows()):
+            for case, evidence in cases.items():
+                with self.subTest(case=case), self.assertRaises(b.ScopeError):
+                    b.read_retained_capture(self.fixture_receipt(),
+                                            self.reader_from_rows(evidence))
+            with self.assertRaisesRegex(b.ScopeError, "out-of-order"):
+                b.read_retained_capture(self.fixture_receipt(), bad_order)
+            with self.assertRaisesRegex(b.ScopeError, "incomplete"):
+                b.read_retained_capture(self.fixture_receipt(),
+                    lambda after, limit: {"rows": rows[:20], "has_more": False})
+
+    def test_retained_reader_rejects_false_receipt_and_qualification_drift(self):
+        rows = self.evidence_fixture()
+        bad_receipt = self.fixture_receipt()
+        bad_receipt["incremental_cost_microusd"] = 1
+        with self.assertRaisesRegex(b.ScopeError, "receipt"):
+            b.read_retained_capture(bad_receipt, self.reader_from_rows(rows))
+        changed = copy.deepcopy(rows)
+        index = next(i for i,r in enumerate(changed) if r["kind"] == "company")
+        obj = json.loads(changed[index]["source_text"])
+        obj["exact_global_rank_certified"] = True
+        changed[index]["source_text"] = json.dumps(obj, sort_keys=True)
+        changed[index]["source_sha256"] = b.sha256_text(changed[index]["source_text"])
+        with self.pin(self.rows()), self.assertRaisesRegex(b.ScopeError, "qualification"):
+            b.read_retained_capture(self.fixture_receipt(), self.reader_from_rows(changed))
+        with self.assertRaisesRegex(b.ScopeError, "page limit"):
+            b.read_retained_capture(self.fixture_receipt(), self.reader_from_rows(rows),
+                                    page_limit=0)
+        with self.assertRaisesRegex(b.ScopeError, "has_more"):
+            b.read_retained_capture(self.fixture_receipt(),
+                                    lambda after, limit: {"rows": [], "has_more": "unknown"})
 
 if __name__ == "__main__": unittest.main()
