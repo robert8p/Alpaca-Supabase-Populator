@@ -22,7 +22,7 @@ BEGIN
     RAISE EXCEPTION 'Monitor migration refused: schema or monitor objects differ from admitted v1 baseline';
   END IF;
   CREATE ROLE astra_ingestion_monitor_owner_v1 NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
-  EXECUTE pg_catalog.format('GRANT astra_ingestion_monitor_owner_v1 TO %I',pg_catalog.current_user);
+  EXECUTE pg_catalog.format('GRANT astra_ingestion_monitor_owner_v1 TO %I',current_user);
 END $admission$;
 
 CREATE TABLE astra_ingestion_v1.monitor_incidents (
@@ -192,7 +192,9 @@ CREATE POLICY ingestion_monitor_tick_write ON astra_ingestion_v1.monitor_ticks
 GRANT CREATE ON SCHEMA astra_ingestion_v1 TO astra_ingestion_monitor_owner_v1;
 ALTER FUNCTION astra_ingestion_v1.monitor_tick_v1() OWNER TO astra_ingestion_monitor_owner_v1;
 REVOKE CREATE ON SCHEMA astra_ingestion_v1 FROM astra_ingestion_monitor_owner_v1;
-EXECUTE 'GRANT EXECUTE ON FUNCTION astra_ingestion_v1.monitor_tick_v1() TO ' || pg_catalog.quote_ident(pg_catalog.current_user);
+DO $grant$ BEGIN
+  EXECUTE pg_catalog.format('GRANT EXECUTE ON FUNCTION astra_ingestion_v1.monitor_tick_v1() TO %I',current_user);
+END $grant$;
 -- pg_cron scheduling is a separately controlled action after qualification and
 -- requires a verified existing cron extension; no service, scheduler or
 -- provider worker is started by this migration.
