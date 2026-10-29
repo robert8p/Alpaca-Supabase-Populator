@@ -177,3 +177,169 @@ def coverage_state(expected: int | None, verified: int, unavailable: int = 0) ->
         return "INCOMPLETE"
     # Even a counted complete set still needs independent source verification.
     return "COUNT_RECONCILED_NOT_CERTIFIED"
+
+
+# These are evidence-capture kinds, NOT the 24 research datasets' coverage.
+RETAINED_COUNTS = {
+    "scope": 1, "cohort": 1, "membership": 1, "company": 3000,
+    "contract": 24, "calendar": 42, "preservation": 1065,
+    "acceptance_event": 2,
+}
+RETAINED_RECEIPT_SHA256 = "ba13899b530288b6aae8d4af3a429efa3f4bd5ec305a7dc698f98c9d552f4496"
+MAX_EVIDENCE_PAGE = 256
+
+
+@dataclass(frozen=True)
+class RetainedManifest:
+    """Bounded checked source inventory. Not bulk admission or data acceptance."""
+
+    source_capture_key: str
+    original_receipt_sha256: str
+    checked_source_rows: int
+    company_ids_by_rank: tuple[str, ...]
+    sessions: tuple[str, ...]
+    scheduled_minutes: int
+    preserved_d06_relations: tuple[str, ...]
+    family_dependency_waves: tuple[tuple[str, ...], ...]
+    # SQL's jsonb_agg receipt is not the same as Python JSON serialization.
+    # Independent SQL verification of that aggregate is a SEPARATE gate.
+    aggregate_receipt_independently_verified: bool = False
+    research_dataset_coverage_certified: bool = False
+
+
+def read_retained_capture(
+    receipt: Mapping[str, Any],
+    read_page: Any,
+    *,
+    page_limit: int = 128,
+) -> RetainedManifest:
+    """Validate every retained source document using a finite keyset reader.
+
+    Caller supplies a READ-ONLY, consistent-snapshot callback with signature
+      read_page(after=(kind,key)|None, limit=page_limit)
+        -> {"rows": list[dict], "has_more": bool}.
+    It must keyset-filter on (kind,evidence_key) and order strictly ascending.
+    Never use offset pagination or turn missing pages into empty populations.
+    This performs NO database or provider writes, admits NO acquisition and
+    deliberately does not claim independent PostgreSQL JSONB aggregate equality.
+    """
+    if not isinstance(receipt, Mapping):
+        raise ScopeError("retained capture receipt missing")
+    if (receipt.get("capture_key") != CAPTURE_KEY
+            or receipt.get("evidence_sha256") != RETAINED_RECEIPT_SHA256
+            or type(receipt.get("evidence_rows")) is not int
+            or receipt["evidence_rows"] != sum(RETAINED_COUNTS.values())
+            or receipt.get("state") != "CAPTURED_NOT_ADMITTED"
+            or type(receipt.get("provider_requests")) is not int
+            or receipt["provider_requests"] != 0
+            or type(receipt.get("incremental_cost_microusd")) is not int
+            or receipt["incremental_cost_microusd"] != 0):
+        raise ScopeError("retained capture receipt does not match pinned scope and zero-cost capture")
+    if type(page_limit) is not int or not 1 <= page_limit <= MAX_EVIDENCE_PAGE:
+        raise ScopeError("finite bounded page limit required")
+    if not callable(read_page):
+        raise ScopeError("bounded source reader callback required")
+
+    counts = {kind: 0 for kind in RETAINED_COUNTS}
+    companies: dict[int, str] = {}
+    sessions: dict[str, int] = {}
+    preservation: set[str] = set()
+    contracts = []
+    after: tuple[str, str] | None = None
+    checked = 0
+    pages = 0
+
+    while True:
+        pages += 1
+        if pages > receipt["evidence_rows"] + 1:
+            raise ScopeError("retained source page count exceeded")
+        page = read_page(after, page_limit)
+        if (not isinstance(page, Mapping) or type(page.get("has_more")) is not bool
+                or not isinstance(page.get("rows"), list)):
+            raise ScopeError("source page needs explicit rows and has_more")
+        rows = page["rows"]
+        if len(rows) > page_limit or (not rows and page["has_more"]):
+            raise ScopeError("source page incomplete, oversized or nonadvancing")
+        if checked + len(rows) > receipt["evidence_rows"]:
+            raise ScopeError("source evidence exceeds pinned receipt count")
+        for row in rows:
+            if not isinstance(row, Mapping):
+                raise ScopeError("malformed source evidence row")
+            kind, key, body, digest = (
+                row.get("kind"), row.get("evidence_key"),
+                row.get("source_text"), row.get("source_sha256"),
+            )
+            if (kind not in RETAINED_COUNTS or not isinstance(key, str) or not key
+                    or not isinstance(body, str) or not isinstance(digest, str)
+                    or not _HASH.fullmatch(digest)):
+                raise ScopeError("invalid source evidence kind/key/body/hash")
+            cursor = (kind, key)
+            if after is not None and cursor <= after:
+                raise ScopeError("source keyset duplicate or out-of-order item")
+            if sha256_text(body) != digest:
+                raise ScopeError("retained source evidence bytes/hash mismatch")
+            after = cursor
+            counts[kind] += 1
+            checked += 1
+            if counts[kind] > RETAINED_COUNTS[kind]:
+                raise ScopeError("retained evidence kind exceeds pinned cardinality")
+            if kind in {"company", "calendar", "preservation"}:
+                try:
+                    obj = json.loads(body, object_pairs_hook=_strict_object,
+                                     parse_constant=lambda _: (_ for _ in ()).throw(ScopeError("non-finite JSON")))
+                except (ValueError, TypeError) as exc:
+                    raise ScopeError("invalid retained source JSON") from exc
+                if not isinstance(obj, dict):
+                    raise ScopeError("source record must be an object")
+                if kind == "company":
+                    rank = obj.get("selection_order")
+                    company_id = obj.get("company_id")
+                    if (type(rank) is not int or not 1 <= rank <= 3000
+                            or not isinstance(company_id, str) or company_id != key
+                            or rank in companies or company_id in companies.values()):
+                        raise ScopeError("company membership key/rank invalid or duplicated")
+                    if (obj.get("membership_accepted") is not True
+                            or obj.get("exact_global_rank_certified") is not False
+                            or obj.get("financial_capitalization_qualified") is not False
+                            or obj.get("full_period_instrument_coverage_accepted") is not False):
+                        raise ScopeError("retained company qualification flags drift")
+                    companies[rank] = company_id
+                elif kind == "calendar":
+                    date_text = obj.get("session_date")
+                    minutes = obj.get("regular_scheduled_minutes")
+                    if (date_text != key or not isinstance(date_text, str)
+                            or not re.fullmatch(r"2026-(08|09)-[0-3][0-9]", date_text)
+                            or type(minutes) is not int or not 1 <= minutes <= 390
+                            or key in sessions):
+                        raise ScopeError("calendar session, minutes or key invalid")
+                    sessions[key] = minutes
+                else:
+                    if obj.get("relation_name") != key or key in preservation:
+                        raise ScopeError("preserved D06 catalogue key invalid or duplicated")
+                    preservation.add(key)
+            elif kind == "contract":
+                contracts.append({"family_id": key, "contract_text": body,
+                                  "contract_sha256": digest})
+        if not page["has_more"]:
+            break
+        if not rows:
+            raise ScopeError("retained source reader did not advance")
+
+    if checked != receipt["evidence_rows"] or counts != RETAINED_COUNTS:
+        raise ScopeError("retained source evidence incomplete or missing kind")
+    if (set(companies) != set(range(1, 3001)) or len(sessions) != 42
+            or sum(sessions.values()) != 16380
+            or min(sessions) != "2026-08-03" or max(sessions) != "2026-09-30"
+            or len(preservation) != 1065):
+        raise ScopeError("retained membership, calendar or D06 inventory incomplete")
+    checked_contracts = read_contracts(contracts)
+    return RetainedManifest(
+        source_capture_key=CAPTURE_KEY,
+        original_receipt_sha256=receipt["evidence_sha256"],
+        checked_source_rows=checked,
+        company_ids_by_rank=tuple(companies[i] for i in range(1, 3001)),
+        sessions=tuple(sorted(sessions)),
+        scheduled_minutes=sum(sessions.values()),
+        preserved_d06_relations=tuple(sorted(preservation)),
+        family_dependency_waves=dependency_waves(checked_contracts),
+    )
