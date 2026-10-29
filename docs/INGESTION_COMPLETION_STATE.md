@@ -1,5 +1,11 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 34 — 29 October 2026, 17:05 London. **Owner:** writer-20261029-1703-bulk-runtime, sole task 6ae2a4c96bbc819182133e17e9b7f779, run 90746069-4688-8325-bcce-9e7406f1fde7. **Finite coordination lease until:** 2026-10-29T18:00:00Z. Owner has not claimed production job, ingestion worker or cross-instance cessation. **Operation:** implement/test provider-free bulk retained-source worker and independent automatic successor with source-safe exact-revision CI; preserve existing 24-family admission barrier, original jobs, rights, costs, safety and full acceptance. No programme expiry.
+
+## Archived v33 checkpoint
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 33 — 29 October 2026, after 16:11 London. **Owner: RELEASED.** Finite claim `writer-20261029-1604-manifest-admission`, run `c9a7793b-51c0-832e-8a3b-15a498359018`, closed after verified source/test and explicit next handoff. The former 16:55 UTC lease was coordination only and is now released. No programme expiry, no job replay, provider admission or production job begun.
 
 **SUBSTANTIVE ENGINEERING:** full 24-family independently reconstructed source-unit witness preflight, `astra_ingestion/bulk_manifest_admission.py` + `tests/ingestion/test_bulk_manifest_admission.py`, exact executable candidate `10a755efa91b722a819c1ec457e10d563b7fabdd`. It checks pinned original contract set, receipt, expected plan reconstruction, all 24 family evidence states, per-family source snapshot/expected manifest/contract hashes, finite sorted keyset reads, missing/extra/duplicate units, provenance/identity/PIT witness hashes; excludes D06 from acquisition. Missing evidence remains BLOCKED. Even fully reconciled synthetic rows return only `INDEPENDENT_REVIEW_REQUIRED`; worker admission is unconditionally false. No real 24-family denominators or independent provenance observations have been established. Source route/witness metadata alone is **not** data completeness, production permission or runtime independent attestation.
