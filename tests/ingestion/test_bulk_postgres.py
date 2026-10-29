@@ -22,6 +22,7 @@ SCOPE_ID = "corrected_company_scope_8e6ca1178f03822c"
 SQL_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_v1.sql"
 REPAIR_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_catalogue_fix_v1.sql"
 FORWARD_PATH = ROOT / "sql" / "astra_ingestion_bulk_scope_no_campaign_cutoff_v2.sql"
+READER_PATH = ROOT / "sql" / "astra_ingestion_bulk_restricted_reader_v1.sql"
 
 
 def digest(text):
@@ -181,6 +182,79 @@ class BulkPostgreSQLTests(unittest.TestCase):
             f"SELECT prosrc FROM pg_proc WHERE oid=to_regprocedure('{self.dst}.capture_retained_top3000_scope_v1(text)')"
         ).fetchone()[0]
         self.assertEqual(before,after)
+        self.assertEqual(self.counts(),(1,4136))
+
+
+    def restricted_reader_sql(self):
+        """Disposable actor/scope and receipt; never privileged production data."""
+        sql=READER_PATH.read_text()
+        for old,new in self.fixture_rewrites:
+            sql=sql.replace(old,new)
+        receipt=self.conn.execute(
+            f"SELECT evidence_sha256 FROM {self.dst}.bulk_scope_capture_v1 "
+            "WHERE capture_key='top3000-augsep2026-retained-scope-v1'"
+        ).fetchone()
+        sql=sql.replace(RETAINED_RECEIPT_SHA256,receipt[0] if receipt else "0"*64)
+        sql=sql.replace("astra_bulk_retained_reader_v1",self.role)
+        return sql
+
+    def test_restricted_reader_full_keyset_and_actual_role_enforcement(self):
+        original=self.capture()
+        self.conn.execute(self.restricted_reader_sql())
+        func=f"{self.dst}.read_retained_capture_page_v1"
+        self.assertFalse(self.conn.execute(
+            f"SELECT EXISTS(SELECT 1 FROM aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) "
+            f"WHERE grantee=0 AND privilege_type='EXECUTE') FROM pg_proc p "
+            f"WHERE oid=to_regprocedure('{func}(text,text,text,integer)')"
+        ).fetchone()[0])
+        self.conn.execute(f"SET ROLE {self.role}")
+        try:
+            after=None; rows=[]; pages=0
+            while True:
+                result=self.conn.execute(
+                    f"SELECT {func}(%s,%s,%s,%s)",
+                    ("top3000-augsep2026-retained-scope-v1",
+                     after[0] if after else None,after[1] if after else None,128)
+                ).fetchone()[0]
+                part=result["rows"]
+                self.assertLessEqual(len(part),128)
+                self.assertTrue(part or not result["has_more"])
+                rows.extend(part)
+                pages+=1
+                if not result["has_more"]: break
+                self.assertTrue(part)
+                after=(part[-1]["kind"],part[-1]["evidence_key"])
+                self.assertLess(pages,40)
+            self.assertEqual(pages,33)
+            self.assertEqual(len(rows),4136)
+            keys=[(r["kind"],r["evidence_key"]) for r in rows]
+            self.assertEqual(keys,sorted(set(keys)))
+            self.assertEqual(sum(r["kind"]=="company" for r in rows),3000)
+            self.assertEqual(sum(r["kind"]=="contract" for r in rows),24)
+            self.assertEqual(sum(r["kind"]=="preservation" for r in rows),1065)
+            self.assertTrue(all(digest(r["source_text"])==r["source_sha256"] for r in rows))
+            self.assertEqual(self.counts(),(0,0))  # RLS: no direct table access
+            for bad in (("bad",None,None,1),
+                        ("top3000-augsep2026-retained-scope-v1",None,None,0),
+                        ("top3000-augsep2026-retained-scope-v1",None,None,257),
+                        ("top3000-augsep2026-retained-scope-v1","company",None,1)):
+                with self.subTest(bad=bad),self.assertRaises(Exception):
+                    self.conn.execute(f"SELECT {func}(%s,%s,%s,%s)",bad)
+        finally:
+            self.conn.execute("RESET ROLE")
+        self.assertEqual(original,self.capture("synthetic-read-after-scope-review"))
+        self.assertEqual(self.counts(),(1,4136))
+
+    def test_restricted_reader_requires_existing_capture_and_is_one_time(self):
+        with self.assertRaisesRegex(Exception,"expected immutable scope receipt missing"):
+            self.conn.execute(self.restricted_reader_sql())
+        self.conn.execute("ROLLBACK")
+        self.assertEqual(self.counts(),(0,0))
+        self.capture()
+        self.conn.execute(self.restricted_reader_sql())
+        with self.assertRaisesRegex(Exception,"already installed or role name claimed"):
+            self.conn.execute(self.restricted_reader_sql())
+        self.conn.execute("ROLLBACK")
         self.assertEqual(self.counts(),(1,4136))
 
     def test_atomic_full_capture_replay_preserves_receipt(self):
