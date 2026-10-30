@@ -1,0 +1,24 @@
+{
+  "service_id": "srv-dbh85vl9fdbs7387rucg",
+  "workspace_id": "tea-d562ma4hg0os73aejnfg",
+  "auto_deploy": false,
+  "exact_head_four_gates_passed": true,
+  "source_head": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+  "web_deployment": {
+    "commit": {
+      "createdAt": "2026-10-30T09:19:03Z",
+      "id": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "message": "fix: bound member planning and shared record refresh work\n\nPreserve fixed-cohort task definitions, source versions, links and receipts while bounding planner transactions and keyed refresh queries. Include exact PostgreSQL qualification and live readbacks. Keep Massive relay held for specific action-time confirmation."
+    },
+    "createdAt": "2026-10-30T09:51:03.329242Z",
+    "id": "dep-dbi6h1rbc2fs73a8fk00",
+    "startedAt": "2026-10-30T09:51:03.287147Z",
+    "status": "build_in_progress",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T09:51:03.329242Z"
+  },
+  "worker_service_changed": false,
+  "worker_source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "status": "BUILD_IN_PROGRESS_NOT_YET_LIVE",
+  "relay_held": true
+}

@@ -1,0 +1,45 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "event": {
+    "id": 8,
+    "recorded_at": "2026-10-30 09:30:02.897689+00",
+    "task_id": "backfill-plan-c36e0f9226725f0770725d9eafdf73d7a1da7efcd7efc0d84264496833306203",
+    "generation": null,
+    "sqlstate": "AI005",
+    "error": "",
+    "page_no": "0",
+    "kind": "retained_reuse",
+    "family": "P01",
+    "status": "IDENTITY_OR_QUALITY_UNRESOLVED",
+    "error_code": null,
+    "task_error": null,
+    "verified_pages": 1,
+    "committed_pages": 1
+  },
+  "subsequent_authoritative_receipt": {
+    "id": 8,
+    "recorded_at": "2026-10-30 09:30:02.897689+00",
+    "sqlstate": "AI005",
+    "reason": "Independent readback requires a subsequent transaction",
+    "page_no": 0,
+    "verified_at": "2026-10-30 09:30:04.082011+00",
+    "body_hash_matches": true,
+    "expected_records": 1,
+    "actual_records": 1,
+    "record_count_matches": true,
+    "method": "INDEPENDENT_TRANSACTION_RAW_HASH_AND_SOURCE_COUNT_V2",
+    "status": "IDENTITY_OR_QUALITY_UNRESOLVED"
+  },
+  "classification": "Guarded same-transaction readback attempt, followed1.184seconds later by a valid independent-transaction readback with exact matching body hash and record count.",
+  "replayed": false,
+  "audit_deleted_or_rewritten": false,
+  "quality_status_preserved": "IDENTITY_OR_QUALITY_UNRESOLVED is retained; readback success does not resolve historical identity.",
+  "ownership_renewal": [
+    {
+      "id": 9,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 09:42:28.287525+00"
+    }
+  ],
+  "lease_until": "2026-10-30T10:00:00Z"
+}

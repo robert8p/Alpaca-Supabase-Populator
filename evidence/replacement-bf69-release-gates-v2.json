@@ -1,0 +1,142 @@
+{
+  "version": "fixed3000-bf69-release-gates-v2",
+  "repo": "robert8p/Alpaca-Supabase-Populator",
+  "head_sha": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+  "expected_tree_sha": "35f15360a7922a27f6a9c9502919ce399a315859",
+  "observed_job_completion_by": "2026-10-30T09:23:50Z",
+  "qualification": "ALL_FOUR_EXACT_HEAD_JOBS_PASSED",
+  "workflow_metadata_reconciliation": "Controller will fetch final workflow metadata once before any deployment; this evidence records completed-job observations and exact-head run membership.",
+  "gates": [
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41032555546,
+      "job_id": 123985520208,
+      "head_sha": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "run_attempt": 1,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:19:13Z",
+      "test_summary_at": "2026-10-30T09:22:41.1462450Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41032555546",
+      "case_counts": {
+        "tests": 563,
+        "passed": 563,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 180.484
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:21:53.4958897Z test_maximum_options_page_projects_within_the_bounded_verifier (test_backfill_shared_records_v2.SharedRecordsTests.test_maximum_options_page_projects_within_the_bounded_verifier) ... ok",
+        "2026-10-30T09:21:58.3331347Z test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl (test_backfill_shared_records_v2.SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl) ... ok",
+        "2026-10-30T09:22:09.7428181Z test_analyzed_archive_keeps_bounded_rpc_and_keyed_generic_custom_plans (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_analyzed_archive_keeps_bounded_rpc_and_keyed_generic_custom_plans) ... ok",
+        "2026-10-30T09:22:10.7324342Z test_exact_existing_conflicts_versions_links_counters_and_receipts_are_preserved (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_exact_existing_conflicts_versions_links_counters_and_receipts_are_preserved) ... ok",
+        "2026-10-30T09:22:10.8833405Z test_function_metadata_private_acl_and_atomic_replay_guard (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_function_metadata_private_acl_and_atomic_replay_guard) ... ok",
+        "2026-10-30T09:22:41.1462450Z Ran 563 tests in 180.484s",
+        "2026-10-30T09:22:41.1462809Z OK"
+      ]
+    },
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41032555583,
+      "job_id": 123985519986,
+      "head_sha": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "run_attempt": 1,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:19:13Z",
+      "test_summary_at": "2026-10-30T09:19:46.8824761Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41032555583",
+      "case_counts": {
+        "passed": 668,
+        "skipped": 278,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 9.35
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:19:46.8824761Z 668 passed, 278 skipped, 1 warning in 9.35s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41032548465,
+      "job_id": 123985496689,
+      "head_sha": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "run_attempt": 1,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:19:09Z",
+      "test_summary_at": "2026-10-30T09:21:21.3526142Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41032548465",
+      "case_counts": {
+        "tests": 563,
+        "passed": 563,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 108.499
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:20:52.1939466Z test_maximum_options_page_projects_within_the_bounded_verifier (test_backfill_shared_records_v2.SharedRecordsTests.test_maximum_options_page_projects_within_the_bounded_verifier) ... ok",
+        "2026-10-30T09:20:54.9803053Z test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl (test_backfill_shared_records_v2.SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl) ... ok",
+        "2026-10-30T09:21:01.7360925Z test_analyzed_archive_keeps_bounded_rpc_and_keyed_generic_custom_plans (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_analyzed_archive_keeps_bounded_rpc_and_keyed_generic_custom_plans) ... ok",
+        "2026-10-30T09:21:02.3166834Z test_exact_existing_conflicts_versions_links_counters_and_receipts_are_preserved (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_exact_existing_conflicts_versions_links_counters_and_receipts_are_preserved) ... ok",
+        "2026-10-30T09:21:02.4013600Z test_function_metadata_private_acl_and_atomic_replay_guard (test_backfill_shared_refresh_performance_v2.SharedRefreshPerformanceTests.test_function_metadata_private_acl_and_atomic_replay_guard) ... ok",
+        "2026-10-30T09:21:21.3526142Z Ran 563 tests in 108.499s",
+        "2026-10-30T09:21:21.3526370Z OK"
+      ]
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41032548327,
+      "job_id": 123985496055,
+      "head_sha": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "run_attempt": 1,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:19:09Z",
+      "test_summary_at": "2026-10-30T09:19:45.3651053Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41032548327",
+      "case_counts": {
+        "passed": 668,
+        "skipped": 278,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 12.2
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:19:45.3651053Z 668 passed, 278 skipped, 1 warning in 12.20s"
+      ]
+    }
+  ],
+  "active_regression_limits": {
+    "news_rpc_seconds_strictly_below": 12,
+    "maximum_options_page_seconds_strictly_below": 15,
+    "each_extracted_generic_custom_projection_statement_milliseconds_strictly_below": 2500
+  },
+  "ingestion_application_syntax": "PASSED_IN_BOTH_JOBS",
+  "remaining_operational_issue": {
+    "state": "UNRESOLVED_AT_EVIDENCE_SAVE",
+    "description": "Full live delivery report exceeds its8-second deadline; controller/cache agent owns a separate read-path repair.",
+    "full_report_milliseconds": 8802.817,
+    "wide_task_scan_milliseconds": 7442.824,
+    "wide_task_rows": 547979,
+    "physical_blocks": 49611,
+    "source": "Controller-reported live EXPLAIN; not a new remote database read by this observer"
+  },
+  "deployment": {
+    "qualified_head_web_deployed": false,
+    "hold": "Full live delivery-report issue remains separate from the successful CI gates; existing controller retains deployment ownership."
+  },
+  "observer_actions": {
+    "github_reads_only": true,
+    "workflow_reruns_requested": 0,
+    "remote_mutations": 0,
+    "additional_tests_run": 0,
+    "supabase_calls": 0,
+    "render_calls": 0
+  }
+}

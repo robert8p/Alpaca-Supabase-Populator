@@ -1,0 +1,67 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "migration": {
+    "name": "astra_backfill_status_index_counts_v2",
+    "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e",
+    "attempts": 1,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "applied_before": "2026-10-30T09:34:44.880415Z"
+  },
+  "readback": [
+    {
+      "observed_at": "2026-10-30 09:34:44.880415+00",
+      "oid": 16041454,
+      "owner": "postgres",
+      "relacl": "{postgres=arwdDxtm/postgres,astra_ingestion_rpc_owner_v1=r/postgres}",
+      "reloptions": [
+        "security_invoker=true"
+      ],
+      "definition_sha256": "8f965a3d153272c5bcbafcbfbf469a4676cf3d8366a08606749cab53564dd50c",
+      "status_counts_marker": 7,
+      "retry_dates_marker": 2406,
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "implementation_owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z"
+    }
+  ],
+  "full_delivery_read": {
+    "deadline_seconds": 8,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to run sql query: ERROR:  57014: canceling statement due to statement timeout\\nCONTEXT:  SQL function \\\"backfill_delivery_status_v2\\\" statement 1\\n\"}}"
+        }
+      ],
+      "structuredContent": {
+        "error_code": "INVALID_ARGUMENT"
+      },
+      "isError": true
+    },
+    "accepted": false
+  },
+  "post_change_diagnostic": {
+    "path": "evidence/replacement-status-count-post-plan-v2.json",
+    "execution_ms": 7924.245,
+    "planning_ms": 103.637,
+    "native_count_ms": 190.464,
+    "native_rows": 572032,
+    "native_heap_fetches": 20812,
+    "remaining_minute_alias_ms": 6621.751,
+    "remaining_minute_alias_rows": 20761,
+    "remaining_minute_alias_read_blocks": 9769,
+    "production_runtime_deadline_unchanged": true
+  },
+  "next_action": "Qualify a narrow exact-predicate minute-alias covering index; current inventory has no matching index. Keep web held until full live report passes.",
+  "independent_ingestion": "Continues through same worker and controller; existing readbacks and all retained work preserved.",
+  "security": "No role/grant/auth/worker/relay change; exact existing relay hold remains required."
+}

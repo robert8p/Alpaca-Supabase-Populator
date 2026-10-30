@@ -1,0 +1,316 @@
+[
+  {
+    "QUERY PLAN": [
+      {
+        "Plan": {
+          "Node Type": "Merge Join",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Join Type": "Left",
+          "Startup Cost": 11813.57,
+          "Total Cost": 23402.72,
+          "Plan Rows": 55,
+          "Plan Width": 150,
+          "Inner Unique": false,
+          "Merge Cond": "(\"*SELECT* 1\".delivery_family = t_2.family)",
+          "Plans": [
+            {
+              "Node Type": "Aggregate",
+              "Strategy": "Sorted",
+              "Partial Mode": "Simple",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 11811.67,
+              "Total Cost": 23398.95,
+              "Plan Rows": 55,
+              "Plan Width": 142,
+              "Group Key": [
+                "\"*SELECT* 1\".delivery_family"
+              ],
+              "Plans": [
+                {
+                  "Node Type": "Merge Append",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 11811.67,
+                  "Total Cost": 23391.59,
+                  "Plan Rows": 55,
+                  "Plan Width": 62,
+                  "Sort Key": [
+                    "\"*SELECT* 1\".delivery_family"
+                  ],
+                  "Subplans Removed": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Subquery Scan",
+                      "Parent Relationship": "Member",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Alias": "*SELECT* 1",
+                      "Startup Cost": 1000.43,
+                      "Total Cost": 12579.25,
+                      "Plan Rows": 52,
+                      "Plan Width": 60,
+                      "Plans": [
+                        {
+                          "Node Type": "Aggregate",
+                          "Strategy": "Sorted",
+                          "Partial Mode": "Finalize",
+                          "Parent Relationship": "Subquery",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 1000.43,
+                          "Total Cost": 12578.73,
+                          "Plan Rows": 52,
+                          "Plan Width": 60,
+                          "Group Key": [
+                            "t.family",
+                            "t.status"
+                          ],
+                          "Plans": [
+                            {
+                              "Node Type": "Gather Merge",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Startup Cost": 1000.43,
+                              "Total Cost": 12577.82,
+                              "Plan Rows": 52,
+                              "Plan Width": 60,
+                              "Workers Planned": 1,
+                              "Plans": [
+                                {
+                                  "Node Type": "Aggregate",
+                                  "Strategy": "Sorted",
+                                  "Partial Mode": "Partial",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Startup Cost": 0.42,
+                                  "Total Cost": 11571.96,
+                                  "Plan Rows": 52,
+                                  "Plan Width": 60,
+                                  "Group Key": [
+                                    "t.family",
+                                    "t.status"
+                                  ],
+                                  "Plans": [
+                                    {
+                                      "Node Type": "Index Only Scan",
+                                      "Parent Relationship": "Outer",
+                                      "Parallel Aware": true,
+                                      "Async Capable": false,
+                                      "Scan Direction": "Forward",
+                                      "Index Name": "backfill_tasks_family_v2",
+                                      "Relation Name": "backfill_tasks_v2",
+                                      "Alias": "t",
+                                      "Startup Cost": 0.42,
+                                      "Total Cost": 9103.55,
+                                      "Plan Rows": 329052,
+                                      "Plan Width": 52,
+                                      "Index Cond": "(run_id = 'fixed3000-20250901-20260731-v1-20261030'::text)"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Sort",
+                      "Parent Relationship": "Member",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 10811.23,
+                      "Total Cost": 10811.24,
+                      "Plan Rows": 3,
+                      "Plan Width": 88,
+                      "Sort Key": [
+                        "\"*SELECT* 2\".delivery_family"
+                      ],
+                      "Plans": [
+                        {
+                          "Node Type": "Subquery Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Alias": "*SELECT* 2",
+                          "Startup Cost": 0.42,
+                          "Total Cost": 10811.2,
+                          "Plan Rows": 3,
+                          "Plan Width": 88,
+                          "Plans": [
+                            {
+                              "Node Type": "Aggregate",
+                              "Strategy": "Sorted",
+                              "Partial Mode": "Simple",
+                              "Parent Relationship": "Subquery",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Startup Cost": 0.42,
+                              "Total Cost": 10811.17,
+                              "Plan Rows": 3,
+                              "Plan Width": 88,
+                              "Group Key": [
+                                "t_1.status"
+                              ],
+                              "Plans": [
+                                {
+                                  "Node Type": "Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Scan Direction": "Forward",
+                                  "Index Name": "backfill_tasks_family_v2",
+                                  "Relation Name": "backfill_tasks_v2",
+                                  "Alias": "t_1",
+                                  "Startup Cost": 0.42,
+                                  "Total Cost": 10811.12,
+                                  "Plan Rows": 4,
+                                  "Plan Width": 48,
+                                  "Index Cond": "((run_id = 'fixed3000-20250901-20260731-v1-20261030'::text) AND (family = 'P01'::text))",
+                                  "Filter": "((kind = ANY ('{alpaca_stock_bars,retained_reuse}'::text[])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Node Type": "Materialize",
+              "Parent Relationship": "Inner",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 1.89,
+              "Total Cost": 3.61,
+              "Plan Rows": 2,
+              "Plan Width": 66,
+              "Plans": [
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Sorted",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 1.89,
+                  "Total Cost": 3.58,
+                  "Plan Rows": 2,
+                  "Plan Width": 66,
+                  "Group Key": [
+                    "t_2.family"
+                  ],
+                  "Plans": [
+                    {
+                      "Node Type": "Merge Append",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 1.89,
+                      "Total Cost": 3.55,
+                      "Plan Rows": 2,
+                      "Plan Width": 66,
+                      "Sort Key": [
+                        "t_2.family"
+                      ],
+                      "Subplans Removed": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Aggregate",
+                          "Strategy": "Sorted",
+                          "Partial Mode": "Simple",
+                          "Parent Relationship": "Member",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 0.12,
+                          "Total Cost": 1.74,
+                          "Plan Rows": 1,
+                          "Plan Width": 52,
+                          "Group Key": [
+                            "t_2.family"
+                          ],
+                          "Plans": [
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "backfill_tasks_recovery_turn_v2",
+                              "Relation Name": "backfill_tasks_v2",
+                              "Alias": "t_2",
+                              "Startup Cost": 0.12,
+                              "Total Cost": 1.73,
+                              "Plan Rows": 1,
+                              "Plan Width": 52,
+                              "Index Cond": "(run_id = 'fixed3000-20250901-20260731-v1-20261030'::text)",
+                              "Filter": "(status = 'RETRY_WAIT'::text)"
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Sort",
+                          "Parent Relationship": "Member",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 1.76,
+                          "Total Cost": 1.76,
+                          "Plan Rows": 1,
+                          "Plan Width": 80,
+                          "Sort Key": [
+                            "('P02'::text)"
+                          ],
+                          "Plans": [
+                            {
+                              "Node Type": "Aggregate",
+                              "Strategy": "Sorted",
+                              "Partial Mode": "Simple",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Startup Cost": 0.12,
+                              "Total Cost": 1.75,
+                              "Plan Rows": 1,
+                              "Plan Width": 80,
+                              "Plans": [
+                                {
+                                  "Node Type": "Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Scan Direction": "Forward",
+                                  "Index Name": "backfill_tasks_recovery_turn_v2",
+                                  "Relation Name": "backfill_tasks_v2",
+                                  "Alias": "t_3",
+                                  "Startup Cost": 0.12,
+                                  "Total Cost": 1.74,
+                                  "Plan Rows": 1,
+                                  "Plan Width": 48,
+                                  "Index Cond": "((run_id = 'fixed3000-20250901-20260731-v1-20261030'::text) AND (family = 'P01'::text))",
+                                  "Filter": "((kind = ANY ('{alpaca_stock_bars,retained_reuse}'::text[])) AND (status = 'RETRY_WAIT'::text) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
