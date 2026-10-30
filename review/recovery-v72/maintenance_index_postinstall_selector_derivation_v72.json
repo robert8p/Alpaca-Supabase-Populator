@@ -1,0 +1,37 @@
+{
+  "schema": "astra.maintenance-index-postinstall-selector-derivation/1",
+  "source_receipt": "review/recovery-v71/live_maintenance_helpers_1335.json",
+  "source_receipt_sha256": "7fc3eedd758a9736da9535bd0e6e86a8ee9b768247755195ff36a31c4e3ebae5",
+  "source_pins": {
+    "backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "backfill_maintain_v2(integer)": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "backfill_breadth_project_pending_v2(integer)": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+    "backfill_minute_account_pending_v2(integer)": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2"
+  },
+  "expected_index_definitions": {
+    "backfill_tasks_breadth_pending_id_v2": "CREATE INDEX backfill_tasks_breadth_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = 'D03'::text) AND (lower(provider) = 'derived'::text))",
+    "backfill_tasks_minute_pending_id_v2": "CREATE INDEX backfill_tasks_minute_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = ANY (ARRAY['P01'::text, 'P02'::text])) AND (kind = ANY (ARRAY['retained_reuse'::text, 'alpaca_stock_bars'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+  },
+  "component_names": [
+    "BREADTH_PENDING",
+    "MINUTE_ACCOUNT_PENDING"
+  ],
+  "query_sha256": {
+    "BREADTH_PENDING": "eae5284baf2ce107443eed1484627ed5019ed1d366398e84765c24a3e5e956d5",
+    "MINUTE_ACCOUNT_PENDING": "88d826252675a6ab3600764d0cf7d01d519a9ad3cd55a5d3f1de3e64e8bbb3c0"
+  },
+  "rewrites": [
+    "The single original p_limit token in each selector becomes the installed literal2; nothing else changes."
+  ],
+  "forbidden_actions_absent": [
+    "Helper invocation",
+    "Provider request",
+    "Explicit row/table/advisory lock acquisition",
+    "Data or schema writes",
+    "Global task count"
+  ],
+  "interpretation": "Direct-role current-snapshot read plans. Not original cached cron plans, production whole-helper latency, gate wait time or cross-cache speed ratios.",
+  "sql_sha256": "59ab433babf8fcc30b9f09b9c4aafb9747685f852a9961c6e0c7c913be39e6e5",
+  "sql_bytes": 7010
+}

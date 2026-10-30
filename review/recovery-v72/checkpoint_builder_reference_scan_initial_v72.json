@@ -1,0 +1,10 @@
+{
+  "schema": "astra.checkpoint-reference-scan-initial/1",
+  "state": "INITIAL_GUARD_REJECTION_RETAINED",
+  "error": "Noncanonical Git path rejected: review/./file.json",
+  "cause": "The independent QA receipt intentionally records negative path examples. The recursive text-reference scanner initially mistook one for an artifact dependency.",
+  "correction": "Reject and record noncanonical regex-discovered strings without opening them; explicitly selected paths still fail closed. The safe_path confinement and symlink guards are unchanged.",
+  "canonical_documents_written": false,
+  "remote_mutations": 0,
+  "production_calls": 0
+}

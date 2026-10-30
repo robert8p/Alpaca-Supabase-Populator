@@ -1,0 +1,150 @@
+{
+  "base_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "base_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "canonical_documents_modified_by_reviewer": false,
+  "checks": {
+    "all_four_exact_head_ci_passes_and_pr_tree_identity_match": true,
+    "all_three_exact_installations_and_history_bodies_match": true,
+    "canonical_v71_and_archives_unchanged": true,
+    "checkpoint_and_automation_shared_sections_identical": true,
+    "family_table13_rows_sums_match": true,
+    "fixed3000_members_16_families_dates_and_entitlements_preserved": true,
+    "fresh55P03_holder_correlation_is_exact_and_residual_contention_not_hidden": true,
+    "historical_progress_lease_not_redated": true,
+    "later_same_owner_lease_audit36_recorded_separately": true,
+    "mission_exactly_once_at_automation_eof": true,
+    "next_step_retains_publication_exact_head_ci_and_independent_review_before_persistent_diagnostic_activation": true,
+    "no_coverage_completion_or_sustained_recovery_claim": true,
+    "no_new_owner_action_credentials_storage_route_or_controller": true,
+    "no_stale_pending_ci_installation_probe_or_runtime_step": true,
+    "old_timing_prototype_remains_unselected_unapplied": true,
+    "one_postinstall_probe_is_distinguished_from_full_cron_cost": true,
+    "only_maintain_definition_changes_to6c880": true,
+    "original_mission_bytes": 23046,
+    "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+    "physical_totals_and_all_deltas_match_receipts": true,
+    "postrepair15_pages1887_records15_tasks_all_matching_readbacks": true,
+    "same_existing_successor_id_and_schedule_preserved": true,
+    "source_document_hashes_match_final_drafter_manifest": true,
+    "tracked_function_metadata_old15_index_identity_and_table_acl_rls_preserved": true
+  },
+  "decision": "PASS_FOR_ROOT_CONTROLLED_CHECKPOINT_PUBLICATION_AND_SAME_TASK_PROMPT_REFRESH",
+  "draft_manifest": {
+    "bytes": 2311,
+    "path": "review/recovery-v72/checkpoint-draft/checkpoint_draft_manifest_v72.json",
+    "sha256": "a4ed7396ac44e7b9590d51d818012d44e9db6bc284b6008cc5f91fc2a66b3266"
+  },
+  "key_evidence": [
+    {
+      "bytes": 8984,
+      "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+      "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62"
+    },
+    {
+      "bytes": 578,
+      "path": "evidence/replacement-owner-residual-recovery-lease-v72.json",
+      "sha256": "a67f012b6f643d9f0c737ddbb53e2cd60e196610252a48e5f3876c175a7120ff"
+    },
+    {
+      "bytes": 35893,
+      "path": "evidence/replacement-maintenance-combined-release-gates-v72.json",
+      "sha256": "9ac9811ea29dbbc2b3c93e4d45e51d9bb5d8a46910e556a356ef894c723aeb71"
+    },
+    {
+      "bytes": 16858,
+      "path": "review/recovery-v72/breadth_hash_index_installation_readback_v72.json",
+      "sha256": "01d482ad06938c1a1728462d643f58804758aa702a00b996948be6ed9b63ddcf"
+    },
+    {
+      "bytes": 17768,
+      "path": "review/recovery-v72/minute_hash_index_installation_readback_v72.json",
+      "sha256": "391e55ceb5fff346cc3e1894af0c847c433e3b31cf844424689e158ffe70c790"
+    },
+    {
+      "bytes": 18164,
+      "path": "review/recovery-v72/readback_transaction_race_installation_readback_v72.json",
+      "sha256": "d1c1febbea884bda3a0d3f809b49ec6b64c10b2533c93ce41927259b27269d81"
+    },
+    {
+      "bytes": 28861,
+      "path": "review/recovery-v72/live_postinstall_selector_profile_v72.json",
+      "sha256": "de0a587e60e29f748114e89ef61ce31625688876d1851dd4734862fde68f462c"
+    }
+  ],
+  "limits": [
+    "Physical accounting is not unique target coverage or mission completion",
+    "Direct read plans depend on state/cache and do not measure complete helper or gate-hold time",
+    "Fresh residual gate contention remains the next engineering problem",
+    "Actual checkpoint publication and existing-task update need their own root readbacks"
+  ],
+  "passed": true,
+  "production_calls": 0,
+  "publication_builder_review": {
+    "activation_authority": "Root still reconciles the current branch and publishes; this local QA does not mutate a ref or task.",
+    "artifact": {
+      "bytes": 14389,
+      "path": "review/recovery-v72/build_checkpoint_publication_v72.py",
+      "sha256": "b6112203006403528504e437a454abdbb28b100b4be38c06050acd12dd83d375"
+    },
+    "fixes_reviewed": [
+      "Every collected/read path and input must be canonical and confined; symlink paths rejected",
+      "Passed QA binds exact base, both approved source-document paths/hashes and mandatory final progress path/hash",
+      "Changed existing evidence cannot be silently replaced"
+    ],
+    "path_cases": [
+      "../outside.json",
+      "review/../outside.json",
+      "/tmp/outside.json",
+      "review//file.json",
+      "review/./file.json",
+      "review\\file.json",
+      "synthetic symlink escape"
+    ],
+    "path_negative_checks_passed": 7,
+    "qa_binding_cases": [
+      "wrong_base",
+      "wrong_documents",
+      "missing_progress",
+      "wrong_progress"
+    ],
+    "qa_binding_negative_checks_passed": 4,
+    "scope": "Only two canonical-document replacements; all other existing blobs preserved; no active runtime/SQL/test/workflow changes or remote calls."
+  },
+  "remote_mutations": 0,
+  "reviewed_at_utc": "2026-10-30T14:57:18.675866+00:00",
+  "reviewed_documents": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v72/checkpoint-draft/INGESTION_COMPLETION_STATE_v72.draft.md",
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v72/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.draft.md",
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283"
+    }
+  },
+  "reviewed_progress_receipt": {
+    "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+    "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62"
+  },
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra.checkpoint-final-independent-qa/1",
+  "verified_current_state": {
+    "cron_job": 602,
+    "cron_run": 4068678,
+    "latest_owner_lease": "2026-10-30T15:45:00Z",
+    "owner_audit": 36,
+    "pages": 5323,
+    "physical_progress_cutoff": "2026-10-30 14:46:31.629652+00",
+    "physical_records_or_pointers": 644164,
+    "postrepair_distinct_tasks": 15,
+    "postrepair_new_pages": 15,
+    "postrepair_physical_records_or_pointers": 1887,
+    "readbacks": 5323,
+    "reservations": 2780,
+    "residual_gate_holder_pid": 1252500,
+    "residual_gate_waiter_pid": 1252046,
+    "source_bytes": 528255377,
+    "sustained_reliability_recovery": false,
+    "whole_cron_seconds": 7.989556
+  }
+}

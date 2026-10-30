@@ -1,0 +1,29 @@
+{
+  "state": "ROOT_FINAL_DRAFT_QA_PASSED",
+  "base_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "base_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "qa_receipt": {
+    "path": "evidence/replacement-checkpoint-final-independent-qa-v72.json",
+    "sha256": "14041dc9d662b75f2c2caa24e98bfd1826d445297e763f2ae2b0e329610251e8"
+  },
+  "approved_documents": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v72/checkpoint-draft/INGESTION_COMPLETION_STATE_v72.draft.md",
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v72/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.draft.md",
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283"
+    }
+  },
+  "progress_receipt": {
+    "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+    "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62"
+  },
+  "deferred_postpublication_paths": [],
+  "root_acceptance": "Existing root controller explicitly accepted these two exact canonical hashes before finalization; root remains sole publisher and automation writer.",
+  "builder_review_amendment": {
+    "path": "evidence/replacement-checkpoint-builder-independent-review-amendment-v72.json",
+    "sha256": "b323a1d93dd173854e36902e1d455d3ecd5ed5fbff490a80bc56c4102bbe7b6b"
+  }
+}

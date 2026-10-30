@@ -1,0 +1,27 @@
+[
+  {
+    "id": 35,
+    "action": "MAINTENANCE_REPAIRS_INSTALLED",
+    "recorded_at": "2026-10-30 14:42:49.389602+00",
+    "evidence": {
+      "order": [
+        "breadth_hash",
+        "minute_hash",
+        "readback_transaction_predicate"
+      ],
+      "request_id": "v72-runtime-repairs-installed-d06c13f3",
+      "same_fence": 1,
+      "same_owner": true,
+      "fixed_members": 3000,
+      "counters_reset": false,
+      "postinstall_probe": "COMPLETED_ONCE_BOTH_HASH_PLANS",
+      "worker_redeployed": false,
+      "sustained_recovery": "NOT_YET_ESTABLISHED",
+      "attempts_per_forward": 1,
+      "final_maintain_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "all_exact_head_ci_passed": true,
+      "migration_body_hashes_exact": true,
+      "source_and_security_preserved": true
+    }
+  }
+]

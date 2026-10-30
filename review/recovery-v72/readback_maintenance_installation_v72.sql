@@ -1,0 +1,11 @@
+BEGIN;
+SET LOCAL statement_timeout='8s';
+SET LOCAL lock_timeout='3s';
+SELECT clock_timestamp() observed_at,
+ (SELECT jsonb_build_object('status',status,'fence',fence,'cohort_sha256',cohort_sha256,'owner',metadata->>'implementation_owner','lease_until',metadata->>'implementation_lease_until','pages_committed',pages_committed,'records_committed',records_committed,'requests_reserved',requests_reserved,'source_bytes',source_bytes) FROM astra_ingestion_v1.backfill_runs_v2 WHERE id='fixed3000-20250901-20260731-v1-20261030') run,
+ (SELECT jsonb_agg(jsonb_build_object('name',c.relname,'oid',c.oid,'owner',c.relowner,'acl',c.relacl,'valid',i.indisvalid,'ready',i.indisready,'live',i.indislive,'method',a.amname,'definition',pg_get_indexdef(c.oid),'bytes',pg_relation_size(c.oid)) ORDER BY c.relname) FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid JOIN pg_am a ON a.oid=c.relam WHERE i.indrelid='astra_ingestion_v1.backfill_tasks_v2'::regclass) indexes,
+ (SELECT jsonb_object_agg(signature,jsonb_build_object('source_sha256',encode(sha256(convert_to(pg_get_functiondef(signature::regprocedure),'UTF8')),'hex'),'metadata',to_jsonb(p)-'prosrc')) FROM unnest(ARRAY['astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)','astra_ingestion_v1.rpc_dispatch(text,jsonb)','astra_ingestion_v1.backfill_maintain_v2(integer)','astra_ingestion_v1.backfill_recheck_page_v2(text,integer)','astra_ingestion_v1.monitor_tick_v1()']) signature JOIN pg_proc p ON p.oid=signature::regprocedure) functions,
+ (SELECT jsonb_agg(jsonb_build_object('version',version,'name',name,'statement_count',cardinality(statements),'body_sha256',encode(sha256(convert_to(array_to_string(statements,E'\n'),'UTF8')),'hex'),'body_bytes',octet_length(array_to_string(statements,E'\n'))) ORDER BY version) FROM supabase_migrations.schema_migrations WHERE name IN('astra_backfill_breadth_pending_hash_index_v2','astra_backfill_minute_pending_hash_index_v2','astra_backfill_readback_transaction_race_v2')) migration_history,
+ (SELECT jsonb_build_object('owner',relowner,'acl',relacl,'rls',relrowsecurity,'force_rls',relforcerowsecurity,'oid',oid,'filenode',relfilenode) FROM pg_class WHERE oid='astra_ingestion_v1.backfill_tasks_v2'::regclass) task_table;
+COMMIT;
+

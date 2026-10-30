@@ -1,0 +1,735 @@
+{
+  "schema": "astra.maintenance-combined.release-gates/1",
+  "record_kind": "READ_ONLY_EXACT_HEAD_CI_QUALIFICATION",
+  "version": 72,
+  "observed_at": "2026-10-30 14:40:45 UTC",
+  "reviewer": "/root/fresh_claim_recovery",
+  "state": "ALL_FOUR_RELEASE_GATES_PASSED",
+  "passed": true,
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "branch": "feat/astra-ingestion-service",
+  "source_head": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "source_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "parent_head": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "final_branch_readback": {
+    "ref": "refs/heads/feat/astra-ingestion-service",
+    "sha": "d06c13f30a0bed8da6366f124101b59d21a450fa"
+  },
+  "checkout_identity": {
+    "push_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+    "pull_request_number": 93,
+    "pr_merge_commit": "ecd55be1ad8de7929d1e420fb3476b27b6fa236f",
+    "pr_merge_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+    "pr_merge_parents": [
+      "455e45646aa71605cb3e541d2c714603d89f4079",
+      "d06c13f30a0bed8da6366f124101b59d21a450fa"
+    ],
+    "pr_merge_tree_equals_published_tree": true
+  },
+  "runs": [
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41072428347,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428347",
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T14:32:21Z",
+      "updated_at": "2026-10-30T14:32:55Z",
+      "checkout_commit": "ecd55be1ad8de7929d1e420fb3476b27b6fa236f",
+      "checkout_log_lines": [
+        "2026-10-30T14:32:27.5113741Z HEAD is now at ecd55be Merge d06c13f30a0bed8da6366f124101b59d21a450fa into 455e45646aa71605cb3e541d2c714603d89f4079",
+        "2026-10-30T14:32:27.5188122Z ecd55be1ad8de7929d1e420fb3476b27b6fa236f"
+      ],
+      "job": {
+        "id": 124119689828,
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41072428347,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Compile",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "JavaScript syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Unit tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          }
+        ],
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428347/job/124119689828"
+      },
+      "tests": {
+        "runner": "pytest -q",
+        "passed": 710,
+        "skipped": 333,
+        "warnings": 1,
+        "elapsed_seconds": 7.06,
+        "summary_line": "2026-10-30T14:32:51.9353820Z 710 passed, 333 skipped, 1 warning in 7.06s",
+        "dedicated_database_proof_supplied_by_separate_zero_skip_jobs": true
+      },
+      "full_decoded_job_log_characters_inspected": 36526,
+      "raw_job_logs_or_credentials_saved": false
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41072428344,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428344",
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T14:32:21Z",
+      "updated_at": "2026-10-30T14:38:31Z",
+      "checkout_commit": "ecd55be1ad8de7929d1e420fb3476b27b6fa236f",
+      "checkout_log_lines": [
+        "2026-10-30T14:32:39.5225215Z HEAD is now at ecd55be Merge d06c13f30a0bed8da6366f124101b59d21a450fa into 455e45646aa71605cb3e541d2c714603d89f4079",
+        "2026-10-30T14:32:39.5305770Z ecd55be1ad8de7929d1e420fb3476b27b6fa236f"
+      ],
+      "job": {
+        "id": 124119689913,
+        "name": "Bounded ingestion and PostgreSQL recovery",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41072428344,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Initialize containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Install pinned runtime and ASGI test dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Require production adapters before qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run all ingestion qualification tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Check application syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Stop containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ],
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428344/job/124119689913"
+      },
+      "tests": {
+        "runner": "python -m unittest discover -s tests/ingestion -p 'test_*.py' -v",
+        "tests_run": 653,
+        "passed": 653,
+        "skipped": 0,
+        "errors": 0,
+        "failures": 0,
+        "elapsed_seconds": 340.219,
+        "summary_lines": [
+          "2026-10-30T14:38:26.8085248Z Ran 653 tests in 340.219s",
+          "2026-10-30T14:38:26.8085609Z OK"
+        ],
+        "new_index_cases": 9,
+        "new_readback_cases": 8,
+        "required_cases": {
+          "test_backfill_maintenance_task_indexes_v2": [
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:51.9034295Z test_real_forward_preserves_sources_metadata_access_and_data (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:46.8910038Z test_exact_replay_does_not_build_or_replace_any_index (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:50.7989118Z test_minute_before_breadth_is_rejected (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:52.3504290Z test_source_index_owner_and_lease_drift_fail_closed (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:52.0935407Z test_same_name_wrong_method_or_predicate_is_never_accepted (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:50.6359193Z test_incomplete_fixed_cohort_rejects_without_deleting_members (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:50.3791662Z test_failure_after_build_and_late_source_drift_roll_back_atomically (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:50.0494690Z test_existing_global_lock_budget_fails_without_any_build (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:46.6514239Z test_authenticated_real_page_successor_and_lost_ack_after_indexes (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes) ... ok"
+            }
+          ],
+          "test_backfill_readback_transaction_race_v2": [
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.SourceTests.test_exact_single_predicate_and_unchanged_verifier",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:01.3649751Z test_exact_single_predicate_and_unchanged_verifier (test_backfill_readback_transaction_race_v2.SourceTests.test_exact_single_predicate_and_unchanged_verifier) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:00.1757712Z test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_candidate_defers_race_without_failure_then_next_transaction_verifies",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:55.9799525Z test_candidate_defers_race_without_failure_then_next_transaction_verifies (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_candidate_defers_race_without_failure_then_next_transaction_verifies) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:56.3578730Z test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_page_bounds_and_existing_failure_exclusion_remain",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:01.2604822Z test_page_bounds_and_existing_failure_exclusion_remain (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_page_bounds_and_existing_failure_exclusion_remain) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_preserves_every_other_function_metadata_and_application_rows",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:59.9066789Z test_forward_preserves_every_other_function_metadata_and_application_rows (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_preserves_every_other_function_metadata_and_application_rows) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_guards_and_atomic_postwrite_rollback",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:59.0713090Z test_forward_guards_and_atomic_postwrite_rollback (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_guards_and_atomic_postwrite_rollback) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_existing_two_second_gate_wait_and_busy_return_remain",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:58.5163478Z test_existing_two_second_gate_wait_and_busy_return_remain (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_existing_two_second_gate_wait_and_busy_return_remain) ... ok"
+            }
+          ]
+        },
+        "actual_postgresql_version": "17.11",
+        "postgres_version_log_lines": [
+          "2026-10-30T14:38:27.5515608Z  2026-10-30 14:32:33.002 UTC [1] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+          "2026-10-30T14:38:27.7513368Z  waiting for server to start....2026-10-30 14:32:32.698 UTC [48] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+        ]
+      },
+      "full_decoded_job_log_characters_inspected": 2335802,
+      "raw_job_logs_or_credentials_saved": false
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41072418656,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418656",
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T14:32:17Z",
+      "updated_at": "2026-10-30T14:33:04Z",
+      "checkout_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "checkout_log_lines": [
+        "2026-10-30T14:32:27.2820783Z d06c13f30a0bed8da6366f124101b59d21a450fa"
+      ],
+      "job": {
+        "id": 124119656952,
+        "name": "test",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41072418656,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Compile",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "JavaScript syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Unit tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          }
+        ],
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418656/job/124119656952"
+      },
+      "tests": {
+        "runner": "pytest -q",
+        "passed": 710,
+        "skipped": 333,
+        "warnings": 1,
+        "elapsed_seconds": 10.97,
+        "summary_line": "2026-10-30T14:32:59.7471852Z 710 passed, 333 skipped, 1 warning in 10.97s",
+        "dedicated_database_proof_supplied_by_separate_zero_skip_jobs": true
+      },
+      "full_decoded_job_log_characters_inspected": 35625,
+      "raw_job_logs_or_credentials_saved": false
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41072418435,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418435",
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T14:32:17Z",
+      "updated_at": "2026-10-30T14:38:40Z",
+      "checkout_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "checkout_log_lines": [
+        "2026-10-30T14:32:38.7634971Z d06c13f30a0bed8da6366f124101b59d21a450fa"
+      ],
+      "job": {
+        "id": 124119656346,
+        "name": "Bounded ingestion and PostgreSQL recovery",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41072418435,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Initialize containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Install pinned runtime and ASGI test dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Require production adapters before qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run all ingestion qualification tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Check application syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Stop containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ],
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418435/job/124119656346"
+      },
+      "tests": {
+        "runner": "python -m unittest discover -s tests/ingestion -p 'test_*.py' -v",
+        "tests_run": 653,
+        "passed": 653,
+        "skipped": 0,
+        "errors": 0,
+        "failures": 0,
+        "elapsed_seconds": 348.618,
+        "summary_lines": [
+          "2026-10-30T14:38:34.4770272Z Ran 653 tests in 348.618s",
+          "2026-10-30T14:38:34.4770575Z OK"
+        ],
+        "new_index_cases": 9,
+        "new_readback_cases": 8,
+        "required_cases": {
+          "test_backfill_maintenance_task_indexes_v2": [
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:54.5367829Z test_real_forward_preserves_sources_metadata_access_and_data (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:49.4438782Z test_exact_replay_does_not_build_or_replace_any_index (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:53.3918970Z test_minute_before_breadth_is_rejected (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:55.0000709Z test_source_index_owner_and_lease_drift_fail_closed (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:54.7293597Z test_same_name_wrong_method_or_predicate_is_never_accepted (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:53.2231674Z test_incomplete_fixed_cohort_rejects_without_deleting_members (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:52.9714881Z test_failure_after_build_and_late_source_drift_roll_back_atomically (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:52.6172508Z test_existing_global_lock_budget_fails_without_any_build (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes",
+              "result": "ok",
+              "log_line": "2026-10-30T14:34:49.2067687Z test_authenticated_real_page_successor_and_lost_ack_after_indexes (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes) ... ok"
+            }
+          ],
+          "test_backfill_readback_transaction_race_v2": [
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.SourceTests.test_exact_single_predicate_and_unchanged_verifier",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:05.5204405Z test_exact_single_predicate_and_unchanged_verifier (test_backfill_readback_transaction_race_v2.SourceTests.test_exact_single_predicate_and_unchanged_verifier) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:03.9432517Z test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_candidate_defers_race_without_failure_then_next_transaction_verifies",
+              "result": "ok",
+              "log_line": "2026-10-30T14:35:59.6614630Z test_candidate_defers_race_without_failure_then_next_transaction_verifies (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_candidate_defers_race_without_failure_then_next_transaction_verifies) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:00.0522346Z test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_page_bounds_and_existing_failure_exclusion_remain",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:05.4246063Z test_page_bounds_and_existing_failure_exclusion_remain (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_page_bounds_and_existing_failure_exclusion_remain) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_preserves_every_other_function_metadata_and_application_rows",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:03.6786993Z test_forward_preserves_every_other_function_metadata_and_application_rows (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_preserves_every_other_function_metadata_and_application_rows) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_guards_and_atomic_postwrite_rollback",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:02.8283378Z test_forward_guards_and_atomic_postwrite_rollback (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_guards_and_atomic_postwrite_rollback) ... ok"
+            },
+            {
+              "qualified_name": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_existing_two_second_gate_wait_and_busy_return_remain",
+              "result": "ok",
+              "log_line": "2026-10-30T14:36:02.2283708Z test_existing_two_second_gate_wait_and_busy_return_remain (test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_existing_two_second_gate_wait_and_busy_return_remain) ... ok"
+            }
+          ]
+        },
+        "actual_postgresql_version": "17.11",
+        "postgres_version_log_lines": [
+          "2026-10-30T14:38:35.2642270Z  waiting for server to start....2026-10-30 14:32:31.465 UTC [48] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+          "2026-10-30T14:38:35.2663731Z  2026-10-30 14:32:31.776 UTC [1] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+        ]
+      },
+      "full_decoded_job_log_characters_inspected": 2334995,
+      "raw_job_logs_or_credentials_saved": false
+    }
+  ],
+  "workflow_contracts": [
+    {
+      "path": ".github/workflows/astra-ingestion-qualification.yml",
+      "source_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/blob/d06c13f30a0bed8da6366f124101b59d21a450fa/.github/workflows/astra-ingestion-qualification.yml",
+      "configured_postgres_image": "postgres:17",
+      "actual_ci_postgres_version": "17.11",
+      "python_version": "3.12.15",
+      "full_ingestion_discovery": true,
+      "disposable_local_database_required": true,
+      "production_adapters_import_gate_passed": true,
+      "syntax_checks_passed": true
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "source_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/blob/d06c13f30a0bed8da6366f124101b59d21a450fa/.github/workflows/release-gate.yml",
+      "python_version": "3.12.7",
+      "general_test_command": "pytest -q",
+      "compile_and_javascript_syntax_checks_passed": true,
+      "readback_module_missing_dsn_non_dedicated_explicit_skip_compatible": true
+    }
+  ],
+  "verification": {
+    "all_actual_push_and_pr_runs_examined": true,
+    "run_count": 4,
+    "all_runs_and_all_steps_success": true,
+    "dedicated_tests_each": 653,
+    "dedicated_skips_each": 0,
+    "all9_index_and8_readback_cases_explicitly_passed_in_both_dedicated_logs": true,
+    "general_release_each": {
+      "passed": 710,
+      "skipped": 333,
+      "warnings": 1
+    },
+    "exact_merge_tree_equality": true,
+    "final_branch_still_exact_published_head": true,
+    "final_new_test_pins": {
+      "tests/ingestion/test_backfill_maintenance_task_indexes_v2.py": "50108ef354e9d3c36b76e6f3b55f31306067f2c20ee4a749b4c5eded931a2145",
+      "tests/ingestion/test_backfill_readback_transaction_race_v2.py": "04312d34e94331fb79981b7b0032560a3128a84aab01d1a32c9efbb53021ae83"
+    }
+  },
+  "observer_actions": {
+    "github_get_only": true,
+    "reruns": 0,
+    "cancels": 0,
+    "workflow_mutations": 0,
+    "repository_mutations": 0,
+    "production_sql_calls": 0,
+    "provider_calls": 0,
+    "credential_reads_or_exports": 0,
+    "polling": "Initial read, source/log preparation and45-second bounded waits; no busy polling."
+  },
+  "limits": [
+    "Successful CI is a release gate, not proof of production installation or sustained ingestion recovery.",
+    "Actual CI is PostgreSQL17.11; production is17.6. Live catalog/source/integrity readbacks and bounded selector measurements remain required.",
+    "General-release skips do not replace database proof; both dedicated full suites executed653 tests with zero skips.",
+    "Only allowlisted checkout, summary, version and required test-result lines are retained; full raw logs are not exported."
+  ],
+  "next_action": "Root may reconcile current ownership, source pins and uncertain writes, then apply the frozen breadth index, minute index and readback predicate forwards in that order, with independent readback between actions."
+}

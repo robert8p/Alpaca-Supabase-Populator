@@ -1,0 +1,56 @@
+{
+  "window": {
+    "start": "2026-10-30T14:14:00Z",
+    "end": "2026-10-30T14:20:10Z"
+  },
+  "result": {
+    "result": [
+      {
+        "lock_holder": "",
+        "process_id": "1247318",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:14:03.153000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "1247318",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:16:04.525000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "1249491",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:19:34.495000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "1247318",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:20:03.987000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "1249491",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:20:04.499000"
+      }
+    ]
+  },
+  "limitation": "Sanitized context only; no request body, token, header, or raw query retained. Empty holder field means these particular error rows do not independently identify the lock holder. Temporal worker log matches at14:14 and14:20 retain the established outer gate failure classification; no blind commit retry was issued."
+}

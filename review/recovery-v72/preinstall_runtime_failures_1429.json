@@ -1,0 +1,258 @@
+{
+  "window_start": "2026-10-30T14:06:00Z",
+  "window_end": "2026-10-30T14:28:00Z",
+  "cron_history_first_attempt": {
+    "query_shape": "time filter, jobid and timestamp order; no known runid lower bound",
+    "result": {
+      "error": {
+        "name": "HttpException",
+        "message": "Failed to run sql query: ERROR:  57014: canceling statement due to statement timeout\n"
+      }
+    },
+    "mutations": false,
+    "retried_same_query": false
+  },
+  "bounded_followup": {
+    "known_lower_runid": 4068620,
+    "rows": [
+      {
+        "observed_at": "2026-10-30 14:29:11.085534+00",
+        "jobid": 602,
+        "runid": 4068658,
+        "job_pid": 1250506,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:26:00.031168+00",
+        "end_time": "2026-10-30 14:26:02.053904+00",
+        "elapsed_seconds": "2.022736"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085556+00",
+        "jobid": 603,
+        "runid": 4068657,
+        "job_pid": 1250505,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:26:00.032588+00",
+        "end_time": "2026-10-30 14:26:00.042597+00",
+        "elapsed_seconds": "0.010009"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085559+00",
+        "jobid": 602,
+        "runid": 4068656,
+        "job_pid": 1249824,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:24:00.02196+00",
+        "end_time": "2026-10-30 14:24:01.833858+00",
+        "elapsed_seconds": "1.811898"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085563+00",
+        "jobid": 603,
+        "runid": 4068655,
+        "job_pid": 1249823,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:24:00.018633+00",
+        "end_time": "2026-10-30 14:24:00.026522+00",
+        "elapsed_seconds": "0.007889"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085566+00",
+        "jobid": 602,
+        "runid": 4068654,
+        "job_pid": 1249751,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:22:00.038184+00",
+        "end_time": "2026-10-30 14:22:15.10882+00",
+        "elapsed_seconds": "15.070636"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085569+00",
+        "jobid": 603,
+        "runid": 4068653,
+        "job_pid": 1249750,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:22:00.036991+00",
+        "end_time": "2026-10-30 14:22:00.079463+00",
+        "elapsed_seconds": "0.042472"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085572+00",
+        "jobid": 602,
+        "runid": 4068652,
+        "job_pid": 1249713,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:20:00.041474+00",
+        "end_time": "2026-10-30 14:20:06.340858+00",
+        "elapsed_seconds": "6.299384"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085586+00",
+        "jobid": 603,
+        "runid": 4068651,
+        "job_pid": 1249712,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:20:00.032445+00",
+        "end_time": "2026-10-30 14:20:00.059042+00",
+        "elapsed_seconds": "0.026597"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.08559+00",
+        "jobid": 602,
+        "runid": 4068650,
+        "job_pid": 1249624,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:18:00.025499+00",
+        "end_time": "2026-10-30 14:18:01.644092+00",
+        "elapsed_seconds": "1.618593"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085593+00",
+        "jobid": 603,
+        "runid": 4068649,
+        "job_pid": 1249623,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:18:00.022395+00",
+        "end_time": "2026-10-30 14:18:00.032349+00",
+        "elapsed_seconds": "0.009954"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085596+00",
+        "jobid": 602,
+        "runid": 4068648,
+        "job_pid": 1249575,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:16:00.024321+00",
+        "end_time": "2026-10-30 14:16:05.942994+00",
+        "elapsed_seconds": "5.918673"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085605+00",
+        "jobid": 603,
+        "runid": 4068647,
+        "job_pid": 1249574,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:16:00.021904+00",
+        "end_time": "2026-10-30 14:16:00.029093+00",
+        "elapsed_seconds": "0.007189"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085608+00",
+        "jobid": 602,
+        "runid": 4068646,
+        "job_pid": 1249542,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:14:00.026675+00",
+        "end_time": "2026-10-30 14:14:03.253457+00",
+        "elapsed_seconds": "3.226782"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085611+00",
+        "jobid": 603,
+        "runid": 4068645,
+        "job_pid": 1249541,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:14:00.025508+00",
+        "end_time": "2026-10-30 14:14:00.043019+00",
+        "elapsed_seconds": "0.017511"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085623+00",
+        "jobid": 602,
+        "runid": 4068644,
+        "job_pid": 1248803,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:12:00.025735+00",
+        "end_time": "2026-10-30 14:12:02.070556+00",
+        "elapsed_seconds": "2.044821"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085626+00",
+        "jobid": 603,
+        "runid": 4068643,
+        "job_pid": 1248802,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:12:00.026811+00",
+        "end_time": "2026-10-30 14:12:00.052878+00",
+        "elapsed_seconds": "0.026067"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085629+00",
+        "jobid": 602,
+        "runid": 4068642,
+        "job_pid": 1248632,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:10:00.023735+00",
+        "end_time": "2026-10-30 14:10:06.156494+00",
+        "elapsed_seconds": "6.132759"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085632+00",
+        "jobid": 603,
+        "runid": 4068641,
+        "job_pid": 1248631,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:10:00.02115+00",
+        "end_time": "2026-10-30 14:10:00.031459+00",
+        "elapsed_seconds": "0.010309"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085634+00",
+        "jobid": 602,
+        "runid": 4068640,
+        "job_pid": 1248560,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:08:00.022546+00",
+        "end_time": "2026-10-30 14:08:02.084534+00",
+        "elapsed_seconds": "2.061988"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085637+00",
+        "jobid": 603,
+        "runid": 4068639,
+        "job_pid": 1248559,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:08:00.01839+00",
+        "end_time": "2026-10-30 14:08:00.025894+00",
+        "elapsed_seconds": "0.007504"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.08564+00",
+        "jobid": 602,
+        "runid": 4068638,
+        "job_pid": 1248531,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:06:00.022751+00",
+        "end_time": "2026-10-30 14:06:00.814137+00",
+        "elapsed_seconds": "0.791386"
+      },
+      {
+        "observed_at": "2026-10-30 14:29:11.085643+00",
+        "jobid": 603,
+        "runid": 4068637,
+        "job_pid": 1248530,
+        "status": "succeeded",
+        "start_time": "2026-10-30 14:06:00.02161+00",
+        "end_time": "2026-10-30 14:06:00.029492+00",
+        "elapsed_seconds": "0.007882"
+      }
+    ]
+  },
+  "worker_errors": [
+    {
+      "timestamp": "2026-10-30T14:14:03.175676642Z",
+      "state": "unresolved_runtime_error",
+      "error_type": "RpcPersistenceError",
+      "rpc_operation": "backfill_claim",
+      "rpc_failure_reason": "HTTP_ERROR"
+    },
+    {
+      "timestamp": "2026-10-30T14:20:04.014779768Z",
+      "state": "unresolved_runtime_error",
+      "error_type": "RpcPersistenceError",
+      "rpc_operation": "backfill_commit",
+      "rpc_failure_reason": "HTTP_ERROR"
+    }
+  ],
+  "logs_has_more": false,
+  "limitation": "Whole cron elapsed includes gate admission and remaining monitor work; it does not measure a specific helper. No function, grant, timeout, schedule or deployment change."
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "astra.replacement.checkpoint-ci/v71",
+  "checkpoint_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "observed_at": "2026-10-30T14:01:19Z",
+  "api_total_count": 3,
+  "triggered_runs": [
+    {
+      "id": 41066457956,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "head_sha": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+      "updated_at": "2026-10-30T13:50:53Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41066457956"
+    },
+    {
+      "id": 41066457729,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "head_sha": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+      "updated_at": "2026-10-30T13:54:16Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41066457729"
+    },
+    {
+      "id": 41066450588,
+      "name": "release-gate",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "head_sha": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+      "updated_at": "2026-10-30T13:50:50Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41066450588"
+    }
+  ],
+  "runtime_sources_unchanged": true,
+  "no_missing_gate_claim": "This docs/evidence publication lists only the three workflows returned for this exact head; deployed runtime gates are separately retained for3ee4 and b434."
+}

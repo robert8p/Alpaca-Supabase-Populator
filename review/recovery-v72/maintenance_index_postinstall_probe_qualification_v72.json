@@ -1,0 +1,35 @@
+{
+  "schema": "astra.maintenance-index-postinstall-probe-qualification/1",
+  "production_calls": 0,
+  "real_drift_rejections": [
+    "changed maintain source",
+    "missing minute index",
+    "wrong same-name index method"
+  ],
+  "required_settings_and_owner": [
+    "read-only",
+    "repeatable-read",
+    "8s statement",
+    "3s lock",
+    "unexpired owner lease"
+  ],
+  "probe": {
+    "selectors": 2,
+    "elapsed_seconds": 0.009018304001074284,
+    "application_tables_functions_and_indexes_unchanged": true,
+    "settings_restored": true,
+    "advisory_locks_absent_after_rollback": true,
+    "real_reference_page_body_and_request_not_returned": true,
+    "result_bytes": 11883,
+    "limitation": "The real committed reference page is ineligible for these two selectors; positive selector identity and hash plans are qualified separately in the existing index tests."
+  },
+  "passed": true,
+  "tests": 3,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 1.9725762149973889,
+  "sql_sha256": "59ab433babf8fcc30b9f09b9c4aafb9747685f852a9961c6e0c7c913be39e6e5",
+  "test_sha256": "c1fcfe8c0997545f946be1d6c79115ece40b0e1c28a95ee3c8adb42ef49d28f4",
+  "fixture_adaptation": "Exact index forwards and race candidate installed only in disposable fixture; schema/run/source hashes map to corresponding local definitions. Read-only probe logic remains exact."
+}

@@ -1,0 +1,60 @@
+{
+  "safe_rpc_window": {
+    "start": "2026-10-30T14:40:00Z",
+    "end": "2026-10-30T14:41:00Z"
+  },
+  "database_errors": {
+    "result": [
+      {
+        "process_id": "1249491",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:40:02.614000"
+      },
+      {
+        "process_id": "1249491",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:40:09.375000"
+      },
+      {
+        "process_id": "1249510",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:40:09.527000"
+      },
+      {
+        "process_id": "1249491",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T14:40:39.351000"
+      }
+    ]
+  },
+  "worker_error_at": "2026-10-30T14:40:09.546334932Z",
+  "classification": "The matching14:40:09.527 database error is55P03 at authenticated rpc_dispatch line39, before the requested operation is dispatched. It overlaps the bounded breadth index build. No blind worker-write replay or manual restart was issued.",
+  "current_deployment": {
+    "commit": {
+      "createdAt": "2026-10-30T12:28:49Z",
+      "id": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "message": "Complete approved relay publication and preserve historical review test boundary"
+    },
+    "createdAt": "2026-10-30T12:36:05.653083Z",
+    "finishedAt": "2026-10-30T12:36:45.668499Z",
+    "id": "dep-dbi8ud942hec73cpm7qg",
+    "startedAt": "2026-10-30T12:36:05.651198Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T12:36:45.668728Z"
+  },
+  "no_new_deployment_since_existing_3ee4": true,
+  "post_repair_recovery_not_inferred": true
+}

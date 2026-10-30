@@ -1,0 +1,36 @@
+{
+  "after_block": "  try:checked_path=safe_path(path)\n  except ValueError:\n   # A QA receipt can legitimately quote rejected traversal/path examples.\n   # They are never opened. Explicitly selected input paths still fail closed.\n   if path in required:raise\n   excluded_refs.append(path)\n   continue\n",
+  "before_block": "  checked_path=safe_path(path)\n",
+  "builder_after_sha256": "2945d19a7bdc0117a40addb97233ed62fec278f929d245fc5b465d9a9c68df64",
+  "builder_before_sha256": "b6112203006403528504e437a454abdbb28b100b4be38c06050acd12dd83d375",
+  "builder_path": "review/recovery-v72/build_checkpoint_publication_v72.py",
+  "canonical_files_modified": false,
+  "document_and_progress_hashes_rechecked": true,
+  "exact_single_block_change_reverses_to_original_reviewed_builder": true,
+  "initial_rejection_retained": {
+    "path": "review/recovery-v72/checkpoint_builder_reference_scan_initial_v72.json",
+    "sha256": "c89bc30cd498b981ea6904d39ac752d548bea3af8a422892071238b4c7bdf14a"
+  },
+  "original_final_document_qa": {
+    "path": "evidence/replacement-checkpoint-final-independent-qa-v72.json",
+    "remains_valid": true,
+    "sha256": "14041dc9d662b75f2c2caa24e98bfd1826d445297e763f2ae2b0e329610251e8"
+  },
+  "passed": true,
+  "production_calls": 0,
+  "remote_mutations": 0,
+  "review_conclusion": "PASS: noncanonical regex-discovered text examples are rejected and recorded as excluded without opening a file. Explicitly selected inputs, direct document references and initial selected seeds remain fatal on confinement failure. The canonical path/symlink guard and exact QA base/document/mandatory-progress bindings are byte-identical to the original reviewed builder.",
+  "reviewed_at_utc": "2026-10-30T15:00:35.853530+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra.checkpoint-builder-independent-review-amendment/1",
+  "scope_of_exception": "Only a safe_path ValueError for a recursively discovered string that is absent from the initial required set; no alternate read path or normalization is added.",
+  "unchanged": [
+    "safe_path and symlink rejection",
+    "read_checked input hashing",
+    "mandatory exact QA base/document/progress equality",
+    "two canonical replacement limit",
+    "immutable archives and mission EOF checks",
+    "no runtime/SQL/test/workflow changes",
+    "root-only remote mutation authority"
+  ]
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "observed_at": "2026-10-30 14:08:21.718702+00",
+    "task_id": "backfill-plan-28241a0a18d98d6b64c6a8e4a14027c1fe08a945048b089a02522b9cb52f42e2",
+    "page_no": 0,
+    "committed_at": "2026-10-30 14:00:00.061968+00",
+    "record_count": 100,
+    "raw_bytes": 246966,
+    "body_sha256": "255ec70d01487893dfeeaaccf5dc9638adc325ad71c0fc13986fa7187b600a9b",
+    "kind": "massive_news",
+    "family": "N01",
+    "provider": "Massive",
+    "status": "PENDING",
+    "generation": 1,
+    "run_fence": 1,
+    "readback_failure_markers": [
+      {
+        "action": "READBACK_FAILURE",
+        "page_no": "0",
+        "sqlstate": "AI005",
+        "recorded_at": "2026-10-30T14:00:04.16716+00:00"
+      }
+    ]
+  }
+]

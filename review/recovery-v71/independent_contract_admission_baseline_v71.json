@@ -1,0 +1,100 @@
+{
+  "schema": "astra.independent-contract-admission-baseline/1",
+  "production_calls": 0,
+  "fixture_only": true,
+  "repair_applied": false,
+  "initial_harness_attempt": "Import failed before any test or database connection because the staged fixture omits test_backfill_shared_records_v2; added repository tests as a fallback import path without modifying fixture or production source.",
+  "source_checks": {
+    "backfill_contract_admit_page_v2": {
+      "retained_sha256": "f72da3cb88f30d3ac66e2e20a51bd2dfd55195bc76ae2997decdc6b10020d7c1",
+      "schema_only_adaptation": true,
+      "local_sha256": "c6d8685c7971fa33fede84d8e1e036e8c84e6e1259016c2fc417284ef85cf76d"
+    },
+    "backfill_contract_register_child_v2": {
+      "retained_sha256": "c5756d3872e552716bffb575025942500946e0e0a8a19c29ef29326b8bc78795",
+      "schema_only_adaptation": true,
+      "local_sha256": "99c9d89229d2366a595f3c9519543f801c9f490a95e348c0be56e754a6fd1099"
+    },
+    "backfill_contract_child_trigger_v2": {
+      "retained_sha256": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b",
+      "schema_only_adaptation": true,
+      "local_sha256": "a422319e2a09ba9eb85d2eb1279bfb64e5020535108846104831b2647aa98f91"
+    },
+    "backfill_contract_enqueue_v2": {
+      "retained_sha256": "e79997417569efc1295fbf8dbbb3b90e8b0c82ded972e213fc1b1e69dffc3c0c",
+      "schema_only_adaptation": true,
+      "local_sha256": "dbb577a8f1ef66a0b8b35abd4990af557cac4a3a48bdd1f23b50f726341d1b02"
+    },
+    "backfill_contract_key_v2": {
+      "retained_sha256": "d5349e3ec4e084dcd53a0ace556e81afe1f8f76b94c6f358cf8e493238a89f90",
+      "schema_only_adaptation": true,
+      "local_sha256": "a48385651bb0548d6a733815da69296e16892346ba8e6ee7756dd01050cd81d1"
+    },
+    "backfill_page_rows_v2": {
+      "retained_sha256": "e0d0a4bceb9f107c00f770546ef0a200ccb9dd7ca48df01c9c821569ac3b897c",
+      "schema_only_adaptation": true,
+      "local_sha256": "17d80793eab902d39375e941f285bc920da76aa33c5a58edc2e2f35f6367f4b7"
+    }
+  },
+  "setup_commit_verify_seconds": {
+    "parse_seconds": 0.006399817997589707,
+    "pacing_fixture_seconds": 0.006264947005547583,
+    "reserve_seconds": 0.014376454993907828,
+    "commit_seconds": 0.1963056590029737,
+    "verify_seconds": 0.45435083000484155
+  },
+  "synthetic_page": {
+    "records": 1000,
+    "raw_bytes": 705542,
+    "inert_padding": true,
+    "source_page_and_independent_readback_immutable": true
+  },
+  "admission_seconds": 0.15108247399621177,
+  "actual_result": {
+    "state": "CONTRACT_WORK_LINKED",
+    "new_children": 10,
+    "linked_source_contracts": 1000,
+    "unlinked_source_contracts": 0,
+    "preexisting_children_preserved": true,
+    "historical_enumeration_completeness_certified": false
+  },
+  "postconditions": {
+    "children": 10,
+    "registered": 1000,
+    "links": 1000,
+    "min_batch": 100,
+    "max_batch": 100
+  },
+  "task_triggers": [
+    {
+      "tgname": "backfill_contract_child_insert_v2",
+      "tgenabled": "O"
+    },
+    {
+      "tgname": "backfill_static_plan_snapshot_v2",
+      "tgenabled": "O"
+    },
+    {
+      "tgname": "backfill_task_scope_v2",
+      "tgenabled": "O"
+    }
+  ],
+  "enabled_trigger_chain": true,
+  "seed_false_during_commit_and_readback": true,
+  "seed_true_before_measured_admission": true,
+  "local_profile": {
+    "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "jit": "on",
+    "plan_cache_mode": "auto",
+    "track_functions": "none"
+  },
+  "local_function_profile": [],
+  "interpretation": "One synthetic fresh-registry local PostgreSQL admission including unchanged real child triggers; warm fixture and instrumentation. Not production timing or the prior failed monitor snapshot. Global gate held locally without contention; no production settings changed.",
+  "passed": true,
+  "tests": 1,
+  "errors": 0,
+  "failures": 0,
+  "skips": 0,
+  "total_seconds": 1.89723350800341,
+  "runner_sha256": "c6a15c3219ffdff02114cd8b5c0910a09ef02418e8d7f1d037206e98c035e297"
+}

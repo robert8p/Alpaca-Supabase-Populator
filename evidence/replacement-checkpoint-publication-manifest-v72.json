@@ -1,0 +1,419 @@
+{
+  "schema": "astra.checkpoint-publication-manifest/1",
+  "created_at": "2026-10-30T15:01:02.176574+00:00",
+  "version": 72,
+  "state": "READY_LOCAL_NOT_PUBLISHED",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "base_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "base_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "canonical_replacements": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 30487,
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+      "git_blob_sha1": "27e59c8b2e71b9543883dcabbd323dcdc99497fb"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 53389,
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+      "git_blob_sha1": "53b0ef3efbc86293114dc35a2efb4c0907ad8349"
+    }
+  },
+  "exact_v71_archives": {
+    "docs/history/INGESTION_COMPLETION_STATE_v71.md": "02b60feb1010d293e7bf608a4127927c933837ebb76c725d92570d97d2dd5026",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v71.md": "b75ab27ebcb619719a2b5c33c9e3b880f7d08a98fbc2f6a99282ded2f303b3fb"
+  },
+  "canonical_bytes_equal_exact_reviewed_drafts": true,
+  "reviewed_draft_sources_not_duplicated_in_publication": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v72/checkpoint-draft/INGESTION_COMPLETION_STATE_v72.draft.md",
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v72/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.draft.md",
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283"
+    }
+  },
+  "all_other_existing_blobs_preserved": true,
+  "active_runtime_sql_tests_or_workflows_changed": false,
+  "mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+  "mission_exact_once_at_task_prompt_eof": true,
+  "root_final_qa_receipt": {
+    "path": "evidence/replacement-checkpoint-final-independent-qa-v72.json",
+    "sha256": "14041dc9d662b75f2c2caa24e98bfd1826d445297e763f2ae2b0e329610251e8"
+  },
+  "root_final_progress_receipt": {
+    "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+    "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62"
+  },
+  "deferred_postpublication_paths": [],
+  "no_automation_write_or_controller_creation": true,
+  "no_publication_or_production_calls": true,
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 30487,
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+      "git_blob_sha1": "27e59c8b2e71b9543883dcabbd323dcdc99497fb",
+      "base_state": "REPLACE_CANONICAL"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 53389,
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+      "git_blob_sha1": "53b0ef3efbc86293114dc35a2efb4c0907ad8349",
+      "base_state": "REPLACE_CANONICAL"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v71.md",
+      "bytes": 21491,
+      "sha256": "02b60feb1010d293e7bf608a4127927c933837ebb76c725d92570d97d2dd5026",
+      "git_blob_sha1": "bc6eb2bf302b0934342494d8e35ea841d2463081",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v71.md",
+      "bytes": 42266,
+      "sha256": "b75ab27ebcb619719a2b5c33c9e3b880f7d08a98fbc2f6a99282ded2f303b3fb",
+      "git_blob_sha1": "2334707a922810b4af02a452007f575a33877359",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-builder-independent-review-amendment-v72.json",
+      "bytes": 2371,
+      "sha256": "b323a1d93dd173854e36902e1d455d3ecd5ed5fbff490a80bc56c4102bbe7b6b",
+      "git_blob_sha1": "20b38b80f655b71810b28b7e5e29b957fcd46686",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-ci-v71.json",
+      "bytes": 1582,
+      "sha256": "4bf75f92741abb1715512d63bc883aaafaf24fc2213e97acf67c82f6a8bc5e49",
+      "git_blob_sha1": "56430daf278422f75b663222d5b30084a323e2be",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-final-independent-qa-v72.json",
+      "bytes": 6799,
+      "sha256": "14041dc9d662b75f2c2caa24e98bfd1826d445297e763f2ae2b0e329610251e8",
+      "git_blob_sha1": "73b8374f6c970d67dbc669e73222b861ebbf4a94",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v71.json",
+      "bytes": 1227,
+      "sha256": "fb96d316fde90b5c3cb00222530a42656fa7c9098f216ad262669507e24cc3b2",
+      "git_blob_sha1": "5c14768e1ba35d4d9121da5adcbbc99d77c62826",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-live-installation-v72.json",
+      "bytes": 4733,
+      "sha256": "6dc5e92d119cd3148949390e419c01a07557d0f2d4cf74584eaab1169dea31da",
+      "git_blob_sha1": "840bedb133963b4ac0d663a24a8a742515293e73",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-release-gates-v72.json",
+      "bytes": 35893,
+      "sha256": "9ac9811ea29dbbc2b3c93e4d45e51d9bb5d8a46910e556a356ef894c723aeb71",
+      "git_blob_sha1": "3f795ed10d3cb791e5dbbcf4a864509c19bed75a",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-installation-audit-v72.json",
+      "bytes": 839,
+      "sha256": "9da7fcbf459cbdf3ce5e90ae458d4d59379931c5e7fb9636ea859d69af668702",
+      "git_blob_sha1": "d74dfb95db28f7f44789410ba8adf4be054cf6af",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-repair-publication-v72.json",
+      "bytes": 2134,
+      "sha256": "15cf04c968e008f17b47c7bab589c03a9fe2a465218444beb3e3ff951ae9d644",
+      "git_blob_sha1": "ea065a98de629a7048d3d930c6e9de28546bdc84",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-owner-residual-recovery-lease-v72.json",
+      "bytes": 578,
+      "sha256": "a67f012b6f643d9f0c737ddbb53e2cd60e196610252a48e5f3876c175a7120ff",
+      "git_blob_sha1": "539b86c3306a4ebb7583df16e8cedcdc6e2597e3",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v71.json",
+      "bytes": 1275,
+      "sha256": "eb69089ebbffbb71bf39a46ed73896b3079cb462bfd82cc2e81671b462908386",
+      "git_blob_sha1": "5cfeae698d9e2e8fa89f7690243414521c46a3fd",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/build_contract_admission_reads_v71.py",
+      "bytes": 7595,
+      "sha256": "5f74665d065b3c585ca8bdb84e21369545f69923767aa7e11f3856ac5373798f",
+      "git_blob_sha1": "3e9eb2bbb89fc03ffc74e144e4c6818b76c28a75",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_read_derivation_v71.json",
+      "bytes": 1583,
+      "sha256": "66d196a4e08971e1765c9f8ec656f7c053b6473f32b165c405de46d87eb67bdb",
+      "git_blob_sha1": "dee2830ad2806f2e32a4127a9687e81c661e76eb",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_qualification_v71.json",
+      "bytes": 1026,
+      "sha256": "2eb3771fa39788dddf14183c7e1ff392f91efb45f9235fb492370fa463ac8834",
+      "git_blob_sha1": "e63fd5a87fa19c9ac361fb8bc42576439412d4c8",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_readonly_v71.sql",
+      "bytes": 10064,
+      "sha256": "192d2ced210709b5d6dbda33b42c3aaaaf10371b26b64f2212af4123748fbf13",
+      "git_blob_sha1": "c7be2a4918e57e100762c503971725e2383ba3c9",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_synthetic_result_v71.json",
+      "bytes": 9790,
+      "sha256": "a28268eea4826d93b839aa9401d55ba9842ff430b2293c26ce51b78a74513362",
+      "git_blob_sha1": "bb7eea9328a6098e668450691a7907d9761e7b1e",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/eligible_task_count_diagnostic_limits_1353.json",
+      "bytes": 604,
+      "sha256": "58e695044594315f08bf49618e28d40c9735b2557c16d7181d894081c2692ae1",
+      "git_blob_sha1": "7198a21ab3cb648cf4a6c0d7ad03925cd3aab1b5",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/independent_contract_admission_baseline_v71.json",
+      "bytes": 3974,
+      "sha256": "65ebace18031517a9642623ca000e095e430355a23a2bdc6d11060586ae5771a",
+      "git_blob_sha1": "73de1be81d6bc20e735ff56a6f2141c834872fa8",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/independent_contract_admission_baseline_v71.py",
+      "bytes": 10297,
+      "sha256": "c6a15c3219ffdff02114cd8b5c0910a09ef02418e8d7f1d037206e98c035e297",
+      "git_blob_sha1": "9572667b91e12267d0ba4710aa3ee178f8fa3dd0",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v71/qualify_contract_admission_reads_v71.py",
+      "bytes": 7008,
+      "sha256": "d14659fdad484fc8e9bee91a30338af8092b10fa4994027e89a2fba3cfe5805d",
+      "git_blob_sha1": "0418c2dfb950efdc0237fa7f0a83d8c0f0dcca24",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/breadth_hash_index_installation_readback_v72.json",
+      "bytes": 16858,
+      "sha256": "01d482ad06938c1a1728462d643f58804758aa702a00b996948be6ed9b63ddcf",
+      "git_blob_sha1": "3aa7f46d961cffdc6447a430995f5cc3df3864e4",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/build_checkpoint_publication_v72.py",
+      "bytes": 14639,
+      "sha256": "2945d19a7bdc0117a40addb97233ed62fec278f929d245fc5b465d9a9c68df64",
+      "git_blob_sha1": "dc1170973140f8dd6a07149a31e622a3268485ef",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/build_maintenance_index_postinstall_probe_v72.py",
+      "bytes": 8086,
+      "sha256": "418eb3bdd7313daabfe27a1a5a7e9b0f94739653f138b85d619b020a427804e7",
+      "git_blob_sha1": "bf754d85adaaa807edd3df6ba2a33dc04544bf8c",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/checkpoint_builder_reference_scan_initial_v72.json",
+      "bytes": 638,
+      "sha256": "c89bc30cd498b981ea6904d39ac752d548bea3af8a422892071238b4c7bdf14a",
+      "git_blob_sha1": "1a93e8de2c0f58ffd74e6c475d5d1b10986664a5",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/checkpoint_publication_inputs_v72.json",
+      "bytes": 1487,
+      "sha256": "8eee6646be28cd9b63473edf9516ac500e5b3bf5e8520040fa302b65a63e6b9d",
+      "git_blob_sha1": "91b9511c69a29c1bf006e22ffd26a3858b0509a8",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/checkpoint_publication_inventory_v72.json",
+      "bytes": 39128,
+      "sha256": "a9dfb7f8de849496e1c8bc0d0a5cf3f9360f8347e7292f401b830ee00b168005",
+      "git_blob_sha1": "f3efa0306c8dcc5231cd355ab408e469ae542f36",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/immediate_preinstall_reconciliation_v72.json",
+      "bytes": 17204,
+      "sha256": "dfe6906f73aa9702d27e47b22aed4e6034c1635a4c35fd0069cd5b7d016e4536",
+      "git_blob_sha1": "7929fd84a91fb02bcb84149b5d3e1efd61680746",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/initial_postinstall_runtime_observation_v72.json",
+      "bytes": 3359,
+      "sha256": "a7198f6d2d3aeff9fa21e1198e2fa8df4bd3b87057e703773814b12727f28002",
+      "git_blob_sha1": "c88febdbf123c9795855e63a645f8cb62d6ff950",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/installation_window_safe_rpc_and_deployment_v72.json",
+      "bytes": 2122,
+      "sha256": "f878a1b3f1758c1c864344f0ca2417beda9b7269cc2f43d5d254cea09c7f053c",
+      "git_blob_sha1": "994650d811856772c715960663f9e792d74a11bc",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/live_pending_readback_1409.json",
+      "bytes": 715,
+      "sha256": "17f15bbff7ed268f3269b5f7f2cc34543a54cdedebcf835ea7428a449a36ecf3",
+      "git_blob_sha1": "447b9fa45c270d8120dad11acefc37c4ec0f0144",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/live_postinstall_selector_profile_v72.json",
+      "bytes": 28861,
+      "sha256": "de0a587e60e29f748114e89ef61ce31625688876d1851dd4734862fde68f462c",
+      "git_blob_sha1": "44da86fa98c41d3d7f233e02d295dda736de5292",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/live_progress_owner_successor_1407.json",
+      "bytes": 4497,
+      "sha256": "20cbc3aa1223be1d286d6713fba2d800942b10f26b227896681d051c620ec5f9",
+      "git_blob_sha1": "8e509dacd5773cc00fedef769605613dc6b02653",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_combined_ci_initial_v72.json",
+      "bytes": 9246,
+      "sha256": "a9fcaa4050f9e56b64d0eb1fb5ffd479108b22b001e00fabc9f8fcee682df07a",
+      "git_blob_sha1": "d2344c11539706b273becec53695acfe7ed4931f",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_probe_qualification_v72.json",
+      "bytes": 1376,
+      "sha256": "5961a7b172ae6c62e9ef01b2039b531c84a6ffc22f29e7523978afed570100aa",
+      "git_blob_sha1": "3987c44f1b86b629ae11c370903664f52a5f8928",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_selector_derivation_v72.json",
+      "bytes": 2339,
+      "sha256": "21515cdd108da841155a58080c18a194c0cb3d9047dc28f346e275a36a9560d4",
+      "git_blob_sha1": "0410ff42378bea5bd05ba534341d526a1d711dc1",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_selectors_readonly_v72.sql",
+      "bytes": 7010,
+      "sha256": "59ab433babf8fcc30b9f09b9c4aafb9747685f852a9961c6e0c7c913be39e6e5",
+      "git_blob_sha1": "cd1f45bb8f3880643929b5fb5da3ae1c4b18a4c6",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_synthetic_result_v72.json",
+      "bytes": 23467,
+      "sha256": "c5348351ab68f61740e4532f4e6166b85046f59700389aea6c4259808f35453d",
+      "git_blob_sha1": "50e553deca67be83fb84c38197faf1aa58aab400",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_task_index_plan_qualification_v72.json",
+      "bytes": 928,
+      "sha256": "83a91b562cf6909166f4658dc0f14995d35cfabd5bd1e78b3da953a4d5603c3b",
+      "git_blob_sha1": "f54d68823f7a68c878b59091e3dd9f9c48d4beac",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/minute_hash_index_installation_readback_v72.json",
+      "bytes": 17768,
+      "sha256": "391e55ceb5fff346cc3e1894af0c847c433e3b31cf844424689e158ffe70c790",
+      "git_blob_sha1": "b5df0fc60eb78018f645dee7d5df82c131795344",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+      "bytes": 8984,
+      "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62",
+      "git_blob_sha1": "1327cb6f23193cb6fccef999f0228ef747b5b5b5",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_exact_index_history_inventory_v72.json",
+      "bytes": 6743,
+      "sha256": "b37764bcc597f9dee3e55bf528e3f6f12db4a07deb02fb1d4aa7d004fcfff42f",
+      "git_blob_sha1": "09767a644730847471e451eea3b339b7e299ee66",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_health_advisors_v72.json",
+      "bytes": 15501,
+      "sha256": "a2aa707614b8bbb625752bf7ec0e9ee39b41779ddcfd1c96ba4de3a294933d8d",
+      "git_blob_sha1": "ff31098b215826a7ef4976b99a53068572580f53",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_runtime_failures_1429.json",
+      "bytes": 8415,
+      "sha256": "48e24b7f65d05b2659fcb8552bf12a45510b725327dd4d0f9d4dd8b6293ca18e",
+      "git_blob_sha1": "636eb7bd4d7d89d14e85ca04167646d28fbb21fd",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_safe_rpc_errors_1430.json",
+      "bytes": 1898,
+      "sha256": "af8123192aadbd8a7f26b3b6a6c19ec6d88d134eed0730bcc68d335354c80772",
+      "git_blob_sha1": "c67a9d6ef78e5a63291d07861bbf55cf27cd8814",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_source_metadata_state_v72.json",
+      "bytes": 14760,
+      "sha256": "16e78915d1f1e9cd0a0da3e2cc55d4c456f6369c6d6141e183fb29cf256b3b48",
+      "git_blob_sha1": "f8c4d3c4d4a6ffe46634692efc38002274fc70e4",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/prepublication_reconciliation_v72.json",
+      "bytes": 3262,
+      "sha256": "80ee07d1c62ef0f3f26179f0329bb494927930af647f24ff8f6e85b6b3683a68",
+      "git_blob_sha1": "d90f46163741494552d7a308f8b5679a4c00d368",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_index_postinstall_probe_v72.py",
+      "bytes": 9749,
+      "sha256": "c1fcfe8c0997545f946be1d6c79115ece40b0e1c28a95ee3c8adb42ef49d28f4",
+      "git_blob_sha1": "3f7fb51713e42cdfbb3dbbf936db3ff8522f8a56",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/readback_maintenance_installation_v72.sql",
+      "bytes": 2224,
+      "sha256": "233b3cddb4585d782926eccf957c9050ba3e588565c254132cd3b5aada703353",
+      "git_blob_sha1": "6da0d89c2551d094af8182ad32b32a41a320304f",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v72/readback_transaction_race_installation_readback_v72.json",
+      "bytes": 18164,
+      "sha256": "d1c1febbea884bda3a0d3f809b49ec6b64c10b2533c93ce41927259b27269d81",
+      "git_blob_sha1": "3547a5acd679d426d9e6ef246ed7bf6522e0df23",
+      "base_state": "ADDITIVE"
+    }
+  ]
+}

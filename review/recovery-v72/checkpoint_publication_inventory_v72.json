@@ -1,0 +1,938 @@
+{
+  "schema": "astra.checkpoint-publication-inventory/1",
+  "created_at": "2026-10-30T15:01:02.175230+00:00",
+  "state": "FINAL_QA_BOUND",
+  "base_commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "base_tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "base_tree_entries": 872,
+  "truncated": false,
+  "permitted_replacements": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+  ],
+  "canonical_v71_archives": {
+    "docs/history/INGESTION_COMPLETION_STATE_v71.md": "02b60feb1010d293e7bf608a4127927c933837ebb76c725d92570d97d2dd5026",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v71.md": "b75ab27ebcb619719a2b5c33c9e3b880f7d08a98fbc2f6a99282ded2f303b3fb"
+  },
+  "new_candidate_files": [
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v71.md",
+      "bytes": 21491,
+      "sha256": "02b60feb1010d293e7bf608a4127927c933837ebb76c725d92570d97d2dd5026",
+      "git_blob_sha1": "bc6eb2bf302b0934342494d8e35ea841d2463081"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v71.md",
+      "bytes": 42266,
+      "sha256": "b75ab27ebcb619719a2b5c33c9e3b880f7d08a98fbc2f6a99282ded2f303b3fb",
+      "git_blob_sha1": "2334707a922810b4af02a452007f575a33877359"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-builder-independent-review-amendment-v72.json",
+      "bytes": 2371,
+      "sha256": "b323a1d93dd173854e36902e1d455d3ecd5ed5fbff490a80bc56c4102bbe7b6b",
+      "git_blob_sha1": "20b38b80f655b71810b28b7e5e29b957fcd46686"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-ci-v71.json",
+      "bytes": 1582,
+      "sha256": "4bf75f92741abb1715512d63bc883aaafaf24fc2213e97acf67c82f6a8bc5e49",
+      "git_blob_sha1": "56430daf278422f75b663222d5b30084a323e2be"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-final-independent-qa-v72.json",
+      "bytes": 6799,
+      "sha256": "14041dc9d662b75f2c2caa24e98bfd1826d445297e763f2ae2b0e329610251e8",
+      "git_blob_sha1": "73b8374f6c970d67dbc669e73222b861ebbf4a94"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v71.json",
+      "bytes": 1227,
+      "sha256": "fb96d316fde90b5c3cb00222530a42656fa7c9098f216ad262669507e24cc3b2",
+      "git_blob_sha1": "5c14768e1ba35d4d9121da5adcbbc99d77c62826"
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-live-installation-v72.json",
+      "bytes": 4733,
+      "sha256": "6dc5e92d119cd3148949390e419c01a07557d0f2d4cf74584eaab1169dea31da",
+      "git_blob_sha1": "840bedb133963b4ac0d663a24a8a742515293e73"
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-release-gates-v72.json",
+      "bytes": 35893,
+      "sha256": "9ac9811ea29dbbc2b3c93e4d45e51d9bb5d8a46910e556a356ef894c723aeb71",
+      "git_blob_sha1": "3f795ed10d3cb791e5dbbcf4a864509c19bed75a"
+    },
+    {
+      "path": "evidence/replacement-maintenance-installation-audit-v72.json",
+      "bytes": 839,
+      "sha256": "9da7fcbf459cbdf3ce5e90ae458d4d59379931c5e7fb9636ea859d69af668702",
+      "git_blob_sha1": "d74dfb95db28f7f44789410ba8adf4be054cf6af"
+    },
+    {
+      "path": "evidence/replacement-maintenance-repair-publication-v72.json",
+      "bytes": 2134,
+      "sha256": "15cf04c968e008f17b47c7bab589c03a9fe2a465218444beb3e3ff951ae9d644",
+      "git_blob_sha1": "ea065a98de629a7048d3d930c6e9de28546bdc84"
+    },
+    {
+      "path": "evidence/replacement-owner-residual-recovery-lease-v72.json",
+      "bytes": 578,
+      "sha256": "a67f012b6f643d9f0c737ddbb53e2cd60e196610252a48e5f3876c175a7120ff",
+      "git_blob_sha1": "539b86c3306a4ebb7583df16e8cedcdc6e2597e3"
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v71.json",
+      "bytes": 1275,
+      "sha256": "eb69089ebbffbb71bf39a46ed73896b3079cb462bfd82cc2e81671b462908386",
+      "git_blob_sha1": "5cfeae698d9e2e8fa89f7690243414521c46a3fd"
+    },
+    {
+      "path": "review/recovery-v71/build_contract_admission_reads_v71.py",
+      "bytes": 7595,
+      "sha256": "5f74665d065b3c585ca8bdb84e21369545f69923767aa7e11f3856ac5373798f",
+      "git_blob_sha1": "3e9eb2bbb89fc03ffc74e144e4c6818b76c28a75"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_read_derivation_v71.json",
+      "bytes": 1583,
+      "sha256": "66d196a4e08971e1765c9f8ec656f7c053b6473f32b165c405de46d87eb67bdb",
+      "git_blob_sha1": "dee2830ad2806f2e32a4127a9687e81c661e76eb"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_qualification_v71.json",
+      "bytes": 1026,
+      "sha256": "2eb3771fa39788dddf14183c7e1ff392f91efb45f9235fb492370fa463ac8834",
+      "git_blob_sha1": "e63fd5a87fa19c9ac361fb8bc42576439412d4c8"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_readonly_v71.sql",
+      "bytes": 10064,
+      "sha256": "192d2ced210709b5d6dbda33b42c3aaaaf10371b26b64f2212af4123748fbf13",
+      "git_blob_sha1": "c7be2a4918e57e100762c503971725e2383ba3c9"
+    },
+    {
+      "path": "review/recovery-v71/contract_admission_reads_synthetic_result_v71.json",
+      "bytes": 9790,
+      "sha256": "a28268eea4826d93b839aa9401d55ba9842ff430b2293c26ce51b78a74513362",
+      "git_blob_sha1": "bb7eea9328a6098e668450691a7907d9761e7b1e"
+    },
+    {
+      "path": "review/recovery-v71/eligible_task_count_diagnostic_limits_1353.json",
+      "bytes": 604,
+      "sha256": "58e695044594315f08bf49618e28d40c9735b2557c16d7181d894081c2692ae1",
+      "git_blob_sha1": "7198a21ab3cb648cf4a6c0d7ad03925cd3aab1b5"
+    },
+    {
+      "path": "review/recovery-v71/independent_contract_admission_baseline_v71.json",
+      "bytes": 3974,
+      "sha256": "65ebace18031517a9642623ca000e095e430355a23a2bdc6d11060586ae5771a",
+      "git_blob_sha1": "73de1be81d6bc20e735ff56a6f2141c834872fa8"
+    },
+    {
+      "path": "review/recovery-v71/independent_contract_admission_baseline_v71.py",
+      "bytes": 10297,
+      "sha256": "c6a15c3219ffdff02114cd8b5c0910a09ef02418e8d7f1d037206e98c035e297",
+      "git_blob_sha1": "9572667b91e12267d0ba4710aa3ee178f8fa3dd0"
+    },
+    {
+      "path": "review/recovery-v71/qualify_contract_admission_reads_v71.py",
+      "bytes": 7008,
+      "sha256": "d14659fdad484fc8e9bee91a30338af8092b10fa4994027e89a2fba3cfe5805d",
+      "git_blob_sha1": "0418c2dfb950efdc0237fa7f0a83d8c0f0dcca24"
+    },
+    {
+      "path": "review/recovery-v72/breadth_hash_index_installation_readback_v72.json",
+      "bytes": 16858,
+      "sha256": "01d482ad06938c1a1728462d643f58804758aa702a00b996948be6ed9b63ddcf",
+      "git_blob_sha1": "3aa7f46d961cffdc6447a430995f5cc3df3864e4"
+    },
+    {
+      "path": "review/recovery-v72/build_checkpoint_publication_v72.py",
+      "bytes": 14639,
+      "sha256": "2945d19a7bdc0117a40addb97233ed62fec278f929d245fc5b465d9a9c68df64",
+      "git_blob_sha1": "dc1170973140f8dd6a07149a31e622a3268485ef"
+    },
+    {
+      "path": "review/recovery-v72/build_maintenance_index_postinstall_probe_v72.py",
+      "bytes": 8086,
+      "sha256": "418eb3bdd7313daabfe27a1a5a7e9b0f94739653f138b85d619b020a427804e7",
+      "git_blob_sha1": "bf754d85adaaa807edd3df6ba2a33dc04544bf8c"
+    },
+    {
+      "path": "review/recovery-v72/checkpoint_builder_reference_scan_initial_v72.json",
+      "bytes": 638,
+      "sha256": "c89bc30cd498b981ea6904d39ac752d548bea3af8a422892071238b4c7bdf14a",
+      "git_blob_sha1": "1a93e8de2c0f58ffd74e6c475d5d1b10986664a5"
+    },
+    {
+      "path": "review/recovery-v72/checkpoint_publication_inputs_v72.json",
+      "bytes": 1487,
+      "sha256": "8eee6646be28cd9b63473edf9516ac500e5b3bf5e8520040fa302b65a63e6b9d",
+      "git_blob_sha1": "91b9511c69a29c1bf006e22ffd26a3858b0509a8"
+    },
+    {
+      "path": "review/recovery-v72/immediate_preinstall_reconciliation_v72.json",
+      "bytes": 17204,
+      "sha256": "dfe6906f73aa9702d27e47b22aed4e6034c1635a4c35fd0069cd5b7d016e4536",
+      "git_blob_sha1": "7929fd84a91fb02bcb84149b5d3e1efd61680746"
+    },
+    {
+      "path": "review/recovery-v72/initial_postinstall_runtime_observation_v72.json",
+      "bytes": 3359,
+      "sha256": "a7198f6d2d3aeff9fa21e1198e2fa8df4bd3b87057e703773814b12727f28002",
+      "git_blob_sha1": "c88febdbf123c9795855e63a645f8cb62d6ff950"
+    },
+    {
+      "path": "review/recovery-v72/installation_window_safe_rpc_and_deployment_v72.json",
+      "bytes": 2122,
+      "sha256": "f878a1b3f1758c1c864344f0ca2417beda9b7269cc2f43d5d254cea09c7f053c",
+      "git_blob_sha1": "994650d811856772c715960663f9e792d74a11bc"
+    },
+    {
+      "path": "review/recovery-v72/live_pending_readback_1409.json",
+      "bytes": 715,
+      "sha256": "17f15bbff7ed268f3269b5f7f2cc34543a54cdedebcf835ea7428a449a36ecf3",
+      "git_blob_sha1": "447b9fa45c270d8120dad11acefc37c4ec0f0144"
+    },
+    {
+      "path": "review/recovery-v72/live_postinstall_selector_profile_v72.json",
+      "bytes": 28861,
+      "sha256": "de0a587e60e29f748114e89ef61ce31625688876d1851dd4734862fde68f462c",
+      "git_blob_sha1": "44da86fa98c41d3d7f233e02d295dda736de5292"
+    },
+    {
+      "path": "review/recovery-v72/live_progress_owner_successor_1407.json",
+      "bytes": 4497,
+      "sha256": "20cbc3aa1223be1d286d6713fba2d800942b10f26b227896681d051c620ec5f9",
+      "git_blob_sha1": "8e509dacd5773cc00fedef769605613dc6b02653"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_combined_ci_initial_v72.json",
+      "bytes": 9246,
+      "sha256": "a9fcaa4050f9e56b64d0eb1fb5ffd479108b22b001e00fabc9f8fcee682df07a",
+      "git_blob_sha1": "d2344c11539706b273becec53695acfe7ed4931f"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_probe_qualification_v72.json",
+      "bytes": 1376,
+      "sha256": "5961a7b172ae6c62e9ef01b2039b531c84a6ffc22f29e7523978afed570100aa",
+      "git_blob_sha1": "3987c44f1b86b629ae11c370903664f52a5f8928"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_selector_derivation_v72.json",
+      "bytes": 2339,
+      "sha256": "21515cdd108da841155a58080c18a194c0cb3d9047dc28f346e275a36a9560d4",
+      "git_blob_sha1": "0410ff42378bea5bd05ba534341d526a1d711dc1"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_selectors_readonly_v72.sql",
+      "bytes": 7010,
+      "sha256": "59ab433babf8fcc30b9f09b9c4aafb9747685f852a9961c6e0c7c913be39e6e5",
+      "git_blob_sha1": "cd1f45bb8f3880643929b5fb5da3ae1c4b18a4c6"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_postinstall_synthetic_result_v72.json",
+      "bytes": 23467,
+      "sha256": "c5348351ab68f61740e4532f4e6166b85046f59700389aea6c4259808f35453d",
+      "git_blob_sha1": "50e553deca67be83fb84c38197faf1aa58aab400"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_task_index_plan_qualification_v72.json",
+      "bytes": 928,
+      "sha256": "83a91b562cf6909166f4658dc0f14995d35cfabd5bd1e78b3da953a4d5603c3b",
+      "git_blob_sha1": "f54d68823f7a68c878b59091e3dd9f9c48d4beac"
+    },
+    {
+      "path": "review/recovery-v72/minute_hash_index_installation_readback_v72.json",
+      "bytes": 17768,
+      "sha256": "391e55ceb5fff346cc3e1894af0c847c433e3b31cf844424689e158ffe70c790",
+      "git_blob_sha1": "b5df0fc60eb78018f645dee7d5df82c131795344"
+    },
+    {
+      "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+      "bytes": 8984,
+      "sha256": "a4b4ec8726f18275c0fd5cc31308fce5f761b6ea500cf80622f97f09b4314d62",
+      "git_blob_sha1": "1327cb6f23193cb6fccef999f0228ef747b5b5b5"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_exact_index_history_inventory_v72.json",
+      "bytes": 6743,
+      "sha256": "b37764bcc597f9dee3e55bf528e3f6f12db4a07deb02fb1d4aa7d004fcfff42f",
+      "git_blob_sha1": "09767a644730847471e451eea3b339b7e299ee66"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_health_advisors_v72.json",
+      "bytes": 15501,
+      "sha256": "a2aa707614b8bbb625752bf7ec0e9ee39b41779ddcfd1c96ba4de3a294933d8d",
+      "git_blob_sha1": "ff31098b215826a7ef4976b99a53068572580f53"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_runtime_failures_1429.json",
+      "bytes": 8415,
+      "sha256": "48e24b7f65d05b2659fcb8552bf12a45510b725327dd4d0f9d4dd8b6293ca18e",
+      "git_blob_sha1": "636eb7bd4d7d89d14e85ca04167646d28fbb21fd"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_safe_rpc_errors_1430.json",
+      "bytes": 1898,
+      "sha256": "af8123192aadbd8a7f26b3b6a6c19ec6d88d134eed0730bcc68d335354c80772",
+      "git_blob_sha1": "c67a9d6ef78e5a63291d07861bbf55cf27cd8814"
+    },
+    {
+      "path": "review/recovery-v72/preinstall_source_metadata_state_v72.json",
+      "bytes": 14760,
+      "sha256": "16e78915d1f1e9cd0a0da3e2cc55d4c456f6369c6d6141e183fb29cf256b3b48",
+      "git_blob_sha1": "f8c4d3c4d4a6ffe46634692efc38002274fc70e4"
+    },
+    {
+      "path": "review/recovery-v72/prepublication_reconciliation_v72.json",
+      "bytes": 3262,
+      "sha256": "80ee07d1c62ef0f3f26179f0329bb494927930af647f24ff8f6e85b6b3683a68",
+      "git_blob_sha1": "d90f46163741494552d7a308f8b5679a4c00d368"
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_index_postinstall_probe_v72.py",
+      "bytes": 9749,
+      "sha256": "c1fcfe8c0997545f946be1d6c79115ece40b0e1c28a95ee3c8adb42ef49d28f4",
+      "git_blob_sha1": "3f7fb51713e42cdfbb3dbbf936db3ff8522f8a56"
+    },
+    {
+      "path": "review/recovery-v72/readback_maintenance_installation_v72.sql",
+      "bytes": 2224,
+      "sha256": "233b3cddb4585d782926eccf957c9050ba3e588565c254132cd3b5aada703353",
+      "git_blob_sha1": "6da0d89c2551d094af8182ad32b32a41a320304f"
+    },
+    {
+      "path": "review/recovery-v72/readback_transaction_race_installation_readback_v72.json",
+      "bytes": 18164,
+      "sha256": "d1c1febbea884bda3a0d3f809b49ec6b64c10b2533c93ce41927259b27269d81",
+      "git_blob_sha1": "3547a5acd679d426d9e6ef246ed7bf6522e0df23"
+    }
+  ],
+  "existing_references_preserved": [
+    {
+      "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+      "base_git_blob_sha1": "f17b2114483f2f503e2bc104660894ba1ec5e66d",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v70.md",
+      "base_git_blob_sha1": "2567d7b4be55f33b83b0eb3970b48e0e68563dec",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v70.md",
+      "base_git_blob_sha1": "81bc3067b2e4e8da8e141602703061ede36e40a4",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-3ee4-release-gates-v71.json",
+      "base_git_blob_sha1": "bb5efd63c772c7e3c901bd68f7e36b16ccfa9bb3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-approved-relay-live-acquisition-v71.json",
+      "base_git_blob_sha1": "66b8681df54ffe861f0ef2ffc9caf672634bbf9b",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-approved-relay-worker-deployment-v71.json",
+      "base_git_blob_sha1": "0347475e79e8a928c202a43b6e4222e9e0b6edd9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-independent-review-v71.json",
+      "base_git_blob_sha1": "d65169dc9bc55f7e169424e19c4a81c370417895",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-live-installation-v71.json",
+      "base_git_blob_sha1": "bda0fb3f52d0f9805417f24a987164c06ef9adf9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-qualification-v71.json",
+      "base_git_blob_sha1": "d932ebb3d7ecf95ae4cad09f7435c53b3098d975",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-release-gates-v71.json",
+      "base_git_blob_sha1": "5d5d21e5d923f3655ad2e2a851dc0fa798850ed5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-existing-successor-readback-v71.json",
+      "base_git_blob_sha1": "86e6f629a4c996adf237ac5e62ad9f348ea9ad97",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-publication-manifest-v72.json",
+      "base_git_blob_sha1": "3ac852bef7fe2b24dcbfe15181852f45e1b9d358",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-task-hash-index-independent-review-v72.json",
+      "base_git_blob_sha1": "1693c7b84ed4ad8aaede534c7c720bbd6bbc242c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-task-hash-index-qualification-v72.json",
+      "base_git_blob_sha1": "9eeb8931f5bd962a1dffeb892a4abde3c208e8dd",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-managed-relay-approval-installation-receipt-v3.json",
+      "base_git_blob_sha1": "ece3e4bd6dbfe50039dea9d27c3e5e9e17b2e115",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-managed-relay-production-security-proof-v3.json",
+      "base_git_blob_sha1": "1aaa323fe28fc1759913d18bb75b13d413b0904c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-owner-lease-continuation-v72.json",
+      "base_git_blob_sha1": "55e33cabc5e18cc7dfe8a499ea7b2cd52b018278",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-readback-transaction-race-independent-review-v72.json",
+      "base_git_blob_sha1": "a71f97559ddc9a78eb6db70caf006774c52df6e3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/capture_gate_lock_contention_readonly_v71.sql",
+      "base_git_blob_sha1": "0a74846a1a2a0354528f6bda2ebb2f8ecb821182",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/gate_lock_capture_qualification_v71.json",
+      "base_git_blob_sha1": "001f832fd38e087736663cc9dba24a3689beb2e8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_advisory_lock_snapshot_1318.json",
+      "base_git_blob_sha1": "a937f9f202dee1085c60a02783199412417809fc",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_backfill_maintain_1332.json",
+      "base_git_blob_sha1": "c6536aeef59bfe7142892dbcad8152ebac4a6dfe",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_committed_progress_1329.json",
+      "base_git_blob_sha1": "7ef82d4a1d83d355b45406e2adeefe503bd6934a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_committed_progress_1346.json",
+      "base_git_blob_sha1": "8d678a397e23d4d27f0eefdd30c6b5b6a12963ea",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_contract_admission_reads_1349.json",
+      "base_git_blob_sha1": "6d0de4a4777f4ede6485eb3e4e2d47bd331231ea",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_contract_date_stamp_helpers_1346.json",
+      "base_git_blob_sha1": "b043c77d8056f1b6dd5016a91225fe1a96c6fda8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_contract_seed_state_helpers_1344.json",
+      "base_git_blob_sha1": "1937c640cb1225ed378e0b413d64f8b24edba8dd",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_cron_functions_1331.json",
+      "base_git_blob_sha1": "d85eba119466102a6f9f4a6759c217ad312309e9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_full18_d03_current_custom_result.json",
+      "base_git_blob_sha1": "e444daf13db3ec1d65a13d9943f90d30bde1dcf2",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_ingestion_cron_run_pid_proof_1331.json",
+      "base_git_blob_sha1": "8f600ebba57851e9a59dbb6a75607f6319575f77",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_candidate_metadata_1342.json",
+      "base_git_blob_sha1": "eaafc2867c0d65cb19b49730a0ccc1ae1c305434",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_helpers_1335.json",
+      "base_git_blob_sha1": "3f5d4d77cded8c85e4b1f3013310e088c654552d",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_page_seed_helpers_1339.json",
+      "base_git_blob_sha1": "d12cd0c22d9302b4dbbbba5e00093bef3fa74707",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_selector_profile_1341.json",
+      "base_git_blob_sha1": "e0148f2d171954a6a350a8c2e3756cc121579e97",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_monitor_second_holder_correlation_1326.json",
+      "base_git_blob_sha1": "21957327358b24b163ce6d13cdabc0b3abd081bf",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_postrepair_sql_errors_1317.json",
+      "base_git_blob_sha1": "afac3fa826f07c5bd6e9557493137f9f1bfcd182",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_relay_n02_date_reconciliation_1308.json",
+      "base_git_blob_sha1": "c0df6c218bb7930666448ea18ee22d2a8e9158a8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_relay_target_support_readback_1308.json",
+      "base_git_blob_sha1": "e46077c1276d53030a237301a4170e0f8bc113f8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selectors_readonly_v71.sql",
+      "base_git_blob_sha1": "6b012ea319676a2c5a20ba05778d50a42c1fcb14",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/audit_maintenance_index_dependencies_v72.py",
+      "base_git_blob_sha1": "11298c10fd88c9206074566890b8e09c7c5e0d8a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/audit_readback_race_dependencies_v72.py",
+      "base_git_blob_sha1": "4bf180d071e46aa39376308ad0a69fac2d281432",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/build_maintenance_index_forwards_v72.py",
+      "base_git_blob_sha1": "bbbb95657e27cbc3ab79b2d5e52d7bab5ec4d1f5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/build_maintenance_index_qualification_v72.py",
+      "base_git_blob_sha1": "89ae81bd6a5616be2d07045606e6e70502feca8e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/build_maintenance_publication_packet_v72.py",
+      "base_git_blob_sha1": "3c63557021479c6574ce9d1dcf6decc47eb3da26",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/exact_readback_transaction_reconciliation_committed_v72.json",
+      "base_git_blob_sha1": "e9d1f34a936698a4f08c08699b8d39edc27ed9cf",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/exact_readback_transaction_reconciliation_result_v72.json",
+      "base_git_blob_sha1": "36f80e6bb2b376170cfbdb78816a7ab0d154ae88",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/live_database_size_version_1404.json",
+      "base_git_blob_sha1": "e90f8cb478c4f3f23f3274f32365fcb42c48ae18",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/live_task_visibility_stats_1359.json",
+      "base_git_blob_sha1": "7d0ab18c86d5fc66b667015760b2c4c6cd1830fd",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_combined_publication_dependencies_v72.json",
+      "base_git_blob_sha1": "69ccde5589617d464598add5a637f4bc33d76f95",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_hash_collision_focused_qualification_v72.json",
+      "base_git_blob_sha1": "1303ea9232bf949009e45b8b87aa3df88fd73ec0",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_hash_positive_generic_qualification_v72.json",
+      "base_git_blob_sha1": "77ccd55d37da66b83e2e286c02f424f7f9fd6226",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_active_initial_qualification_v72.json",
+      "base_git_blob_sha1": "f462c83c7cefa6e293d586687fac60957446b1e8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_active_qualification_v72.json",
+      "base_git_blob_sha1": "33c8c6a12e85dafa23e94188b722911c5bec2517",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_forward_derivation_v72.json",
+      "base_git_blob_sha1": "006f037e871c10c725df6db8ad3c5a05acc1efab",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_independent_test_result_v72.json",
+      "base_git_blob_sha1": "e9d9458ca3a2d8d9ec8cd9e8a774eb25f852e118",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_staged_source_v72.json",
+      "base_git_blob_sha1": "043e887c71c7eafdd380fa4fd4d8e7be3346d988",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_publication_review_pins_v72.json",
+      "base_git_blob_sha1": "7d9bdd8504b46e0037d488cc39dbe885543e09a8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_readback_active_initial_qualification_v72.json",
+      "base_git_blob_sha1": "6291cf17273d9519fbea75ce5385fa1a920937da",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_readback_active_qualification_v72.json",
+      "base_git_blob_sha1": "10c9b7d07d87f3ba34491770abd17245ecef4244",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_task_btree_initial_qualification_v72.json",
+      "base_git_blob_sha1": "84343226b3cea4f5e4b1ac0f6d75a92463a2e75c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_task_hash_collision_initial_qualification_v72.json",
+      "base_git_blob_sha1": "f54d68823f7a68c878b59091e3dd9f9c48d4beac",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/maintenance_task_hash_sensitivity_qualification_v72.json",
+      "base_git_blob_sha1": "10ce68998d4f662d0732b98d35068a486f3c5240",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_hash_collision_focused_v72.py",
+      "base_git_blob_sha1": "243f0b5658fb49d01c8fde598f02fc5b8b2e9d1c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_hash_positive_generic_focused_v72.py",
+      "base_git_blob_sha1": "977b136a3982b9b0bf4a47d20892dd364295f95e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_index_independently_v72.py",
+      "base_git_blob_sha1": "f2cb81d981080960c7ae4bba83a9ae8fcc447252",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_task_btree_initial_v72.py",
+      "base_git_blob_sha1": "348204767052e3d225ba2014d69b34bd42a5cd5e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_task_hash_sensitivity_v72.py",
+      "base_git_blob_sha1": "90b0949b541454c44c0168db73107e5e928873c8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/qualify_maintenance_task_indexes_v72.py",
+      "base_git_blob_sha1": "c65062441ce9fe74a83ddc7d71f4e25156f8d2b5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_hardened_initial_v72.json",
+      "base_git_blob_sha1": "a458be53e05aa0cbf93bda5cd7e1011ad37c0d7f",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_initial_v72.json",
+      "base_git_blob_sha1": "f35ecc3cd51490e3415d023236df2d57807e8c38",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_v72.json",
+      "base_git_blob_sha1": "0873bd2d1d7bdf63824bd763ecd69d362b081651",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/baseline_maintain_v2.sql",
+      "base_git_blob_sha1": "268f068d97bc0e3319b9176b8b404dc0b6c91546",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/build_readback_transaction_race_v72.py",
+      "base_git_blob_sha1": "7397269d9b9620b673cfad0221acead10a7c9293",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql",
+      "base_git_blob_sha1": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/ci_admission_qualification_v72.json",
+      "base_git_blob_sha1": "d386f8ee15f6f1b72fa28c3a20cdb40d1c9b20e0",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/derivation_initial_v72.json",
+      "base_git_blob_sha1": "dccb03db58c9f8fb058e0d18a93712e89e730955",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/derivation_v72.json",
+      "base_git_blob_sha1": "424cf5dd8ab15aac61d54bcd7c996b975215241a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/forward_readback_transaction_race_v72.sql",
+      "base_git_blob_sha1": "f249b7d2bf17fd05939576c5db6e25cbf7fcc55e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/forward_readback_transaction_race_v72_initial.sql",
+      "base_git_blob_sha1": "10260cd72ebfc43d68b5d38efc50f2be23c71a18",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/prepare_active_paths_v72.py",
+      "base_git_blob_sha1": "6f0822e029c02d1409bd99bdee17ca1f0ab416c6",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_attempt_1.json",
+      "base_git_blob_sha1": "a3b1c20e07bede495f41567e588529de9451e59b",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_attempt_2.json",
+      "base_git_blob_sha1": "9319795160a0045db4442c2e1f6b53a9a8f966fe",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_v72.json",
+      "base_git_blob_sha1": "9319795160a0045db4442c2e1f6b53a9a8f966fe",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualify_ci_admission_v72.py",
+      "base_git_blob_sha1": "8ac665e82c0e5e13b5f177797f5f719f716b5e1a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualify_readback_transaction_race_v72.py",
+      "base_git_blob_sha1": "bb54e0c5f457ae93e847c2d1661cf92342729b50",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/readback_transaction_race_v72.diff",
+      "base_git_blob_sha1": "35b8db55ba67ebac361a8fe41f2e2f70610b0652",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/unchanged_recheck_page_v2.sql",
+      "base_git_blob_sha1": "2499744a5da670d034d1ce495dee8c294a25ee21",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback_transaction_race_actual_reason_1410.json",
+      "base_git_blob_sha1": "08f34eeedb0c75c91f8b4b081edaf6cfe5b912e1",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/reconcile_exact_readback_transaction_race_v72.sql",
+      "base_git_blob_sha1": "e800b725f2a0644ad09592f2449060a02cc88c6b",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/stage_maintenance_index_v72.py",
+      "base_git_blob_sha1": "e6995aaea89275705934b10c9efa167341424b84",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "base_git_blob_sha1": "dc420ad040e49ddb7108f4955b166e765c653b32",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "base_git_blob_sha1": "df67b7ad5a435b10892bad2cda87aedc4a24139f",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "base_git_blob_sha1": "f249b7d2bf17fd05939576c5db6e25cbf7fcc55e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_task_indexes_v2.py",
+      "base_git_blob_sha1": "5c1fcb2d27abc15de3cd1bf7be2fee69b5f7b919",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_readback_transaction_race_v2.py",
+      "base_git_blob_sha1": "40c89b78550d48c693a334847230dd6235462a76",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    }
+  ],
+  "existing_local_drift_excluded": [
+    {
+      "path": "evidence/replacement-controlled-restart-proof.json",
+      "base_git_blob_sha1": "8ecc09aff081da9534d4e7989d65fe0ac8541e92",
+      "local_git_blob_sha1": "13463952029e31496b3fd25e9015d91563a703d3",
+      "published": false
+    },
+    {
+      "path": "evidence/replacement-live-progress-v65.json",
+      "base_git_blob_sha1": "fff26891e6ed79a0049736ff2cb19de1d691f4b1",
+      "local_git_blob_sha1": "2b9c2b53b0ba21e07a38e06195224d118fe7c680",
+      "published": false
+    }
+  ],
+  "unavailable_references": [],
+  "excluded_references": [
+    "review/../outside.json",
+    "review/./file.json",
+    "review//file.json",
+    "review/recovery-v72/checkpoint-draft/INGESTION_COMPLETION_STATE_v72.draft.md",
+    "review/recovery-v72/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.draft.md",
+    "review/recovery-v72/checkpoint-draft/checkpoint_draft_manifest_v72.json"
+  ],
+  "excluded_classes": [
+    "Nine stale local runtime/foundation differences",
+    "active SQL/test changes",
+    "timing contingency and prototypes",
+    "__pycache__ and pyc",
+    "unapproved checkpoint drafts"
+  ],
+  "required_final_inputs": {
+    "state": "ROOT_FINAL_DRAFT_QA_PASSED",
+    "qa_receipt": {
+      "path": "<actual passed QA JSON>",
+      "sha256": "<actual hash>"
+    },
+    "approved_documents": {
+      "docs/INGESTION_COMPLETION_STATE.md": {
+        "path": "<root-approved final draft path>",
+        "sha256": "<actual final draft hash>"
+      },
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+        "path": "<root-approved final draft path>",
+        "sha256": "<actual final draft hash>"
+      }
+    },
+    "progress_receipt": {
+      "path": "<actual final progress receipt>",
+      "sha256": "<actual hash>"
+    }
+  },
+  "remote_or_production_calls": 0,
+  "canonical_local_files_written": false
+}

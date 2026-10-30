@@ -1,0 +1,16 @@
+{
+  "initial_nonexecuted_syntax_error": {
+    "sqlstate": "42601",
+    "cause": "LIMIT20 token typo; corrected to LIMIT 20 before one retry",
+    "data_mutations": false
+  },
+  "bounded_count_query_attempt": {
+    "sqlstate": "57014",
+    "statement_timeout_seconds": 8,
+    "completed": false,
+    "exact_minute_eligible_count_established": false,
+    "component_timing_attribution": false,
+    "data_mutations": false,
+    "next_action": "Do not repeat or raise the count-query budget. Use observed grouped task counts as upper bounds and retained actual selector plans for local qualification."
+  }
+}

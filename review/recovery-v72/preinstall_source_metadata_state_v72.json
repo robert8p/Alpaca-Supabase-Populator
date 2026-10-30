@@ -1,0 +1,435 @@
+[
+  {
+    "observed_at": "2026-10-30 14:35:47.118427+00",
+    "run": {
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T15:00:00Z",
+      "source_bytes": 525105818,
+      "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+      "pages_committed": 5292,
+      "records_committed": 639539,
+      "requests_reserved": 2760
+    },
+    "indexes": [
+      {
+        "acl": null,
+        "oid": "16061384",
+        "live": true,
+        "name": "backfill_contract_enum_task_v2",
+        "bytes": 851968,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_contract_enum_task_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, id) WHERE (kind = 'alpaca_option_contracts'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16061383",
+        "live": true,
+        "name": "backfill_contract_old_child_cursor_v2",
+        "bytes": 352256,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_contract_old_child_cursor_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, created_at, id) WHERE (kind = 'alpaca_option_bars'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16041706",
+        "live": true,
+        "name": "backfill_daily_month_units_v2",
+        "bytes": 3383296,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_daily_month_units_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'source_month'::text)), ((scope #>> '{member_ids,0}'::text[])), status) WHERE (family = 'D03'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16047681",
+        "live": true,
+        "name": "backfill_identity_derived_member_v2",
+        "bytes": 131883008,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_identity_derived_member_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope #>> '{member_ids,0}'::text[])), id) WHERE ((kind = ANY (ARRAY['derive_daily'::text, 'derive_intraday'::text])) AND (NOT (scope ? 'identity_refresh_of'::text)))"
+      },
+      {
+        "acl": null,
+        "oid": "16047696",
+        "live": true,
+        "name": "backfill_identity_refresh_tasks_v2",
+        "bytes": 8192,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_identity_refresh_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status) WHERE (scope ? 'identity_refresh_of'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16041024",
+        "live": true,
+        "name": "backfill_reuse_children_v2",
+        "bytes": 32768,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_reuse_children_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'reuse_parent'::text))) WHERE (scope ? 'reuse_parent'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16050045",
+        "live": true,
+        "name": "backfill_shared_action_tasks_v2",
+        "bytes": 491520,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_shared_action_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, id) WHERE (kind = 'alpaca_actions'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16043346",
+        "live": true,
+        "name": "backfill_tasks_family_turn_v2",
+        "bytes": 240771072,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_family_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text]))"
+      },
+      {
+        "acl": null,
+        "oid": "16040159",
+        "live": true,
+        "name": "backfill_tasks_family_v2",
+        "bytes": 6905856,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_family_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, status)"
+      },
+      {
+        "acl": null,
+        "oid": "16272445",
+        "live": true,
+        "name": "backfill_tasks_minute_alias_status_v2",
+        "bytes": 2547712,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_minute_alias_status_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, next_retry_at) WHERE ((family = 'P01'::text) AND (kind = ANY (ARRAY['alpaca_stock_bars'::text, 'retained_reuse'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+      },
+      {
+        "acl": null,
+        "oid": "16040160",
+        "live": true,
+        "name": "backfill_tasks_provider_v2",
+        "bytes": 7110656,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_provider_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, provider, status, kind)"
+      },
+      {
+        "acl": null,
+        "oid": "16043695",
+        "live": true,
+        "name": "backfill_tasks_recovery_turn_v2",
+        "bytes": 16384,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_recovery_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['RETRY_WAIT'::text, 'RUNNING'::text]))"
+      },
+      {
+        "acl": null,
+        "oid": "16040158",
+        "live": true,
+        "name": "backfill_tasks_runnable_v2",
+        "bytes": 244547584,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_runnable_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, priority, next_retry_at, id)"
+      },
+      {
+        "acl": null,
+        "oid": "16422385",
+        "live": true,
+        "name": "backfill_tasks_runtime_summary_v2",
+        "bytes": 7274496,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE INDEX backfill_tasks_runtime_summary_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, kind, provider, status, records_committed, last_progress_at)"
+      },
+      {
+        "acl": null,
+        "oid": "16040151",
+        "live": true,
+        "name": "backfill_tasks_v2_pkey",
+        "bytes": 103972864,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "method": "btree",
+        "definition": "CREATE UNIQUE INDEX backfill_tasks_v2_pkey ON astra_ingestion_v1.backfill_tasks_v2 USING btree (id)"
+      }
+    ],
+    "functions": {
+      "astra_ingestion_v1.monitor_tick_v1()": {
+        "metadata": {
+          "oid": "15990404",
+          "proacl": [
+            "astra_ingestion_monitor_owner_v1=X/astra_ingestion_monitor_owner_v1",
+            "postgres=X/astra_ingestion_monitor_owner_v1"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "monitor_tick_v1",
+          "prorows": 0,
+          "pronargs": 0,
+          "proowner": "15990376",
+          "proconfig": [
+            "search_path=\"\"",
+            "statement_timeout=8s",
+            "lock_timeout=2s"
+          ],
+          "proretset": false,
+          "prosecdef": true,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": null,
+          "proargtypes": [],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "source_sha256": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057"
+      },
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)": {
+        "metadata": {
+          "oid": "15986028",
+          "proacl": [
+            "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+            "anon=X/astra_ingestion_rpc_owner_v1"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "rpc_dispatch",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "15985999",
+          "proconfig": [
+            "search_path=\"\"",
+            "statement_timeout=10s",
+            "lock_timeout=3s"
+          ],
+          "proretset": false,
+          "prosecdef": true,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_operation",
+            "p_payload"
+          ],
+          "proargtypes": [
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+      },
+      "astra_ingestion_v1.backfill_maintain_v2(integer)": {
+        "metadata": {
+          "oid": "16041463",
+          "proacl": [
+            "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+            "astra_ingestion_monitor_owner_v1=X/astra_ingestion_rpc_owner_v1"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_maintain_v2",
+          "prorows": 0,
+          "pronargs": 1,
+          "proowner": "15985999",
+          "proconfig": [
+            "search_path=\"\"",
+            "statement_timeout=8s",
+            "lock_timeout=2s"
+          ],
+          "proretset": false,
+          "prosecdef": true,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_limit"
+          ],
+          "proargtypes": [
+            "23"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+          "pronargdefaults": 1
+        },
+        "source_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859"
+      },
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": {
+        "metadata": {
+          "oid": "16040232",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_dispatch_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_operation",
+            "p_payload"
+          ],
+          "proargtypes": [
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "source_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+      },
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": {
+        "metadata": {
+          "oid": "16041451",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_recheck_page_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_task_id",
+            "p_page_no"
+          ],
+          "proargtypes": [
+            "25",
+            "23"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "source_sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37"
+      }
+    },
+    "migration_history": null,
+    "task_table": {
+      "acl": [
+        "postgres=arwdDxtm/postgres",
+        "astra_ingestion_rpc_owner_v1=arw/postgres"
+      ],
+      "oid": "16040120",
+      "rls": true,
+      "owner": "16388",
+      "filenode": "16040120",
+      "force_rls": false
+    }
+  }
+]

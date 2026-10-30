@@ -1,0 +1,21 @@
+{
+  "source_definition_sha256": "f72da3cb88f30d3ac66e2e20a51bd2dfd55195bc76ae2997decdc6b10020d7c1",
+  "additional_pins": {
+    "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)": "f72da3cb88f30d3ac66e2e20a51bd2dfd55195bc76ae2997decdc6b10020d7c1",
+    "astra_ingestion_v1.backfill_page_rows_v2(text,integer)": "e0d0a4bceb9f107c00f770546ef0a200ccb9dd7ca48df01c9c821569ac3b897c",
+    "astra_ingestion_v1.backfill_contract_key_v2(text,timestamptz,timestamptz,text,text)": "d5349e3ec4e084dcd53a0ace556e81afe1f8f76b94c6f358cf8e493238a89f90",
+    "astra_ingestion_v1.backfill_contract_register_child_v2(text)": "c5756d3872e552716bffb575025942500946e0e0a8a19c29ef29326b8bc78795",
+    "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)": "e79997417569efc1295fbf8dbbb3b90e8b0c82ded972e213fc1b1e69dffc3c0c",
+    "astra_ingestion_v1.backfill_contract_child_trigger_v2()": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b",
+    "astra_ingestion_v1.backfill_date_v2(text)": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+    "astra_ingestion_v1.backfill_stamp_v2(text)": "63988e76443273e860cfc5cc7929dd2282c5525d9e824c443e79c03b15e6a1e9"
+  },
+  "sql_sha256": "192d2ced210709b5d6dbda33b42c3aaaaf10371b26b64f2212af4123748fbf13",
+  "rewrites": [
+    "Remove INTO target for dynamic parameter binding",
+    "Replace exact PL/pgSQL variables with six bound parameters",
+    "EXPLAIN existing-link INSERT source SELECT only, without its INSERT",
+    "Sanitize plan output to fixed metrics and node labels"
+  ],
+  "production_calls": 0
+}

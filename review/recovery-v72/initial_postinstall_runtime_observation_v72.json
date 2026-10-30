@@ -1,0 +1,106 @@
+{
+  "progress": [
+    {
+      "observed_at": "2026-10-30 14:42:50.454026+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T15:00:00Z",
+      "pages_committed": 5308,
+      "records_committed": 642277,
+      "requests_reserved": 2771,
+      "source_bytes": 527043172,
+      "planner_next_member": "2285",
+      "planning_complete": "false",
+      "latest_page_commit": "2026-10-30 14:40:05.812895+00",
+      "readbacks": 5308,
+      "since_final_repair_readback": {
+        "pages": 0,
+        "records": null,
+        "readbacks": 0,
+        "first_commit": null,
+        "latest_commit": null,
+        "distinct_tasks": 0,
+        "matching_hashes_and_counts": 0
+      },
+      "subsequent_readback_failures": null
+    }
+  ],
+  "cron": [
+    {
+      "observed_at": "2026-10-30 14:43:16.398499+00",
+      "jobid": 602,
+      "runid": 4068674,
+      "job_pid": 1252376,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:42:00.023088+00",
+      "end_time": "2026-10-30 14:42:01.125801+00",
+      "elapsed_seconds": "1.102713"
+    },
+    {
+      "observed_at": "2026-10-30 14:43:16.398521+00",
+      "jobid": 603,
+      "runid": 4068673,
+      "job_pid": 1252375,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:42:00.020546+00",
+      "end_time": "2026-10-30 14:42:00.028986+00",
+      "elapsed_seconds": "0.008440"
+    },
+    {
+      "observed_at": "2026-10-30 14:43:16.398525+00",
+      "jobid": 602,
+      "runid": 4068672,
+      "job_pid": 1251651,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:40:00.02693+00",
+      "end_time": "2026-10-30 14:40:02.059998+00",
+      "elapsed_seconds": "2.033068"
+    },
+    {
+      "observed_at": "2026-10-30 14:43:16.398527+00",
+      "jobid": 603,
+      "runid": 4068671,
+      "job_pid": 1251650,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:40:00.028372+00",
+      "end_time": "2026-10-30 14:40:00.03741+00",
+      "elapsed_seconds": "0.009038"
+    },
+    {
+      "observed_at": "2026-10-30 14:43:16.39853+00",
+      "jobid": 602,
+      "runid": 4068670,
+      "job_pid": 1251561,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:38:00.022728+00",
+      "end_time": "2026-10-30 14:38:07.138983+00",
+      "elapsed_seconds": "7.116255"
+    },
+    {
+      "observed_at": "2026-10-30 14:43:16.398532+00",
+      "jobid": 603,
+      "runid": 4068669,
+      "job_pid": 1251560,
+      "status": "succeeded",
+      "start_time": "2026-10-30 14:38:00.020295+00",
+      "end_time": "2026-10-30 14:38:00.025874+00",
+      "elapsed_seconds": "0.005579"
+    }
+  ],
+  "worker_log_window": {
+    "start": "2026-10-30T14:38:00Z",
+    "end": "2026-10-30T14:43:00Z"
+  },
+  "worker_errors": [
+    {
+      "timestamp": "2026-10-30T14:40:09.546334932Z",
+      "state": "unresolved_runtime_error",
+      "error_type": "RpcPersistenceError",
+      "rpc_operation": "backfill_reuse_commit",
+      "rpc_failure_reason": "HTTP_ERROR"
+    }
+  ],
+  "logs_has_more": false,
+  "limitations": "One post-install monitor execution and no new committed page at the first check do not establish recovery. The14:40:09 reuse-commit error overlaps bounded breadth-index installation; classification beyond timing needs safe database evidence. No manual restart or replay was performed."
+}
