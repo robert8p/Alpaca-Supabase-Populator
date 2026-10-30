@@ -102,7 +102,7 @@ def prepare_bound_https_page(
                 or previous.family != plan.family
                 or previous.symbol != plan.symbol
                 or previous_receipt.get("consistent") is not True
-                or previous_receipt.get("source_page_sha256") != previous.page_sha256
+                or previous_receipt.get("source_sha256") != previous.page_sha256
                 or previous_receipt.get("page_no") != previous.page_no
                 or previous_receipt.get("work_key") != bound.work_key):
             raise ScopeError("provider page requires a genuine matching predecessor")
