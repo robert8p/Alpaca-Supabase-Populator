@@ -22,7 +22,7 @@ import re
 from .bulk_scope import ScopeError
 
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
-_TICKER = re.compile(r"[A-Z][A-Z0-9./^-]{0,15}\Z")
+_TICKER = re.compile(r"[A-Za-z][A-Za-z0-9./^-]{0,15}\Z")
 CONTRACTS = {
     "P01": "9eda239c37522ec884e090279220fd701b41f6140bf0a66674b2a3a4798fe387",
     "P02": "ba96c9a04d15e88f0674278dd9ea789d61a7e62cd2e10da754d2c3426655c8bb",
