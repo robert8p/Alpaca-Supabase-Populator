@@ -25,9 +25,17 @@ CREATE TABLE astra_ingestion_v1.bulk_provider_reviewed_request_v1 (
  page_no integer NOT NULL CHECK(page_no BETWEEN 0 AND 199),
  manifest_sha256 text NOT NULL,
  family text NOT NULL CHECK(family IN ('P01','P02')),
- source_receipt_sha256 text NOT NULL CHECK(source_receipt_sha256 ~ '^[0-9a-f]{64}
+ source_receipt_sha256 text NOT NULL CHECK(source_receipt_sha256 ~ '^[0-9a-f]{64}$'),
+ independent_report_sha256 text NOT NULL CHECK(independent_report_sha256 ~ '^[0-9a-f]{64}$'),
+ request_sha256 text NOT NULL CHECK(request_sha256 ~ '^[0-9a-f]{64}$'),
+ records_reserved integer NOT NULL CHECK(records_reserved BETWEEN 1 AND 1000),
+ recorded_by name NOT NULL DEFAULT current_user,
+ recorded_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+ PRIMARY KEY(work_key,page_no)
+);
+CREATE TABLE astra_ingestion_v1.bulk_provider_precall_v1 (
  work_key text NOT NULL REFERENCES astra_ingestion_v1.bulk_work_v1(work_key),
- page_no integer NOT NULL CHECK (page_no BETWEEN 0 AND 199),
+ page_no integer NOT NULL CHECK(page_no BETWEEN 0 AND 199),
  manifest_sha256 text NOT NULL,
  family text NOT NULL CHECK(family IN ('P01','P02')),
  source_receipt_sha256 text NOT NULL CHECK(source_receipt_sha256 ~ '^[0-9a-f]{64}$'),
