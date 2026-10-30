@@ -1,0 +1,88 @@
+{
+  "schema": "astra.eqr-dated-identity-followthrough-readback/1",
+  "readback": {
+    "observed_at": "2026-10-30T16:37:53.525149+00:00",
+    "refresh_queue": null,
+    "dated_evidence": [
+      {
+        "cik": "0000906107",
+        "state": "RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED",
+        "reason": null,
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "symbol": "EQR",
+        "eligible": true,
+        "member_id": "CIK:0000906107",
+        "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+        "evidence_id": 1,
+        "market_date": "2026-07-31",
+        "recorded_at": "2026-10-30T16:23:26.431961+00:00",
+        "security_type": "CS",
+        "source_sha256": "f11931dd96941da93c70c2022e484a8ed84bbe48ed20c3aa84ffdd135e86b359",
+        "composite_figi": "BBG000BG8M31",
+        "native_ordinal": 1,
+        "identity_anchor": "CIK:0000906107|FIGI:BBG000BG8M31|CLASS:BBG001S723L9",
+        "primary_exchange": "XNYS",
+        "share_class_figi": "BBG001S723L9",
+        "historical_symbol": "EQR",
+        "native_row_sha256": "8ac3f80ea6161d9cbe456114da0ce541f1c7cd7df83092b13b96e470ecf3d2c1"
+      }
+    ],
+    "identity_roots": [],
+    "pending_repair": {
+      "state": "SOURCE_PINNED_SHARED_DIAGNOSIS_AND_LOCAL_CONFIRMED_ABORT_RETRY_QUALIFICATION",
+      "worker_deployment": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "diagnostic_restored": true,
+      "active_runtime_change_selected": false
+    },
+    "identity_source": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "page_no": 0,
+      "task_id": "backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e",
+      "verified": true,
+      "source_id": null,
+      "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+      "invalidated": false,
+      "market_date": "2026-07-31",
+      "source_kind": "CURRENT_PAGE",
+      "verified_at": "2026-10-30T16:23:26.422497+00:00",
+      "source_sha256": "f11931dd96941da93c70c2022e484a8ed84bbe48ed20c3aa84ffdd135e86b359",
+      "native_records": 1,
+      "compressed_sha256": null,
+      "invalidation_reason": null
+    },
+    "page_market_locale": {
+      "locale": "us",
+      "market": "stocks"
+    },
+    "current_dated_identity": {
+      "cik": "0000906107",
+      "state": "RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED",
+      "reason": null,
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "symbol": "EQR",
+      "eligible": true,
+      "member_id": "CIK:0000906107",
+      "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+      "market_date": "2026-07-31",
+      "security_type": "CS",
+      "composite_figi": "BBG000BG8M31",
+      "evidence_sha256": "3e5d43ca8e194b04216216bb471e634d4b0ac364e4ec35d1b402f607deb0510c",
+      "identity_anchor": "CIK:0000906107|FIGI:BBG000BG8M31|CLASS:BBG001S723L9",
+      "evidence_records": 1,
+      "primary_exchange": "XNYS",
+      "share_class_figi": "BBG001S723L9",
+      "historical_symbol": "EQR",
+      "retrospective_only": true,
+      "strict_historical_availability_certified": false
+    }
+  },
+  "conclusion": "Existing readback trigger already persisted a verified current-page source and one matched eligible retrospective identity evidence row for2026-07-31. The current dated view agrees.",
+  "continuation": "No refresh queue row or affected identity root was present at readback. Reuse normal claim/maintenance identity-refresh consumers and existing dated tasks; no helper replay or duplicate source task.",
+  "limitations": [
+    "The dated view is retrospective_only=true and strict_historical_availability_certified=false.",
+    "This one date cannot certify other dates or current Alpaca UUID/availability.",
+    "No missing refresh row is treated as failure or as proof of a specific consumed task."
+  ],
+  "correct_contention_metadata_key": "implementation_pending_repair",
+  "contention_repair_preserved": true
+}

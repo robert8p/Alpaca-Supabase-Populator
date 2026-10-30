@@ -1,4 +1,60 @@
-# ASTRA ingestion — replacement checkpoint v73
+# ASTRA ingestion — replacement checkpoint v74
+
+## Current controlling state — reporting update and EQR recovery
+
+This section supersedes older current-state statements below. Continue the existing controller, run, worker and enabled hourly successor. The fixed mission remains incomplete; neither physical acquisition counts nor a process restart certify coverage or sustained reliability.
+
+### Reporting instructions from Rob, 2026-10-30 16:22 UTC
+
+Dot consolidates project updates in Rob's existing dot conversation. Persist routine results, genuine acquired-page progress, failures, current executable steps and receipts in this checkpoint, database audit/metadata and repository evidence for dot to read. Do not proactively send routine user-facing notifications from this controller or its implementation task. Keep specific owner-action/confirmation payloads available for dot to relay, preserving the exact scope, security/cost diff and actual approval timestamp/window. Reporting suppression never grants approval or bypasses a hold. Continue independent authorized execution.
+
+The same task **6ae2a4c96bbc819182133e17e9b7f779** was updated at **16:27:39.839131 UTC** and independently read back byte-exact: prompt SHA256 **bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea**. Its enabled state, hourly Europe/London schedule, title and mission remain unchanged. The entire original 23,046-byte mission, SHA256 **62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45**, appears exactly once at the prompt's end. The reporting prefix overrides older routine-notification directions.
+
+**The available task interface has no per-task delivery-only mute field. This is prompt-only reporting suppression; platform push/email muting is not verified. No global ChatGPT/Android notification setting was changed.** Controller audit47 at **16:28:42.568035 UTC**, independently read back at **16:29:07.011551**, records the same policy and preserves EQR recovery, contention repair, counters, ownership and all other metadata.
+
+Evidence: `docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md`, `evidence/replacement-reporting-only-task-update-20261030T1622Z.json`, `evidence/replacement-controller-reporting-policy-readback-v74.json`. Do not repeat the verified task update or create a reporting task/controller.
+
+### Ownership, successor and genuine progress
+
+Owner remains **root-replacement-20261030T042603Z**, fence1, ACTIVE. Audit45 at **16:07:13.265277** renewed only this same owner's lease to16:45 UTC. Audit49 at **16:38:52.239559** renewed the still-valid same-owner lease to **17:15 UTC**, independently verified at **16:39:10.44393**. Other metadata, counters, reporting policy and EQR/contention work were preserved. Reconcile the live lease before a write or takeover; this does not extend any expired diagnostic or approval window. Evidence: `evidence/replacement-owner-reporting-and-qualified-repair-lease-v74.json`.
+
+The same successor's16:00 scheduled run **bc45f857-ec90-8321-b60b-8e79d2a166fd** completed **16:04:23.189315**, having started **15:56:59.587040**, before the v73 prompt refresh. It respected the root lease and performed read-only reconciliation. Do not assert that it used a later prompt or repeat its already-completed archived-page parse/metadata probes. Delivery remains unknown and future dispatch time is not guaranteed by a task readback.
+
+At **16:29:10.907728 UTC**, durable totals were **5,756 pages, 5,756 independent readbacks, 694,030 physical records/retained pointers, 3,047 reservations and 560,705,492 source bytes**. Latest actual acquisition was **16:23:54.248148**. Since the v72 repairs' final readback at14:40:58, **448 pages /51,753 records /448 readbacks** were committed across448 tasks; all observed hashes/counts matched. These are physical counts with possible overlap, not certified unique coverage. Planning had advanced to2,383 with planning_done=false. No later READBACK_FAILURE audit was found in that bounded observation. Repeated contention remains unresolved; these counts are not a sustained-reliability claim.
+
+Evidence: `evidence/replacement-owner-remediation-and-contention-lease-v74.json`, `review/recovery-v74/existing_successor_completed_1600_v74.json`, `review/recovery-v74/live_progress_1629_v74.json`.
+
+### EQR exception2282 — existing equivalent task acquired and verified
+
+The original REF01 EQR task **backfill-plan-d54009e35cd9cd283f26e6c455425be613d24af035420b982f964c3ba97bfa54** and exception2282 retain the **13:21:50.913209** Alpaca404 failure, one attempt/reservation and zero acquired records. The actual request was a current paper-universe `GET paper-api.alpaca.markets/v2/assets/EQR` without a historical-date parameter. Its53-byte failure body is retained and rehashed; a404 is not proof of historical provider absence. The task had a retry timestamp but OPERATIONAL_ERROR was not runnable, and the exception's retry timestamp was null. No equivalent recovery assignment was found before the bounded repair.
+
+Audit46 at **16:22:14.427133**, independently read back16:22:44.927775, linked the **existing** Massive REF01 target-end task **backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e** and changed only its priority40→9. No duplicate task was created. Original task/exception, fixed member446 **CIK:0000906107**, target definition/scope, counters, current contention assignment and other metadata were preserved.
+
+The normal existing worker then acquired **HTTP200 `/v3/reference/tickers/EQR?date=2026-07-31`**, fetched **16:23:26.254**, committed **16:23:26.326148**, and independently verified **16:23:26.419964**. The task is **INGESTED**, one attempt, reservation, page, record and readback. Body SHA256 **f11931dd96941da93c70c2022e484a8ed84bbe48ed20c3aa84ffdd135e86b359** rehashes and matches the independent readback. The existing relay dispatch **a3e287d5-fb19-4850-8a8f-89947d69f3c0** matches the exact request, generation and fence; fetch occurred within its authorized ticket.
+
+At16:33:51–16:34:07, allowlisted identity readback found **CIK0000906107, EQR, composite FIGI BBG000BG8M31, share-class FIGI BBG001S723L9, XNYS, CS**, all matching the immutable accepted member anchor dated2026-08-03. This establishes a successful equivalent dated reference acquisition. It does not establish current Alpaca UUID/availability or all historical identity intervals, and does not clear or replace the original failure.
+
+Audit48 at **16:37:13.210854**, independently read back **16:37:26.621252**, advanced the existing queue entry to **ALTERNATIVE_REFERENCE_ACQUIRED_VERIFIED**, preserving both task rows, original exception, counters and every other metadata key. At **16:37:53.525149**, the existing identity trigger's persisted source was verified and not invalidated; evidence row1 and the current dated view both reported **RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED**, eligible=true for **2026-07-31**. Market=stocks and locale=us passed the existing projection. The view explicitly retains retrospective_only=true and strict_historical_availability_certified=false. No affected identity root or pending member-refresh row was present; absence is not treated as a failed or specifically proven consumed refresh.
+
+Continue normal existing claim/maintenance identity consumers and already-planned dated reference tasks. Do not replay the acquired page or invoke a mutating helper as a diagnostic. This dated evidence cannot fill other dates or prove current Alpaca UUID/availability. Preserve uncertainty and NULL/reasons for affected derivations. Original exception2282 remains intact; no provider-absence terminal disposition has been made. Evidence: `evidence/replacement-eqr-ref01-progress-readback-v74.json` and `evidence/replacement-eqr-ref01-identity-followthrough-v74.json`.
+
+Evidence: `evidence/replacement-eqr-ref01-remediation-assignment-v74.json`, `evidence/replacement-eqr-ref01-acquisition-readback-v74.json`, and `review/recovery-v74/eqr-ref01/`.
+
+### Contention work remains independent
+
+The bounded v73 phase observation is complete and restored to exact maintenance source **6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7**. Its15:45 diagnostic deadline is expired; do not replay or extend it. Shared refresh and contract work remain the concrete observed sources of long maintenance calls. No new maintenance diagnostic or worker restart has been applied.
+
+A narrow shared-refresh candidate caches chosen JSON field states once. Local actual-PostgreSQL equivalence/guard qualification and independent review have passed; it remains **unpublished and uninstalled at this checkpoint**. A bounded candidate-only SELECT on the same already-retained1,000-record page confirmed the repeated field-aggregate buffer work disappeared. The different cache/snapshot reads do not establish a controlled speedup ratio, and temporary I/O increased. Contract processing is still a separate unresolved cost. Before any function replacement, publish exact reviewed bytes, pass required exact-head CI, reconcile fresh owner/source/metadata pins, then apply only the guarded forward migration once and verify. Preserve the exact qualified restore path.
+
+A separate strict55P03 RPC retry candidate remains local. Only complete, exact native rollback responses for six admitted operations may qualify for identical-byte bounded retries; ambiguous outcomes and lost acknowledgements remain fatal/reconcile. Its source/trigger/catalog closure, independent tests and publication qualification are still being finalized. Do not deploy it before its required gates. The deployed worker remains **3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d**; no new credentials, grants, relay installation or subscription change is involved.
+
+### Retained v73 publication and controls
+
+The preceding checkpoint was published at **a3bc0520e624054b278e46682b04cebb33e9b677**, tree **52d5ed1305aff8246599b689176d8732f2dadb2f**, with database audit44 independently verified16:05:56.035672. All **three actually reported** workflows passed: ingestion PR41085482067 ran679 tests, zero skips/errors/failures,376.873s on PostgreSQL17.11; release PR41085482074 and release push41085471233 passed. No fourth run is claimed.
+
+The approved v3 relay remains installed from the genuine12:14 approval consumed12:17:26.804513, with unchanged reviewed security scope. Do not use the expired09:53 v2 approval. Preserve fixed3,000 membership, original16 families,2025-09-01–2026-07-31 target, source/cost/fence/authentication controls, retained work and completion requirements. Do not rerank, reset counts, substitute companies, or create another controller.
+
+## Prior checkpoint v73 — retained historical evidence
 
 **The bounded v73 observation is complete and exact maintenance source has been restored.** The package at **3fddb6cf196e289e79eb9bfaef45d56965b64eca**, tree **bd41e2f106d412ebebf3e72f854c2665ae616aa8**, passed all four exact-head CI gates, was installed once, produced two immutable ordinary-monitor observations, and was restored once to exact **6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7**, independently verified at **15:45:10.404232**. The diagnostic deadline remains **15:45 UTC**, has expired, and must not be extended or used to reinstall. Same-owner lease **16:15 UTC** remains separate.
 

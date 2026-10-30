@@ -1,0 +1,57 @@
+[
+  {
+    "observed_at": "2026-10-30 16:14:08.735743+00",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:45:00Z",
+    "relevant_metadata_keys": null,
+    "current_contention_repair": {
+      "state": "SOURCE_PINNED_SHARED_DIAGNOSIS_AND_LOCAL_CONFIRMED_ABORT_RETRY_QUALIFICATION",
+      "worker_deployment": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "diagnostic_restored": true,
+      "active_runtime_change_selected": false
+    },
+    "recovery_audits": null,
+    "massive_dependency": [
+      {
+        "code": "RUNTIME_CAPABILITY_UNAVAILABLE",
+        "state": "AVAILABLE",
+        "provider": "Massive",
+        "dependency": "MASSIVE_WORKER_CREDENTIAL",
+        "observed_at": "2026-10-30T12:37:09.03914+00:00",
+        "resolved_at": "2026-10-30T12:37:09.03914+00:00"
+      }
+    ],
+    "recent_workers": [
+      {
+        "worker_id": "14de79d1-d228-4d93-aba9-bdb46091f97a",
+        "observed_at": "2026-10-30T15:47:58.870113+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supports_massive_reference": true
+      },
+      {
+        "worker_id": "8389c7e4-a048-4b57-95da-0a838e71a115",
+        "observed_at": "2026-10-30T16:11:59.258394+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supports_massive_reference": true
+      },
+      {
+        "worker_id": "801386ab-d66e-49ed-a722-d42b4fb49c4b",
+        "observed_at": "2026-10-30T16:05:58.948279+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supports_massive_reference": true
+      },
+      {
+        "worker_id": "03ae92e9-b2e9-42af-b8fd-6ad860560cf3",
+        "observed_at": "2026-10-30T15:53:57.38068+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supports_massive_reference": true
+      },
+      {
+        "worker_id": "3940a237-fe68-4ae9-a85f-7f521ad3c64a",
+        "observed_at": "2026-10-30T15:59:58.596448+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supports_massive_reference": true
+      }
+    ]
+  }
+]

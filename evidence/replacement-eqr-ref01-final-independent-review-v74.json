@@ -1,0 +1,117 @@
+{
+  "schema": "astra.eqr-final-independent-evidence-review/1",
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T16:39:32.286672+00:00",
+  "passed": true,
+  "retained_artifact_pins": {
+    "evidence/replacement-eqr-ref01-acquisition-readback-v74.json": {
+      "sha256": "16150bf283cf417c0d9cbc22aaf27b8ac36f5632ce96bb6b1c177ac2eac09e3c",
+      "bytes": 5646
+    },
+    "evidence/replacement-eqr-ref01-progress-readback-v74.json": {
+      "sha256": "75b5394d9dce3b3e8ad36fb883ba2f6f42525e41abd0dfa86d655ad12c8e956f",
+      "bytes": 9273
+    },
+    "evidence/replacement-eqr-ref01-identity-followthrough-v74.json": {
+      "sha256": "89accffbd4b442a6ad896c7a34ca23c051e0b56e0cf5fea56b5dda2ba39592a5",
+      "bytes": 4035
+    },
+    "review/recovery-v74/eqr-ref01/independent_existing_task_assignment_review_v74.json": {
+      "sha256": "75d34ee1e892f89c15b2c5f570e49cd89d3b8c2550d947067e825baf92de857a",
+      "bytes": 7362
+    },
+    "review/recovery-v74/eqr-ref01/independent_identity_followthrough_review_v74.json": {
+      "sha256": "d48d3c9de4b8cae9bd7d8180261dc7e2ce8488ab9cbc5242f47a77d4125456cd",
+      "bytes": 7278
+    },
+    "review/recovery-v74/eqr-ref01/identity_followthrough_source_extract_v74.json": {
+      "sha256": "ce92118699869b70d1643de848294aba45fab273207230d2c6b977f1dfa15edb",
+      "bytes": 15465
+    },
+    "review/recovery-v74/eqr-ref01/record_verified_alternative_acquisition_v74.sql": {
+      "sha256": "454a86718e0d8d8ceeda19416797025a415ccb990d1b8f5a660e8a309562a821",
+      "bytes": 7544
+    }
+  },
+  "finding": "The existing task produced one verified Massive reference row, and the ordinary readback trigger already projected a matched eligible retrospective identity for EQR on 2026-07-31. The original Alpaca failure remains intact. No duplicate acquisition or manual identity-helper replay is indicated.",
+  "acquisition": {
+    "task_id": "backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e",
+    "provider": "Massive",
+    "request_path": "/v3/reference/tickers/EQR",
+    "date": "2026-07-31",
+    "fetched_at": "2026-10-30T16:23:26.254+00:00",
+    "committed_at": "2026-10-30T16:23:26.326148+00:00",
+    "independent_readback_at": "2026-10-30T16:23:26.419964+00:00",
+    "pages": 1,
+    "records": 1,
+    "readbacks": 1,
+    "reservations": 1,
+    "attempts": 1,
+    "body_sha256": "f11931dd96941da93c70c2022e484a8ed84bbe48ed20c3aa84ffdd135e86b359",
+    "valid_existing_relay_ticket": true
+  },
+  "durable_progress": {
+    "audit_id": 48,
+    "audit_recorded_at": "2026-10-30T16:37:13.210854+00:00",
+    "independent_readback_at": "2026-10-30 16:37:26.621252+00",
+    "state": "ALTERNATIVE_REFERENCE_ACQUIRED_VERIFIED",
+    "original_task_full_row_sha256": "9409c71fe6f84108de7b995312588710fca0d03edf27667069b2b3105cce75e5",
+    "original_exception_evidence_sha256": "4f4a3f759c43e712ebb2c19c83cea027fe2cf6ba083b8fb1fe7d9fa61710b3e0",
+    "original_failure_preserved": true
+  },
+  "dated_identity": {
+    "observed_at": "2026-10-30T16:37:53.525149+00:00",
+    "member_id": "CIK:0000906107",
+    "date": "2026-07-31",
+    "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+    "source_verified": true,
+    "source_invalidated": false,
+    "evidence_id": 1,
+    "evidence_records": 1,
+    "state": "RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED",
+    "reason": null,
+    "eligible": true,
+    "market": "stocks",
+    "locale": "us",
+    "active": true,
+    "cik": "0000906107",
+    "ticker": "EQR",
+    "composite_figi": "BBG000BG8M31",
+    "share_class_figi": "BBG001S723L9",
+    "security_type": "CS",
+    "exchange": "XNYS",
+    "evidence_sha256": "3e5d43ca8e194b04216216bb471e634d4b0ac364e4ec35d1b402f607deb0510c",
+    "retrospective_only": true,
+    "strict_historical_availability_certified": false,
+    "affected_identity_roots_at_readback": 0,
+    "member_refresh_row_at_readback": false
+  },
+  "existing_consumer_semantics": [
+    "The readback trigger inserts the verified dated source/evidence and requests refresh only for new evidence.",
+    "Normal claim and existing maintenance already consume ready identity refresh in bounded batches; a deterministic root/material hash reuses any equivalent existing recalculation task.",
+    "No affected root or member refresh row was present at the actual readback. This is not a failed-retry signal and does not prove that a particular child task was consumed.",
+    "Future eligible calculations read identity material for the exact requested date; completed intraday output uses the existing dated overlay and attribution checks.",
+    "Continue existing scheduled/controller work and already planned dated reference tasks. Preserve the original Alpaca exception, other-date unknowns and existing NULL/reason behavior."
+  ],
+  "continuity": {
+    "same_owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "lease_observed_at_progress_readback": "2026-10-30T16:45:00Z",
+    "routine_reporting_mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "same_hourly_task": "6ae2a4c96bbc819182133e17e9b7f779",
+    "prompt_only_suppression": true,
+    "global_delivery_muting_claimed": false,
+    "contention_work_preserved": true,
+    "correct_contention_metadata_key": "implementation_pending_repair",
+    "projection_correction": "The earlier progress receipt queried a nonexistent contention_repair key and retained a null. The later identity receipt independently reads the correct implementation_pending_repair value; no removal or displacement is inferred."
+  },
+  "limitations": [
+    "This resolves one dated alternative source acquisition and its existing dated-identity projection, not the current Alpaca asset UUID or availability.",
+    "The original paper-Alpaca404 does not support provider absence.",
+    "One July31 observation does not certify other dates, a complete historical identity interval, historical availability at the time, or full mission/derived-data completion.",
+    "The page request and relay ticket use different documented hash serializations; JSON request equality and ticket timing are the retained integrity comparison, not equality of those differently encoded hashes."
+  ],
+  "recommendation": "Publish these retained results through the existing reporting/checkpoint route. Continue ordinary worker/maintenance and remaining admitted work; no new task, source call, permission, controller or helper replay is needed for this completed single-date follow-through.",
+  "production_or_provider_calls_by_reviewer": 0,
+  "production_writes_by_reviewer": 0
+}

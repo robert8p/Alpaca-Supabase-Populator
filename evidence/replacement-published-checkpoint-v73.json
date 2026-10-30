@@ -1,0 +1,171 @@
+{
+  "schema": "astra.replacement-published-checkpoint/1",
+  "version": "v73",
+  "publication": {
+    "commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+    "tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+    "manifest_sha256": "9f89bc60beb7b56518af93cab958b6821050900744300570a113f63412663c35",
+    "canonical_checkpoint_sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94",
+    "prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+    "changed_paths": 29,
+    "additions": 27,
+    "canonical_replacements": 2,
+    "retained_unchanged_blobs": 919,
+    "total_tree_blobs": 948,
+    "active_code_changes": false
+  },
+  "successor": {
+    "schema": "replacement-existing-successor-update-v73",
+    "published_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+    "published_tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+    "observation_clock_bounds": {
+      "before": "2026-10-30 16:00:23 UTC",
+      "after": "2026-10-30 16:00:26 UTC"
+    },
+    "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "updated_at": "2026-10-30T16:00:24.984146+00:00",
+    "is_enabled": true,
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+    "prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+    "prompt_characters": 69104,
+    "independent_exact_prompt_readback": true,
+    "schedule_unchanged": true,
+    "run_details": {
+      "last_run": {
+        "id": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+        "recorded_status": "in_progress",
+        "scheduled_for": "2026-10-30T16:00:00Z",
+        "started_at": "2026-10-30T15:56:59.587040Z",
+        "completed_at": null,
+        "chat_ref": null
+      },
+      "latest_result": {
+        "run_id": "f42a5e8f-3164-832a-b9ba-11d00afb2ab8",
+        "created_at": "2026-10-30T15:09:14.940488Z",
+        "scheduled_for": "2026-10-30T15:00:00Z",
+        "completed_at": "2026-10-30T15:09:15.771228Z",
+        "content_text": "**ASTRA has made further verified ingestion progress, and the latest investigation confirms that maintenance-lock contention is still interrupting the worker.**\n\n<grid columns={2} gap={3}>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Committed pages</text>\n    <title size=\"xl\" tabularNums>5,409</title>\n    <text color=\"success\" size=\"xs\">+338 since previous review</text>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Records and retained pointers</text>\n    <title size=\"xl\" tabularNums>654,867</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Independent readbacks</text>\n    <title size=\"xl\" tabularNums>5,409/5,409</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Planner cursor</text>\n    <title size=\"xl\" tabularNums>2,308 / 3,000</title>\n  </grid-item>\n</grid>\n\n<caption>Live database verification at 15:07 London, 30 October 2026. These are overlapping physical storage counts, not complete dataset coverage.</caption>\n\nI independently confirmed that the three repairs from <Link url=\"https://github.com/robert8p/Alpaca-Supabase-Populator/commit/d06c13f30a0bed8da6366f124101b59d21a450fa\">revision `d06c13f`</Link> are installed: both maintenance task indexes are valid and ready, and the readback function excludes pages committed in its current transaction. The approved authentication function remains unchanged.\n\n**A fresh failure at 15:00 identifies continued lock contention.** Two PostgreSQL `55P03` failures occurred at 15:00:03 and 15:00:05, with both waiters blocked by PID `1253575`. The existing cron 602 monitor ran for 8.48 seconds across this interval. Earlier failures have proven monitor ownership; the exact holder-to-cron PID association for this particular occurrence has not yet been independently established.\n\nThe existing implementation owner retains its verified lease through **15:45 London**. I preserved that ownership, performed no competing production changes and left the worker running. A direct diagnostic handoff was attempted but the notification service rejected it; I have not claimed delivery to the controller.\n\n**Status: RUNNING — 5,409 pages verified, sustained reliability not yet established, full 16-family backfill incomplete.** The remaining engineering priority is bounded measurement and correction of maintenance time spent holding the shared advisory lock. The existing implementation automation remains enabled without a programme deadline.",
+        "content_truncated": false,
+        "chat_ref": {
+          "type": "chatgpt",
+          "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+        },
+        "requires_user_action": false,
+        "is_failure_message": false
+      },
+      "delivery_status": "unknown"
+    },
+    "next_run_time": null,
+    "no_new_task_created": true,
+    "original_mission_preserved": true,
+    "ownership_readback": {
+      "observed_at": "2026-10-30 16:00:23.441799+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T16:15:00Z"
+    },
+    "active_run_reconciliation": "The existing16:00 scheduled run started15:56:59.587040 before this prompt update. Same root lease remained valid; no new controller was created. Updating its saved prompt does not prove the running invocation used the new prompt. The first update attempt stopped before any mutation when that active run was detected."
+  },
+  "database_independent_readback": {
+    "observed_at": "2026-10-30 16:05:56.035672+00",
+    "id": "fixed3000-20250901-20260731-v1-20261030",
+    "status": "ACTIVE",
+    "fence": 1,
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:15:00Z",
+    "checkpoint": {
+      "commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "version": "v73",
+      "recorded_at": "2026-10-30T16:01:18.951014+00:00",
+      "manifest_sha256": "9f89bc60beb7b56518af93cab958b6821050900744300570a113f63412663c35",
+      "published_and_ref_verified": true
+    },
+    "successor_checkpoint": {
+      "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+      "updated_at": "2026-10-30T16:00:24.984146Z",
+      "prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+      "exact_readback": true,
+      "schedule_unchanged": true
+    },
+    "current_step": "Published v73 and same-task prompt reconciled. Continue focused pure-read diagnosis of the retained1000-contract shared candidate and local qualification of strict confirmed55P03 same-RPC handling; no speculative deployment. In parallel reconcile user-reported REF01 EQR exception2282 and any existing equivalent recovery, then persist bounded permitted reference recovery without changing the fixed member or source entitlements.",
+    "checkpoint_audits": [
+      {
+        "id": 44,
+        "action": "IMPLEMENTATION_CHECKPOINT_PUBLISHED",
+        "evidence": {
+          "tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+          "owner": "root-replacement-20261030T042603Z",
+          "commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+          "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+          "version": "v73",
+          "progress": {
+            "readbacks": 5650,
+            "observed_at": "2026-10-30T15:46:48.130167Z",
+            "pages_committed": 5650,
+            "planning_complete": false,
+            "latest_page_commit": "2026-10-30T15:41:59.315192Z",
+            "planner_next_member": 2359,
+            "physical_records_or_pointers": 680657
+          },
+          "request_id": "v73-checkpoint-and-existing-successor-a3bc0520",
+          "prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+          "manifest_sha256": "9f89bc60beb7b56518af93cab958b6821050900744300570a113f63412663c35",
+          "phase_audit_ids": [
+            41,
+            42
+          ],
+          "same_controller": true,
+          "task_updated_at": "2026-10-30T16:00:24.984146Z",
+          "schedule_unchanged": true,
+          "diagnostic_restored": true,
+          "restored_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+          "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+          "canonical_checkpoint_sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94",
+          "exact_successor_prompt_readback": true,
+          "original_mission_exactly_once_at_prompt_eof": true
+        },
+        "recorded_at": "2026-10-30T16:01:18.957958+00:00"
+      }
+    ],
+    "maintenance_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+  },
+  "scope": {
+    "same_controller": true,
+    "new_controller": false,
+    "approval_unchanged": true,
+    "counts_not_reset": true,
+    "eqr_recovery_status": "CURRENT_RECORD_RECONCILIATION_IN_PROGRESS_NOT_YET_ASSIGNED"
+  },
+  "ci_runs_observed": [
+    {
+      "id": 41085482074,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "attempt": 1
+    },
+    {
+      "id": 41085482067,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "attempt": 1
+    },
+    {
+      "id": 41085471233,
+      "name": "release-gate",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "attempt": 1
+    }
+  ],
+  "qualification_note": "Checkpoint-only publication; actual run conclusions recorded here. No active runtime change or replay of restored diagnostic."
+}

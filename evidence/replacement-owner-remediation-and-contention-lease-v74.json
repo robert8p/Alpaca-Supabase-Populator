@@ -1,0 +1,50 @@
+{
+  "schema": "astra.same-owner-lease/1",
+  "database_readback": {
+    "observed_at": "2026-10-30 16:07:25.150925+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:45:00Z",
+    "pages_committed": 5714,
+    "records_committed": 688368,
+    "requests_reserved": 3020,
+    "source_bytes": 556468597,
+    "planner_next_member": "2373",
+    "planning_complete": "false",
+    "latest_page_commit": "2026-10-30 16:05:58.020807+00",
+    "readbacks": 5714,
+    "since_final_repair_readback": {
+      "pages": 406,
+      "records": 46091,
+      "readbacks": 406,
+      "first_commit": "2026-10-30T14:45:20.376251+00:00",
+      "latest_commit": "2026-10-30T16:05:58.020807+00:00",
+      "distinct_tasks": 406,
+      "matching_hashes_and_counts": 406
+    },
+    "subsequent_readback_failures": null,
+    "lease_audits": [
+      {
+        "id": 45,
+        "action": "IMPLEMENTATION_LEASE_RENEWED",
+        "evidence": {
+          "owner": "root-replacement-20261030T042603Z",
+          "reason": "Reconcile and add bounded REF01 EQR exception recovery while continuing primary shared/contract contention diagnosis and local confirmed-abort RPC handling qualification; reuse successor read-only work.",
+          "request_id": "v74-remediation-and-contention-lease-20261030T1610Z",
+          "lease_until": "2026-10-30T16:45:00Z",
+          "same_controller": true,
+          "approval_unchanged": true,
+          "previous_lease_until": "2026-10-30T16:15:00Z",
+          "existing_successor_run": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+          "successor_completed_at": "2026-10-30T16:04:23.189315Z",
+          "existing_successor_task": "6ae2a4c96bbc819182133e17e9b7f779",
+          "expired_diagnostic_not_extended": true
+        },
+        "recorded_at": "2026-10-30T16:07:13.265277+00:00"
+      }
+    ]
+  },
+  "approval_unchanged": true,
+  "expired_diagnostic_not_extended": true
+}

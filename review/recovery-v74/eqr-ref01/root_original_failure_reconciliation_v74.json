@@ -1,0 +1,91 @@
+[
+  {
+    "observed_at": "2026-10-30 16:11:19.063374+00",
+    "task": {
+      "id": "backfill-plan-d54009e35cd9cd283f26e6c455425be613d24af035420b982f964c3ba97bfa54",
+      "asof": "2026-08-03",
+      "kind": "alpaca_reference",
+      "owner": null,
+      "family": "REF01",
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "status": "OPERATIONAL_ERROR",
+      "symbol": "EQR",
+      "page_no": 0,
+      "symbols": [
+        "EQR"
+      ],
+      "attempts": 1,
+      "provider": "Alpaca",
+      "run_fence": 1,
+      "error_code": "SOURCE_HTTP_ERROR",
+      "generation": 1,
+      "member_ids": [
+        "CIK:0000906107"
+      ],
+      "lease_until": null,
+      "scope_sha256": "0e63617a4df227ad133d373b8ede374e4c28b2a132089aa188d4b402877a1068",
+      "next_retry_at": "2026-10-30T13:22:20.909726+00:00",
+      "page_attempts": 1,
+      "identity_status": "UNRESOLVED_PROVIDER_ANCHOR",
+      "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "attempt_deadline": "2026-10-30T13:26:50.09281+00:00",
+      "reference_policy": "CURRENT_PROVIDER_IDENTIFIERS_NOT_HISTORICAL_PROOF",
+      "records_committed": 0,
+      "requests_reserved": 1
+    },
+    "exceptions": [
+      {
+        "id": 2282,
+        "code": "SOURCE_HTTP_ERROR",
+        "state": "OPERATIONAL_ERROR",
+        "page_no": 0,
+        "task_id": "backfill-plan-d54009e35cd9cd283f26e6c455425be613d24af035420b982f964c3ba97bfa54",
+        "generation": 1,
+        "recorded_at": "2026-10-30T13:21:50.913209+00:00",
+        "evidence_keys": [
+          "headers",
+          "request",
+          "raw_body",
+          "fetched_at",
+          "body_sha256",
+          "http_status"
+        ],
+        "next_retry_at": null,
+        "message_sha256": "606f1903c96dd615ced7093031e770c4ff6cc0ca71ad7370e863d9a0957dd379",
+        "evidence_sha256": "4f4a3f759c43e712ebb2c19c83cea027fe2cf6ba083b8fb1fe7d9fa61710b3e0"
+      }
+    ],
+    "pages": 0,
+    "readbacks": 0,
+    "member": [
+      {
+        "member_id": "CIK:0000906107",
+        "anchor_keys": [
+          "company_id",
+          "accepted_at",
+          "anchor_ticker",
+          "cohort_sha256",
+          "policy_sha256",
+          "anchor_exchange",
+          "selection_order",
+          "membership_accepted",
+          "anchor_security_type",
+          "anchor_composite_figi",
+          "anchor_observation_date",
+          "anchor_share_class_figi",
+          "company_manifest_sha256",
+          "root_acceptance_event_id",
+          "exact_global_rank_certified",
+          "independent_review_event_id",
+          "membership_acceptance_sha256",
+          "selection_market_cap_proxy_usd",
+          "financial_capitalization_qualified",
+          "full_period_instrument_coverage_accepted"
+        ],
+        "anchor_sha256": "85d0f5adcb21c83a653728005dbefc632887f9e006f8feeda6fdc5fbe4eeaa00",
+        "anchor_ticker": "EQR",
+        "selection_order": 446
+      }
+    ]
+  }
+]
