@@ -1,0 +1,171 @@
+{
+  "state": "READ_ONLY_DIAGNOSIS_CANDIDATE_NOT_IMPLEMENTED",
+  "known_result": {
+    "source": "controlling root receipt message",
+    "probe": "replacement-runtime-status-explain-probe-v2.sql",
+    "started_at_utc": "2026-10-30T10:19:02Z",
+    "outcome": "SQLSTATE57014 statement timeout at8s; no completed execution plan",
+    "retries": 0,
+    "deadline_increased": false,
+    "holder_operation_unattributed": true
+  },
+  "source_files": {
+    "sql/astra_backfill_runtime_v2.sql": {
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    "sql/astra_backfill_identity_v2.sql": {
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    "sql/astra_backfill_delivery_v2.sql": {
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    "evidence/replacement-task-index-inventory-v69.json": {
+      "sha256": "da22c807c84f8f06ba36754149beb879fe22cc3e4755dabc55688c2323f3bd0e"
+    },
+    "sql/astra_backfill_minute_alias_index_v2.sql": {
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f"
+    },
+    "astra_ingestion/rpc_store.py": {
+      "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7"
+    },
+    "astra_ingestion/worker.py": {
+      "sha256": "00d9f7a16fc161a6e7b40938319e4bbe9a8c24c97ea29171b375a2e9241ca0b6"
+    },
+    "astra_ingestion/static/app.js": {
+      "sha256": "f4b94b1a64f08f0a6cf545821ddd4b30c9a6b9a53082afca67ea3f9e51bd7c30"
+    }
+  },
+  "runtime_status_branch_sha256": "ce0465543cc8c06bffa53070be02849adf80454bf0776042a9d32a2f2ae488b2",
+  "index_inventory_basis": "Thirteen task indexes in the saved09:37:38 live catalogue inventory; the subsequently qualified/applied minute-alias index addresses only P01-to-P02 delivery counts and does not cover this runtime summary.",
+  "operations": [
+    {
+      "operation": "Task group summary",
+      "source": "astra_backfill_runtime_v2.sql:289-290",
+      "required_columns": [
+        "run_id",
+        "family",
+        "kind",
+        "provider",
+        "status",
+        "records_committed",
+        "last_progress_at"
+      ],
+      "work": "All tasks of each returned run; count(*),sum(records_committed),max(last_progress_at), GROUP BY family,kind,provider,status",
+      "existing_indexes": {
+        "backfill_tasks_family_v2": [
+          "run_id",
+          "family",
+          "status"
+        ],
+        "backfill_tasks_provider_v2": [
+          "run_id",
+          "provider",
+          "status",
+          "kind"
+        ]
+      },
+      "gap": "No inventoried task index supplies all grouping columns and both aggregate inputs. The existing minute-alias partial index does not supply these inputs or all task families.",
+      "assessment": "Leading structural candidate for broad heap I/O, consistent with the observed DataFileRead holder but not attributed to that holder. Actual elapsed dominance remains unmeasured."
+    },
+    {
+      "operation": "Unsupported pending kinds",
+      "source": "astra_backfill_runtime_v2.sql:291-292",
+      "required_columns": [
+        "run_id",
+        "status",
+        "kind"
+      ],
+      "work": "Pending/retry task scan with an anti-existence check against current worker capabilities, followed by DISTINCT kind aggregation",
+      "existing_indexes": {
+        "backfill_tasks_provider_v2": [
+          "run_id",
+          "provider",
+          "status",
+          "kind"
+        ]
+      },
+      "assessment": "Task-side data can be covered by the existing provider index. The estimated plan must establish whether the worker-capability check is repeated for many task rows. This remains a separate possible CPU/loop cost."
+    },
+    {
+      "operation": "Identity recalculation pending count",
+      "source": "astra_backfill_identity_v2.sql:501",
+      "required_columns": [
+        "run_id",
+        "status"
+      ],
+      "exact_partial_predicate": "scope ? 'identity_refresh_of'",
+      "existing_index": "backfill_identity_refresh_tasks_v2(run_id,status) WHERE scope ? identity_refresh_of",
+      "assessment": "The exact helper predicate has a purpose-built partial index. It should not need a scope scan over all planned tasks if the planner selects that index."
+    },
+    {
+      "operation": "Identity discovery progress",
+      "source": "astra_backfill_identity_v2.sql:498",
+      "table": "backfill_identity_discovered_members_v2",
+      "key": [
+        "run_id",
+        "member_id"
+      ],
+      "assessment": "One compact per-member progress row enforced by primary key and membership foreign key; at most3000 rows for the fixed cohort. Counts not-complete rows; no original source bodies or identity evidence records are parsed."
+    },
+    {
+      "operation": "Identity refresh queue count/minimum",
+      "source": "astra_backfill_identity_v2.sql:499-500",
+      "table": "backfill_identity_refresh_v2",
+      "key": [
+        "run_id",
+        "member_id"
+      ],
+      "assessment": "Compact per-member queue with a primary key; source producer writes fixed-member keys. There is no membership foreign key on this table, so a hard3000-row limit is a producer invariant rather than a database constraint."
+    },
+    {
+      "operation": "Identity source counts/latest verification",
+      "source": "astra_backfill_identity_v2.sql:502-504",
+      "table": "backfill_identity_sources_v2",
+      "key": [
+        "run_id",
+        "source_ref"
+      ],
+      "assessment": "Reads compact source verification metadata, not raw/compressed source bytes or member/day evidence. It performs three aggregates; source count is not hard-capped by schema. The outer EXPLAIN may not expand this SQL function because it has function-local configuration."
+    },
+    {
+      "operation": "Members, provider dependencies, retry deadline",
+      "source": "astra_backfill_runtime_v2.sql:288,293-294",
+      "assessment": "Fixed3000-member count uses its primary key; provider dependencies are keyed per run/provider; retry minimum has existing runnable/recovery indexes. No new repair proposed without contrary plan evidence."
+    }
+  ],
+  "recommended_candidate": {
+    "type": "One non-unique covering btree index; leave the runtime SELECT unchanged initially",
+    "table": "astra_ingestion_v1.backfill_tasks_v2",
+    "key_columns": [
+      "run_id",
+      "family",
+      "kind",
+      "provider",
+      "status",
+      "records_committed",
+      "last_progress_at"
+    ],
+    "predicate": null,
+    "purpose": "Allow the existing all-task grouped summary to read its exact grouping and aggregate inputs without fetching every wide task heap row. Trailing aggregate-input columns are index keys, not a uniqueness constraint.",
+    "preservation": "No output expressions, aggregate types, GROUP BY keys, NULL behavior, DISTINCT behavior, task state, membership, receipts, permissions, function definitions, worker code, or relay files change.",
+    "eligibility": "Only proceed if the estimated plan confirms the task summary lacks a covering path. Qualify actual index selection and output equivalence locally before any deployment decision.",
+    "build_bounds": "If prepared later, use ordinary transactional creation with source/schema/name guards; one DO statement covers advisory lock acquisition and build under8s statement_timeout and3s lock_timeout. No concurrent-DDL workaround and no automatic retries.",
+    "local_gate": [
+      "Seed representative wide tasks with all statuses and NULL/non-NULL last_progress_at; include zero and nonzero records_committed.",
+      "Compare original and indexed complete runtime and combined delivery JSON at the same unchanged dataset. Preserve numeric SUM type and NULL MAX for untouched groups.",
+      "Verify generic/custom plans use the new covering index for the grouped summary; capture heap fetches and each summary subplan.",
+      "Measure build time and size with older visible rows plus fresh unvacuumed rows; do not infer production latency from warm local results.",
+      "Exercise normal task status/commit progress updates, replay/conflict/source-drift guards, bounded lock failure and rollback. Confirm owner/ACL/function/worker/relay hashes unchanged."
+    ],
+    "live_acceptance": "Root performs one combined authenticated status measurement under unchanged deadlines plus independent worker-progress observation. Delivery-only timing is insufficient; this candidate does not prove a universal absence of3s lock contention.",
+    "deferred_query_rewrite": "If the capability anti-join is the dominant estimated/executed path, a distinct-kind-first rewrite can reduce repeated capability checks. Do not assert exact time-boundary equivalence casually: the current predicate evaluates volatile clock_timestamp() and worker expiry can cross during the query. Keep it unchanged for the index-only first candidate."
+  },
+  "publication": "Do not delay v69 for this unimplemented candidate. Record the8s inner-status timeout, unchanged approval pins, and the guarded plain-EXPLAIN next step.",
+  "no_actions": {
+    "production_calls": 0,
+    "database_mutations": 0,
+    "code_or_auth_changes": 0,
+    "worker_changes": 0,
+    "relay_package_changes": 0
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "version": "replacement-runtime-status-estimated-plan-v2",
+  "probe_sha256": "3437402e159aca476ca245f1056fe8dca691c7af31663ea6d4aaa636dd6f309b",
+  "read_only": true,
+  "analyze": false,
+  "statement_timeout_seconds": 8,
+  "lock_timeout_seconds": 3,
+  "outer_advisory_lock_acquired": false,
+  "actual_timing": "Unavailable; earlier ANALYZE probe exceeded8s and was not repeated",
+  "estimated_plan": [
+    {
+      "QUERY PLAN": [
+        {
+          "Plan": {
+            "Node Type": "Aggregate",
+            "Strategy": "Plain",
+            "Partial Mode": "Simple",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 2444808.52,
+            "Total Cost": 2444808.53,
+            "Plan Rows": 1,
+            "Plan Width": 32,
+            "Plans": [
+              {
+                "Node Type": "Limit",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 3.02,
+                "Total Cost": 2444808.51,
+                "Plan Rows": 1,
+                "Plan Width": 40,
+                "Plans": [
+                  {
+                    "Node Type": "Result",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 3.02,
+                    "Total Cost": 2444808.51,
+                    "Plan Rows": 1,
+                    "Plan Width": 40,
+                    "Plans": [
+                      {
+                        "Node Type": "Sort",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 3.02,
+                        "Total Cost": 3.02,
+                        "Plan Rows": 1,
+                        "Plan Width": 507,
+                        "Sort Key": [
+                          "r.created_at DESC"
+                        ],
+                        "Plans": [
+                          {
+                            "Node Type": "Seq Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Relation Name": "backfill_runs_v2",
+                            "Alias": "r",
+                            "Startup Cost": 0,
+                            "Total Cost": 3.01,
+                            "Plan Rows": 1,
+                            "Plan Width": 507
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 1",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 89.98,
+                        "Total Cost": 89.99,
+                        "Plan Rows": 1,
+                        "Plan Width": 8,
+                        "Plans": [
+                          {
+                            "Node Type": "Index Only Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Scan Direction": "Forward",
+                            "Index Name": "backfill_identity_member_symbol_v2",
+                            "Relation Name": "backfill_members_v2",
+                            "Alias": "m",
+                            "Startup Cost": 0.28,
+                            "Total Cost": 82.48,
+                            "Plan Rows": 3000,
+                            "Plan Width": 0,
+                            "Index Cond": "(run_id = r.id)"
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 2",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 111543.48,
+                        "Total Cost": 111543.49,
+                        "Plan Rows": 1,
+                        "Plan Width": 32,
+                        "Plans": [
+                          {
+                            "Node Type": "Subquery Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Alias": "z",
+                            "Startup Cost": 111455.08,
+                            "Total Cost": 111534.64,
+                            "Plan Rows": 3536,
+                            "Plan Width": 58,
+                            "Plans": [
+                              {
+                                "Node Type": "Aggregate",
+                                "Strategy": "Hashed",
+                                "Partial Mode": "Simple",
+                                "Parent Relationship": "Subquery",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Startup Cost": 111455.08,
+                                "Total Cost": 111499.28,
+                                "Plan Rows": 3536,
+                                "Plan Width": 82,
+                                "Group Key": [
+                                  "backfill_tasks_v2.family",
+                                  "backfill_tasks_v2.kind",
+                                  "backfill_tasks_v2.provider",
+                                  "backfill_tasks_v2.status"
+                                ],
+                                "Planned Partitions": 0,
+                                "Plans": [
+                                  {
+                                    "Node Type": "Seq Scan",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Relation Name": "backfill_tasks_v2",
+                                    "Alias": "backfill_tasks_v2",
+                                    "Startup Cost": 0,
+                                    "Total Cost": 100291.2,
+                                    "Plan Rows": 637936,
+                                    "Plan Width": 50,
+                                    "Filter": "(run_id = r.id)"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 4",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 2333166.98,
+                        "Total Cost": 2333166.99,
+                        "Plan Rows": 1,
+                        "Plan Width": 32,
+                        "Plans": [
+                          {
+                            "Node Type": "Sort",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 2331579.85,
+                            "Total Cost": 2332373.41,
+                            "Plan Rows": 317426,
+                            "Plan Width": 15,
+                            "Sort Key": [
+                              "st.kind"
+                            ],
+                            "Plans": [
+                              {
+                                "Node Type": "Index Only Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Scan Direction": "Forward",
+                                "Index Name": "backfill_tasks_provider_v2",
+                                "Relation Name": "backfill_tasks_v2",
+                                "Alias": "st",
+                                "Startup Cost": 0.42,
+                                "Total Cost": 2299395.86,
+                                "Plan Rows": 317426,
+                                "Plan Width": 15,
+                                "Index Cond": "((run_id = r.id) AND (status = ANY ('{PENDING,RETRY_WAIT}'::text[])))",
+                                "Filter": "(NOT EXISTS(SubPlan 3))",
+                                "Plans": [
+                                  {
+                                    "Node Type": "Seq Scan",
+                                    "Parent Relationship": "SubPlan",
+                                    "Subplan Name": "SubPlan 3",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Relation Name": "backfill_workers_v2",
+                                    "Alias": "w",
+                                    "Startup Cost": 0,
+                                    "Total Cost": 3.58,
+                                    "Plan Rows": 1,
+                                    "Plan Width": 0,
+                                    "Filter": "((supported_kinds ? st.kind) AND (observed_at > (clock_timestamp() - '00:10:00'::interval)))"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 5",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 2.37,
+                        "Total Cost": 2.38,
+                        "Plan Rows": 1,
+                        "Plan Width": 32,
+                        "Plans": [
+                          {
+                            "Node Type": "Index Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Scan Direction": "Forward",
+                            "Index Name": "backfill_provider_dependencies_v2_pkey",
+                            "Relation Name": "backfill_provider_dependencies_v2",
+                            "Alias": "d",
+                            "Startup Cost": 0.15,
+                            "Total Cost": 2.37,
+                            "Plan Rows": 1,
+                            "Plan Width": 296,
+                            "Index Cond": "(run_id = r.id)"
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 6",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 2.35,
+                        "Total Cost": 2.36,
+                        "Plan Rows": 1,
+                        "Plan Width": 8,
+                        "Plans": [
+                          {
+                            "Node Type": "Index Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Scan Direction": "Forward",
+                            "Index Name": "backfill_tasks_recovery_turn_v2",
+                            "Relation Name": "backfill_tasks_v2",
+                            "Alias": "st_1",
+                            "Startup Cost": 0.12,
+                            "Total Cost": 2.35,
+                            "Plan Rows": 1,
+                            "Plan Width": 8,
+                            "Index Cond": "(run_id = r.id)",
+                            "Filter": "(status = 'RETRY_WAIT'::text)"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

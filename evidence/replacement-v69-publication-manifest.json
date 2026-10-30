@@ -1,0 +1,325 @@
+{
+  "version": "replacement-v69-explicit-publication-manifest",
+  "canonical_checkpoint_version": 69,
+  "prepared_at": "2026-10-30T10:31:12.217990+00:00",
+  "state": "READY_FOR_CONTROLLED_PUBLICATION",
+  "do_not_publish": false,
+  "do_not_publish_current_draft": false,
+  "base_branch_revision": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+  "base_tree": "4695051e938ff78a7ef91b018981843fc6ac8f30",
+  "previous_checkpoint_commit": "d4d684c965eca11e2daecca7bce52e44419664d1",
+  "publication_paths": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+    "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+    "docs/history/INGESTION_COMPLETION_STATE_v68.md",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v68.md",
+    "evidence/replacement-independent-progress-1019-v69.json",
+    "evidence/replacement-independent-progress-1025-v69.json",
+    "evidence/replacement-bf69-web-live-v2.json",
+    "evidence/replacement-76fad-release-gates-v2.json",
+    "evidence/replacement-runtime-status-explain-probe-v2.sql",
+    "evidence/replacement-runtime-status-estimated-plan-probe-v2.sql",
+    "evidence/replacement-runtime-status-estimated-plan-v2.json",
+    "evidence/replacement-runtime-status-source-index-inventory-v2.json",
+    "evidence/replacement-managed-relay-expired-approval-receipt-v2.json",
+    "evidence/replacement-managed-relay-postexpiry-edge-readback-v2.json",
+    "evidence/replacement-managed-relay-transport-diagnosis-v2.json",
+    "evidence/replacement-managed-relay-native-probe-qualification-v2.json",
+    "review/relay-transport-v2/native_readonly_probe.sql",
+    "review/relay-transport-v2/native_readonly_probe.py",
+    "review/relay-transport-v2/test_native_readonly_probe.py",
+    "review/relay-transport-v2/README.md"
+  ],
+  "payload_count": 21,
+  "groups": {
+    "canonical_documents": [
+      "docs/INGESTION_COMPLETION_STATE.md",
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+    ],
+    "v68_history": [
+      "docs/history/INGESTION_COMPLETION_STATE_v68.md",
+      "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v68.md"
+    ],
+    "current_progress_deployment_and_ci": [
+      "evidence/replacement-independent-progress-1019-v69.json",
+      "evidence/replacement-independent-progress-1025-v69.json",
+      "evidence/replacement-bf69-web-live-v2.json",
+      "evidence/replacement-76fad-release-gates-v2.json"
+    ],
+    "bounded_status_diagnosis": [
+      "evidence/replacement-runtime-status-explain-probe-v2.sql",
+      "evidence/replacement-runtime-status-estimated-plan-probe-v2.sql",
+      "evidence/replacement-runtime-status-estimated-plan-v2.json",
+      "evidence/replacement-runtime-status-source-index-inventory-v2.json"
+    ],
+    "current_relay_hold_and_transport_evidence": [
+      "evidence/replacement-managed-relay-expired-approval-receipt-v2.json",
+      "evidence/replacement-managed-relay-postexpiry-edge-readback-v2.json",
+      "evidence/replacement-managed-relay-transport-diagnosis-v2.json",
+      "evidence/replacement-managed-relay-native-probe-qualification-v2.json"
+    ],
+    "read_only_native_preparation": [
+      "review/relay-transport-v2/native_readonly_probe.sql",
+      "review/relay-transport-v2/native_readonly_probe.py",
+      "review/relay-transport-v2/test_native_readonly_probe.py",
+      "review/relay-transport-v2/README.md"
+    ],
+    "original_instruction_source": [
+      "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md"
+    ]
+  },
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 51146,
+      "sha256": "5cde0f808bad7fbb88bd322bf8388d1fd4e9b51afc64884822a31dfda41ac571"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 37304,
+      "sha256": "965640e42eff28ca032b87760a167498d88419d40a30ea844e1bb9700df0950b"
+    },
+    {
+      "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+      "bytes": 23046,
+      "sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v68.md",
+      "bytes": 18779,
+      "sha256": "c6568bc5a337e69dd59325249cd6fb3d7b9e416e66707058f8a80ca0808e93b5"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v68.md",
+      "bytes": 34090,
+      "sha256": "d9ceb57c2f8d6f6c69414baeffef89b55a8bc24ebfb30387a667bb11673e2b45"
+    },
+    {
+      "path": "evidence/replacement-independent-progress-1019-v69.json",
+      "bytes": 3734,
+      "sha256": "30d8160e3ffe652074955cdf5c600a7f47f765ee1b4a8e9c153e8959b0ddf94a"
+    },
+    {
+      "path": "evidence/replacement-independent-progress-1025-v69.json",
+      "bytes": 1736,
+      "sha256": "508f01414e54e51afd9608dd553b80e116037f422edafc7078f134081cab4798"
+    },
+    {
+      "path": "evidence/replacement-bf69-web-live-v2.json",
+      "bytes": 1500,
+      "sha256": "3c668cde80dbfaf1848ebbf7db394b41fa99d6c68d42e61fc7a5f8db69eb5341"
+    },
+    {
+      "path": "evidence/replacement-76fad-release-gates-v2.json",
+      "bytes": 7914,
+      "sha256": "8af92ed1e3345c17e02951e9ad89209bb3b6d4e215f1c804e49ba318d6d98016"
+    },
+    {
+      "path": "evidence/replacement-runtime-status-explain-probe-v2.sql",
+      "bytes": 3167,
+      "sha256": "1ba3d8c5bf5ba329ac73fb8c33662eed8b78058c0e5ea3b2615f875567721e8b"
+    },
+    {
+      "path": "evidence/replacement-runtime-status-estimated-plan-probe-v2.sql",
+      "bytes": 3315,
+      "sha256": "3437402e159aca476ca245f1056fe8dca691c7af31663ea6d4aaa636dd6f309b"
+    },
+    {
+      "path": "evidence/replacement-runtime-status-estimated-plan-v2.json",
+      "bytes": 13456,
+      "sha256": "c66797d857ba3aef8d4df397f755ef65c8a2150a55383275b771ae203eb48692"
+    },
+    {
+      "path": "evidence/replacement-runtime-status-source-index-inventory-v2.json",
+      "bytes": 9240,
+      "sha256": "5b60b173a940927b8c6de51757f51aef68990acaba2a7ac19a5019af99f7ef78"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-expired-approval-receipt-v2.json",
+      "bytes": 10290,
+      "sha256": "83b6398ba6856b0ae79125e82214edf96a5325bab5ad8216d7d0c860e10eb175"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-postexpiry-edge-readback-v2.json",
+      "bytes": 802,
+      "sha256": "98a48069ba1ab0450b5a1b453cb2893e265cbb225f15d150393d9733ecf0ebb4"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-transport-diagnosis-v2.json",
+      "bytes": 9427,
+      "sha256": "ce8e65b955b5f2987a3adb197c3d154ff8311943cc8bc69685469e85e62c95f6"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-native-probe-qualification-v2.json",
+      "bytes": 4618,
+      "sha256": "88aae67cda677c6f0cee1d5fd711a0838c5dc667c17d40c8960a865fa5c60810"
+    },
+    {
+      "path": "review/relay-transport-v2/native_readonly_probe.sql",
+      "bytes": 712,
+      "sha256": "2a292e5b12394f0c5b4ddc455f7c04291ff61956c5b2565e302e8e9d526b526e"
+    },
+    {
+      "path": "review/relay-transport-v2/native_readonly_probe.py",
+      "bytes": 6855,
+      "sha256": "fa4040e05beb96f915f4f6d7a89835b08fefdd4ec26d2ce5821e924fb872d932"
+    },
+    {
+      "path": "review/relay-transport-v2/test_native_readonly_probe.py",
+      "bytes": 4568,
+      "sha256": "2c131f5b19449cce721f9b4de1217f779691bb809e3b4c1fc467c70031800cd5"
+    },
+    {
+      "path": "review/relay-transport-v2/README.md",
+      "bytes": 6733,
+      "sha256": "33bf30bcfb6595ac4fcbf18aba46d71f9c5c40635d298049f760fc555f07d8fc"
+    }
+  ],
+  "manifest_path": "evidence/replacement-v69-publication-manifest.json",
+  "publish_this_manifest_itself_in_addition_to_payload_paths": true,
+  "total_files_including_manifest": 22,
+  "publication_performed_by_agent": false,
+  "root_action": "Compare-and-swap publish exactly these21payloads plus thismanifest from the reconciled source head; original instruction copied byte-exact, no speculative runtime or relay activation included.",
+  "already_published_release_payloads_not_duplicated": {
+    "bf69_revision": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+    "bf69_payload_count": 12,
+    "report_revision": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+    "report_payload_count": 20
+  },
+  "owner": "root-replacement-20261030T042603Z",
+  "owner_lease_until": "2026-10-30T10:55:00Z",
+  "lease_audit": 16,
+  "lease_renewed_at": "2026-10-30T10:16:48.427913Z",
+  "owner_release_recorded": false,
+  "automation": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "updated_at": "2026-10-30T10:18:12.209478Z",
+    "same_existing_task": true,
+    "schedule_changed": false,
+    "next_hourly": "2026-10-30T11:00:00Z",
+    "original_ten_sections_preserved": true
+  },
+  "latest_progress": {
+    "observed_at": "2026-10-30T10:25:43.039641Z",
+    "status": "ACTIVE",
+    "fence": 1,
+    "pages_committed": 3725,
+    "records_and_retained_pointers": 452794,
+    "requests_reserved": 1836,
+    "source_bytes": 391913504,
+    "readbacks": 3725,
+    "unread_pages": 0,
+    "last_progress_at": "2026-10-30T10:25:42.511234Z",
+    "planning_complete": false,
+    "member_cursor": "Not returned",
+    "operational_error_tasks": "Not returned in latestsample;zero at10:17:32 only",
+    "worker_process": "540f919f-4a2f-4b8f-a6ab-3a28da1de8e2",
+    "worker_heartbeat_at": "2026-10-30T10:25:42.613881Z",
+    "delta_from_0953": {
+      "pages": 580,
+      "records_or_pointers": 70757,
+      "reservations": 291
+    },
+    "unique_observation_or_complete_coverage_claimed": false
+  },
+  "deployments": {
+    "web": {
+      "id": "dep-dbi6h1rbc2fs73a8fk00",
+      "source_revision": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "state": "live",
+      "finished_at": "2026-10-30T09:51:57.224633Z",
+      "selected_before_branch_advance": true,
+      "fresh_authenticated_browser_e2e_claimed": false
+    },
+    "worker": {
+      "id": "dep-dbi4gvrbc2fs73a3b2fg",
+      "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+      "source_file_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+      "deployment_unchanged": true,
+      "sustained_reliability_proven": false
+    }
+  },
+  "qualification": {
+    "selected_bf69_head_all_four_gates": "PASSED_ATTEMPT1",
+    "later_76fad_head_all_four_workflows_and_jobs": "PASSED_ATTEMPT1",
+    "later_76fad_ingestion_tests_each": 571,
+    "new_readonly_native_preparation": {
+      "guard_tests": 7,
+      "guards": "PASSED",
+      "syntax": "PASSED",
+      "actual_disposable_local_pg_exact_byte_read_only_probe": "PASSED",
+      "independent_review": "ACCEPTED_AFTER_HOSTADDR_FIX",
+      "production_ready": false,
+      "activation_runner": false
+    },
+    "new_checkpoint_artifacts_already_run_in_remote_exact_head_ci": false
+  },
+  "current_runtime_issue": {
+    "sqlstate": "55P03",
+    "recurring_restarts": true,
+    "holder_operation_identified": false,
+    "all_failures_attributed_to_web": false,
+    "delivery_only_success_ms": 1657.548,
+    "delivery_deadline_seconds": 8,
+    "inner_analyze_readonly_result": "SQLSTATE57014_NO_COMPLETED_PLAN",
+    "automatic_retry": false,
+    "deadline_increased": false,
+    "guarded_plain_explain": "PASSED_WITHOUT_AGGREGATION_EXECUTION",
+    "estimated_unsupported_kind_cost": 2333166.99,
+    "estimated_grouped_task_cost": 111543.49,
+    "costs_are_milliseconds": false,
+    "actual_combined_timing_available": false,
+    "next_executable": "Qualify and measure narrowly targeted output/freshness-preserving unsupported-kind status-query optimization, preservingauth/worker/relaypins and originalbounds",
+    "speculative_repair_published_or_applied": false
+  },
+  "relay": {
+    "state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+    "review_id": "managed-massive-relay-v2-review-20261030",
+    "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+    "sql_sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "original_approval_at": "2026-10-30T09:53:00Z",
+    "approval_precision": "Minute adopted by current user, represented conservatively at minute start",
+    "approval_ref": "Sentinel_2bd8b52631f081918ab63db69e720cb5",
+    "approval_recorded_at": "2026-10-30T09:59:13.879655Z",
+    "approval_audit": 12,
+    "single_attempt_at": "2026-10-30T09:59:47.861000Z",
+    "single_attempt_outcome": "P0001_PRE_DDL_PREFLIGHT_REJECTION",
+    "expiry": "2026-10-30T10:08:00Z",
+    "hold_audit": 14,
+    "hold_audit_at": "2026-10-30T10:11:10.683584Z",
+    "next_action_audit": 15,
+    "next_action_at": "2026-10-30T10:16:48.427547Z",
+    "latest_ledger_helper_absence": "2026-10-30T10:17:32.595037Z",
+    "authenticated_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "candidate_applied": false,
+    "edge_deployed": false,
+    "worker_integrated": false,
+    "package_or_validator_changed": false,
+    "approval_redated_or_extended": false,
+    "secrets_read_or_exported": false,
+    "new_credentials_or_trust_relationships": false,
+    "existing_supported_production_transport_verified": false,
+    "production_ready": false,
+    "next_action": "Read-only readiness through existing authorized exact-byte transport, then genuine renewal for unchanged package only when executable; renewal alone does not fix transport"
+  },
+  "local_document_verification": {
+    "all_selected_paths_exist_and_hashes_recorded": true,
+    "all_checkpoint_relative_links_resolve": true,
+    "history_v68_checkpoint_sha256": "c6568bc5a337e69dd59325249cd6fb3d7b9e416e66707058f8a80ca0808e93b5",
+    "history_v68_prompt_sha256": "d9ceb57c2f8d6f6c69414baeffef89b55a8bc24ebfb30387a667bb11673e2b45",
+    "history_byte_identical": true,
+    "original_ten_section_mission_tail_byte_identical": true,
+    "mission_tail_sha256": "09e841c22d086e1552f027af41ad80af5878f2396f8b716f6a32bbfa32199fe8",
+    "frozen_relay_sql_and_worker_source_hashes_verified": true,
+    "frozen_native_preparation_hashes_verified": true,
+    "active_source_edits_by_document_agent": 0,
+    "remote_or_postgresql_calls_by_document_agent": 0,
+    "new_tests_run_by_document_agent": 0,
+    "original_instruction_source_byte_identical_to_upload": true,
+    "original_instruction_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+    "original_instruction_bytes": 23046,
+    "existing_mission_link_and_database_instruction_path_resolved": true
+  },
+  "pending_final_inputs": []
+}

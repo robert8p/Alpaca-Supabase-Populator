@@ -1,0 +1,170 @@
+{
+  "version": "fixed3000-76fad-release-gates-v2",
+  "repo": "robert8p/Alpaca-Supabase-Populator",
+  "head_sha": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+  "controller_reported_tree_sha": "4695051e938ff78a7ef91b018981843fc6ac8f30",
+  "observed_at": "2026-10-30T10:00:28Z",
+  "qualification": "ALL_FOUR_EXACT_HEAD_WORKFLOWS_AND_JOBS_PASSED",
+  "gates": [
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41036596568,
+      "job_id": 123998832635,
+      "head_sha": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+      "run_attempt": 1,
+      "run_number": 1417,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:52:31Z",
+      "run_started_at": "2026-10-30T09:52:31Z",
+      "updated_at": "2026-10-30T09:53:10Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41036596568",
+      "case_counts": {
+        "passed": 668,
+        "skipped": 286,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 11.55
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:53:07.0166985Z 668 passed, 286 skipped, 1 warning in 11.55s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41036596483,
+      "job_id": 123998832921,
+      "head_sha": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+      "run_attempt": 1,
+      "run_number": 371,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:52:31Z",
+      "run_started_at": "2026-10-30T09:52:31Z",
+      "updated_at": "2026-10-30T09:56:46Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41036596483",
+      "case_counts": {
+        "tests": 571,
+        "passed": 571,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 224.196
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:56:40.7071827Z Ran 571 tests in 224.196s",
+        "2026-10-30T09:56:40.7072147Z OK"
+      ]
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41036590793,
+      "job_id": 123998813384,
+      "head_sha": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+      "run_attempt": 1,
+      "run_number": 1416,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:52:28Z",
+      "run_started_at": "2026-10-30T09:52:28Z",
+      "updated_at": "2026-10-30T09:53:08Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41036590793",
+      "case_counts": {
+        "passed": 668,
+        "skipped": 286,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 11.8
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:53:04.9873414Z 668 passed, 286 skipped, 1 warning in 11.80s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41036590740,
+      "job_id": 123998812882,
+      "head_sha": "76fad254921d7f778d75ec81844c64ee0f14ffd2",
+      "run_attempt": 1,
+      "run_number": 370,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T09:52:28Z",
+      "run_started_at": "2026-10-30T09:52:28Z",
+      "updated_at": "2026-10-30T09:56:35Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41036590740",
+      "case_counts": {
+        "tests": 571,
+        "passed": 571,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 219.834
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T09:53:31.0041828Z test_mixed_pointer_and_derived_pages_preserve_existing_role_group_join_semantics (test_backfill_family_report_performance_v2.FamilyReportPerformanceTests.test_mixed_pointer_and_derived_pages_preserve_existing_role_group_join_semantics) ... ok",
+        "2026-10-30T09:54:07.2010214Z test_exact_predicate_full_status_permissions_and_status_updates (test_backfill_minute_alias_index_v2.MinuteAliasIndexTests.test_exact_predicate_full_status_permissions_and_status_updates) ... ok",
+        "2026-10-30T09:54:07.3654745Z test_replay_conflicting_name_and_schema_drift_fail_before_creation (test_backfill_minute_alias_index_v2.MinuteAliasIndexTests.test_replay_conflicting_name_and_schema_drift_fail_before_creation) ... ok",
+        "2026-10-30T09:54:18.8174429Z test_transactional_build_has_bounded_lock_failure_and_blocks_only_writes (test_backfill_minute_alias_index_v2.MinuteAliasIndexTests.test_transactional_build_has_bounded_lock_failure_and_blocks_only_writes) ... ok",
+        "2026-10-30T09:54:34.8326097Z test_wide_scale_build_and_covering_count_retry_plans_preserve_full_status (test_backfill_minute_alias_index_v2.MinuteAliasIndexTests.test_wide_scale_build_and_covering_count_retry_plans_preserve_full_status) ... ok",
+        "2026-10-30T09:55:47.4818729Z test_all_statuses_and_native_p02_alias_exclusions_preserve_full_family_json (test_backfill_status_index_counts_v2.StatusIndexCountsTests.test_all_statuses_and_native_p02_alias_exclusions_preserve_full_family_json) ... ok",
+        "2026-10-30T09:56:24.2022586Z test_mixed_case_retained_warrant_symbol_is_not_silently_excluded (test_bulk_ref01_ticker_projection.Ref01TickerProjectionTests.test_mixed_case_retained_warrant_symbol_is_not_silently_excluded) ... ok",
+        "2026-10-30T09:56:31.7732869Z Ran 571 tests in 219.834s",
+        "2026-10-30T09:56:31.7733429Z OK"
+      ]
+    }
+  ],
+  "active_regression_limits": {
+    "news_rpc_seconds_strictly_below": 12,
+    "maximum_options_page_seconds_strictly_below": 15,
+    "each_extracted_generic_custom_projection_statement_milliseconds_strictly_below": 2500
+  },
+  "ingestion_application_syntax": "PASSED_IN_BOTH_JOBS",
+  "controller_reported_live_report_recovery": {
+    "source": "Existing controller message; observer made no database or Render calls",
+    "index_first_attempt": "Timed out; reconciled absent before retry",
+    "index_second_attempt": "Valid and ready at 2026-10-30T09:48:05Z",
+    "actual_delivery_report": {
+      "families": 16,
+      "seconds": 1.657548,
+      "deadline_seconds": 8,
+      "result": "PASSED"
+    },
+    "scope": "Delivery report measurement does not establish the duration of the older combined backfill_status RPC"
+  },
+  "deployment": {
+    "source": "Existing controller message; not independently read by this observer",
+    "selected_web_head": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+    "deployment_id": "dep-dbi6h1rbc2fs73a8fk00",
+    "selected_at": "2026-10-30T09:51:03Z",
+    "selection_preceded_branch_advance": true,
+    "this_head_selected_for_web": false,
+    "source_delta_description": "Controller reports SQL, tests and recovery evidence only"
+  },
+  "remaining_operational_investigation": {
+    "state": "SOURCE_REVIEW_COMPLETE_LIVE_TIMING_PENDING",
+    "controller_reported_symptom": "Worker 55P03 while acquiring shared RPC advisory lock",
+    "finding": "Web backfill_status invokes the original runtime full-task summary plus delivery report under the same global advisory transaction lock. Recent delivery-view repairs do not replace the original task aggregation or unsupported-kind scan.",
+    "potential_effect": "A combined status call longer than the worker lock timeout could block worker lock acquisition; exact causation remains unmeasured by this observer",
+    "runtime_deadlines_changed": false
+  },
+  "observer_actions": {
+    "github_reads_only": true,
+    "workflow_reruns_requested": 0,
+    "remote_mutations": 0,
+    "additional_tests_run": 0,
+    "supabase_calls": 0,
+    "render_calls": 0,
+    "postgresql_calls": 0
+  }
+}

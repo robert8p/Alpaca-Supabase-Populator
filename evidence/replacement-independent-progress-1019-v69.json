@@ -1,0 +1,105 @@
+{
+  "version": "replacement-independent-progress-1019-v69",
+  "runtime_readback": {
+    "observed_at": "2026-10-30 10:17:32.595037+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "pages_committed": 3605,
+    "records_committed": 438375,
+    "requests_reserved": 1776,
+    "source_bytes": 381925635,
+    "last_progress_at": "2026-10-30 10:15:59.966677+00",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T10:55:00Z",
+    "planning_complete": "false",
+    "readbacks": 3605,
+    "unread_pages": 0,
+    "operational_error_tasks": 0,
+    "relay_ledger": null,
+    "relay_helper": null,
+    "rpc_dispatch_sha256": "8a6231d861840558bbdc210fa5cc5c65935d2130d7690aa03b33b90806f14d7c"
+  },
+  "rpc_source_hash_semantics": "runtime_readback.rpc_dispatch_sha256 is SHA256(prosrc), not the reviewed SHA256(pg_get_functiondef). Definition SHA remains0616b84e... as separately recorded.",
+  "authenticated_dispatch_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+  "worker_observation": [
+    {
+      "worker_id": "5d1b916a-9e25-4d97-a531-ed61ce16f4de",
+      "observed_at": "2026-10-30T10:18:59.697257+00:00",
+      "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    },
+    {
+      "worker_id": "ee86f236-745d-4f32-8739-585ba22c6524",
+      "observed_at": "2026-10-30T10:15:59.0997+00:00",
+      "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    }
+  ],
+  "active_session_observation": [
+    {
+      "pid": 1224537,
+      "state": "active",
+      "wait_event": "DataFileRead",
+      "blocking_pids": [],
+      "wait_event_type": "IO",
+      "query_age_seconds": 1.779129,
+      "transaction_age_seconds": 1.779777,
+      "known_status_text_present": false
+    },
+    {
+      "pid": 1226418,
+      "state": "active",
+      "wait_event": "transactionid",
+      "blocking_pids": [
+        1223210
+      ],
+      "wait_event_type": "Lock",
+      "query_age_seconds": 0.165462,
+      "transaction_age_seconds": 0.210395,
+      "known_status_text_present": false
+    },
+    {
+      "pid": 1226438,
+      "state": "active",
+      "wait_event": "advisory",
+      "blocking_pids": [
+        1224537
+      ],
+      "wait_event_type": "Lock",
+      "query_age_seconds": 1.016604,
+      "transaction_age_seconds": 1.01735,
+      "known_status_text_present": false
+    }
+  ],
+  "unresolved_operational_issue": "Repeated55P03 advisory-lock contention and worker exit1/restarts; active I/O holder/advisory waiter observed but holder operation not established.",
+  "inner_status_probe": {
+    "file": "evidence/replacement-runtime-status-explain-probe-v2.sql",
+    "sha256": "1ba3d8c5bf5ba329ac73fb8c33662eed8b78058c0e5ea3b2615f875567721e8b",
+    "result": "SQLSTATE57014 statement timeout; no completed execution plan",
+    "statement_timeout_seconds": 8,
+    "lock_timeout_seconds": 3,
+    "readonly": true,
+    "outer_advisory_lock_acquired": false,
+    "automatic_retry": false,
+    "deadline_increased": false
+  },
+  "counts_are": "Overlapping source/derived records and retained pointers; not unique observations or proof of complete coverage.",
+  "ownership_audit": [
+    {
+      "id": 15,
+      "action": "MASSIVE_RELAY_UNCHANGED_PACKAGE_HOLD_RECONCILED",
+      "recorded_at": "2026-10-30 10:16:48.427547+00"
+    },
+    {
+      "id": 16,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 10:16:48.427913+00"
+    }
+  ],
+  "automation": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "updated_at": "2026-10-30T10:18:12.209478+00:00",
+    "same_existing_task": true,
+    "schedule_changed": false,
+    "last_recorded_run": "2026-10-30T10:00:01.560989+00:00",
+    "scope_and_original_ten_sections_preserved": true
+  }
+}
