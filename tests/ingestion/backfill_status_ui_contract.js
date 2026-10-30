@@ -62,6 +62,36 @@ async function run() {
   assert.match(text("backfill-body"), /repeated appearances/);
   assert.equal(text("backfill-coverage-state"), "Not established");
 
+  const shared = JSON.parse(JSON.stringify(detailed));
+  const sharedCoverage = shared.delivery.runs[1].families[0].nonminute_coverage;
+  sharedCoverage.source_count_basis = "PROVIDER_RECORD_KEYS_DEDUPLICATED_WITH_EXPLICIT_CONTENT_FALLBACKS_NO_CROSS_PROVIDER_MATCHING";
+  sharedCoverage.shared_records = {unique_articles: 2, article_security_links: 4,
+    verified_source_occurrences: 3, source_versions: 2, conflicting_records: 1,
+    projection_pending_verified_pages: 5, cross_provider_matching: "NOT_ASSERTED"};
+  sharedCoverage.fields[0].record_type = "ARTICLE";
+  shared.delivery.runs[1].families.push({family: "CTX02", committed_records: 120,
+    nonminute_coverage: {shared_records: {unique_contract_references: 5, unique_contract_session_bars: 120, non_session_option_bar_records: 2,
+      verified_source_occurrences: 126, source_versions: 125, cross_provider_matching: "NOT_ASSERTED",
+      contract_work: {registered_contract_windows: 5, unreconciled_verified_enumeration_pages: 3,
+        existing_overlap_contract_links: 2, expected_contract_population: null}}}});
+  shared.delivery.runs[1].families.push({family: "N03", nonminute_coverage: {
+    shared_records: {boundary_support_events: 2, shared_action_workflows: {open_units: 7}}}});
+  context.renderBackfill(shared);
+  assert.match(text("backfill-body"), /2 unique provider articles · 4 article\/security links/);
+  assert.match(text("backfill-body"), /3 verified source appearances · 2 retained versions/);
+  assert.match(text("backfill-body"), /5 contract references · 120 contract\/session daily bars/);
+  assert.match(text("backfill-body"), /2 option bar records have no verified market date/);
+  assert.match(text("backfill-body"), /5 registered contract\/windows · 3 verified enumeration pages await successor admission/);
+  assert.match(text("backfill-body"), /Earlier overlapping requests remain executable/);
+  assert.match(text("backfill-body"), /5 verified pages await deduplicated counts/);
+  assert.match(text("backfill-body"), /1 records have conflicting provider versions/);
+  assert.match(text("backfill-body"), /7 open shared corporate-action units/);
+  assert.match(text("backfill-body"), /2 events support the target window/);
+  assert.match(text("backfill-body"), /Field availability for unique provider records/);
+  assert.match(text("backfill-body"), /Records from different providers retain separate identities/);
+  assert.doesNotMatch(nodes.get("backfill-body").children[14].textContent, /Historical article attribution/);
+  assert.equal(text("backfill-coverage-state"), "Not established");
+
   context.renderBackfill({runs:[{id:"minimal-run",status:"ACTIVE"}]});
   assert.equal(nodes.get("backfill-body").children.length, 16);
   assert.equal(text("backfill-plan-state"), "Unknown");

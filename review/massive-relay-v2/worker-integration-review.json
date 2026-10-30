@@ -1,0 +1,11 @@
+{
+  "state": "REVIEW_ONLY_NOT_APPLIED",
+  "base_commit": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "base_worker_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+  "proposed_worker_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+  "patch_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+  "worker_file_unchanged": true,
+  "new_environment_configuration": false,
+  "changes": "Wrap the existing provider in the managed relay adapter only for the existing RPC deployment, preserving direct configured credentials. Constructor readiness is authenticated; no provider key export.",
+  "new_credential_recipient": "Existing worker capability token sent over HTTPS to the existing same-project Edge function, which forwards it only to the fixed existing RPC endpoint. Requires action-time user confirmation."
+}

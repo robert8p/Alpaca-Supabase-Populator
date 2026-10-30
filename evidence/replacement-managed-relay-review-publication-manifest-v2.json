@@ -1,0 +1,186 @@
+{
+  "state": "DURABLE_REVIEW_ONLY_PUBLICATION_PACKAGE_NOT_APPLIED",
+  "created_at": "2026-10-30T07:53:57.969143+00:00",
+  "publication_is_not_activation": true,
+  "requires_explicit_action_time_confirmation_for_relay_activation": true,
+  "review_id": "managed-massive-relay-v2-review-20261030",
+  "review_scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+  "frozen_original_manifest": "evidence/replacement-managed-relay-review-manifest-v2.json",
+  "frozen_original_manifest_sha256": "e9c3cf4664c9d04f525bf015deb09fb6113ba95cc358fe88cc94dafdbedf9f32",
+  "active_source_paths_must_remain_unpublished": [
+    "sql/astra_backfill_massive_relay_v2.sql",
+    "supabase/functions/population-top3000-news-v1/index.ts",
+    "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+    "astra_ingestion/backfill_massive_relay_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+    "tests/ingestion/managed_massive_relay_v2.test.mjs",
+    "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py"
+  ],
+  "publication_paths": [
+    "review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql",
+    "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/index.ts",
+    "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+    "review/massive-relay-v2/candidates/astra_ingestion/backfill_massive_relay_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/managed_massive_relay_v2.test.mjs",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+    "review/massive-relay-v2/worker-integration.patch",
+    "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+    "review/massive-relay-v2/worker-integration-review.json",
+    "evidence/replacement-managed-relay-review-scope-v2.json",
+    "evidence/replacement-managed-relay-qualification-v2.json",
+    "evidence/replacement-managed-relay-security-review-v2.md",
+    "evidence/replacement-managed-relay-rpc-auth.diff",
+    "evidence/replacement-managed-relay-edge-handler.diff",
+    "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+    "evidence/replacement-apply-migration-wrapper-template.txt",
+    "evidence/replacement-managed-relay-review-manifest-v2.json"
+  ],
+  "credential_content_policy": "No live credential values were accessed or added. Existing source reads managed credentials only at runtime; tests contain explicitly synthetic credentials. Existing authentication evidence omits values; transport template account identifier is redacted.",
+  "files": [
+    {
+      "source_path": "sql/astra_backfill_massive_relay_v2.sql",
+      "publish_path": "review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql",
+      "bytes": 21525,
+      "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "supabase/functions/population-top3000-news-v1/index.ts",
+      "publish_path": "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/index.ts",
+      "bytes": 15812,
+      "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+      "publish_path": "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+      "bytes": 12575,
+      "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "astra_ingestion/backfill_massive_relay_v2.py",
+      "publish_path": "review/massive-relay-v2/candidates/astra_ingestion/backfill_massive_relay_v2.py",
+      "bytes": 14520,
+      "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "publish_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "bytes": 28976,
+      "sha256": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "tests/ingestion/test_backfill_massive_relay_v2.py",
+      "publish_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_v2.py",
+      "bytes": 14370,
+      "sha256": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+      "publish_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+      "bytes": 534,
+      "sha256": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "tests/ingestion/managed_massive_relay_v2.test.mjs",
+      "publish_path": "review/massive-relay-v2/candidates/tests/ingestion/managed_massive_relay_v2.test.mjs",
+      "bytes": 15309,
+      "sha256": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "publish_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "bytes": 4781,
+      "sha256": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+      "copied_to_review_namespace": true
+    },
+    {
+      "source_path": "review/massive-relay-v2/worker-integration.patch",
+      "publish_path": "review/massive-relay-v2/worker-integration.patch",
+      "bytes": 950,
+      "sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+      "publish_path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "review/massive-relay-v2/worker-integration-review.json",
+      "publish_path": "review/massive-relay-v2/worker-integration-review.json",
+      "bytes": 892,
+      "sha256": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-review-scope-v2.json",
+      "publish_path": "evidence/replacement-managed-relay-review-scope-v2.json",
+      "bytes": 5297,
+      "sha256": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-qualification-v2.json",
+      "publish_path": "evidence/replacement-managed-relay-qualification-v2.json",
+      "bytes": 7317,
+      "sha256": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-security-review-v2.md",
+      "publish_path": "evidence/replacement-managed-relay-security-review-v2.md",
+      "bytes": 16829,
+      "sha256": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-rpc-auth.diff",
+      "publish_path": "evidence/replacement-managed-relay-rpc-auth.diff",
+      "bytes": 3487,
+      "sha256": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-edge-handler.diff",
+      "publish_path": "evidence/replacement-managed-relay-edge-handler.diff",
+      "bytes": 1073,
+      "sha256": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+      "publish_path": "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+      "bytes": 8542,
+      "sha256": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-apply-migration-wrapper-template.txt",
+      "publish_path": "evidence/replacement-apply-migration-wrapper-template.txt",
+      "bytes": 774,
+      "sha256": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7",
+      "copied_to_review_namespace": false
+    },
+    {
+      "source_path": "evidence/replacement-managed-relay-review-manifest-v2.json",
+      "publish_path": "evidence/replacement-managed-relay-review-manifest-v2.json",
+      "bytes": 4055,
+      "sha256": "e9c3cf4664c9d04f525bf015deb09fb6113ba95cc358fe88cc94dafdbedf9f32",
+      "copied_to_review_namespace": false
+    }
+  ]
+}

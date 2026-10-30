@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-30T08:05:05.832365+00:00",
+  "scope": "Exact independent shared-record and contract-work status release; held relay paths are not imported or activated",
+  "command": "python -m unittest discover -s tests/ingestion -p test_backfill_web_status_v2.py -v",
+  "result": {
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "seconds": 0.298
+  },
+  "coverage": [
+    "Real ASGI authentication/read-only route and headers",
+    "Actual DOM contract and unknown/stale reporting",
+    "Bounded shared-record and contract-work schema with private nested fields stripped",
+    "Distinct storage/work/coverage units and NULL reasons",
+    "Sanitized failures without credentials"
+  ],
+  "files": [
+    {
+      "path": "astra_ingestion/backfill_status.py",
+      "sha256": "5cf6393e949db58f6b1250757fb0dce2da990b6cdd410f79f9db79d76f21bb6d"
+    },
+    {
+      "path": "astra_ingestion/static/app.js",
+      "sha256": "f4b94b1a64f08f0a6cf545821ddd4b30c9a6b9a53082afca67ea3f9e51bd7c30"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_web_status_v2.py",
+      "sha256": "0c6b9450664d299f39fe415c331aa2eb8ebad70d96c66651902c6facb4ff82f9"
+    },
+    {
+      "path": "tests/ingestion/backfill_status_ui_contract.js",
+      "sha256": "f7566f9dea5004a5ff936799485d1dc558d71ad734f79dbd52c56f8c574eaa9b"
+    }
+  ],
+  "prior_combined_qualification": "The earlier 29-case shared-delivery artifact pins the earlier status revision. Its SQL proofs remain valid, but this 12-case receipt pins the latest four status files."
+}

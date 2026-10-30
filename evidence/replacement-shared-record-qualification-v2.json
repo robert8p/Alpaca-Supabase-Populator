@@ -1,0 +1,126 @@
+{
+  "version": "fixed3000-shared-record-qualification-v2.2",
+  "qualified_at": "2026-10-30T07:41:11.499782+00:00",
+  "scope": "Local disposable PostgreSQL only; no production application or remote calls by this agent",
+  "artifacts": [
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+      "bytes": 46872
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_records_v2.py",
+      "sha256": "a9dbc30b856c97f6678997c87d2d5161b101e9f94ba9621892c9cfbbc1987e73",
+      "bytes": 21895
+    }
+  ],
+  "dependency_order": [
+    "astra_backfill_identity_v2.sql",
+    "astra_backfill_nonminute_coverage_v2.sql",
+    "astra_backfill_retained_s02_v2.sql",
+    "astra_backfill_shared_records_v2.sql"
+  ],
+  "required_direct_dependency": "Installed nonminute projection; preserves installed minute/cache/identity/S02 report wrappers",
+  "postgres_tests": {
+    "passed": 14,
+    "failed": 0,
+    "suite_seconds": 12.414,
+    "full_page_cases": {
+      "news_records": 1000,
+      "option_bar_records": 10000
+    },
+    "raw_reader_disabled_for_report_test": true,
+    "compact_status_has_no_canonical_record_archive_scan": true,
+    "actual_two_connection_gateway_and_monitor_serialization": true
+  },
+  "behaviors": [
+    "Repeated provider records deduplicate across immutable page receipts",
+    "Distinct provider source versions and occurrence pointers preserved",
+    "Article/security links deduplicate by provider article key, security symbol and link role",
+    "Provider update ordering selects a current version only when all versions supply comparable timestamps",
+    "Ambiguous source fields are NULL in canonical serving with CONFLICTING_PROVIDER_RECORD_VERSIONS",
+    "No cross-provider IDs joined",
+    "Missing IDs use explicitly marked exact-content fallback with semantic identity unknown",
+    "Alpaca forward/reverse/unit split groups reference the same original N02 page in N03",
+    "CTX02 contract references and contract/session bars reported separately",
+    "News publication dates use America/New_York",
+    "All supplied corporate action date axes and target-boundary support retained",
+    "New verified pages project automatically; retained readbacks catch up monotonically in bounded maintenance",
+    "Original pages, hashes, readbacks, task scopes and terminal states unchanged",
+    "Expected observation denominators remain NULL"
+  ],
+  "report_schema": {
+    "nonminute_coverage_additions": [
+      "variant_count_basis",
+      "source_occurrence_fields",
+      "shared_records"
+    ],
+    "shared_records_numbers": [
+      "unique_provider_record_keys",
+      "unique_articles",
+      "unique_contract_references",
+      "unique_contract_session_bars",
+      "primary_records",
+      "target_records",
+      "support_records",
+      "after_target_records",
+      "unknown_date_records",
+      "verified_source_occurrences",
+      "source_versions",
+      "conflicting_records",
+      "fallback_content_keys",
+      "article_security_links",
+      "cohort_candidate_article_links",
+      "historically_attributed_article_links",
+      "boundary_crossing_events",
+      "boundary_support_events",
+      "projection_pending_verified_pages",
+      "non_session_option_bar_records"
+    ],
+    "shared_records_other": [
+      "cross_provider_matching",
+      "expected_applicable_records",
+      "coverage_fraction",
+      "counts_additive_across_record_types",
+      "all_original_versions_retained"
+    ],
+    "date_axes_row": [
+      "record_type",
+      "date_axis",
+      "period",
+      "records"
+    ],
+    "shared_action_workflows": [
+      "planned_units",
+      "open_units",
+      "operational_error_units",
+      "blocked_units",
+      "documented_gap_units"
+    ],
+    "unique_field_row_addition": "record_type",
+    "new_reason": "CONFLICTING_PROVIDER_RECORD_VERSIONS",
+    "existing_reason_used": "UNDECLARED_FIELD_VALIDATION",
+    "new_period": "BOUNDARY_SUPPORT",
+    "field_semantics": "New fields describe one selected provider record key; source_occurrence_fields and variants retain original physical occurrence projections and their original date classification"
+  },
+  "queryable_destinations": [
+    "backfill_family_n01_v2",
+    "backfill_family_n02_v2",
+    "backfill_family_n03_v2",
+    "backfill_family_ctx02_v2",
+    "backfill_article_security_links_v2",
+    "backfill_contract_underlying_links_v2",
+    "backfill_shared_versions_v2",
+    "backfill_shared_occurrences_v2",
+    "backfill_option_bar_underlying_links_v2"
+  ],
+  "separate_followup": "Global contract-work registry and many-parent successor lineage are not part of this frozen forward",
+  "superseded_sql_sha256": "047cc578dfb85839acb36527c8b0e6cd00591f9cd51e8ce2c2a2bece1dd785d3",
+  "review_resolution": [
+    "Normal RPC verify and direct maintenance already share global advisory706314020261028; live two-connection fixture proves monitor BUSY until verified worker transaction commits, then OBSERVED. No unestablished normal-path lock change applied.",
+    "Option bar member provenance references shared contract-underlying links without copying those links per bar; source-query member scope is retained as explicitly labeled fallback.",
+    "Provider contract symbols define reference identity consistently whether provider ID is present or omitted; conflicting/omitted IDs remain visible in source versions and are NULL in ambiguous current fields.",
+    "Undated bar content fallback retains provider envelope contract symbol/feed/timeframe; non_session_option_bar_records is separate from unique_contract_session_bars.",
+    "Ambiguous action ticker/symbol/initiating-symbol versions are NULL both in canonical source fields and top-level serving symbol; all candidate links remain available."
+  ]
+}

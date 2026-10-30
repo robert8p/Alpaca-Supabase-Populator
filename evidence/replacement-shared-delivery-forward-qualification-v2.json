@@ -1,0 +1,30 @@
+{
+  "version": "replacement-shared-delivery-forward-v2",
+  "qualified_at": "2026-10-30T07:48:30.246592+00:00",
+  "base_source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "tests_run": 29,
+  "passed": 29,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 15.716,
+  "node_syntax_exit_code": 0,
+  "source_hashes": {
+    "astra_ingestion/backfill_status.py": "61b2190e9bc0af43f7d2f1582e19956072f40c16608aa5fc96f7384d92d6b6d3",
+    "astra_ingestion/static/app.js": "da60c19cde16bea77f016e5e01a72822198ee616f6742a84fd3e6ac9ac97e882",
+    "tests/ingestion/test_backfill_web_status_v2.py": "fa3e05e647378043f40e9f2395f8b336deac217b88ccb7cbd10f2961250a90cc",
+    "tests/ingestion/backfill_status_ui_contract.js": "db4e9aee517ce774cea52a110c380a6aa79b8e2a18e4cb6756b73a63528eefc1",
+    "sql/astra_backfill_shared_records_v2.sql": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+    "tests/ingestion/test_backfill_shared_records_v2.py": "a9dbc30b856c97f6678997c87d2d5161b101e9f94ba9621892c9cfbbc1987e73",
+    "evidence/replacement-shared-record-qualification-v2.json": "b10745324aeb02d607ab4ae202985637339ca2efcb8ef71e18ea79923ed4aebc",
+    "sql/astra_backfill_maintenance_fairness_v2.sql": "3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9",
+    "tests/ingestion/test_backfill_maintenance_fairness_v2.py": "8f06f9710bb01ba088c1e288d19b78391b4f1235eea7bd8eb95a75e522e0f6db"
+  },
+  "inputs_unchanged": true,
+  "excluded": [
+    "Massive relay",
+    "contract-work registry"
+  ],
+  "scope": "Shared provider record identities, member links, source versions/date axes, bounded public status and existing scheduled maintenance lock fairness. No new external credential/trust path.",
+  "combined_suite_gate": "PASS"
+}

@@ -94,6 +94,62 @@ class StatusAdapterTests(unittest.TestCase):
             with self.assertRaises(RpcPersistenceError):
                 self.store(data).backfill_status()
 
+    def test_shared_record_counts_keep_distinct_units_and_strip_private_nested_evidence(self):
+        data = snapshot()
+        data["delivery"]["runs"][0]["families"][0]["nonminute_coverage"] = {
+            "variant_count_basis": "PHYSICAL_PROVIDER_RECORD_OCCURRENCES",
+            "shared_records": {"unique_articles": 2, "verified_source_occurrences": 3,
+                "source_versions": 2, "article_security_links": 4,
+                "unique_contract_references": 5, "unique_contract_session_bars": 120, "non_session_option_bar_records": 2,
+                "expected_applicable_records": None, "coverage_fraction": None,
+                "counts_additive_across_record_types": False, "cross_provider_matching": "NOT_ASSERTED",
+                "date_axes": [{"record_type": "ACTION", "date_axis": "declaration_date",
+                    "period": "TARGET", "records": 1, "raw_body": "private-fixture-secret"}],
+                "shared_action_workflows": {"open_units": 7, "blocked_units": 1,
+                    "evidence": "private-fixture-secret"},
+                "contract_work": {"registered_contract_windows": 5, "expected_contract_population": None,
+                    "historical_enumeration_completeness_certified": False, "evidence": "private-fixture-secret"},
+                "private": "private-fixture-secret"},
+            "fields": [{"record_type": "ARTICLE", "field": "headline", "observed_field_slots": 2}],
+            "source_occurrence_fields": [{"field": "headline", "observed_field_slots": 3,
+                "null_or_unusable_reasons": {"FIELD_NOT_RETURNED": 1, "private-fixture-secret": 1},
+                "raw_body": "private-fixture-secret"}]}
+        report = self.store(data).backfill_status()
+        coverage = report["delivery"]["runs"][0]["families"][0]["nonminute_coverage"]
+        shared = coverage["shared_records"]
+        self.assertEqual((shared["unique_articles"], shared["verified_source_occurrences"]), (2, 3))
+        self.assertEqual((shared["unique_contract_references"], shared["unique_contract_session_bars"]), (5, 120))
+        self.assertEqual(shared["non_session_option_bar_records"], 2)
+        self.assertIsNone(shared["expected_applicable_records"])
+        self.assertFalse(shared["counts_additive_across_record_types"])
+        self.assertEqual(shared["date_axes"][0],
+            {"record_type": "ACTION", "date_axis": "declaration_date", "period": "TARGET", "records": 1})
+        self.assertEqual(shared["shared_action_workflows"], {"open_units": 7, "blocked_units": 1})
+        self.assertEqual(shared["contract_work"], {"registered_contract_windows": 5,
+            "expected_contract_population": None, "historical_enumeration_completeness_certified": False})
+        self.assertEqual(coverage["fields"][0]["record_type"], "ARTICLE")
+        self.assertEqual(coverage["source_occurrence_fields"][0]["null_or_unusable_reasons"], {"FIELD_NOT_RETURNED": 1})
+        self.assertNotIn("private-fixture-secret", json.dumps(report))
+
+    def test_shared_record_projection_bounds_and_unknowns_are_preserved(self):
+        for coverage in ({"source_occurrence_fields": [{}] * 513},
+                         {"shared_records": {"date_axes": [{}] * 257}},
+                         {"shared_records": {"shared_action_workflows": []}},
+                         {"shared_records": {"contract_work": []}},
+                         {"shared_records": []}):
+            data = snapshot()
+            data["delivery"]["runs"][0]["families"][0]["nonminute_coverage"] = coverage
+            with self.assertRaises(RpcPersistenceError):
+                self.store(data).backfill_status()
+        data = snapshot()
+        data["delivery"]["runs"][0]["families"][0]["nonminute_coverage"] = {
+            "source_occurrence_fields": None,
+            "shared_records": {"shared_action_workflows": None, "expected_applicable_records": None}}
+        coverage = self.store(data).backfill_status()["delivery"]["runs"][0]["families"][0]["nonminute_coverage"]
+        self.assertIsNone(coverage["source_occurrence_fields"])
+        self.assertIsNone(coverage["shared_records"]["shared_action_workflows"])
+        self.assertIsNone(coverage["shared_records"]["expected_applicable_records"])
+
     def test_invalid_status_is_a_sanitized_persistence_failure(self):
         cases = [None, [], {"runs": None}, {"runs": [None]}, {"runs": [{}] * 21},
                  {"runs": [], "delivery": {"runs": None}},

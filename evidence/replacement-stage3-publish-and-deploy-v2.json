@@ -1,0 +1,138 @@
+{
+  "version": "replacement-stage3-publish-and-deploy-v2",
+  "published_commit": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "published_tree": "426f7712db9c8badf95acda5ed7f4e82241a4f32",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "branch": "feat/astra-ingestion-service",
+  "qualification": {
+    "actual_postgresql_passed": 519,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "manifest_sha256": "03f4a3dd1bfb214b6710709e62e749f661e01c9a2efa2e413ea3996151f695a5"
+  },
+  "github_checks": [
+    {
+      "id": 41020607253,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    },
+    {
+      "id": 41020607228,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    },
+    {
+      "id": 41020599665,
+      "name": "release-gate",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    },
+    {
+      "id": 41020599650,
+      "name": "ASTRA ingestion qualification",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "947b681735138b0b9052df1e5eba5769d7b2c381"
+    }
+  ],
+  "worker_deploy": {
+    "commit": {
+      "createdAt": "2026-10-30T07:31:16Z",
+      "id": "947b681735138b0b9052df1e5eba5769d7b2c381",
+      "message": "feat(ingestion): qualify retained identity and short-interest reuse\n\nPreserve immutable originals while resolving dated identity progressively, recomputing affected derived outputs, and exposing bounded nonminute coverage. Add verified July S02 source pointers through the existing worker and queue.\n\nExact local qualification: 519 PostgreSQL tests passed; zero failures, errors, or skips. Massive relay and shared-record candidates are excluded; relay remains held for explicit action-time security confirmation."
+    },
+    "createdAt": "2026-10-30T07:34:23.594796Z",
+    "finishedAt": "2026-10-30T07:35:03.145578Z",
+    "id": "dep-dbi4gvrbc2fs73a3b2fg",
+    "startedAt": "2026-10-30T07:34:23.592305Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T07:35:03.145843Z"
+  },
+  "web_deploy": {
+    "commit": {
+      "createdAt": "2026-10-30T07:31:16Z",
+      "id": "947b681735138b0b9052df1e5eba5769d7b2c381",
+      "message": "feat(ingestion): qualify retained identity and short-interest reuse\n\nPreserve immutable originals while resolving dated identity progressively, recomputing affected derived outputs, and exposing bounded nonminute coverage. Add verified July S02 source pointers through the existing worker and queue.\n\nExact local qualification: 519 PostgreSQL tests passed; zero failures, errors, or skips. Massive relay and shared-record candidates are excluded; relay remains held for explicit action-time security confirmation."
+    },
+    "createdAt": "2026-10-30T07:34:29.245988Z",
+    "finishedAt": "2026-10-30T07:35:11.220004Z",
+    "id": "dep-dbi4h1ei0phs73crc7dg",
+    "startedAt": "2026-10-30T07:34:29.209615Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T07:35:39.54754Z"
+  },
+  "migrations": [
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+      "state": "APPLIED"
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+      "state": "APPLIED",
+      "recovery": "Initial lock timeout rolled back; absence and cleared locks reconciled; one exact retry succeeded."
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+      "state": "APPLIED"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_fairness_v2.sql",
+      "sha256": "3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9",
+      "state": "APPLIED_AFTER_STAGE3_DEPLOY",
+      "tests_passed": 3,
+      "recovery": "Two original three-second installation-lock attempts timed out and absence was reconciled. Installation wait alone was changed to ten seconds and requalified; successful application preserves the runtime two-second lock bound and eight-second operation timeout."
+    }
+  ],
+  "latest_progress": {
+    "observed_at": "2026-10-30 07:49:42.249063+00",
+    "status": "ACTIVE",
+    "pages_committed": 1635,
+    "records_committed": 195785,
+    "requests_reserved": 810,
+    "source_bytes": 190099530,
+    "last_progress_at": "2026-10-30 07:49:41.894089+00",
+    "planner_next_selection_order": "1173",
+    "owner": "root-replacement-20261030T042603Z",
+    "owner_lease": "2026-10-30T08:00:00Z",
+    "independent_readbacks": 1635,
+    "s02_source_occurrences": 857,
+    "s02_next_page": 7,
+    "operational_error_tasks": 0
+  },
+  "retained_s02_successor": {
+    "initial_two_pages_source_occurrences": 323,
+    "initial_next_page": 3,
+    "later_source_occurrences": 857,
+    "later_next_page": 7,
+    "scope": "July15/31 frozen-anchor candidates only; historical attribution and publication availability remain unresolved; full-history Massive acquisition remains open.",
+    "execution": "Existing scheduled maintainer and existing ingestion worker; no second controller."
+  },
+  "relay": {
+    "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+    "installed": false,
+    "live_probe_performed": false,
+    "managed_secret_exported": false,
+    "new_credentials_configured": false
+  },
+  "remaining": {
+    "mission_complete": false,
+    "planning_complete": false,
+    "identity_proofs_pending": true,
+    "family_report_performance": "Eight-second report read timeout diagnosed; inherited whole-plan materialization repair in qualification."
+  }
+}

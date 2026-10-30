@@ -1,0 +1,24 @@
+begin;
+
+-- apply sql from post body
+<EXACT_APPROVED_MIGRATION_BYTES>;
+
+-- track statements in history table
+insert into supabase_migrations.schema_migrations as old
+  (version, name, statements, created_by, idempotency_key, rollback)
+values (
+  to_char(current_timestamp, 'YYYYMMDDHH24MISS'),
+  $USQrtAZZkmYPmewYmQrd$astra_backfill_retained_s02_v2$USQrtAZZkmYPmewYmQrd$,
+  array[$USQrtAZZkmYPmewYmQrd$<EXACT_APPROVED_MIGRATION_BYTES>$USQrtAZZkmYPmewYmQrd$],
+  $USQrtAZZkmYPmewYmQrd$<ACCOUNT_IDENTIFIER>$USQrtAZZkmYPmewYmQrd$,
+  null,
+  null
+)
+on conflict (idempotency_key) do update set
+  version = EXCLUDED.version,
+  name = coalesce(EXCLUDED.name, old.name),
+  statements = EXCLUDED.statements,
+  rollback = EXCLUDED.rollback,
+  created_by = EXCLUDED.created_by;
+
+commit;

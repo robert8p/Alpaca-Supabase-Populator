@@ -1,0 +1,88 @@
+{
+  "version": "replacement-v67-publication-qualification-map",
+  "recorded_at": "2026-10-30T08:04:39.054689+00:00",
+  "stage3_release": {
+    "commit": "947b681735138b0b9052df1e5eba5769d7b2c381",
+    "postgres_passed": 519,
+    "github_checks_passed": 4,
+    "source": "evidence/replacement-stage3-publish-and-deploy-v2.json"
+  },
+  "maintenance_fairness": {
+    "sql_sha256": "3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9",
+    "postgres_passed": 3,
+    "source": "evidence/replacement-stage3-publish-and-deploy-v2.json"
+  },
+  "shared_record_sql": {
+    "sql_sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+    "dedicated_postgres_passed": 14,
+    "source": "evidence/replacement-shared-record-qualification-v2.json"
+  },
+  "earlier_combined_suite": {
+    "passed": 29,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 15.716,
+    "source": "evidence/replacement-shared-delivery-forward-qualification-v2.json",
+    "latest_status_file_bytes_qualified": false
+  },
+  "contract_registry": {
+    "sql_sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+    "postgres_passed": 7,
+    "source": "evidence/replacement-contract-registry-qualification-v2.json",
+    "independent_static_review": "evidence/replacement-contract-registry-independent-static-review-v2.json"
+  },
+  "latest_status_focused_tests": {
+    "passed": 12,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "seconds": 0.298,
+    "source": "evidence/replacement-shared-status-release-qualification-v2.json",
+    "source_sha256": "9ed676fd5c9351683d3401fc0d04d8a81fbafff0f9cd3a6f41dbe68b3b78c127",
+    "all_four_current_status_hashes_match_qualification": true,
+    "exact_head_github_release_checks": "REQUIRED_PENDING",
+    "execution": "Root executed exact-current ASGI/DOM suite; packaging agent verified all four file hashes against the durable receipt."
+  },
+  "latest_status_hash_comparison": [
+    {
+      "path": "astra_ingestion/backfill_status.py",
+      "current_sha256": "5cf6393e949db58f6b1250757fb0dce2da990b6cdd410f79f9db79d76f21bb6d",
+      "earlier_combined_suite_sha256": "61b2190e9bc0af43f7d2f1582e19956072f40c16608aa5fc96f7384d92d6b6d3",
+      "same_bytes": false,
+      "latest_bytes_covered_by_earlier_29_test_suite": false
+    },
+    {
+      "path": "astra_ingestion/static/app.js",
+      "current_sha256": "f4b94b1a64f08f0a6cf545821ddd4b30c9a6b9a53082afca67ea3f9e51bd7c30",
+      "earlier_combined_suite_sha256": "da60c19cde16bea77f016e5e01a72822198ee616f6742a84fd3e6ac9ac97e882",
+      "same_bytes": false,
+      "latest_bytes_covered_by_earlier_29_test_suite": false
+    },
+    {
+      "path": "tests/ingestion/test_backfill_web_status_v2.py",
+      "current_sha256": "0c6b9450664d299f39fe415c331aa2eb8ebad70d96c66651902c6facb4ff82f9",
+      "earlier_combined_suite_sha256": "fa3e05e647378043f40e9f2395f8b336deac217b88ccb7cbd10f2961250a90cc",
+      "same_bytes": false,
+      "latest_bytes_covered_by_earlier_29_test_suite": false
+    },
+    {
+      "path": "tests/ingestion/backfill_status_ui_contract.js",
+      "current_sha256": "f7566f9dea5004a5ff936799485d1dc558d71ad734f79dbd52c56f8c574eaa9b",
+      "earlier_combined_suite_sha256": "db4e9aee517ce774cea52a110c380a6aa79b8e2a18e4cb6756b73a63528eefc1",
+      "same_bytes": false,
+      "latest_bytes_covered_by_earlier_29_test_suite": false
+    }
+  ],
+  "suite_totals_additive": false,
+  "local_packaging_checks": {
+    "historical_v66_checkpoint_byte_identical": true,
+    "historical_v66_prompt_byte_identical": true,
+    "full_original_mission_tail_byte_identical": true,
+    "source_code_edited": false,
+    "postgres_calls": 0,
+    "remote_calls": 0
+  },
+  "mission_tail_sha256": "09e841c22d086e1552f027af41ad80af5878f2396f8b716f6a32bbfa32199fe8",
+  "relay_scope_unchanged": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe"
+}

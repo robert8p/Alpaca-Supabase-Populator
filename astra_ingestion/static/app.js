@@ -149,12 +149,31 @@ function renderBackfill(snapshot) {
     if (coverage) {
       records.append(element("span", `${observedCount(coverage.physical_receipt_records)} physical records · ${observedCount(coverage.selected_derived_records)} selected calculation rows`, "subline"));
       if (coverage.source_count_basis?.startsWith("PHYSICAL_PROVIDER_RECORD_OCCURRENCES")) records.append(element("span", "Provider counts include repeated appearances of the same article or event.", "subline"));
+      const shared = coverage.shared_records;
+      if (shared) {
+        if (family === "N01") records.append(element("span", `${observedCount(shared.unique_articles)} unique provider articles · ${observedCount(shared.article_security_links)} article/security links`, "subline"));
+        if (family === "CTX02") records.append(element("span", `${observedCount(shared.unique_contract_references)} contract references · ${observedCount(shared.unique_contract_session_bars)} contract/session daily bars`, "subline"));
+        if (family === "CTX02" && knownCount(shared.non_session_option_bar_records) > 0) records.append(element("span", `${number(shared.non_session_option_bar_records)} option bar records have no verified market date`, "subline"));
+        records.append(element("span", `${observedCount(shared.verified_source_occurrences)} verified source appearances · ${observedCount(shared.source_versions)} retained versions`, "subline"));
+        if (knownCount(shared.conflicting_records) > 0) records.append(element("span", `${number(shared.conflicting_records)} records have conflicting provider versions; affected fields remain unresolved`, "subline"));
+        if (knownCount(shared.boundary_support_events) > 0) records.append(element("span", `${number(shared.boundary_support_events)} events support the target window through another supplied action date`, "subline"));
+        if (knownCount(shared.projection_pending_verified_pages) > 0) records.append(element("span", `${number(shared.projection_pending_verified_pages)} verified pages await deduplicated counts`, "subline"));
+        if (shared.cross_provider_matching === "NOT_ASSERTED") records.append(element("span", "Records from different providers retain separate identities." + (family === "N01" ? " Historical article attribution remains separately assessed." : ""), "subline"));
+        const actions = shared.shared_action_workflows;
+        if (actions) records.append(element("span", `${observedCount(actions.open_units)} open shared corporate-action units can supply further splits`, "subline"));
+        const contracts = shared.contract_work;
+        if (contracts) {
+          records.append(element("span", `${observedCount(contracts.registered_contract_windows)} registered contract/windows · ${observedCount(contracts.unreconciled_verified_enumeration_pages)} verified enumeration pages await successor admission`, "subline"));
+          if (knownCount(contracts.existing_overlap_contract_links) > 0) records.append(element("span", "Earlier overlapping requests remain executable; their returned records are deduplicated in delivery.", "subline"));
+        }
+      }
       if (knownCount(coverage.identity_invalidated_output_records) > 0) records.append(element("span", `${number(coverage.identity_invalidated_output_records)} rows await recalculation after identity evidence changed`, "subline"));
       if (coverage.fields?.length) {
-        const details = element("details"), summary = element("summary", "Field availability"), list = element("ul");
+        const details = element("details"), summary = element("summary", shared ? "Field availability for unique provider records" : "Field availability"), list = element("ul");
         for (const field of coverage.fields) {
           const period = field.period ? ` · ${pretty(field.period)}` : "";
-          const item = element("li", `${field.field || "Unknown field"}${period}: ${observedCount(field.usable_values)} usable / ${observedCount(field.observed_field_slots)} observed; ${observedCount(field.missing_values)} missing`);
+          const recordType = field.record_type ? `${pretty(field.record_type)} · ` : "";
+          const item = element("li", `${recordType}${field.field || "Unknown field"}${period}: ${observedCount(field.usable_values)} usable / ${observedCount(field.observed_field_slots)} observed; ${observedCount(field.missing_values)} missing`);
           const reasons = Object.entries(field.null_or_unusable_reasons || {}).map(([reason, count]) => `${pretty(reason)}: ${observedCount(count)}`);
           if (reasons.length) item.append(element("span", reasons.join(" · "), "subline"));
           list.append(item);

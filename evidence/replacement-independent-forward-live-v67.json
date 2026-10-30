@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-10-30 08:03:00.949924+00",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "controller": "root-replacement-20261030T042603Z",
+  "observed": {
+    "observed_at": "2026-10-30 08:03:00.949924+00",
+    "status": "ACTIVE",
+    "pages_committed": 1793,
+    "records_committed": 215444,
+    "requests_reserved": 885,
+    "source_bytes": 206216369,
+    "last_progress_at": "2026-10-30 08:02:10.516891+00",
+    "planner_next_selection_order": "1343",
+    "implementation_owner": "root-replacement-20261030T042603Z",
+    "implementation_lease_until": "2026-10-30T08:30:00Z",
+    "independent_readbacks": 1793,
+    "s02_source_occurrences": 1869,
+    "s02_next_page": 15,
+    "operational_error_tasks": 0,
+    "contract_registry_state": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "child_id": "",
+      "seed_complete": false,
+      "child_created_at": "-infinity",
+      "registered_windows": 0,
+      "new_children_created": 0,
+      "parent_contract_links": 0,
+      "registered_child_links": 0,
+      "unlinked_source_contracts": 0,
+      "enumeration_pages_processed": 0
+    }
+  },
+  "applied_forward": {
+    "path": "sql/astra_backfill_contract_registry_v2.sql",
+    "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+    "migration_name": "astra_backfill_contract_registry_v2",
+    "applied_approximately": "2026-10-30T08:02:25Z",
+    "tool_result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "preflight": "Existing shared-record table present, registry absent, same active owner through08:30Z. Existing relay table/helper absent; security hold remains awaiting action-time confirmation."
+  },
+  "interpretation": "Physical pages, records/pointers, logical source occurrences and reused observations have different overlapping units. Do not sum these or infer final coverage.",
+  "relay": "HELD; no relay deployment, credentials, grants, integration or live probe",
+  "independent_continuation": "Same durable worker, queue, database monitor and hourly implementation automation remain in use."
+}

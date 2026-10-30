@@ -1,0 +1,109 @@
+{
+  "version": "fixed3000-contract-registry-qualification-v2.1",
+  "qualified_at": "2026-10-30T07:53:10.692770+00:00",
+  "scope": "Local disposable PostgreSQL only; no production application, provider requests or remote calls by this agent",
+  "artifacts": [
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+      "bytes": 28911
+    },
+    {
+      "path": "tests/ingestion/test_backfill_contract_registry_v2.py",
+      "sha256": "4ac7d1e09a08bf805e6ba87f016ac702438ec6c456d5e442999f7c1bfe0941fa",
+      "bytes": 13078
+    }
+  ],
+  "dependency_order": [
+    "astra_backfill_identity_v2.sql",
+    "astra_backfill_nonminute_coverage_v2.sql",
+    "astra_backfill_retained_s02_v2.sql",
+    "astra_backfill_shared_records_v2.sql",
+    "astra_backfill_contract_registry_v2.sql"
+  ],
+  "shared_records_dependency_sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+  "postgres_tests": {
+    "passed": 7,
+    "failed": 0,
+    "suite_seconds": 4.285,
+    "skip_without_explicit_dsn": true,
+    "full_enumeration_page_records": 1000,
+    "resulting_bounded_children": 10,
+    "contracts_per_child": 100
+  },
+  "runtime_changes": [
+    "Existing inline option successor loop replaced by an immutable-page referenced durable admission queue",
+    "Only independently verified enumeration pages can admit new work",
+    "Existing child tasks reconcile before new admission; completed independently verified exact-window child preferred",
+    "Canonical work key uses run,Alpaca,contract symbol,start/end instants,opra,1Day; parent identity is separate lineage",
+    "New children are only unregistered contracts, grouped at most100 per request",
+    "All existing scopes, statuses, cursors, attempts, generations and running leases stay unchanged",
+    "Existing duplicate children remain executable and visible; no virtual completion or cancellation",
+    "Many-parent lineage retains each frozen parent member scope and original canonical child member scope",
+    "Canonical query_complete requires every committed page independently verified, contiguous pages and exhausted source cursor",
+    "Finalization waits for unreconciled verified enumeration admissions",
+    "No worker/provider changes or new controller required"
+  ],
+  "automatic_successor_bounds": {
+    "retained_child_seed_tasks_per_tick": 8,
+    "maximum_explicit_seed_limit": 16,
+    "readback_metadata_rows_per_tick": 32,
+    "retained_enumeration_pages_admitted_per_tick": 1,
+    "heavy_admission_during_readback_catchup": false
+  },
+  "migration_serialization": {
+    "existing_global_advisory": "706314020261028",
+    "task_table_lock": "SHARE ROW EXCLUSIVE",
+    "lock_timeout_seconds": 3,
+    "statement_timeout_seconds": 30,
+    "purpose": "Drain pre-hook task insertions before atomic successor wiring changes"
+  },
+  "queryable_destinations": [
+    "backfill_contract_work_v2",
+    "backfill_contract_child_links_v2",
+    "backfill_contract_parent_links_v2",
+    "backfill_contract_parent_work_v2",
+    "backfill_contract_child_proofs_v2",
+    "backfill_contract_work_status_v2"
+  ],
+  "status_path": "nonminute_coverage.shared_records.contract_work",
+  "status_numeric_keys": [
+    "registered_contract_windows",
+    "registered_child_contract_links",
+    "parent_contract_links",
+    "new_children_created",
+    "enumeration_pages_processed",
+    "unlinked_source_contracts",
+    "pending_enumeration_pages",
+    "unverified_pending_enumeration_pages",
+    "unreconciled_verified_enumeration_pages",
+    "existing_overlap_contract_links"
+  ],
+  "status_boolean_keys": [
+    "registry_seed_complete",
+    "preexisting_children_preserved",
+    "existing_overlaps_remain_executable",
+    "historical_enumeration_completeness_certified"
+  ],
+  "status_other_keys": [
+    "parent_link_count_basis",
+    "expected_contract_population",
+    "coverage_fraction"
+  ],
+  "count_basis": {
+    "parent_contract_links": "Verified enumeration source occurrences, not distinct parent/contract pairs",
+    "parent_work_verified_records": "Entire canonical child request; not this individual contract; not additive across parent links",
+    "historical_enumeration_completeness_certified": false,
+    "expected_contract_population": null
+  },
+  "limitations": [
+    "Pre-existing duplicate tasks deliberately still run and may make duplicate provider requests; their immutable results are deduplicated by shared delivery",
+    "Provider contract rows lacking a valid symbol or requested underlying link remain retained as explicitly counted unlinked source contracts",
+    "No global market-data completeness, historical identity or availability certificate is inferred from request completion"
+  ],
+  "frozen_prior_files_unchanged": {
+    "sql/astra_backfill_nonminute_coverage_v2.sql": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+    "sql/astra_backfill_retained_s02_v2.sql": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+    "sql/astra_backfill_shared_records_v2.sql": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+  }
+}
