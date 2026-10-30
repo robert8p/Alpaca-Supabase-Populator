@@ -167,9 +167,19 @@ BEGIN
    SELECT 1 FROM astra_ingestion_v1.bulk_receipt_v1 br
    JOIN astra_ingestion_v1.bulk_provider_response_quarantine_v1 q
     ON q.work_key=br.work_key AND q.page_no=br.page_no
+   JOIN astra_ingestion_v1.bulk_provider_transport_proof_v1 tp
+    ON tp.work_key=q.work_key AND tp.page_no=q.page_no
    WHERE br.work_key=p_work AND br.page_no=p_page-1
    AND br.requests_committed=1 AND q.next_page_required=true
- ) THEN RAISE EXCEPTION 'provider continuation lacks a committed nonterminal predecessor'; END IF;
+   AND br.records_committed=q.eligible_records
+   AND br.source_sha256=q.source_page_sha256
+   AND br.output_sha256=q.eligible_bars_sha256
+   AND tp.request_sha256=q.request_sha256
+   AND tp.source_page_sha256=q.source_page_sha256
+   AND tp.eligible_bars_sha256=q.eligible_bars_sha256
+   AND (astra_ingestion_v1.bulk_provider_atomic_readback_v1(p_work,p_page-1)
+      ->>'consistent')='true'
+ ) THEN RAISE EXCEPTION 'provider continuation lacks a separately pinned atomic predecessor'; END IF;
  INSERT INTO astra_ingestion_v1.bulk_provider_precall_v1(
    work_key,page_no,manifest_sha256,family,source_receipt_sha256,
    request_sha256,owner,fence,records_reserved,original_deadline)
