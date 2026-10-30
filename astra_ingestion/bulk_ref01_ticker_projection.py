@@ -19,7 +19,7 @@ from .bulk_scope import CAPTURE_KEY, ScopeError, canonical
 _SOURCE = "reference.alpaca_fixed_window_instruments_v1"
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _KEY = re.compile(r"[A-Za-z0-9_.:-]{1,128}\Z")
-_TICKER = re.compile(r"[A-Z][A-Z0-9./^-]{0,15}\Z")
+_TICKER = re.compile(r"[A-Za-z][A-Za-z0-9./^-]{0,15}\Z")
 _MAX = 128
 if _SOURCE not in SPECS:
     raise RuntimeError("original REF01 source route is not pinned")
