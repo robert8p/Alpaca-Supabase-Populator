@@ -1,5 +1,15 @@
 # ASTRA ingestion completion — active coordination checkpoint
 
+**Checkpoint version:** 56 — 30 October 2026, 02:03 Europe/London. **Owner: ACTIVE** sole writer `6ae2a4c96bbc819182133e17e9b7f779`, actual scheduled run `35dbb49e-4ce4-8325-ad11-5ef5b01e5aa8` started `2026-10-30T02:03:21.793848Z`. Finite CAS coordination claim `writer-20261030-0203-provider-response-atomic` expires `2026-10-30T02:50:00Z`; not a campaign cutoff, an original job deadline, or proof of previous process cessation. Previous v55 owner RELEASED. Verified task registry: writer ENABLED and in this run; reviewer and closeout both DISABLED (`requires_user_action=true` with blank result), no wake or reenable. Source branch head at claim: `3c749d0f59e8250fa59e6b280640fc22df44f01b` (source/test candidate a153de4b; v55 checkpoint 3c749d0f). No additional controller or duplicate writer.
+
+**BOUNDED ACTION:** implement/test next independent source-only SQL/Python bridge: immutable provider response stage bound to the original pre-call ticket and claims, durable atomic receipt/accounting, zero duplicate refetch on unknown outcomes. Keep actual remote provider transport disabled, no production SQL/grants/deploy or new costs until real independent 24-family source/identity/HTTP/hosted gates. Keep REF01 and remaining population work independently eligible. Reconvene exact source CI and reconcile impact before release. Preserve failed attempts. No existing original job, idempotency key or source evidence may be modified.
+
+**NON-EXPIRING PROGRAMME:** no programme cutoff, no replacement deadline or fixed run count. Every new job/deadline, claim/lease, cumulative budget, request/record/cost reservation, attempt limit, stop/fence remain finite and enforced. All four joint acceptance gates OPEN, historical/full-market NOT_CERTIFIED. The claim expires only to bound current engineering ownership; expiry alone does not prove cessation.
+
+## Archived checkpoint v55 (verbatim below)
+
+# ASTRA ingestion completion — active coordination checkpoint
+
 **Checkpoint version:** 55 — 30 October 2026, after 01:12 Europe/London. **Owner: RELEASED.** The registered sole writer `6ae2a4c96bbc819182133e17e9b7f779` completed its bounded source/test slice in actual run `7073ba28-be30-832e-8421-baeafacdd2b9`. Finite claim `writer-20261030-0055-restricted-provider-ledger` is RETIRED; the former 01:45Z claim limit is only a coordination lease, NOT campaign expiry or host eviction proof. No competing writer, extra controller, verifier impersonation or automated wake. Keep existing hourly writer ENABLED; verifier and closeout DISABLED with blank user-action flags. No renewal of an original expired job.
 
 **EXACT QUALIFIED SOURCE:** `a153de4b047382a66802ea05f1efbcb2057e78a2` (draft PR93 remains open/unmerged). [ASTRA ingestion PR qualification 40984316718](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40984316718) SUCCESS: **292 tests passed, zero failures**, including disposable PostgreSQL security and pre-call ledger cases. [Release gate PR 40984316700](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40984316700) and [release gate push 40984312539](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40984312539) SUCCESS. The four new source/test paths were read back at the exact executable candidate. The earlier intermediate `3ba4d9fa` qualification FAILED six new PG-test setup cases due to malformed SQL string insertion; the stage SQL was reconstructed from a known good base and the final candidate passed all 292. Do not treat the corrected outcome as erasing the previous failure.
@@ -13,6 +23,7 @@
 **EXECUTABLE NEXT BOUNDED SLICE:** Existing hourly writer task (no programme cutoff) will inspect current state, acquire a new finite CAS only if safe, then build/test an **atomic provider response stage tied to the immutable reviewed pre-call ticket** and narrow restricted reader under an authenticated *separate* principal; continue REF01/date-valid and complete family expected-unit evidence independently. No provider submission, production SQL installation or grants before safety and real source gates are met. Preserve explicit platform safety refusals, do not sidestep them, and never reset budgets or attempt counters.
 
 **NO CAMPAIGN CUTOFF:** The former 5 November 2026 cutoff is superseded. Preserve finite per-job deadlines, stop admission, cumulative request/record/cost limits, maximum two materially identical failed attempts, leases, fencing and cancellation; no new campaign deadline.
+
 
 ## Archived checkpoint v54 (verbatim below)
 
