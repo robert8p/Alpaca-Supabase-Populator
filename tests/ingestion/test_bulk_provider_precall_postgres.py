@@ -483,7 +483,7 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
   self.transport_proof(w)
   result=self.provider_atomic(w)
   self.assertEqual(result["status"],
-   "ATOMically_COMMITTED_PENDING_INDEPENDENT_TRANSPORT_AND_SOURCE_ACCEPTANCE")
+   "ATOMICALLY_COMMITTED_PENDING_INDEPENDENT_TRANSPORT_AND_SOURCE_ACCEPTANCE")
   self.assertEqual(result["eligible_records_committed"],1)
   self.assertFalse(result["coverage_certified"])
   self.assertFalse(result["source_authenticity_independently_certified"])
@@ -494,6 +494,8 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
   self.assertEqual(self.conn.execute(
    f"SELECT requests_committed,records_committed,last_page FROM {self.schema}.bulk_work_v1"
    " WHERE work_key=%s",(w["work_key"],)).fetchone(),(1,1,0))
+  self.assertTrue(self.sql("bulk_provider_quarantine_readback_v1",
+   w["work_key"],0)["bulk_output_committed"])
   with self.assertRaises(self.pg.Error):self.provider_atomic(w)
   with self.assertRaises(self.pg.Error):
    self.conn.execute(f"UPDATE {self.schema}.bulk_provider_output_v1 SET ordinal=2")
