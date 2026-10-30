@@ -25,7 +25,7 @@ from urllib.request import (
 
 from .bulk_p01_p02_alpaca_request import AlpacaSIPRequestPlan
 from .bulk_p01_p02_alpaca_response import SIPResponseWitness, inspect_sip_response
-from .bulk_provider_precall import match_precall_candidate
+from .bulk_provider_precall import match_precall_candidate, provider_request_sha256
 from .bulk_scope import ScopeError
 
 ENDPOINT = "https://data.alpaca.markets/v2/stocks/bars"
@@ -122,6 +122,40 @@ def prepare_bound_https_page(
     )
 
 
+def _check_bound_endpoint(bound: BoundHTTPSPage) -> None:
+    """Never send credentials to a caller-supplied or tampered URL.
+
+    Public dataclasses and test fixtures are NOT trust boundaries. Rebuild the
+    entire original provider URI and digest immediately before HTTP I/O.
+    The separate durable principal/fence authorization remains mandatory.
+    """
+    if (not isinstance(bound, BoundHTTPSPage)
+            or bound.status != "BOUND_NOT_ADMITTED_NOT_SENT"
+            or type(bound.page_no) is not int or not 0 <= bound.page_no <= 199
+            or type(bound.fence) is not int or bound.fence < 1
+            or bound.manifest_sha256 != bound.plan.manifest_sha256
+            or bound.request_sha256 != provider_request_sha256(bound.plan)):
+        raise ScopeError("untrusted or altered bounded provider request")
+    query = dict(bound.plan.request)
+    if bound.page_no == 0:
+        if bound.previous is not None:
+            raise ScopeError("first page cannot include a predecessor")
+    else:
+        previous = bound.previous
+        if (not isinstance(previous, SIPResponseWitness)
+                or previous.page_no != bound.page_no - 1
+                or not previous.next_page_token
+                or previous.symbol != bound.plan.symbol
+                or previous.family != bound.plan.family
+                or previous.manifest_sha256 != bound.manifest_sha256):
+            raise ScopeError("provider continuation cannot be reconstructed")
+        query["page_token"] = previous.next_page_token
+    exact = ENDPOINT + "?" + urlencode(query)
+    if (bound.url != exact
+            or bound.request_url_sha256 != sha256(exact.encode("utf-8")).hexdigest()):
+        raise ScopeError("provider endpoint/query changed after original pre-call")
+
+
 class _RejectRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
@@ -150,8 +184,7 @@ def inspect_https_page(
     raw_body: bytes,
 ) -> HTTPSPageObservation:
     """Strict pure inspection. Network metadata alone is forgeable in tests."""
-    if not isinstance(bound, BoundHTTPSPage) or bound.status != "BOUND_NOT_ADMITTED_NOT_SENT":
-        raise ScopeError("missing original bounded HTTPS request")
+    _check_bound_endpoint(bound)
     if effective_url != bound.url or status_code != 200:
         raise ScopeError("provider URL or response status mismatch")
     if not isinstance(content_type, str) or content_type.split(";")[0].strip().lower() != "application/json":
@@ -197,8 +230,8 @@ def fetch_once(
     This function must remain unreachable from the production worker until
     independently authenticated runtime readback/role/entitlement exists.
     """
-    if (not isinstance(bound, BoundHTTPSPage)
-            or not callable(verified_admission)
+    _check_bound_endpoint(bound)
+    if (not callable(verified_admission)
             or verified_admission(bound) is not True):
         raise ScopeError("live independently authenticated admission unavailable")
     for secret in (api_key, secret_key):
