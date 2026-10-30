@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "status": "SITES_SOURCE_TESTED_NATIVE_HOST_BINDING_PENDING",
+  "source_sha256": "2c1f818c6d7253d173100acd82cc34e358435a9972e518f4d4d69f4d42880cb4",
+  "tests": "13/13",
+  "hourly_executor_id": "6ae4d6e1e2a48191aa7edaf9464f77e5",
+  "successor": "Dot bind native Sites verified caller and publish private canonical plugin, no provider credentials. Implementation owner continues contract tests."
+}
