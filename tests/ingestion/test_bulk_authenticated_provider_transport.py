@@ -16,6 +16,7 @@ from astra_ingestion.bulk_authenticated_provider_transport import (
     BoundHTTPSPage, ENDPOINT, MAX_BODY_BYTES, TIMEOUT_SECONDS, fetch_once,
     inspect_https_page, prepare_bound_https_page,
 )
+from astra_ingestion.bulk_provider_quarantine_bridge import prepare_https_observation_quarantine
 from astra_ingestion.bulk_scope import ScopeError
 
 
@@ -254,6 +255,44 @@ class TransportStageTests(unittest.TestCase):
         self.assertEqual(len(calls), 1)
         self.assertNotIn("synthetic-secret", str(error.exception))
         self.assertNotIn("query", str(error.exception))
+
+    def test_https_page_to_quarantine_still_has_no_live_admission(self):
+        p, c = plan(), claim()
+        t = ticket(p, c)
+        b = bound(p, c, t)
+        x = inspect(b)
+        q = prepare_https_observation_quarantine(
+            b, x, c, t, received_at_utc=NOW)
+        self.assertEqual(q.status, "OFFLINE_QUARANTINE_ENVELOPE_UNAUTHENTICATED")
+        self.assertFalse(q.transport_authorized)
+        self.assertFalse(q.bulk_output_committed)
+        self.assertEqual(q.source_page_sha256, x.witness.page_sha256)
+        self.assertEqual(q.provider_records_observed, 1)
+        self.assertNotIn("10.1", repr(q))
+
+    def test_https_quarantine_refuses_forged_or_mutated_transport(self):
+        p, c = plan(), claim()
+        t = ticket(p, c)
+        b = bound(p, c, t)
+        x = inspect(b)
+        for altered in (
+            replace(x, request_sha256="f"*64),
+            replace(x, request_url_sha256="f"*64),
+            replace(x, work_key="astra-bulk-v1-"+"c"*64),
+            replace(x, status="AUTHENTICATED"),
+            replace(x, witness=replace(x.witness, page_sha256="f"*64)),
+            replace(x, _private_raw_body=json.dumps(response([bar(
+                "2026-09-02T13:31:00Z")])).encode()),
+        ):
+            with self.subTest(status=altered.status), self.assertRaises(ScopeError):
+                prepare_https_observation_quarantine(
+                    b, altered, c, t, received_at_utc=NOW)
+        with self.assertRaises(ScopeError):
+            prepare_https_observation_quarantine(
+                b, x, claim(stopped=True), t, received_at_utc=NOW)
+        with self.assertRaises(ScopeError):
+            prepare_https_observation_quarantine(
+                replace(b, status="AUTHORIZED"), x, c, t, received_at_utc=NOW)
 
     def test_empty_last_page_not_coverage(self):
         x = inspect(body=response(bars=[]))
