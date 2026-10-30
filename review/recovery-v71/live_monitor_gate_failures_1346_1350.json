@@ -1,0 +1,222 @@
+{
+  "result": [
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246301",
+      "process_id": "1246119",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:46:01.770000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246301",
+      "process_id": "1246141",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:46:02.479000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1246119",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:46:03.770000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246141",
+      "process_id": "1246119",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:47:07.328000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246141",
+      "process_id": "1243169",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:47:07.475000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1246119",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:47:09.328000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1243169",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:47:09.475000"
+    },
+    {
+      "authenticated_gate_context": 0,
+      "function_context": [],
+      "holder": "Process holding the lock: 1233416",
+      "process_id": "1245258",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:47:20.477000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1243169",
+      "process_id": "1246119",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:47:42.477000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1246119",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:47:44.477000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246448",
+      "process_id": "1243169",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:48:01.615000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246448",
+      "process_id": "1246119",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:48:02.476000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1243169",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:48:03.615000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246119",
+      "process_id": "1243169",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:48:52.484000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246119",
+      "process_id": "1246141",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:49:27.488000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246119",
+      "process_id": "1243169",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:49:37.495000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1243169",
+      "process_id": "1246141",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:49:47.523000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1243169",
+      "process_id": "1246141",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:49:57.492000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1246141",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:49:59.492000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246544",
+      "process_id": "1246119",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:50:01.337000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "Process holding the lock: 1246544",
+      "process_id": "1243169",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:50:02.489000"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "holder": "",
+      "process_id": "1246119",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:50:03.337000"
+    }
+  ]
+}

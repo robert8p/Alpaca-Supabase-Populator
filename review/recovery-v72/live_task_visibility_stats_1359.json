@@ -1,0 +1,17 @@
+[
+  {
+    "observed_at": "2026-10-30 13:58:07.560223+00",
+    "relpages": 102696,
+    "relallvisible": 98271,
+    "estimated_rows": 712899,
+    "heap_bytes": 868802560,
+    "n_live_tup": 735815,
+    "n_dead_tup": 1512,
+    "n_mod_since_analyze": 23863,
+    "n_ins_since_vacuum": 42510,
+    "last_vacuum": null,
+    "last_autovacuum": "2026-10-30 13:24:37.91807+00",
+    "last_analyze": null,
+    "last_autoanalyze": "2026-10-30 13:41:32.412788+00"
+  }
+]

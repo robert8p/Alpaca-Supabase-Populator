@@ -1,0 +1,19 @@
+{
+  "schema": "astra.maintenance-eligibility-index-plan-qualification/1",
+  "production_calls": 0,
+  "production_ddl": false,
+  "repair_installed": false,
+  "interpretation": [
+    "Synthetic local planner proof, not live runtime recovery or install-duration proof.",
+    "26466 is the live P01 family/kind group upper bound, used as a synthetic eligible count; the exact live timeframe-qualified count is unknown.",
+    "Tables copy actual fixture column types, defaults, checks and existing index definitions; foreign keys and triggers are not copied into the isolated plan-only schema.",
+    "Original selectors are unchanged except schema adaptation; cache is warm from fixture construction and bloat is fresh."
+  ],
+  "passed": false,
+  "tests": 1,
+  "errors": 1,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 52.47831993300497,
+  "test_sha256": "bcf1d117261ad74de0c6532dc0b14db996473bdb669811b65db566f6b32675d0"
+}

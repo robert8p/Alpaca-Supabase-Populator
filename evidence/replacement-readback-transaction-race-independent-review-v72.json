@@ -1,0 +1,155 @@
+{
+  "artifacts": [
+    {
+      "bytes": 6902,
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b"
+    },
+    {
+      "bytes": 6902,
+      "path": "review/recovery-v72/readback-transaction-race/forward_readback_transaction_race_v72.sql",
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b"
+    },
+    {
+      "bytes": 2805,
+      "path": "review/recovery-v72/readback-transaction-race/baseline_maintain_v2.sql",
+      "sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859"
+    },
+    {
+      "bytes": 2849,
+      "path": "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql",
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+    },
+    {
+      "bytes": 6749,
+      "path": "review/recovery-v72/readback-transaction-race/unchanged_recheck_page_v2.sql",
+      "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37"
+    },
+    {
+      "bytes": 4095,
+      "path": "review/recovery-v72/readback-transaction-race/derivation_v72.json",
+      "sha256": "5834d479e8d13ca97c98f481d0f6923dc60abe3773a602abb1bb1762f3f192f0"
+    },
+    {
+      "bytes": 22510,
+      "path": "tests/ingestion/test_backfill_readback_transaction_race_v2.py",
+      "sha256": "04312d34e94331fb79981b7b0032560a3128a84aab01d1a32c9efbb53021ae83"
+    },
+    {
+      "bytes": 3781,
+      "path": "review/recovery-v72/readback-transaction-race/qualify_ci_admission_v72.py",
+      "sha256": "3642080f8f7bc60cc490243084ba20cfdb585db899eee751afd3219397994fb2"
+    }
+  ],
+  "ci_admission": {
+    "dedicated_gate": "GITHUB_WORKFLOW=ASTRA ingestion qualification requires the disposable PostgreSQL DSN and errors if missing; configured context delegates to the real fixture.",
+    "other_contexts": "Missing DSN in general release or unset workflow explicitly skips the PostgreSQL class. Source tests still run. This is not counted as a database pass.",
+    "receipt": {
+      "bytes": 834,
+      "path": "review/recovery-v72/readback-transaction-race/ci_admission_qualification_v72.json",
+      "sha256": "7347ff5c57e26a21ee6bfa93d3171cbd6186e2feb8b56ca1e302069aa0d38cb5"
+    }
+  },
+  "combined_installation_order": [
+    {
+      "bytes": 13522,
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9"
+    },
+    {
+      "bytes": 13725,
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203"
+    },
+    {
+      "bytes": 6902,
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b"
+    }
+  ],
+  "created_at_utc": "2026-10-30T14:29:59.971709+00:00",
+  "decision": "PASS_EXACT_SINGLE_PREDICATE_REPAIR_SUBJECT_TO_ROOT_FRESH_INSTALLATION_PREREQUISITES",
+  "excluded": "Timing telemetry prototype is not part of this fix.",
+  "final_guard_review": [
+    "Installer asserts8s/3s writable bounds, exact baseline maintain source/catalog metadata and current same-owner lease/fence/cohort before replacement.",
+    "Candidate hash and reverse identity constrain the function change to one exact predicate.",
+    "All other function catalog rows and target metadata must remain identical.",
+    "After replacement and preservation snapshots, verifier0ccd/inner28ae/autha9 exact pins are checked again; injected pre-snapshot drift cannot be accepted as a new baseline.",
+    "Final current owner/lease/fence/run/snapshot checks remain. Already-applied or uncertain responses require readback, not blind replay."
+  ],
+  "independent_non_database_execution": {
+    "errors": 0,
+    "failures": 0,
+    "scope": "Final active source-integrity test plus all four mocked CI-admission branches, independently executed without a database connection.",
+    "skipped": 0,
+    "test_log": "test_exact_single_predicate_and_unchanged_verifier (independent_race_source_subject_v72.SourceTests.test_exact_single_predicate_and_unchanged_verifier) ... ok\ntest_dedicated_ingestion_with_dsn_delegates_and_discovers_eight_cases (independent_race_admission_v72.AdmissionTests.test_dedicated_ingestion_with_dsn_delegates_and_discovers_eight_cases) ... ok\ntest_dedicated_ingestion_without_dsn_errors (independent_race_admission_v72.AdmissionTests.test_dedicated_ingestion_without_dsn_errors) ... ok\ntest_general_release_without_dsn_explicitly_skips (independent_race_admission_v72.AdmissionTests.test_general_release_without_dsn_explicitly_skips) ... ok\ntest_unset_workflow_without_dsn_explicitly_skips (independent_race_admission_v72.AdmissionTests.test_unset_workflow_without_dsn_explicitly_skips) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n",
+    "tests": 5
+  },
+  "limitations": [
+    "LocalPostgreSQL16.15 versus live17.6",
+    "Historical READBACK_FAILURE rows remain excluded; this prevents new false failures and does not silently repair history",
+    "No claim of reduced whole-cron duration or resolved gate contention",
+    "The independent reviewer executed five non-database source/admission cases; the final eight database cases are producer evidence, separately attributed"
+  ],
+  "order_reason": "Both exact index forwards pin maintaincd100, so the race maintain6c880 change must follow their separate installation/readbacks.",
+  "preserved": [
+    "Verifier0ccd unchanged",
+    "Private dispatcher28ae unchanged",
+    "Authenticated outer dispatchera9 unchanged",
+    "Global advisory gate and post-lock live credential recheck",
+    "Maintain8s statement and2s runtime lock settings",
+    "Owner, ACL, OID and all other function metadata",
+    "All helper calls/order/error handlers/finalizer/return values",
+    "Existing READBACK_FAILURE exclusions and bounded page limits",
+    "Existing rows and immutable audit history",
+    "Source scope, fixed cohort and controller"
+  ],
+  "production_actions_by_reviewer": 0,
+  "reason": "The unchanged independent verifier rejects committed_at>=transaction_timestamp(). A monitor transaction that waits behind a worker commit can otherwise select an ineligible page, record AI005 and permanently exclude it. The predicate defers that page until a subsequent transaction; it preserves the verifier.",
+  "required_root_prerequisites": [
+    "All exact-head CI gates passed",
+    "Fresh same owner/lease and exact live source/catalog reconciliation",
+    "Separate exact install/readback with uncertain-write reconciliation before retry",
+    "Observe subsequent worker/monitor readbacks; preserve immutable evidence"
+  ],
+  "reviewed_actual_database_qualification": {
+    "active_test_sha256": "04312d34e94331fb79981b7b0032560a3128a84aab01d1a32c9efbb53021ae83",
+    "covers": [
+      "Actual two-connection global-gate race reproduces baselineAI005/permanent exclusion",
+      "Candidate defers then subsequent transaction verifies100 records and identical body hash",
+      "Equality/+1microsecond boundary stays rejected by the unchanged verifier in old transaction",
+      "Limits and prior genuine failure exclusions remain",
+      "Exact final forward metadata/application preservation and denied outsider/gateway access",
+      "Pre-snapshot verifier drift and post-write failures roll back",
+      "Owner/lease/run/fence/2999-member/replay rejection",
+      "Unchanged2-second BUSY lock result"
+    ],
+    "elapsed_seconds": 5.539925237004354,
+    "errors": 0,
+    "executed_by": "/root/fresh_claim_recovery; independently inspected by this reviewer.",
+    "failures": 0,
+    "receipt": {
+      "bytes": 40079,
+      "path": "review/recovery-v72/maintenance_readback_active_qualification_v72.json",
+      "sha256": "e09b8fa26a9c062a88ed401bc8ac69fbc7ee0a2bf21acf7faa56fea74d1ef855"
+    },
+    "skipped": 0,
+    "tests": 8
+  },
+  "reviewer": "/root/relay_v3_review",
+  "root_is_sole_controller_and_remote_writer": true,
+  "schema": "astra.readback-transaction-race-independent-review/1",
+  "security_diff": {
+    "new_grants_roles_credentials_trust_relationships": false,
+    "new_tables_indexes_or_audit_actions": false,
+    "persistent_mutation": "Replace only the exact existing maintain function definition with the one-predicate postimage.",
+    "weakened_verification_or_integrity": false
+  },
+  "source_transition": {
+    "addition": "AND pg.committed_at<transaction_timestamp()",
+    "after": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "before": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+    "exactly_one_selector_changed": true,
+    "reverse_replacement_recovers_baseline_byte_for_byte": true
+  }
+}

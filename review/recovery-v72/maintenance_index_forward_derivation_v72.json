@@ -1,0 +1,60 @@
+{
+  "schema": "astra.maintenance-index-forward-derivation/1",
+  "forwards": [
+    {
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+      "bytes": 13522,
+      "index": "backfill_tasks_breadth_pending_id_v2"
+    },
+    {
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203",
+      "bytes": 13725,
+      "index": "backfill_tasks_minute_pending_id_v2"
+    }
+  ],
+  "source_pins": {
+    "backfill_breadth_project_pending_v2(integer)": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+    "backfill_minute_account_pending_v2(integer)": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2",
+    "backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "backfill_maintain_v2(integer)": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+    "monitor_tick_v1()": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057"
+  },
+  "baseline_index_definition_sha256": "2d87039e14365784d4c027e20c297e3b7c2354d096a466caab2c00fc5ead1f47",
+  "baseline_index_names": [
+    "backfill_contract_enum_task_v2",
+    "backfill_contract_old_child_cursor_v2",
+    "backfill_daily_month_units_v2",
+    "backfill_identity_derived_member_v2",
+    "backfill_identity_refresh_tasks_v2",
+    "backfill_reuse_children_v2",
+    "backfill_shared_action_tasks_v2",
+    "backfill_tasks_family_turn_v2",
+    "backfill_tasks_family_v2",
+    "backfill_tasks_minute_alias_status_v2",
+    "backfill_tasks_provider_v2",
+    "backfill_tasks_recovery_turn_v2",
+    "backfill_tasks_runnable_v2",
+    "backfill_tasks_runtime_summary_v2",
+    "backfill_tasks_v2_pkey"
+  ],
+  "expected_index_definitions": {
+    "backfill_tasks_breadth_pending_id_v2": "CREATE INDEX backfill_tasks_breadth_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = 'D03'::text) AND (lower(provider) = 'derived'::text))",
+    "backfill_tasks_minute_pending_id_v2": "CREATE INDEX backfill_tasks_minute_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = ANY (ARRAY['P01'::text, 'P02'::text])) AND (kind = ANY (ARRAY['retained_reuse'::text, 'alpaca_stock_bars'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+  },
+  "separate_atomic_statements": true,
+  "statement_budget_seconds": 8,
+  "lock_budget_seconds": 3,
+  "lock_order": [
+    "existing_global_advisory_gate",
+    "existing_run_row_share",
+    "existing_task_table_share"
+  ],
+  "exact_valid_existing_target": "No index build; same-name drift or invalidity aborts.",
+  "production_version": "17.6",
+  "local_qualification_version": "16.15",
+  "production_application": false,
+  "no_persistent_access_or_authentication_change": true
+}

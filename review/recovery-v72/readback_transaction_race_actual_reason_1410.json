@@ -1,0 +1,14 @@
+[
+  {
+    "id": 30,
+    "recorded_at": "2026-10-30 14:00:04.16716+00",
+    "action": "READBACK_FAILURE",
+    "page_no": "0",
+    "sqlstate": "AI005",
+    "reason_class": "SUBSEQUENT_TRANSACTION_REQUIRED",
+    "committed_at": "2026-10-30 14:00:00.061968+00",
+    "body_sha256": "255ec70d01487893dfeeaaccf5dc9638adc325ad71c0fc13986fa7187b600a9b",
+    "record_count": 100,
+    "already_read_back": false
+  }
+]

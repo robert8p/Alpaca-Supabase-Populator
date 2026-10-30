@@ -1,0 +1,166 @@
+{
+  "artifacts": [
+    {
+      "bytes": 13522,
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9"
+    },
+    {
+      "bytes": 13725,
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203"
+    },
+    {
+      "bytes": 13957,
+      "path": "tests/ingestion/test_backfill_maintenance_task_indexes_v2.py",
+      "sha256": "50108ef354e9d3c36b76e6f3b55f31306067f2c20ee4a749b4c5eded931a2145"
+    },
+    {
+      "bytes": 3041,
+      "path": "review/recovery-v72/maintenance_index_forward_derivation_v72.json",
+      "sha256": "8c9feb1d1bef3ca27fd5686fae4f9ca06fa0c592ee2b214385bfae07d8776001"
+    }
+  ],
+  "base_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "base_tree": "60ba98872222e1c7f285296fc48300e326ee6fda",
+  "combined_installation_order": [
+    {
+      "bytes": 13522,
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9"
+    },
+    {
+      "bytes": 13725,
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203"
+    },
+    {
+      "bytes": 6902,
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b"
+    }
+  ],
+  "created_at_utc": "2026-10-30T14:29:59.971709+00:00",
+  "decision": "PASS_EXACT_INDEX_ONLY_REPAIR_SUBJECT_TO_ROOT_FRESH_INSTALLATION_PREREQUISITES",
+  "exact_change": {
+    "breadth_predicate": "family = 'D03' AND lower(provider) = 'derived'",
+    "functions_queries_rows_or_existing_metadata_changed": false,
+    "method": "Nonunique partial hash indexes on the existing text task id; primary key and all15 old indexes remain.",
+    "minute_predicate": "family IN ('P01','P02') AND kind IN ('retained_reuse','alpaca_stock_bars') AND COALESCE(scope->>'timeframe','1Min') = '1Min'",
+    "new_objects": [
+      "astra_ingestion_v1.backfill_tasks_breadth_pending_id_v2",
+      "astra_ingestion_v1.backfill_tasks_minute_pending_id_v2"
+    ]
+  },
+  "excluded": "No timing telemetry candidate, credentials, runtime auth change, schedule change, provider scope change or worker redeploy is included.",
+  "independent_execution": {
+    "covers": [
+      "All source/metadata/ACL/RLS/data preservation",
+      "Exact no-op/OID preservation",
+      "Required breadth-before-minute order",
+      "Source/index/owner/lease/status/fence/cohort drift",
+      "Wrong method and predicate",
+      "Actual pre-snapshot and post-build source drift rollback",
+      "Post-build lease expiry rollback",
+      "Existing3-second lock budget55P03 with no build",
+      "Authenticated real page, automatic successor and lost-ack reconciliation"
+    ],
+    "elapsed_seconds": 5.873668249005277,
+    "errors": 0,
+    "failures": 0,
+    "receipt": {
+      "bytes": 3660,
+      "path": "review/recovery-v72/maintenance_index_independent_test_result_v72.json",
+      "sha256": "96f9d2a972b689e9b7e7d351fde95de242d9d72991328a2e2714737046594e77"
+    },
+    "runner": {
+      "bytes": 2886,
+      "path": "review/recovery-v72/qualify_maintenance_index_independently_v72.py",
+      "sha256": "047b0d8664b662f96a9c320dd68a1956f532b356c249a7cb9752ecae9eaa0046"
+    },
+    "scope": "Exact final forwards and active test in the536-base staged disposable PostgreSQL fixture.",
+    "skipped": 0,
+    "tests": 9
+  },
+  "installation_risks_and_limits": {
+    "capacity_and_production_build_duration_verified_by_this_review": false,
+    "lock_order": [
+      "Existing global advisory gate706314020261028",
+      "Fixed run row FOR SHARE",
+      "Task table SHARE"
+    ],
+    "lock_timeout": "3s",
+    "normal_transactional_build": true,
+    "statement_timeout": "8s",
+    "storage": "Local grown hash pair consumes41,975,808bytes, approximately40MiB; this is larger than the rejected B-tree pair and adds insertion/expansion work.",
+    "transient_risk": "Normal index build scans the task heap and blocks conflicting task writes while holding the global gate. Worker3-second waits can fail during this bounded installation.",
+    "version_and_cache": "LocalPostgreSQL16.15 versus live17.6; fixture construction/warm-cache and visibility state are disclosed. Local times do not prove production build time or monitoring latency."
+  },
+  "order_reason": "The two index installers require maintaincd100. Install/read back breadth, then minute, then the one-predicate race fix to maintain6c880. The old index forwards correctly become stale after that function change.",
+  "performance_conclusion": {
+    "collision_correctness": "An actual text-hash collision produces one discarded index recheck; the excluded ID is not returned and the primary key remains valid.",
+    "negative_results_preserved": "B-tree variant rejected; unsuccessful large collision-search and one-ACTIVE-run fixture attempt remain recorded, not relabeled as passes.",
+    "not_claimed": [
+      "Production speed ratio",
+      "Whole cron transaction or global-gate hold duration",
+      "Sustained recovery",
+      "Universal minute-selector ordering: the existing minute LIMIT query has no total ORDER BY"
+    ],
+    "positive_generic_scope": "Separate60,000-task fixture passes exact original selector identities with one positive per family, and generic plans choose the hashes.",
+    "supported": "In the separate712,899-task local scale fixture, normal chosen hash equality probes reduce task-node buffer visits from21,200/20,850 to4,241/4,171 across0/~95/100 percent heap visibility and disclosed growth/status changes."
+  },
+  "production_actions_by_reviewer": 0,
+  "remote_mutations_by_reviewer": 0,
+  "required_root_prerequisites": [
+    "Publish exact reviewed sources and every active test/fixture dependency, then require all configured CI gates on that exact head.",
+    "Read current ownership/lease, exact sources, index inventory/definitions and capacity; do not assume the previously observed lease remains valid.",
+    "Install and read back each forward separately in the required order, retaining exact migration/history results.",
+    "If a response is uncertain, reconcile exact catalogs and migration history before retrying.",
+    "Use bounded pure-SELECT post-install plans to verify actual chosen paths, and observe actual monitor/worker/readbacks before claiming recovery."
+  ],
+  "reviewed_producer_evidence": [
+    {
+      "bytes": 49595,
+      "path": "evidence/replacement-maintenance-task-hash-index-qualification-v72.json",
+      "sha256": "458f149d06bf65d09bdedadf05fa3f9337c32ff8ff206cd6a8795c8939b01071"
+    },
+    {
+      "bytes": 35571,
+      "path": "review/recovery-v72/maintenance_index_active_qualification_v72.json",
+      "sha256": "995ec6fb0a5eed6773d73d63f55cdd21b554e7381ae959047d3f6855152a0f96"
+    },
+    {
+      "bytes": 246646,
+      "path": "review/recovery-v72/maintenance_task_hash_sensitivity_qualification_v72.json",
+      "sha256": "5baf02c733052770adf699d544ebbcb4335e712dfc680d8e304b8e1ba708c064"
+    },
+    {
+      "bytes": 23888,
+      "path": "review/recovery-v72/maintenance_hash_positive_generic_qualification_v72.json",
+      "sha256": "f5bd79445c17351ef4c9d6fee19bdec2e37b3e306c51e409dddab327e04e5a48"
+    },
+    {
+      "bytes": 2817,
+      "path": "review/recovery-v72/maintenance_hash_collision_focused_qualification_v72.json",
+      "sha256": "46c58c1b63f9cece7334b58f1feba60db818c89eaf1f5e39018167f222ca3c74"
+    }
+  ],
+  "reviewer": "/root/relay_v3_review",
+  "root_is_sole_controller_and_remote_writer": true,
+  "schema": "astra.maintenance-task-hash-index-independent-review/1",
+  "security_diff": {
+    "authentication_dispatch_scope_fences_or_live_credential_recheck_changed": false,
+    "cohort_members_source_cost_scope_and_controller_changed": false,
+    "global_gate_and_runtime_timeout_policies_changed": false,
+    "new_grants_roles_credentials_trust_relationships": false,
+    "new_index_owner": "Existing task-table owner; no index ACL",
+    "table_owner_acl_rls_and_every_existing_function_catalog_row_preserved": true
+  },
+  "source_guard_review": [
+    "Both installers pin the same six exact function definitions,15 retained index definitions and ordinary task-table shape before building.",
+    "Existing exact valid candidate is a no-op; wrong same-name objects, extra indexes, invalid indexes and reversed minute-only installation state fail closed.",
+    "All six source pins are checked again after building and on the no-op path; post-build and no-op owner/fence/lease checks remain.",
+    "Before/after snapshots preserve all original index catalog rows, table owner/ACL/RLS and all function catalog rows.",
+    "Exact3,000-member count, accepted snapshot hash, same ACTIVE run, owner and fence are mandatory; lease must be fresh."
+  ]
+}

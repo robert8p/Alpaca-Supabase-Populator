@@ -1,0 +1,288 @@
+{
+  "schema": "astra.contract-admission-pure-reads/1",
+  "page_no": 0,
+  "results": [
+    {
+      "nodes": [
+        {
+          "path": [
+            0
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Aggregate",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3805,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": null,
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Sort",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3805,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Subquery Scan",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3799,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "WindowAgg",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3799,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Subquery",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Unique",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3799,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Sort",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3799,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": "Anti",
+          "node_type": "Nested Loop",
+          "temp_reads": 0,
+          "actual_rows": 0,
+          "shared_hits": 3799,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 227,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Function Scan",
+          "temp_reads": 0,
+          "actual_rows": 1000,
+          "shared_hits": 0,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 0,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": 0,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            2
+          ],
+          "index": "backfill_contract_work_v2_pkey",
+          "relation": "backfill_contract_work_v2",
+          "join_type": null,
+          "node_type": "Index Only Scan",
+          "temp_reads": 0,
+          "actual_rows": 1,
+          "shared_hits": 3774,
+          "temp_writes": 0,
+          "actual_loops": 1000,
+          "shared_reads": 227,
+          "parent_relationship": "Inner",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        }
+      ],
+      "component": "UNREGISTERED_SYMBOL_BATCHES",
+      "planning_ms": 0.672,
+      "execution_ms": 185.689
+    },
+    {
+      "nodes": [
+        {
+          "path": [
+            0
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": "Inner",
+          "node_type": "Nested Loop",
+          "temp_reads": 0,
+          "actual_rows": 1000,
+          "shared_hits": 4964,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 36,
+          "parent_relationship": null,
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            1
+          ],
+          "index": null,
+          "relation": null,
+          "join_type": null,
+          "node_type": "Function Scan",
+          "temp_reads": 0,
+          "actual_rows": 1000,
+          "shared_hits": 0,
+          "temp_writes": 0,
+          "actual_loops": 1,
+          "shared_reads": 0,
+          "parent_relationship": "Outer",
+          "rows_removed_filter": 0,
+          "rows_removed_join_filter": null
+        },
+        {
+          "path": [
+            0,
+            2
+          ],
+          "index": "backfill_contract_work_v2_pkey",
+          "relation": "backfill_contract_work_v2",
+          "join_type": null,
+          "node_type": "Index Scan",
+          "temp_reads": 0,
+          "actual_rows": 1,
+          "shared_hits": 4964,
+          "temp_writes": 0,
+          "actual_loops": 1000,
+          "shared_reads": 36,
+          "parent_relationship": "Inner",
+          "rows_removed_filter": null,
+          "rows_removed_join_filter": null
+        }
+      ],
+      "component": "EXISTING_PARENT_LINKS",
+      "planning_ms": 0.248,
+      "execution_ms": 46.65
+    }
+  ],
+  "task_id": "backfill-plan-0a93df963fd7ef5a5c67e7534302d55c4fc5db535c9ff5bb8f7238d78af181e8",
+  "complete": true,
+  "observed_at": "2026-10-30T13:48:32.036962+00:00",
+  "eligible_rows": 1000,
+  "seed_complete": true,
+  "source_sha256": "b17ea8c26261621646f4e7dba39ad91b521991ce406cb40b3ed666bd63c12624",
+  "parsed_records": 1000,
+  "parse_elapsed_ms": 87.24,
+  "parsed_rows_sha256": "1b46aa8d84e643850db98430ba03a30b700c71c48950e04d29e11eccc831c1c6",
+  "transaction_isolation": "repeatable read",
+  "transaction_read_only": "on",
+  "advisory_lock_acquired": false,
+  "admission_currently_pending": false,
+  "admission_or_registration_invoked": false,
+  "raw_source_or_parsed_rows_returned": false
+}

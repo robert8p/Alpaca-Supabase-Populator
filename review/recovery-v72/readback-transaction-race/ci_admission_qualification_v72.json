@@ -1,0 +1,17 @@
+{
+  "schema": "astra.readback-race-ci-admission-qualification/1",
+  "database_connections": 0,
+  "production_calls": 0,
+  "test_sha256": "04312d34e94331fb79981b7b0032560a3128a84aab01d1a32c9efbb53021ae83",
+  "configured_dedicated_workflow": "EXISTING_FIXTURE_DELEGATION; eight discoverable cases; no inherited skip",
+  "missing_dsn_dedicated_workflow": "ERROR; no fixture or database called",
+  "missing_dsn_other_workflow": "EXPLICIT_SKIP naming the dedicated ingestion gate",
+  "missing_dsn_unset_workflow": "EXPLICIT_SKIP naming the dedicated ingestion gate",
+  "passed": true,
+  "tests": 4,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "runner_sha256": "3642080f8f7bc60cc490243084ba20cfdb585db899eee751afd3219397994fb2",
+  "limitation": "Mocked admission only; actual eight-case database discovery is qualified separately."
+}
