@@ -1,4 +1,4 @@
-# ASTRA ingestion — replacement checkpoint v62
+# ASTRA ingestion — replacement checkpoint v63
 
 ## Active authority and scope
 
@@ -30,17 +30,24 @@ The old runtime dispatcher uses real api/worker capabilities and advisory transa
 
 ## Current implementation work
 
-1. Safely close old-scope admission, persist a distinct replacement run and freeze the exact saved cohort.
+1. Old-scope admission is now closed at the authenticated database boundary. Persist a distinct replacement run and freeze the exact saved cohort.
 2. Extend the existing application queue/worker with family-aware bounded tasks, receipts, truthful dispositions, retries and automatic continuation.
 3. Reuse verified equivalent existing source observations by mapped reference where practical. Do not count direct SEC/FINRA/other sources in two-plan completion.
 4. Connect the first useful provider/reuse batch, verify readback and successor, then keep full-scope work running while implementing remaining adapters/calculations.
 5. Keep raw acquisition independent of per-unit identity/research-quality gaps. Operational failures remain operational failures, never provider absences.
 6. Retarget all app continuation/supervision paths; preserve unrelated scanners/controllers and excluded datasets.
 
-All16 families remain in accounting. F01–F06,CTX07,CTX14 are outside acquisition; D06preservation-only. Current full backfill state is **IMPLEMENTING / NOT_YET_RUNNING**, not complete. Database supersession and new-run deployment are not yet claimed.
+All16 families remain in accounting. F01–F06,CTX07,CTX14 are outside acquisition; D06preservation-only. Current full backfill state is **IMPLEMENTING / NOT_YET_RUNNING**, not complete. Database admission supersession is verified; the new-run deployment is not yet claimed.
 
 ## Evidence and continuation
 
 Current source before replacement: `b3e2912f00812dd11122be116f98be9499a4908f`; old checkpoint archived at [history/INGESTION_COMPLETION_STATE_v61.md](history/INGESTION_COMPLETION_STATE_v61.md).
 The implementation owner is active in this conversation and will publish concrete queue/run/release receipts and restore this same scheduled writer after establishing safe resumption. Never restore the old24-family/Aug–Sep scope from archived docs or former automation prompts.
 Existing disabled independent reviewer/closeout have unresolved requires_user_action states; do not impersonate their acceptance or bypass actual platform restrictions. Independent local/source/readback work continues meanwhile.
+
+## Verified replacement milestone — 2026-10-30T05:03:57Z
+
+Migration `astra_ingestion_supersede_gate_v2` applied successfully and read back. Original `submit_job` now returns SUPERSEDED_BY_SCOPE_CHANGE after normal capability authentication; original `claim_next` returns null after the shared transaction lock. Existing completed job counters remain 156/2 and78/1; zero active claims. No queued original work required relabeling.
+The gate was qualified against disposable PostgreSQL16 with existing capability authentication, queued-task preservation, repeated application, and invalid-token rejection.
+Actual Alpaca calendar has230 target sessions. Minimum60-session daily support begins2025-06-05;20-session intraday support begins2025-08-04. Retain support separately.
+Actual Render deployment reconciliation confirms both services still LIVE on `2c809b69e131f84e1778486e74c2f89a273f59f9`; no replacement bulk execution is claimed.
