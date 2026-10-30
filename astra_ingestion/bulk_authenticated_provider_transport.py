@@ -41,6 +41,7 @@ class BoundHTTPSPage:
     page_no: int
     fence: int
     request_sha256: str
+    request_url_sha256: str
     manifest_sha256: str
     previous: SIPResponseWitness | None = field(default=None, repr=False)
     status: str = "BOUND_NOT_ADMITTED_NOT_SENT"
@@ -56,14 +57,18 @@ class HTTPSPageObservation:
     page_no: int
     request_sha256: str
     raw_body_sha256: str
+    request_url_sha256: str
     witness: SIPResponseWitness = field(repr=False)
-    _response: Mapping[str, Any] = field(repr=False)
+    _private_raw_body: bytes = field(repr=False)
     status: str = "HTTPS_OBSERVED_NOT_INDEPENDENTLY_ATTESTED"
 
     def quarantinable_response(self) -> Mapping[str, Any]:
         # Caller still needs the original fenced durable ticket and a separate
         # authenticated transport attestor, never this object alone.
-        return self._response
+        # Return a fresh decoding. Callers cannot mutate our immutable source
+        # observation before the staged quarantine checks its original hash.
+        return json.loads(self._private_raw_body.decode("utf-8"),
+                          object_pairs_hook=_unique_object, parse_constant=_nonfinite)
 
     @property
     def provider_provenance_accepted(self) -> bool:
@@ -112,7 +117,8 @@ def prepare_bound_https_page(
     url = ENDPOINT + "?" + urlencode(request)
     return BoundHTTPSPage(
         plan, url, bound.work_key, bound.page_no, bound.claim_fence,
-        bound.request_sha256, bound.manifest_sha256, previous,
+        bound.request_sha256, sha256(url.encode("utf-8")).hexdigest(),
+        bound.manifest_sha256, previous,
     )
 
 
@@ -171,7 +177,8 @@ def inspect_https_page(
     )
     return HTTPSPageObservation(
         bound.work_key, bound.page_no, bound.request_sha256,
-        sha256(raw_body).hexdigest(), witness, body,
+        sha256(raw_body).hexdigest(), bound.request_url_sha256,
+        witness, raw_body,
     )
 
 
