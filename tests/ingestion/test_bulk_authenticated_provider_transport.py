@@ -214,6 +214,28 @@ class TransportStageTests(unittest.TestCase):
         self.assertEqual(x.witness.excluded_end_bar_count, 1)
         self.assertFalse(x.provider_provenance_accepted)
 
+    def test_tampered_dataclass_cannot_redirect_provider_credentials(self):
+        original = bound()
+        attempts = []
+        def forbidden(req, *, timeout):
+            attempts.append(req.full_url)
+            raise AssertionError("mutated URL must fail before network")
+        for altered in (
+            replace(original, url="https://evil.example/steal"),
+            replace(original, request_url_sha256="f"*64),
+            replace(original, request_sha256="f"*64),
+            replace(original, page_no=1),
+            replace(original, previous=inspect_sip_response(
+                plan(), response(token="QUJDRA=="))),
+        ):
+            with self.subTest(altered=altered.page_no), self.assertRaises(ScopeError):
+                fetch_once(
+                    altered, api_key="synthetic-key", secret_key="synthetic-secret",
+                    verified_admission=lambda _: True, opener=forbidden)
+            with self.assertRaises(ScopeError):
+                inspect(altered)
+        self.assertFalse(attempts)
+
     def test_no_network_without_separate_runtime_admission(self):
         b = bound()
         called = []
