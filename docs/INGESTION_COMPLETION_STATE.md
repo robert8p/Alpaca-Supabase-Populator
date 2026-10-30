@@ -1,12 +1,16 @@
-# ASTRA ingestion — replacement checkpoint v67
+# ASTRA ingestion — replacement checkpoint v68
 
 ## Current execution and ownership
 
-Updated from root-verified observations through **2026-10-30T08:04:11Z**. Status: **ACTIVE — USEFUL BULK BACKFILL RUNNING; FULL DELIVERY INCOMPLETE**.
+Updated **2026-10-30T08:19:41Z**. Status: **ACTIVE — OPERATIONAL REPAIR IN PROGRESS; FULL DELIVERY INCOMPLETE**.
 
-The same owner `root-replacement-20261030T042603Z` holds the finite implementation lease through **2026-10-30T08:30:00Z**. Database audit4 records the compare-and-swap renewal from 08:00 to 08:30 at approximately 07:52:41Z. No release has been reported. The existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` remains enabled with its original hourly recurrence and no expiry; its prompt was updated at 07:52:51Z with the relay security boundary first. It must respect the current root lease. The existing 08:00 hourly execution completed a read-only reconciliation and respected the active owner. No competing controller or scheduled task was created.
+The existing worker is **intermittently crashing and restarting with `RpcPersistenceError`**. The database run remains ACTIVE and retained progress is intact, but this does not establish healthy continuous execution. The family-report performance repair has succeeded; the separate claim/dispatch timeout and the failed 1,000-news-row qualification still require repair.
 
-Run: `fixed3000-20250901-20260731-v1-20261030`, fence1. Existing PR93/branch `feat/astra-ingestion-service`, repository `robert8p/Alpaca-Supabase-Populator`. Retain completed work and reconcile uncertain writes before retrying. The worker continues through the existing queue and existing services.
+**First reconcile the interrupted turn, current ownership, retained files, installed forwards and any uncertain writes before retrying or changing anything.** Continue the same run `fixed3000-20250901-20260731-v1-20261030`, fence1, through the existing worker, queue and controller. Do not restart completed work or create a competing controller.
+
+Owner `root-replacement-20261030T042603Z` retains the finite implementation lease through **2026-10-30T08:50:00Z**. Database audit5 records its compare-and-swap renewal from 08:30 to 08:50 at **08:18:35Z**. No release is recorded. The same hourly automation `6ae2a4c96bbc819182133e17e9b7f779` remains enabled without programme expiry; the root updated its prompt at **08:19:41Z** with the current failures, ownership and relay hold. It must respect this lease. After explicit release or expiry, reconcile and acquire coherent ownership before implementation writes.
+
+Existing PR93/branch `feat/astra-ingestion-service`, repository `robert8p/Alpaca-Supabase-Populator`. Published v67 commit: `3e8a7b94ec7dcea8a995fd20ce5df372b2677250`. Packaging-fix revision at this reconciliation: `3ffd337e9c65b5ea33f96ab6436c0701684f435a`. [Runtime, CI and ownership evidence](../evidence/replacement-runtime-reconciliation-v68.json).
 
 ## Fixed authority and cohort
 
@@ -25,95 +29,75 @@ The accepted saved snapshot `population_top3000_202608_202609_v1.ref01_practical
 
 Actual calendar:230 target sessions; daily60-session support starts2025-06-05; intraday20-session support starts2025-08-04. Formula manifest SHA256 `e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65`.
 
-## Exact tested deployment and genuine progress
+## Deployed revision, retained progress and runtime failure
 
-Executable revision **`947b681735138b0b9052df1e5eba5769d7b2c381`** passed all four GitHub push/pull-request ingestion qualification and release-gate checks. Stage3 local qualification passed **519 actual PostgreSQL tests** with zero failures, errors or skips. The exact release qualification also records its no-DSN and syntax checks. Relay, shared-record and contract-registry candidates were excluded from this release.
+Both existing services still use tested stage3 executable revision **`947b681735138b0b9052df1e5eba5769d7b2c381`**. Its historical qualification passed 519 actual PostgreSQL tests and all four GitHub checks. That result does not qualify the newer branch revision or establish current worker health.
 
-| Existing service | Exact deployment | Live at (2026-10-30 UTC) |
+| Existing service | Deployment | Became live (2026-10-30 UTC) |
 | --- | --- | --- |
 | Worker `srv-dbh9fko473hc739an8m0` | `dep-dbi4gvrbc2fs73a3b2fg` | 07:35:03 |
 | Web `srv-dbh85vl9fdbs7387rucg` | `dep-dbi4h1ei0phs73crc7dg` | 07:35:11 |
 
-Both selected revision `947b681735138b0b9052df1e5eba5769d7b2c381`. Workspace `tea-d562ma4hg0os73aejnfg`; one existing ingestion worker instance.
+The newer shared-record/contract-work status UI is published in the branch but **has not been deployed**. Do not deploy it until the exact-head ingestion and release gates pass. Worker source remains SHA256 `90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e`.
 
-At **07:49:42Z**, root verified:
+At **08:13:52Z**, the complete delivery read returned:
 
 | Measure | Recorded value |
 | --- | ---: |
-| Run state | ACTIVE |
-| Physical committed pages | 1,635 |
-| Physical records/pointers | 195,785 |
-| Provider reservations | 810 |
-| Recorded readbacks | 1,635 |
-| Retained S02 occurrences | 857 |
-| Next retained S02 page | 7 |
-| OPERATIONAL_ERROR tasks | 0 |
-| Planner next selection order | 1,173 |
+| Physical committed pages | 1,810 |
+| Physical source/derived records and pointers | 217,210 |
+| Provider reservations | 891 |
+| Source bytes | 207,684,827 |
+| Required readbacks remaining | 0 |
+| Families returned | 16 |
 
-These are execution and storage measurements, not a count of distinct market observations or completed family coverage. Retained pointers, shared observations, cached feature rows and article/contract occurrences have different units and may overlap. Planning is still incomplete, and historical pagination/enumeration remains open. The 07:49:42 figures are a timestamped checkpoint, not a claim that progress stopped then.
+The **08:14:31Z** runtime read still showed 1,810 pages and 217,210 physical records/pointers, planner next selection order **1,373**, and last useful progress at **08:13:44Z**. These timestamps are retained observations, not a promise of later progress. Physical records, pointers, reused observations and logical source occurrences have different overlapping units; do not add them into a unique-observation count or infer final coverage. The fuller earlier 07:49 and 08:03 measurements remain in [v67 history](history/INGESTION_COMPLETION_STATE_v67.md) and their original evidence files.
 
-Newer reconciliations show **1,758 committed pages, 210,856 physical records/pointers and 1,758 readbacks at 07:57:42Z** in the existing automation's read-only execution. At **08:02:09Z**, the root observed **1,792 committed pages and 214,624 physical records/pointers**, with last useful progress at **08:02:06Z**. The earlier 07:49:42 table remains unchanged because it contains additional measures not refreshed in those later reads. At **08:03:00Z**, the root's fuller readback showed **1,793 committed pages, 215,444 physical records/pointers, 885 reservations and 1,793 independent readbacks**, with **1,869 retained S02 occurrences**, next retained S02 page **15**, planner next selection order **1,343**, and **zero OPERATIONAL_ERROR tasks**. Last useful progress in that receipt was 08:02:10Z. The newly installed registry was at its initial state: `seed_complete=false` and zero registered windows/links; installation alone is not evidence that its catch-up has progressed.
+Sanitized service logs show repeated `RpcPersistenceError` exits and automatic restarts, including an exit at **08:13:55Z**, after the report repair. PostgreSQL reports **SQLSTATE `57014`**, “canceling statement due to statement timeout,” at **`astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)` line106**, through the existing authenticated RPC path. The current executable defect is this claim/dispatch timeout. Do not classify it as provider absence or a successful terminal gap, and do not claim the worker is healthy merely because the deployment or run status says ACTIVE.
 
-Evidence: [stage3 publication and exact deployments](../evidence/replacement-stage3-publish-and-deploy-v2.json), [07:49:42 live measurement](../evidence/replacement-live-progress-v67.json), [later progress and applied-forward reconciliation](../evidence/replacement-live-progress-v67-supplement.json), [08:03 live progress and registry application receipt](../evidence/replacement-independent-forward-live-v67.json), [stage3 exact release qualification](../evidence/replacement-stage3-release-qualification-v2.json), [PostgreSQL qualification](../evidence/replacement-stage3-pg-qualification-v2.json), [no-DSN qualification](../evidence/replacement-stage3-no-dsn-qualification-v2.json), [syntax qualification](../evidence/replacement-stage3-syntax-qualification-v2.json), and [first useful batch](../evidence/replacement-first-useful-batch.json).
+Evidence: [stage3 exact deployment](../evidence/replacement-stage3-publish-and-deploy-v2.json), [report-performance live readback](../evidence/replacement-family-report-performance-live-v2.json), and [sanitized worker/SQL failure plus lease reconciliation](../evidence/replacement-runtime-reconciliation-v68.json).
 
-## Verified unattended execution path
+## Applied forwards and repaired family report
 
-The new run has demonstrated actual provider acquisition/verified reuse, automatic subsequent tasks, source-to-database readback, controlled restart and deferred retry. Continue bulk work after this proof.
+All previously installed cohort, runtime, bounded planning, source reuse, delivery/readback, breadth, source deduplication, feature-cache reuse, provider/family pacing, adaptive page, canonical encoding and retry-priority work remains retained. Additional installed forwards include:
 
-Controlled restart `dep-dbi3ki4s728c73c8fnrg` on13ae became LIVE06:34:28Z. All75 prior page keys/hashes stayed unchanged, zero duplicates, and34 pages committed after the old worker's final heartbeat by06:37:23Z. [Restart proof](../evidence/replacement-controlled-restart-proof.json).
-
-A controlled30-second application pacing deadline—not a fabricated provider429—put five actual tasks in RETRY_WAIT withzero reservations. Four resumed and committed verified data by06:54. The fifth, AAPL options task `backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a`, committed1000 verified contracts07:05:44Z and retained its next cursor. [Initial four-task retry proof](../evidence/replacement-deferred-retry-proof-v2.json); the fifth readback is in v66 live evidence.
-
-The live check exposed two application defects and both were repaired:
-
-- Eligible retries could be starved by fresh PENDING work. Per-family due-recovery priority now selects eligible deferred/expired claims first.
-- A normal one-second provider pacing refusal could hand the next turn to another family. The bounded short-pacing fairness forward retains that family's turn when the remaining delay is at most one second. Longer Retry-After deadlines remain intact and other families/providers continue. Six actual-PG tests include an exact starvation reproduction and successful next reservation.
-- News pages hit the existing10-second RPC deadline in the old character-by-character JSON encoder. The linear encoding forward preserves old bytes/hashes (104 Unicode comparisons), and a1,208,635-byte authenticated test commit completed in0.158seconds with idempotence/readback/successor verification. Actual50-article pages are now committing. No provider-absence inference was made.
-
-## Applied changes and retained work
-
-Runtime, cohort, bounded planner, retained-source commits/readback, stable delivery views/finalizer, breadth material, source deduplication, compact D01 cache reuse, provider pacing, family fairness, adaptive execution page limits, canonical encoding and due-recovery priority are installed. Cache reuse and replacement-run app status remain deployed.
-
-The following additional forwards are confirmed APPLIED; reconcile installed markers and exact definitions before any retry:
-
-| Forward | SHA256 | Status |
+| Forward | Exact SHA256 | Application state |
 | --- | --- | --- |
-| Short provider-pacing fairness | `edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c` | Applied before v66; normal delays at most one second preserve the eligible family turn |
-| Progressive historical identity | `47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553` | Applied; included in stage3 |
-| Non-minute per-field projection | `3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869` | Applied; included in stage3 |
-| Bounded retained S02 overlay | `10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9` | Applied; included in stage3 |
-| Maintenance fairness | `3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9` | Applied approximately 07:46Z; three actual PostgreSQL concurrency tests passed |
-| Shared-record delivery | `2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10` | Applied approximately 07:55Z; 14 dedicated PostgreSQL tests and the earlier 29-test combined qualification |
-| Contract-work registry | `fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2` | Applied approximately 08:02:25Z after live absence, shared prerequisite and ownership reconciliation; seven PostgreSQL tests and accepted independent static review |
+| Progressive historical identity | `47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553` | Applied in stage3 |
+| Non-minute field projection | `3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869` | Applied in stage3 |
+| Retained S02 overlay | `10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9` | Applied in stage3 |
+| Maintenance fairness | `3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9` | Applied approximately 07:46Z |
+| Shared-record delivery | `2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10` | Applied approximately 07:55Z |
+| Contract-work registry | `fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2` | Applied approximately 08:02:25Z |
+| Family-report performance | `324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad` | **Applied once at approximately 08:12:37Z** |
 
-Maintenance fairness changes `backfill_maintain` only, with no ACL change. The authenticated dispatcher baseline remains SHA256 `0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96`.
+The report forward changes two existing views, preserving their relation identity and ACLs, outer report composition, immutable receipts, task states/scopes/leases, revision selection and identity invalidation semantics. It adds no role, grant, credential or relay path. The local qualification passed **six actual PostgreSQL tests**, with no failure, error or skip, and exact input hashes unchanged. It includes a 200,000-task synthetic workload under the actual stage3/shared/registry schema; the synthetic timing is separate from production evidence. [Full qualification and plans](../evidence/replacement-family-report-performance-qualification-v2.json).
 
-Historical identity uses retained original-byte evidence and exact dated identifiers. Missing support dates or unresolved historical aliases remain explicit; do not infer continuity from a ticker alone. Derivative refreshes use immutable successor work. The retained S02 overlay is partial reuse and does not retire full-history Massive tasks.
+Live verification produced the complete **16-family JSON in 4.207 seconds** of server statement time at 08:13:02Z, and the **complete delivery function in 4.322 seconds** at 08:13:52Z with zero required readbacks remaining. These reads establish that the report repair worked for the recorded live calls. They do not resolve the later dispatch timeout or the separate shared-news performance failure. [Application and live timing evidence](../evidence/replacement-family-report-performance-live-v2.json).
 
-Original legacy canary/restart jobs retain 234 records/3 requests. Their counters, limits, evidence and completed states remain outside new-run accounting. Old-scope admission stays closed. No old evidence was rewritten.
+Reconcile both installed view definitions before any uncertain retry: the receipt view contains `WITH task_counts AS` and no `mapped_tasks` materialization; the effective-page view contains `chosen_row` and the per-task chosen-field window. The two changes were atomic. Do not replay the forward solely because a chat or tool response was interrupted.
 
-## Qualification scope for this publication
+## Exact-head qualification: current release blocked
 
-| Qualification | Result and applicable bytes |
-| --- | --- |
-| Stage3 full release | 519 actual PostgreSQL tests; all four GitHub checks passed for `947b681735138b0b9052df1e5eba5769d7b2c381`, already deployed |
-| Maintenance fairness | Three actual PostgreSQL concurrency tests for SQL `3823c379…` |
-| Shared-record SQL | 14 dedicated PostgreSQL tests for SQL `2ba0a87c…`; the earlier combined 29-test suite also includes this same SQL and the maintenance forward |
-| Contract registry | Seven actual PostgreSQL tests for SQL `fde0b731…`; independent static review accepted the same bytes |
-| Earlier combined shared/status suite | 29 passed; its four status-file hashes are now superseded and must not be presented as coverage of the latest status files |
-| Latest four status files | 12 exact-current ASGI/DOM tests passed in 0.298 seconds; the new status qualification receipt pins all four latest files, and exact-head GitHub release checks are still required |
+Both repository release-gate checks passed for revision **`3ffd337e9c65b5ea33f96ab6436c0701684f435a`**, including the narrow review-directory pytest collection boundary. The ingestion PR qualification **failed**, so the overall release gate is not satisfied.
 
-These overlapping suite counts are not additive. See [the exact-current status qualification](../evidence/replacement-shared-status-release-qualification-v2.json) and [the publication qualification map](../evidence/replacement-v67-publication-qualification-map.json) for exact artifact hashes and the status-file mismatch with the earlier combined suite. The status UI remains unpublished and undeployed at this checkpoint. The inherited family-report performance forward remains pending independently.
+[Ingestion workflow 41024658444](https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41024658444), job `123959793133`, ran **545 tests in 346.844 seconds with one failure**. The failed test is `SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl`, at line244 of `tests/ingestion/test_backfill_shared_records_v2.py`. Its **1,000-news-row `self.commit(c, rows)` took 239.080 seconds against the existing 12-second assertion**. The application-syntax step was skipped after the failure. The 10,000-option-row projection case passed. This is a concrete commit/verification performance failure, not the earlier archived-review import error.
+
+The earlier local shared-record qualification and 29-test combined suite remain historical evidence; they do not supersede the failed exact-head result. The latest four status files separately passed **12 exact-current ASGI/DOM tests in 0.298 seconds**, but that focused result is not a substitute for the complete ingestion gate. Do not combine overlapping suite totals or claim the newer status UI has been deployed. Preserve the original correctness and timing assertions while repairing the demonstrated cause.
+
+Evidence: [runtime/CI reconciliation](../evidence/replacement-runtime-reconciliation-v68.json), [exact-current status qualification](../evidence/replacement-shared-status-release-qualification-v2.json), and [narrow review collection boundary](../evidence/replacement-review-pytest-boundary-v67.json).
 
 ## Current executable step and durable successor
 
-Continue in the retained working directory `/workspace/scratch/a1eb25e9f187/replacement-run` under the same ownership. The ingestion worker continues acquisition, reuse and calculations while independent engineering proceeds.
+Continue in `/workspace/scratch/a1eb25e9f187/replacement-run` under the same owner and existing hourly successor:
 
-1. **Repair the inherited family-report query performance.** The current investigation found an eight-second timeout with approximately 388,000 planned task rows being materialized. This is a status/query performance defect; it does not establish provider absence or terminal coverage. Preserve exact family accounting, existing visibility and permissions. Qualify a bounded forward using the local fixture, then have the root reconcile and apply it once.
-2. **Retain and read back the applied shared-record forward; finish its public status release.** `sql/astra_backfill_shared_records_v2.sql`, SHA256 `2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10`, was applied successfully by the root at approximately 07:55Z after 29 focused PostgreSQL/status tests. Do not replay it. The additional contract-work status sanitizer and UI passed **12 exact-current ASGI/DOM tests in 0.298 seconds**, recorded in the [status release qualification](../evidence/replacement-shared-status-release-qualification-v2.json), which pins all four latest files. That public status code is **not yet published or deployed**. The earlier 29-test combined qualification pins older hashes for all four status files and does **not** qualify their latest bytes. Exact-head GitHub checks remain the release gate for the current four-file status change. See [shared-delivery qualification](../evidence/replacement-shared-delivery-forward-qualification-v2.json). Preserve physical work versus coverage accounting and explicit unknown denominators.
-3. **Retain and read back the applied contract-work registry.** SQL SHA256 `fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2` was applied successfully at approximately 08:02:25Z after the root reconciled its absence, the installed shared-record prerequisite and ownership. Seven PostgreSQL tests passed, and the [independent static review](../evidence/replacement-contract-registry-independent-static-review-v2.json) accepted the exact candidate. Preserve existing immutable tasks and running leases, all parent/member lineage and bounded activation catch-up. Existing overlapping children remain executable. Verify real registry progress; do not replay the installed forward.
-4. **Publish the independent forwards and status code, then deploy the tested web revision.** Reconcile uncertain writes, qualify exact files, pass exact-head CI, reconcile the still-pending performance forward before its one-time application, deploy the tested web revision once and read back real effects. The existing stage3 worker keeps running; its source hash remains `90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e`. Keep the relay review-only files out of executable source publication. Record updated progress and the next concrete step in this checkpoint and the same hourly automation.
-5. **Continue the complete mission.** Advance the remaining frozen-member plan, historical acquisition and pagination, identity/support/alias work, calculations, field coverage and truthful terminal accounting. Continue after first-batch/restart/retry proof; do not repeat completed proof or stop at a small useful sample.
+1. **Reconcile before retrying.** Read the latest branch, exact deployed revision, owner lease, installed function/view markers and retained receipts/counters. Reconcile any uncertain claim, commit or migration write. Preserve completed pages and task generations; do not create a second controller or reset the run.
+2. **Repair the live claim/dispatch timeout.** The existing performance agent is diagnosing SQLSTATE57014 at inner `backfill_dispatch_v2` line106. Implement and qualify the smallest bounded forward while preserving dependencies, leases/fences, cancellation, provider pacing, fixed cohort and existing authentication. The root owns production application. This step is not yet completed; repeated worker restarts are not a durable fix.
+3. **Repair the reproduced CI shared-news bottleneck.** The existing shared-record agent owns diagnosis of the 1,000-news-row commit/verification path. Compare the exact failing fixture and relevant query plans, retain the original assertions and immutable evidence, and qualify the concrete forward. The cause remains under investigation; do not label an unverified JIT or planner hypothesis as established.
+4. **Qualify and release the exact repaired head.** Publish the retained report forward and the qualified repairs; require exact-head ingestion and repository gates. Reconcile/apply each new forward once. Deploy the pending independent web status revision only after those gates pass, then read back authenticated status and useful worker progress across the repaired path. Keep relay source outside executable publication. Record the new exact head, actual health/progress and next concrete action in this checkpoint and the same hourly automation.
+5. **Continue all remaining acquisition and delivery.** Once the operational path is repaired, resume the full frozen-member plan, pagination/contract enumeration, identity/support/alias work, retained S02 reuse, calculations and truthful field-coverage/final accounting. Verify registry catch-up and shared projection progress; do not infer completion from installation or raw counters. Preserve historical missing evidence and unknown denominators.
+
+The original acquisition/automatic-successor/restart/readback/deferred-retry proof remains valid historical evidence. It is not evidence that today's worker is continuously healthy. Do not rerun that completed proof or restart completed data work. Original legacy canary/restart jobs remain 234 records/3 requests with their original limits and evidence, outside new-run accounting. Old-scope admission remains closed.
 
 ## Massive relay: exact review package held for action-time confirmation
 
@@ -133,8 +117,8 @@ The concrete proposed change would send the worker's existing `X-Astra-Ingestion
 
 Until a later approved authenticated capability probe and real acquisition verify the relay, `MASSIVE_WORKER_CREDENTIAL / RUNTIME_CAPABILITY_UNAVAILABLE` remains an external dependency. Continue Alpaca, retained evidence and calculations within the existing permissions. Do not bypass this boundary through an old controller, different service, exported key or plan purchase.
 
-## Completion remains unverified
+## Completion and checkpoint history
 
-Full delivery remains incomplete: the 3,000-member plan is unsealed, pagination and contract enumeration are still running, and identity/support/alias and coverage reconciliation remain. Use final COMPLETE or COMPLETE_WITH_DOCUMENTED_GAPS only after the mission's full verified terminal accounting. Repairable technical failures remain operational.
+The mission remains incomplete: the 3,000-member plan is unsealed, historical pagination and contract enumeration remain open, identity/support/alias and coverage work remain, and current operational failures require repair. COMPLETE or COMPLETE_WITH_DOCUMENTED_GAPS requires the full mission's verified terminal accounting. Repairable technical failures remain operational.
 
-The preceding published checkpoint v66 at commit `2dbe666c86b3eeb0080bf6dd24ecc3b1fcb4fe2b` is preserved byte-for-byte in [checkpoint history](history/INGESTION_COMPLETION_STATE_v66.md); see [v66 publication evidence](../evidence/replacement-published-checkpoint-v66.json). The earlier automation prompt is also retained in [prompt history](history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v66.md).
+Published v67 at `3e8a7b94ec7dcea8a995fd20ce5df372b2677250` is preserved byte-for-byte in [checkpoint history](history/INGESTION_COMPLETION_STATE_v67.md) and [automation prompt history](history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v67.md). The packaging fix is `3ffd337e9c65b5ea33f96ab6436c0701684f435a`. Existing ownership and the same hourly task continue; this checkpoint creates no new controller or authorization for the held relay.

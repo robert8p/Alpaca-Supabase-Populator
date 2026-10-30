@@ -1,0 +1,136 @@
+{
+  "version": "replacement-v68-explicit-publication-manifest",
+  "prepared_at": "2026-10-30T08:22:41.161872+00:00",
+  "base_branch_revision": "3ffd337e9c65b5ea33f96ab6436c0701684f435a",
+  "previous_checkpoint_commit": "3e8a7b94ec7dcea8a995fd20ce5df372b2677250",
+  "canonical_checkpoint_version": 68,
+  "publication_paths": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+    "docs/history/INGESTION_COMPLETION_STATE_v67.md",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v67.md",
+    "sql/astra_backfill_family_report_performance_v2.sql",
+    "tests/ingestion/test_backfill_family_report_performance_v2.py",
+    "evidence/replacement-family-report-performance-qualification-v2.json",
+    "evidence/replacement-family-report-performance-live-v2.json",
+    "evidence/replacement-runtime-reconciliation-v68.json"
+  ],
+  "payload_count": 9,
+  "groups": {
+    "canonical_documents": [
+      "docs/INGESTION_COMPLETION_STATE.md",
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+    ],
+    "v67_history": [
+      "docs/history/INGESTION_COMPLETION_STATE_v67.md",
+      "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v67.md"
+    ],
+    "frozen_report_performance_release": [
+      "sql/astra_backfill_family_report_performance_v2.sql",
+      "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "evidence/replacement-family-report-performance-qualification-v2.json",
+      "evidence/replacement-family-report-performance-live-v2.json"
+    ],
+    "runtime_ci_and_lease_receipt": [
+      "evidence/replacement-runtime-reconciliation-v68.json"
+    ]
+  },
+  "manifest_path": "evidence/replacement-v68-publication-manifest.json",
+  "publish_this_manifest_itself_in_addition_to_payload_paths": true,
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "group": "canonical_documents",
+      "bytes": 18779,
+      "sha256": "c6568bc5a337e69dd59325249cd6fb3d7b9e416e66707058f8a80ca0808e93b5"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "group": "canonical_documents",
+      "bytes": 34090,
+      "sha256": "d9ceb57c2f8d6f6c69414baeffef89b55a8bc24ebfb30387a667bb11673e2b45"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v67.md",
+      "group": "v67_history",
+      "bytes": 21047,
+      "sha256": "fcf76a940873a11902a3903edcb3b96bc3326668ed0b3f605a93d9a4093283b1"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v67.md",
+      "group": "v67_history",
+      "bytes": 35161,
+      "sha256": "e6a4802f8edb44d7d1a4cb35ebb126b20857a2a321f70a8a6b7d9b80eb7b56f2"
+    },
+    {
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "group": "frozen_report_performance_release",
+      "bytes": 10029,
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "group": "frozen_report_performance_release",
+      "bytes": 16964,
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424"
+    },
+    {
+      "path": "evidence/replacement-family-report-performance-qualification-v2.json",
+      "group": "frozen_report_performance_release",
+      "bytes": 268621,
+      "sha256": "cc06764f9c5edca80775e787fc4a1c77e6d9e6d2ce0c8e366bd979338bdd1ece"
+    },
+    {
+      "path": "evidence/replacement-family-report-performance-live-v2.json",
+      "group": "frozen_report_performance_release",
+      "bytes": 1743,
+      "sha256": "f565b8363857c9afb5a343dd48b58f3fb4594df28b59b1c2106e9962fa9e5538"
+    },
+    {
+      "path": "evidence/replacement-runtime-reconciliation-v68.json",
+      "group": "runtime_ci_and_lease_receipt",
+      "bytes": 6656,
+      "sha256": "5e9d30c8baaf55cf10c1bcba083138dd63159af3ee65f54819ffa298c3622103"
+    }
+  ],
+  "owner": "root-replacement-20261030T042603Z",
+  "owner_lease_until": "2026-10-30T08:50:00Z",
+  "lease_audit": 5,
+  "gates_at_reconciled_base": {
+    "repository_release_push": "success",
+    "repository_release_pr": "success",
+    "ingestion_pr": "failure",
+    "tests": 545,
+    "failures": 1,
+    "failed_news_fixture_seconds": 239.08,
+    "required_bound_seconds": 12
+  },
+  "pending_repairs": [
+    "claim/dispatch SQLSTATE57014 inner backfill_dispatch_v2 line106",
+    "CI 1000-news-row commit/verification latency"
+  ],
+  "worker_health": "INTERMITTENT_CRASH_RESTARTS_NOT_CONTINUOUSLY_HEALTHY",
+  "deployed_worker_and_web_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "latest_status_ui_deployed": false,
+  "report_forward_applied": true,
+  "report_forward_sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad",
+  "local_document_verification": {
+    "v67_checkpoint_backup_byte_identical": true,
+    "v67_automation_backup_byte_identical": true,
+    "original_ten_section_mission_tail_byte_identical": true,
+    "fixed_cohort_section_preserved": true,
+    "relay_security_section_preserved": true,
+    "source_mutations": 0,
+    "postgres_calls": 0,
+    "network_calls": 0
+  },
+  "mission_tail_sha256": "09e841c22d086e1552f027af41ad80af5878f2396f8b716f6a32bbfa32199fe8",
+  "relay_state": "AWAITING_ACTION_TIME_CONFIRMATION",
+  "relay_scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+  "exclusions": [
+    "held relay code and tests",
+    "unfrozen claim/dispatch repair",
+    "unfrozen shared-news performance repair"
+  ],
+  "qualification_note": "Six report-forward PostgreSQL tests passed and live report reads succeeded; this does not override the current ingestion CI failure or unresolved worker dispatch failure."
+}

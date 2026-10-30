@@ -1,0 +1,44 @@
+{
+  "recorded_at": "2026-10-30T08:17:00Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "migration": {
+    "name": "astra_backfill_family_report_performance_v2",
+    "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad",
+    "applied_approximately": "2026-10-30T08:12:37Z",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "attempts": 1
+  },
+  "full_family_report": {
+    "family_count": 16,
+    "report_bytes": 131604,
+    "report_sha256": "d6a7c50e075eeff1fbed83835707fd4b04ce03075fb58f705086bfb8962b1a7f",
+    "server_statement_elapsed_ms": "4206.604000",
+    "observed_at": "2026-10-30 08:13:02.373178+00",
+    "client_elapsed_ms": 5495
+  },
+  "complete_delivery_function": {
+    "observed_at": "2026-10-30 08:13:52.799427+00",
+    "run_count": 1,
+    "family_count": 16,
+    "physical_totals": {
+      "source_bytes": 207684827,
+      "physical_pages": 1810,
+      "requests_reserved": 891,
+      "physical_source_and_derived_records": 217210
+    },
+    "required_readbacks_remaining": 0,
+    "report_bytes": 132723,
+    "server_statement_elapsed_ms": "4322.066000"
+  },
+  "scope": "Two existing views only; unchanged relations, grants, original receipts, tasks, provider credentials, worker source and authenticated dispatcher. No relay action.",
+  "remaining_runtime_issue": "Independent worker logs show RpcPersistenceError exits. Postgres SQLSTATE57014 at backfill_dispatch_v2(text,jsonb) line106, including08:13:55 after this report repair. This report repair is not claimed to resolve that separate dispatch timeout; existing owner investigating."
+}

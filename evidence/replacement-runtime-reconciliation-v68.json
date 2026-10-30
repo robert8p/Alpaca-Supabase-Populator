@@ -1,0 +1,158 @@
+{
+  "observed_through": "2026-10-30T08:18:35Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "lease_renewal": [
+    {
+      "id": 5,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 08:18:35.06188+00"
+    }
+  ],
+  "lease_until": "2026-10-30T08:50:00Z",
+  "current_branch_revision": "3ffd337e9c65b5ea33f96ab6436c0701684f435a",
+  "deployed_worker_and_web_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "current_executable_steps": [
+    "Repair statement_timeout at inner backfill_dispatch_v2 line106 without changing worker source or authentication permissions.",
+    "Reproduce and repair CI 1000-news-row projection latency, retaining original correctness/performance assertions.",
+    "Pass exact-head ingestion/release gates, then deploy pending independent status update once and read back.",
+    "Keep relay held for exact action-time user confirmation; continue only existing authorized scope."
+  ],
+  "worker_observation": [
+    {
+      "observed_at": "2026-10-30 08:14:31.831866+00",
+      "status": "ACTIVE",
+      "pages_committed": 1810,
+      "records_committed": 217210,
+      "last_progress_at": "2026-10-30 08:13:44.949968+00",
+      "planner_next_selection_order": "1373",
+      "workers": [
+        {
+          "worker_id": "cf7d339a-efa5-43b9-943d-ae68facbbcb2",
+          "observed_at": "2026-10-30T08:08:19.853463+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        },
+        {
+          "worker_id": "f820c086-fe61-453f-a327-0975759145d7",
+          "observed_at": "2026-10-30T08:04:17.298671+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ],
+      "active_or_error_tasks": null
+    }
+  ],
+  "sanitized_restart_log": [
+    {
+      "timestamp": "2026-10-30T08:00:53.543476198Z",
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}"
+    },
+    {
+      "timestamp": "2026-10-30T08:01:47.236422922Z",
+      "message": "==>\u001b(B Running 'python -m astra_ingestion.worker'\u001b(B"
+    },
+    {
+      "timestamp": "2026-10-30T08:02:17.160102427Z",
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}"
+    },
+    {
+      "timestamp": "2026-10-30T08:03:07.118474764Z",
+      "message": "==> Instance srv-dbh9fko473hc739an8m0-4rjqg restarted"
+    },
+    {
+      "timestamp": "2026-10-30T08:03:52.231973037Z",
+      "message": "==>\u001b(B Running 'python -m astra_ingestion.worker'\u001b(B"
+    },
+    {
+      "timestamp": "2026-10-30T08:04:28.201228773Z",
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}"
+    },
+    {
+      "timestamp": "2026-10-30T08:06:01.841353106Z",
+      "message": "==> Instance srv-dbh9fko473hc739an8m0-4rjqg restarted"
+    },
+    {
+      "timestamp": "2026-10-30T08:07:21.654425458Z",
+      "message": "==>\u001b(B Running 'python -m astra_ingestion.worker'\u001b(B"
+    },
+    {
+      "timestamp": "2026-10-30T08:08:30.691465808Z",
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}"
+    },
+    {
+      "timestamp": "2026-10-30T08:13:34.945008385Z",
+      "message": "==>\u001b(B Running 'python -m astra_ingestion.worker'\u001b(B"
+    },
+    {
+      "timestamp": "2026-10-30T08:13:55.036842591Z",
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}"
+    }
+  ],
+  "postgres_timeout_stacks": {
+    "result": [
+      {
+        "db_user": "authenticator",
+        "function_stack": [
+          "function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 106 at SQL statement",
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 68 at RETURN",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "message": "canceling statement due to statement timeout",
+        "sql_state": "57014",
+        "timestamp": "2026-10-30T08:13:55.018000"
+      },
+      {
+        "db_user": "authenticator",
+        "function_stack": [
+          "function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 106 at SQL statement",
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 68 at RETURN",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "message": "canceling statement due to statement timeout",
+        "sql_state": "57014",
+        "timestamp": "2026-10-30T08:08:30.674000"
+      },
+      {
+        "db_user": "authenticator",
+        "function_stack": [
+          "function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 106 at SQL statement",
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 68 at RETURN",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "message": "canceling statement due to statement timeout",
+        "sql_state": "57014",
+        "timestamp": "2026-10-30T08:04:28.185000"
+      },
+      {
+        "db_user": "authenticator",
+        "function_stack": [
+          "function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 106 at SQL statement",
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 68 at RETURN",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "message": "canceling statement due to statement timeout",
+        "sql_state": "57014",
+        "timestamp": "2026-10-30T08:00:53.527000"
+      }
+    ]
+  },
+  "release_gate": {
+    "revision": "3ffd337e9c65b5ea33f96ab6436c0701684f435a",
+    "repository_release_push": "success",
+    "repository_release_pr": "success",
+    "ingestion_pr": {
+      "run_id": 41024658444,
+      "job_id": 123959793133,
+      "conclusion": "failure",
+      "tests": 545,
+      "failures": 1,
+      "elapsed_seconds": 346.844,
+      "failed_test": "SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+      "failure": "1000-news-row self.commit(c, rows)239.080s exceeded existing12s assertion",
+      "source": "Independent reviewer's read-only GitHub connector inspection of completed workflow job logs",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41024658444"
+    }
+  },
+  "classification": "Report performance repaired, worker dispatch performance remains operational issue. Counts do not establish healthy sustained execution or complete coverage. No original pages or verification evidence rewritten.",
+  "relay_state": "AWAITING_ACTION_TIME_CONFIRMATION",
+  "secrets_exported_or_read_for_relay": false
+}
