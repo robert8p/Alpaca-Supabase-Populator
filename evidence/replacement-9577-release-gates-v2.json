@@ -1,0 +1,197 @@
+{
+  "version": "replacement-9577-release-gates-v2",
+  "repo": "robert8p/Alpaca-Supabase-Populator",
+  "head_sha": "9577b25fa6fdddbf509795b6c93571233485626d",
+  "observed_at": "2026-10-30 11:12:24 UTC",
+  "qualification": "ALL_FOUR_EXACT_HEAD_WORKFLOWS_AND_JOBS_PASSED",
+  "gates": [
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41045607646,
+      "job_id": 124028817356,
+      "head_sha": "9577b25fa6fdddbf509795b6c93571233485626d",
+      "run_attempt": 1,
+      "run_number": 1423,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T11:06:06Z",
+      "run_started_at": "2026-10-30T11:06:06Z",
+      "updated_at": "2026-10-30T11:06:44Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41045607646",
+      "case_counts": {
+        "passed": 675,
+        "skipped": 294,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 12.39
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T11:06:41.3364564Z 675 passed, 294 skipped, 1 warning in 12.39s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41045607606,
+      "job_id": 124028817555,
+      "head_sha": "9577b25fa6fdddbf509795b6c93571233485626d",
+      "run_attempt": 1,
+      "run_number": 376,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T11:06:06Z",
+      "run_started_at": "2026-10-30T11:06:06Z",
+      "updated_at": "2026-10-30T11:11:16Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41045607606",
+      "case_counts": {
+        "tests": 579,
+        "passed": 579,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 278.118
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T11:11:11.0512237Z Ran 579 tests in 278.118s",
+        "2026-10-30T11:11:11.0512588Z OK"
+      ]
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41045597727,
+      "job_id": 124028784299,
+      "head_sha": "9577b25fa6fdddbf509795b6c93571233485626d",
+      "run_attempt": 1,
+      "run_number": 1422,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T11:06:01Z",
+      "run_started_at": "2026-10-30T11:06:01Z",
+      "updated_at": "2026-10-30T11:06:38Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41045597727",
+      "case_counts": {
+        "passed": 675,
+        "skipped": 294,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 10.89
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T11:06:35.9462835Z 675 passed, 294 skipped, 1 warning in 10.89s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41045597684,
+      "job_id": 124028784431,
+      "head_sha": "9577b25fa6fdddbf509795b6c93571233485626d",
+      "run_attempt": 1,
+      "run_number": 375,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T11:06:01Z",
+      "run_started_at": "2026-10-30T11:06:01Z",
+      "updated_at": "2026-10-30T11:11:10Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41045597684",
+      "case_counts": {
+        "tests": 579,
+        "passed": 579,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 278.401
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T11:11:07.1723398Z Ran 579 tests in 278.401s",
+        "2026-10-30T11:11:07.1723663Z OK"
+      ]
+    }
+  ],
+  "ingestion_application_syntax": "PASSED_IN_BOTH_JOBS",
+  "active_regression_limits": {
+    "news_rpc_seconds_strictly_below": 12,
+    "maximum_options_page_seconds_strictly_below": 15,
+    "local_combined_runtime_status_rpc_seconds_strictly_below": 3
+  },
+  "production_acceptance": {
+    "path": "evidence/replacement-runtime-status-live-v70.json",
+    "sha256_at_observation": "cfa05fef20d7ec6c8dcf6e74bea299e2471dc588f9ff7d4208e7c0c94410f1c5",
+    "source": "controller_saved_production_receipts_read_locally",
+    "maintenance": {
+      "state": "APPLIED_ONCE_AND_READ_BACK_VALID",
+      "source_commit": "9577b25fa6fdddbf509795b6c93571233485626d",
+      "sql_sha256": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+      "qualification_sha256": "8609efe568194ebf985eb886f80c0b37586cc8f58f54a796997d504d70f754b7",
+      "success_observed_at": "2026-10-30T11:06:19Z",
+      "statement_timeout_seconds": 20,
+      "lock_timeout_seconds": 3,
+      "deadline_semantics": "20s is the single DO budget, not a guaranteed wall-clock lock-release bound. Transaction cleanup/commit may add time.",
+      "runtime_provider_relay_timeouts_unchanged": true
+    },
+    "combined_database_timing_after_index": {
+      "observed_at": "2026-10-30 11:06:56.840155+00",
+      "elapsed_ms": "2105.451000",
+      "run_count": 1,
+      "authenticated_rpc_proof": false,
+      "outer_advisory_lock_measured": false,
+      "statement_timeout_seconds": 8,
+      "lock_timeout_seconds": 3,
+      "scope": "Exact combined inner runtime summary and16-family delivery report; no provider request or data mutation",
+      "improvement": "6848.010ms before index to2105.451ms after valid index"
+    },
+    "post_maintenance_worker_progress": {
+      "verified": false,
+      "latest_report_snapshot": [
+        {
+          "pages_committed": 3916,
+          "records_committed": 473116,
+          "last_progress_at": "2026-10-30T11:05:34.309828+00:00",
+          "next_member": 1978
+        }
+      ],
+      "reason": "Latest report's11:05:34 commit precedes maintenance; require a later independent readback before claiming resumed post-maintenance progress."
+    },
+    "authenticated_web_request_log_lookup": {
+      "start": "2026-10-30T10:52:02Z",
+      "end": "2026-10-30T10:56:59Z",
+      "method": "GET",
+      "path": "/api/backfill/status",
+      "status": 200,
+      "entries": 0,
+      "has_more": false,
+      "interpretation": "No matching retrieved entries; no conclusion about absence of traffic, authentication success or request latency."
+    },
+    "authenticated_application_path_latency_proven": false,
+    "claim_failure_causality": "The earlier 10:53:28 normal-claim statement timeout predates the index attempts. CI and report-index success do not prove a claim repair.",
+    "deployment_selected_or_changed_by_observer": false,
+    "relay": "Exact frozen 19-file package remains separate; no relay installation or renewed authorization is represented by this CI receipt."
+  },
+  "local_protected_files": {
+    "manifest_path": "evidence/replacement-managed-relay-review-manifest-v2.json",
+    "manifest_sha256": "e9c3cf4664c9d04f525bf015deb09fb6113ba95cc358fe88cc94dafdbedf9f32",
+    "reviewed_files": 19,
+    "all_bytes_and_hashes_unchanged": true,
+    "worker_path": "astra_ingestion/backfill_worker_v2.py",
+    "worker_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "worker_unchanged": true
+  },
+  "observer_actions": {
+    "github_reads_only": true,
+    "workflow_reruns_requested": 0,
+    "remote_mutations": 0,
+    "additional_tests_run": 0,
+    "supabase_calls": 0,
+    "render_calls": 0,
+    "postgresql_calls": 0,
+    "credential_access": 0
+  }
+}

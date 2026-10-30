@@ -1,0 +1,289 @@
+{
+  "version": "replacement-claim-timeout-reconciliation-v70",
+  "source_commit": "d63a7142dd2f6395b230b4907199d925951176cc",
+  "safe_postgres_errors": {
+    "result": [
+      {
+        "event_message": "canceling statement due to statement timeout",
+        "function_context": [
+          "function inline_code_block line 27 at EXECUTE"
+        ],
+        "sqlstate": "57014",
+        "timestamp": "2026-10-30T10:55:33.590000"
+      },
+      {
+        "event_message": "canceling statement due to lock timeout",
+        "function_context": [
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T10:55:29.533000"
+      },
+      {
+        "event_message": "canceling statement due to statement timeout",
+        "function_context": [
+          "function inline_code_block line 27 at EXECUTE"
+        ],
+        "sqlstate": "57014",
+        "timestamp": "2026-10-30T10:54:36.609000"
+      },
+      {
+        "event_message": "canceling statement due to lock timeout",
+        "function_context": [
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T10:54:34.472000"
+      },
+      {
+        "event_message": "canceling statement due to statement timeout",
+        "function_context": [
+          "function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 123 at SQL statement",
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 68 at RETURN",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "sqlstate": "57014",
+        "timestamp": "2026-10-30T10:53:28.600000"
+      },
+      {
+        "event_message": "canceling statement due to lock timeout",
+        "function_context": [
+          "function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM",
+          "function \"astra_ingestion_rpc_v1\" statement 1"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T10:53:24.510000"
+      }
+    ]
+  },
+  "live_function_lines": [
+    {
+      "line_number": 95,
+      "line": "  UPDATE astra_ingestion_v1.backfill_tasks_v2 SET status='OPERATIONAL_ERROR',owner=NULL,lease_until=NULL,error_code='ATTEMPT_BUDGET_EXHAUSTED',error_message='Eight bounded attempts exhausted; implementation recovery must diagnose before requeue'"
+    },
+    {
+      "line_number": 96,
+      "line": "   WHERE status='RUNNING' AND lease_until<=v_now AND page_attempts>=8;"
+    },
+    {
+      "line_number": 97,
+      "line": ""
+    },
+    {
+      "line_number": 98,
+      "line": "  -- backfill_family_fairness_hook_v2: one coherent queue, at most16 families and32 indexed candidate probes."
+    },
+    {
+      "line_number": 99,
+      "line": "  SELECT id INTO v_fair_run FROM astra_ingestion_v1.backfill_runs_v2 WHERE status='ACTIVE' ORDER BY created_at,id LIMIT 1;"
+    },
+    {
+      "line_number": 100,
+      "line": "  IF v_fair_run IS NULL THEN RETURN NULL; END IF;"
+    },
+    {
+      "line_number": 101,
+      "line": "  INSERT INTO astra_ingestion_v1.backfill_family_turn_v2(run_id) VALUES(v_fair_run) ON CONFLICT(run_id) DO NOTHING;"
+    },
+    {
+      "line_number": 102,
+      "line": "  SELECT next_family_index INTO STRICT v_fair_start FROM astra_ingestion_v1.backfill_family_turn_v2 WHERE run_id=v_fair_run FOR UPDATE;"
+    },
+    {
+      "line_number": 103,
+      "line": "  v_fair_selected:=false;"
+    },
+    {
+      "line_number": 104,
+      "line": "  FOR v_fair_pick IN"
+    },
+    {
+      "line_number": 105,
+      "line": "   SELECT family,ordinality::integer family_index"
+    },
+    {
+      "line_number": 106,
+      "line": "   FROM unnest(ARRAY['REF01','REF03','P01','P02','D01','D02','D03','D04','D05','N01','N02','N03','S01','S02','CTX02','CTX06']) WITH ORDINALITY f(family,ordinality)"
+    },
+    {
+      "line_number": 107,
+      "line": "   ORDER BY mod(ordinality::integer-v_fair_start+16,16)"
+    },
+    {
+      "line_number": 108,
+      "line": "  LOOP"
+    },
+    {
+      "line_number": 109,
+      "line": "  -- backfill_due_recovery_priority_v2: recovery first, then the unchanged normal candidate."
+    },
+    {
+      "line_number": 110,
+      "line": "  SELECT q.* INTO t FROM astra_ingestion_v1.backfill_tasks_v2 q JOIN astra_ingestion_v1.backfill_runs_v2 rr ON rr.id=q.run_id"
+    },
+    {
+      "line_number": 111,
+      "line": "   WHERE q.run_id=v_fair_run AND q.family=v_fair_pick.family"
+    },
+    {
+      "line_number": 112,
+      "line": "    AND q.status IN ('RETRY_WAIT','RUNNING') AND rr.status='ACTIVE' AND rr.fence=q.run_fence AND q.kind IN (SELECT jsonb_array_elements_text(v_supported))"
+    },
+    {
+      "line_number": 113,
+      "line": "    AND q.next_retry_at<=v_now AND q.page_attempts<8"
+    },
+    {
+      "line_number": 114,
+      "line": "    AND (q.status IN ('PENDING','RETRY_WAIT') OR (q.status='RUNNING' AND q.lease_until<=v_now))"
+    },
+    {
+      "line_number": 115,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_provider_dependencies_v2 d WHERE d.run_id=q.run_id AND d.provider=q.provider AND d.state='BLOCKED_EXTERNAL')"
+    },
+    {
+      "line_number": 116,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM unnest(q.dependencies) dep LEFT JOIN astra_ingestion_v1.backfill_tasks_v2 d ON d.id=dep"
+    },
+    {
+      "line_number": 117,
+      "line": "      WHERE d.id IS NULL OR d.run_id<>q.run_id OR d.status NOT IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED'))"
+    },
+    {
+      "line_number": 118,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 gap WHERE gap.run_id=q.run_id AND gap.scope ? 'reuse_parent' AND gap.scope->>'reuse_parent'=ANY(q.dependencies) AND gap.status NOT IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED'))"
+    },
+    {
+      "line_number": 119,
+      "line": "    AND (q.kind<>'derive_breadth' OR astra_ingestion_v1.backfill_breadth_ready_v2(q.id))"
+    },
+    {
+      "line_number": 120,
+      "line": "    AND (SELECT count(*) FROM astra_ingestion_v1.backfill_members_v2 m WHERE m.run_id=v_fair_run)=3000 /* backfill_claim_member_count_once_v2 */"
+    },
+    {
+      "line_number": 121,
+      "line": "   ORDER BY q.priority,q.next_retry_at,q.created_at,q.id LIMIT 1 FOR UPDATE OF q;"
+    },
+    {
+      "line_number": 122,
+      "line": "  IF NOT FOUND THEN"
+    },
+    {
+      "line_number": 123,
+      "line": "  SELECT q.* INTO t FROM astra_ingestion_v1.backfill_tasks_v2 q JOIN astra_ingestion_v1.backfill_runs_v2 rr ON rr.id=q.run_id"
+    },
+    {
+      "line_number": 124,
+      "line": "   WHERE q.run_id=v_fair_run AND q.family=v_fair_pick.family"
+    },
+    {
+      "line_number": 125,
+      "line": "    AND q.status IN ('PENDING','RUNNING','RETRY_WAIT') AND rr.status='ACTIVE' AND rr.fence=q.run_fence AND q.kind IN (SELECT jsonb_array_elements_text(v_supported))"
+    },
+    {
+      "line_number": 126,
+      "line": "    AND q.next_retry_at<=v_now AND q.page_attempts<8"
+    },
+    {
+      "line_number": 127,
+      "line": "    AND (q.status IN ('PENDING','RETRY_WAIT') OR (q.status='RUNNING' AND q.lease_until<=v_now))"
+    },
+    {
+      "line_number": 128,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_provider_dependencies_v2 d WHERE d.run_id=q.run_id AND d.provider=q.provider AND d.state='BLOCKED_EXTERNAL')"
+    },
+    {
+      "line_number": 129,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM unnest(q.dependencies) dep LEFT JOIN astra_ingestion_v1.backfill_tasks_v2 d ON d.id=dep"
+    },
+    {
+      "line_number": 130,
+      "line": "      WHERE d.id IS NULL OR d.run_id<>q.run_id OR d.status NOT IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED'))"
+    },
+    {
+      "line_number": 131,
+      "line": "    AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 gap WHERE gap.run_id=q.run_id AND gap.scope ? 'reuse_parent' AND gap.scope->>'reuse_parent'=ANY(q.dependencies) AND gap.status NOT IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED'))"
+    },
+    {
+      "line_number": 132,
+      "line": "    AND (q.kind<>'derive_breadth' OR astra_ingestion_v1.backfill_breadth_ready_v2(q.id))"
+    },
+    {
+      "line_number": 133,
+      "line": "    AND (SELECT count(*) FROM astra_ingestion_v1.backfill_members_v2 m WHERE m.run_id=v_fair_run)=3000 /* backfill_claim_member_count_once_v2 */"
+    },
+    {
+      "line_number": 134,
+      "line": "   ORDER BY q.priority,q.next_retry_at,q.created_at,q.id LIMIT 1 FOR UPDATE OF q;"
+    },
+    {
+      "line_number": 135,
+      "line": "  END IF;"
+    },
+    {
+      "line_number": 136,
+      "line": "   IF FOUND THEN"
+    },
+    {
+      "line_number": 137,
+      "line": "    v_fair_selected:=true;"
+    },
+    {
+      "line_number": 138,
+      "line": "    UPDATE astra_ingestion_v1.backfill_family_turn_v2"
+    },
+    {
+      "line_number": 139,
+      "line": "     SET next_family_index=(v_fair_pick.family_index%16)+1,last_family=t.family,last_claimed_task_id=t.id,"
+    },
+    {
+      "line_number": 140,
+      "line": "      claim_turns=claim_turns+1,changed_at=v_now WHERE run_id=v_fair_run;"
+    }
+  ],
+  "live_claim_parameters": [
+    {
+      "observed_at": "2026-10-30 11:00:49.547058+00",
+      "family_turn": {
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "changed_at": "2026-10-30T10:59:57.475007+00:00",
+        "claim_turns": 3812,
+        "last_family": "CTX02",
+        "next_family_index": 16,
+        "last_claimed_task_id": "backfill-plan-5490ec42b5018baeb33fe4e86b66b93792d8240dad751cf39f21ee3c45268313"
+      },
+      "latest_worker": {
+        "worker_id": "5013b971-365f-4ce3-bc5f-56eac1236d8c",
+        "observed_at": "2026-10-30T10:59:57.475007+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse",
+          "retained_identity",
+          "retained_massive_archive"
+        ]
+      },
+      "run_progress": {
+        "next_member": "1976",
+        "planner_phase": "MEMBERS",
+        "pages_committed": 3909,
+        "last_progress_at": "2026-10-30T10:59:59.229311+00:00",
+        "records_committed": 473019
+      }
+    }
+  ],
+  "finding": "The10:53:28.600 statement timeout is in the normal fairness claim-candidate SELECT at inner dispatch line123, matching the worker's RpcPersistenceError and exit1. It precedes both optional index builds. Status polling is not established as its cause.",
+  "current_action": "Measure the exact current claim candidate plan using persisted fair-turn/latest-worker capability parameters; preserve identity/dependency/reuse/breadth/cohort/fence predicates and no blind task replay.",
+  "relay_unchanged": true
+}

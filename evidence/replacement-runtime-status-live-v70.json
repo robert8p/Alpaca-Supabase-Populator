@@ -1,0 +1,232 @@
+{
+  "version": "replacement-runtime-status-live-v70",
+  "source_commit": "d63a7142dd2f6395b230b4907199d925951176cc",
+  "rewrite_sql_sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+  "rewrite_apply": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"success\":true}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "preapply": [
+    {
+      "observed_at": "2026-10-30 10:51:39.129905+00",
+      "oid": 16040232,
+      "owner": "postgres",
+      "acl": "{postgres=X/postgres,astra_ingestion_rpc_owner_v1=X/postgres}",
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "provolatile": "v",
+      "definition_sha256": "3ac53d9ad6c61f68768709f0ca67dc9cd9531cd2843263360cc35821207835bd",
+      "non_status_tail_sha256": "836360913257d69e02692ff6d7b9e9856c3aaa14d522031661af76a538040c09",
+      "installed_marker": 0,
+      "outer_auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96"
+    }
+  ],
+  "postapply": [
+    {
+      "observed_at": "2026-10-30 10:52:51.927757+00",
+      "oid": 16040232,
+      "owner": "postgres",
+      "acl": "{postgres=X/postgres,astra_ingestion_rpc_owner_v1=X/postgres}",
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "provolatile": "v",
+      "definition_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+      "non_status_tail_sha256": "836360913257d69e02692ff6d7b9e9856c3aaa14d522031661af76a538040c09",
+      "installed_marker": 3099,
+      "outer_auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "optional_index": null
+    }
+  ],
+  "combined_database_timing": {
+    "observed_at": "2026-10-30 10:54:07.361686+00",
+    "elapsed_ms": "6848.010000",
+    "run_count": 1,
+    "body_keys": [
+      "runs",
+      "delivery",
+      "observed_at"
+    ],
+    "authenticated_rpc_proof": false,
+    "outer_advisory_lock_measured": false,
+    "statement_timeout_seconds": 8,
+    "lock_timeout_seconds": 3,
+    "conclusion": "Full database report completes but6.848s exceeds the worker3slock waiting threshold; not proof of contention recovery."
+  },
+  "index_8s_attempts": [
+    {
+      "attempt": 1,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to apply database migration: ERROR:  57014: canceling statement due to statement timeout\\nCONTEXT:  SQL statement \\\"CREATE INDEX backfill_tasks_runtime_summary_v2\\n  ON astra_ingestion_v1.backfill_tasks_v2(run_id,family,kind,provider,status,records_committed,last_progress_at)\\\"\\nPL/pgSQL function inline_code_block line 27 at EXECUTE\\n\"}}"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      },
+      "subsequent_readback": [
+        {
+          "observed_at": "2026-10-30 10:55:04.078865+00",
+          "optional_index": null,
+          "runtime_status_definition_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+          "auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+          "pages_committed": 3876,
+          "records_committed": 469747,
+          "requests_reserved": 1910,
+          "last_progress_at": "2026-10-30 10:53:18.52764+00",
+          "owner": "root-replacement-20261030T042603Z",
+          "lease_until": "2026-10-30T11:30:00Z",
+          "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+          "latest_worker": [
+            {
+              "worker_id": "54f28bbb-cfe8-42cf-90bb-40c640de97c0",
+              "observed_at": "2026-10-30T10:47:57.89683+00:00",
+              "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attempt": 2,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to apply database migration: ERROR:  57014: canceling statement due to statement timeout\\nCONTEXT:  SQL statement \\\"CREATE INDEX backfill_tasks_runtime_summary_v2\\n  ON astra_ingestion_v1.backfill_tasks_v2(run_id,family,kind,provider,status,records_committed,last_progress_at)\\\"\\nPL/pgSQL function inline_code_block line 27 at EXECUTE\\n\"}}"
+          }
+        ],
+        "structuredContent": {
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "isError": true
+      },
+      "subsequent_readback": [
+        {
+          "observed_at": "2026-10-30 10:56:58.810698+00",
+          "optional_index": null,
+          "auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+          "pages_committed": 3876,
+          "records_committed": 469747,
+          "requests_reserved": 1910,
+          "last_progress_at": "2026-10-30 10:53:18.52764+00",
+          "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+          "approval_at": "2026-10-30T09:53:00Z",
+          "relay_ledger": null,
+          "relay_helper": null
+        }
+      ]
+    }
+  ],
+  "index_8s_retries_exhausted": true,
+  "authenticated_web_request_log_lookup": {
+    "start": "2026-10-30T10:52:02Z",
+    "end": "2026-10-30T10:56:59Z",
+    "method": "GET",
+    "path": "/api/backfill/status",
+    "status": 200,
+    "entries": 0,
+    "has_more": false,
+    "interpretation": "No matching retrieved entries; no conclusion about absence of traffic, authentication success or request latency."
+  },
+  "separate_claim_failure_evidence": "evidence/replacement-claim-timeout-reconciliation-v70.json",
+  "maintenance_20s": {
+    "state": "APPLIED_ONCE_AND_READ_BACK_VALID",
+    "source_commit": "9577b25fa6fdddbf509795b6c93571233485626d",
+    "sql_sha256": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+    "qualification_sha256": "8609efe568194ebf985eb886f80c0b37586cc8f58f54a796997d504d70f754b7",
+    "preapply": [
+      {
+        "observed_at": "2026-10-30 11:05:22.934868+00",
+        "index_relation": null,
+        "status": "ACTIVE",
+        "fence": 1,
+        "pages_committed": 3909,
+        "records_committed": 473019,
+        "last_progress_at": "2026-10-30 10:59:59.229311+00",
+        "owner": "root-replacement-20261030T042603Z",
+        "lease_until": "2026-10-30T11:30:00Z",
+        "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+        "relay_original_approval_at": "2026-10-30T09:53:00Z"
+      }
+    ],
+    "apply_result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "success_observed_at": "2026-10-30T11:06:19Z",
+    "independent_index_readback": [
+      {
+        "observed_at": "2026-10-30 11:06:53.699006+00",
+        "oid": 16422385,
+        "indisvalid": true,
+        "indisready": true,
+        "indisunique": false,
+        "index_bytes": 5734400,
+        "definition": "CREATE INDEX backfill_tasks_runtime_summary_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, kind, provider, status, records_committed, last_progress_at)",
+        "status_definition_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+        "auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96"
+      }
+    ],
+    "statement_timeout_seconds": 20,
+    "lock_timeout_seconds": 3,
+    "deadline_semantics": "20s is the single DO budget, not a guaranteed wall-clock lock-release bound. Transaction cleanup/commit may add time.",
+    "runtime_provider_relay_timeouts_unchanged": true,
+    "additional_attempt_authorized_by_this_receipt": false
+  },
+  "approval_not_redated_or_extended": true,
+  "combined_database_timing_after_index": {
+    "observed_at": "2026-10-30 11:06:56.840155+00",
+    "elapsed_ms": "2105.451000",
+    "run_count": 1,
+    "authenticated_rpc_proof": false,
+    "outer_advisory_lock_measured": false,
+    "statement_timeout_seconds": 8,
+    "lock_timeout_seconds": 3,
+    "scope": "Exact combined inner runtime summary and16-family delivery report; no provider request or data mutation",
+    "improvement": "6848.010ms before index to2105.451ms after valid index"
+  },
+  "post_maintenance_worker_progress": {
+    "verified": true,
+    "observed_at": "2026-10-30 11:12:47.37159+00",
+    "pages_committed": 3943,
+    "records_committed": 476704,
+    "requests_reserved": 1945,
+    "readbacks": 3943,
+    "unread_pages": 0,
+    "last_progress_at": "2026-10-30 11:12:45.881062+00",
+    "worker": [
+      {
+        "worker_id": "b1ae8fda-aa18-4d34-be11-1fdc97c3f649",
+        "observed_at": "2026-10-30T11:12:44.989694+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      }
+    ],
+    "receipt": "evidence/replacement-independent-progress-1112-v70.json",
+    "sustained_reliability_claimed": false
+  },
+  "postmaintenance_safe_log_lookup": {
+    "failed": true,
+    "error": "Connector Internal Server Error",
+    "no_error_absence_claim": true
+  }
+}

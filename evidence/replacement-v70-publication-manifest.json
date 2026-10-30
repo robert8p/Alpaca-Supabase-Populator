@@ -1,0 +1,276 @@
+{
+  "version": "replacement-v70-explicit-publication-manifest",
+  "canonical_checkpoint_version": 70,
+  "prepared_at": "2026-10-30T11:18:38.143839+00:00",
+  "state": "READY_FOR_CONTROLLED_PUBLICATION",
+  "do_not_publish": false,
+  "do_not_publish_current_draft": false,
+  "base_branch_revision": "9577b25fa6fdddbf509795b6c93571233485626d",
+  "base_tree": "64b52b304aa8cd0bba027336d659007658b86ae7",
+  "previous_checkpoint_commit": "3f8698b9c35b7a26ff60970bab9555c477cab1ae",
+  "publication_paths": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+    "docs/history/INGESTION_COMPLETION_STATE_v69.md",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v69.md",
+    "evidence/replacement-runtime-status-live-v70.json",
+    "evidence/replacement-claim-timeout-reconciliation-v70.json",
+    "evidence/replacement-independent-progress-1112-v70.json",
+    "evidence/replacement-9577-release-gates-v2.json",
+    "evidence/replacement-claim-normal-generic-live-plan-v70.json",
+    "evidence/replacement-claim-normal-generic-plan-probe-v70.sql",
+    "evidence/replacement-claim-normal-custom-plan-probes-v70.json",
+    "evidence/replacement-claim-plan-probes-v70.md",
+    "evidence/replacement-claim-plan-probe-qualification-v70.json",
+    "evidence/replacement-combined-status-timing-probe-v2.sql"
+  ],
+  "payload_count": 14,
+  "groups": {
+    "canonical_documents": [
+      "docs/INGESTION_COMPLETION_STATE.md",
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+    ],
+    "v69_history": [
+      "docs/history/INGESTION_COMPLETION_STATE_v69.md",
+      "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v69.md"
+    ],
+    "current_live_progress_and_ci": [
+      "evidence/replacement-runtime-status-live-v70.json",
+      "evidence/replacement-claim-timeout-reconciliation-v70.json",
+      "evidence/replacement-independent-progress-1112-v70.json",
+      "evidence/replacement-9577-release-gates-v2.json",
+      "evidence/replacement-claim-normal-generic-live-plan-v70.json"
+    ],
+    "bounded_diagnostic_preparation": [
+      "evidence/replacement-claim-normal-generic-plan-probe-v70.sql",
+      "evidence/replacement-claim-normal-custom-plan-probes-v70.json",
+      "evidence/replacement-claim-plan-probes-v70.md",
+      "evidence/replacement-claim-plan-probe-qualification-v70.json",
+      "evidence/replacement-combined-status-timing-probe-v2.sql"
+    ]
+  },
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 14465,
+      "sha256": "39b71ed0c3a198391116aabe00c5bad850913b8445817001befdda445f0b06a8"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 35181,
+      "sha256": "af93cf9ba82bc77c72d65adf8b62c28d57d18f070e17e7eccd64380becd7188b"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v69.md",
+      "bytes": 51146,
+      "sha256": "5cde0f808bad7fbb88bd322bf8388d1fd4e9b51afc64884822a31dfda41ac571"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v69.md",
+      "bytes": 37304,
+      "sha256": "965640e42eff28ca032b87760a167498d88419d40a30ea844e1bb9700df0950b"
+    },
+    {
+      "path": "evidence/replacement-runtime-status-live-v70.json",
+      "bytes": 9200,
+      "sha256": "c15ed6eef9b1bb043848204371b4f2046b016bd67a89e7664846e682c3e68249"
+    },
+    {
+      "path": "evidence/replacement-claim-timeout-reconciliation-v70.json",
+      "bytes": 11358,
+      "sha256": "90a324708e5f257055519cc02c65e810e68f441929d947b117ca8f3d593336fd"
+    },
+    {
+      "path": "evidence/replacement-independent-progress-1112-v70.json",
+      "bytes": 1665,
+      "sha256": "70725b9d562dd53f501ec402ed8d6eeee42a69909f1f2a12abf3aceee98ee11c"
+    },
+    {
+      "path": "evidence/replacement-9577-release-gates-v2.json",
+      "bytes": 7612,
+      "sha256": "03a225be2ef00b384231c42cee73433bc1dbb6a521a54ab6cc3a4562270349a0"
+    },
+    {
+      "path": "evidence/replacement-claim-normal-generic-live-plan-v70.json",
+      "bytes": 18589,
+      "sha256": "bf1c61652c9d0add6cfb1407fba19a96f3b9037f65a5ebb9e0dc25a88d30b9bc"
+    },
+    {
+      "path": "evidence/replacement-claim-normal-generic-plan-probe-v70.sql",
+      "bytes": 4857,
+      "sha256": "3722f125e7040215fc04b79206b242aeb5a2be9afa3b5005b468f085b64571dc"
+    },
+    {
+      "path": "evidence/replacement-claim-normal-custom-plan-probes-v70.json",
+      "bytes": 82953,
+      "sha256": "346dd11dd9c83ac28ac84e627a5362b8fd3d86b472ec65e47b8e484a75ec603c"
+    },
+    {
+      "path": "evidence/replacement-claim-plan-probes-v70.md",
+      "bytes": 2457,
+      "sha256": "ac29d3f05c704d6798bdc6b1fb83e4ea7beedc828cc4e1a1b24fb25f4bad0be5"
+    },
+    {
+      "path": "evidence/replacement-claim-plan-probe-qualification-v70.json",
+      "bytes": 4566,
+      "sha256": "840fc13e32187039af0b761e6c082adcec2513216e6089ca54df7d910d54e7d5"
+    },
+    {
+      "path": "evidence/replacement-combined-status-timing-probe-v2.sql",
+      "bytes": 2688,
+      "sha256": "bebbfed723343a73bab0f1ed933d34474389669707dab9289baf37c5bfb9d026"
+    }
+  ],
+  "manifest_path": "evidence/replacement-v70-publication-manifest.json",
+  "publish_this_manifest_itself_in_addition_to_payload_paths": true,
+  "total_files_including_manifest": 15,
+  "publication_performed_by_agent": false,
+  "already_published_artifacts_not_duplicated": {
+    "d63_revision": "d63a7142dd2f6395b230b4907199d925951176cc",
+    "d63_source_file_count": 4,
+    "9577_revision": "9577b25fa6fdddbf509795b6c93571233485626d",
+    "9577_source_file_count": 4,
+    "d63_ci_receipt": {
+      "path": "evidence/replacement-d63-release-gates-v2.json",
+      "sha256": "e42d46a7cb51198175bb0d6238e8678b3052cce40b79b23a3a3d93d6f1fd68cb",
+      "already_published_in": "9577b25fa6fdddbf509795b6c93571233485626d"
+    },
+    "original_mission": {
+      "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+      "sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45"
+    }
+  },
+  "owner": "root-replacement-20261030T042603Z",
+  "owner_lease_until": "2026-10-30T11:30:00Z",
+  "lease_audit": 18,
+  "same_automation_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "actual_automation_update": "2026-10-30T11:02:21Z",
+  "schedule_changed": false,
+  "latest_progress": {
+    "observed_at": "2026-10-30T11:12:47.371590Z",
+    "pages_committed": 3943,
+    "records_and_pointers": 476704,
+    "requests_reserved": 1945,
+    "source_bytes": 410287589,
+    "readbacks": 3943,
+    "unread_pages": 0,
+    "last_progress_at": "2026-10-30T11:12:45.881062Z",
+    "next_member_position": 1984,
+    "planning_complete": false,
+    "worker_id": "b1ae8fda-aa18-4d34-be11-1fdc97c3f649",
+    "heartbeat_at": "2026-10-30T11:12:44.989694Z",
+    "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+    "post_maintenance_delta": {
+      "pages": 27,
+      "records_or_pointers": 3588,
+      "reservations": 15
+    },
+    "post_maintenance_progress_verified": true,
+    "sustained_reliability_proven": false,
+    "postmaintenance_sql_log_lookup": "UNAVAILABLE_CONNECTOR_INTERNAL_SERVER_ERROR",
+    "clean_log_claim": false
+  },
+  "installed_status_rewrite": {
+    "sql_sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+    "applied_once": "2026-10-30T10:52:02Z",
+    "definition_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+    "marker_position": 3099,
+    "nonstatus_claim_tail_sha256": "836360913257d69e02692ff6d7b9e9856c3aaa14d522031661af76a538040c09",
+    "outer_auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "report_asof_boundary_change_explicit": true,
+    "claim_live_clock_unchanged": true
+  },
+  "installed_summary_index": {
+    "state": "INSTALLED_VALID_READY_DO_NOT_REAPPLY",
+    "two_8s_failed_attempts_retained": true,
+    "authoritative_absence_after_each_8s_failure": true,
+    "maintenance_sql_sha256": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+    "maintenance_applied_once_success_at": "2026-10-30T11:06:19Z",
+    "validity_readback_at": "2026-10-30T11:06:53.699006Z",
+    "oid": 16422385,
+    "valid": true,
+    "ready": true,
+    "unique": false,
+    "bytes": 5734400,
+    "keys": [
+      "run_id",
+      "family",
+      "kind",
+      "provider",
+      "status",
+      "records_committed",
+      "last_progress_at"
+    ],
+    "maintenance_do_budget_seconds": 20,
+    "lock_timeout_seconds": 3,
+    "hard_wall_clock_release_bound_claimed": false,
+    "runtime_provider_relay_limits_unchanged": true
+  },
+  "measured_combined_database_path": {
+    "before_ms": 6848.01,
+    "after_ms": 2105.451,
+    "after_observed_at": "2026-10-30T11:06:56.840155Z",
+    "internal_runtime_summary_plus_16_family_delivery": true,
+    "read_only": true,
+    "statement_timeout_seconds": 8,
+    "lock_timeout_seconds": 3,
+    "authenticated_rpc_proof": false,
+    "outer_advisory_lock_measured": false,
+    "render_filtered_http200_entries": 0,
+    "zero_entries_interpreted_as_auth_success_or_latency": false
+  },
+  "claim_recovery": {
+    "known_timeout_at": "2026-10-30T10:53:28.600Z",
+    "sqlstate": "57014",
+    "location": "Normal fairness claim candidate SELECT; backfill_dispatch_v2line123",
+    "matches_worker_failure": true,
+    "predates_both_index_attempts": true,
+    "ui_or_maintenance_cause_established": false,
+    "claim_rewrite_applied": false,
+    "live_generic_plan_only": true,
+    "live_claims_or_locks_executed_by_probe": false,
+    "new_summary_index_chosen_for_generic_claim": false,
+    "failed_family_and_cached_plan_known": false,
+    "next_action": "Keep existing worker/recovery active; investigate exact current claim family/workload only if fresh error or substantive progress stall recurs; no speculative repair or full16-probe sweep"
+  },
+  "qualification": {
+    "rewrite_pg_cases": 5,
+    "rewrite_seconds": 66.10034590199939,
+    "maintenance_pg_cases": 3,
+    "maintenance_seconds": 25.761375196998415,
+    "d63_all_four_gates": "PASSED_ATTEMPT1",
+    "9577_all_four_gates": "PASSED_ATTEMPT1",
+    "9577_ingestion_tests_each": 579,
+    "9577_release_passed_each": 675,
+    "9577_release_skipped_each": 294,
+    "claim_preparation_local_nonexecuting_plans": 17,
+    "claim_preparation_seconds": 0.8603520510005183,
+    "new_checkpoint_artifacts_already_run_in_remote_exact_head_ci": false
+  },
+  "relay": {
+    "state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+    "original_approval_at": "2026-10-30T09:53:00Z",
+    "expiry": "2026-10-30T10:08:00Z",
+    "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+    "sql_sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "reviewed_payloads_unchanged": 19,
+    "activation_or_renewal": false,
+    "production_native_channel_confirmed": false,
+    "renew_only_after_transport_ready": true,
+    "validator_package_approval_time_or_trust_changes": false
+  },
+  "local_document_verification": {
+    "selected_paths_and_hashes_verified": true,
+    "checkpoint_relative_links_resolve": true,
+    "v69_history_byte_identical": true,
+    "v69_checkpoint_sha256": "5cde0f808bad7fbb88bd322bf8388d1fd4e9b51afc64884822a31dfda41ac571",
+    "v69_prompt_sha256": "965640e42eff28ca032b87760a167498d88419d40a30ea844e1bb9700df0950b",
+    "original_mission_file_unchanged": true,
+    "original_mission_tail_byte_identical": true,
+    "mission_tail_sha256": "09e841c22d086e1552f027af41ad80af5878f2396f8b716f6a32bbfa32199fe8",
+    "worker_and_relay_sql_pins_verified": true,
+    "active_source_edits": 0,
+    "new_tests_pg_or_remote_calls": 0
+  },
+  "pending_final_inputs": []
+}
