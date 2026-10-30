@@ -1,0 +1,18 @@
+{
+  "result": [
+    {
+      "authenticated_gate_context": 1,
+      "holder": "Process holding the lock: 1244016",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:26:01.224000",
+      "waiting_process_id": "1243169"
+    },
+    {
+      "authenticated_gate_context": 1,
+      "holder": "",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:26:03.224000",
+      "waiting_process_id": "1243169"
+    }
+  ]
+}

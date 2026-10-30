@@ -1,0 +1,129 @@
+{
+  "schema": "astra.replacement.claim-capability-filter-live-installation/v71",
+  "source_commit": "b434f4575f5d6656b176b006857a655e4bf703c9",
+  "sql_sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+  "apply_attempts": 1,
+  "apply_result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"success\":true}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "readback": [
+    {
+      "observed_at": "2026-10-30 13:13:22.722702+00",
+      "functions": [
+        {
+          "oid": "16040232",
+          "name": "backfill_dispatch_v2",
+          "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+          "metadata": {
+            "oid": "16040232",
+            "proacl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "probin": null,
+            "procost": 100,
+            "prokind": "f",
+            "prolang": "13619",
+            "proname": "backfill_dispatch_v2",
+            "prorows": 0,
+            "pronargs": 2,
+            "proowner": "16388",
+            "proconfig": [
+              "search_path=\"\""
+            ],
+            "proretset": false,
+            "prosecdef": false,
+            "prorettype": "3802",
+            "prosqlbody": null,
+            "prosupport": "-",
+            "proargmodes": null,
+            "proargnames": [
+              "p_operation",
+              "p_payload"
+            ],
+            "proargtypes": [
+              "25",
+              "3802"
+            ],
+            "proisstrict": false,
+            "proparallel": "u",
+            "protrftypes": null,
+            "provariadic": "0",
+            "provolatile": "v",
+            "proleakproof": false,
+            "pronamespace": "15984556",
+            "proallargtypes": null,
+            "proargdefaults": null,
+            "pronargdefaults": 0
+          }
+        },
+        {
+          "oid": "15986028",
+          "name": "rpc_dispatch",
+          "sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+          "metadata": {
+            "oid": "15986028",
+            "proacl": [
+              "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+              "anon=X/astra_ingestion_rpc_owner_v1"
+            ],
+            "probin": null,
+            "procost": 100,
+            "prokind": "f",
+            "prolang": "13619",
+            "proname": "rpc_dispatch",
+            "prorows": 0,
+            "pronargs": 2,
+            "proowner": "15985999",
+            "proconfig": [
+              "search_path=\"\"",
+              "statement_timeout=10s",
+              "lock_timeout=3s"
+            ],
+            "proretset": false,
+            "prosecdef": true,
+            "prorettype": "3802",
+            "prosqlbody": null,
+            "prosupport": "-",
+            "proargmodes": null,
+            "proargnames": [
+              "p_operation",
+              "p_payload"
+            ],
+            "proargtypes": [
+              "25",
+              "3802"
+            ],
+            "proisstrict": false,
+            "proparallel": "u",
+            "protrftypes": null,
+            "provariadic": "0",
+            "provolatile": "v",
+            "proleakproof": false,
+            "pronamespace": "15984556",
+            "proallargtypes": null,
+            "proargdefaults": null,
+            "pronargdefaults": 0
+          }
+        }
+      ],
+      "history": [
+        {
+          "name": "astra_backfill_claim_capability_filter_v2",
+          "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+          "version": "20261030131300"
+        }
+      ]
+    }
+  ],
+  "metadata_preserved": true,
+  "new_access_or_credential": false,
+  "sustained_recovery_proven": false
+}

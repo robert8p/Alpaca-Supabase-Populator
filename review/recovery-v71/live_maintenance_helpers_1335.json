@@ -1,0 +1,205 @@
+[
+  {
+    "evidence": {
+      "owner": {
+        "id": "fixed3000-20250901-20260731-v1-20261030",
+        "fence": 1,
+        "owner": "root-replacement-20261030T042603Z",
+        "status": "ACTIVE",
+        "checkpoint": "{\"commit\": \"ad4e3ba854cd4a004669ea5da6a97fef436ae1a9\", \"version\": \"v70\", \"recorded_at\": \"2026-10-30T11:21:57.648068+00:00\", \"manifest_sha256\": \"a585da1eed169faef3dcd33a35c9d2a621f49fba273a154762cd610576e5f78a\", \"published_and_ref_verified\": true}",
+        "lease_until": "2026-10-30T14:00:00Z"
+      },
+      "definitions": [
+        {
+          "oid": "16041712",
+          "args": "p_limit integer",
+          "sha256": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+          "proname": "backfill_breadth_project_pending_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_breadth_project_pending_v2(p_limit integer DEFAULT 2)\n RETURNS jsonb\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE p record; v_pages integer:=0;v_rows bigint:=0;v_errors integer:=0;\nBEGIN\n FOR p IN SELECT pg.task_id,pg.page_no,pg.run_id FROM astra_ingestion_v1.backfill_pages_v2 pg JOIN astra_ingestion_v1.backfill_tasks_v2 t ON t.id=pg.task_id\n  WHERE t.family='D03' AND lower(t.provider)='derived'\n   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_breadth_projected_pages_v2 q WHERE q.task_id=pg.task_id AND q.page_no=pg.page_no)\n   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_audit_v2 a WHERE a.task_id=pg.task_id AND a.action='D03_PROJECTION_FAILURE' AND a.evidence->>'page_no'=pg.page_no::text)\n  ORDER BY pg.committed_at,pg.task_id,pg.page_no LIMIT GREATEST(1,LEAST(p_limit,8))\n LOOP\n  BEGIN v_rows:=v_rows+astra_ingestion_v1.backfill_breadth_project_page_v2(p.task_id,p.page_no);v_pages:=v_pages+1;\n  EXCEPTION WHEN OTHERS THEN\n   v_errors:=v_errors+1;\n   INSERT INTO astra_ingestion_v1.backfill_audit_v2(run_id,task_id,action,evidence) VALUES(p.run_id,p.task_id,'D03_PROJECTION_FAILURE',\n    jsonb_build_object('page_no',p.page_no,'sqlstate',SQLSTATE,'reason',left(SQLERRM,500),'next_action','Repair the projection and execute backfill_breadth_project_page_v2 for this exact task/page'));\n  END;\n END LOOP;\n RETURN jsonb_build_object('projected_pages',v_pages,'projected_records',v_rows,'projection_errors',v_errors);\nEND $function$\n"
+        },
+        {
+          "oid": "16061400",
+          "args": "",
+          "sha256": "52007f177dca38faf48fab8773936173519dcbfa54af896b5ef6f902ad64c748",
+          "proname": "backfill_contract_maintain_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=20s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_contract_maintain_v2()\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '20s'\nAS $function$\nDECLARE r record;x record;c astra_ingestion_v1.backfill_contract_readback_cursor_v2;n integer:=0;\nBEGIN\n FOR r IN SELECT id FROM astra_ingestion_v1.backfill_runs_v2 WHERE status='ACTIVE' ORDER BY created_at LIMIT 1 LOOP\n  PERFORM astra_ingestion_v1.backfill_contract_seed_v2(r.id,8);\n  FOR x IN SELECT e.task_id,e.page_no FROM astra_ingestion_v1.backfill_contract_enumeration_v2 e JOIN astra_ingestion_v1.backfill_readbacks_v2 b USING(task_id,page_no)\n   WHERE e.run_id=r.id AND e.processed_at IS NULL ORDER BY e.task_id,e.page_no LIMIT 1 LOOP PERFORM astra_ingestion_v1.backfill_contract_admit_page_v2(x.task_id,x.page_no);n:=n+1;END LOOP;\n END LOOP;\n SELECT * INTO STRICT c FROM astra_ingestion_v1.backfill_contract_readback_cursor_v2 WHERE singleton FOR UPDATE;\n FOR x IN SELECT b.verified_at,b.task_id,b.page_no,t.kind FROM astra_ingestion_v1.backfill_readbacks_v2 b JOIN astra_ingestion_v1.backfill_tasks_v2 t ON t.id=b.task_id\n  WHERE (b.verified_at,b.task_id,b.page_no)>(c.verified_at,c.task_id,c.page_no) ORDER BY b.verified_at,b.task_id,b.page_no LIMIT 32 LOOP\n  -- Catchup only queues retained enumeration pointers. Heavy source parsing and\n  -- admission stays at one page per maintenance call, never32 provider pages.\n  IF x.kind='alpaca_option_contracts' THEN PERFORM astra_ingestion_v1.backfill_contract_enqueue_v2(x.task_id,x.page_no);\n  ELSIF x.kind='alpaca_option_bars' THEN PERFORM astra_ingestion_v1.backfill_contract_register_child_v2(x.task_id);END IF;\n  UPDATE astra_ingestion_v1.backfill_contract_readback_cursor_v2 SET verified_at=x.verified_at,task_id=x.task_id,page_no=x.page_no WHERE singleton;\n END LOOP;RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16047703",
+          "args": "",
+          "sha256": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+          "proname": "backfill_identity_discover_pending_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_identity_discover_pending_v2()\n RETURNS integer\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE x record;\nBEGIN\n SELECT d.run_id,d.member_id INTO x FROM astra_ingestion_v1.backfill_identity_discovered_members_v2 d\n JOIN astra_ingestion_v1.backfill_runs_v2 r ON r.id=d.run_id WHERE NOT d.complete AND r.status='ACTIVE'\n ORDER BY d.observed_at,d.run_id,d.member_id LIMIT 1;\n IF NOT FOUND THEN RETURN 0; END IF;\n RETURN astra_ingestion_v1.backfill_identity_discover_member_v2(x.run_id,x.member_id);\nEND $function$\n"
+        },
+        {
+          "oid": "16047730",
+          "args": "p_limit integer",
+          "sha256": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+          "proname": "backfill_identity_refresh_pending_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=8s"
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_identity_refresh_pending_v2(p_limit integer DEFAULT 2)\n RETURNS integer\n LANGUAGE plpgsql\n SET search_path TO ''\n SET statement_timeout TO '8s'\nAS $function$\nDECLARE q astra_ingestion_v1.backfill_identity_refresh_v2;t astra_ingestion_v1.backfill_tasks_v2;v jsonb;v_id text;n integer:=0;seen integer:=0;last_id text;\nBEGIN\n SELECT x.* INTO q FROM astra_ingestion_v1.backfill_identity_refresh_v2 x JOIN astra_ingestion_v1.backfill_runs_v2 r ON r.id=x.run_id\n  WHERE r.status='ACTIVE' AND x.ready_after<=clock_timestamp()\n   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_identity_source_members_v2 sm JOIN astra_ingestion_v1.backfill_tasks_v2 st ON st.id=sm.task_id\n    WHERE sm.run_id=x.run_id AND sm.member_id=x.member_id AND st.status IN('PENDING','RUNNING','RETRY_WAIT'))\n  ORDER BY x.ready_after,x.run_id,x.member_id LIMIT 1 FOR UPDATE OF x;\n IF NOT FOUND THEN RETURN 0; END IF;\n PERFORM 1 FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=q.run_id AND status='ACTIVE' FOR UPDATE;\n IF NOT FOUND THEN RETURN 0; END IF;\n last_id:=q.after_task_id;\n FOR t IN SELECT * FROM astra_ingestion_v1.backfill_tasks_v2 z WHERE z.run_id=q.run_id AND z.id>q.after_task_id AND NOT(z.scope ? 'identity_refresh_of')\n  AND ((q.member_id='__COHORT__' AND z.kind='derive_breadth') OR (z.kind='derive_daily' AND z.scope#>>'{member_ids,0}'=q.member_id))\n  AND z.status IN('INGESTED','NO_DATA_RETURNED','IDENTITY_OR_QUALITY_UNRESOLVED')\n  AND COALESCE((z.scope->>'input_start')::date,(z.scope->>'target_start')::date)<=q.latest_date\n  AND (z.scope->>'target_end')::date>=q.earliest_date ORDER BY z.id LIMIT GREATEST(1,LEAST(p_limit,8))\n LOOP\n  seen:=seen+1;last_id:=t.id;v:=astra_ingestion_v1.backfill_identity_build_material_v2(t);\n  INSERT INTO astra_ingestion_v1.backfill_identity_roots_v2(root_task_id,run_id,member_id,input_start,target_end,identity_material_sha256)\n  VALUES(t.id,t.run_id,CASE WHEN t.kind<>'derive_breadth' THEN q.member_id END,COALESCE((t.scope->>'input_start')::date,(t.scope->>'target_start')::date),(t.scope->>'target_end')::date,v->>'identity_material_sha256')\n  ON CONFLICT(root_task_id) DO UPDATE SET identity_material_sha256=EXCLUDED.identity_material_sha256,invalidated=false,checked_at=clock_timestamp();\n  IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_identity_calculation_receipts_v2 c\n    WHERE c.root_task_id=t.id AND c.identity_material_sha256=v->>'identity_material_sha256') THEN CONTINUE; END IF;\n  v_id:='backfill-identity-refresh-'||encode(sha256(convert_to(t.id||':'||(v->>'identity_material_sha256'),'UTF8')),'hex');\n  INSERT INTO astra_ingestion_v1.backfill_tasks_v2(id,run_id,family,provider,kind,scope,dependencies,priority,run_fence)\n  VALUES(v_id,t.run_id,t.family,t.provider,t.kind,t.scope||jsonb_build_object('identity_refresh_of',t.id,\n    'identity_material_sha256',v->>'identity_material_sha256','plan_static',false,'prefer_retained_formula_cache',false),t.dependencies,GREATEST(t.priority,150),t.run_fence)\n  ON CONFLICT(id) DO NOTHING;\n  n:=n+1;\n END LOOP;\n IF seen<GREATEST(1,LEAST(p_limit,8)) THEN DELETE FROM astra_ingestion_v1.backfill_identity_refresh_v2 WHERE run_id=q.run_id AND member_id=q.member_id;\n ELSE UPDATE astra_ingestion_v1.backfill_identity_refresh_v2 SET after_task_id=last_id WHERE run_id=q.run_id AND member_id=q.member_id; END IF;\n RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16042604",
+          "args": "p_limit integer",
+          "sha256": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2",
+          "proname": "backfill_minute_account_pending_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=8s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_minute_account_pending_v2(p_limit integer DEFAULT 2)\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '8s'\nAS $function$\nDECLARE x record; n integer:=0;\nBEGIN\n FOR x IN SELECT DISTINCT v.task_id FROM astra_ingestion_v1.backfill_readbacks_v2 v\n  JOIN astra_ingestion_v1.backfill_tasks_v2 t ON t.id=v.task_id\n  LEFT JOIN astra_ingestion_v1.backfill_minute_projection_v2 s ON s.task_id=v.task_id\n  WHERE t.family IN('P01','P02') AND t.kind IN('retained_reuse','alpaca_stock_bars') AND COALESCE(t.scope->>'timeframe','1Min')='1Min'\n   AND (s.task_id IS NULL OR s.last_verified_page<v.page_no) LIMIT GREATEST(1,LEAST(p_limit,8))\n LOOP PERFORM astra_ingestion_v1.backfill_minute_account_v2(x.task_id);n:=n+1;END LOOP;\n RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16047824",
+          "args": "p_limit integer",
+          "sha256": "ceb1889732da767e8815741a792347ccb91c33c53acd38eeff36f9176d063cec",
+          "proname": "backfill_nonminute_project_pending_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=8s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_nonminute_project_pending_v2(p_limit integer DEFAULT 2)\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '8s'\nAS $function$\nDECLARE c astra_ingestion_v1.backfill_nonminute_projection_cursor_v2;x record;n integer:=0;\nBEGIN\n SELECT * INTO STRICT c FROM astra_ingestion_v1.backfill_nonminute_projection_cursor_v2 WHERE singleton FOR UPDATE;\n FOR x IN SELECT verified_at,task_id,page_no FROM astra_ingestion_v1.backfill_readbacks_v2\n  WHERE (verified_at,task_id,page_no)>(c.verified_at,c.task_id,c.page_no)\n  ORDER BY verified_at,task_id,page_no LIMIT GREATEST(1,LEAST(p_limit,8)) LOOP\n  PERFORM astra_ingestion_v1.backfill_nonminute_project_page_v2(x.task_id,x.page_no);\n  UPDATE astra_ingestion_v1.backfill_nonminute_projection_cursor_v2 SET verified_at=x.verified_at,task_id=x.task_id,page_no=x.page_no WHERE singleton;\n  n:=n+1;\n END LOOP;\n RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16041451",
+          "args": "p_task_id text, p_page_no integer",
+          "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+          "proname": "backfill_recheck_page_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_recheck_page_v2(p_task_id text, p_page_no integer)\n RETURNS jsonb\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE p astra_ingestion_v1.backfill_pages_v2; v_hash text; v_counts record; v_saved astra_ingestion_v1.backfill_readbacks_v2; v_reuse jsonb; v_sessions record; v_feature jsonb; v_identity jsonb;v_s02 jsonb;\nBEGIN\n SELECT * INTO p FROM astra_ingestion_v1.backfill_pages_v2 WHERE task_id=p_task_id AND page_no=p_page_no;\n IF NOT FOUND THEN RAISE EXCEPTION USING ERRCODE='AI004',MESSAGE='Readback page does not exist'; END IF;\n IF p.committed_at>=transaction_timestamp() THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Independent readback requires a subsequent transaction'; END IF;\n v_hash:=encode(sha256(convert_to(p.raw_body,'UTF8')),'hex');\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 st WHERE st.id=p.task_id AND st.kind='retained_massive_archive') THEN v_s02:=astra_ingestion_v1.backfill_massive_archive_verify_v2(p.task_id,p.page_no);END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 it WHERE it.id=p.task_id AND it.kind='retained_identity') THEN\n  v_identity:=astra_ingestion_v1.backfill_identity_source_verify_v2(p.task_id,p.page_no);\n  IF v_identity->'passed' IS DISTINCT FROM 'true'::jsonb THEN RAISE EXCEPTION USING ERRCODE='AI002',MESSAGE='Retained identity source readback differs'; END IF;\n END IF;\n SELECT count(*)::int total,count(*) FILTER(WHERE target_window)::int target,\n  count(*) FILTER(WHERE market_date<'2025-09-01'::date)::int support,\n  count(*) FILTER(WHERE market_date IS NULL)::int unknown_date,\n  count(*) FILTER(WHERE target_window AND session='RTH')::int rth,\n  count(*) FILTER(WHERE target_window AND session='PRE')::int pre,\n  count(*) FILTER(WHERE target_window AND session='POST')::int post,\n  count(*) FILTER(WHERE target_window AND session='RTH' AND astra_ingestion_v1.backfill_bar_usable_v2(source_row))::int urth,\n  count(*) FILTER(WHERE target_window AND session='PRE' AND astra_ingestion_v1.backfill_bar_usable_v2(source_row))::int upre,\n  count(*) FILTER(WHERE target_window AND session='POST' AND astra_ingestion_v1.backfill_bar_usable_v2(source_row))::int upost,\n  count(*) FILTER(WHERE session IN ('INVALID_TIMESTAMP','CALENDAR_UNRESOLVED','OUTSIDE_SUPPORTED_SESSION'))::int unclassified\n INTO v_counts FROM astra_ingestion_v1.backfill_page_rows_v2(p.task_id,p.page_no);\n IF v_hash<>p.body_sha256 OR v_counts.total<>p.record_count THEN RAISE EXCEPTION USING ERRCODE='AI002',MESSAGE='Independent stored-source hash or count mismatch'; END IF;\n\n IF p.raw_body::jsonb#>>'{rows,0,record_type}'='DERIVED_RETAINED_SOURCE_POINTER' THEN\n  v_feature:=astra_ingestion_v1.backfill_feature_reuse_verify_v2(p.task_id,p.page_no);\n  IF v_feature->'passed' IS DISTINCT FROM 'true'::jsonb THEN\n   RAISE EXCEPTION USING ERRCODE='AI002',MESSAGE='Retained feature source readback differs'; END IF;\n  v_counts.target:=(v_feature->>'reused_feature_rows')::int;\n  v_counts.support:=0;v_counts.unknown_date:=0;\n END IF;\n IF lower(p.provider)='reuse' AND EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 it WHERE it.id=p.task_id AND it.kind='retained_reuse') THEN\n  IF to_regprocedure('astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)') IS NULL THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Fixed retained-source verifier is required before pointer readback'; END IF;\n  v_reuse:=astra_ingestion_v1.backfill_reuse_verify_v2(p.task_id,p.page_no);\n  IF v_reuse->'passed' IS DISTINCT FROM 'true'::jsonb THEN RAISE EXCEPTION USING ERRCODE='AI002',MESSAGE='Retained pointer source digest or aggregate readback differs'; END IF;\n  SELECT COALESCE(sum((e->>'record_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int target,\n   COALESCE(sum((e->>'record_count')::int) FILTER(WHERE (e->>'market_date')::date<'2025-09-01'::date),0)::int support,\n   COALESCE(sum((e->>'qualified_rth_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int rth,\n   COALESCE(sum((e->>'qualified_pre_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int pre,\n   COALESCE(sum((e->>'qualified_post_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int post,\n   COALESCE(sum((e->>'usable_rth_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int urth,\n   COALESCE(sum((e->>'usable_pre_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int upre,\n   COALESCE(sum((e->>'usable_post_count')::int) FILTER(WHERE (e->>'market_date')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date),0)::int upost\n   INTO v_sessions FROM jsonb_array_elements(v_reuse->'session_coverage') e;\n  v_counts.target:=v_sessions.target;v_counts.support:=v_sessions.support;v_counts.unknown_date:=0;\n  v_counts.rth:=v_sessions.rth;v_counts.pre:=v_sessions.pre;v_counts.post:=v_sessions.post;\n  v_counts.urth:=v_sessions.urth;v_counts.upre:=v_sessions.upre;v_counts.upost:=v_sessions.upost;\n  v_counts.unclassified:=COALESCE((v_reuse->>'unknown_session_count')::int,0);\n END IF;\n INSERT INTO astra_ingestion_v1.backfill_readbacks_v2(task_id,page_no,run_id,body_sha256,readback_sha256,expected_records,actual_records,target_records,support_records,unknown_date_records,rth_records,pre_records,post_records,unclassified_session_records,\n  usable_rth_records,usable_pre_records,usable_post_records,reused_records,reused_qualified_records,reused_usable_records,retained_source_verification,reused_feature_records,qualified_feature_records,usable_feature_records,retained_feature_verification,retained_identity_verification,retained_s02_verification)\n VALUES(p.task_id,p.page_no,p.run_id,p.body_sha256,v_hash,p.record_count,v_counts.total,v_counts.target,v_counts.support,v_counts.unknown_date,v_counts.rth,v_counts.pre,v_counts.post,v_counts.unclassified,\n  v_counts.urth,v_counts.upre,v_counts.upost,COALESCE((v_reuse->>'reused_records')::bigint,0),COALESCE((v_reuse->>'qualifying_profile_count')::bigint,0),COALESCE((v_reuse->>'usable_source_count')::bigint,0),v_reuse,COALESCE((v_feature->>'reused_feature_rows')::int,0),COALESCE((v_feature->>'qualifying_feature_rows')::int,0),COALESCE((v_feature->>'usable_feature_rows')::int,0),v_feature,v_identity,v_s02)\n ON CONFLICT(task_id,page_no) DO NOTHING;\n SELECT * INTO v_saved FROM astra_ingestion_v1.backfill_readbacks_v2 WHERE task_id=p.task_id AND page_no=p.page_no;\n RETURN to_jsonb(v_saved)||jsonb_build_object('state','VERIFIED');\nEND $function$\n"
+        },
+        {
+          "oid": "16047956",
+          "args": "",
+          "sha256": "40827de08ca59d1470a02aceff6ccc249e6b43bb8ef13ff39eddffa673e78939",
+          "proname": "backfill_s02_maintain_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=8s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_s02_maintain_v2()\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '8s'\nAS $function$\nDECLARE r record;x record;c astra_ingestion_v1.backfill_s02_projection_cursor_v2;n integer:=0;\nBEGIN\n FOR r IN SELECT id FROM astra_ingestion_v1.backfill_runs_v2 WHERE status='ACTIVE' ORDER BY created_at LIMIT 1 LOOP PERFORM astra_ingestion_v1.backfill_s02_seed_v2(r.id,2);END LOOP;\n SELECT * INTO STRICT c FROM astra_ingestion_v1.backfill_s02_projection_cursor_v2 WHERE singleton FOR UPDATE;\n FOR x IN SELECT verified_at,task_id,page_no FROM astra_ingestion_v1.backfill_readbacks_v2 WHERE (verified_at,task_id,page_no)>(c.verified_at,c.task_id,c.page_no)\n  ORDER BY verified_at,task_id,page_no LIMIT 8 LOOP\n  PERFORM astra_ingestion_v1.backfill_s02_project_v2(x.task_id,x.page_no);\n  UPDATE astra_ingestion_v1.backfill_s02_projection_cursor_v2 SET verified_at=x.verified_at,task_id=x.task_id,page_no=x.page_no WHERE singleton;n:=n+1;\n END LOOP;RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16050110",
+          "args": "p_limit integer",
+          "sha256": "5da488f3e44e2521b64f58230b2bc6db3c34800ae4ac259166f4dc223c8ad2be",
+          "proname": "backfill_shared_maintain_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=15s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_maintain_v2(p_limit integer DEFAULT 4)\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '15s'\nAS $function$\nDECLARE c astra_ingestion_v1.backfill_shared_cursor_v2;x record;n integer:=0;\nBEGIN\n SELECT * INTO STRICT c FROM astra_ingestion_v1.backfill_shared_cursor_v2 WHERE singleton FOR UPDATE;\n FOR x IN SELECT verified_at,task_id,page_no FROM astra_ingestion_v1.backfill_readbacks_v2\n  WHERE (verified_at,task_id,page_no)>(c.verified_at,c.task_id,c.page_no) ORDER BY verified_at,task_id,page_no LIMIT GREATEST(1,LEAST(p_limit,8)) LOOP\n  PERFORM astra_ingestion_v1.backfill_shared_project_v2(x.task_id,x.page_no);\n  UPDATE astra_ingestion_v1.backfill_shared_cursor_v2 SET verified_at=x.verified_at,task_id=x.task_id,page_no=x.page_no WHERE singleton;n:=n+1;\n END LOOP;RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16041460",
+          "args": "p_run_id text",
+          "sha256": "f8f9ef6d8d9ada232b132170bde9922397a2b247dbc7e4b391cbca57b67b7063",
+          "proname": "backfill_try_finalize_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_try_finalize_v2(p_run_id text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE r astra_ingestion_v1.backfill_runs_v2; v_state text; v_gaps boolean; v_coverage_unknown boolean; v_plan astra_ingestion_v1.backfill_plan_manifests_v2;\nBEGIN\n SELECT * INTO r FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=p_run_id FOR UPDATE;\n IF NOT FOUND THEN RAISE EXCEPTION USING ERRCODE='AI004',MESSAGE='Replacement run does not exist'; END IF;\n IF r.status IN ('COMPLETE','COMPLETE_WITH_DOCUMENTED_GAPS','SUPERSEDED','PAUSED') THEN RETURN jsonb_build_object('state',r.status); END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_identity_discovered_members_v2 WHERE run_id=r.id AND NOT complete) THEN RETURN jsonb_build_object('state','IDENTITY_SOURCE_DISCOVERY_PENDING'); END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_identity_refresh_v2 WHERE run_id=r.id) THEN RETURN jsonb_build_object('state','IDENTITY_RECOMPUTATION_PENDING'); END IF;\n IF r.metadata->'planning_complete' IS DISTINCT FROM 'true'::jsonb THEN RETURN jsonb_build_object('state','PLANNING_INCOMPLETE'); END IF;\n SELECT * INTO v_plan FROM astra_ingestion_v1.backfill_plan_manifests_v2 WHERE run_id=r.id;\n IF NOT FOUND THEN RETURN jsonb_build_object('state','FULL_PLAN_NOT_SEALED'); END IF;\n\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 WHERE run_id=r.id AND status IN ('PENDING','RUNNING','RETRY_WAIT')) THEN\n  RETURN jsonb_build_object('state','WORK_REMAINS'); END IF;\n -- bounded_delivery_completion_check_v2: whole-plan count only after runnable work is exhausted.\n IF (SELECT count(*) FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id AND recorded_at<=v_plan.sealed_at)<>v_plan.expected_task_count THEN\n  RETURN jsonb_build_object('state','EXPECTED_PLAN_UNITS_DIFFER'); END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_family_status_v2 WHERE run_id=r.id AND family<>'REF03' AND planned_units=0) THEN\n  RETURN jsonb_build_object('state','REQUIRED_FAMILY_NOT_PLANNED'); END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 WHERE run_id=r.id AND status='OPERATIONAL_ERROR') THEN v_state:='PARTIAL_OPERATIONAL_FAILURE';\n ELSIF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 WHERE run_id=r.id AND status='BLOCKED_EXTERNAL') THEN v_state:='BLOCKED_EXTERNAL';\n ELSIF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_pages_v2 p WHERE p.run_id=r.id AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_readbacks_v2 v WHERE v.task_id=p.task_id AND v.page_no=p.page_no)) THEN\n  RETURN jsonb_build_object('state','READBACK_PENDING');\n ELSE\n  IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_nonminute_pages_v2 n WHERE n.run_id=r.id AND n.kind IN('alpaca_news','massive_news','alpaca_actions','massive_dividends','massive_splits','alpaca_option_contracts','alpaca_option_bars') AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_pages_v2 s WHERE s.task_id=n.task_id AND s.page_no=n.page_no)) THEN RETURN jsonb_build_object('state','SHARED_RECORD_PROJECTION_PENDING');END IF;\n  IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_readbacks_v2 b JOIN astra_ingestion_v1.backfill_tasks_v2 t ON t.id=b.task_id WHERE b.run_id=r.id AND t.kind='alpaca_option_contracts' AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_contract_enumeration_v2 e WHERE e.task_id=b.task_id AND e.page_no=b.page_no AND e.processed_at IS NOT NULL)) THEN RETURN jsonb_build_object('state','CONTRACT_WORK_ADMISSION_PENDING');END IF;\n  v_coverage_unknown:=r.metadata->'applicable_data_coverage_established' IS DISTINCT FROM 'true'::jsonb\n   OR jsonb_typeof(r.metadata->'coverage_evidence') IS DISTINCT FROM 'object'\n   OR COALESCE(r.metadata#>>'{coverage_evidence,report_sha256}','') !~ '^[0-9a-f]{64}$'\n   OR length(COALESCE(r.metadata#>>'{coverage_evidence,evidence_ref}',''))<8\n   OR r.metadata#>>'{coverage_evidence,cohort_sha256}' IS DISTINCT FROM r.cohort_sha256\n   OR r.metadata#>>'{coverage_evidence,instruction_sha256}' IS DISTINCT FROM r.instruction_sha256\n   OR astra_ingestion_v1.backfill_stamp_v2(r.metadata#>>'{coverage_evidence,verified_at}') IS NULL\n   OR astra_ingestion_v1.backfill_stamp_v2(r.metadata#>>'{coverage_evidence,verified_at}')<COALESCE(r.last_progress_at,r.created_at)\n   OR astra_ingestion_v1.backfill_stamp_v2(r.metadata#>>'{coverage_evidence,verified_at}')>clock_timestamp();\n  SELECT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 WHERE run_id=r.id AND status<>'INGESTED')\n   OR EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_readbacks_v2 WHERE run_id=r.id AND unclassified_session_records>0) INTO v_gaps;\n  v_gaps:=v_gaps OR EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_counts_v2 WHERE run_id=r.id AND (conflicts>0 OR fallback_keys>0));\n  v_state:=CASE WHEN v_gaps OR v_coverage_unknown THEN 'COMPLETE_WITH_DOCUMENTED_GAPS' ELSE 'COMPLETE' END;\n END IF;\n IF r.status<>v_state THEN\n  UPDATE astra_ingestion_v1.backfill_runs_v2 SET status=v_state,metadata=metadata||jsonb_build_object('work_disposition',v_state,'work_disposition_at',clock_timestamp(),'coverage_policy','Observed source and calculation outcomes remain distinct from research coverage certification','coverage_disposition_reason',CASE WHEN v_coverage_unknown THEN 'APPLICABLE_DATA_COVERAGE_NOT_ESTABLISHED' WHEN v_gaps THEN 'DOCUMENTED_UNIT_OR_SESSION_GAPS' ELSE 'APPLICABLE_DATA_COVERAGE_EVIDENCED' END) WHERE id=r.id;\n  INSERT INTO astra_ingestion_v1.backfill_audit_v2(run_id,action,evidence) VALUES(r.id,'RUN_DISPOSITION',jsonb_build_object('state',v_state,'planning_complete',true,'fixed_member_count',3000,'coverage_unknown',v_coverage_unknown,'coverage_evidence',r.metadata->'coverage_evidence'));\n END IF;\n RETURN jsonb_build_object('state',v_state);\nEND $function$\n"
+        }
+      ],
+      "observed_at": "2026-10-30T13:35:37.623379+00:00",
+      "function_stats": null,
+      "track_functions": "none"
+    }
+  }
+]

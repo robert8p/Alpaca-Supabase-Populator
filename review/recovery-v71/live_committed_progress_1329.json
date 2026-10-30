@@ -1,0 +1,18 @@
+[
+  {
+    "observed_at": "2026-10-30 13:29:06.438699+00",
+    "pages_committed": 4423,
+    "records_committed": 538388,
+    "requests_reserved": 2224,
+    "source_bytes": 454982075,
+    "next_member": "2099",
+    "latest_page_commit": "2026-10-30 13:25:59.737537+00",
+    "pages_since_repair": 147,
+    "readbacks": 4423,
+    "latest_worker": {
+      "worker_id": "9cd8b803-84f6-4cdc-8599-0b61ee2dc4b1",
+      "observed_at": "2026-10-30T13:25:57.729834+00:00",
+      "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d"
+    }
+  }
+]

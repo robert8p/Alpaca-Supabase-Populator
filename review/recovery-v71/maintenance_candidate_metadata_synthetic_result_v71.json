@@ -1,0 +1,44 @@
+{
+  "schema": "astra.maintenance-candidate-metadata/1",
+  "complete": true,
+  "observed_at": "2026-10-30T13:41:29.758177+00:00",
+  "selector_count": 10,
+  "page_candidates": [
+    {
+      "kind": "alpaca_reference",
+      "family": "REF01",
+      "run_id": "run-f1a26aad946946b1bc2a44570912853d",
+      "status": "INGESTED",
+      "page_no": 0,
+      "task_id": "task-61b8ce729ddb4349b9fea750ab7eaced",
+      "provider": "Alpaca",
+      "component": "MISSING_READBACK",
+      "raw_bytes": 39,
+      "timeframe": "",
+      "max_page_no": 0,
+      "archived_pages": 1,
+      "source_records": 1,
+      "verified_pages": 0,
+      "max_verified_page": null,
+      "latest_committed_at": "2026-10-30T13:41:29.704552+00:00",
+      "earliest_committed_at": "2026-10-30T13:41:29.704552+00:00",
+      "minute_projection_last_page": null,
+      "shared_page_already_projected": false
+    }
+  ],
+  "transaction_isolation": "repeatable read",
+  "transaction_read_only": "on",
+  "advisory_lock_acquired": false,
+  "raw_page_bodies_returned": false,
+  "current_run_finalizer_gates": {
+    "status": "ACTIVE",
+    "planning_complete": null,
+    "plan_manifest_exists": false,
+    "runnable_work_exists": false,
+    "identity_refresh_pending": false,
+    "identity_discovery_pending": false
+  },
+  "identity_refresh_candidates": [],
+  "identity_discovery_candidates": [],
+  "maintenance_functions_invoked": false
+}

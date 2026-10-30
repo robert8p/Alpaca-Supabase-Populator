@@ -1,0 +1,480 @@
+{
+  "schema": "astra.replacement.checkpoint-publication/v71",
+  "base_commit": "b434f4575f5d6656b176b006857a655e4bf703c9",
+  "base_tree": "b35471f7db32d197c8d0012b42976fb6bb4e4d0f",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "lease_until": "2026-10-30T14:30:00Z",
+  "progress_cutoff": "2026-10-30T13:45:41.352806Z",
+  "approved_v3_publication": "8774e059274610635111cc4e0fb2d74923c37545",
+  "approval_at": "2026-10-30T12:14:00Z",
+  "approval_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+  "approved_installation_at": "2026-10-30T12:17:26.804513Z",
+  "worker_source": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "installed_claim_repair_source": "b434f4575f5d6656b176b006857a655e4bf703c9",
+  "same_automation": "6ae2a4c96bbc819182133e17e9b7f779",
+  "full_original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+  "full_original_mission_preserved": true,
+  "runtime_source_changed": false,
+  "security_scope_changed": false,
+  "controller_created": false,
+  "maintenance_repair_applied": false,
+  "sustained_recovery_proven": false,
+  "full_mission_complete": false,
+  "new_files": [
+    "docs/history/INGESTION_COMPLETION_STATE_v70.md",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v70.md",
+    "evidence/replacement-approved-relay-live-acquisition-v71.json",
+    "evidence/replacement-claim-capability-filter-live-installation-v71.json",
+    "evidence/replacement-claim-capability-filter-release-gates-v71.json",
+    "evidence/replacement-existing-successor-readback-v71.json",
+    "evidence/replacement-live-reconciliation-v71.json",
+    "evidence/replacement-monitor-gate-contention-v71.json",
+    "evidence/replacement-owner-lease-continuation-v71.json",
+    "evidence/replacement-rpc-failure-static-causal-review-v71.json",
+    "review/recovery-v71/build_maintenance_candidate_metadata_v71.py",
+    "review/recovery-v71/build_maintenance_selector_profile_v71.py",
+    "review/recovery-v71/capture_gate_lock_contention_readonly_v71.sql",
+    "review/recovery-v71/claim_full18_d03_candidate_custom_1306_v71.sql",
+    "review/recovery-v71/claim_full18_d03_candidate_generic_1306_v71.sql",
+    "review/recovery-v71/claim_full18_d03_current_custom_1306_v71.sql",
+    "review/recovery-v71/claim_full18_d03_current_generic_1306_v71.sql",
+    "review/recovery-v71/claim_full18_d03_diagnostic_manifest_1306_v71.json",
+    "review/recovery-v71/gate_lock_capture_qualification_v71.json",
+    "review/recovery-v71/gate_lock_capture_synthetic_result_v71.json",
+    "review/recovery-v71/live_advisory_lock_snapshot_1318.json",
+    "review/recovery-v71/live_backfill_maintain_1332.json",
+    "review/recovery-v71/live_committed_progress_1329.json",
+    "review/recovery-v71/live_committed_progress_1346.json",
+    "review/recovery-v71/live_contract_date_stamp_helpers_1346.json",
+    "review/recovery-v71/live_contract_seed_state_helpers_1344.json",
+    "review/recovery-v71/live_cron_functions_1331.json",
+    "review/recovery-v71/live_exact_sqlstate_1309.json",
+    "review/recovery-v71/live_existing_timeout_settings_1322.json",
+    "review/recovery-v71/live_full18_d03_current_custom_result.json",
+    "review/recovery-v71/live_full_capability_claim_state_1306.json",
+    "review/recovery-v71/live_full_capability_function_pins_1307.json",
+    "review/recovery-v71/live_ingestion_cron_registry_1330.json",
+    "review/recovery-v71/live_ingestion_cron_run_pid_proof_1331.json",
+    "review/recovery-v71/live_known_lock_holder_state_1323.json",
+    "review/recovery-v71/live_legacy_monitor_workload_1337.json",
+    "review/recovery-v71/live_lock_wait_holder_logs_1322.json",
+    "review/recovery-v71/live_maintenance_candidate_metadata_1342.json",
+    "review/recovery-v71/live_maintenance_helpers_1335.json",
+    "review/recovery-v71/live_maintenance_page_seed_helpers_1339.json",
+    "review/recovery-v71/live_maintenance_selector_profile_1341.json",
+    "review/recovery-v71/live_monitor_second_holder_correlation_1326.json",
+    "review/recovery-v71/live_monitor_second_holder_proof_1326.json",
+    "review/recovery-v71/live_postrepair_claim_state_1316.json",
+    "review/recovery-v71/live_postrepair_sql_errors_1317.json",
+    "review/recovery-v71/live_relay_n02_date_reconciliation_1308.json",
+    "review/recovery-v71/live_relay_target_support_readback_1308.json",
+    "review/recovery-v71/live_rpc_http_timing_by_size_1326.json",
+    "review/recovery-v71/live_transient_holder_attribution_1328.json",
+    "review/recovery-v71/maintenance_candidate_metadata_column_diagnostic_v71.json",
+    "review/recovery-v71/maintenance_candidate_metadata_initial_qualification_v71.json",
+    "review/recovery-v71/maintenance_candidate_metadata_qualification_v71.json",
+    "review/recovery-v71/maintenance_candidate_metadata_readonly_v71.sql",
+    "review/recovery-v71/maintenance_candidate_metadata_synthetic_result_v71.json",
+    "review/recovery-v71/maintenance_selector_derivation_v71.json",
+    "review/recovery-v71/maintenance_selectors_initial_qualification_v71.json",
+    "review/recovery-v71/maintenance_selectors_qualification_v71.json",
+    "review/recovery-v71/maintenance_selectors_readonly_v71.sql",
+    "review/recovery-v71/maintenance_selectors_synthetic_result_v71.json",
+    "review/recovery-v71/qualify_gate_lock_capture_v71.py",
+    "review/recovery-v71/qualify_maintenance_candidate_metadata_v71.py",
+    "review/recovery-v71/qualify_maintenance_selectors_v71.py"
+  ],
+  "changed_files": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+  ],
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 21491,
+      "sha256": "02b60feb1010d293e7bf608a4127927c933837ebb76c725d92570d97d2dd5026",
+      "git_blob_sha": "bc6eb2bf302b0934342494d8e35ea841d2463081"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 42266,
+      "sha256": "b75ab27ebcb619719a2b5c33c9e3b880f7d08a98fbc2f6a99282ded2f303b3fb",
+      "git_blob_sha": "2334707a922810b4af02a452007f575a33877359"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v70.md",
+      "bytes": 14465,
+      "sha256": "39b71ed0c3a198391116aabe00c5bad850913b8445817001befdda445f0b06a8",
+      "git_blob_sha": "2567d7b4be55f33b83b0eb3970b48e0e68563dec"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v70.md",
+      "bytes": 35181,
+      "sha256": "af93cf9ba82bc77c72d65adf8b62c28d57d18f070e17e7eccd64380becd7188b",
+      "git_blob_sha": "81bc3067b2e4e8da8e141602703061ede36e40a4"
+    },
+    {
+      "path": "evidence/replacement-approved-relay-live-acquisition-v71.json",
+      "bytes": 14899,
+      "sha256": "f4a8a258400d0b5b21602146688e1d2afe033071424900250ed87e9124ebc7e0",
+      "git_blob_sha": "66b8681df54ffe861f0ef2ffc9caf672634bbf9b"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-live-installation-v71.json",
+      "bytes": 3829,
+      "sha256": "561e58a563ce15db463edab37bf50249cb770cb447096f3afcc79c2a595bbb6d",
+      "git_blob_sha": "bda0fb3f52d0f9805417f24a987164c06ef9adf9"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-release-gates-v71.json",
+      "bytes": 26782,
+      "sha256": "422fcccd724b1ab6d9518932a314a19252dba874c13f00e13adaa3cd84a614f1",
+      "git_blob_sha": "5d5d21e5d923f3655ad2e2a851dc0fa798850ed5"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-readback-v71.json",
+      "bytes": 4187,
+      "sha256": "fda18293a0b9928ad6f12e338e2e685ff298acb38a60efd7770b4c1bb3401e1c",
+      "git_blob_sha": "86e6f629a4c996adf237ac5e62ad9f348ea9ad97"
+    },
+    {
+      "path": "evidence/replacement-live-reconciliation-v71.json",
+      "bytes": 22473,
+      "sha256": "512dc2fd1946d42291b73f5d4e93924d690e51976e456e88e558ac545cc93ae8",
+      "git_blob_sha": "b5ba97b3c3699d74cf4a52e30f5b538b84bf2b04"
+    },
+    {
+      "path": "evidence/replacement-monitor-gate-contention-v71.json",
+      "bytes": 3933,
+      "sha256": "aa6e14e63f75e4b0a68dbe4244ec4dabd1c424a6acc2de0d8271cd3f18d9cf2a",
+      "git_blob_sha": "e8c7a38ab00c37de2ed57ebb19d3424d2ead7bbd"
+    },
+    {
+      "path": "evidence/replacement-owner-lease-continuation-v71.json",
+      "bytes": 560,
+      "sha256": "1822ada4172fb2f5e29351bd4bc94fb3c7150dd6549a3d98794f49a20d4000d3",
+      "git_blob_sha": "fe5426db76c2e81f4c9d737117365c320880f141"
+    },
+    {
+      "path": "evidence/replacement-rpc-failure-static-causal-review-v71.json",
+      "bytes": 6077,
+      "sha256": "1ecbd728087906244ddf8bf6a0bae20a591876d8a2f5ed9c808ecee9379fe837",
+      "git_blob_sha": "1926f3aa00e0858dc3dcb72381d5ec8c9fe95d28"
+    },
+    {
+      "path": "review/recovery-v71/build_maintenance_candidate_metadata_v71.py",
+      "bytes": 5181,
+      "sha256": "446520f4537722e28e386e889957631b8d7416724020ee886e604c707009aa2e",
+      "git_blob_sha": "e1b71366706d285464dff95171602e8c7ef99c39"
+    },
+    {
+      "path": "review/recovery-v71/build_maintenance_selector_profile_v71.py",
+      "bytes": 7676,
+      "sha256": "b7288c145a9d5fe96904f08fed71a368838ce6bb5ca3fd84206ae999edf66474",
+      "git_blob_sha": "c337972c0194e44e16566c203be668626f628d09"
+    },
+    {
+      "path": "review/recovery-v71/capture_gate_lock_contention_readonly_v71.sql",
+      "bytes": 5291,
+      "sha256": "7d0c61e69cb677cff9531c88e29a39a4d9b955883b7eeb5b5add2c112d63af59",
+      "git_blob_sha": "0a74846a1a2a0354528f6bda2ebb2f8ecb821182"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_candidate_custom_1306_v71.sql",
+      "bytes": 5317,
+      "sha256": "a5cdb63ca146439192477bfe2ecf5dd9678bf6ae0ea0fe1c4a2d4d4da195bbb9",
+      "git_blob_sha": "124ae3f2cd166755fb50fac4f18a19fdf0fb8df7"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_candidate_generic_1306_v71.sql",
+      "bytes": 5321,
+      "sha256": "05ac92bf2bff3963a65253820c7ebbde8c2568df1c160665693c2ff9d9a009d6",
+      "git_blob_sha": "1c3a9c57525930672305a991a42a24994e48b789"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_current_custom_1306_v71.sql",
+      "bytes": 5213,
+      "sha256": "e1889c2e2259d12bc63a8eb52a68dee1321ea2d9cf34035dcf1ee319f36e5e4c",
+      "git_blob_sha": "3b0b87a234f44b6f16bd17fdce1c12a50854ee83"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_current_generic_1306_v71.sql",
+      "bytes": 5217,
+      "sha256": "884846217fa054d88cfc9fdfbe2d37ae2577e1695cb10f80f6bdd3fd0592d300",
+      "git_blob_sha": "7bbcaeef1acc57d86cd72db9c07fc796b186d7f4"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_diagnostic_manifest_1306_v71.json",
+      "bytes": 3471,
+      "sha256": "e28bfceea33ba132d092397ae7f0c7c20dad854129b1eda59bdd5a3f8ff54901",
+      "git_blob_sha": "afc45f9ee7c17093468950dd130c360bc481edcc"
+    },
+    {
+      "path": "review/recovery-v71/gate_lock_capture_qualification_v71.json",
+      "bytes": 1342,
+      "sha256": "8fe5490d6ba4651c33f62edad667b66c2412c4bf2c4c84e4b6eea58f73025e19",
+      "git_blob_sha": "001f832fd38e087736663cc9dba24a3689beb2e8"
+    },
+    {
+      "path": "review/recovery-v71/gate_lock_capture_synthetic_result_v71.json",
+      "bytes": 29802,
+      "sha256": "d1eade8e6561db4e66b8098d721cb2a2cdfe51d8ea88ce263957fa3db1b6b55b",
+      "git_blob_sha": "4b300b094595bbec15830ae81a730a2a00e16969"
+    },
+    {
+      "path": "review/recovery-v71/live_advisory_lock_snapshot_1318.json",
+      "bytes": 117,
+      "sha256": "7508907158a76dfd70b97d3be82ea28bcaeac1fc84ea068567dc5676c32d3793",
+      "git_blob_sha": "a937f9f202dee1085c60a02783199412417809fc"
+    },
+    {
+      "path": "review/recovery-v71/live_backfill_maintain_1332.json",
+      "bytes": 4300,
+      "sha256": "34dc61dc3101eb325cd84664acd4e78c4ab3cf599794acfac834dcb73899e207",
+      "git_blob_sha": "c6536aeef59bfe7142892dbcad8152ebac4a6dfe"
+    },
+    {
+      "path": "review/recovery-v71/live_committed_progress_1329.json",
+      "bytes": 541,
+      "sha256": "0d0d6ad8f1aad6b8c48323599fe9aa9d5888a661e021d33a4e018621870c4b60",
+      "git_blob_sha": "7ef82d4a1d83d355b45406e2adeefe503bd6934a"
+    },
+    {
+      "path": "review/recovery-v71/live_committed_progress_1346.json",
+      "bytes": 496,
+      "sha256": "211fd126e66e192c45d3a980ea8b9257546792a0816cb928fbb94c49f5d20b73",
+      "git_blob_sha": "8d678a397e23d4d27f0eefdd30c6b5b6a12963ea"
+    },
+    {
+      "path": "review/recovery-v71/live_contract_date_stamp_helpers_1346.json",
+      "bytes": 1162,
+      "sha256": "28f2adc83f50742ed23937a0d57a505b4b342ba43e3bc431bbc5bf88a6fe8efb",
+      "git_blob_sha": "b043c77d8056f1b6dd5016a91225fe1a96c6fda8"
+    },
+    {
+      "path": "review/recovery-v71/live_contract_seed_state_helpers_1344.json",
+      "bytes": 12320,
+      "sha256": "7c9c513307000e45cec797a9cec4323b6d1531e7dd0d1f8430684d02cfe6f6c7",
+      "git_blob_sha": "1937c640cb1225ed378e0b413d64f8b24edba8dd"
+    },
+    {
+      "path": "review/recovery-v71/live_cron_functions_1331.json",
+      "bytes": 10882,
+      "sha256": "fd58830bfdfa5002bcc986da052223da4c87e140c0dd262e17db0dd333b59472",
+      "git_blob_sha": "d85eba119466102a6f9f4a6759c217ad312309e9"
+    },
+    {
+      "path": "review/recovery-v71/live_exact_sqlstate_1309.json",
+      "bytes": 1089,
+      "sha256": "ebb9272112001d432b6cf978c90a94e2ac4c94d1e14ace4c7509d16c41b748b2",
+      "git_blob_sha": "aa2c7050d6e78939edd40c14aa20319413fd6ced"
+    },
+    {
+      "path": "review/recovery-v71/live_existing_timeout_settings_1322.json",
+      "bytes": 735,
+      "sha256": "8cbbf6e49f64f961b90d4ee3ea1aa7ff931e753dbbef5aa395a049cbdaabcad0",
+      "git_blob_sha": "89425f63e368538fa2bbafafadb576ac8589ba4d"
+    },
+    {
+      "path": "review/recovery-v71/live_full18_d03_current_custom_result.json",
+      "bytes": 30241,
+      "sha256": "6c93ed71fae92e2f7a67d6f1a9b4eb0ef856d859246e2e6ea59b7ae1114a9400",
+      "git_blob_sha": "e444daf13db3ec1d65a13d9943f90d30bde1dcf2"
+    },
+    {
+      "path": "review/recovery-v71/live_full_capability_claim_state_1306.json",
+      "bytes": 1472,
+      "sha256": "293b37389a61e9ce4491e6bec015eca7a715894187edc1840d390ad20a7b9b32",
+      "git_blob_sha": "276bcc65be3bf38277e713d361ac60093a78f6f1"
+    },
+    {
+      "path": "review/recovery-v71/live_full_capability_function_pins_1307.json",
+      "bytes": 2497,
+      "sha256": "7f21437debcda01f174d583ecd4cd124cf89ca8a5caf1830df84668576ba284f",
+      "git_blob_sha": "2a6583e765381a72fb5be39557a847c046f2d726"
+    },
+    {
+      "path": "review/recovery-v71/live_ingestion_cron_registry_1330.json",
+      "bytes": 495,
+      "sha256": "2314b08fb849ea626dc57617a652f13667602d325d70db16aae8487dd09a1a61",
+      "git_blob_sha": "4ffc58b42cda88d15dc500652fa74c67f327078d"
+    },
+    {
+      "path": "review/recovery-v71/live_ingestion_cron_run_pid_proof_1331.json",
+      "bytes": 4225,
+      "sha256": "d798a7009aff62ad3d72417c0ec5b4d5ae42eeca8b076e4e94de54d17671becd",
+      "git_blob_sha": "8f600ebba57851e9a59dbb6a75607f6319575f77"
+    },
+    {
+      "path": "review/recovery-v71/live_known_lock_holder_state_1323.json",
+      "bytes": 825,
+      "sha256": "3ae048419a3c82de6b3067bf74832943cfdb53933f26a58b12d20b3a1eb012bc",
+      "git_blob_sha": "b391ad1b0429fa0b84a0bfc0a3966e1958e86815"
+    },
+    {
+      "path": "review/recovery-v71/live_legacy_monitor_workload_1337.json",
+      "bytes": 1186,
+      "sha256": "67391b2ac1ef709cff701cbf7cef08f3b1c954a7f04153177dc863fc75d57f56",
+      "git_blob_sha": "701022e6b8c67858d5cc4634df9a1b1cfb89d93f"
+    },
+    {
+      "path": "review/recovery-v71/live_lock_wait_holder_logs_1322.json",
+      "bytes": 3120,
+      "sha256": "5c6ec7a66477bfdeff8824f7f44c9923496d40a336d23b08ed651eba7f08cd73",
+      "git_blob_sha": "03a8c84b0481262cd47612f5e0895c4e23e8a468"
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_candidate_metadata_1342.json",
+      "bytes": 36291,
+      "sha256": "924edf8fcdd3db6fec6e8d83376f4b2bc0d04b53df072faab997e1f0b607b984",
+      "git_blob_sha": "eaafc2867c0d65cb19b49730a0ccc1ae1c305434"
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_helpers_1335.json",
+      "bytes": 30538,
+      "sha256": "7fc3eedd758a9736da9535bd0e6e86a8ee9b768247755195ff36a31c4e3ebae5",
+      "git_blob_sha": "3f5d4d77cded8c85e4b1f3013310e088c654552d"
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_page_seed_helpers_1339.json",
+      "bytes": 42685,
+      "sha256": "ec0f83892812a98f6180d349644dcecbc1bcc3475606918b17882fe7e63a02bc",
+      "git_blob_sha": "d12cd0c22d9302b4dbbbba5e00093bef3fa74707"
+    },
+    {
+      "path": "review/recovery-v71/live_maintenance_selector_profile_1341.json",
+      "bytes": 89591,
+      "sha256": "3dfb93cb588202f954cc237438c3fb8c4521c60c643839904976ea188c4e2bdb",
+      "git_blob_sha": "e0148f2d171954a6a350a8c2e3756cc121579e97"
+    },
+    {
+      "path": "review/recovery-v71/live_monitor_second_holder_correlation_1326.json",
+      "bytes": 1084,
+      "sha256": "2c9de0e4963fa2896d04c71ea5199b6e2efbeb59f62239b3c104151133151430",
+      "git_blob_sha": "21957327358b24b163ce6d13cdabc0b3abd081bf"
+    },
+    {
+      "path": "review/recovery-v71/live_monitor_second_holder_proof_1326.json",
+      "bytes": 428,
+      "sha256": "fe6d9ea20f337c1aaab5de5a604e312dad0551eecfc2630657d62feb53b424ad",
+      "git_blob_sha": "1b4c4c97637d9e64e07051333f7a5778e48a6c2e"
+    },
+    {
+      "path": "review/recovery-v71/live_postrepair_claim_state_1316.json",
+      "bytes": 822,
+      "sha256": "84c6c19dace53e94cb87ec6a17eb98a079a17fcfc94e8649b71d9e19213ee343",
+      "git_blob_sha": "1b89ac31799a1536babfb22a8ccb976aaec8d4da"
+    },
+    {
+      "path": "review/recovery-v71/live_postrepair_sql_errors_1317.json",
+      "bytes": 695,
+      "sha256": "8ecc406a2cf17b842bdc218363e5e9307b612d99b8edee9d215cf04cc07b6b39",
+      "git_blob_sha": "afac3fa826f07c5bd6e9557493137f9f1bfcd182"
+    },
+    {
+      "path": "review/recovery-v71/live_relay_n02_date_reconciliation_1308.json",
+      "bytes": 150,
+      "sha256": "266248a47d68b24625fc1f0a2912c184bd93066deaee930c5fd69cb375dc443c",
+      "git_blob_sha": "c0df6c218bb7930666448ea18ee22d2a8e9158a8"
+    },
+    {
+      "path": "review/recovery-v71/live_relay_target_support_readback_1308.json",
+      "bytes": 1050,
+      "sha256": "2053740d3fc956d6021dae400a8b98c8fa2e63062bd1a6bf47fd0d0bb8023dc9",
+      "git_blob_sha": "e46077c1276d53030a237301a4170e0f8bc113f8"
+    },
+    {
+      "path": "review/recovery-v71/live_rpc_http_timing_by_size_1326.json",
+      "bytes": 13201,
+      "sha256": "664f8f07348b89423639fb32baaf9f0d4d75cbfe0c92b92b6a391fe0b709fa38",
+      "git_blob_sha": "fb0a898b77fab29485c79f84779f6d7def2fbc32"
+    },
+    {
+      "path": "review/recovery-v71/live_transient_holder_attribution_1328.json",
+      "bytes": 549,
+      "sha256": "3c1c14f6cf8f66c21102c046679556506c018e54fd6f1de72dd815753a379dfc",
+      "git_blob_sha": "491983599d8d8359a18cc8a45d6970287fbfb414"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_candidate_metadata_column_diagnostic_v71.json",
+      "bytes": 543,
+      "sha256": "f833817c6527e0689565e99e763706838acb7274489be2a6466edce7ffaba204",
+      "git_blob_sha": "245521431218f760276ea6012f4d930091c4beb0"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_candidate_metadata_initial_qualification_v71.json",
+      "bytes": 543,
+      "sha256": "c01dd2cf5c12db3c7b8bc5d1c5aabc3887784b428eebcffa46e25f499fa3fa2b",
+      "git_blob_sha": "0abd19c5ed8808bedcff0f88d2415d63c95c74d6"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_candidate_metadata_qualification_v71.json",
+      "bytes": 810,
+      "sha256": "960b3aca98c17857e5e73353ae4c30b93814e022802208878de0ebfb3a9821b1",
+      "git_blob_sha": "52b8fe70fa4c5d277106cc8f5ea32b6b77bcb5b6"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_candidate_metadata_readonly_v71.sql",
+      "bytes": 11815,
+      "sha256": "0d16861b7deff8eb54c5632922935c6a4f2e63c1a204994ab55afba800d78105",
+      "git_blob_sha": "e952554875280cefbcfbe08b55e4de6b62447d73"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_candidate_metadata_synthetic_result_v71.json",
+      "bytes": 1399,
+      "sha256": "86c30e1a56bd2ed561fb4bd3990e1cd18a118aec1097b158d6cf8c70b29b6919",
+      "git_blob_sha": "cfe6489f2e0b06d9389fff20d01acc04287d2a67"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selector_derivation_v71.json",
+      "bytes": 2427,
+      "sha256": "f99f681b04ee0a6f37bad46db9944df25670fc81250950b9dbd73b3d53fb314f",
+      "git_blob_sha": "68c8c9163ab33f5a2004107c3f419fbd7a97d3ad"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selectors_initial_qualification_v71.json",
+      "bytes": 510,
+      "sha256": "531f4123dd76f6e175123cb7798ea7a479c3b1dfb430363dfe9032564d71ac42",
+      "git_blob_sha": "f3bfd216c7ce56f42540bad1d47e54a40bf510bc"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selectors_qualification_v71.json",
+      "bytes": 1192,
+      "sha256": "7ef1d569f1104d41c0499ccf50ebedb038793b1b029443e50d18d70037db8111",
+      "git_blob_sha": "ffffa0b60c488994f65a951fb5208d5759121c50"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selectors_readonly_v71.sql",
+      "bytes": 9171,
+      "sha256": "462cd183dc28fd0c963b7bd014fb6a63164937cc624b9e023c26c3a8e74d3cf1",
+      "git_blob_sha": "6b012ea319676a2c5a20ba05778d50a42c1fcb14"
+    },
+    {
+      "path": "review/recovery-v71/maintenance_selectors_synthetic_result_v71.json",
+      "bytes": 87135,
+      "sha256": "59ef22ee29bb76dfdf9f1f7576fc725a06f336c8d2aaed80672fd27b42de33d5",
+      "git_blob_sha": "f84e8fe1b1aab1ea9f3d63a53893d9ca76dca4e2"
+    },
+    {
+      "path": "review/recovery-v71/qualify_gate_lock_capture_v71.py",
+      "bytes": 10213,
+      "sha256": "919daac7709c3654df4d6f4e100d3d66a10b3ed02d2a87314274219769b15ba8",
+      "git_blob_sha": "0fc93e83f2d0c4136487377a69a89cdc356ec87d"
+    },
+    {
+      "path": "review/recovery-v71/qualify_maintenance_candidate_metadata_v71.py",
+      "bytes": 4015,
+      "sha256": "df697aac044796a8eb1d2ec4e13478e0fe0789c6c7cafc18427b2ffd3e64bcb8",
+      "git_blob_sha": "c347c35f5368bd4115be26672bb49e5932be74f6"
+    },
+    {
+      "path": "review/recovery-v71/qualify_maintenance_selectors_v71.py",
+      "bytes": 7206,
+      "sha256": "e3ffeebea91e923ccb834489f93cb17a21958c170a7356b2ba79c11e56697370",
+      "git_blob_sha": "af354d3a66a607d677a77a4292569fe23f3c76f9"
+    }
+  ],
+  "historical_probe_note": "The old1368-pinned D03 artifacts preserve their original dispatched/prepared form and limits. They are historical evidence, not a retry instruction. Current applied dispatcher is28ae. Gate capture remains locally qualified but unused; both later maintenance probes were executed exactly once and completed read-only."
+}

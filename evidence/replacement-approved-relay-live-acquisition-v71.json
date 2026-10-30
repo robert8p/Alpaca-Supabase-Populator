@@ -1,0 +1,486 @@
+{
+  "schema": "astra.replacement.approved-relay-live-acquisition/v71",
+  "observed_at": "2026-10-30T13:08:39Z",
+  "approval_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+  "actual_approval_at": "2026-10-30T12:14:00Z",
+  "approved_publication": "8774e059274610635111cc4e0fb2d74923c37545",
+  "deployment_receipt": "evidence/replacement-approved-relay-worker-deployment-v71.json",
+  "initial_capability_readback": [
+    {
+      "observed_at": "2026-10-30 12:51:04.416327+00",
+      "pages_committed": 4198,
+      "records_committed": 510452,
+      "requests_reserved": 2086,
+      "latest_page_commit": "2026-10-30 12:44:17.327023+00",
+      "readbacks": 4198,
+      "relay_dispatches": 37,
+      "latest_worker": {
+        "worker_id": "239359cc-2164-4e6e-a9c7-8e937d858007",
+        "observed_at": "2026-10-30T12:44:16.209848+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "massive_reference",
+          "massive_news",
+          "massive_dividends",
+          "massive_splits",
+          "massive_short_volume",
+          "massive_short_interest",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse",
+          "retained_identity",
+          "retained_massive_archive"
+        ]
+      }
+    }
+  ],
+  "latest_total_progress": [
+    {
+      "observed_at": "2026-10-30 13:06:42.509058+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T14:00:00Z",
+      "pages_committed": 4276,
+      "records_committed": 518993,
+      "requests_reserved": 2134,
+      "family_turn": {
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "changed_at": "2026-10-30T13:03:32.794473+00:00",
+        "claim_turns": 4187,
+        "last_family": "D02",
+        "next_family_index": 7,
+        "last_claimed_task_id": "backfill-plan-c6dfa8452841bb6998b059e208b5be721ca85947c6bd5dd0b9391e4efd50c056"
+      },
+      "latest_worker": {
+        "worker_id": "17e73b52-6f6c-43b4-a797-97d37be6f379",
+        "observed_at": "2026-10-30T13:03:32.794473+00:00",
+        "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "massive_reference",
+          "massive_news",
+          "massive_dividends",
+          "massive_splits",
+          "massive_short_volume",
+          "massive_short_interest",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse",
+          "retained_identity",
+          "retained_massive_archive"
+        ]
+      },
+      "latest_page_commit": "2026-10-30 13:03:33.922852+00",
+      "readbacks": 4276
+    }
+  ],
+  "relay_pages_by_family": [
+    {
+      "observed_at": "2026-10-30 13:08:39.385506+00",
+      "family": "N01",
+      "kind": "massive_news",
+      "relay_pages": 15,
+      "distinct_tasks": 15,
+      "records": 1500,
+      "first_commit": "2026-10-30 12:37:11.249618+00",
+      "latest_commit": "2026-10-30 12:57:56.28805+00",
+      "verified_pages": 15,
+      "bound_dispatch_pages": 15
+    },
+    {
+      "observed_at": "2026-10-30 13:08:39.387874+00",
+      "family": "N02",
+      "kind": "massive_dividends",
+      "relay_pages": 13,
+      "distinct_tasks": 13,
+      "records": 536,
+      "first_commit": "2026-10-30 12:38:46.156643+00",
+      "latest_commit": "2026-10-30 12:57:58.246318+00",
+      "verified_pages": 13,
+      "bound_dispatch_pages": 13
+    },
+    {
+      "observed_at": "2026-10-30 13:08:39.390537+00",
+      "family": "N03",
+      "kind": "massive_splits",
+      "relay_pages": 14,
+      "distinct_tasks": 14,
+      "records": 27,
+      "first_commit": "2026-10-30 12:37:13.608259+00",
+      "latest_commit": "2026-10-30 13:03:16.836814+00",
+      "verified_pages": 14,
+      "bound_dispatch_pages": 14
+    },
+    {
+      "observed_at": "2026-10-30 13:08:39.393005+00",
+      "family": "S01",
+      "kind": "massive_short_volume",
+      "relay_pages": 12,
+      "distinct_tasks": 12,
+      "records": 2487,
+      "first_commit": "2026-10-30 12:38:51.051925+00",
+      "latest_commit": "2026-10-30 13:03:18.753544+00",
+      "verified_pages": 12,
+      "bound_dispatch_pages": 12
+    },
+    {
+      "observed_at": "2026-10-30 13:08:39.395722+00",
+      "family": "S02",
+      "kind": "massive_short_interest",
+      "relay_pages": 13,
+      "distinct_tasks": 13,
+      "records": 262,
+      "first_commit": "2026-10-30 12:38:52.787181+00",
+      "latest_commit": "2026-10-30 13:03:20.689306+00",
+      "verified_pages": 13,
+      "bound_dispatch_pages": 13
+    }
+  ],
+  "relay_page_totals": {
+    "pages": 67,
+    "records": 4812,
+    "verified_pages": 67,
+    "bound_dispatch_pages": 67
+  },
+  "automatic_successor": {
+    "distinct_tasks": 67,
+    "first_commit": "2026-10-30T12:37:11.249618Z",
+    "later_commits_observed_without_another_trigger": true,
+    "only_manual_deployment": "dep-dbi8ud942hec73cpm7qg"
+  },
+  "limits": {
+    "unique_observations_claimed": false,
+    "all_six_families_have_live_pages": false,
+    "reference_live_page_not_yet_observed": true,
+    "sustained_recovery_proven": false,
+    "full_mission_complete": false
+  },
+  "sanitized_postdeployment_errors": {
+    "hasMore": false,
+    "logs": [
+      {
+        "id": "76a5cfc0-ebd5-4747-a706-3e97a8e7d208",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_plan_next\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:36:55.157644916Z"
+      },
+      {
+        "id": "cc344036-1ab8-4b70-871e-7730ca901bec",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_commit\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:37:18.962660014Z"
+      },
+      {
+        "id": "1c1f1bc4-35e3-4e88-9407-589fc6ee1488",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_reserve\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:37:54.25602854Z"
+      },
+      {
+        "id": "24d018df-baf6-45d4-8856-ac8be5cbb4e4",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T12:38:03.314947998Z"
+      },
+      {
+        "id": "636b80de-1a11-4e5a-a09d-da3bd1273a84",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_material\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:40:04.150523919Z"
+      },
+      {
+        "id": "6e9d3f21-7aa5-4e94-bc28-eb9c658a46a2",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_claim\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:44:27.854304732Z"
+      },
+      {
+        "id": "8fe04ea2-c852-4497-93eb-0196bd765add",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_claim\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:46:03.837894894Z"
+      },
+      {
+        "id": "49744868-bc4e-4811-a502-b81f594d6d13",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_claim\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T12:49:03.747232012Z"
+      }
+    ],
+    "nextEndTime": "2026-10-30T12:36:55.157644916Z",
+    "nextStartTime": "2026-10-30T12:36:40Z"
+  },
+  "fresh_database_context": {
+    "result": [
+      {
+        "attribute_keys": [
+          "env",
+          "host",
+          "identifier",
+          "parsed.application_name",
+          "parsed.backend_type",
+          "parsed.command_tag",
+          "parsed.connection_from",
+          "parsed.context",
+          "parsed.database_name",
+          "parsed.error_severity",
+          "parsed.process_id",
+          "parsed.query",
+          "parsed.query_id",
+          "parsed.session_id",
+          "parsed.session_line_num",
+          "parsed.session_start_time",
+          "parsed.sql_state_code",
+          "parsed.timestamp",
+          "parsed.transaction_id",
+          "parsed.user_name",
+          "parsed.virtual_transaction_id",
+          "path",
+          "project",
+          "region",
+          "source_type"
+        ],
+        "contains_57014": 1,
+        "context_lines": [
+          "line 123 at SQL statement",
+          "line 73 at RETURN"
+        ],
+        "normal_claim_line123": 1,
+        "source": "postgres_logs",
+        "statement_timeout": 0,
+        "timestamp": "2026-10-30T13:03:44.403000"
+      },
+      {
+        "attribute_keys": [
+          "env",
+          "host",
+          "identifier",
+          "parsed.application_name",
+          "parsed.backend_type",
+          "parsed.command_tag",
+          "parsed.connection_from",
+          "parsed.context",
+          "parsed.database_name",
+          "parsed.error_severity",
+          "parsed.process_id",
+          "parsed.query",
+          "parsed.query_id",
+          "parsed.session_id",
+          "parsed.session_line_num",
+          "parsed.session_start_time",
+          "parsed.sql_state_code",
+          "parsed.timestamp",
+          "parsed.transaction_id",
+          "parsed.user_name",
+          "parsed.virtual_transaction_id",
+          "path",
+          "project",
+          "region",
+          "source_type"
+        ],
+        "contains_57014": 1,
+        "context_lines": [
+          "line 123 at SQL statement",
+          "line 73 at RETURN"
+        ],
+        "normal_claim_line123": 1,
+        "source": "postgres_logs",
+        "statement_timeout": 0,
+        "timestamp": "2026-10-30T12:49:03.730000"
+      },
+      {
+        "attribute_keys": [
+          "env",
+          "host",
+          "identifier",
+          "parsed.application_name",
+          "parsed.backend_type",
+          "parsed.command_tag",
+          "parsed.connection_from",
+          "parsed.context",
+          "parsed.database_name",
+          "parsed.error_severity",
+          "parsed.process_id",
+          "parsed.query",
+          "parsed.query_id",
+          "parsed.session_id",
+          "parsed.session_line_num",
+          "parsed.session_start_time",
+          "parsed.sql_state_code",
+          "parsed.timestamp",
+          "parsed.transaction_id",
+          "parsed.user_name",
+          "parsed.virtual_transaction_id",
+          "path",
+          "project",
+          "region",
+          "source_type"
+        ],
+        "contains_57014": 1,
+        "context_lines": [
+          "line 123 at SQL statement",
+          "line 73 at RETURN"
+        ],
+        "normal_claim_line123": 1,
+        "source": "postgres_logs",
+        "statement_timeout": 0,
+        "timestamp": "2026-10-30T12:44:27.838000"
+      }
+    ]
+  },
+  "scope_expanded": false,
+  "new_credentials": false,
+  "secrets_read_or_exported": false,
+  "new_subscription": false,
+  "new_controller": false
+}

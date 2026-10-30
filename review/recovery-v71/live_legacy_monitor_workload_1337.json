@@ -1,0 +1,47 @@
+[
+  {
+    "evidence": {
+      "legacy_jobs": [
+        {
+          "jobs": 2,
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-10-30T13:36:44.539037+00:00",
+      "latest_monitor_ticks": [
+        {
+          "active_jobs": 0,
+          "observed_at": "2026-10-30T13:36:01.80305+00:00",
+          "new_incidents": 0,
+          "observed_partitions": 0
+        },
+        {
+          "active_jobs": 0,
+          "observed_at": "2026-10-30T13:34:01.49693+00:00",
+          "new_incidents": 0,
+          "observed_partitions": 0
+        },
+        {
+          "active_jobs": 0,
+          "observed_at": "2026-10-30T13:32:01.173624+00:00",
+          "new_incidents": 0,
+          "observed_partitions": 0
+        },
+        {
+          "active_jobs": 0,
+          "observed_at": "2026-10-30T13:30:01.17075+00:00",
+          "new_incidents": 0,
+          "observed_partitions": 0
+        },
+        {
+          "active_jobs": 0,
+          "observed_at": "2026-10-30T13:28:01.455903+00:00",
+          "new_incidents": 0,
+          "observed_partitions": 0
+        }
+      ],
+      "function_stats_enabled": "none",
+      "legacy_active_partitions": 0
+    }
+  }
+]

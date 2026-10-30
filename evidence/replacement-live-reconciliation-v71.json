@@ -1,0 +1,793 @@
+{
+  "schema": "astra.replacement.live-reconciliation/v71",
+  "reconciliation": [
+    {
+      "observed_at": "2026-10-30 11:51:19.469006+00",
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T11:30:00Z",
+      "checkpoint": {
+        "commit": "ad4e3ba854cd4a004669ea5da6a97fef436ae1a9",
+        "version": "v70",
+        "recorded_at": "2026-10-30T11:21:57.648068+00:00",
+        "manifest_sha256": "a585da1eed169faef3dcd33a35c9d2a621f49fba273a154762cd610576e5f78a",
+        "published_and_ref_verified": true
+      },
+      "successor": "6ae2a4c96bbc819182133e17e9b7f779",
+      "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+      "original_approval": "2026-10-30T09:53:00Z",
+      "relay_ledger": null,
+      "relay_helper": null,
+      "auth_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "runtime_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02"
+    }
+  ],
+  "lease_renewal": [
+    {
+      "id": 20,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 11:51:37.935896+00",
+      "evidence": {
+        "owner": "root-replacement-20261030T042603Z",
+        "reason": "Current user continuation; current owner and scheduled successor reconciled; fresh failure diagnostics and connector-compatible proposal preparation",
+        "lease_until": "2026-10-30T12:30:00Z",
+        "same_controller": true,
+        "previous_lease_until": "2026-10-30T11:30:00Z",
+        "relay_hold_preserved": true,
+        "relay_approval_redated_or_extended": false
+      }
+    }
+  ],
+  "initial_progress": [
+    {
+      "observed_at": "2026-10-30 11:50:49.048215+00",
+      "pages_committed": 4043,
+      "records_committed": 489794,
+      "requests_reserved": 1995,
+      "source_bytes": 419810875,
+      "last_progress_at": "2026-10-30 11:50:48.260906+00",
+      "next_member": "2008",
+      "planning_complete": "false",
+      "readbacks": 4043,
+      "unread_pages": 0,
+      "latest_worker": [
+        {
+          "worker_id": "71222ad4-0b05-479f-b5bc-169fdbd89d3c",
+          "observed_at": "2026-10-30T11:50:46.128434+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    }
+  ],
+  "workload": [
+    {
+      "observed_at": "2026-10-30 11:53:09.792367+00",
+      "evidence": {
+        "queue": [
+          {
+            "kind": "alpaca_option_bars",
+            "tasks": 1104,
+            "family": "CTX02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_option_contracts",
+            "tasks": 3943,
+            "family": "CTX02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "derive_intraday",
+            "tasks": 462138,
+            "family": "D01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_stock_bars",
+            "tasks": 3558,
+            "family": "D02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "derive_daily",
+            "tasks": 22121,
+            "family": "D02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "derive_daily",
+            "tasks": 21730,
+            "family": "D03",
+            "status": "PENDING"
+          },
+          {
+            "kind": "derive_daily",
+            "tasks": 1,
+            "family": "D03",
+            "status": "RUNNING"
+          },
+          {
+            "kind": "derive_daily",
+            "tasks": 21730,
+            "family": "D04",
+            "status": "PENDING"
+          },
+          {
+            "kind": "derive_daily",
+            "tasks": 21731,
+            "family": "D05",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_news",
+            "tasks": 21922,
+            "family": "N01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_news",
+            "tasks": 22121,
+            "family": "N01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_actions",
+            "tasks": 1623,
+            "family": "N02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_dividends",
+            "tasks": 2011,
+            "family": "N02",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_splits",
+            "tasks": 2011,
+            "family": "N03",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_stock_bars",
+            "tasks": 85,
+            "family": "P01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "retained_reuse",
+            "tasks": 23661,
+            "family": "P01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "alpaca_reference",
+            "tasks": 1585,
+            "family": "REF01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_reference",
+            "tasks": 24132,
+            "family": "REF01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "retained_identity",
+            "tasks": 2243,
+            "family": "REF01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_short_volume",
+            "tasks": 2011,
+            "family": "S01",
+            "status": "PENDING"
+          },
+          {
+            "kind": "massive_short_interest",
+            "tasks": 2011,
+            "family": "S02",
+            "status": "PENDING"
+          }
+        ],
+        "page_proof": {
+          "total_pages": 4061,
+          "latest_commit": "2026-10-30T11:51:50.20345+00:00",
+          "committed_after_113359": 30
+        }
+      }
+    }
+  ],
+  "claim_parameters": [
+    {
+      "observed_at": "2026-10-30 11:52:08.814074+00",
+      "family_turn": {
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "changed_at": "2026-10-30T11:51:52.603465+00:00",
+        "claim_turns": 3967,
+        "last_family": "D03",
+        "next_family_index": 8,
+        "last_claimed_task_id": "backfill-plan-e8ad598a76c0e7f4417f3b2856c2d21f16cb21394f7836926945c87ceb23ced0"
+      },
+      "latest_worker": {
+        "worker_id": "71222ad4-0b05-479f-b5bc-169fdbd89d3c",
+        "observed_at": "2026-10-30T11:51:52.603465+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse",
+          "retained_identity",
+          "retained_massive_archive"
+        ],
+        "capability_revision": "9094dd743eeac2f7bbcd952f02d744c5ea5dbb900073817cf48ecf9bfd9b76ed"
+      }
+    }
+  ],
+  "inflight": [
+    {
+      "observed_at": "2026-10-30 11:53:47.770338+00",
+      "id": "backfill-plan-e8ad598a76c0e7f4417f3b2856c2d21f16cb21394f7836926945c87ceb23ced0",
+      "family": "D03",
+      "kind": "derive_daily",
+      "status": "RUNNING",
+      "owner": "71222ad4-0b05-479f-b5bc-169fdbd89d3c",
+      "generation": 1,
+      "run_fence": 1,
+      "page_no": 0,
+      "page_attempts": 1,
+      "requests_reserved": 0,
+      "records_committed": 0,
+      "lease_until": "2026-10-30 11:53:22.603465+00",
+      "attempt_deadline": "2026-10-30 11:56:52.603465+00",
+      "next_retry_at": "2026-10-30 06:41:08.716208+00",
+      "reserved_at": null,
+      "last_progress_at": null,
+      "error_code": null,
+      "scope": {
+        "asof": "2026-08-03",
+        "symbol": "MRK",
+        "symbols": [
+          "MRK"
+        ],
+        "calendar": [
+          {
+            "date": "2025-11-04",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-05",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-06",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-07",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-10",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-11",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-12",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-13",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-14",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-17",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-18",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-19",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-20",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-21",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-24",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-25",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-26",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-11-28",
+            "open": "09:30",
+            "close": "13:00"
+          },
+          {
+            "date": "2025-12-01",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-02",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-03",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-04",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-05",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-08",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-09",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-10",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-11",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-12",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-15",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-16",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-17",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-18",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-19",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-22",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-23",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-24",
+            "open": "09:30",
+            "close": "13:00"
+          },
+          {
+            "date": "2025-12-26",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-29",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-30",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2025-12-31",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-02",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-05",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-06",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-07",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-08",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-09",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-12",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-13",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-14",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-15",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-16",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-20",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-21",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-22",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-23",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-26",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-27",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-28",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-29",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-01-30",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-02",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-03",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-04",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-05",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-06",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-09",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-10",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-11",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-12",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-13",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-17",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-18",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-19",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-20",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-23",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-24",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-25",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-26",
+            "open": "09:30",
+            "close": "16:00"
+          },
+          {
+            "date": "2026-02-27",
+            "open": "09:30",
+            "close": "16:00"
+          }
+        ],
+        "member_ids": [
+          "CIK:0000310158"
+        ],
+        "target_end": "2026-02-28",
+        "input_start": "2025-11-04",
+        "plan_static": true,
+        "source_month": "2026-02-01",
+        "target_start": "2026-02-01",
+        "governing_date": "MARKET_SESSION",
+        "formula_version": "fixed3000-derived-v2.1",
+        "identity_status": "UNRESOLVED_PROVIDER_ANCHOR",
+        "market_timezone": "America/New_York",
+        "planner_version": "fixed3000-plan-v2.1",
+        "cohort_classification": "RETROSPECTIVE_FIXED_COHORT",
+        "prefer_retained_formula_cache": true
+      },
+      "dependencies": [
+        "backfill-plan-629ac19da94b9be7bccd8719af7e31932f9ff048a3640a0851e0c41cd4e08d11",
+        "backfill-plan-8b04643aee4a74c358b54cdf1b46863f99b591d0d188291d59a1bc10e53c5fe7"
+      ]
+    }
+  ],
+  "activity": [],
+  "safe_log_lookup_errors": [
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"\\\"Internal Server Error\\\"\"}}"
+        }
+      ],
+      "structuredContent": {
+        "error_code": "INVALID_ARGUMENT"
+      },
+      "isError": true
+    },
+    {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"\\\"Internal Server Error\\\"\"}}"
+        }
+      ],
+      "structuredContent": {
+        "error_code": "INVALID_ARGUMENT"
+      },
+      "isError": true
+    }
+  ],
+  "render_errors": {
+    "hasMore": false,
+    "logs": [
+      {
+        "id": "5091d76c-48da-4543-a130-d87c4b1d049e",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T11:34:03.30243131Z"
+      },
+      {
+        "id": "f0192064-ed3d-495a-85ac-78e33b3c3bfd",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T11:39:32.585177748Z"
+      },
+      {
+        "id": "e6030b0f-b950-49ab-947e-33202477dc67",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T11:44:50.29252449Z"
+      }
+    ],
+    "nextEndTime": "2026-10-30T11:34:03.30243131Z",
+    "nextStartTime": "2026-10-30T11:30:00Z"
+  },
+  "render_events": "[{\"details\":{},\"id\":\"evt-dbi88ou0tbcc73es5ab0\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:49:55.378278Z\",\"type\":\"server_available\"},{\"details\":{\"instanceID\":\"srv-dbh9fko473hc739an8m0-4rjqg\",\"reason\":{\"evicted\":false,\"nonZeroExit\":1}},\"id\":\"evt-dbi87gm0tbcc73es37ag\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:47:14.828767Z\",\"type\":\"server_failed\"},{\"details\":{},\"id\":\"evt-dbi86960tbcc73es1gs0\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:44:36.186693Z\",\"type\":\"server_available\"},{\"details\":{\"instanceID\":\"srv-dbh9fko473hc739an8m0-4rjqg\",\"reason\":{\"evicted\":false,\"nonZeroExit\":1}},\"id\":\"evt-dbi852u0tbcc73es0hl0\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:42:03.89265Z\",\"type\":\"server_failed\"},{\"details\":{},\"id\":\"evt-dbi83ou0tbcc73eruuv0\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:39:15.778509Z\",\"type\":\"server_available\"},{\"details\":{\"instanceID\":\"srv-dbh9fko473hc739an8m0-4rjqg\",\"reason\":{\"evicted\":false,\"nonZeroExit\":1}},\"id\":\"evt-dbi80g60tbcc73errmf0\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:32:16.803461Z\",\"type\":\"server_failed\"},{\"details\":{},\"id\":\"evt-dbi7vj60tbcc73erq1kg\",\"serviceId\":\"srv-dbh9fko473hc739an8m0\",\"timestamp\":\"2026-10-30T11:30:20.954937Z\",\"type\":\"server_available\"}]\n\n cursor: Y6Iv2_iaF-V2ajYwdGJjYzczZXJxMWtn",
+  "automations": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "last_recorded_run": "2026-10-30T10:00:01.560989Z",
+    "same_task_updated_at": "2026-10-30T11:52:59.008173Z"
+  }
+}
+

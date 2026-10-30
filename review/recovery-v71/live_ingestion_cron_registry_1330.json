@@ -1,0 +1,18 @@
+[
+  {
+    "jobid": 602,
+    "jobname": "astra_ingestion_monitor_v1",
+    "schedule": "*/2 * * * *",
+    "active": true,
+    "command_class": "ASTRA_INGESTION_COMMAND",
+    "ingestion_function": "astra_ingestion_v1.monitor_tick_v1"
+  },
+  {
+    "jobid": 603,
+    "jobname": "astra_ingestion_independent_verifier_v1",
+    "schedule": "*/2 * * * *",
+    "active": true,
+    "command_class": "ASTRA_INGESTION_COMMAND",
+    "ingestion_function": "astra_ingestion_v1.independent_verify_tick_v1"
+  }
+]

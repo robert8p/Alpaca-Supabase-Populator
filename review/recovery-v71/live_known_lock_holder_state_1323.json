@@ -1,0 +1,30 @@
+[
+  {
+    "observed_at": "2026-10-30 13:22:51.38245+00",
+    "pid": 1242184,
+    "state": "idle",
+    "wait_event_type": "Client",
+    "wait_event": "ClientRead",
+    "transaction_age_seconds": null,
+    "query_age_seconds": "2.883278",
+    "blocking_pids": [],
+    "query_id": null,
+    "application_class": "POSTGREST",
+    "query_class": "OTHER_REDACTED",
+    "operation_literal": "OPERATION_NOT_LITERAL"
+  },
+  {
+    "observed_at": "2026-10-30 13:22:51.38248+00",
+    "pid": 1242186,
+    "state": "idle",
+    "wait_event_type": "Client",
+    "wait_event": "ClientRead",
+    "transaction_age_seconds": null,
+    "query_age_seconds": "0.499323",
+    "blocking_pids": [],
+    "query_id": null,
+    "application_class": "POSTGREST",
+    "query_class": "OTHER_REDACTED",
+    "operation_literal": "OPERATION_NOT_LITERAL"
+  }
+]

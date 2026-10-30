@@ -1,0 +1,454 @@
+{
+  "result": [
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "6049",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:56.999000",
+      "upstream_service_time": "5982"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "503",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "35",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:56.441000",
+      "upstream_service_time": "446"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "1428",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "1698969",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:55.517000",
+      "upstream_service_time": "1281"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "46",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:54.487000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "455",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:53.997000",
+      "upstream_service_time": "416"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "80",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:53.834000",
+      "upstream_service_time": "35"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "55",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "10483",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:53.745000",
+      "upstream_service_time": "14"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "46",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "584",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:53.197000",
+      "upstream_service_time": "5"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "40",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "49",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:53.116000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "43",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:52.930000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "416",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:52.480000",
+      "upstream_service_time": "376"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "146",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:52.238000",
+      "upstream_service_time": "91"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "44",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "35",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:51.451000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "70",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "560",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:51.204000",
+      "upstream_service_time": "5"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "42",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "49",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:51.137000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "56",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:50.938000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "434",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:50.468000",
+      "upstream_service_time": "375"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "72",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:50.316000",
+      "upstream_service_time": "19"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "45",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "1411",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:50.238000",
+      "upstream_service_time": "7"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "73",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "505",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:49.610000",
+      "upstream_service_time": "6"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "45",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "49",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:49.541000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "55",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:49.326000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "418",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:48.875000",
+      "upstream_service_time": "379"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "186",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:48.579000",
+      "upstream_service_time": "136"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "86",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "50236",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:48.446000",
+      "upstream_service_time": "41"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "45",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "509",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:47.670000",
+      "upstream_service_time": "5"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "38",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:47.399000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "442",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:46.917000",
+      "upstream_service_time": "395"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "438",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "35",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:46.445000",
+      "upstream_service_time": "397"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "1777",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "574",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:45.108000",
+      "upstream_service_time": "1730"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "362",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:44.654000",
+      "upstream_service_time": "322"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "366",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "416933",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:44.257000",
+      "upstream_service_time": "242"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "45",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "609",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:43.423000",
+      "upstream_service_time": "5"
+    },
+    {
+      "client_class": "DENO",
+      "method": "POST",
+      "origin_time": "46",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "49",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:43.357000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "42",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "279",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:43.120000",
+      "upstream_service_time": "4"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "405",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:42.676000",
+      "upstream_service_time": "355"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "90",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "71901",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:42.386000",
+      "upstream_service_time": "49"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "137",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "289",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:42.198000",
+      "upstream_service_time": "80"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "129",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "290",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:41.992000",
+      "upstream_service_time": "16"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "44",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "35",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:41.445000",
+      "upstream_service_time": "2"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "69",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "391",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:41.374000",
+      "upstream_service_time": "19"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "109",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "80581",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:41.227000",
+      "upstream_service_time": "56"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "121",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "289",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:41.043000",
+      "upstream_service_time": "73"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "91",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "290",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:40.893000",
+      "upstream_service_time": "15"
+    },
+    {
+      "client_class": "PYTHON_URLLIB",
+      "method": "POST",
+      "origin_time": "407",
+      "path": "/rest/v1/rpc/astra_ingestion_rpc_v1",
+      "request_bytes": "633",
+      "status": "200",
+      "timestamp": "2026-10-30T13:23:40.435000",
+      "upstream_service_time": "360"
+    }
+  ]
+}

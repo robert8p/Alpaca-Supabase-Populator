@@ -1,0 +1,164 @@
+[
+  {
+    "jobid": 602,
+    "runid": 4068600,
+    "job_pid": 1244043,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:28:00.024776+00",
+    "end_time": "2026-10-30 13:28:01.460049+00",
+    "duration_seconds": "1.435273"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068599,
+    "job_pid": 1244042,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:28:00.021912+00",
+    "end_time": "2026-10-30 13:28:00.02917+00",
+    "duration_seconds": "0.007258"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068598,
+    "job_pid": 1244016,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:26:00.045168+00",
+    "end_time": "2026-10-30 13:26:04.085217+00",
+    "duration_seconds": "4.040049"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068597,
+    "job_pid": 1244015,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:26:00.043065+00",
+    "end_time": "2026-10-30 13:26:00.090063+00",
+    "duration_seconds": "0.046998"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068596,
+    "job_pid": 1243827,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:24:00.029655+00",
+    "end_time": "2026-10-30 13:24:02.070473+00",
+    "duration_seconds": "2.040818"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068595,
+    "job_pid": 1243826,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:24:00.026109+00",
+    "end_time": "2026-10-30 13:24:00.059823+00",
+    "duration_seconds": "0.033714"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068594,
+    "job_pid": 1243675,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:22:00.042421+00",
+    "end_time": "2026-10-30 13:22:02.116248+00",
+    "duration_seconds": "2.073827"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068593,
+    "job_pid": 1243674,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:22:00.03812+00",
+    "end_time": "2026-10-30 13:22:00.049605+00",
+    "duration_seconds": "0.011485"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068592,
+    "job_pid": 1242995,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:20:00.025311+00",
+    "end_time": "2026-10-30 13:20:01.039678+00",
+    "duration_seconds": "1.014367"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068591,
+    "job_pid": 1242994,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:20:00.020149+00",
+    "end_time": "2026-10-30 13:20:00.027385+00",
+    "duration_seconds": "0.007236"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068590,
+    "job_pid": 1242971,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:18:00.022497+00",
+    "end_time": "2026-10-30 13:18:01.3216+00",
+    "duration_seconds": "1.299103"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068589,
+    "job_pid": 1242970,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:18:00.018714+00",
+    "end_time": "2026-10-30 13:18:00.026034+00",
+    "duration_seconds": "0.007320"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068587,
+    "job_pid": 1242937,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:16:00.037541+00",
+    "end_time": "2026-10-30 13:16:00.063047+00",
+    "duration_seconds": "0.025506"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068588,
+    "job_pid": 1242938,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:16:00.034976+00",
+    "end_time": "2026-10-30 13:16:03.949088+00",
+    "duration_seconds": "3.914112"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068586,
+    "job_pid": 1242193,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:14:00.023257+00",
+    "end_time": "2026-10-30 13:14:00.988338+00",
+    "duration_seconds": "0.965081"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068585,
+    "job_pid": 1242192,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:14:00.020591+00",
+    "end_time": "2026-10-30 13:14:00.028771+00",
+    "duration_seconds": "0.008180"
+  },
+  {
+    "jobid": 602,
+    "runid": 4068584,
+    "job_pid": 1242161,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:12:00.0269+00",
+    "end_time": "2026-10-30 13:12:01.31667+00",
+    "duration_seconds": "1.289770"
+  },
+  {
+    "jobid": 603,
+    "runid": 4068583,
+    "job_pid": 1242160,
+    "status": "succeeded",
+    "start_time": "2026-10-30 13:12:00.021535+00",
+    "end_time": "2026-10-30 13:12:00.03132+00",
+    "duration_seconds": "0.009785"
+  }
+]

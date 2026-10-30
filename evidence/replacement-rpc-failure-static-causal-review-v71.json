@@ -1,0 +1,90 @@
+{
+  "schema": "astra.replacement.rpc-failure-static-causal-review/1",
+  "recorded_at": "2026-10-30T12:16:17.950548+00:00",
+  "mode": "RETAINED_SOURCE_REVIEW_ONLY",
+  "root_cause": "UNDETERMINED",
+  "production_calls": 0,
+  "runtime_edits": 0,
+  "proposed_sql_repair": null,
+  "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "worker_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+  "live_definition_pins": {
+    "backfill_dispatch_v2": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+    "backfill_identity_material_v2": "47070ac2e808702631794b8283baad0db929e25938eee2951015d9ee66a9c4bf",
+    "backfill_reuse_read_v2": "53a014b1694ccaa3ff67f43116398b456845f6f51a25ebee42b43d5fd2bfd574",
+    "backfill_delivery_dispatch_v2": "5a8512f1b74fcbb44c05baf353a4e403e01972b08fe20dfdfac0e95b94d9fc05",
+    "backfill_identity_discover_pending_v2": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+    "backfill_identity_refresh_pending_v2": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+    "backfill_owned_v2": "66968de9e4b6ed74deca00f6aaf63b3c44a3a6546f01fd8a7007d8fd7b2603f2"
+  },
+  "observed_root_evidence": {
+    "last_d03_claim_heartbeat_at": "2026-10-30T11:51:52Z",
+    "claim_lease_seconds": 90,
+    "first_material_lease_extension_observed": false,
+    "operation_and_reason_code": "NOT_PRESENT_IN_EXISTING_LOG",
+    "reported_fatal_error_at": "2026-10-30T11:52:03Z"
+  },
+  "findings": [
+    {
+      "fact": "backfill_claim invokes identity discovery and pending refresh before resetting v_now, inserting/updating worker heartbeat, selecting and updating the claim.",
+      "implication": "A committed heartbeat and claim prove their same transaction passed that identity prelude. A failure in that same prelude would roll back the heartbeat/claim. This does not identify which later RPC failed, or exclude a separate subsequent failed claim attempt."
+    },
+    {
+      "fact": "The worker directly calls backfill_material first for derive_daily after claim; it calls identity_material only after all material pages are acquired.",
+      "implication": "For the reported unchanged 90-second lease, lost claim acknowledgement or an uncommitted first material RPC is consistent. A successful first material transaction normally extends the lease to min(attempt_deadline, operation_start+120 seconds). Later identity/commit/verify failure is not established by this state."
+    },
+    {
+      "fact": "backfill_delivery_dispatch_v2 handles status/verify/delivery/finalize/recover/maintain/plan-snapshot/seal, not claim or material.",
+      "implication": "Its delivery status aggregation and verify/finalization path cannot be assigned as the cause of a claim/first-material failure without evidence of a different operation."
+    },
+    {
+      "fact": "The two observed D03 dependencies each hold one 32,006-byte page; the baseline RPC response bound is 64 MiB and timeout 15 seconds.",
+      "implication": "No response-size overflow is evidenced for these source pages. This is not a full HTTP envelope/transport proof."
+    },
+    {
+      "fact": "Measured inner material selector custom 33.612 ms/generic 15.787 ms, D04 candidate custom 6.1 ms/generic 5.6 ms, D01 candidate 3.752 ms and exhaustion selector 0.085 ms were fast in the retained observations.",
+      "implication": "Those measurements do not cover outer authentication/global advisory lock, owned-row lock, material lease UPDATE, later has_more query, HTTP/connection failure or a different concurrent workload. No specific heavy selector is established."
+    }
+  ],
+  "unmeasured_identity_paths": [
+    "Pending-discovery queue selection, then at most 128 distinct retained date/source pairs for one member, with exact ticker or composite/share-class matching and source metadata validation.",
+    "Pending-refresh queue selection, then at most 2 completed daily/cohort tasks in the installed claim prelude, followed by identity material build and queue updates."
+  ],
+  "diagnostic_decision": "DO_NOT_RUN_MUTATING_HELPERS_OR_SPECULATIVE_HEAVY_SELECTOR_SWEEP",
+  "next_safe_action": "Deploy the separately qualified local operation/reason logging repair, retain the first useful failure classification, then select one exact bounded read-only diagnostic justified by that operation and current state.",
+  "conditional_readonly_rules": [
+    "No authenticated business RPC or helper invocation that writes claims/leases/identity queues.",
+    "8-second statement and 3-second lock limits with explicit transaction read-only.",
+    "Source/hash guards and current exact workload parameters.",
+    "No FOR UPDATE/UPDATE/claim execution; no credentials, query payload or raw source bodies returned.",
+    "A selector-only result does not prove lock or end-to-end latency."
+  ],
+  "prepared_new_probe": false,
+  "reason_no_probe": "Current evidence supports an operation-classification gap, not a demonstrated heavy selector. Another broad selector sweep or performance rewrite would be speculative.",
+  "evidence_files": [
+    {
+      "path": "review/recovery-v71/live_functions_1155.json",
+      "sha256": "8288e0494f183a5a70739015d63ce0a5a9d57cd67057de84436755fccb872c89"
+    },
+    {
+      "path": "review/recovery-v71/live_helper_functions_1214.json",
+      "sha256": "582cbb2776ead8edf3364ddeeacee9ec7853d01628459510ecfc8f8c99ac4908"
+    },
+    {
+      "path": "review/recovery-v71/material_dependencies_live.json",
+      "sha256": "a91d4161db5889a213c7f31bacbb87cb0500d97ec33b057f8526dc8af006161d"
+    },
+    {
+      "path": "review/recovery-v71/live_material_firstpage_result.json",
+      "sha256": "0bbefc14a1329517e7575db81c919c74e11b859b1c7bc886b8f09654ef235d6b"
+    },
+    {
+      "path": "review/recovery-v71/live_material_generic_result.json",
+      "sha256": "9ee4c038624d900950efecf8dfd21821c64522f85cc56622a3743ef9a0450731"
+    },
+    {
+      "path": "review/recovery-v71/baseline/rpc_store.py",
+      "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7"
+    }
+  ]
+}

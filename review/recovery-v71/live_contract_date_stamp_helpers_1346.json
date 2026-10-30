@@ -1,0 +1,16 @@
+[
+  {
+    "proname": "backfill_date_v2",
+    "oid": 16041364,
+    "provolatile": "i",
+    "sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+    "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_date_v2(v text)\n RETURNS date\n LANGUAGE plpgsql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\nBEGIN\n IF v IS NULL OR v !~ '^\\d{4}-\\d{2}-\\d{2}' THEN RETURN NULL; END IF;\n RETURN left(v,10)::date;\nEXCEPTION WHEN invalid_datetime_format OR datetime_field_overflow THEN RETURN NULL;\nEND $function$\n"
+  },
+  {
+    "proname": "backfill_stamp_v2",
+    "oid": 16041363,
+    "provolatile": "i",
+    "sha256": "63988e76443273e860cfc5cc7929dd2282c5525d9e824c443e79c03b15e6a1e9",
+    "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_stamp_v2(v text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\nBEGIN\n IF v IS NULL OR v !~ '^\\d{4}-\\d{2}-\\d{2}T.*(Z|[+-]\\d{2}:\\d{2})$' THEN RETURN NULL; END IF;\n RETURN v::timestamptz;\nEXCEPTION WHEN invalid_datetime_format OR datetime_field_overflow THEN RETURN NULL;\nEND $function$\n"
+  }
+]

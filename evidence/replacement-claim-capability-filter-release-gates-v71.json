@@ -1,0 +1,624 @@
+{
+  "schema": "astra.claim-capability-filter.exact-head-ci/1",
+  "record_kind": "INDEPENDENT_RELEASE_GATE_READBACK",
+  "version": "v71",
+  "observed_at": "2026-10-30 13:12:35 UTC",
+  "reviewer": "/root/relay_v3_review",
+  "state": "ALL_FOUR_EXACT_HEAD_GATES_PASSED",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "branch": "feat/astra-ingestion-service",
+  "source_head": "b434f4575f5d6656b176b006857a655e4bf703c9",
+  "source_tree": "b35471f7db32d197c8d0012b42976fb6bb4e4d0f",
+  "parent_head": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "parent_tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+  "final_branch_readback": {
+    "ref": "refs/heads/feat/astra-ingestion-service",
+    "sha": "b434f4575f5d6656b176b006857a655e4bf703c9"
+  },
+  "checkout_identity": {
+    "push": "Direct checkout of the published source head.",
+    "pull_request": {
+      "commit": "f65a4862abefc71141809d140f25768487835cbc",
+      "tree": "b35471f7db32d197c8d0012b42976fb6bb4e4d0f",
+      "parents": [
+        "455e45646aa71605cb3e541d2c714603d89f4079",
+        "b434f4575f5d6656b176b006857a655e4bf703c9"
+      ],
+      "same_tree_as_source_head": true
+    },
+    "distinction": "PR checks ran on GitHub's synthetic merge commit. Its tree is byte-identical to the published repair tree; it includes the published source head as a parent."
+  },
+  "runs": [
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41060461822,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060461822",
+      "head_sha": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T13:06:15Z",
+      "updated_at": "2026-10-30T13:06:56Z",
+      "checkout_commit": "f65a4862abefc71141809d140f25768487835cbc",
+      "job": {
+        "id": 124078591437,
+        "name": "test",
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060461822/job/124078591437",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Compile",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "JavaScript syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Unit tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          }
+        ]
+      },
+      "tests": {
+        "runner": "pytest -q",
+        "passed": 709,
+        "skipped": 317,
+        "warnings": 1,
+        "elapsed_seconds": 11.44,
+        "summary": "709 passed, 317 skipped, 1 warning in 11.44s"
+      }
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41060461986,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060461986",
+      "head_sha": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T13:06:15Z",
+      "updated_at": "2026-10-30T13:12:15Z",
+      "checkout_commit": "f65a4862abefc71141809d140f25768487835cbc",
+      "job": {
+        "id": 124078592593,
+        "name": "Bounded ingestion and PostgreSQL recovery",
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060461986/job/124078592593",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Initialize containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Install pinned runtime and ASGI test dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Require production adapters before qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run all ingestion qualification tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Check application syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Stop containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      "tests": {
+        "runner": "python -m unittest discover -s tests/ingestion -p 'test_*.py' -v",
+        "tests_run": 636,
+        "passed": 636,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "elapsed_seconds": 331.572,
+        "summary": "Ran 636 tests in 331.572s; OK",
+        "new_capability_filter_tests": [
+          "test_dependency_gap_and_breadth_guards (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_dependency_gap_and_breadth_guards) ... ok",
+          "test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback) ... ok",
+          "test_forward_preserves_all_other_source_metadata_auth_status_and_data (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_forward_preserves_all_other_source_metadata_auth_status_and_data) ... ok",
+          "test_incomplete_cohort_blocks_claim (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_incomplete_cohort_blocks_claim) ... ok",
+          "test_news_prefix_with_73_reuse_children_keeps_normal_and_recovery_selection (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_news_prefix_with_73_reuse_children_keeps_normal_and_recovery_selection) ... ok",
+          "test_real_page_successor_and_lost_ack (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_real_page_successor_and_lost_ack) ... ok",
+          "test_recovery_first_fences_and_accounting (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_recovery_first_fences_and_accounting) ... ok",
+          "test_three_valued_membership_and_unchanged_capability_admission (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_three_valued_membership_and_unchanged_capability_admission) ... ok",
+          "test_forward_pins_exact_dual_change_and_security_boundaries (test_backfill_claim_capability_filter_v2.CapabilityFilterSourceTests.test_forward_pins_exact_dual_change_and_security_boundaries) ... ok"
+        ]
+      }
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41060453000,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060453000",
+      "head_sha": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T13:06:11Z",
+      "updated_at": "2026-10-30T13:06:53Z",
+      "checkout_commit": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "job": {
+        "id": 124078562689,
+        "name": "test",
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060453000/job/124078562689",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Compile",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "JavaScript syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Unit tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          }
+        ]
+      },
+      "tests": {
+        "runner": "pytest -q",
+        "passed": 709,
+        "skipped": 317,
+        "warnings": 1,
+        "elapsed_seconds": 13.14,
+        "summary": "709 passed, 317 skipped, 1 warning in 13.14s"
+      }
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41060453205,
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060453205",
+      "head_sha": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T13:06:11Z",
+      "updated_at": "2026-10-30T13:12:05Z",
+      "checkout_commit": "b434f4575f5d6656b176b006857a655e4bf703c9",
+      "job": {
+        "id": 124078563664,
+        "name": "Bounded ingestion and PostgreSQL recovery",
+        "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41060453205/job/124078563664",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Initialize containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Install pinned runtime and ASGI test dependencies",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Require production adapters before qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run all ingestion qualification tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Check application syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Node for JavaScript syntax checks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Post Check out the candidate source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Stop containers",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      },
+      "tests": {
+        "runner": "python -m unittest discover -s tests/ingestion -p 'test_*.py' -v",
+        "tests_run": 636,
+        "passed": 636,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "elapsed_seconds": 321.78,
+        "summary": "Ran 636 tests in 321.780s; OK",
+        "new_capability_filter_tests": [
+          "test_dependency_gap_and_breadth_guards (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_dependency_gap_and_breadth_guards) ... ok",
+          "test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback) ... ok",
+          "test_forward_preserves_all_other_source_metadata_auth_status_and_data (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_forward_preserves_all_other_source_metadata_auth_status_and_data) ... ok",
+          "test_incomplete_cohort_blocks_claim (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_incomplete_cohort_blocks_claim) ... ok",
+          "test_news_prefix_with_73_reuse_children_keeps_normal_and_recovery_selection (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_news_prefix_with_73_reuse_children_keeps_normal_and_recovery_selection) ... ok",
+          "test_real_page_successor_and_lost_ack (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_real_page_successor_and_lost_ack) ... ok",
+          "test_recovery_first_fences_and_accounting (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_recovery_first_fences_and_accounting) ... ok",
+          "test_three_valued_membership_and_unchanged_capability_admission (test_backfill_claim_capability_filter_v2.CapabilityFilterPostgreSQLTests.test_three_valued_membership_and_unchanged_capability_admission) ... ok",
+          "test_forward_pins_exact_dual_change_and_security_boundaries (test_backfill_claim_capability_filter_v2.CapabilityFilterSourceTests.test_forward_pins_exact_dual_change_and_security_boundaries) ... ok"
+        ]
+      }
+    }
+  ],
+  "file_pin_readback": [
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22439,
+      "git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 17590,
+      "git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 7696,
+      "git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-independent-review-v71.json",
+      "bytes": 16508,
+      "git_blob_sha1": "d65169dc9bc55f7e169424e19c4a81c370417895",
+      "sha256": "7f94069b27e617a7731856ec2cf08ab3ff52314a9cc0720744e9b2556e92084f",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-qualification-v71.json",
+      "bytes": 15686,
+      "git_blob_sha1": "d932ebb3d7ecf95ae4cad09f7435c53b3098d975",
+      "sha256": "4c05ecd655308790394f429bf5b357a867409dcd2c72d5c55f3cc538ff40b50b",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_independent_qualification_v71.json",
+      "bytes": 2276,
+      "git_blob_sha1": "e53cc4e83656c9f8f736761034b8716474900359",
+      "sha256": "a41c122a7b33e99fa976f610478cae21b72047fdeed33ddcbf9c305fe30d9d93",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "bytes": 5513,
+      "git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "bytes": 20490,
+      "git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "binding": "Local git blob SHA-1 recomputed over blob header plus exact bytes and matched the complete remote tree; SHA-256 independently computed over the same local bytes."
+    }
+  ],
+  "publication_diff": {
+    "complete_recursive_trees": true,
+    "parent_tree_truncated": false,
+    "head_tree_truncated": false,
+    "added_files": 28,
+    "modified_files": 0,
+    "deleted_files": 0,
+    "active_runtime_edge_or_workflow_changes": [],
+    "changed_paths": [
+      "evidence/replacement-3ee4-release-gates-v71.json",
+      "evidence/replacement-approved-relay-worker-deployment-v71.json",
+      "evidence/replacement-claim-capability-filter-independent-review-v71.json",
+      "evidence/replacement-claim-capability-filter-publication-manifest-v71.json",
+      "evidence/replacement-claim-capability-filter-publication-readiness-v71.json",
+      "evidence/replacement-claim-capability-filter-qualification-v71.json",
+      "evidence/replacement-preactivation-reconciliation-v71.json",
+      "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "review/recovery-v71/build_capability_publication_packet_v71.py",
+      "review/recovery-v71/claim_capability_benchmark_result_v71.json",
+      "review/recovery-v71/claim_capability_benchmark_v71.py",
+      "review/recovery-v71/claim_capability_independent_qualification_v71.json",
+      "review/recovery-v71/claim_capability_publication_dependencies_v71.json",
+      "review/recovery-v71/claim_capability_qualification_guard_fixture_failure_v71.json",
+      "review/recovery-v71/claim_capability_qualification_guard_rerun_v71.json",
+      "review/recovery-v71/claim_capability_qualification_initial_result_v71.json",
+      "review/recovery-v71/claim_capability_staged_publication_dependencies_v71.json",
+      "review/recovery-v71/claim_capability_staged_source_v71.json",
+      "review/recovery-v71/claim_n01_capability_candidate_readonly_v71.sql",
+      "review/recovery-v71/claim_n01_capability_generic_readonly_v71.sql",
+      "review/recovery-v71/claim_n01_readonly_custom_v71.sql",
+      "review/recovery-v71/live_functions_1155.json",
+      "review/recovery-v71/live_n01_capability_candidate_result.json",
+      "review/recovery-v71/live_n01_capability_generic_result.json",
+      "review/recovery-v71/live_n01_custom_result.json",
+      "review/recovery-v71/stage_capability_publication_v71.py",
+      "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "tests/ingestion/test_backfill_claim_capability_filter_v2.py"
+    ],
+    "inference": "This publication adds the reviewed SQL/test/evidence package without changing existing worker, Edge, authentication adapter or CI workflow files. It does not require a worker source redeployment."
+  },
+  "workflow_pins": [
+    {
+      "path": ".github/workflows/astra-ingestion-qualification.yml",
+      "git_blob_sha1": "f36b4f21874de6afb141faca74bba1cd2d84e328",
+      "bytes": 3386
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "git_blob_sha1": "4789639a9c553b26a4e5bed81ad333504865e073",
+      "bytes": 1445
+    }
+  ],
+  "verification": {
+    "expected_run_pairs": [
+      "release-gate/push",
+      "release-gate/pull_request",
+      "ASTRA ingestion qualification/push",
+      "ASTRA ingestion qualification/pull_request"
+    ],
+    "actual_runs": 4,
+    "all_attempt_one": true,
+    "all_jobs_and_steps_success": true,
+    "release_counts_each": {
+      "passed": 709,
+      "skipped": 317,
+      "warnings": 1
+    },
+    "ingestion_counts_each": {
+      "tests_run": 636,
+      "passed": 636,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "each_ingestion_job_passed_all_nine_new_repair_tests": true,
+    "ingestion_environment": "Workflow uses a disposable PostgreSQL 17 service on the GitHub runner, with no production database credentials.",
+    "release_skip_interpretation": "The 317 pytest skips are retained as skips. Actual PostgreSQL execution is established by the separate 636-test ingestion jobs."
+  },
+  "observer_actions": {
+    "github_reads_only": true,
+    "reruns": 0,
+    "remote_mutations": 0,
+    "deployments": 0,
+    "production_database_calls": 0,
+    "secrets_read_or_exported": 0
+  },
+  "limits": [
+    "Successful CI is source qualification, not evidence that the SQL has been installed or that the running ingestion has recovered.",
+    "Root controls current ownership/successor and uncertain-write reconciliation, exact SQL application, expected source/metadata readback, and actual committed-page progress.",
+    "The existing live worker release is root-managed at 3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d; this reviewer performed no deployment read or mutation.",
+    "The prior unsupported-news-prefix finding remains narrow. The current full-capability D03 read-only diagnostic does not establish the family that timed out in the multi-family claim loop."
+  ],
+  "next_action": "CI qualification is complete. Reconcile any installed or uncertain outcome through the separate live-installation receipt and source readback; successful CI is not permission to replay the SQL. Continue actual committed-page verification through the same controller and live worker. No worker redeployment is needed for this SQL-only publication.",
+  "post_ci_root_report": {
+    "provenance": "Parent-controller message received after the CI observation; not independently checked in production by this reviewer.",
+    "applied_once_at": "2026-10-30T13:13:00Z",
+    "readback_at": "2026-10-30T13:13:22Z",
+    "inner_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "outer_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "receipt": "evidence/replacement-claim-capability-filter-live-installation-v71.json",
+    "actual_worker_progress_after_installation": "pending at parent report",
+    "old_1368_diagnostic_probes": "No longer executable against the reported current source; do not replay."
+  }
+}
