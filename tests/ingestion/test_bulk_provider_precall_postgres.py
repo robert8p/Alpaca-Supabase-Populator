@@ -29,6 +29,7 @@ SQL_FILES=(
  "astra_ingestion_bulk_runtime_port_v1.sql",
  "astra_ingestion_bulk_unit_binding_v1.sql",
  "astra_ingestion_bulk_provider_precall_v1.sql",
+ "astra_ingestion_bulk_provider_response_quarantine_v1.sql",
 )
 
 
@@ -240,6 +241,173 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
   self.assertEqual(public_exec,0)
   self.assertEqual(self.conn.execute(
    f"SELECT count(*) FROM {self.schema}.bulk_provider_review_v1").fetchone()[0],0)
+
+
+ def synthetic_stage(self,**changes):
+  # Fabricated bars; never licensed provider records or genuine source proof.
+  row=dict(timestamp_utc="2026-09-02T13:30:00Z",
+   open="10.1",high="10.5",low="10",close="10.2",vwap="10.3",
+   volume=100,trade_count=5,record_sha256="6"*64)
+  stage=dict(source_page_sha256="f"*64,stage_candidate_sha256="7"*64,
+   provider_records_observed=1,eligible_records=1,
+   inclusive_end_records_excluded=0,eligible_bars=[row],
+   next_page_required=False,continuation_token_sha256=None,
+   previous_continuation_token_sha256=None)
+  stage.update(changes)
+  return stage
+
+ def quarantine(self,w,stage=None,*,owner="synthetic-owner",fence=None,request="9"*64,page=0):
+  from psycopg.types.json import Jsonb
+  return self.sql("bulk_provider_quarantine_response_v1",w["work_key"],
+   owner,fence if fence is not None else w["claim_fence"],
+   page,request,Jsonb(self.synthetic_stage() if stage is None else stage))
+
+ def test_response_stages_atomically_without_provider_output_or_budget_double_count(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  result=self.quarantine(w)
+  self.assertEqual(result["status"],"QUARANTINED_UNAUTHENTICATED_NOT_BULK_COMMITTED")
+  self.assertEqual((result["eligible_records"],result["provider_records_observed"]),(1,1))
+  self.assertFalse(result["bulk_output_committed"])
+  self.assertFalse(result["provider_submission_authorized"])
+  self.assertFalse(result["coverage_certified"])
+  readback=self.sql("bulk_provider_quarantine_readback_v1",w["work_key"],0)
+  self.assertTrue(readback["consistent"])
+  self.assertEqual(readback["stage_candidate_sha256"],"7"*64)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_response_quarantine_v1"
+  ).fetchone()[0],1)
+  self.assertEqual(self.conn.execute(
+   f"SELECT requests_committed,records_committed,last_page FROM {self.schema}.bulk_work_v1"
+   " WHERE work_key=%s",(w["work_key"],)).fetchone(),(0,0,-1))
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],0)
+  with self.assertRaises(self.pg.Error):self.quarantine(w)
+  with self.assertRaises(self.pg.Error):self.precall(w)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_response_quarantine_v1"
+  ).fetchone()[0],1)
+
+ def test_response_refuses_missing_ticket_stale_owner_and_review_mismatch(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  with self.assertRaises(self.pg.Error):self.quarantine(w)
+  self.precall(w)
+  for change in ({"owner":"other"},{"fence":w["claim_fence"]+1},
+                 {"request":"8"*64},{"page":1}):
+   with self.subTest(change=change),self.assertRaises(self.pg.Error):
+    self.quarantine(w,**change)
+  self.sql("bulk_stop_v1",MANIFEST,"synthetic explicit stop")
+  with self.assertRaises(self.pg.Error):self.quarantine(w)
+  self.assertIsNone(self.sql("bulk_provider_quarantine_readback_v1",w["work_key"],0))
+
+ def test_response_refuses_payload_rewriting_type_confusion_and_count_fraud(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  base=self.synthetic_stage()
+  mutations=(
+   {"source_page_sha256":"wrong"},
+   {"stage_candidate_sha256":"wrong"},
+   {"provider_records_observed":6},
+   {"provider_records_observed":True},
+   {"eligible_records":False},
+   {"eligible_records":2},
+   {"inclusive_end_records_excluded":2},
+   {"next_page_required":True},
+   {"continuation_token_sha256":"1"*64},
+   {"previous_continuation_token_sha256":"2"*64},
+   {"eligible_bars":"not-array"},
+   {"extra_field":"AUTHORIZED"},
+   {"eligible_bars":[{**base["eligible_bars"][0],"time":"extra"}]},
+   {"eligible_bars":[{**base["eligible_bars"][0],"record_sha256":"bad"}]},
+   {"eligible_bars":[{**base["eligible_bars"][0],"timestamp_utc":"2026-08-02T13:30:00Z"}]},
+   {"eligible_bars":[{**base["eligible_bars"][0],"trade_count":True}]},
+   {"eligible_bars":[base["eligible_bars"][0],base["eligible_bars"][0]],
+    "provider_records_observed":2,"eligible_records":2},
+  )
+  for changes in mutations:
+   with self.subTest(changes=changes),self.assertRaises(self.pg.Error):
+    self.quarantine(w,{**base,**changes})
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_response_quarantine_v1"
+  ).fetchone()[0],0)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],0)
+
+ def test_response_accepts_bound_inclusive_end_without_false_eligible_credit(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  stage=self.synthetic_stage(provider_records_observed=2,
+   eligible_records=1,inclusive_end_records_excluded=1)
+  result=self.quarantine(w,stage)
+  self.assertEqual(result["provider_records_observed"],2)
+  self.assertEqual(result["eligible_records"],1)
+  self.assertFalse(result["coverage_certified"])
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"UPDATE {self.schema}.bulk_provider_response_quarantine_v1"
+                     " SET eligible_records=2")
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"DELETE FROM {self.schema}.bulk_provider_response_quarantine_v1")
+
+ def test_response_finite_reservation_and_monotone_continuation_hold(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  row=self.synthetic_stage()["eligible_bars"][0]
+  another={**row,"timestamp_utc":"2026-09-02T13:31:00Z",
+           "record_sha256":"5"*64}
+  for stage in (
+   self.synthetic_stage(provider_records_observed=6,eligible_records=6,
+                        eligible_bars=[row]*6),
+   self.synthetic_stage(next_page_required=True),
+   self.synthetic_stage(eligible_records=2,provider_records_observed=2,
+                        eligible_bars=[another,row]),
+   self.synthetic_stage(eligible_records=2,provider_records_observed=2,
+                        eligible_bars=[row,row]),
+  ):
+   with self.subTest(stage=stage),self.assertRaises(self.pg.Error):
+    self.quarantine(w,stage)
+  valid=self.synthetic_stage(
+   next_page_required=True,continuation_token_sha256="3"*64)
+  result=self.quarantine(w,valid)
+  self.assertEqual(result["eligible_records"],1)
+  self.assertIsNone(self.sql("bulk_provider_quarantine_readback_v1",w["work_key"],1))
+  with self.assertRaises(self.pg.Error):
+   self.quarantine(w,self.synthetic_stage(
+    previous_continuation_token_sha256="3"*64),page=1)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_response_quarantine_v1"
+  ).fetchone()[0],1)
+
+ def test_response_stage_is_not_public_or_general_transport_grant(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  for fn in ("bulk_provider_quarantine_response_v1",
+             "bulk_provider_quarantine_readback_v1"):
+   n=self.conn.execute("""
+    SELECT count(*) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+    CROSS JOIN LATERAL aclexplode(p.proacl) x
+    WHERE n.nspname=%s AND p.proname=%s
+    AND x.grantee=0 AND x.privilege_type='EXECUTE'
+   """,(self.schema,fn)).fetchone()[0]
+   self.assertEqual(n,0)
+  self.assertTrue(self.conn.execute("""
+    SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n
+    ON n.oid=c.relnamespace WHERE n.nspname=%s
+    AND c.relname='bulk_provider_response_quarantine_v1'
+   """,(self.schema,)).fetchone()[0])
+  self.assertIsNone(self.sql("bulk_provider_quarantine_readback_v1",w["work_key"],0))
+
 
 
 if __name__=="__main__":unittest.main()
