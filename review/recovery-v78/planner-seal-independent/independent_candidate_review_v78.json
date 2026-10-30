@@ -1,0 +1,268 @@
+{
+  "diagnosis": {
+    "causal_conclusion": "Old enumeration/more/completeness predicates require absent snapshots for dynamic tasks that the exact installed snapshot_task intentionally rejects. Presence of any such row keeps the old more predicate true. The same mismatch also blocks direct seal completeness.",
+    "guard_passed": true,
+    "limitations": [
+      "Samples are not population counts, first-batch order, timing measurements, or proof of whole-plan completeness.",
+      "No identity_refresh_of row was returned in this bounded production sample. Inclusion in the repair is exact alignment with the already installed exclusion, independently tested locally.",
+      "Actual acquired-page progress and full data-family completion are separate from sealing planned units."
+    ],
+    "positive_classes": [
+      {
+        "candidate_limit_reached": true,
+        "candidates_seen": 9,
+        "class": "retained_identity",
+        "old_predicate_missing_snapshot_examples": 9
+      },
+      {
+        "candidate_limit_reached": true,
+        "candidates_seen": 9,
+        "class": "retained_massive_archive",
+        "old_predicate_missing_snapshot_examples": 9
+      }
+    ],
+    "production_affected_rows_observed_at": "2026-10-30T22:35:48.355802+00:00",
+    "returned_positive_rows": 16,
+    "run": {
+      "expected_static_count": 979516,
+      "fence": 1,
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "lease_until": "2026-10-30T23:00:00Z",
+      "owner": "root-replacement-20261030T042603Z",
+      "phase": "SEAL",
+      "planning_complete": false,
+      "preexisting_static_count": 0,
+      "status": "ACTIVE"
+    },
+    "source_pin_equality_observed_at": "2026-10-30T22:27:39Z"
+  },
+  "external_mutations": 0,
+  "focused_actual_postgres": {
+    "cases": {
+      "dynamic_starvation_and_500_cap": {
+        "business_rows_unchanged": true,
+        "ignored_dynamic_rows": 501,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "only_real_static_coverage_added": true,
+        "repaired_calls": [
+          {
+            "more": true,
+            "snapshotted": 500
+          },
+          {
+            "more": false,
+            "snapshotted": 1
+          },
+          {
+            "more": false,
+            "snapshotted": 0
+          }
+        ],
+        "retained_preexisting_plan_unit": true,
+        "unsnapshotted_real_static_rows": 501
+      },
+      "existing_dynamic_exclusions": {
+        "business_and_plan_state_unchanged": true,
+        "old": {
+          "more": false,
+          "snapshotted": 0
+        },
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "identity_refresh_of": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "ordinary_plan_static_false": {
+        "business_rows_unchanged": true,
+        "no_manifest_or_completion_written": true,
+        "seal_refused_missing_static_sqlstate": "AI005",
+        "snapshotted": {
+          "more": false,
+          "snapshotted": 1
+        }
+      },
+      "retained_identity": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "retained_massive_archive": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      }
+    },
+    "database": {
+      "address": "127.0.0.1",
+      "db": "astra_ingestion_qualification",
+      "version": "PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit"
+    },
+    "errors": 0,
+    "failed_attempts_retained": [
+      {
+        "attempt": 1,
+        "cause": "Additional local loopback admission compared inet::text including CIDR suffix. Corrected to host(inet_server_addr()); exact route unchanged.",
+        "tests": 0
+      },
+      {
+        "attempt": 2,
+        "cause": "Synthetic retained-identity/S02 rows omitted already required shared-cohort/preserve-acquisition markers. Existing guards refused admission. Added valid exact synthetic scopes; no guard weakened.",
+        "errors": 3,
+        "tests": 6
+      }
+    ],
+    "failures": 0,
+    "fixture_cleanup_readback_passed": true,
+    "passed": true,
+    "seconds": 2.729,
+    "skips": 0,
+    "tests": 6
+  },
+  "inputs": [
+    {
+      "bytes": 13938,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "sha256": "f1bf394169bc32f079d94db5dc2cfe1fbac08db5d930b5335714bde30de62bd2"
+    },
+    {
+      "bytes": 13312,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "sha256": "8e1548b13d085ee43d755ab9400378d11002322d1b60ce1fd90e2b2fb3f51936"
+    },
+    {
+      "bytes": 22824,
+      "path": "review/recovery-v78/planner-seal/candidate_archive_v78.json",
+      "sha256": "0f8ee6721bdfb1eb5053d48968687b109572ff79dac8ae53217c56ec65cf4547"
+    },
+    {
+      "bytes": 2406,
+      "path": "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+      "sha256": "f1e6c7f27d61c5cdb7eab906c7cd3d78dfe8d9d2274db6646f92193b603be141"
+    },
+    {
+      "bytes": 9729,
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_evidence_v78.json",
+      "sha256": "2faae604a9ddb3397a033e6c6ac9d0790867881537dbd927ce316747f2362f83"
+    },
+    {
+      "bytes": 10145,
+      "path": "review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+      "sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7"
+    },
+    {
+      "bytes": 7769,
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+      "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0"
+    },
+    {
+      "bytes": 17102,
+      "path": "review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+      "sha256": "4451e1214ebe59e67713eafeb95de32a82bbac6595505f2006f285005e721a6e"
+    },
+    {
+      "bytes": 11369,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt01_v78.json",
+      "sha256": "b62f7443bed9e110a9570dc765434e679a9f6f8b20ea56e8e9050157ff2a6ee3"
+    },
+    {
+      "bytes": 17780,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt02_v78.json",
+      "sha256": "8c489cce169ef0f62353dd9308913f853de59a2932e0d08c571087d845d7f66a"
+    },
+    {
+      "bytes": 14617,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+      "sha256": "eba04a321121c362f82cc142de875190867ab88dd758d1d8e369bfc1f5f04c4d"
+    },
+    {
+      "bytes": 242,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_cleanup_readback_v78.json",
+      "sha256": "8108b74ced89891686b184246d9ebe359b57696472540e309b8d82542b69b4a3"
+    }
+  ],
+  "other_residual_risks": [
+    "A genuinely static late task may expose a legitimate expected-count mismatch; reconcile provenance without changing expected count to observed count.",
+    "Near-million-task scanning and manifest aggregation may require separate bounded performance diagnosis. Small synthetic fixture timing does not establish production runtime."
+  ],
+  "pending_admission": [
+    "Independent review of producer initial-planner, full-SEAL, count/hash/calendar/member/date/map negative cases and migration/restore guard actualPG results.",
+    "Root current nine-function/run/owner reconciliation immediately before any installation.",
+    "Root publication/readback and supported exact SQL application; v75 hold untouched.",
+    "Production planner proof of unchanged expected count/manifest/readback and useful source acquisitions before claiming recovery."
+  ],
+  "production_calls_by_reviewer": 0,
+  "production_release_admitted": false,
+  "reviewer": "/root/plugin_handoff_v78",
+  "schema": "astra.independent-planner-seal-candidate-review/1",
+  "static_review": {
+    "all_nine_oid_and_metadata_pins_unchanged": true,
+    "blocking_static_findings": [],
+    "body_delta_exact": true,
+    "candidate_source_sha256": [
+      "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1"
+    ],
+    "inverse_exact": true,
+    "missing_or_null_function_pin_fails_closed": true,
+    "modified_functions": [
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)"
+    ],
+    "nine_unique_before_after_pins": true,
+    "only_two_source_pins_change": true,
+    "predicate_replacements": 3,
+    "preserved_semantics": [
+      "No plan_static filter; ordinary staticfalse remains required.",
+      "No changes to snapshot_task eligibility, expected count, plan hash, exact calendars, workflow coverage or representative-map validation.",
+      "Private dispatcher dbe8 and all other seven protected function sources retained.",
+      "Normal runtime helper execution gains no implementation-lease gate."
+    ],
+    "restore_controls": [
+      "Requires exact candidate bodies and same current finite owner/scope/metadata guards.",
+      "Restores exact retained two helper definitions; cannot replay after restoration.",
+      "Does not require unsealed metadata so a committed seal is preserved.",
+      "Writes no task/run/manifest/accounting rows; full run equality check remains."
+    ],
+    "run_guard": [
+      "Exact existing run, owner and fence1; ACTIVE; finite lease with over one minute remaining.",
+      "Exact frozen cohort/manifest/window, actual3000 member count and ordered member-id SHA, dot-only reporting.",
+      "Forward requires SEAL, planning_complete=false, member cursor3001 and breadth cursor230.",
+      "No ownership renewal, new controller, task insertion, source request, grant, credential, role, operation, timeout expansion or retry change.",
+      "Existing transaction advisory gate and bounded8s statement/3s lock settings.",
+      "Post-install nine exact pins and unchanged complete run row."
+    ]
+  },
+  "status": "STATIC_AND_FOCUSED_PG_PASS_PENDING_PRODUCER_INTEGRATION"
+}

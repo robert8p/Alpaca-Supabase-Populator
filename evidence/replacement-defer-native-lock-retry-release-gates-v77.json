@@ -1,0 +1,246 @@
+{
+  "schema": "astra.defer-native-lock-retry-exact-head-ci/1",
+  "passed": true,
+  "verified_at": "2026-10-30T20:29:15.677290+00:00",
+  "head_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+  "tree_sha": "564347923f62753c8303c7448455310528ff6b72",
+  "base_commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "synthetic_pr_merge_sha": "f2301135be402150c6f70338fbe1a9c0856e1c8d",
+  "synthetic_pr_merge_tree_equals_published_tree": true,
+  "all_actual_runs_and_steps_passed": true,
+  "actual_run_count": 4,
+  "run_attempts": [
+    1
+  ],
+  "dedicated_tests_each": 729,
+  "dedicated_skips_each": 0,
+  "dedicated_errors_each": 0,
+  "dedicated_failures_each": 0,
+  "actual_postgres_version": "17.11",
+  "new_cases_explicitly_once_in_each_dedicated_job": 9,
+  "new_case_ids": [
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_committed_defer_lost_ack_never_retries_or_refetches",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_current_nine_function_sources_and_security_catalog",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_early_native_gate_abort_retries_only_identical_defer",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_invalid_scoped_adaptive_receipt_stays_controlled_single_send",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_late_native_abort_rolls_back_all_three_effect_branches",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_retry_rechecks_all_existing_authority_without_renewal",
+    "test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_defer_rejects_ambiguous_errors_and_keeps_same_deadline_budget",
+    "test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_dsn_admission_keeps_dedicated_gate_strict",
+    "test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_only_one_operation_literal_changes_runtime"
+  ],
+  "outcomes": [
+    {
+      "run_id": 41121907646,
+      "job_id": 124289729177,
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "head_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_sha": "f2301135be402150c6f70338fbe1a9c0856e1c8d",
+      "checkout_tree_sha": "564347923f62753c8303c7448455310528ff6b72",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "step_count": 10,
+      "started_at": "2026-10-30T20:16:58Z",
+      "completed_at": "2026-10-30T20:17:39Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41121907646",
+      "test_seconds": 13.49,
+      "decoded_log_sha256": "5678b5d6bbf392156b176a7cae0c6e8c0a12f980e869ebbb0f3c2c5b95ad68c1",
+      "decoded_log_bytes": 36713,
+      "errors": 0,
+      "failures": 0,
+      "passed_tests": 737,
+      "skipped_tests": 382,
+      "warnings": 1,
+      "skip_interpretation": "General release has no PostgreSQL service; dedicated ingestion must separately pass with zero skips."
+    },
+    {
+      "run_id": 41121907649,
+      "job_id": 124289729376,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "head_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_sha": "f2301135be402150c6f70338fbe1a9c0856e1c8d",
+      "checkout_tree_sha": "564347923f62753c8303c7448455310528ff6b72",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "step_count": 14,
+      "started_at": "2026-10-30T20:16:58Z",
+      "completed_at": "2026-10-30T20:23:33Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41121907649",
+      "test_seconds": 368.699,
+      "decoded_log_sha256": "4bc437fe5ccda863c9790cd9389a030a8483440bfaa956aa64e76fee3de6df80",
+      "decoded_log_bytes": 6050265,
+      "errors": 0,
+      "failures": 0,
+      "tests": 729,
+      "skips": 0,
+      "postgres_version": "17.11",
+      "explicit_new_cases_once": 9
+    },
+    {
+      "run_id": 41121900199,
+      "job_id": 124289713672,
+      "workflow": "release-gate",
+      "event": "push",
+      "run_attempt": 1,
+      "head_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_tree_sha": "564347923f62753c8303c7448455310528ff6b72",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "step_count": 10,
+      "started_at": "2026-10-30T20:16:56Z",
+      "completed_at": "2026-10-30T20:17:22Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41121900199",
+      "test_seconds": 7.63,
+      "decoded_log_sha256": "1f171f692df171c7013b61be6267210ac585408678738e00ea99136ea5879da0",
+      "decoded_log_bytes": 35816,
+      "errors": 0,
+      "failures": 0,
+      "passed_tests": 737,
+      "skipped_tests": 382,
+      "warnings": 1,
+      "skip_interpretation": "General release has no PostgreSQL service; dedicated ingestion must separately pass with zero skips."
+    },
+    {
+      "run_id": 41121900106,
+      "job_id": 124289704115,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_attempt": 1,
+      "head_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_sha": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "checkout_tree_sha": "564347923f62753c8303c7448455310528ff6b72",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "step_count": 14,
+      "started_at": "2026-10-30T20:16:55Z",
+      "completed_at": "2026-10-30T20:24:19Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41121900106",
+      "test_seconds": 413.895,
+      "decoded_log_sha256": "48591b1853050bb170941e7de955beadc3eae921f0683ee04baba8562ad1c847",
+      "decoded_log_bytes": 6049250,
+      "errors": 0,
+      "failures": 0,
+      "tests": 729,
+      "skips": 0,
+      "postgres_version": "17.11",
+      "explicit_new_cases_once": 9
+    }
+  ],
+  "source_artifacts_from_reviewed_published_tree": [
+    {
+      "target_path": "astra_ingestion/rpc_store.py",
+      "bytes": 23247,
+      "sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+      "git_blob": "b423c9cb6ca0adcdece631d12b36e00149dd5b1a"
+    },
+    {
+      "target_path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "bytes": 17878,
+      "sha256": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1",
+      "git_blob": "55cd6637002ec1f7384540fb5fce34fb1ad7535d"
+    },
+    {
+      "target_path": "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py",
+      "bytes": 23970,
+      "sha256": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07",
+      "git_blob": "3eda078918bac6d9806f205330d064bf9380b4a7"
+    }
+  ],
+  "source_bundle": {
+    "path": "review/recovery-v77/defer-native-lock-retry/defer_source_bundle_v77.json",
+    "bytes": 94056,
+    "sha256": "24e6c46d90e03442607eef934501577bd53ae45a43ec7e30fba31bf2b5f008a7"
+  },
+  "unchanged_workflows": [
+    {
+      "path": ".github/workflows/astra-ingestion-qualification.yml",
+      "exact_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "bytes": 3386,
+      "sha256": "da9316b11ee3a03c383f1468b593c9309217b4f3a00b604489a1b398fa6e1dec",
+      "git_blob": "f36b4f21874de6afb141faca74bba1cd2d84e328",
+      "identical_to_a71": true
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "exact_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+      "bytes": 1445,
+      "sha256": "2ba8b0973258e94ce099d1e710f2644b6e00aa41db834d8097aec0d7f040cef7",
+      "git_blob": "4789639a9c553b26a4e5bed81ad333504865e073",
+      "identical_to_a71": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "review/recovery-v77/defer-ci/final_run_job_and_commit_readback_v77.json",
+      "bytes": 19209,
+      "sha256": "e65f306626abf8173c24542478eaf9f1cdf3130c06b2d90ee92eaf6755e95d09"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/poll_history_v77.json",
+      "bytes": 16894,
+      "sha256": "996b1aa19ebf7b4b526a5ebf21f09342f0993b1c14c785b18818384ae97ff4c3"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/workflow_definitions_v77.json",
+      "bytes": 5253,
+      "sha256": "c192d1382d1cad5dd64f6d6ff0c679d87dc9761cc4aeec903c040e8520370dda"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/workflow_identity_v77.json",
+      "bytes": 650,
+      "sha256": "73cf09509f31d616fe89cbdf9781752ccf9ecbaa633d388a132533b85476ca61"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/expected_test_inventory_v77.json",
+      "bytes": 1250,
+      "sha256": "8f16dea4e9c7ce9180a99f6450727cd8046cf8a6b9469e3e3de33fce3dc39917"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/published_commit_v77.json",
+      "bytes": 408,
+      "sha256": "5b4360c6395a5e4e86812a0caa977cd1d494fe5379f6dc7948315430f2a13793"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/pr_merge_commit_v77.json",
+      "bytes": 456,
+      "sha256": "8aa235e5923c10f0930ef16fcea754d8dc468d85f7298db7157330c091418e04"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/job_124289729177_verified_v77.json",
+      "bytes": 942,
+      "sha256": "d44428da853bd706732efc88c7a17c068a9ce9cb20b4c430b361850bca58304c"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/job_124289729376_verified_v77.json",
+      "bytes": 5238,
+      "sha256": "9b130479f28044f84259362a4d7b2dfcb97c797d3d36c1a99975d09d325e1ed0"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/job_124289713672_verified_v77.json",
+      "bytes": 932,
+      "sha256": "bb2925622526b69e13ef77a9d1d575a9a8bfee21fb1adb19e2bebe22c42b0bde"
+    },
+    {
+      "path": "review/recovery-v77/defer-ci/job_124289704115_verified_v77.json",
+      "bytes": 5230,
+      "sha256": "c94e1cd825daf841956bd08d0232f5eeb5653044a8816276d59af32b7083934c"
+    }
+  ],
+  "metadata_inconsistency": "Earlier latest-job responses were queued/empty despite terminal run. Retained as observed; final exact-attempt1 metadata and complete log ends independently establish completion.",
+  "interruption": "A local-delay poll script was interrupted before its remote reads. No unknown log request or write was retried.",
+  "generic_job_detail_endpoint": "One unsupported generic GET returned INVALID_ARGUMENT; no policy/permission change or mutation followed. Existing supported log and exact-attempt job tools supplied the needed evidence.",
+  "decoded_log_downloads_per_completed_job": 1,
+  "workflow_triggers_reruns_cancels_edits_or_deployments": 0,
+  "production_sql_calls": 0,
+  "held_checkpoint_and_identity_packages": "Unchanged; no active identity-material retry added.",
+  "activation": "NOT_PERFORMED_BY_CI_REVIEWER. Root owns current source/security/ownership confirmation, any selected pinned existing-worker deploy and independent live readback. This receipt does not establish production-positive retry or sustained recovery."
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "astra.readonly-cron-correlation-interruption/1",
+  "dispatches": 1,
+  "read_only": true,
+  "repeatable_read": true,
+  "statement_timeout": "8s",
+  "lock_timeout": "3s",
+  "recent_rows_limit": 2048,
+  "match_rows_limit": 6,
+  "target_holders": [
+    41372,
+    45486,
+    45636,
+    45761,
+    47948
+  ],
+  "target_job": 602,
+  "result": "TOOL_ABORTED_BY_USER_AFTER314_3_SECONDS_NO_TERMINAL_DATABASE_RESULT",
+  "remote_execution_or_completion": "UNKNOWN",
+  "receipt_received": false,
+  "retried": false,
+  "query_attempt_did_not_authorize_any_mutation": true,
+  "expected_result_limit": "Current command equality and historical PID/time correlation only; no full phase duration or application request binding."
+}

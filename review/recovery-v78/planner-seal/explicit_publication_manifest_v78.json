@@ -1,0 +1,272 @@
+{
+  "additional_existing_fixture_dependencies_to_publish": [],
+  "all_existing_loaded_dependency_blobs_match_base": true,
+  "base_commit": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+  "candidate_file_hashes": {
+    "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql": {
+      "bytes": 15444,
+      "sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3"
+    },
+    "sql/astra_backfill_seal_dynamic_exclusions_v78.sql": {
+      "bytes": 16070,
+      "sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef"
+    }
+  },
+  "changed_helper_count": 2,
+  "existing_loaded_dependencies": 75,
+  "files": [
+    {
+      "bytes": 16070,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "role": "executable_required",
+      "sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef"
+    },
+    {
+      "bytes": 15444,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "role": "executable_required",
+      "sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3"
+    },
+    {
+      "bytes": 19352,
+      "path": "tests/ingestion/test_backfill_seal_dynamic_exclusions_v78.py",
+      "role": "executable_required",
+      "sha256": "cbdf349d2e246162b27d37253e4c37846b2f3fbf31ea6f170ad424db6b179817"
+    },
+    {
+      "bytes": 24285,
+      "path": "review/recovery-v78/planner-seal/candidate_archive_v78.json",
+      "role": "executable_required",
+      "sha256": "cb1b9ac22017e21e712c6e7ba5e995b0b5805a5fcaaf946403706ad2db598850"
+    },
+    {
+      "bytes": 9039,
+      "path": "review/recovery-v78/planner-seal/build_candidate_v78.py",
+      "role": "retained_evidence",
+      "sha256": "b89c3bce94e3b61106d8401f8db6d25d250fa30078dc200b056e9b21d4764f30"
+    },
+    {
+      "bytes": 3942,
+      "path": "review/recovery-v78/planner-seal/qualify_producer_v78.py",
+      "role": "retained_evidence",
+      "sha256": "caa0f4677263d1c462896fd36be8885945c9cdd7a0da84c300679076f8768cea"
+    },
+    {
+      "bytes": 6018,
+      "path": "review/recovery-v78/planner-seal/qualification_and_execution_v78.md",
+      "role": "retained_evidence",
+      "sha256": "6888e39160a6b17028ab47f8e696953dafdd4ec4cf700994ea3a7cda40ca4618"
+    },
+    {
+      "bytes": 2597,
+      "path": "review/recovery-v78/planner-seal/candidate_predicate_diff_v78.patch",
+      "role": "retained_evidence",
+      "sha256": "8b17d6c31918168cb561156bb13746bb2679124446b990c76cd96661b63e8500"
+    },
+    {
+      "bytes": 2406,
+      "path": "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+      "role": "retained_evidence",
+      "sha256": "f1e6c7f27d61c5cdb7eab906c7cd3d78dfe8d9d2274db6646f92193b603be141"
+    },
+    {
+      "bytes": 2922,
+      "path": "review/recovery-v78/planner-seal/integrity_helper_hash_readback_v78.json",
+      "role": "retained_evidence",
+      "sha256": "102d986b56c905f540e05a4c6255b5f64ce1316262b9562b79e03bd800a175fa"
+    },
+    {
+      "bytes": 5846,
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_readonly_v78.sql",
+      "role": "retained_evidence",
+      "sha256": "e3710b70c4b4208f98c39a6a744b93818f57ecdce1a5e55cac43b731f8ed727c"
+    },
+    {
+      "bytes": 9729,
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_evidence_v78.json",
+      "role": "retained_evidence",
+      "sha256": "2faae604a9ddb3397a033e6c6ac9d0790867881537dbd927ce316747f2362f83"
+    },
+    {
+      "bytes": 10461,
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_readback_v78.json",
+      "role": "retained_evidence",
+      "sha256": "4f39a0379f336507df37745f5b4c79a73f7fe8afc68609bc9ccf809a80a6eafb"
+    },
+    {
+      "bytes": 1068,
+      "path": "review/recovery-v78/planner-seal/source_only_dispatch_v78.json",
+      "role": "retained_evidence",
+      "sha256": "9806fd9297e5b8ad3b65862e0923af5a571db95c352bcf669d19a3f53e677856"
+    },
+    {
+      "bytes": 30637,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt01_v78.json",
+      "role": "retained_evidence",
+      "sha256": "5a05766778f40d394bd033ee3fb65ef8cae723af1c48feed8686af08eb4d50ed"
+    },
+    {
+      "bytes": 37678,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt02_v78.json",
+      "role": "retained_evidence",
+      "sha256": "ece8ba58339c7d09e07a638ef5198917781709a06ffb84210090d4a0dc4f5abd"
+    },
+    {
+      "bytes": 38178,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt03_v78.json",
+      "role": "retained_evidence",
+      "sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e"
+    },
+    {
+      "bytes": 8392,
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/build_candidate_v78.py",
+      "role": "retained_evidence",
+      "sha256": "d13d6eb8d98259c7e3a5fc08b06b343ded67885cd183146106b6883f901efa34"
+    },
+    {
+      "bytes": 22824,
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/candidate_archive_v78.json",
+      "role": "retained_evidence",
+      "sha256": "0f8ee6721bdfb1eb5053d48968687b109572ff79dac8ae53217c56ec65cf4547"
+    },
+    {
+      "bytes": 13938,
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "role": "retained_evidence",
+      "sha256": "f1bf394169bc32f079d94db5dc2cfe1fbac08db5d930b5335714bde30de62bd2"
+    },
+    {
+      "bytes": 13312,
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "role": "retained_evidence",
+      "sha256": "8e1548b13d085ee43d755ab9400378d11002322d1b60ce1fd90e2b2fb3f51936"
+    },
+    {
+      "bytes": 10145,
+      "path": "review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+      "role": "retained_evidence",
+      "sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7"
+    },
+    {
+      "bytes": 10465,
+      "path": "review/recovery-v78/planner-seal-independent/retained_integrity_helper_definitions_v78.json",
+      "role": "retained_evidence",
+      "sha256": "3be55d9380f286750d7c528ce56ef5fcf32ce98f0236ba0816e1c41a766d0174"
+    },
+    {
+      "bytes": 7769,
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+      "role": "retained_evidence",
+      "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0"
+    },
+    {
+      "bytes": 2459,
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.patch",
+      "role": "retained_evidence",
+      "sha256": "fa32d6880a29628fa5e8841047a4b4a83d8f87f724bfeefb06f6f5ba3fea5e83"
+    },
+    {
+      "bytes": 6514,
+      "path": "review/recovery-v78/planner-seal-independent/independent_preliminary_review_v78.json",
+      "role": "retained_evidence",
+      "sha256": "0ab8bbc49154075ec6151112a372574447ceaa5d7f46ea94dc39117afc00b02b"
+    },
+    {
+      "bytes": 10959,
+      "path": "review/recovery-v78/planner-seal-independent/independent_candidate_review_v78.json",
+      "role": "retained_evidence",
+      "sha256": "07ce0ef86c18651b6978ae867ef57bfa2abd224b03835bd0086bef768846314c"
+    },
+    {
+      "bytes": 17102,
+      "path": "review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+      "role": "retained_evidence",
+      "sha256": "4451e1214ebe59e67713eafeb95de32a82bbac6595505f2006f285005e721a6e"
+    },
+    {
+      "bytes": 11369,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt01_v78.json",
+      "role": "retained_evidence",
+      "sha256": "b62f7443bed9e110a9570dc765434e679a9f6f8b20ea56e8e9050157ff2a6ee3"
+    },
+    {
+      "bytes": 17780,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt02_v78.json",
+      "role": "retained_evidence",
+      "sha256": "8c489cce169ef0f62353dd9308913f853de59a2932e0d08c571087d845d7f66a"
+    },
+    {
+      "bytes": 14617,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+      "role": "retained_evidence",
+      "sha256": "eba04a321121c362f82cc142de875190867ab88dd758d1d8e369bfc1f5f04c4d"
+    },
+    {
+      "bytes": 242,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_cleanup_readback_v78.json",
+      "role": "retained_evidence",
+      "sha256": "8108b74ced89891686b184246d9ebe359b57696472540e309b8d82542b69b4a3"
+    },
+    {
+      "bytes": 18147,
+      "path": "review/recovery-v78/planner-seal-independent/independent_final_review_v78.json",
+      "role": "independent_final_admission_review",
+      "sha256": "05f50f2ca881eedcc7af1b8f158dc4fe43e7bdf1cc821dcdd1e607637c0e370c"
+    }
+  ],
+  "independent_final_review_path": "review/recovery-v78/planner-seal-independent/independent_final_review_v78.json",
+  "independent_final_review_path_pending": false,
+  "predicate_replacements": 3,
+  "producer_actual_postgresql_cases": 9,
+  "producer_receipt_sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e",
+  "producer_source_integrity_cases": 1,
+  "producer_test_count": 10,
+  "production_calls_after_root_local_only_instruction": 0,
+  "production_writes_by_this_agent": 0,
+  "protected_function_guard_count": 13,
+  "publication_paths": [
+    "sql/astra_backfill_seal_dynamic_exclusions_v78.sql",
+    "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+    "tests/ingestion/test_backfill_seal_dynamic_exclusions_v78.py",
+    "review/recovery-v78/planner-seal/candidate_archive_v78.json",
+    "review/recovery-v78/planner-seal/build_candidate_v78.py",
+    "review/recovery-v78/planner-seal/qualify_producer_v78.py",
+    "review/recovery-v78/planner-seal/qualification_and_execution_v78.md",
+    "review/recovery-v78/planner-seal/candidate_predicate_diff_v78.patch",
+    "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+    "review/recovery-v78/planner-seal/integrity_helper_hash_readback_v78.json",
+    "review/recovery-v78/planner-seal/affected_row_classification_readonly_v78.sql",
+    "review/recovery-v78/planner-seal/affected_row_classification_evidence_v78.json",
+    "review/recovery-v78/planner-seal/affected_row_classification_readback_v78.json",
+    "review/recovery-v78/planner-seal/source_only_dispatch_v78.json",
+    "review/recovery-v78/planner-seal/producer_qualification_attempt01_v78.json",
+    "review/recovery-v78/planner-seal/producer_qualification_attempt02_v78.json",
+    "review/recovery-v78/planner-seal/producer_qualification_attempt03_v78.json",
+    "review/recovery-v78/planner-seal/prior_nine_pin_candidate/build_candidate_v78.py",
+    "review/recovery-v78/planner-seal/prior_nine_pin_candidate/candidate_archive_v78.json",
+    "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_v78.sql",
+    "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+    "review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+    "review/recovery-v78/planner-seal-independent/retained_integrity_helper_definitions_v78.json",
+    "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+    "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.patch",
+    "review/recovery-v78/planner-seal-independent/independent_preliminary_review_v78.json",
+    "review/recovery-v78/planner-seal-independent/independent_candidate_review_v78.json",
+    "review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+    "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt01_v78.json",
+    "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt02_v78.json",
+    "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+    "review/recovery-v78/planner-seal-independent/focused_snapshot_cleanup_readback_v78.json",
+    "review/recovery-v78/planner-seal-independent/independent_final_review_v78.json",
+    "review/recovery-v78/planner-seal/explicit_publication_manifest_v78.json"
+  ],
+  "schema": "astra.planner-seal-qualified-publication-selection/1",
+  "status": "QUALIFIED_LOCALLY_AND_INDEPENDENTLY_REVIEWED_AWAITING_EXACT_COMMIT_CI_AND_ROOT_INSTALLATION",
+  "test_sha256": "cbdf349d2e246162b27d37253e4c37846b2f3fbf31ea6f170ad424db6b179817",
+  "unproven": [
+    "Production-scale 979516-row SEAL aggregation performance",
+    "Current production plan-unit count equals planner expectation",
+    "Production planner or ingestion mission completion"
+  ],
+  "worker_deployment_required": false
+}

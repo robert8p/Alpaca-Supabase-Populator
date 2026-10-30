@@ -1,0 +1,29 @@
+{
+  "schema": "astra.implementation-task-prompt-independent-readback/1",
+  "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "actual_updated_at": "2026-10-30T22:33:04.145383+00:00",
+  "expected_update_ack_at": "2026-10-30T22:32:42.823292+00:00",
+  "prompt_sha256": "9bb7bd973d44796fb6c2080f0cbd9de51623f32fe546c9cdd8d0064f244ddb48",
+  "prompt_chars": 99585,
+  "exact_prompt_match": true,
+  "enabled": true,
+  "schedule_unchanged": true,
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "title_unchanged": true,
+  "last_run": {
+    "id": "ffeb5ee5-3a80-8329-898a-0ae0480a19d4",
+    "recorded_status": "completed",
+    "scheduled_for": "2026-10-30T22:00:00Z",
+    "started_at": "2026-10-30T22:04:30.935159Z",
+    "completed_at": "2026-10-30T22:07:57.702926Z",
+    "chat_ref": {
+      "type": "chatgpt",
+      "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+    }
+  },
+  "delivery_status": "unknown",
+  "delivery_only_mute_supported": false,
+  "claim_of_platform_muting": false,
+  "first_update_error_preserved": true,
+  "automatic_update_budget_remaining": 0
+}

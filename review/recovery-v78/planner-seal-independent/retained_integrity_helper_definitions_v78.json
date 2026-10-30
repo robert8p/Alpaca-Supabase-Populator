@@ -1,0 +1,61 @@
+{
+  "external_calls": 0,
+  "functions": [
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_plan_coverage_check_v2(p_run_id text, p_trading datemultirange, p_calendar datemultirange)\n RETURNS jsonb\n LANGUAGE sql\n STABLE\n SET search_path TO ''\nAS $function$\n SELECT jsonb_build_object('missing_member_date_workflows',COALESCE(jsonb_agg(z),'[]')) FROM (\n  SELECT f.family,m.member_id,\n   (CASE WHEN f.family IN ('P01','P02','D01','D02','D03','D04','D05','S01') THEN p_trading ELSE p_calendar END-COALESCE(c.covered_dates,'{}'::datemultirange))::text missing_dates\n  FROM astra_ingestion_v1.backfill_family_catalogue_v2 f CROSS JOIN astra_ingestion_v1.backfill_members_v2 m\n  LEFT JOIN astra_ingestion_v1.backfill_plan_coverage_v2 c ON c.run_id=m.run_id AND c.member_id=m.member_id AND c.family=f.family\n  WHERE m.run_id=p_run_id AND f.family NOT IN ('REF03','CTX06')\n   AND NOT COALESCE(c.covered_dates,'{}'::datemultirange) @> CASE WHEN f.family IN ('P01','P02','D01','D02','D03','D04','D05','S01') THEN p_trading ELSE p_calendar END\n  UNION ALL SELECT 'CTX06','__COHORT__',(p_trading-COALESCE(c.covered_dates,'{}'::datemultirange))::text\n   FROM (SELECT 1) x LEFT JOIN astra_ingestion_v1.backfill_plan_coverage_v2 c ON c.run_id=p_run_id AND c.family='CTX06' AND c.member_id='__COHORT__'\n   WHERE NOT COALESCE(c.covered_dates,'{}'::datemultirange) @> p_trading\n  LIMIT 100\n ) z\n$function$\n",
+      "definition_provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "definition_source_path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63",
+      "oid": "16041470",
+      "retained_pin_source_path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_snapshot_task_v2(p_task_id text)\n RETURNS boolean\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2; v_start date; v_end date; v_period daterange; v_member text; v_family text;\n v_added integer; v_map jsonb; v_map_hash text; v_map_valid boolean;\nBEGIN\n SELECT * INTO STRICT t FROM astra_ingestion_v1.backfill_tasks_v2 WHERE id=p_task_id;\n IF (t.kind='alpaca_option_bars' AND t.scope ? 'enumeration_parent') OR t.scope ? 'reuse_parent' OR t.scope ? 'identity_refresh_of' OR t.kind IN('retained_identity','retained_massive_archive') THEN RETURN false; END IF;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE task_id=t.id) THEN RETURN false; END IF;\n v_start:=astra_ingestion_v1.backfill_date_v2(t.scope->>'target_start');v_end:=astra_ingestion_v1.backfill_date_v2(t.scope->>'target_end');\n IF v_start IS NOT NULL AND v_end IS NOT NULL AND v_start<=v_end AND t.scope->>'market_timezone'='America/New_York'\n  AND GREATEST(v_start,'2025-09-01'::date)<=LEAST(v_end,'2026-07-31'::date) THEN\n  v_period:=daterange(GREATEST(v_start,'2025-09-01'::date),LEAST(v_end,'2026-07-31'::date)+1,'[)');\n END IF;\n IF t.family='CTX06' THEN\n  v_map:=t.scope->'representative_security';v_map_valid:=false;\n  IF jsonb_typeof(v_map)='object' THEN\n   v_map_hash:=encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(v_map),'UTF8')),'hex');\n   SELECT count(*)=3000 AND bool_and(m.member_id IS NOT NULL AND jsonb_typeof(x.value)='object' AND length(COALESCE(x.value->>'symbol',''))>0\n    AND (NOT x.value ? 'eligible' OR jsonb_typeof(x.value->'eligible') IN ('boolean','null'))) INTO v_map_valid\n    FROM jsonb_each(v_map) x LEFT JOIN astra_ingestion_v1.backfill_members_v2 m ON m.run_id=t.run_id AND m.member_id=x.key;\n  END IF;\n END IF;\n INSERT INTO astra_ingestion_v1.backfill_plan_units_v2(run_id,task_id,family,definition_sha256,target_period,representative_map_sha256,representative_map_valid)\n VALUES(t.run_id,t.id,t.family,astra_ingestion_v1.backfill_task_definition_sha256_v2(t),v_period,v_map_hash,v_map_valid) ON CONFLICT(task_id) DO NOTHING;\n GET DIAGNOSTICS v_added=ROW_COUNT;\n IF v_added=0 THEN RETURN false; END IF;\n FOR v_family IN SELECT t.family UNION ALL SELECT 'P02' WHERE t.family='P01' AND t.kind IN ('alpaca_stock_bars','retained_reuse') LOOP\n  FOR v_member IN SELECT jsonb_array_elements_text(COALESCE(t.scope->'member_ids','[]')) WHERE t.family NOT IN ('REF03','CTX06')\n   UNION ALL SELECT '__COHORT__' WHERE t.family='CTX06'\n  LOOP\n   INSERT INTO astra_ingestion_v1.backfill_plan_coverage_v2(run_id,family,member_id,covered_dates,task_count)\n   VALUES(t.run_id,v_family,v_member,CASE WHEN v_period IS NULL THEN '{}'::datemultirange ELSE datemultirange(v_period) END,1)\n   ON CONFLICT(run_id,family,member_id) DO UPDATE SET covered_dates=astra_ingestion_v1.backfill_plan_coverage_v2.covered_dates+EXCLUDED.covered_dates,task_count=astra_ingestion_v1.backfill_plan_coverage_v2.task_count+1;\n  END LOOP;\n END LOOP;\n RETURN true;\nEND $function$\n",
+      "definition_provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "definition_source_path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418",
+      "oid": "16041466",
+      "retained_pin_source_path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "signature": "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.rpc_canonical(p_value jsonb)\n RETURNS text\n LANGUAGE plpgsql\n IMMUTABLE STRICT\n SET search_path TO ''\nAS $function$\nDECLARE v_result text;\nBEGIN\n  CASE pg_catalog.jsonb_typeof(p_value)\n  WHEN 'object' THEN\n    SELECT '{' || COALESCE(pg_catalog.string_agg(astra_ingestion_v1.rpc_ascii_string(k) || ':' || astra_ingestion_v1.rpc_canonical(v),',' ORDER BY k COLLATE \"C\"),'') || '}'\n      INTO v_result FROM pg_catalog.jsonb_each(p_value) e(k,v);\n  WHEN 'array' THEN\n    SELECT '[' || COALESCE(pg_catalog.string_agg(astra_ingestion_v1.rpc_canonical(v),',' ORDER BY i),'') || ']'\n      INTO v_result FROM pg_catalog.jsonb_array_elements(p_value) WITH ORDINALITY e(v,i);\n  WHEN 'string' THEN v_result := astra_ingestion_v1.rpc_ascii_string(p_value #>> '{}');\n  ELSE v_result := p_value::text;\n  END CASE;\n  RETURN v_result;\nEND $function$\n",
+      "definition_provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "definition_source_path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd",
+      "oid": "15986014",
+      "retained_pin_source_path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "signature": "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_date_v2(v text)\n RETURNS date\n LANGUAGE plpgsql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\nBEGIN\n IF v IS NULL OR v !~ '^\\d{4}-\\d{2}-\\d{2}' THEN RETURN NULL; END IF;\n RETURN left(v,10)::date;\nEXCEPTION WHEN invalid_datetime_format OR datetime_field_overflow THEN RETURN NULL;\nEND $function$\n",
+      "definition_provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "definition_source_path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958",
+      "oid": "16041364",
+      "retained_pin_source_path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "signature": "astra_ingestion_v1.backfill_date_v2(text)",
+      "source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_task_definition_sha256_v2(t astra_ingestion_v1.backfill_tasks_v2)\n RETURNS text\n LANGUAGE sql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\n SELECT encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(jsonb_build_object('id',t.id,'run_id',t.run_id,'family',t.family,'provider',t.provider,'kind',t.kind,'scope',t.scope,'dependencies',to_jsonb(t.dependencies))),'UTF8')),'hex')\n$function$\n",
+      "definition_provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "definition_source_path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc",
+      "oid": "16041465",
+      "retained_pin_source_path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633"
+    }
+  ],
+  "production_writes": 0,
+  "representative_map_validation": "Inline in the already currently pinned backfill_snapshot_task_v2: exact3000 JSON entries, frozen-member join, object value, nonempty symbol and eligible boolean/null. rpc_canonical hashes the explicit map; it does not replace validity checks. backfill_seal_plan_v2 rejects absent CTX06 units or any representative_map_valid distinct from true.",
+  "retained_pin_file_sha256": "46a8815030a25a5b4bd1974bec3997dc4fbcf668accf063a8effc717a8753609",
+  "schema": "astra.retained-planner-integrity-helper-source/1",
+  "source_file_sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88",
+  "status": "RETAINED_SOURCE_PIN_MATCH_CURRENT_EQUALITY_REQUIRED_FOR_FOUR_ADDITIONAL_HELPERS"
+}

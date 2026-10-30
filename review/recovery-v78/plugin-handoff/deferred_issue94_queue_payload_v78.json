@@ -1,0 +1,114 @@
+{
+  "schema": "astra.deferred-controller-plugin-handoff/1",
+  "queue_key": "PLUGIN_HANDOFF:github:robert8p/Alpaca-Supabase-Populator:issue:94",
+  "state": "DEFERRED_BEHIND_BACKFILL_RELIABILITY",
+  "prepared_at_utc": "2026-10-30 22:18:56 UTC",
+  "priority_rule": "After current backfill reliability, planner SEAL/accounting and scoped residual-fault recovery; do not interrupt useful ingestion or displace existing assignments.",
+  "source": {
+    "issue_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94",
+    "issue_id": 6126962822,
+    "issue_number": 94,
+    "state": "open",
+    "updated_at": "2026-10-30T21:08:02Z",
+    "title": "Deferred ingestion-owner handoff: ASTRA Operations atomic port and workflow dispatch eligibility",
+    "body_sha256": "34f1a69cbc5002ee3a2ee926a9bb0deea50a09fc45779cf624aad4e44a76d424",
+    "body_utf8_bytes": 4103,
+    "snapshot_path": "review/recovery-v78/plugin-handoff/issue94_source_readback_v78.json",
+    "snapshot_sha256": "b7ab78c105fd2c2dbfd22502c5fb90b46b02a11c9fa513c8a50c89454ecf7d9b",
+    "comments_observed": 0
+  },
+  "ownership": {
+    "ingestion_controller_conversation": "https://chatgpt.com/c/6ae206a6-9524-83ed-b103-7c23bcfe51e5",
+    "existing_implementation_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "implementation_owner_label": "root-replacement-20261030T042603Z",
+    "writer_authority": "Reconcile current durable owner, stop, fence and finite lease before any controller write; this payload grants none.",
+    "client_capability_owner": "ASTRA Operations MCP, not a replacement ingestion controller",
+    "client_branch": "feat/astra-operations-mcp-20261030",
+    "client_branch_readback_commit": "fb20e97e34d0cba21c6f707171d64fd66cdc29f2",
+    "related_client_task_from_user_context": "6ae4d6e1e2a48191aa7edaf9464f77e5",
+    "related_client_task_fresh_readback": "NOT_PERFORMED"
+  },
+  "requested_owner_interfaces": [
+    {
+      "name": "lookupExact",
+      "requirement": "Source-backed lookup of the exact immutable admission/outcome in the existing controller store."
+    },
+    {
+      "name": "admitExact",
+      "requirement": "Admission bound to the current owner, exact immutable change, stop/fence/lease and physical resource."
+    },
+    {
+      "name": "reserveAndDispatchUnderOwnerGuard",
+      "requirement": "Owner-atomic reservation and guarded provider dispatch; preserve physical-resource exclusivity, crash windows and UNKNOWN no-replay."
+    },
+    {
+      "name": "readbackExact",
+      "requirement": "Provider-causal exact-operation readback; ingestion page receipt semantics alone are not equivalence proof."
+    }
+  ],
+  "source_findings_status": "The issue's API, RPC and workflow source findings were read as reported evidence; their referenced blobs were not independently requalified by this deferred-handoff preparation.",
+  "issue_reported_gaps": [
+    "Existing authenticated Basic API identity can control jobs and must not be shared with Sites.",
+    "Current ingestion RPC does not expose the four requested owner-port operations.",
+    "Existing job/page idempotency and provider-page receipts do not establish a cross-provider immutable-change reservation, physical-resource lock and causal Render/GitHub write-readback port.",
+    "Qualification workflow reportedly lacks workflow_dispatch on ingestion branch and was absent on main; default-branch dispatch eligibility is unproved.",
+    "The Render ingestion worker already exists; no duplicate worker or new paid service is admitted."
+  ],
+  "document_reconciliation": {
+    "requested_path": "engineering/astra-operations-mcp/sites-v11/CONTROLLER_OWNER_PORT_QUALIFICATION.md",
+    "related_contract_name": "OWNER_PORT_ADOPTION_CONTRACT.md",
+    "directory_read_url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/contents/engineering/astra-operations-mcp/sites-v11?ref=fb20e97e34d0cba21c6f707171d64fd66cdc29f2",
+    "directory_read_status": 404,
+    "interpretation": "The issue's v11 directory was not retrievable at the current isolated Operations branch pin. This does not establish absence in an earlier release or invalidate the issue. Detailed owner-port contract content was not reviewed.",
+    "next_dependency": "Locate and hash-bind the exact published v11 contract/qualification artifact before adopting its detailed interface; if only client-local, request the existing capability owner to publish an owner-reviewable reference."
+  },
+  "bounded_next_executable_action": {
+    "owner": "Existing ingestion implementation controller",
+    "action": "After the reliability priority permits, map the existing durable outcome store and stop/fence/lease/resource-lock boundaries to the four requested operations from exact current source. Reconcile the missing v11 contract reference. Report a precise missing capability where no suitable atomic interface exists; do not introduce a second journal/controller.",
+    "scope": "Read-only source-backed owner-interface mapping and a bounded proposal/qualification plan; no provider dispatch or access configuration.",
+    "follow_on": "Decide whether a manual ingestion qualification trigger and a separately restricted GET-only status facade are useful. Any implementation uses this ingestion owner's own branch, review and release process.",
+    "exact_current_source_pins_required_at_action_time": true
+  },
+  "qualification_requirements_from_issue": [
+    "20 concurrent requests against one immutable change and physical resource",
+    "Alternate idempotency keys and revisions cannot bypass exclusivity",
+    "Stop, owner and fence changes invalidate dispatch",
+    "PREPARED and DISPATCHING crash windows preserve uncertainty",
+    "UNKNOWN effects remain nonreplayable until authoritative reconciliation",
+    "Readback is causally bound to the exact provider operation"
+  ],
+  "gates": {
+    "current_owner_and_stop_fence_lease": true,
+    "same_existing_controller_and_task": true,
+    "frozen_members_and_two_provider_scope": true,
+    "v75_no_retry_hold_preserved": true,
+    "no_new_credentials_or_secret_transfer": true,
+    "no_new_persistent_grant_or_trust_without_specific_action_time_confirmation": true,
+    "account_provider_identity_effective_permissions_secure_destination_expiry_revocation_must_be_known": true,
+    "no_workflow_trigger_change_under_issue_authority": true,
+    "default_branch_workflow_presence_and_eligibility_must_be_verified_before_any_dispatch_proposal": true,
+    "no_production_write_site_release_pr_approval_spending_scanner_action_or_trade_authorized": true,
+    "no_duplicate_render_worker": true,
+    "no_second_journal_or_controller": true
+  },
+  "admission": {
+    "authorized_now": "Acknowledge and durably queue this deferred handoff after higher-priority backfill reliability.",
+    "credentials_or_provider_grants_authorized": false,
+    "new_persistent_security_configuration_authorized": false,
+    "production_activation_authorized": false,
+    "user_action_required_now": false,
+    "specific_future_owner_action": "Prepare any exact security/access diff and tests first; dot relays genuine action-time confirmation only if required."
+  },
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "equivalent_queue_assignment": "NOT_READ_HERE_ROOT_MUST_DEDUPLICATE_AND_LINK_EXISTING_ASSIGNMENT_BEFORE_PERSISTING",
+  "actions_performed": {
+    "github_reads_only": true,
+    "external_writes": 0,
+    "db_queries": 0,
+    "provider_requests": 0,
+    "credential_reads": 0,
+    "deployments": 0,
+    "automation_changes": 0,
+    "local_artifact_preparation": true
+  }
+}

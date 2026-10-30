@@ -1,0 +1,563 @@
+{
+  "schema": "astra.existing-controller-resume-checkpoint/1",
+  "version": "v78",
+  "checkpoint_kind": "QUALIFIED_RELEASE_READY_PUBLICATION_AND_CI_PENDING",
+  "prepared_at": "2026-10-30T22:39:36.185527+00:00",
+  "source_parent": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+  "authority": {
+    "ownership_audit": 95,
+    "owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "lease_until": "2026-10-30T23:00:00Z",
+    "ownership_independent_readback_at": "2026-10-30T22:20:12.430766Z",
+    "user_transient_2106_2150_delivery": "UNVERIFIED_NOT_ASSUMED_EXECUTED",
+    "later_stop_reconciliation": "User stopped unresponsive chat only22:06 and explicitly resumed thiscontroller; runACTIVE/fence1/workerLIVE; no worker stop applied."
+  },
+  "mission": {
+    "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+    "sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+    "all_ten_sections_preserved": true,
+    "fixed_members": 3000,
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+    "cohort_manifest_sha256": "4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f",
+    "target_start": "2025-09-01",
+    "target_end": "2026-07-31",
+    "market_timezone": "America/New_York",
+    "reranking_invoked": false
+  },
+  "completed_release_reused": {
+    "commit": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+    "tree": "564347923f62753c8303c7448455310528ff6b72",
+    "deploy_id": "dep-dbigesegekts73f8mh50",
+    "live_at": "2026-10-30T21:09:43.452059Z",
+    "deploy_dispatches": 1,
+    "audits": [
+      87,
+      88,
+      89,
+      90,
+      91,
+      94
+    ],
+    "sql_pins_unchanged": true,
+    "replayed": false
+  },
+  "acquisition": {
+    "snapshot_at": "2026-10-30T22:19:09.599450Z",
+    "pages": 12000,
+    "initial_matching_readbacks": 11999,
+    "initial_missing": 1,
+    "initial_mismatches": 0,
+    "post_v77_pages": 2397,
+    "initial_post_v77_matches": 2396,
+    "post_v77_actual_provider_pages": 1474,
+    "latest_source_commit": "2026-10-30T22:19:07.144807Z",
+    "source_bytes": 973890937,
+    "records_or_pointers": 1360732,
+    "bounded_population_complete": true,
+    "single_pending_page": {
+      "task_id": "backfill-plan-efb7b6bb828eee839ec5b81ee165642d7dbfa3a6dd86b67d3752f66118e4ada3",
+      "page_no": 0,
+      "body_sha256": "101b91a9a63b9030897de34c4f4ae6adac6c5fb95a89e19c01e500d0e05fc20e",
+      "records": 974,
+      "verified_at": "2026-10-30T22:19:07.866079Z",
+      "independent_pk_read_at": "2026-10-30T22:20:12.430766Z",
+      "hash_and_count_match": true
+    },
+    "original_snapshot_fully_matched_after_pk_reconciliation": true,
+    "physical_counts_are_complete_coverage": false,
+    "sustained_reliability_proved": false
+  },
+  "planner": {
+    "installed_state": {
+      "phase": "SEAL",
+      "member_cursor": 3001,
+      "breadth_cursor": 230,
+      "planning_complete": false,
+      "next": "Diagnose actual seal accounting and prepare smallest executable correction; let ordinary worker continue, do not force planner status."
+    },
+    "live_diagnosis": "Live bounded retained_identity and retained_massive_archive rows are considered by planner snapshot and seal completeness predicates but explicitly skipped by installed snapshot_task. This establishes a predicate mismatch; it is not an exact total, first-batch or performance measurement.",
+    "positive_affected_samples": [
+      {
+        "class": "retained_identity",
+        "candidates_seen": 9,
+        "candidate_limit_reached": true,
+        "old_predicate_missing_snapshot_examples": 9
+      },
+      {
+        "class": "retained_massive_archive",
+        "candidates_seen": 9,
+        "candidate_limit_reached": true,
+        "old_predicate_missing_snapshot_examples": 9
+      }
+    ],
+    "affected_evidence_sha256": "2faae604a9ddb3397a033e6c6ac9d0790867881537dbd927ce316747f2362f83",
+    "candidate_files": {
+      "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql": {
+        "bytes": 15444,
+        "sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3"
+      },
+      "sql/astra_backfill_seal_dynamic_exclusions_v78.sql": {
+        "bytes": 16070,
+        "sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef"
+      }
+    },
+    "candidate_status": "QUALIFIED_AND_INDEPENDENTLY_REVIEWED_NOT_INSTALLED",
+    "security_diff": {
+      "authentication_changes": false,
+      "broad_plan_static_exclusion": false,
+      "counter_or_manifest_mutation": false,
+      "new_grants": false,
+      "new_routes": false,
+      "owner_or_acl_changes": false,
+      "source_cost_scope_changes": false
+    },
+    "next_executable_step": "Qualify and independently review the exact two-helper three-predicate exclusion alignment on actual PostgreSQL; preserve count/hash/calendar/member-map/coverage and owner/security checks, then publish and install only through exact-source release admission. Worker continues ordinary acquisition; do not manually invoke SEAL or force planning_complete.",
+    "focused_independent_postgres": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "version": "16.15",
+      "proof_path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+      "proof_sha256": "eba04a321121c362f82cc142de875190867ab88dd758d1d8e369bfc1f5f04c4d",
+      "full_integration_pending": false
+    },
+    "full_qualification": {
+      "total_producer_tests": 10,
+      "actual_postgres_tests": 9,
+      "source_binding_tests": 1,
+      "independent_postgres_tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "producer_receipt_sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e",
+      "independent_review_sha256": "05f50f2ca881eedcc7af1b8f158dc4fe43e7bdf1cc821dcdd1e607637c0e370c",
+      "protected_function_pins": 13
+    }
+  },
+  "residual_faults": {
+    "audit": 97,
+    "source_evidence_sha256": "5e4f2c558bfdd33eb62265f5b24772f37d0b48f2d28c3ca470cdfead20a871b0",
+    "established_cause": "The five retained time windows contain actual shared outer-gate lock waits and native55P03 aborts at authenticated rpc_dispatch line39. Historical holders are identified per window. The deployed finite strict-abort retry policy is exhausted for verify/planner/commit; the two excluded material operations emit ambiguous HTTP_ERROR. This is repairable contention evidence, not evidence of no-runnable-task/provider absence.",
+    "causal_limits": [
+      "Temporal proximity does not bind the Render operation to a particular database request, task, claim or exact send count.",
+      "The holder PID is observed in native lock-wait detail; its exact cron/job identity remains unverified because the sole bounded mapping read did not return a result.",
+      "No internal monitor phase duration, complete gate-hold duration, sustainable throughput or mission completion is established.",
+      "Original HTTP-ambiguous effects remain unreplayed; native confirmed-abort classification does not license resetting provider, task or total retry counters."
+    ],
+    "incidents": [
+      {
+        "operation": "backfill_verify",
+        "render_log_id": "a8a5904c-718c-4487-8d55-adf1c9a395e7",
+        "timestamp": "2026-10-30T21:16:10.345769942Z",
+        "reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+        "holder_pids": [
+          41372
+        ],
+        "queue_key": "RUNTIME_RPC:backfill_verify:render:a8a5904c-718c-4487-8d55-adf1c9a395e7",
+        "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+        "http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING"
+      },
+      {
+        "operation": "backfill_plan_next",
+        "render_log_id": "bc52984f-5823-422f-b317-813e2d6a92e3",
+        "timestamp": "2026-10-30T21:46:10.476307775Z",
+        "reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+        "holder_pids": [
+          45486
+        ],
+        "queue_key": "RUNTIME_RPC:backfill_plan_next:render:bc52984f-5823-422f-b317-813e2d6a92e3",
+        "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+        "http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING"
+      },
+      {
+        "operation": "backfill_identity_material",
+        "render_log_id": "c72374d0-53da-472a-94f0-047a6efea329",
+        "timestamp": "2026-10-30T21:48:03.191411368Z",
+        "reason": "HTTP_ERROR",
+        "holder_pids": [
+          45636
+        ],
+        "queue_key": "RUNTIME_RPC:backfill_identity_material:render:c72374d0-53da-472a-94f0-047a6efea329",
+        "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+        "http_outcome": "UNKNOWN_NOT_REPLAYED"
+      },
+      {
+        "operation": "backfill_commit",
+        "render_log_id": "851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+        "timestamp": "2026-10-30T21:50:10.532244945Z",
+        "reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+        "holder_pids": [
+          45761
+        ],
+        "queue_key": "RUNTIME_RPC:backfill_commit:render:851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+        "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+        "http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING"
+      },
+      {
+        "operation": "backfill_material",
+        "render_log_id": "9f0ee4c6-1265-4c91-a0cc-1953946440de",
+        "timestamp": "2026-10-30T22:04:03.133977929Z",
+        "reason": "HTTP_ERROR",
+        "holder_pids": [
+          47948
+        ],
+        "queue_key": "RUNTIME_RPC:backfill_material:render:b0789bcf-2995-4c2d-a0d3-93956f6e58ea",
+        "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+        "http_outcome": "UNKNOWN_NOT_REPLAYED"
+      }
+    ],
+    "runtime_retries_expanded": false
+  },
+  "plugin_handoff": {
+    "schema": "astra.deferred-controller-plugin-handoff/1",
+    "queue_key": "PLUGIN_HANDOFF:github:robert8p/Alpaca-Supabase-Populator:issue:94",
+    "state": "DEFERRED_BEHIND_BACKFILL_RELIABILITY",
+    "prepared_at_utc": "2026-10-30 22:18:56 UTC",
+    "priority_rule": "After current backfill reliability, planner SEAL/accounting and scoped residual-fault recovery; do not interrupt useful ingestion or displace existing assignments.",
+    "source": {
+      "issue_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94",
+      "issue_id": 6126962822,
+      "issue_number": 94,
+      "state": "open",
+      "updated_at": "2026-10-30T21:08:02Z",
+      "title": "Deferred ingestion-owner handoff: ASTRA Operations atomic port and workflow dispatch eligibility",
+      "body_sha256": "34f1a69cbc5002ee3a2ee926a9bb0deea50a09fc45779cf624aad4e44a76d424",
+      "body_utf8_bytes": 4103,
+      "snapshot_path": "review/recovery-v78/plugin-handoff/issue94_source_readback_v78.json",
+      "snapshot_sha256": "b7ab78c105fd2c2dbfd22502c5fb90b46b02a11c9fa513c8a50c89454ecf7d9b",
+      "comments_observed": 0
+    },
+    "ownership": {
+      "ingestion_controller_conversation": "https://chatgpt.com/c/6ae206a6-9524-83ed-b103-7c23bcfe51e5",
+      "existing_implementation_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+      "implementation_owner_label": "root-replacement-20261030T042603Z",
+      "writer_authority": "Reconcile current durable owner, stop, fence and finite lease before any controller write; this payload grants none.",
+      "client_capability_owner": "ASTRA Operations MCP, not a replacement ingestion controller",
+      "client_branch": "feat/astra-operations-mcp-20261030",
+      "client_branch_readback_commit": "fb20e97e34d0cba21c6f707171d64fd66cdc29f2",
+      "related_client_task_from_user_context": "6ae4d6e1e2a48191aa7edaf9464f77e5",
+      "related_client_task_fresh_readback": "NOT_PERFORMED"
+    },
+    "requested_owner_interfaces": [
+      {
+        "name": "lookupExact",
+        "requirement": "Source-backed lookup of the exact immutable admission/outcome in the existing controller store."
+      },
+      {
+        "name": "admitExact",
+        "requirement": "Admission bound to the current owner, exact immutable change, stop/fence/lease and physical resource."
+      },
+      {
+        "name": "reserveAndDispatchUnderOwnerGuard",
+        "requirement": "Owner-atomic reservation and guarded provider dispatch; preserve physical-resource exclusivity, crash windows and UNKNOWN no-replay."
+      },
+      {
+        "name": "readbackExact",
+        "requirement": "Provider-causal exact-operation readback; ingestion page receipt semantics alone are not equivalence proof."
+      }
+    ],
+    "source_findings_status": "The issue's API, RPC and workflow source findings were read as reported evidence; their referenced blobs were not independently requalified by this deferred-handoff preparation.",
+    "issue_reported_gaps": [
+      "Existing authenticated Basic API identity can control jobs and must not be shared with Sites.",
+      "Current ingestion RPC does not expose the four requested owner-port operations.",
+      "Existing job/page idempotency and provider-page receipts do not establish a cross-provider immutable-change reservation, physical-resource lock and causal Render/GitHub write-readback port.",
+      "Qualification workflow reportedly lacks workflow_dispatch on ingestion branch and was absent on main; default-branch dispatch eligibility is unproved.",
+      "The Render ingestion worker already exists; no duplicate worker or new paid service is admitted."
+    ],
+    "document_reconciliation": {
+      "requested_path": "engineering/astra-operations-mcp/sites-v11/CONTROLLER_OWNER_PORT_QUALIFICATION.md",
+      "related_contract_name": "OWNER_PORT_ADOPTION_CONTRACT.md",
+      "directory_read_url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/contents/engineering/astra-operations-mcp/sites-v11?ref=fb20e97e34d0cba21c6f707171d64fd66cdc29f2",
+      "directory_read_status": 404,
+      "interpretation": "The issue's v11 directory was not retrievable at the current isolated Operations branch pin. This does not establish absence in an earlier release or invalidate the issue. Detailed owner-port contract content was not reviewed.",
+      "next_dependency": "Locate and hash-bind the exact published v11 contract/qualification artifact before adopting its detailed interface; if only client-local, request the existing capability owner to publish an owner-reviewable reference."
+    },
+    "bounded_next_executable_action": {
+      "owner": "Existing ingestion implementation controller",
+      "action": "After the reliability priority permits, map the existing durable outcome store and stop/fence/lease/resource-lock boundaries to the four requested operations from exact current source. Reconcile the missing v11 contract reference. Report a precise missing capability where no suitable atomic interface exists; do not introduce a second journal/controller.",
+      "scope": "Read-only source-backed owner-interface mapping and a bounded proposal/qualification plan; no provider dispatch or access configuration.",
+      "follow_on": "Decide whether a manual ingestion qualification trigger and a separately restricted GET-only status facade are useful. Any implementation uses this ingestion owner's own branch, review and release process.",
+      "exact_current_source_pins_required_at_action_time": true
+    },
+    "qualification_requirements_from_issue": [
+      "20 concurrent requests against one immutable change and physical resource",
+      "Alternate idempotency keys and revisions cannot bypass exclusivity",
+      "Stop, owner and fence changes invalidate dispatch",
+      "PREPARED and DISPATCHING crash windows preserve uncertainty",
+      "UNKNOWN effects remain nonreplayable until authoritative reconciliation",
+      "Readback is causally bound to the exact provider operation"
+    ],
+    "gates": {
+      "current_owner_and_stop_fence_lease": true,
+      "same_existing_controller_and_task": true,
+      "frozen_members_and_two_provider_scope": true,
+      "v75_no_retry_hold_preserved": true,
+      "no_new_credentials_or_secret_transfer": true,
+      "no_new_persistent_grant_or_trust_without_specific_action_time_confirmation": true,
+      "account_provider_identity_effective_permissions_secure_destination_expiry_revocation_must_be_known": true,
+      "no_workflow_trigger_change_under_issue_authority": true,
+      "default_branch_workflow_presence_and_eligibility_must_be_verified_before_any_dispatch_proposal": true,
+      "no_production_write_site_release_pr_approval_spending_scanner_action_or_trade_authorized": true,
+      "no_duplicate_render_worker": true,
+      "no_second_journal_or_controller": true
+    },
+    "admission": {
+      "authorized_now": "Acknowledge and durably queue this deferred handoff after higher-priority backfill reliability.",
+      "credentials_or_provider_grants_authorized": false,
+      "new_persistent_security_configuration_authorized": false,
+      "production_activation_authorized": false,
+      "user_action_required_now": false,
+      "specific_future_owner_action": "Prepare any exact security/access diff and tests first; dot relays genuine action-time confirmation only if required."
+    },
+    "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "equivalent_queue_assignment": "CURRENT_QUEUE_READ_22_20_12_HAS_NO_EQUIVALENT_ENTRY",
+    "actions_performed": {
+      "github_reads_only": true,
+      "external_writes": 0,
+      "db_queries": 0,
+      "provider_requests": 0,
+      "credential_reads": 0,
+      "deployments": 0,
+      "automation_changes": 0,
+      "local_artifact_preparation": true
+    },
+    "acknowledged_by_existing_controller": true
+  },
+  "same_implementation_task": {
+    "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "audit": 100,
+    "prompt_sha256": "9bb7bd973d44796fb6c2080f0cbd9de51623f32fe546c9cdd8d0064f244ddb48",
+    "saved_prompt_exact_match": true,
+    "enabled": true,
+    "cadence": "EXISTING_HOURLY_UNCHANGED",
+    "delivery_only_mute_supported": false,
+    "platform_push_or_email_muting_claimed": false,
+    "reporting": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "first_service_error_preserved": true
+  },
+  "held_v75": {
+    "state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "original_create_tree_outcome": "UNKNOWN",
+    "exact_recovery_result": "USER_REJECTED_MCP_TOOL_CALL",
+    "packet_sha256": "8806ef636f5be4220562b0ee52d64426f620461d8ad99adef5f9edd1f9724da3",
+    "expected_tree": "e56dc140deeb00eb2a0aae4e7d572519d773ccd0",
+    "automatic_object_retry_budget": 0,
+    "automatic_recheck_budget": 0,
+    "prior_negative_readback_is_terminal_failure_proof": false,
+    "held_packet_included_in_this_candidate": false
+  },
+  "controller_audits": [
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103
+  ],
+  "worker_stop_restart_redeploy_count_this_resumption": 0,
+  "new_credentials_permissions_sources_subscriptions": false,
+  "mission_complete": false,
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "fresh_preinstall_acquisition_baseline": {
+    "observed_at": "2026-10-30 22:41:03.543818+00",
+    "progress": {
+      "pages": 12756,
+      "missing": 1,
+      "readbacks": 12755,
+      "mismatches": 0,
+      "source_bytes": 1021189808,
+      "latest_commit": "2026-10-30T22:41:02.164591+00:00",
+      "post_v77_pages": 3153,
+      "post_v77_matches": 3152,
+      "records_or_pointers": 1438780,
+      "post_v77_provider_pages": 1939
+    },
+    "bounded_complete": true,
+    "source_samples": [
+      {
+        "kind": "alpaca_reference",
+        "family": "REF01",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-8ed1321bfa5e11a82041adc462d4036dd6f0c4799e9c5f0ee8464fca6f0bf5a0",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T22:40:59.975742+00:00",
+        "generation": 1,
+        "body_sha256": "738d72e66434efef24688f8225b7462fab818f2c84870a02f843c62eec35b60c",
+        "http_status": 200,
+        "verified_at": "2026-10-30T22:41:00.108737+00:00",
+        "committed_at": "2026-10-30T22:41:00.034038+00:00",
+        "has_readback": true,
+        "record_count": 1,
+        "source_bytes": 457,
+        "actual_records": 1,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "738d72e66434efef24688f8225b7462fab818f2c84870a02f843c62eec35b60c",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "alpaca_option_contracts",
+        "family": "CTX02",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-e0ce8fbc093a377690a867ca7786975618c72f3fb79a9b5e959c08aed79fd95a",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T22:40:54.325061+00:00",
+        "generation": 1,
+        "body_sha256": "2c7c115c933f8f3502567550662de95cb692bc9074bd4caeb5626bcd155bcd36",
+        "http_status": 200,
+        "verified_at": "2026-10-30T22:40:55.201457+00:00",
+        "committed_at": "2026-10-30T22:40:54.759181+00:00",
+        "has_readback": true,
+        "record_count": 546,
+        "source_bytes": 381853,
+        "actual_records": 546,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "2c7c115c933f8f3502567550662de95cb692bc9074bd4caeb5626bcd155bcd36",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "massive_short_interest",
+        "family": "S02",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-98f19ba58abffa8371880e85093a6b895aead30175a4d32fec59719089e5e739",
+        "provider": "Massive",
+        "fetched_at": "2026-10-30T22:40:52.958+00:00",
+        "generation": 1,
+        "body_sha256": "1fac10e0eee256c3963fb06eaddf39796cd3cc2f2758d47bc20544f687f79e4d",
+        "http_status": 200,
+        "verified_at": "2026-10-30T22:40:53.091452+00:00",
+        "committed_at": "2026-10-30T22:40:53.015622+00:00",
+        "has_readback": true,
+        "record_count": 22,
+        "source_bytes": 2778,
+        "actual_records": 22,
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "readback_sha256": "1fac10e0eee256c3963fb06eaddf39796cd3cc2f2758d47bc20544f687f79e4d",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "massive_short_volume",
+        "family": "S01",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-1e66700f925d63965d5409b96bee436f10ccdc33743aa819bfa94f9fe0d66e0c",
+        "provider": "Massive",
+        "fetched_at": "2026-10-30T22:40:51.689+00:00",
+        "generation": 1,
+        "body_sha256": "855a63a7555b0bb4112416407dacd163e2b5e87603b905a23b14af4cc63b30f2",
+        "http_status": 200,
+        "verified_at": "2026-10-30T22:40:52.010239+00:00",
+        "committed_at": "2026-10-30T22:40:51.855179+00:00",
+        "has_readback": true,
+        "record_count": 230,
+        "source_bytes": 101518,
+        "actual_records": 230,
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "readback_sha256": "855a63a7555b0bb4112416407dacd163e2b5e87603b905a23b14af4cc63b30f2",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      }
+    ],
+    "ownership_planning": {
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T23:00:00Z",
+      "planner_phase": "SEAL",
+      "breadth_cursor": 230,
+      "latest_audit_id": 100,
+      "selection_cursor": 3001,
+      "planning_complete": false,
+      "recovery_audit_count": 1
+    },
+    "workers": [
+      {
+        "worker_id": "9522320a-b044-4f95-89d4-5a4c6777add6",
+        "observed_at": "2026-10-30T22:41:00.252634+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      },
+      {
+        "worker_id": "a08a5058-72de-4e1f-ba36-c0190c30acfe",
+        "observed_at": "2026-10-30T22:23:59.242277+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      },
+      {
+        "worker_id": "b9f4514f-82cb-4125-85b7-f912e7353117",
+        "observed_at": "2026-10-30T22:04:00.04049+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      }
+    ],
+    "proof_path": "review/recovery-v78/acquisition_baseline_before_seal_release_v78.json",
+    "proof_sha256": "dbe091b741d52bc7bbd671ee13736fa60fe7b4cddfe09d83bb6812419d483f49"
+  },
+  "updated_at": "2026-10-30T23:00:33.899277+00:00",
+  "current_authority": {
+    "owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "status": "ACTIVE",
+    "lease_until": "2026-10-30T23:30:00Z",
+    "renewal_audit": 101,
+    "renewed_at": "2026-10-30T22:47:15.817104Z",
+    "independent_readback_at": "2026-10-30T22:47:25.124622Z",
+    "competing_successor_active": false,
+    "supported_same_owner_continuation": true
+  },
+  "contract_context": {
+    "reservation_audit": 102,
+    "result_audit": 103,
+    "schema": "astra.current-contract-context-transport-verification/1",
+    "request_id": "v78-one-current-contract-input-context-read",
+    "transport": "EXPECTED_READ_ONLY_P0001_OBSERVATION",
+    "exact_prefix": true,
+    "valid_expected_json": true,
+    "observed_at": "2026-10-30T22:56:46.256301+00:00",
+    "query_sha256": "d7fe9d4a94524f45b68a9844390b8d291f160edf5cf7e3485c5973019529111e",
+    "dispatches": 1,
+    "automatic_retry_budget": 0,
+    "raw_result_sha256": "5e8afc337d0e6ef4ddeca33de7ec19f0c7e8a876bd09bac01de760398afeb3b9",
+    "evidence_path": "review/recovery-v78/gate-duration/context_read_evidence_v78.json",
+    "evidence_sha256": "69e6a8c4929af56da1918ec67519bb1d3186442bdaf8e7e7b7931fc4200ec59c",
+    "seed_complete": true,
+    "readback_cursor": {
+      "page_no": 0,
+      "task_id": "backfill-plan-d955607b0da2953d844758c843a7b3085ee3f44d502ab9778b99778ed029f0d3",
+      "verified_at": "2026-10-30T21:24:09.415858+00:00"
+    },
+    "next_rows": 32,
+    "pending_sample_records": [
+      548,
+      1000
+    ],
+    "production_mutations": 0,
+    "source_acquisition_claimed_by_diagnostic": false,
+    "phase_cost_measured": false,
+    "next_step": "Qualify the smallest next cause diagnosis from pinned contract admission source and the first pending enumeration-page metadata; this read budget is consumed."
+  },
+  "residual_fault_recurrences": {
+    "audit": 103,
+    "proposal_path": "review/recovery-v78/residual-faults/residual_fault_recurrence_queue_proposal_2252_v78.json",
+    "proposal_sha256": "48ab0be179093bb08649bf0c6d862987b3193830467abee5b65b089bb2015646",
+    "recurrences_linked": 4,
+    "startup_health_incident_added": 1,
+    "native_cause_for_new_recurrences": "UNVERIFIED_NOT_INHERITED",
+    "unknown_health_http_outcome": "PRESERVED_NOT_REPLAYED"
+  },
+  "test_count_label_correction": {
+    "audit": 103,
+    "original_key": "full_producer_postgres_tests",
+    "clarification": "The producer suite has10 total tests:9 actualPostgreSQL cases and1 source-binding case. The independent suite adds6 actualPostgreSQL cases. Original immutable audit is retained."
+  }
+}

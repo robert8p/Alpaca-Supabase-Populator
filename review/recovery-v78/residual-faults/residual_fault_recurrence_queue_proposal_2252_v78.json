@@ -1,0 +1,204 @@
+{
+  "schema": "astra.residual-fault-recurrence-queue-proposal/1",
+  "prepared_by": "/root/residual_faults_v78",
+  "controller_writes_performed": 0,
+  "runtime_changes_performed": 0,
+  "new_external_calls_performed_by_preparer": 0,
+  "scope": {
+    "run_id": "fixed3000-20250901-20260731-v1-20261030",
+    "owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "reporting": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY"
+  },
+  "retained_queue_readback": {
+    "observed_at": "2026-10-30 22:55:06.940838+00",
+    "latest_audit": 101,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T23:30:00Z",
+    "requires_current_authority_reconciliation_before_write": true,
+    "evidence": {
+      "path": "review/recovery-v78/residual-faults/current_recurrence_queue_readback_v78.json",
+      "sha256": "3d14c0b5cf387ca8c0b5de504a20ce5ba1c94fb1abff9bb45867fa0c5392331c",
+      "bytes": 6199
+    }
+  },
+  "render_reads_performed_by_root": [
+    {
+      "evidence": {
+        "path": "review/recovery-v78/residual-faults/render_rpc_errors_2206_2252_v78.json",
+        "sha256": "0b205d467b2f8f344655c0af2706c9bfa1729827cc25c3c1ebd0fda0eb42ca83",
+        "bytes": 3771
+      },
+      "request": {
+        "resource": [
+          "srv-dbh9fko473hc739an8m0"
+        ],
+        "workspaceId": "tea-d562ma4hg0os73aejnfg",
+        "startTime": "2026-10-30T22:06:00Z",
+        "endTime": "2026-10-30T22:52:30Z",
+        "direction": "forward",
+        "limit": 20,
+        "text": [
+          "RpcPersistenceError"
+        ]
+      },
+      "dispatches": 1,
+      "hasMore": false,
+      "automatic_recheck_budget": 0
+    },
+    {
+      "evidence": {
+        "path": "review/recovery-v78/residual-faults/render_unbound_http_context_224816_v78.json",
+        "sha256": "f0cfe92975bbcd15dfe3bfaf0897089d0c265e934025a9e4c05566dee4b62100",
+        "bytes": 7474
+      },
+      "request": {
+        "resource": [
+          "srv-dbh9fko473hc739an8m0"
+        ],
+        "workspaceId": "tea-d562ma4hg0os73aejnfg",
+        "startTime": "2026-10-30T22:48:14Z",
+        "endTime": "2026-10-30T22:48:18Z",
+        "direction": "forward",
+        "limit": 30
+      },
+      "dispatches": 1,
+      "hasMore": false,
+      "automatic_recheck_budget": 0
+    }
+  ],
+  "observations": [
+    {
+      "operation": "backfill_verify",
+      "queue_action": "LINK_ONE_RECURRENCE",
+      "queue_key": "RUNTIME_RPC:backfill_verify:render:a8a5904c-718c-4487-8d55-adf1c9a395e7",
+      "recurrence_key": "RUNTIME_RPC:backfill_verify:render:8d1402b9-a3eb-4697-a497-06f9124674a1",
+      "render_log_id": "8d1402b9-a3eb-4697-a497-06f9124674a1",
+      "render_timestamp": "2026-10-30T22:24:10.251794226Z",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "state": "RENDER_REPORTED_ABORT_POLICY_EXHAUSTION_NATIVE_CAUSE_UNVERIFIED",
+      "native_incident_evidence_collected": false,
+      "native_sqlstate": null,
+      "holder_pid": null,
+      "cron_mapping_proven": false,
+      "request_task_claim_binding": "UNKNOWN",
+      "classification_limit": "The deployed worker reports exhaustion of its existing strict confirmed-abort classifier policy. Render alone does not identify the native backend, holder, phase, exact request tuple, or exact send count. Earlier incidents have distinct native evidence that is not inherited by this recurrence.",
+      "next_executable_step": "Retain this recurrence under the existing incident and continue the assigned shared-gate duration diagnosis through the same owner. If an exact historical task/page/claim becomes available, reconcile its immutable page/readback and generation/fence before any manual recovery. Preserve existing finite retry budgets; no manual replay or restart is admitted.",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "automatic_followup_read_budget": 0
+    },
+    {
+      "operation": "backfill_plan_next",
+      "queue_action": "LINK_ONE_RECURRENCE",
+      "queue_key": "RUNTIME_RPC:backfill_plan_next:render:bc52984f-5823-422f-b317-813e2d6a92e3",
+      "recurrence_key": "RUNTIME_RPC:backfill_plan_next:render:12795d1b-f277-4eac-93fe-dd7d10b3d775",
+      "render_log_id": "12795d1b-f277-4eac-93fe-dd7d10b3d775",
+      "render_timestamp": "2026-10-30T22:48:10.218307307Z",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "state": "RENDER_REPORTED_ABORT_POLICY_EXHAUSTION_NATIVE_CAUSE_UNVERIFIED",
+      "native_incident_evidence_collected": false,
+      "native_sqlstate": null,
+      "holder_pid": null,
+      "cron_mapping_proven": false,
+      "request_task_claim_binding": "UNKNOWN",
+      "classification_limit": "The deployed worker reports exhaustion of its existing strict confirmed-abort classifier policy. Render alone does not identify the native backend, holder, phase, exact request tuple, or exact send count. Earlier incidents have distinct native evidence that is not inherited by this recurrence.",
+      "next_executable_step": "Retain this recurrence under the existing incident and continue the assigned shared-gate duration diagnosis through the same owner. If an exact historical task/page/claim becomes available, reconcile its immutable page/readback and generation/fence before any manual recovery. Preserve existing finite retry budgets; no manual replay or restart is admitted.",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "automatic_followup_read_budget": 0
+    },
+    {
+      "operation": "backfill_commit",
+      "queue_action": "LINK_ONE_RECURRENCE",
+      "queue_key": "RUNTIME_RPC:backfill_commit:render:851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+      "recurrence_key": "RUNTIME_RPC:backfill_commit:render:c8ba09b6-ecfb-4992-ac9e-5b36198219a1",
+      "render_log_id": "c8ba09b6-ecfb-4992-ac9e-5b36198219a1",
+      "render_timestamp": "2026-10-30T22:50:10.413648339Z",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "state": "RENDER_REPORTED_ABORT_POLICY_EXHAUSTION_NATIVE_CAUSE_UNVERIFIED",
+      "native_incident_evidence_collected": false,
+      "native_sqlstate": null,
+      "holder_pid": null,
+      "cron_mapping_proven": false,
+      "request_task_claim_binding": "UNKNOWN",
+      "classification_limit": "The deployed worker reports exhaustion of its existing strict confirmed-abort classifier policy. Render alone does not identify the native backend, holder, phase, exact request tuple, or exact send count. Earlier incidents have distinct native evidence that is not inherited by this recurrence.",
+      "next_executable_step": "Retain this recurrence under the existing incident and continue the assigned shared-gate duration diagnosis through the same owner. If an exact historical task/page/claim becomes available, reconcile its immutable page/readback and generation/fence before any manual recovery. Preserve existing finite retry budgets; no manual replay or restart is admitted.",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "automatic_followup_read_budget": 0
+    },
+    {
+      "operation": "backfill_reserve",
+      "queue_action": "LINK_ONE_RECURRENCE",
+      "queue_key": "RUNTIME_RPC:backfill_reserve:render:d453fafa-f3db-42fe-b4bc-85f4cc000a0f",
+      "recurrence_key": "RUNTIME_RPC:backfill_reserve:render:076038de-9629-4140-8c33-a13b385049bd",
+      "render_log_id": "076038de-9629-4140-8c33-a13b385049bd",
+      "render_timestamp": "2026-10-30T22:52:10.547755983Z",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "state": "RENDER_REPORTED_ABORT_POLICY_EXHAUSTION_NATIVE_CAUSE_UNVERIFIED",
+      "native_incident_evidence_collected": false,
+      "native_sqlstate": null,
+      "holder_pid": null,
+      "cron_mapping_proven": false,
+      "request_task_claim_binding": "UNKNOWN",
+      "classification_limit": "The deployed worker reports exhaustion of its existing strict confirmed-abort classifier policy. Render alone does not identify the native backend, holder, phase, exact request tuple, or exact send count. Earlier incidents have distinct native evidence that is not inherited by this recurrence.",
+      "next_executable_step": "Retain this recurrence under the existing incident and continue the assigned shared-gate duration diagnosis through the same owner. If an exact historical task/page/claim becomes available, reconcile its immutable page/readback and generation/fence before any manual recovery. Preserve existing finite retry budgets; no manual replay or restart is admitted.",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "automatic_followup_read_budget": 0
+    },
+    {
+      "operation": "health",
+      "queue_action": "ADD_EXACT_INCIDENT_KEY",
+      "queue_key": "RUNTIME_RPC:health:render:a8fb10e9-a021-4562-bc97-36bb5ea71b9b",
+      "recurrence_key": "RUNTIME_RPC:health:render:a8fb10e9-a021-4562-bc97-36bb5ea71b9b",
+      "render_log_id": "a8fb10e9-a021-4562-bc97-36bb5ea71b9b",
+      "render_timestamp": "2026-10-30T22:48:16.492404734Z",
+      "companion_log_id": "ca581618-bb41-43c2-b545-185685f236e7",
+      "companion_timestamp": "2026-10-30T22:48:16.492399714Z",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "render_failure_reason": "HTTP_ERROR",
+      "state": "STARTUP_HEALTH_OPERATION_BOUND_HTTP_OUTCOME_UNRESOLVED",
+      "operation_binding_evidence": {
+        "worker_frame": "worker.py:133 store.health()",
+        "store_frame": "rpc_store.py:340 self._call(\"health\", {})",
+        "call_once_frame": "rpc_store.py:194 raises RpcPersistenceError(reason_code=\"HTTP_ERROR\")",
+        "context_rows": 17,
+        "context_complete_within_requested_window": true
+      },
+      "native_incident_evidence_collected": false,
+      "native_sqlstate": null,
+      "http_status": null,
+      "holder_pid": null,
+      "cron_mapping_proven": false,
+      "historical_http_outcome": "UNKNOWN_NOT_REPLAYED",
+      "retained_source_observation": {
+        "auth_source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+        "description": "The retained authentication dispatcher validates the credential/operation, acquires the shared advisory gate, rechecks the credential, and only then reaches health. The health branch validates an empty key set, reads schema version, and returns readiness. This identifies a possible gate boundary, not the cause of this HTTP failure."
+      },
+      "next_executable_step": "Preserve this startup health incident separately from the plan_next recurrence. Root may select one bounded native-log window 22:48:14Z through22:48:18Z, at most25 safe rows, to classify the fresh HTTP cause if needed after checking retained evidence. No health replay, retry-policy expansion or native-query dispatch is selected by this payload.",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "automatic_followup_read_budget": 0
+    }
+  ],
+  "merge_controls": {
+    "append_only_deduplicated_recurrences": true,
+    "retain_original_evidence_and_existing_states": true,
+    "preserve_existing_material_recurrence_exactly": true,
+    "preserve_all_other_queue_entries": true,
+    "claim_and_defer_installed_repairs_not_replayed": true,
+    "no_counter_or_retry_budget_reset": true,
+    "no_native_holder_or_phase_inherited_from_older_incidents": true,
+    "same_existing_owner_only": true,
+    "no_source_cost_security_changes": true
+  },
+  "automatic_native_read_budget": 0,
+  "automatic_provider_request_budget": 0,
+  "credential_or_raw_payload_exported": false
+}
