@@ -2,6 +2,8 @@
 -- Prerequisites: ledger, independent 24-family/unit review, provider pre-call v1.
 -- This is deliberately NOT a market-data ingestion/output or provider transport grant.
 -- No PUBLIC privileges, no production install, no licensed rows in repository.
+-- All provider records, including excluded eligible-window boundary observations,
+-- consume the finite record cap across pages. No terminal-page continuation.
 -- The one durable pre-call ticket is permanently consumed for this page even
 -- if the remote response was lost. A missing/uncertain response must NOT refetch.
 BEGIN;
@@ -157,7 +159,13 @@ BEGIN
  OR w.attempts NOT BETWEEN 1 AND 2
  OR w.last_page+1 IS DISTINCT FROM p_page
  OR w.requests_committed+1>w.max_requests
- OR w.records_committed+v_observed>w.max_records
+ OR GREATEST(w.records_committed,COALESCE((
+    SELECT sum(q.provider_records_observed)
+    FROM astra_ingestion_v1.bulk_provider_response_quarantine_v1 q
+    JOIN astra_ingestion_v1.bulk_receipt_v1 br
+      ON br.work_key=q.work_key AND br.page_no=q.page_no
+    WHERE q.work_key=p_work AND q.page_no<p_page
+   ),0)) + v_observed > w.max_records
  THEN RAISE EXCEPTION 'provider stage refused: stale claim, deadline, stop or cumulative budget'; END IF;
  SELECT * INTO t FROM astra_ingestion_v1.bulk_provider_precall_v1
  WHERE work_key=p_work AND page_no=p_page FOR SHARE;
