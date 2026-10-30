@@ -62,7 +62,7 @@ class SIPSourcePageCandidate:
     inclusive_end_records_excluded: int
     request_increment: int
     request_total_after_candidate: int
-    eligible_records_total_after_candidate: int
+    provider_records_total_after_candidate: int
     continuation_token_sha256: str | None
     next_page_required: bool
     status: str = "CANDIDATE_UNAUTHENTICATED_NOT_SQL_STAGED_NOT_AUTHORIZED"
@@ -117,7 +117,7 @@ def build_sip_page_stage_candidate(
             or claim.get("mode") != "provider_acquisition"
             or claim.get("status") != "claimed"
             or claim.get("stopped") is not False
-            or claim.get("source_receipt_sha256") != checked.entitlement_receipt_sha256
+            or not _sha(claim.get("source_receipt_sha256"))
             or not _int(claim.get("attempts"), 1, 2)):
         raise ScopeError("unqualified provider work, immutable source or owner fence")
     now = _utc(received_at_utc)
@@ -155,7 +155,7 @@ def build_sip_page_stage_candidate(
                 or previous_receipt.get("page_no") != page_prior
                 or previous_receipt.get("source_sha256") != previous.page_sha256
                 or previous_receipt.get("consistent") is not True
-                or used_requests < page_no):
+                or used_requests != page_no):
             raise ScopeError("non-advancing/unauthenticated previous provider receipt")
         prior_sha = previous.page_sha256
         prior_timestamp = previous.bars[-1].timestamp_utc
@@ -165,7 +165,7 @@ def build_sip_page_stage_candidate(
     eligible = len(inspected.bars)
     provider_count = eligible + inspected.excluded_end_bar_count
     if (provider_count > checked.reserved_record_count
-            or used_records + eligible > max_records
+            or used_records + provider_count > max_records
             or used_requests + checked.reserved_request_count > max_requests
             or inspected.continuation_required and not inspected.bars):
         raise ScopeError("response exceeds cumulative reservation or cannot advance")
@@ -174,7 +174,8 @@ def build_sip_page_stage_candidate(
     stage = {
         "work_key": work, "manifest": checked.manifest_sha256,
         "family": checked.family, "contract": checked.contract_sha256,
-        "source_receipt": checked.entitlement_receipt_sha256,
+        "reviewed_source_receipt_unverified": claim["source_receipt_sha256"],
+        "entitlement_receipt": checked.entitlement_receipt_sha256,
         "identity_receipt": checked.identity_receipt_sha256,
         "calendar_receipt": checked.calendar_receipt_sha256,
         "page": page_no, "owner": owner, "fence": fence,
@@ -186,7 +187,7 @@ def build_sip_page_stage_candidate(
         "eligible_record_sha256": [bar.record_sha256 for bar in inspected.bars],
         "excluded_boundary_sha256": inspected.excluded_end_bar_sha256,
         "requests_after": used_requests + 1,
-        "eligible_records_after": used_records + eligible,
+        "provider_records_after": used_records + provider_count,
         "continuation_sha256": (
             sha256(inspected.next_page_token.encode("ascii")).hexdigest()
             if inspected.next_page_token else None),
@@ -197,6 +198,6 @@ def build_sip_page_stage_candidate(
         sha256(canonical(stage).encode("utf-8")).hexdigest(),
         inspected.bars, provider_count, eligible,
         inspected.excluded_end_bar_count, 1,
-        used_requests + 1, used_records + eligible,
+        used_requests + 1, used_records + provider_count,
         stage["continuation_sha256"], inspected.continuation_required,
     )
