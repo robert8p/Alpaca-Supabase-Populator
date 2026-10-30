@@ -1,0 +1,130 @@
+{
+  "metadata": [
+    {
+      "jsonb_build_object": {
+        "chain": {
+          "pages": 135,
+          "max_page": 135,
+          "min_page": 1,
+          "last_retrieval": "2026-10-23T14:36:30.727+00:00",
+          "terminal_pages": 1,
+          "first_retrieval": "2026-10-23T14:11:19.476+00:00",
+          "missing_successor_edges": 0
+        },
+        "columns": [
+          {
+            "type": "text",
+            "column": "source_id"
+          },
+          {
+            "type": "text",
+            "column": "source_sha256"
+          },
+          {
+            "type": "text",
+            "column": "source_uri"
+          },
+          {
+            "type": "text",
+            "column": "source_provider"
+          },
+          {
+            "type": "timestamp with time zone",
+            "column": "retrieved_at"
+          },
+          {
+            "type": "timestamp with time zone",
+            "column": "source_published_at"
+          },
+          {
+            "type": "timestamp with time zone",
+            "column": "historical_received_at"
+          },
+          {
+            "type": "text",
+            "column": "content_text"
+          },
+          {
+            "type": "text",
+            "column": "content_external_uri"
+          },
+          {
+            "type": "bigint",
+            "column": "content_bytes"
+          },
+          {
+            "type": "jsonb",
+            "column": "evidence"
+          },
+          {
+            "type": "text",
+            "column": "license_policy"
+          },
+          {
+            "type": "timestamp with time zone",
+            "column": "created_at"
+          }
+        ],
+        "indexes": [
+          "CREATE UNIQUE INDEX source_document_pkey ON population_top3000_202608_202609_v1.source_document USING btree (source_id)"
+        ]
+      }
+    }
+  ],
+  "proof": [
+    {
+      "jsonb_build_object": {
+        "original_page": {
+          "rows": 1000,
+          "status": "OK",
+          "evidence": {
+            "scope": "S02 settlement dates 2026-07-15 through 2026-09-30; July support and Aug/Sep target; publication schedule retained separately",
+            "wire_bytes": 118221,
+            "wire_sha256": "f0e092b9103d1d3504c982e94011f76d063a0e606dcf8fc73fa107cc3236d99e",
+            "hash_representation": "EXACT_UTF8_RESPONSE_WITH_TOP_LEVEL_NEXT_URL_CREDENTIAL_REDACTION_ONLY",
+            "provider_request_id": "eadb70970327486e962d35d059cb3996",
+            "wire_bytes_retained": false,
+            "stored_content_bytes": 118221,
+            "original_historical_receipt": false
+          },
+          "next_url": "https://api.massive.com/stocks/v1/short-interest?cursor=Ag8PCjIwMjYtMDctMTURDwoyMDI2LTA5LTMwAgAAAQEAAQH76AMAAgEPCjIwMjYtMDctMTUBDwRBTVRZ",
+          "provider": "Massive",
+          "source_id": "massive-archive:S02:c1ed3ed6aa5bad110f122c2459ba27f6daa14a7ac484363d4915c0fc9ddb1f88:page:1",
+          "request_url": "https://api.massive.com/stocks/v1/short-interest?settlement_date.gte=2026-07-15&settlement_date.lte=2026-09-30&sort=settlement_date.asc,ticker.asc&limit=1000",
+          "wire_sha256": "f0e092b9103d1d3504c982e94011f76d063a0e606dcf8fc73fa107cc3236d99e",
+          "result_count": 1000,
+          "retrieved_at": "2026-10-23T14:11:19.476+00:00",
+          "source_sha256": "f0e092b9103d1d3504c982e94011f76d063a0e606dcf8fc73fa107cc3236d99e",
+          "license_policy": "EXISTING_MASSIVE_SUBSCRIPTION_API_RESPONSE_INTERNAL_USE",
+          "stored_bytes_match": true,
+          "source_published_at": null,
+          "stored_content_bytes": 118221,
+          "rows_equal_normalized": true,
+          "stored_sha_recomputed": "f0e092b9103d1d3504c982e94011f76d063a0e606dcf8fc73fa107cc3236d99e",
+          "historical_received_at": null
+        },
+        "in_window_fixed_anchor_candidates": [
+          {
+            "last_page": 23,
+            "first_page": 1,
+            "business_keys": 2989,
+            "settlement_date": "2026-07-15",
+            "business_versions": 2989,
+            "candidate_members": 2989,
+            "record_occurrences": 2989
+          },
+          {
+            "last_page": 45,
+            "first_page": 23,
+            "business_keys": 2999,
+            "settlement_date": "2026-07-31",
+            "business_versions": 2999,
+            "candidate_members": 2999,
+            "record_occurrences": 2999
+          }
+        ]
+      }
+    }
+  ],
+  "attribution": "Frozen anchor ticker candidates only; historical attribution remains unresolved until dated evidence supports it."
+}

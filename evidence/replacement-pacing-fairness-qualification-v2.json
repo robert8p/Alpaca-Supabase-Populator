@@ -1,0 +1,72 @@
+{
+  "qualification": "stage3-short-provider-pacing-fairness-v2.3",
+  "qualified_at": "2026-10-30T07:03:26.181959+00:00",
+  "passed": true,
+  "postgresql_tests": {
+    "run": 6,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 8.031
+  },
+  "no_dsn_tests": {
+    "run": 6,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 6,
+    "reason": "Explicit disposable PostgreSQL required"
+  },
+  "environment": "Disposable loopback PostgreSQL only; no remote requests or provider calls",
+  "baseline_stack": [
+    "runtime",
+    "retained_reader",
+    "reuse_commit",
+    "reuse_verify",
+    "delivery",
+    "breadth_material",
+    "delivery_performance",
+    "provider_pacing",
+    "family_fairness",
+    "adaptive_pages",
+    "canonical_performance",
+    "recovery_priority"
+  ],
+  "sha256": {
+    "sql/astra_backfill_pacing_fairness_v2.sql": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c",
+    "tests/ingestion/test_backfill_pacing_fairness_v2.py": "6dabf41aa4dec08a2ced01ae2062e4993abb646645e2033c0f1a987f7e55f259"
+  },
+  "stage2_payload_changes": [],
+  "verified": {
+    "original_starvation_reproduced": {
+      "cycles": 3,
+      "reference_pages_committed": 3,
+      "options_generation": 3,
+      "options_requests_reserved": 0,
+      "options_state": "RETRY_WAIT",
+      "timing": "Real one-second shared reservation interval and 2.05-second waits matching the existing worker cadence"
+    },
+    "fixed_next_turn": {
+      "same_options_task_reclaimed": true,
+      "generation_advanced_once": true,
+      "request_reserved_after_wait": true,
+      "normal_family_rotation_resumed": true
+    },
+    "short_wait_boundary_seconds": 1,
+    "long_retry_after_seconds_preserved": 90000,
+    "long_wait_allows_other_provider": true,
+    "interleaved_later_claim_prevents_rewind": true,
+    "stale_owner_and_stopped_run_fenced": true,
+    "migration_preserves_task_deadline_cursor_and_counters": true,
+    "duplicate_apply_rejected": true
+  },
+  "reconciliation": {
+    "function": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+    "marker": "backfill_short_pacing_fairness_v2",
+    "metadata_path": "family_scheduling_policy.short_pacing_applied_at"
+  },
+  "scope": "A separate new forward SQL migration; no changes to stage-2 files, worker/provider code, request ceilings, persisted source deadlines, frozen members, source scope or controller ownership",
+  "limitations": [
+    "This proves actual database scheduling and reservation; the production options provider response still requires root readback after installation",
+    "The bounded improvement uses the existing single worker and its two-second waiting cadence; it does not introduce another controller or worker"
+  ]
+}

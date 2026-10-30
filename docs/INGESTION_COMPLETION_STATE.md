@@ -1,12 +1,12 @@
-# ASTRA ingestion — replacement checkpoint v65
+# ASTRA ingestion — replacement checkpoint v66
 
 ## Current execution and ownership
 
-Updated 2026-10-30T06:38:08Z (01:38 America/Cancun). Status: **ACTIVE — USEFUL BACKFILL RUNNING; FULL DELIVERY INCOMPLETE**.
+Updated 2026-10-30T07:08Z (02:08 America/Cancun). Status: **ACTIVE — USEFUL BULK BACKFILL RUNNING; FULL DELIVERY INCOMPLETE**.
 
-The same originating owner `root-replacement-20261030T042603Z` retains a finite implementation lease through **2026-10-30T07:15:00Z**. The database and this checkpoint now agree on that lease. Existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` is enabled with its original hourly recurrence and no expiry. It must reconcile current ownership before implementation writes. No replacement controller or service has been created.
+The same owner `root-replacement-20261030T042603Z` holds a finite implementation lease through **2026-10-30T08:00:00Z**. Database audit2 records the renewal at07:07:08Z. The existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` remains enabled with its original hourly recurrence and no expiry; its prompt was updated07:08:16Z. An implementation wake-up was recorded in progress for07:00, started07:05:18; this is not a second ingestion executor or evidence of a completed result. It must respect the current root lease.
 
-Run: `fixed3000-20250901-20260731-v1-20261030`, fence1. Existing PR93/branch `feat/astra-ingestion-service` in `robert8p/Alpaca-Supabase-Populator`. Deployed executable revision: `13ae192ef28b26f4f658f9c16a4992f4ed73cb2e`. Exact revision passed both GitHub ingestion qualification and release gates.
+Run: `fixed3000-20250901-20260731-v1-20261030`, fence1. Existing PR93/branch `feat/astra-ingestion-service`, repository `robert8p/Alpaca-Supabase-Populator`. No completed work was restarted, and no competing controller or paid service was created.
 
 ## Fixed authority and cohort
 
@@ -25,44 +25,62 @@ The accepted saved snapshot `population_top3000_202608_202609_v1.ref01_practical
 
 Actual calendar:230 target sessions; daily60-session support starts2025-06-05; intraday20-session support starts2025-08-04. Formula manifest SHA256 `e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65`.
 
-## Verified deployment, useful data and continuity
+## Exact tested deployment and genuine progress
 
-Existing worker `srv-dbh9fko473hc739an8m0` deployed revision13ae at06:29:50Z. Existing web `srv-dbh85vl9fdbs7387rucg` deployed the same revision at06:30:04Z. Workspace `tea-d562ma4hg0os73aejnfg`; no new paid instance.
+Executable revision **`2d67c06ee1a19084a61d7cc1145de16bc68ca0cd`** passed all four GitHub push/pull-request ingestion-qualification and release-gate checks. Local stage2 qualification:479/479 actual PostgreSQL tests, zero skipped/failures/errors;90 Python files compile and both JavaScript syntax checks pass.
 
-Useful source began with NVDA reference and two 290-record daily series (raw and split-adjusted), then AAPL and further fixed members. Each complete initial series includes230 target+60 support sessions. Retained SIP source references progressed automatically, including20,018 NVDA September and21,951 October minute observations. Missing retained support creates genuine acquisition children; it is not labelled provider absence.
+Existing worker `srv-dbh9fko473hc739an8m0` deploy `dep-dbi41c2fngtc73c81gg0` became LIVE07:02:37Z. Existing web `srv-dbh85vl9fdbs7387rucg` deploy `dep-dbi41eetlv9c738pvjvg` became LIVE07:02:48Z. Both selected exact revision2d67. Latest observed worker `c9c2b861-b697-4f69-bc02-f24161d45051` advertises that revision. Workspace `tea-d562ma4hg0os73aejnfg`; one existing worker instance.
 
-At06:38:08Z:
--134 physical committed pages,15,258 physical records/pointers,84 provider reservations.
--133 pages independently read back; all133 hashes matched. The newest live page was awaiting its subsequent readback at that instant.
--768,136 retained minute observations were referenced, provenance-qualified and source-usable in completed readbacks.
--Planner cursor29 (next frozen selection order), planning_complete=false.
--No operational task error had been observed in the preceding reconciliation; identity limitations remain explicit.
--These are different units. Do not sum raw/split variants, shared P01/P02 data or retained pointers into one unique-observation total.
+At07:05:50Z the active run held694 physical committed pages,69006 physical records/pointers and343 provider reservations; last useful progress07:05:46Z. The bounded planner had advanced to selection order223, with planning_complete=false.
 
-Controlled restart `dep-dbi3ki4s728c73c8fnrg` was triggered once at06:33:44Z and became LIVE06:34:28Z on the same revision13ae. Old worker3874b7b4-3693-472d-a386-fa979c417a32 was replaced by2952b01e-7c23-48e8-9947-2fa1f5c058f6. All75 pre-restart page keys/hashes remain unchanged; zero duplicates;34 pages committed after the old worker's final heartbeat by06:37:23Z. Automatic successors are executing from the same durable queue.
+At07:06:14Z independent readback showed:
 
-Evidence: [first useful batch](../evidence/replacement-first-useful-batch.json), [restart proof](../evidence/replacement-controlled-restart-proof.json), [live accounting](../evidence/replacement-live-progress-v65.json).
+- 705 verified pages; all705 stored/readback hashes match.
+- 1,598,231 retained minute observations referenced, provenance-qualified and source-usable.
+- 10 retained D01 feature pointers referencing3900 verified usable feature rows. The deployed worker is using the cache path; these are not3900 duplicated full arrays.
+- 2500 committed news article occurrences in50 pages.
+- 7000 committed option-contract occurrences in7 pages; historical enumeration/pagination remains open.
+- Corporate actions, daily raw/split series and D03/D04/D05 calculations continue. No OPERATIONAL_ERROR task was present in this readback.
+- These measurements have different timestamps and units. Never add physical records/pointers, raw/split variants, shared P01/P02 observations, cached features and article/contract occurrences into one unique-observation count.
 
-## Installed work and retained engineering
+Evidence: [live readbacks and deployments](../evidence/replacement-live-progress-v66.json), [stage2 qualification](../evidence/replacement-stage2-release-qualification-v2.json), [first useful batch](../evidence/replacement-first-useful-batch.json).
 
-Installed runtime, exact fixed cohort, planner, retained-source read/commit/verification, delivery views/finalizer, breadth projection/material, performance extension, paid-provider pacing, retained/fresh source deduplication, and retained D01 feature reuse. Applied migrations remain immutable.
+## Verified unattended execution path
 
-Forward source-dedup SHA256 `f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5`; feature-reuse SHA256 `28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61`; pacing SHA256 `50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501`. Their source publication is included in the next tested forward release; do not reapply because a local output was interrupted.
+The new run has demonstrated actual provider acquisition/verified reuse, automatic subsequent tasks, source-to-database readback, controlled restart and deferred retry. Continue bulk work after this proof.
 
-Optional worker cache wiring is locally qualified, not yet deployed: full449-test PostgreSQL suite passed; actual worker cache-hit/fallback paths passed. Additional family fairness and adaptive-page changes are being qualified under this same owner. These test counts are engineering evidence, not ingestion completion.
+Controlled restart `dep-dbi3ki4s728c73c8fnrg` on13ae became LIVE06:34:28Z. All75 prior page keys/hashes stayed unchanged, zero duplicates, and34 pages committed after the old worker's final heartbeat by06:37:23Z. [Restart proof](../evidence/replacement-controlled-restart-proof.json).
 
-Original legacy canary/restart jobs and their234 records/3 requests remain immutable and outside new-run usage. Old admission remains closed.
+A controlled30-second application pacing deadline—not a fabricated provider429—put five actual tasks in RETRY_WAIT withzero reservations. Four resumed and committed verified data by06:54. The fifth, AAPL options task `backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a`, committed1000 verified contracts07:05:44Z and retained its next cursor. [Initial four-task retry proof](../evidence/replacement-deferred-retry-proof-v2.json); the fifth readback is in v66 live evidence.
 
-## Genuine remaining dependencies and executable continuation
+The live check exposed two application defects and both were repaired:
 
-1. Publish and deploy the exact tested forward release: wire retained D01 cache reuse, make persisted family rotation prevent a price/reference backlog from starving news/actions/options, and persist adaptive execution page limits without changing immutable scope/cursors. Verify exact deployed commit and actual family progress.
-2. Demonstrate the new run's persisted deferred-retry execution path. A heartbeat or unit test alone is insufficient; retain actual scheduled deferral and later progress evidence.
-3. Implement progressive historical-identity reconciliation and affected derivation recomputation. Current provider anchors remain unresolved; raw acquisition continues. Missing resolution logic is an implementation issue, not an exhausted provider gap.
-4. Improve non-minute per-field coverage accounting: distinguish source variants, derived rows, usable values and NULL reasons; do not add overlapping raw/split/derived counts. Keep unknown expected denominators unknown.
-5. Expose replacement-run status in the existing app, and continue the full bounded planner, acquisition, independent readbacks and finalizer. Do not stop after this first useful batch.
-6. **Massive worker credential remains BLOCKED_EXTERNAL**: actual heartbeat advertises Alpaca kinds only; `MASSIVE_WORKER_CREDENTIAL / RUNTIME_CAPABILITY_UNAVAILABLE` is persisted. Massive connector historical probes succeeded, but do not supply a deployable secret. Use the existing Massive account API key as `MASSIVE_API_KEY` in this worker environment through an authorised owner setup when available. Do not request a new plan or infer provider absence. Keep Alpaca, reuse and calculations active; the admitted Alpaca-news alternative is planned.
-7. At safe handoff, refresh this same task's executable prompt and release the root implementation lease. The enabled task must reconcile remote state before taking the next bounded repair step. Preserve disabled independent reviewer/closeout platform states and unrelated scanners.
+- Eligible retries could be starved by fresh PENDING work. Per-family due-recovery priority now selects eligible deferred/expired claims first.
+- A normal one-second provider pacing refusal could hand the next turn to another family. The bounded short-pacing fairness forward retains that family's turn when the remaining delay is at most one second. Longer Retry-After deadlines remain intact and other families/providers continue. Six actual-PG tests include an exact starvation reproduction and successful next reservation.
+- News pages hit the existing10-second RPC deadline in the old character-by-character JSON encoder. The linear encoding forward preserves old bytes/hashes (104 Unicode comparisons), and a1,208,635-byte authenticated test commit completed in0.158seconds with idempotence/readback/successor verification. Actual50-article pages are now committing. No provider-absence inference was made.
 
-No full-family completion or unattended-proof completion is claimed yet. Full delivery requires all3000 members, all16 workflows, sealed complete plan, pagination/contract enumeration, truthful terminal outcomes, independent readbacks, actual data coverage and stable outputs. Operational failures must remain operational. Continue healthy bulk work while repairing affected units.
+## Applied changes and retained work
 
-Previous checkpoint retained at [v64](history/INGESTION_COMPLETION_STATE_v64.md).
+Runtime, cohort, bounded planner, retained-source commits/readback, stable delivery views/finalizer, breadth material, source deduplication, compact D01 cache reuse, provider pacing, family fairness, adaptive execution page limits, canonical encoding and due-recovery priority are installed. Stage2 worker cache wiring and replacement app status are deployed.
+
+The additional short-pacing forward is already APPLIED successfully:
+`sql/astra_backfill_pacing_fairness_v2.sql`, SHA256 `edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c`.
+Reconcile function marker `backfill_short_pacing_fairness_v2` and metadata `family_scheduling_policy.short_pacing_applied_at` before any retry. Do not reapply an installed forward because a chat result was interrupted.
+
+Original legacy canary/restart jobs retain234 records/3requests; their counters, limits, evidence and completed states are outside new-run accounting. Old-scope admission stays closed. No old evidence was rewritten.
+
+## Current executable step and durable successor
+
+The same root is completing stage3 in the retained working directory `/workspace/scratch/a1eb25e9f187/replacement-run`. Preserve these in-progress files and reconcile before resuming:
+
+1. Finish and integrate progressive historical identity using original retained Massive gzip responses with independently checked compressed/original hashes. Resolve exact dated CIK+composite-FIGI+share-class-FIGI matches only. Preserve missing support dates and historical aliases; respect Alpaca's documented explicit asof symbol mapping only when the actual receipt and fixed dated identifiers support it; otherwise keep mismatched historical aliases unresolved. Keep raw data available. Recompute affected daily/breadth outputs by immutable successor tasks; expose current D01 attribution through a view without copying its large numerical cache.
+2. Install the tested non-minute per-field projection after identity's output-validity view. Select the latest complete derivative version, retain source variants separately, record NULL/unusable reasons and unknown denominators, and expose pending identity refresh timing in status.
+3. Complete bounded S02 retained-page references. Verified old chain135 pages hasno gaps/continuation mismatches and one terminal page. Candidate frozen-anchor July15/July31 records are2989/2999 unique business keys, pages1–45. Stored response hashes/bytes/normalized rows match. Retain the declared credential-redaction representation and late retrieval; no exact-original-wire or historical ticker-attribution claim. This partial reuse does not retire the full historical Massive tasks.
+4. Resolve the Massive runtime dependency using the existing server-side route if its actual capability verifies. The deployed `population-top3000-news-v1` Edge function already uses managed Massive credentials for the earlier archive. A narrow authenticated, bounded relay extension is being implemented in this same function, preserving its original handler and keeping the existing worker/queue as sole executor. Never export a managed/connector key. Validate run/claim/reservation/request, one dispatch per reservation, allowlisted read-only endpoints, real response evidence and subsequent commit/readback.
+5. Exact candidate tests, exact-head GitHub CI, one-time forward migrations, exact tested deployment, real capability/source/identity/readback verification, then continue full planning/acquisition/calculation and finalization. Update this checkpoint and the same automation; do not create a replacement controller or stop at proof.
+
+Until an actual capability probe and acquisition succeed, `MASSIVE_WORKER_CREDENTIAL / RUNTIME_CAPABILITY_UNAVAILABLE` remains BLOCKED_EXTERNAL. The existing worker continues Alpaca, reuse and calculations. If the managed route is genuinely unavailable, retain the exact owner setup dependency; do not repeatedly retry unchanged absent credentials, widen providers or buy a plan upgrade.
+
+Full delivery remains incomplete: the3000-member plan is not sealed, pagination/contract enumeration is still running, identity/support/alias work and coverage reconciliation remain. Use final COMPLETE or COMPLETE_WITH_DOCUMENTED_GAPS only after the mission's full verified terminal accounting. Repairable technical failures remain operational.
+
+Previous checkpoint retained at [v65](history/INGESTION_COMPLETION_STATE_v65.md).
