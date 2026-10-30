@@ -1,0 +1,2337 @@
+{
+  "source": "alpaca_live_get_calendar",
+  "retrieved_at": null,
+  "retrieved_before_utc": "2026-10-30T04:56:46Z",
+  "retrieval_timestamp_policy": "Exact original tool receipt time was not captured; retained upper bound is a subsequently observed UTC clock.",
+  "source_request": {"start":"2025-05-01","end":"2026-07-31","date_type":"TRADING"},
+  "target_market_timezone": "America/New_York",
+  "target_start": "2025-09-01",
+  "target_end": "2026-07-31",
+  "daily_support_start": "2025-06-05",
+  "intraday_support_start": "2025-08-04",
+  "target_sessions": 230,
+  "daily_support_sessions": 60,
+  "intraday_support_sessions": 20,
+  "sessions": [
+    {
+      "close": "16:00",
+      "date": "2025-06-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-06-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-06-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-03"
+    },
+    {
+      "close": "13:00",
+      "date": "2025-07-03",
+      "open": "09:30",
+      "session_close": "1700",
+      "session_open": "0400",
+      "settlement_date": "2025-07-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-07-31"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-07-31",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-08-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-08-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-09-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-09-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-10-31"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-10-31",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-11-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-11-28"
+    },
+    {
+      "close": "13:00",
+      "date": "2025-11-28",
+      "open": "09:30",
+      "session_close": "1700",
+      "session_open": "0400",
+      "settlement_date": "2025-12-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-24"
+    },
+    {
+      "close": "13:00",
+      "date": "2025-12-24",
+      "open": "09:30",
+      "session_close": "1700",
+      "session_open": "0400",
+      "settlement_date": "2025-12-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2025-12-31"
+    },
+    {
+      "close": "16:00",
+      "date": "2025-12-31",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-01-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-01-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-02-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-02-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-03-31"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-03-31",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-04-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-04-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-19"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-19",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-05-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-05-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-03"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-03",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-04"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-04",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-05"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-05",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-11"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-11",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-12"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-12",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-18"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-18",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-25"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-25",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-26"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-26",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-06-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-06-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-01"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-01",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-02"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-02",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-06"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-06",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-07"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-07",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-08"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-08",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-09"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-09",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-10"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-10",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-13"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-13",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-14"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-14",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-15"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-15",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-16"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-16",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-17"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-17",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-20"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-20",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-21"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-21",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-22"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-22",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-23"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-23",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-24"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-24",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-27"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-27",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-28"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-28",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-29"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-29",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-30"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-30",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-07-31"
+    },
+    {
+      "close": "16:00",
+      "date": "2026-07-31",
+      "open": "09:30",
+      "session_close": "2000",
+      "session_open": "0400",
+      "settlement_date": "2026-08-03"
+    }
+  ]
+}

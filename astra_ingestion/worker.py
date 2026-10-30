@@ -113,21 +113,28 @@ def main():
     store = create_store(settings)
     store.health()
     worker = Worker(store, AlpacaSource(settings.api_key, settings.secret_key), lease_seconds=settings.lease_seconds)
+    # The replacement shares this single process, capability and recovery loop.
+    # Legacy job scopes/quotas are unchanged; their admission is closed in SQL.
+    from .backfill_worker_v2 import from_settings
+    backfill = from_settings(store, settings) if not settings.test_mode else None
     stop = threading.Event()
     for sig in (signal.SIGTERM, signal.SIGINT):
         signal.signal(sig, lambda *_: stop.set())
     while not stop.is_set():
         try:
-            outcome = worker.run_once()
+            outcome = backfill.run_once() if backfill is not None else worker.run_once()
             if outcome["state"] not in ("idle", "waiting"):
                 print(json.dumps(outcome), flush=True)
         except Exception as exc:
             # Never print driver exceptions: they can contain connection details.
             print(json.dumps({"state": "unresolved_runtime_error", "error_type": type(exc).__name__}), file=sys.stderr, flush=True)
             return 1
-        stop.wait(settings.worker_poll_seconds)
+        # Successful local reuse and calculations need no artificial provider
+        # sleep. The database reserves provider-specific paced request slots.
+        stop.wait(settings.worker_poll_seconds if outcome["state"] in ("idle", "waiting") else 0.05)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

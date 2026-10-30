@@ -3,7 +3,9 @@ const $ = (id) => document.getElementById(id);
 let jobs = [], selectedId = null, refreshing = false, pendingSubmission = null;
 const activeStates = new Set(["queued", "pending", "running", "fetching", "downloading", "loading", "retry_wait", "verifying"]);
 const badStates = new Set(["blocked", "failed", "held"]);
-const finishedStates = new Set(["completed", "verified", "cancelled", "failed", "blocked"]);
+const finishedStates = new Set(["completed", "verified", "cancelled", "failed", "blocked", "SUPERSEDED_BY_SCOPE_CHANGE"]);
+
+const replacementFamilies = ["REF01","REF03","P01","P02","D01","D02","D03","D04","D05","N01","N02","N03","S01","S02","CTX02","CTX06"];
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -82,6 +84,34 @@ function renderDetail(job) {
     const row = element("li"); row.append(element("time", timestamp(event.timestamp || event.created_at)), element("span", pretty(event.event || event.kind), "event-name"), element("span", typeof event.detail === "object" ? JSON.stringify(event.detail) : event.detail || "", "event-detail")); return row;
   }));
 }
+function renderBackfill(snapshot) {
+  const run = (snapshot.runs || [])[0];
+  if (!run) {
+    $("backfill-state").textContent = "Awaiting initialization";
+    $("backfill-progress").textContent = "No replacement run is recorded.";
+    return;
+  }
+  const delivery = (snapshot.delivery?.runs || [])[0] || run.delivery;
+  $("backfill-state").textContent = pretty(delivery?.run_status || run.status);
+  $("backfill-progress").textContent = `${number(run.members)} fixed members · ${number(run.pages_committed)} physical pages committed · ${number(run.requests_reserved)} provider request reservations · Last useful progress: ${timestamp(run.last_progress_at)}`;
+  const familyRows = new Map((delivery?.families || []).map(row => [row.family, row]));
+  const rows = replacementFamilies.map(family => {
+    const f = familyRows.get(family);
+    const tasks = (run.tasks || []).filter(t => t.family === family);
+    const planned = f?.planned_units ?? tasks.reduce((n,t) => n + Number(t.tasks || 0), 0);
+    const terminal = f?.terminal_units ?? tasks.filter(t => ["INGESTED","NO_DATA_RETURNED","NOT_APPLICABLE","PROVIDER_LIMITATION","IDENTITY_OR_QUALITY_UNRESOLVED"].includes(t.status)).reduce((n,t) => n + Number(t.tasks || 0), 0);
+    const retry = f?.retry_wait_units ?? tasks.filter(t => t.status === "RETRY_WAIT").reduce((n,t) => n + Number(t.tasks || 0), 0);
+    const errors = (f?.operational_error_units || 0) + (f?.blocked_units || 0);
+    const row = element("tr"), label = element("td", family), state = element("td", pretty(f?.work_completion || (planned ? "IN_PROGRESS" : "PLANNING")));
+    if (f?.title) label.append(element("span", f.title, "subline"));
+    const records = f ? number(f.committed_records) : "—";
+    row.append(label, state, element("td", `${number(terminal)} / ${number(planned)}`), element("td", records), element("td", `${number(retry)} retry · ${number(errors)} technical`));
+    return row;
+  });
+  $("backfill-body").replaceChildren(...rows);
+  const unsupported = run.unsupported_pending_kinds || [];
+  $("backfill-limits").textContent = "Work completion is separate from data coverage. Shared price sources and audit records are not additive across families. Cohort selection is retrospective." + (unsupported.length ? " Waiting for configured worker capabilities: " + unsupported.join(", ") + "." : "");
+}
 async function selectJob(id) {
   selectedId = id; renderJobs();
   try { renderDetail((await api("/api/jobs/" + encodeURIComponent(id))).job); } catch (error) { notice(error.message); }
@@ -90,6 +120,7 @@ async function refresh() {
   if (refreshing || document.hidden) return;
   refreshing = true;
   try {
+    renderBackfill(await api("/api/backfill/status"));
     jobs = (await api("/api/jobs")).jobs || [];
     if (!selectedId && jobs.length) selectedId = jobs[0].id;
     renderJobs();
@@ -123,3 +154,4 @@ $("refresh").addEventListener("click", refresh);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
 setInterval(refresh, 10000);
 refresh();
+

@@ -1,0 +1,25 @@
+{
+  "adjustment": "Provider split series used unchanged; no double adjustment. Raw auxiliary values remain available when adjusted identity qualification is unresolved.",
+  "amihud": "abs(adjusted arithmetic daily return)/dollar-volume;20-session complete mean including current; scale1, inverse USD.",
+  "breadth": "One explicitly supplied representative per frozen company; unknown eligibility keeps coverage denominator NULL; supplied excluded members remain in cohort accounting.",
+  "daily_returns": "Arithmetic close ratio minus1; exact1/5/20/60 exchange sessions; n+1 complete closes. Adjusted outputs also require stable explicit identity and supported adjustment basis.",
+  "daily_source": "market_factors_20250901_20260731_v1.compute_daily_features_remediated_v1; compute_daily_features_equity_patch_v3",
+  "daily_volatility": "Sample standard deviation of20 adjusted log returns, current session included; unannualized.",
+  "daily_volume": "Current adjusted volume divided by mean of prior20 sessions, current excluded; z-score uses prior20 sample standard deviation.",
+  "excluded": "scenario10_frozen_factor_inputs preservation-only; microstructure NULL outside genuine captured windows; no quote/trade acquisition.",
+  "intraday_missing_input_policy": "Enforce frozen dictionary completeness for every required price/volume/OHLC observation; legacy SQL close-count-only shortcuts are not reused.",
+  "intraday_source": "astra_shared_equity_features_20260928_v1.feature_contract:v1; compute_feature_grid",
+  "intraday_windows": "Exact RTH session grid; returns1/5/10/20/60/120; sample log-volatility5/20/60; SMA5/20/60. No windows cross session open.",
+  "minute_daily_aggregation": "Exact complete RTH calendar; last close, sum volume, sum minute close times volume. Missing minute queries do not prove no eligible trade.",
+  "new_provider_daily_dollar_volume_definition": "CONVENTIONAL_PROVIDER_DAILY_CLOSE_VOLUME_V1: close times provider daily volume; provider session basis labelled, never silently equated to RTH minute aggregation.",
+  "source_contract_sha256": {
+    "CTX06": "0b754b05d4998bb4c1008d35f7db9aa72de5a0e33d0fb06748a56454ea598d21",
+    "D01": "b0108a7ea587d11fb61057c493a9eb316166b80fdc38f6e16c36bef699e2e0c2",
+    "D02": "556e44418879e710c921b3e72214768ab6f36ee54f0632a74aabd9777de67a65",
+    "D03": "720d1d6243eed29518e9cc4be2e1fd8c1f1ec45cc4c45400c5567320d3ecab4b",
+    "D04": "230f350109b9b137b8dd9c722c7cefefac49b91eed733b5c2b4aa96ec43b97a8",
+    "D05": "708d472f20dc1fa936737cf792676855c2eda377c89636fe26244c077bc10e91"
+  },
+  "support_requirement": "60 earlier daily sessions; actual calendar. D01 inherited windows are within-session;20 earlier intraday sessions retained as separately labelled support.",
+  "version": "fixed3000-derived-v2.1"
+}

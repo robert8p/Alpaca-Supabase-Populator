@@ -7,6 +7,8 @@ on:
       - 'tests/ingestion/**'
       - '.github/workflows/astra-ingestion-qualification.yml'
       - 'requirements-ingestion*.txt'
+      - 'sql/astra_backfill*.sql'
+      - 'sql/astra_ingestion_supersede_gate_v2.sql'
       - 'sql/astra_ingestion_roles.sql'
       - 'sql/astra_ingestion_schema_v1.sql'
       - 'sql/astra_ingestion_rpc_v1.sql'
@@ -24,6 +26,8 @@ on:
       - 'tests/ingestion/**'
       - '.github/workflows/astra-ingestion-qualification.yml'
       - 'requirements-ingestion*.txt'
+      - 'sql/astra_backfill*.sql'
+      - 'sql/astra_ingestion_supersede_gate_v2.sql'
       - 'sql/astra_ingestion_roles.sql'
       - 'sql/astra_ingestion_schema_v1.sql'
       - 'sql/astra_ingestion_rpc_v1.sql'
@@ -86,3 +90,4 @@ jobs:
         run: |
           python -m compileall -q astra_ingestion
           node --check astra_ingestion/static/app.js
+

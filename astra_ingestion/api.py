@@ -194,6 +194,8 @@ def create_app(settings=None, store=None):
                     return Response(content, media_type=mime)
                 if route == "/api/jobs":
                     return send(200, {"jobs": await run_in_threadpool(store.list_jobs, limit=50)})
+                if route == "/api/backfill/status":
+                    return send(200, await run_in_threadpool(store.backfill_status))
                 match = JOB_ROUTE.fullmatch(route)
                 if match:
                     job = await run_in_threadpool(store.get_job, match.group(1))
@@ -225,3 +227,4 @@ def create_app(settings=None, store=None):
             return failure(exc)
 
     return app
+

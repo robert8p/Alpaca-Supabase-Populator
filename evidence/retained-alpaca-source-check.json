@@ -1,0 +1,136 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "provider": "Alpaca",
+  "provider_request": {
+    "symbols": "NVDA",
+    "timeframe": "1Min",
+    "start": "2025-09-02T08:00:00Z",
+    "end": "2025-09-02T08:04:00Z",
+    "feed": "sip",
+    "adjustment": "raw",
+    "asof": "2026-08-03",
+    "limit": 5
+  },
+  "source_observed_by_utc": "2026-10-30T05:25:25Z",
+  "source_response": {
+    "bars": {
+      "NVDA": [
+        {
+          "c": 172.68,
+          "h": 173.6,
+          "l": 172.2,
+          "n": 1678,
+          "o": 172.4,
+          "t": "2025-09-02T08:00:00Z",
+          "v": 65341,
+          "vw": 172.650767
+        },
+        {
+          "c": 172.36,
+          "h": 172.78,
+          "l": 172.36,
+          "n": 1322,
+          "o": 172.73,
+          "t": "2025-09-02T08:01:00Z",
+          "v": 42228,
+          "vw": 172.502419
+        },
+        {
+          "c": 172.28,
+          "h": 172.4,
+          "l": 172.26,
+          "n": 1468,
+          "o": 172.36,
+          "t": "2025-09-02T08:02:00Z",
+          "v": 42464,
+          "vw": 172.344669
+        },
+        {
+          "c": 172.5,
+          "h": 172.5,
+          "l": 172.24,
+          "n": 1508,
+          "o": 172.24,
+          "t": "2025-09-02T08:03:00Z",
+          "v": 42847,
+          "vw": 172.380504
+        },
+        {
+          "c": 172.4,
+          "h": 172.57,
+          "l": 172.4,
+          "n": 940,
+          "o": 172.5,
+          "t": "2025-09-02T08:04:00Z",
+          "v": 25076,
+          "vw": 172.483372
+        }
+      ]
+    },
+    "next_page_token": null
+  },
+  "retained_relation": "market_fixed_20250901_20260831.alpaca_sip_bars_1m",
+  "retained_instrument_key": 8372,
+  "retained_records": [
+    {
+      "bar_ts": "2025-09-02 08:00:00+00",
+      "open": 172.4,
+      "high": 173.6,
+      "low": 172.2,
+      "close": 172.68,
+      "volume": 65341,
+      "trade_count": 1678,
+      "vwap": 172.650767,
+      "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea"
+    },
+    {
+      "bar_ts": "2025-09-02 08:01:00+00",
+      "open": 172.73,
+      "high": 172.78,
+      "low": 172.36,
+      "close": 172.36,
+      "volume": 42228,
+      "trade_count": 1322,
+      "vwap": 172.502419,
+      "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea"
+    },
+    {
+      "bar_ts": "2025-09-02 08:02:00+00",
+      "open": 172.36,
+      "high": 172.4,
+      "low": 172.26,
+      "close": 172.28,
+      "volume": 42464,
+      "trade_count": 1468,
+      "vwap": 172.344669,
+      "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea"
+    },
+    {
+      "bar_ts": "2025-09-02 08:03:00+00",
+      "open": 172.24,
+      "high": 172.5,
+      "low": 172.24,
+      "close": 172.5,
+      "volume": 42847,
+      "trade_count": 1508,
+      "vwap": 172.380504,
+      "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea"
+    },
+    {
+      "bar_ts": "2025-09-02 08:04:00+00",
+      "open": 172.5,
+      "high": 172.57,
+      "low": 172.4,
+      "close": 172.4,
+      "volume": 25076,
+      "trade_count": 940,
+      "vwap": 172.483372,
+      "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea"
+    }
+  ],
+  "compared_records": 5,
+  "mismatches": [],
+  "status": "MATCHED",
+  "scope_of_evidence": "These five observations only; not full-dataset completeness or historical-company identity certification",
+  "provider_requests": 1
+}

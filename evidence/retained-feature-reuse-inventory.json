@@ -1,0 +1,241 @@
+[
+  {
+    "evidence": {
+      "builders": [
+        {
+          "name": "compact_output_hash_remediated_v1",
+          "schema": "astra_shared_equity_features_20260928_v1",
+          "arguments": "p_source bytea, p_identity bytea, p_minutes smallint[], p_flags smallint[], p_receipts timestamp with time zone[], p_values double precision[], p_retained integer, p_unaligned integer, p_invalid_price integer, p_invalid_volume integer"
+        },
+        {
+          "name": "compute_feature_sessions_remediated_v1",
+          "schema": "astra_shared_equity_features_20260928_v1",
+          "arguments": "p_lo integer, p_hi integer, p_start date, p_end date, p_skip_built boolean"
+        },
+        {
+          "name": "feature_grid_as_of_remediated_v1",
+          "schema": "astra_shared_equity_features_20260928_v1",
+          "arguments": "p_instrument_key integer, p_session_date date, p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "feature_grid_remediated_v1",
+          "schema": "astra_shared_equity_features_20260928_v1",
+          "arguments": "p_instrument_key integer, p_session_date date, p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "rebuild_feature_sessions_remediated_v1",
+          "schema": "astra_shared_equity_features_20260928_v1",
+          "arguments": "p_lo integer, p_hi integer, p_start date, p_end date"
+        },
+        {
+          "name": "alfred_vintage_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_use_archive_bound boolean, p_allow_announced_future_effective boolean"
+        },
+        {
+          "name": "compute_daily_features_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_lo integer, p_hi integer, p_start date, p_end date"
+        },
+        {
+          "name": "daily_features_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "finite_float_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "x double precision"
+        },
+        {
+          "name": "finra_short_interest_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_allow_archived_publication_bound boolean"
+        },
+        {
+          "name": "finra_short_volume_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_allow_archived_publication_bound boolean"
+        },
+        {
+          "name": "fundamental_fact_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone"
+        },
+        {
+          "name": "fundamental_facts_as_of_release_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_cik text, p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "fundamental_issuer_metrics_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_cik text, p_decision timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "fundamental_metrics_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_key integer, p_decision timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "news_attention_daily_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_allow_retrospective_acquired_version boolean"
+        },
+        {
+          "name": "news_security_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_allow_retrospective_acquired_version boolean"
+        },
+        {
+          "name": "nyfed_funding_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_use_archive_bound boolean"
+        },
+        {
+          "name": "occ_market_open_interest_report_asof_remediation_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "decision_ts timestamp with time zone"
+        },
+        {
+          "name": "official_macro_release_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_use_archive_bound boolean"
+        },
+        {
+          "name": "read_identity_anchor_mapping_remediation_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": ""
+        },
+        {
+          "name": "rebuild_daily_features_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_lo integer, p_hi integer, p_start date, p_end date"
+        },
+        {
+          "name": "sec_filings_as_of_release_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_cik text, p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+        },
+        {
+          "name": "sec_public_filing_day_bound_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_accepted timestamp with time zone, p_filed date, p_form text"
+        },
+        {
+          "name": "split_adjustment_inputs_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone"
+        },
+        {
+          "name": "treasury_curve_10y_2y_as_of_remediated_v1",
+          "schema": "market_factors_20250901_20260731_v1",
+          "arguments": "p_decision_ts timestamp with time zone, p_use_archive_bound boolean"
+        }
+      ],
+      "cache_sample": {
+        "built_at": "2026-10-08T06:05:51.232068+00:00",
+        "array_dims": "[1:390][1:17]",
+        "session_date": "2025-09-02",
+        "output_sha256": "d905e1e2bbc63f1bc109e9941ca260d4ff49afdb9bba2c6da37046620a077e47",
+        "instrument_key": 8372,
+        "invalid_ohlc_rows": 0,
+        "coefficient_sample": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            169.563915
+          ]
+        ],
+        "expected_grid_rows": 390,
+        "source_rows_sha256": "6d2d92cc34d5371624a446ad7356bf370bd65b1431386b68e85ec2f63fe92bdd",
+        "aligned_source_rows": 390,
+        "invalid_volume_rows": 0,
+        "first_minute_indices": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "first_validity_codes": [
+          55,
+          55,
+          55,
+          55,
+          55
+        ],
+        "retained_source_rows": 390,
+        "identity_contract_sha256": "27ba9694086267366f8e49880bd2322e1f783dc94f527868d74801b980c0fe48"
+      },
+      "daily_samples": [
+        {
+          "ret_1d": -0.0202547624512279,
+          "ret_5d": -0.0505449288256228,
+          "ret_20d": -0.0512307606823359,
+          "ret_60d": 0.220078599499822,
+          "built_at": "2026-10-08T02:01:40.338729+00:00",
+          "raw_close": 170.75,
+          "raw_ret_1d": -0.0202547624512279,
+          "raw_volume": 203340915,
+          "volume_z20": 1.66241738349127,
+          "source_code": 1,
+          "session_date": "2025-09-02",
+          "expected_bars": 390,
+          "observed_bars": 390,
+          "quality_flags": 20576,
+          "instrument_key": 8372,
+          "amihud_mean_20d": null,
+          "identity_anchor": "BBG001S5TZJ6",
+          "source_age_seconds": null,
+          "source_observed_at": "2026-10-01T16:00:58.041+00:00",
+          "relative_volume_20d": 1.41452507630619,
+          "assumed_available_at": "2025-09-02T20:01:00+00:00",
+          "realized_log_vol_20d": 0.0141274872320591,
+          "valid_close_count_61": 61,
+          "provider_dollar_volume": 34470914889.6494
+        },
+        {
+          "ret_1d": -0.000761346998535806,
+          "ret_5d": -0.0609796367638964,
+          "ret_20d": -0.0428587456524178,
+          "ret_60d": 0.20417813536594,
+          "built_at": "2026-10-08T02:01:40.338729+00:00",
+          "raw_close": 170.62,
+          "raw_ret_1d": -0.000761346998535806,
+          "raw_volume": 137287560,
+          "volume_z20": -0.282765358125717,
+          "source_code": 1,
+          "session_date": "2025-09-03",
+          "expected_bars": 390,
+          "observed_bars": 390,
+          "quality_flags": 20576,
+          "instrument_key": 8372,
+          "amihud_mean_20d": null,
+          "identity_anchor": "BBG001S5TZJ6",
+          "source_age_seconds": null,
+          "source_observed_at": "2026-10-01T16:00:58.041+00:00",
+          "relative_volume_20d": 0.927931220712894,
+          "assumed_available_at": "2025-09-03T20:01:00+00:00",
+          "realized_log_vol_20d": 0.0140373740437278,
+          "valid_close_count_61": 61,
+          "provider_dollar_volume": 23426931059.6461
+        }
+      ]
+    }
+  }
+]

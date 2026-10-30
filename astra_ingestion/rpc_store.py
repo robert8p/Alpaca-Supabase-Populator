@@ -208,6 +208,12 @@ class RpcStore:
             raise ValueError("Unsupported control")
         return self._call("control_job", {"job_id": job_id, "action": action})
 
+    def backfill_status(self):
+        result = self._call("backfill_status", {})
+        if not isinstance(result, dict) or not isinstance(result.get("runs"), list):
+            raise RpcPersistenceError("Invalid replacement-run status response")
+        return result
+
     def claim_next(self, worker_id, lease_seconds=90):
         result = self._call("claim_next", {"worker_id": worker_id, "lease_seconds": max(30, min(int(lease_seconds), 300))})
         if result is not None:
@@ -261,3 +267,4 @@ def create_store(settings):
         raise ValueError("Production runtime does not accept direct database credentials")
     return RpcStore(settings.api_url, settings.publishable_key, settings.rpc_token,
                     project_ref=settings.project_ref)
+

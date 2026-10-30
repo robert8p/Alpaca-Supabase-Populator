@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "test_framework": "unittest",
+  "tests_run": 9,
+  "skipped": 0,
+  "duration_seconds": 1.631,
+  "target": "disposable loopback PostgreSQL, port55432, database astra_ingestion_qualification",
+  "production_access": false,
+  "command": "ASTRA_INGESTION_POSTGRES_TEST_URL=postgresql://postgres@127.0.0.1:55432/astra_ingestion_qualification PYTHONPATH=.:tests/ingestion python3 -m unittest test_backfill_reuse_commit_v2 test_backfill_reuse_verify_v2 -v",
+  "python": "3.12.14",
+  "source_sha256": {
+    "sql/astra_backfill_reuse_commit_v2.sql": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535",
+    "sql/astra_backfill_reuse_verify_v2.sql": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5",
+    "tests/ingestion/test_backfill_reuse_commit_v2.py": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f",
+    "tests/ingestion/test_backfill_reuse_verify_v2.py": "99fb8ed69ae70dcc866439481a3c322308a85d8937b3616603c70bba3c1e1db9"
+  },
+  "checks": [
+    "one pointer receipt/no source duplication",
+    "post-commit source verifier compatibility",
+    "missing-session acquisition successor and derivation dependency wait",
+    "bad-profile and invalid-session repair child deduplication",
+    "empty retained month creates provider acquisition",
+    "lost acknowledgement is idempotent",
+    "readback without live claim or reopening paused run",
+    "source-value and pointer-count tamper detection",
+    "private permissions and uncommitted-reference rejection"
+  ],
+  "limitation": "Local disposable PostgreSQL qualification; does not itself prove deployment or live provider execution."
+}
