@@ -1,0 +1,122 @@
+{
+  "version": "fixed3000-shared-refresh-performance-qualification-v2",
+  "started_at": "2026-10-30T09:15:58.528009+00:00",
+  "finished_at": "2026-10-30T09:16:22.893427+00:00",
+  "elapsed_seconds": 24.3654,
+  "tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "passed": true,
+  "files": {
+    "sql/astra_backfill_shared_refresh_performance_v2.sql": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424",
+    "tests/ingestion/test_backfill_shared_refresh_performance_v2.py": "db15b1c5aabd4f0b0b2a82941531c877c7392dff0ff00fe86c5b3d15c8a6492f",
+    "tests/ingestion/test_backfill_shared_records_v2.py": "582e71f64d17a8a57c055c69fd4f8f136916f959eb9bb2b47d953550a3ac6a86",
+    "sql/astra_backfill_shared_records_v2.sql": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+  },
+  "exact_inputs_unchanged": true,
+  "performance": {
+    "news_rpc_seconds": 0.7763779770029942,
+    "phase_seconds": {
+      "parse_seconds": 0.0036321279985713772,
+      "pacing_fixture_seconds": 0.004460945994651411,
+      "reserve_seconds": 0.011010746995452791,
+      "commit_seconds": 0.21524509599839803,
+      "verify_seconds": 0.5416088769998169
+    },
+    "prior_option_records": 10000,
+    "news_records": 1000,
+    "analyzed_fixture": true,
+    "plans": [
+      {
+        "query": "records",
+        "mode": "force_generic_plan",
+        "milliseconds": 112.872,
+        "cost": 2947.54,
+        "archive_lookups": 2,
+        "repeated_grouped_results": 0,
+        "maximum_cte_scan_loops": 1
+      },
+      {
+        "query": "records",
+        "mode": "force_custom_plan",
+        "milliseconds": 115.303,
+        "cost": 2497.54,
+        "archive_lookups": 2,
+        "repeated_grouped_results": 0,
+        "maximum_cte_scan_loops": 1
+      },
+      {
+        "query": "links",
+        "mode": "force_generic_plan",
+        "milliseconds": 55.893,
+        "cost": 2565.11,
+        "archive_lookups": 3,
+        "repeated_grouped_results": 0,
+        "maximum_cte_scan_loops": 1
+      },
+      {
+        "query": "links",
+        "mode": "force_custom_plan",
+        "milliseconds": 82.679,
+        "cost": 2112.86,
+        "archive_lookups": 3,
+        "repeated_grouped_results": 0,
+        "maximum_cte_scan_loops": 1
+      }
+    ]
+  },
+  "production_changes": 0,
+  "semantics": "Original field conflicts, version selection, dates, links, counters, immutable receipts, task scopes and worker authorization preserved",
+  "database_scope": "Disposable loopback PostgreSQL; isolated generated schemas and roles",
+  "timing_bounds": {
+    "news_rpc_seconds_strictly_below": 12,
+    "existing_maximum_options_page_seconds_strictly_below": 15,
+    "each_extracted_generic_custom_statement_milliseconds_strictly_below": 2500
+  },
+  "application": {
+    "after": [
+      "astra_backfill_shared_records_v2"
+    ],
+    "mutations": [
+      "One existing private shared_refresh function definition"
+    ],
+    "new_tables": 0,
+    "new_roles": 0,
+    "new_grants": 0,
+    "worker_changes": 0,
+    "source_baseline_sha256": "690916efcbf8cbed40163ebcfed9345e7c7a487c89f7c8d1ef1d9937cbb1742f",
+    "uncertain_write_reconciliation": "Read shared_refresh prosrc for backfill_shared_refresh_bounded_keys_v2 and exact candidate source hash; baseline guard rejects replay.",
+    "candidate_prosrc_sha256": "7cbf387da2848ed79b4643b45ab83706e3923cfa020a044c614dc0d57e945770"
+  },
+  "python_syntax_passed": true,
+  "no_dsn": {
+    "tests_discovered": 17,
+    "skipped": 17,
+    "errors": 0,
+    "failures": 0
+  },
+  "python_compile_passed": true,
+  "ci_failure_source": {
+    "path": "evidence/replacement-shared-refresh-ci-profile-v2.json",
+    "sha256": "ac619d8357f31aa012230ed27b7087ba61ee9ca3e59c328a76962846b3444036",
+    "run_id": 41029742338,
+    "job_id": 123976284949,
+    "news_rpc_seconds": 151.71791369199997,
+    "shared_refresh_self_milliseconds": 151335.481,
+    "postgres_version": "17.11"
+  },
+  "independent_review": {
+    "reviewer": "replacement_cache_finish",
+    "scope": "read-only SQL equivalence and test profiling review",
+    "result": "No remaining semantic objection",
+    "confirmed": [
+      "duplicate key multiplicity",
+      "version ordering and ties",
+      "conflicts and dates",
+      "occurrence counts",
+      "link classifications",
+      "unchanged existing privilege path"
+    ]
+  }
+}

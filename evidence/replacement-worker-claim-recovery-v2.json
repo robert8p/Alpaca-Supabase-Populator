@@ -1,0 +1,58 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "claim_repair_sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39",
+  "applied_approximately": "2026-10-30T08:51:25Z",
+  "baseline": {
+    "observed_at": "2026-10-30 08:54:05.707097+00",
+    "status": "ACTIVE",
+    "pages_committed": 1854,
+    "records_committed": 222851,
+    "requests_reserved": 911,
+    "last_progress_at": "2026-10-30 08:49:37.878645+00",
+    "latest_workers": [
+      {
+        "worker_id": "453fcdb5-cad2-4331-b558-ca1b52087b9c",
+        "observed_at": "2026-10-30T08:44:11.73864+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      },
+      {
+        "worker_id": "84ded304-2c49-4134-8297-afb191226f30",
+        "observed_at": "2026-10-30T08:25:30.055429+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      }
+    ]
+  },
+  "recovered_observation": {
+    "observed_at": "2026-10-30 08:56:16.328763+00",
+    "status": "ACTIVE",
+    "pages_committed": 1874,
+    "records_committed": 225260,
+    "requests_reserved": 921,
+    "source_bytes": 215117977,
+    "last_progress_at": "2026-10-30 08:56:12.095181+00",
+    "planner_next_selection_order": "1463",
+    "independent_readbacks": 1874,
+    "s02_source_occurrences": 2810,
+    "s02_next_page": 46,
+    "operational_error_tasks": 0,
+    "latest_worker": [
+      {
+        "worker_id": "57b1aafe-fb13-49ea-9faf-0bd807563df1",
+        "observed_at": "2026-10-30T08:56:11.141697+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      }
+    ]
+  },
+  "delta": {
+    "physical_pages": 20,
+    "physical_records_and_pointers": 2409,
+    "provider_reservations": 10
+  },
+  "render_autorestart_available_at": "2026-10-30T08:54:50.231826Z",
+  "same_existing_service": "srv-dbh9fko473hc739an8m0",
+  "source_revision_unchanged": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "worker_source_sha256_unchanged": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+  "interpretation": "Actual resumed acquisition/derived/reused commits and independent readback after the existing service's automatic restart. Observation window85seconds after server_available; not a long-term reliability certificate. Physical records, references and source occurrences overlap and are not unique market coverage.",
+  "relay_state": "HELD_AWAITING_EXACT_ACTION_TIME_CONFIRMATION",
+  "pending_independent_release": "Latest source7f39 includes claim repair and diagnostic-only shared-news test. Exact-head CI remains pending; web still947. Intermittent shared-news performance issue not claimed repaired."
+}

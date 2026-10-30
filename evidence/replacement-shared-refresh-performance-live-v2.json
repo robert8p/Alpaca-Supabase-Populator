@@ -1,0 +1,113 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "migration": {
+    "name": "astra_backfill_shared_refresh_performance_v2",
+    "sql_sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424",
+    "application_time_bound_utc": {
+      "after": "2026-10-30T09:16:12.731402Z",
+      "before": "2026-10-30T09:18:04.527682Z"
+    },
+    "attempts": 1,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    }
+  },
+  "preflight": [
+    {
+      "observed_at": "2026-10-30 09:16:12.731402+00",
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "relay_ledger": null,
+      "relay_helper": null,
+      "relay_probe_position": 0,
+      "relay_dispatch_position": 0,
+      "shared_refresh_source_sha256": "690916efcbf8cbed40163ebcfed9345e7c7a487c89f7c8d1ef1d9937cbb1742f",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      }
+    }
+  ],
+  "readback": [
+    {
+      "observed_at": "2026-10-30 09:18:04.527682+00",
+      "shared_refresh_source_sha256": "7cbf387da2848ed79b4643b45ab83706e3923cfa020a044c614dc0d57e945770",
+      "installed_marker": 179,
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z",
+      "next_member": "1629",
+      "planning_complete": "false",
+      "pages_committed": 2220,
+      "records_committed": 267062,
+      "requests_reserved": 1082,
+      "last_progress_at": "2026-10-30 09:17:56.507018+00",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      },
+      "readbacks": 2220,
+      "readback_mismatches": 0,
+      "unread_pages": 0,
+      "operational_error_tasks": 0,
+      "latest_worker": [
+        {
+          "worker_id": "6dde714d-1a30-4674-b52a-8c57f95c3f2c",
+          "observed_at": "2026-10-30T09:17:56.756567+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "reviewer": "replacement_cache_finish",
+    "accepted": true,
+    "scope": "Exact data semantics, targeted lookup/materialization change, immutable receipts, permissions and measured plan behavior"
+  },
+  "qualification": {
+    "path": "evidence/replacement-shared-refresh-performance-qualification-v2.json",
+    "sha256": "2d7c2745fecb5be517eb597ec1d98fe7f193b105e1b5d260e5d390025a1f4736",
+    "actual_postgres_cases": 17,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 24.3654,
+    "news_rpc_seconds": 0.7763779770029942,
+    "news_strict_bound_seconds": 12,
+    "options_strict_bound_seconds": 15
+  },
+  "security": {
+    "new_grants": 0,
+    "new_roles": 0,
+    "new_tables": 0,
+    "worker_changes": 0,
+    "authenticated_dispatcher_unchanged": true,
+    "relay_held": true,
+    "secret_exported": false
+  },
+  "limits": [
+    "Local PostgreSQL16 qualification does not substitute for exact-head PostgreSQL17 CI.",
+    "This function repair has been installed and verified, but no live Massive request was sent.",
+    "Work/storage counts overlap; full plan and family coverage remain incomplete.",
+    "Web release remains gated on exact-head CI."
+  ]
+}

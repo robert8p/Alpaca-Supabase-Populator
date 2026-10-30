@@ -19,7 +19,9 @@ class SharedRecordsTests(unittest.TestCase):
     def setUpClass(cls):
         s02.RetainedS02Tests.setUpClass.__func__(cls)
         f=cls.fixture('runTest')
-        with f.admin() as conn:conn.execute(cls.rewrite((ROOT/'sql/astra_backfill_shared_records_v2.sql').read_text()))
+        with f.admin() as conn:
+            conn.execute(cls.rewrite((ROOT/'sql/astra_backfill_shared_records_v2.sql').read_text()))
+            conn.execute(cls.rewrite((ROOT/'sql/astra_backfill_shared_refresh_performance_v2.sql').read_text()))
         # Fixture-only observation: production SQL and its timing bound are unchanged.
         original_admin=cls.fixture.admin
         def observed_admin(_cls):
