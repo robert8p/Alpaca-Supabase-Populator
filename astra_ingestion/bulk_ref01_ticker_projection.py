@@ -122,8 +122,14 @@ def inspect_ticker_projection_page(
     plan: Ref01TickerPage, rows: Sequence[Mapping[str, Any]],
 ) -> Ref01TickerPageEvidence:
     """Bound source observations; never use current status as historical PIT."""
-    if not isinstance(plan, Ref01TickerPage) or not _SHA.fullmatch(plan.snapshot_sha256):
+    if not isinstance(plan, Ref01TickerPage):
         raise ScopeError("REF01 exact source page query plan required")
+    original = plan_ticker_projection(
+        plan.snapshot_sha256, after_company_key=plan.after_company_key,
+        page_limit=plan.page_limit)
+    if (plan.sql != original.sql or plan.params != original.params
+            or plan.status != original.status):
+        raise ScopeError("REF01 source query or scope changed after validation")
     if not isinstance(rows, (tuple, list)) or len(rows) > plan.page_limit:
         raise ScopeError("unbounded REF01 ticker page")
     seen = plan.after_company_key
