@@ -153,6 +153,9 @@ class TransportStageTests(unittest.TestCase):
         b = bound(p, c, t, previous=prev, previous_receipt=receipt)
         self.assertIn("page_token=QUJDRA%3D%3D", b.url)
         self.assertEqual(b.page_no, 1)
+        self.assertNotEqual(b.request_url_sha256, bound().request_url_sha256)
+        # Original contract request stays unchanged; pagination URL does not.
+        self.assertEqual(b.request_sha256, bound().request_sha256)
         with self.assertRaises(ScopeError):
             bound(p, c, t, previous=prev,
                   previous_receipt={**receipt, "source_page_sha256": "f"*64})
@@ -171,7 +174,12 @@ class TransportStageTests(unittest.TestCase):
         self.assertFalse(x.provider_provenance_accepted)
         self.assertFalse(x.bulk_output_committed)
         self.assertNotIn("10.1", repr(x))
+        self.assertEqual(x.request_url_sha256, bound().request_url_sha256)
         self.assertEqual(x.quarantinable_response()["bars"]["AAPL"][0]["o"], 10.1)
+        stolen_copy = x.quarantinable_response()
+        stolen_copy["bars"]["AAPL"][0]["o"] = 999999
+        self.assertEqual(x.quarantinable_response()["bars"]["AAPL"][0]["o"], 10.1)
+        self.assertNotIn("10.1", repr(x))
 
     def test_no_redirect_wrong_status_media_compression_oversize_or_empty(self):
         b = bound()
