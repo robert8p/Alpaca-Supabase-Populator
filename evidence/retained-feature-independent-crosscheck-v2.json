@@ -1,0 +1,1108 @@
+{
+  "source": "Root bounded live read of390rawNVDAregular-session bars and5retained feature rows",
+  "source_artifact": "evidence/retained-feature-crosscheck.json",
+  "source_artifact_sha256": "bdb01a36ad12d218c90de3c30ce856fef0a3281fb7ac2fd41305557ce9e87a73",
+  "date": "2025-09-02",
+  "symbol": "NVDA",
+  "cached_formula_version": "compact_intraday_float64_v1",
+  "independent_formula_version": "fixed3000-derived-v2.1",
+  "numeric_comparisons": 155,
+  "distinct_fields": 36,
+  "null_comparisons": 25,
+  "absolute_tolerance": 1e-09,
+  "relative_tolerance": 1e-10,
+  "mismatches": [],
+  "passed": true,
+  "comparisons": [
+    {
+      "minute": 0,
+      "field": "open",
+      "cached": 170.06,
+      "independent": 170.06,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "high",
+      "cached": 170.07,
+      "independent": 170.07,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "low",
+      "cached": 168.66,
+      "independent": 168.66,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "close",
+      "cached": 169.01,
+      "independent": 169.01,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "volume",
+      "cached": 6435341,
+      "independent": 6435341.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "trade_count",
+      "cached": 106824,
+      "independent": 106824.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "provider_vwap",
+      "cached": 169.563915,
+      "independent": 169.563915,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 0,
+      "field": "dollar_volume_close",
+      "cached": 1087636982.41,
+      "independent": 1087636982.4099998,
+      "absolute_error": 2.384185791015625e-07
+    },
+    {
+      "minute": 0,
+      "field": "dollar_volume_vwap",
+      "cached": 1091201614.32001,
+      "independent": 1091201614.320015,
+      "absolute_error": 5.0067901611328125e-06
+    },
+    {
+      "minute": 0,
+      "field": "candle_range_pct",
+      "cached": 0.00829119134423143,
+      "independent": 0.008291191344231428,
+      "absolute_error": 1.734723475976807e-18
+    },
+    {
+      "minute": 0,
+      "field": "candle_body_pct",
+      "cached": -0.0061742914265554,
+      "independent": -0.0061742914265554005,
+      "absolute_error": 8.673617379884035e-19
+    },
+    {
+      "minute": 0,
+      "field": "upper_wick_pct",
+      "cached": 5.88027754909497e-05,
+      "independent": 5.880277549094969e-05,
+      "absolute_error": 6.776263578034403e-21
+    },
+    {
+      "minute": 0,
+      "field": "lower_wick_pct",
+      "cached": 0.00205809714218508,
+      "independent": 0.0020580971421850776,
+      "absolute_error": 2.6020852139652106e-18
+    },
+    {
+      "minute": 0,
+      "field": "session_vwap_proxy",
+      "cached": 169.563915,
+      "independent": 169.56391499999998,
+      "absolute_error": 2.842170943040401e-14
+    },
+    {
+      "minute": 0,
+      "field": "close_vs_provider_vwap_bps",
+      "cached": -32.6670329592249,
+      "independent": -32.667032959224905,
+      "absolute_error": 7.105427357601002e-15
+    },
+    {
+      "minute": 0,
+      "field": "close_vs_session_vwap_bps",
+      "cached": -32.6670329592227,
+      "independent": -32.66703295922269,
+      "absolute_error": 1.4210854715202004e-14
+    },
+    {
+      "minute": 20,
+      "field": "open",
+      "cached": 171.727,
+      "independent": 171.727,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "high",
+      "cached": 172.379,
+      "independent": 172.379,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "low",
+      "cached": 171.635,
+      "independent": 171.635,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "close",
+      "cached": 172.3101,
+      "independent": 172.3101,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "volume",
+      "cached": 1207556,
+      "independent": 1207556.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "trade_count",
+      "cached": 12688,
+      "independent": 12688.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "provider_vwap",
+      "cached": 172.033436,
+      "independent": 172.033436,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "dollar_volume_close",
+      "cached": 208074095.1156,
+      "independent": 208074095.11560002,
+      "absolute_error": 2.9802322387695312e-08
+    },
+    {
+      "minute": 20,
+      "field": "dollar_volume_vwap",
+      "cached": 207740007.842416,
+      "independent": 207740007.842416,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "return_1m",
+      "cached": 0.00334876408419937,
+      "independent": 0.0033487640841993738,
+      "absolute_error": 3.903127820947816e-18
+    },
+    {
+      "minute": 20,
+      "field": "return_5m",
+      "cached": 0.00772033452248677,
+      "independent": 0.007720334522486771,
+      "absolute_error": 1.734723475976807e-18
+    },
+    {
+      "minute": 20,
+      "field": "return_10m",
+      "cached": 0.0104279671005643,
+      "independent": 0.010427967100564262,
+      "absolute_error": 3.8163916471489756e-17
+    },
+    {
+      "minute": 20,
+      "field": "return_20m",
+      "cached": 0.0195260635465357,
+      "independent": 0.019526063546535743,
+      "absolute_error": 4.5102810375396984e-17
+    },
+    {
+      "minute": 20,
+      "field": "realized_vol_5m",
+      "cached": 0.00207829496123169,
+      "independent": 0.002078294961231566,
+      "absolute_error": 1.235990476633475e-16
+    },
+    {
+      "minute": 20,
+      "field": "realized_vol_20m",
+      "cached": 0.00190933492655895,
+      "independent": 0.0019093349265589278,
+      "absolute_error": 2.211772431870429e-17
+    },
+    {
+      "minute": 20,
+      "field": "sma_close_5m",
+      "cached": 171.67346,
+      "independent": 171.67346,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "sma_close_20m",
+      "cached": 170.643275,
+      "independent": 170.643275,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "candle_range_pct",
+      "cached": 0.00433245791285005,
+      "independent": 0.004332457912850045,
+      "absolute_error": 5.204170427930421e-18
+    },
+    {
+      "minute": 20,
+      "field": "candle_body_pct",
+      "cached": 0.00339550565723504,
+      "independent": 0.00339550565723504,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "upper_wick_pct",
+      "cached": 0.000401218212628096,
+      "independent": 0.00040121821262809623,
+      "absolute_error": 2.168404344971009e-19
+    },
+    {
+      "minute": 20,
+      "field": "lower_wick_pct",
+      "cached": 0.000535734042986909,
+      "independent": 0.0005357340429869092,
+      "absolute_error": 2.168404344971009e-19
+    },
+    {
+      "minute": 20,
+      "field": "range_20m_pct",
+      "cached": 0.0221108805217907,
+      "independent": 0.022110880521790666,
+      "absolute_error": 3.469446951953614e-17
+    },
+    {
+      "minute": 20,
+      "field": "volume_mean_20m",
+      "cached": 1150619.6,
+      "independent": 1150619.6,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "volume_rel_20m",
+      "cached": 1.0494832523277,
+      "independent": 1.0494832523277022,
+      "absolute_error": 2.220446049250313e-15
+    },
+    {
+      "minute": 20,
+      "field": "volume_z_20m",
+      "cached": 0.191435311359622,
+      "independent": 0.191435311359622,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "dollar_volume_mean_20m",
+      "cached": 196228190.19236,
+      "independent": 196228190.19236,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 20,
+      "field": "session_vwap_proxy",
+      "cached": 170.283498370055,
+      "independent": 170.28349837005513,
+      "absolute_error": 1.1368683772161603e-13
+    },
+    {
+      "minute": 20,
+      "field": "close_vs_provider_vwap_bps",
+      "cached": 16.0819900150111,
+      "independent": 16.081990015011094,
+      "absolute_error": 7.105427357601002e-15
+    },
+    {
+      "minute": 20,
+      "field": "close_vs_session_vwap_bps",
+      "cached": 119.013389397293,
+      "independent": 119.01338939729334,
+      "absolute_error": 3.410605131648481e-13
+    },
+    {
+      "minute": 20,
+      "field": "close_vs_sma20_bps",
+      "cached": 97.678915269297,
+      "independent": 97.67891526929695,
+      "absolute_error": 4.263256414560601e-14
+    },
+    {
+      "minute": 20,
+      "field": "sma5_vs_sma20_bps",
+      "cached": 60.3706767817291,
+      "independent": 60.370676781726914,
+      "absolute_error": 2.1884716261411086e-12
+    },
+    {
+      "minute": 20,
+      "field": "coverage_20m",
+      "cached": 1,
+      "independent": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "open",
+      "cached": 170.63,
+      "independent": 170.63,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "high",
+      "cached": 170.63,
+      "independent": 170.63,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "low",
+      "cached": 170.3614,
+      "independent": 170.3614,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "close",
+      "cached": 170.44,
+      "independent": 170.44,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "volume",
+      "cached": 404642,
+      "independent": 404642.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "trade_count",
+      "cached": 5144,
+      "independent": 5144.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "provider_vwap",
+      "cached": 170.470025,
+      "independent": 170.470025,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "dollar_volume_close",
+      "cached": 68967182.48,
+      "independent": 68967182.48,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "dollar_volume_vwap",
+      "cached": 68979331.85605,
+      "independent": 68979331.85605,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "return_1m",
+      "cached": -0.00113459482774791,
+      "independent": -0.0011345948277479145,
+      "absolute_error": 4.553649124439119e-18
+    },
+    {
+      "minute": 60,
+      "field": "return_5m",
+      "cached": 0.00161607851203249,
+      "independent": 0.0016160785120324928,
+      "absolute_error": 2.8189256484623115e-18
+    },
+    {
+      "minute": 60,
+      "field": "return_10m",
+      "cached": -0.000146657671662886,
+      "independent": -0.00014665767166288646,
+      "absolute_error": 4.607859233063394e-19
+    },
+    {
+      "minute": 60,
+      "field": "return_20m",
+      "cached": 0.000731583873214037,
+      "independent": 0.0007315838732140367,
+      "absolute_error": 3.2526065174565133e-19
+    },
+    {
+      "minute": 60,
+      "field": "return_60m",
+      "cached": 0.00846103780841378,
+      "independent": 0.008461037808413785,
+      "absolute_error": 5.204170427930421e-18
+    },
+    {
+      "minute": 60,
+      "field": "realized_vol_5m",
+      "cached": 0.00158021585573989,
+      "independent": 0.0015802158557398777,
+      "absolute_error": 1.235990476633475e-17
+    },
+    {
+      "minute": 60,
+      "field": "realized_vol_20m",
+      "cached": 0.00132184209678742,
+      "independent": 0.001321842096787317,
+      "absolute_error": 1.0299920638612292e-16
+    },
+    {
+      "minute": 60,
+      "field": "realized_vol_60m",
+      "cached": 0.0017406893167554,
+      "independent": 0.001740689316755375,
+      "absolute_error": 2.4936649967166602e-17
+    },
+    {
+      "minute": 60,
+      "field": "sma_close_5m",
+      "cached": 170.25772,
+      "independent": 170.25772,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "sma_close_20m",
+      "cached": 170.31398,
+      "independent": 170.31398000000002,
+      "absolute_error": 2.842170943040401e-14
+    },
+    {
+      "minute": 60,
+      "field": "sma_close_60m",
+      "cached": 170.719511666667,
+      "independent": 170.71951166666668,
+      "absolute_error": 3.126388037344441e-13
+    },
+    {
+      "minute": 60,
+      "field": "candle_range_pct",
+      "cached": 0.0015741663247963,
+      "independent": 0.0015741663247962972,
+      "absolute_error": 2.8189256484623115e-18
+    },
+    {
+      "minute": 60,
+      "field": "candle_body_pct",
+      "cached": -0.00111352048291624,
+      "independent": -0.0011135204829162383,
+      "absolute_error": 1.734723475976807e-18
+    },
+    {
+      "minute": 60,
+      "field": "upper_wick_pct",
+      "cached": 0,
+      "independent": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "lower_wick_pct",
+      "cached": 0.000460645841880059,
+      "independent": 0.0004606458418800589,
+      "absolute_error": 1.0842021724855044e-19
+    },
+    {
+      "minute": 60,
+      "field": "range_20m_pct",
+      "cached": 0.00624300606631722,
+      "independent": 0.006243006066317225,
+      "absolute_error": 5.204170427930421e-18
+    },
+    {
+      "minute": 60,
+      "field": "volume_mean_20m",
+      "cached": 599008.8,
+      "independent": 599008.8,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "volume_rel_20m",
+      "cached": 0.6755192912024,
+      "independent": 0.6755192912023996,
+      "absolute_error": 3.3306690738754696e-16
+    },
+    {
+      "minute": 60,
+      "field": "volume_z_20m",
+      "cached": -1.24437117853058,
+      "independent": -1.2443711785305753,
+      "absolute_error": 4.6629367034256575e-15
+    },
+    {
+      "minute": 60,
+      "field": "dollar_volume_mean_20m",
+      "cached": 102010575.694275,
+      "independent": 102010575.694275,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 60,
+      "field": "session_vwap_proxy",
+      "cached": 170.557309388585,
+      "independent": 170.55730938858542,
+      "absolute_error": 4.263256414560601e-13
+    },
+    {
+      "minute": 60,
+      "field": "close_vs_provider_vwap_bps",
+      "cached": -1.7613067165323,
+      "independent": -1.761306716532296,
+      "absolute_error": 3.9968028886505635e-15
+    },
+    {
+      "minute": 60,
+      "field": "close_vs_session_vwap_bps",
+      "cached": -6.87800417384365,
+      "independent": -6.878004173843655,
+      "absolute_error": 4.440892098500626e-15
+    },
+    {
+      "minute": 60,
+      "field": "close_vs_sma20_bps",
+      "cached": 7.39927515051697,
+      "independent": 7.399275150516971,
+      "absolute_error": 8.881784197001252e-16
+    },
+    {
+      "minute": 60,
+      "field": "sma5_vs_sma20_bps",
+      "cached": -3.30331074407497,
+      "independent": -3.303310744074972,
+      "absolute_error": 2.220446049250313e-15
+    },
+    {
+      "minute": 60,
+      "field": "coverage_20m",
+      "cached": 1,
+      "independent": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "open",
+      "cached": 169.05,
+      "independent": 169.05,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "high",
+      "cached": 169.0973,
+      "independent": 169.0973,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "low",
+      "cached": 168.85,
+      "independent": 168.85,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "close",
+      "cached": 168.895,
+      "independent": 168.895,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "volume",
+      "cached": 507630,
+      "independent": 507630.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "trade_count",
+      "cached": 6307,
+      "independent": 6307.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "provider_vwap",
+      "cached": 168.971436,
+      "independent": 168.971436,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "dollar_volume_close",
+      "cached": 85736168.85,
+      "independent": 85736168.85000001,
+      "absolute_error": 1.4901161193847656e-08
+    },
+    {
+      "minute": 120,
+      "field": "dollar_volume_vwap",
+      "cached": 85774970.05668,
+      "independent": 85774970.05668001,
+      "absolute_error": 1.4901161193847656e-08
+    },
+    {
+      "minute": 120,
+      "field": "return_1m",
+      "cached": -0.000975984857446988,
+      "independent": -0.0009759848574469876,
+      "absolute_error": 4.336808689942018e-19
+    },
+    {
+      "minute": 120,
+      "field": "return_5m",
+      "cached": -0.00103507422960891,
+      "independent": -0.0010350742296089122,
+      "absolute_error": 2.168404344971009e-18
+    },
+    {
+      "minute": 120,
+      "field": "return_10m",
+      "cached": -0.000503018108651831,
+      "independent": -0.0005030181086518315,
+      "absolute_error": 5.421010862427522e-19
+    },
+    {
+      "minute": 120,
+      "field": "return_20m",
+      "cached": -0.000739557448822592,
+      "independent": -0.000739557448822592,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "return_60m",
+      "cached": -0.00906477352734092,
+      "independent": -0.009064773527340919,
+      "absolute_error": 1.734723475976807e-18
+    },
+    {
+      "minute": 120,
+      "field": "return_120m",
+      "cached": -0.000680433110466727,
+      "independent": -0.0006804331104667272,
+      "absolute_error": 2.168404344971009e-19
+    },
+    {
+      "minute": 120,
+      "field": "realized_vol_5m",
+      "cached": 0.000637835452895379,
+      "independent": 0.0006378354528951973,
+      "absolute_error": 1.8171228410857054e-16
+    },
+    {
+      "minute": 120,
+      "field": "realized_vol_20m",
+      "cached": 0.000885347180368898,
+      "independent": 0.0008853471803687555,
+      "absolute_error": 1.4246416546459528e-16
+    },
+    {
+      "minute": 120,
+      "field": "realized_vol_60m",
+      "cached": 0.000922951054928456,
+      "independent": 0.0009229510549283958,
+      "absolute_error": 6.01732205729455e-17
+    },
+    {
+      "minute": 120,
+      "field": "sma_close_5m",
+      "cached": 169.07672,
+      "independent": 169.07672,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "sma_close_20m",
+      "cached": 168.99742,
+      "independent": 168.99742,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "sma_close_60m",
+      "cached": 169.316606666667,
+      "independent": 169.31660666666667,
+      "absolute_error": 3.410605131648481e-13
+    },
+    {
+      "minute": 120,
+      "field": "candle_range_pct",
+      "cached": 0.00146288080449569,
+      "independent": 0.0014628808044956853,
+      "absolute_error": 4.7704895589362195e-18
+    },
+    {
+      "minute": 120,
+      "field": "candle_body_pct",
+      "cached": -0.000916888494528253,
+      "independent": -0.0009168884945282527,
+      "absolute_error": 3.2526065174565133e-19
+    },
+    {
+      "minute": 120,
+      "field": "upper_wick_pct",
+      "cached": 0.000279798876072041,
+      "independent": 0.0002797988760720413,
+      "absolute_error": 2.710505431213761e-19
+    },
+    {
+      "minute": 120,
+      "field": "lower_wick_pct",
+      "cached": 0.000266193433895391,
+      "independent": 0.00026619343389539137,
+      "absolute_error": 3.7947076036992655e-19
+    },
+    {
+      "minute": 120,
+      "field": "range_20m_pct",
+      "cached": 0.0051029490298462,
+      "independent": 0.005102949029846204,
+      "absolute_error": 4.336808689942018e-18
+    },
+    {
+      "minute": 120,
+      "field": "volume_mean_20m",
+      "cached": 509188.25,
+      "independent": 509188.25,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "volume_rel_20m",
+      "cached": 0.996939736924409,
+      "independent": 0.9969397369244086,
+      "absolute_error": 3.3306690738754696e-16
+    },
+    {
+      "minute": 120,
+      "field": "volume_z_20m",
+      "cached": -0.00846388205568596,
+      "independent": -0.008463882055685957,
+      "absolute_error": 3.469446951953614e-18
+    },
+    {
+      "minute": 120,
+      "field": "dollar_volume_mean_20m",
+      "cached": 86032460.68118,
+      "independent": 86032460.68118,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 120,
+      "field": "session_vwap_proxy",
+      "cached": 170.091055716277,
+      "independent": 170.09105571627654,
+      "absolute_error": 4.547473508864641e-13
+    },
+    {
+      "minute": 120,
+      "field": "close_vs_provider_vwap_bps",
+      "cached": -4.52360480619918,
+      "independent": -4.523604806199177,
+      "absolute_error": 2.6645352591003757e-15
+    },
+    {
+      "minute": 120,
+      "field": "close_vs_session_vwap_bps",
+      "cached": -70.3185544495433,
+      "independent": -70.31855444954327,
+      "absolute_error": 2.842170943040401e-14
+    },
+    {
+      "minute": 120,
+      "field": "close_vs_sma20_bps",
+      "cached": -6.06044755002699,
+      "independent": -6.060447550026993,
+      "absolute_error": 2.6645352591003757e-15
+    },
+    {
+      "minute": 120,
+      "field": "sma5_vs_sma20_bps",
+      "cached": 4.69237932744448,
+      "independent": 4.692379327446705,
+      "absolute_error": 2.2248869413488137e-12
+    },
+    {
+      "minute": 120,
+      "field": "coverage_20m",
+      "cached": 1,
+      "independent": 1.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "open",
+      "cached": 171.1,
+      "independent": 171.1,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "high",
+      "cached": 171.1,
+      "independent": 171.1,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "low",
+      "cached": 170.73,
+      "independent": 170.73,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "close",
+      "cached": 170.75,
+      "independent": 170.75,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "volume",
+      "cached": 2656524,
+      "independent": 2656524.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "trade_count",
+      "cached": 22726,
+      "independent": 22726.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "provider_vwap",
+      "cached": 170.860412,
+      "independent": 170.860412,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "dollar_volume_close",
+      "cached": 453601473,
+      "independent": 453601473.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "dollar_volume_vwap",
+      "cached": 453894785.127888,
+      "independent": 453894785.12788796,
+      "absolute_error": 5.960464477539063e-08
+    },
+    {
+      "minute": 389,
+      "field": "return_1m",
+      "cached": -0.00204558737580363,
+      "independent": -0.002045587375803626,
+      "absolute_error": 4.336808689942018e-18
+    },
+    {
+      "minute": 389,
+      "field": "return_5m",
+      "cached": -0.00052680870990407,
+      "independent": -0.0005268087099040697,
+      "absolute_error": 3.2526065174565133e-19
+    },
+    {
+      "minute": 389,
+      "field": "return_10m",
+      "cached": 0.000600067038739382,
+      "independent": 0.0006000670387393825,
+      "absolute_error": 5.421010862427522e-19
+    },
+    {
+      "minute": 389,
+      "field": "return_20m",
+      "cached": -3.80659008587525e-05,
+      "independent": -3.80659008587525e-05,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "return_60m",
+      "cached": 0.00667381999551941,
+      "independent": 0.006673819995519414,
+      "absolute_error": 4.336808689942018e-18
+    },
+    {
+      "minute": 389,
+      "field": "return_120m",
+      "cached": 0.00905639192163932,
+      "independent": 0.009056391921639317,
+      "absolute_error": 3.469446951953614e-18
+    },
+    {
+      "minute": 389,
+      "field": "realized_vol_5m",
+      "cached": 0.00113943956630252,
+      "independent": 0.0011394395663025388,
+      "absolute_error": 1.8865117801247777e-17
+    },
+    {
+      "minute": 389,
+      "field": "realized_vol_20m",
+      "cached": 0.000757985437757494,
+      "independent": 0.0007579854377574228,
+      "absolute_error": 7.112366251504909e-17
+    },
+    {
+      "minute": 389,
+      "field": "realized_vol_60m",
+      "cached": 0.000670283551940125,
+      "independent": 0.0006702835519401486,
+      "absolute_error": 2.3527187142935446e-17
+    },
+    {
+      "minute": 389,
+      "field": "sma_close_5m",
+      "cached": 170.98062,
+      "independent": 170.98062,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "sma_close_20m",
+      "cached": 170.73606,
+      "independent": 170.73606,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "sma_close_60m",
+      "cached": 170.352915,
+      "independent": 170.352915,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "candle_range_pct",
+      "cached": 0.00216247808299243,
+      "independent": 0.0021624780829924287,
+      "absolute_error": 1.3010426069826053e-18
+    },
+    {
+      "minute": 389,
+      "field": "candle_body_pct",
+      "cached": -0.00204558737580359,
+      "independent": -0.0020455873758035903,
+      "absolute_error": 4.336808689942018e-19
+    },
+    {
+      "minute": 389,
+      "field": "upper_wick_pct",
+      "cached": 0,
+      "independent": 0.0,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "lower_wick_pct",
+      "cached": 0.000116890707188838,
+      "independent": 0.00011689070718883829,
+      "absolute_error": 2.981555974335137e-19
+    },
+    {
+      "minute": 389,
+      "field": "range_20m_pct",
+      "cached": 0.00472653612424034,
+      "independent": 0.004726536124240344,
+      "absolute_error": 3.469446951953614e-18
+    },
+    {
+      "minute": 389,
+      "field": "volume_mean_20m",
+      "cached": 716422.15,
+      "independent": 716422.15,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "volume_rel_20m",
+      "cached": 3.70804280688418,
+      "independent": 3.708042806884181,
+      "absolute_error": 8.881784197001252e-16
+    },
+    {
+      "minute": 389,
+      "field": "volume_z_20m",
+      "cached": 3.65525715805988,
+      "independent": 3.655257158059885,
+      "absolute_error": 4.884981308350689e-15
+    },
+    {
+      "minute": 389,
+      "field": "dollar_volume_mean_20m",
+      "cached": 122353302.46283,
+      "independent": 122353302.46283,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "session_vwap_proxy",
+      "cached": 169.522768645205,
+      "independent": 169.52276864520533,
+      "absolute_error": 3.410605131648481e-13
+    },
+    {
+      "minute": 389,
+      "field": "close_vs_provider_vwap_bps",
+      "cached": -6.46211715795264,
+      "independent": -6.46211715795264,
+      "absolute_error": 0.0
+    },
+    {
+      "minute": 389,
+      "field": "close_vs_session_vwap_bps",
+      "cached": 72.3933053124637,
+      "independent": 72.39330531246368,
+      "absolute_error": 1.4210854715202004e-14
+    },
+    {
+      "minute": 389,
+      "field": "close_vs_sma20_bps",
+      "cached": 0.816464899096037,
+      "independent": 0.8164648990960366,
+      "absolute_error": 4.440892098500626e-16
+    },
+    {
+      "minute": 389,
+      "field": "sma5_vs_sma20_bps",
+      "cached": 14.3238633947607,
+      "independent": 14.32386339476066,
+      "absolute_error": 3.907985046680551e-14
+    },
+    {
+      "minute": 389,
+      "field": "coverage_20m",
+      "cached": 1,
+      "independent": 1.0,
+      "absolute_error": 0.0
+    }
+  ],
+  "limitations": [
+    "One real company/session comparison, not full-cohort coverage proof.",
+    "Original compact cache formula version is retained; no relabelling as new derivation.",
+    "Company historical mapping remains unresolved; optional microstructure excluded."
+  ]
+}

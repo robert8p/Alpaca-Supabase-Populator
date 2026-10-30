@@ -209,10 +209,12 @@ class RpcStore:
         return self._call("control_job", {"job_id": job_id, "action": action})
 
     def backfill_status(self):
+        from .backfill_status import public_backfill_status
         result = self._call("backfill_status", {})
-        if not isinstance(result, dict) or not isinstance(result.get("runs"), list):
-            raise RpcPersistenceError("Invalid replacement-run status response")
-        return result
+        try:
+            return public_backfill_status(result)
+        except (ValueError, TypeError):
+            raise RpcPersistenceError("Invalid replacement-run status response") from None
 
     def claim_next(self, worker_id, lease_seconds=90):
         result = self._call("claim_next", {"worker_id": worker_id, "lease_seconds": max(30, min(int(lease_seconds), 300))})

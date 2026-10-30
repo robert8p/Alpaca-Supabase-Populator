@@ -1,0 +1,40 @@
+{
+  "qualification_kind": "LOCAL_DISPOSABLE_POSTGRESQL_AND_BOUNDED_RETAINED_SOURCE_COMPARISON",
+  "tests_passed": 7,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "database": "Disposable loopback55432 only; no remote writes by this agent",
+  "source_comparison": {
+    "raw_source_rows": 390,
+    "cached_output_rows_compared": 5,
+    "numeric_comparisons": 155,
+    "distinct_fields": 36,
+    "null_comparisons": 25,
+    "mismatches": 0
+  },
+  "files": [
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61",
+      "bytes": 30170
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "a780332912a0cd6cb9e65ac98e01cbe1b587056fcd4588f6c152dc7597f89af2",
+      "bytes": 15141
+    },
+    {
+      "path": "evidence/retained-feature-independent-crosscheck-v2.json",
+      "sha256": "0e86469bb61bd0d248186d4572cd7de32281a3e86d1b10ead8457f57bb257098",
+      "bytes": 27897
+    }
+  ],
+  "boundaries": [
+    "Cache formula remains compact_intraday_float64_v1.",
+    "One pointer is a physical audit record; logical feature grid and qualified/usable counts stay separate.",
+    "Raw-source, identity-contract, output and formula-code hashes rechecked.",
+    "Missing or changed source/cache and repair-child scopes fall back to current calculation.",
+    "Original historical identity eligibility is retained only as provenance, never inherited as replacement certification.",
+    "No live deployment claim."
+  ]
+}

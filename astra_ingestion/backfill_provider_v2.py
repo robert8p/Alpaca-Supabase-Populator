@@ -8,6 +8,7 @@ is never inferred from an HTTP error or an unfinished page chain.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import base64
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from hashlib import sha256
@@ -21,8 +22,9 @@ from urllib.parse import parse_qs, quote, urlencode, urlsplit
 from urllib.request import HTTPRedirectHandler, HTTPSHandler, ProxyHandler, Request, build_opener
 from zoneinfo import ZoneInfo
 
-VERSION = "fixed3000-provider-v2.1"
+VERSION = "fixed3000-provider-v2.2"
 MAX_BODY_BYTES = 3 * 1024 * 1024
+MAX_PARTIAL_BODY_BYTES = 16 * 1024
 REQUEST_TIMEOUT_SECONDS = 25
 NY = ZoneInfo("America/New_York")
 SYMBOL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,63}\Z")
@@ -32,6 +34,38 @@ KINDS = (
     "massive_news", "massive_dividends", "massive_splits", "massive_short_volume",
     "massive_short_interest",
 )
+
+PAGE_LIMIT_CAPS = {
+    "alpaca_stock_bars": 10000, "alpaca_option_bars": 10000,
+    "alpaca_option_contracts": 1000, "alpaca_actions": 1000,
+    "alpaca_news": 50, "massive_news": 1000, "massive_dividends": 1000,
+    "massive_splits": 1000, "massive_short_volume": 1000,
+    "massive_short_interest": 1000,
+}
+
+
+def _page_limit(task):
+    cap = PAGE_LIMIT_CAPS.get(task.get("kind"))
+    if cap is None:
+        return None
+    value = task.get("page_limit")
+    if value is None:
+        return cap
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ProviderProblem("INVALID_EXECUTION_LIMIT", "Durable source page limit must be a positive integer")
+    return min(value, cap)
+
+
+def _retry_delay(headers):
+    value = headers.get("Retry-After", "30")
+    try:
+        return max(1, int(value))
+    except ValueError:
+        try:
+            due = parsedate_to_datetime(value)
+            return max(1, math.ceil((due - datetime.now(timezone.utc)).total_seconds()))
+        except (TypeError, ValueError, OverflowError):
+            return 30
 
 
 def canonical(value):
@@ -173,6 +207,9 @@ def request_for(task, *, paper=True):
                       "settlement_date.lte": _bounded_date(scope["end"]), "limit": 1000, "sort": "ticker.asc"}
     if cursor:
         params["cursor" if kind.startswith("massive_") else "page_token"] = cursor
+    limit = _page_limit(task)
+    if limit is not None:
+        params["limit"] = limit
     return {"provider": "Massive" if kind.startswith("massive_") else "Alpaca",
             "host": host, "path": path, "params": params, "method": "GET"}
 
@@ -410,8 +447,29 @@ class BackfillProvider:
                     break
                 raw.extend(part)
             if len(raw) > MAX_BODY_BYTES:
-                raise ProviderProblem("SOURCE_PAGE_TOO_LARGE", "Response exceeds a bounded page; reduce the page size before retrying",
-                                      evidence={"request": plan, "http_status": status})
+                # This is a bounded prefix, not an original complete response
+                # and not an exhausted page. No continuation is guessed from it.
+                prefix = bytes(raw[:MAX_PARTIAL_BODY_BYTES])
+                partial = {"request": plan, "http_status": status, "headers": safe_headers,
+                           "fetched_at": utc_now(), "adapter_version": VERSION,
+                           "response_complete": False, "read_limit_bytes": MAX_BODY_BYTES,
+                           "observed_prefix_bytes": len(raw),
+                           "observed_prefix_sha256": sha256(bytes(raw)).hexdigest(),
+                           "partial_body_base64": base64.b64encode(prefix).decode("ascii"),
+                           "partial_body_bytes": len(prefix),
+                           "partial_body_sha256": sha256(prefix).hexdigest(),
+                           "cursor_controls_page_size": plan["provider"] == "Massive" and bool(plan["params"].get("cursor"))}
+                if response.geturl() != url or response.headers.get("Content-Encoding", "identity") not in ("", "identity"):
+                    raise ProviderProblem("UNEXPECTED_SOURCE_TRANSPORT", "Redirect or compressed response refused", evidence=partial)
+                if status != 200:
+                    code = "SOURCE_RATE_LIMIT" if status == 429 else "BLOCKED_EXTERNAL" if status in (401, 403) else "SOURCE_HTTP_ERROR"
+                    raise ProviderProblem(code, "Provider request returned HTTP " + str(status),
+                                          retryable=status in (408, 425, 429, 500, 502, 503, 504),
+                                          retry_after=_retry_delay(safe_headers), evidence=partial)
+                raise ProviderProblem("SOURCE_PAGE_TOO_LARGE", "Response exceeds the bounded body size; retry only at a smaller durable page limit",
+                                      retryable=(plan["params"].get("limit", 1) > 1 and not partial["cursor_controls_page_size"]),
+                                      retry_after=_retry_delay(safe_headers) if "Retry-After" in safe_headers else 2,
+                                      evidence=partial)
             raw_text = bytes(raw).decode("utf-8", errors="replace")
             evidence = {"request": plan, "http_status": status, "raw_body": raw_text,
                         "body_sha256": sha256(bytes(raw)).hexdigest(), "headers": safe_headers, "fetched_at": utc_now()}
@@ -419,15 +477,7 @@ class BackfillProvider:
                 raise ProviderProblem("UNEXPECTED_SOURCE_TRANSPORT", "Redirect or compressed response refused", evidence=evidence)
             if status != 200:
                 retry = status in (408, 425, 429, 500, 502, 503, 504)
-                retry_header = safe_headers.get("Retry-After", "30")
-                try:
-                    delay = max(1, int(retry_header))
-                except ValueError:
-                    try:
-                        due = parsedate_to_datetime(retry_header)
-                        delay = max(1, math.ceil((due - datetime.now(timezone.utc)).total_seconds()))
-                    except (TypeError, ValueError, OverflowError):
-                        delay = 30
+                delay = _retry_delay(safe_headers)
                 code = "SOURCE_RATE_LIMIT" if status == 429 else "BLOCKED_EXTERNAL" if status in (401, 403) else "SOURCE_HTTP_ERROR"
                 raise ProviderProblem(code, "Provider request returned HTTP " + str(status), retryable=retry, retry_after=delay, evidence=evidence)
             try:

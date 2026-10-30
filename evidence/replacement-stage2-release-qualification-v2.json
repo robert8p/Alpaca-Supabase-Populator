@@ -1,0 +1,288 @@
+{
+  "release": "replacement-stage2",
+  "qualified_at": "2026-10-30T06:54:35.247595+00:00",
+  "gate": "PASS",
+  "scope": "Local release qualification only; production deployment and database state are owned by the existing root controller",
+  "postgresql_suite": {
+    "tests_run": 479,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 57.495,
+    "passed": true,
+    "tested_module_count": 57,
+    "skip_reasons": {},
+    "excluded_in_progress": [
+      "tests/ingestion/test_backfill_nonminute_coverage_v2.py"
+    ],
+    "changed_during_qualification": []
+  },
+  "no_dsn_ci_suite": {
+    "tests_run": 479,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 204,
+    "elapsed_seconds": 3.941,
+    "passed": true,
+    "tested_module_count": 57,
+    "skip_reasons": {
+      "Explicit disposable PostgreSQL required": 107,
+      "PostgreSQL bulk ledger tests require disposable explicit local URL": 7,
+      "disposable local PostgreSQL only": 5,
+      "PostgreSQL bulk qualification NOT_RUN: explicit local test URL absent": 15,
+      "disposable loopback PostgreSQL required": 20,
+      "isolated PostgreSQL qualification URL required": 5,
+      "disposable PostgreSQL qualification URL required": 5,
+      "disposable loopback PostgreSQL URL required": 7,
+      "PostgreSQL role qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set": 3,
+      "PostgreSQL qualification NOT_RUN: ASTRA_INGESTION_POSTGRES_TEST_URL is not set": 10,
+      "RPC PostgreSQL qualification NOT_RUN: explicit loopback DSN absent": 20
+    },
+    "excluded_in_progress": [
+      "tests/ingestion/test_backfill_nonminute_coverage_v2.py"
+    ],
+    "changed_during_qualification": []
+  },
+  "syntax": {
+    "python_compiled_files": 90,
+    "node": [
+      {
+        "path": "astra_ingestion/static/app.js",
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "path": "tests/ingestion/backfill_status_ui_contract.js",
+        "exit_code": 0,
+        "output": ""
+      }
+    ]
+  },
+  "canonical_regression": {
+    "news_payload_bytes": 1208635,
+    "authenticated_commit_seconds": 0.158,
+    "unicode_cases_matching_original_and_python": 104,
+    "readback_hashes_match": true,
+    "lost_ack_idempotence_passed": true,
+    "automatic_page_successor_passed": true
+  },
+  "release_manifest": {
+    "payload_file_count": 31,
+    "publish_file_count": 32,
+    "paths": [
+      "astra_ingestion/backfill_worker_v2.py",
+      "astra_ingestion/backfill_provider_v2.py",
+      "astra_ingestion/backfill_status.py",
+      "astra_ingestion/rpc_store.py",
+      "astra_ingestion/web.py",
+      "astra_ingestion/static/index.html",
+      "astra_ingestion/static/app.js",
+      "astra_ingestion/static/styles.css",
+      "sql/astra_backfill_source_dedup_v2.sql",
+      "sql/astra_backfill_feature_reuse_v2.sql",
+      "sql/astra_backfill_provider_pacing_v2.sql",
+      "sql/astra_backfill_family_fairness_v2.sql",
+      "sql/astra_backfill_adaptive_pages_v2.sql",
+      "sql/astra_backfill_canonical_performance_v2.sql",
+      "sql/astra_backfill_recovery_priority_v2.sql",
+      "tests/ingestion/test_backfill_source_dedup_v2.py",
+      "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "tests/ingestion/test_backfill_provider_pacing_v2.py",
+      "tests/ingestion/test_backfill_family_fairness_v2.py",
+      "tests/ingestion/test_backfill_adaptive_pages_v2.py",
+      "tests/ingestion/test_backfill_canonical_performance_v2.py",
+      "tests/ingestion/test_backfill_recovery_priority_v2.py",
+      "tests/ingestion/test_backfill_web_status_v2.py",
+      "tests/ingestion/backfill_status_ui_contract.js",
+      "evidence/retained-feature-independent-crosscheck-v2.json",
+      "evidence/retained-feature-reuse-qualification-v2.json",
+      "evidence/replacement-worker-cache-qualification-v2.json",
+      "evidence/replacement-provider-pacing-qualification-v2.json",
+      "evidence/replacement-family-fairness-qualification-v2.json",
+      "evidence/replacement-recovery-priority-qualification-v2.json",
+      "evidence/replacement-web-status-qualification-v2.json",
+      "evidence/replacement-stage2-release-qualification-v2.json"
+    ],
+    "payload_files": [
+      {
+        "path": "astra_ingestion/backfill_worker_v2.py",
+        "bytes": 16875,
+        "sha256": "49d62aae8d3081ff9c777f448dd8851805b89b9824b588da5c3fa6d082e9e64e"
+      },
+      {
+        "path": "astra_ingestion/backfill_provider_v2.py",
+        "bytes": 27423,
+        "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+      },
+      {
+        "path": "astra_ingestion/backfill_status.py",
+        "bytes": 4314,
+        "sha256": "01318b0cdc5dce5c54051e375a4a08f31cda149136245ab597246ec9aa3a4c6f"
+      },
+      {
+        "path": "astra_ingestion/rpc_store.py",
+        "bytes": 13918,
+        "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7"
+      },
+      {
+        "path": "astra_ingestion/web.py",
+        "bytes": 11428,
+        "sha256": "81d31df62b75484e66f343b246ef82b7bd9660c861c7ec02e654ad9bb1be0f12"
+      },
+      {
+        "path": "astra_ingestion/static/index.html",
+        "bytes": 6874,
+        "sha256": "649f458a37fcbfd1d706de6f8cb34373a7e9194f784b1747b93497846d729184"
+      },
+      {
+        "path": "astra_ingestion/static/app.js",
+        "bytes": 17531,
+        "sha256": "8cea854ca8ed67e1399772da56cf38dec74dbcfd26948e21e24690b57cd29afc"
+      },
+      {
+        "path": "astra_ingestion/static/styles.css",
+        "bytes": 7137,
+        "sha256": "0e5210c2f3cbc3770d873c85b14bab1d94a900fc7b9a51d6d1a0dbd754313a27"
+      },
+      {
+        "path": "sql/astra_backfill_source_dedup_v2.sql",
+        "bytes": 21403,
+        "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+      },
+      {
+        "path": "sql/astra_backfill_feature_reuse_v2.sql",
+        "bytes": 30170,
+        "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+      },
+      {
+        "path": "sql/astra_backfill_provider_pacing_v2.sql",
+        "bytes": 2865,
+        "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+      },
+      {
+        "path": "sql/astra_backfill_family_fairness_v2.sql",
+        "bytes": 6758,
+        "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+      },
+      {
+        "path": "sql/astra_backfill_adaptive_pages_v2.sql",
+        "bytes": 9439,
+        "sha256": "78aaf940c059cb6cb4b4977c50220984ebf0bbd0805935b8e00dd05159c887cb"
+      },
+      {
+        "path": "sql/astra_backfill_canonical_performance_v2.sql",
+        "bytes": 1812,
+        "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+      },
+      {
+        "path": "sql/astra_backfill_recovery_priority_v2.sql",
+        "bytes": 3880,
+        "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_source_dedup_v2.py",
+        "bytes": 7808,
+        "sha256": "5a391a2115e4fab94c36eb0a507acdbe0ac499d6065e26931b051ef018c96bf6"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+        "bytes": 19668,
+        "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_provider_pacing_v2.py",
+        "bytes": 8178,
+        "sha256": "95093d86f8d7f9935a375b3daac58b7df7737b2c8a34948f8ed2d07bfb642cab"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_family_fairness_v2.py",
+        "bytes": 9928,
+        "sha256": "0dc0d95e53dd5276eda2c57d3b0d2a7292338b541ec96d0ac6939e0556d09d76"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_adaptive_pages_v2.py",
+        "bytes": 14802,
+        "sha256": "c6c3ae9559dfedd9e70b1346b46504d36aedbefab93758f845ddfccade5c3ff4"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_canonical_performance_v2.py",
+        "bytes": 5378,
+        "sha256": "5ae08df62ef97ef904779c5d57d5bc394ebb2343c1138184d4997c6a9d0c1e3b"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_recovery_priority_v2.py",
+        "bytes": 10612,
+        "sha256": "bcd8701b95cafaaa0f15e50baffdfc86a3b45df16fc16dcc4a713cfbdf517e88"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_web_status_v2.py",
+        "bytes": 8225,
+        "sha256": "aefd3361c9bd7221c1f4420c21d5a006ff65ede7818925f006b6b709ef06a71e"
+      },
+      {
+        "path": "tests/ingestion/backfill_status_ui_contract.js",
+        "bytes": 5016,
+        "sha256": "5936895806e025433694d336246b40b91b74d32b358a122dd13748b3f3a84d6c"
+      },
+      {
+        "path": "evidence/retained-feature-independent-crosscheck-v2.json",
+        "bytes": 27897,
+        "sha256": "0e86469bb61bd0d248186d4572cd7de32281a3e86d1b10ead8457f57bb257098"
+      },
+      {
+        "path": "evidence/retained-feature-reuse-qualification-v2.json",
+        "bytes": 1539,
+        "sha256": "1d1cfa87a7557f0152421d7ff75c1381e8c42da074d717426863075083ba2a2b"
+      },
+      {
+        "path": "evidence/replacement-worker-cache-qualification-v2.json",
+        "bytes": 4353,
+        "sha256": "5f4f7c82fd477979f1fbc661ce682ccebbcad51aa4083ca7f37db19365ea6365"
+      },
+      {
+        "path": "evidence/replacement-provider-pacing-qualification-v2.json",
+        "bytes": 1192,
+        "sha256": "fac020b425b747022a62c9e55b021259ed11fb1ac47c7d310c1a3d679f6afeb2"
+      },
+      {
+        "path": "evidence/replacement-family-fairness-qualification-v2.json",
+        "bytes": 1825,
+        "sha256": "334231032362610234d433adec5251bca45ec0601122133c3e4098f39c8758b5"
+      },
+      {
+        "path": "evidence/replacement-recovery-priority-qualification-v2.json",
+        "bytes": 2221,
+        "sha256": "cfdf245d7a9f7fc25aec45a78984bfcb410a02fe64a39284785c977a1b5b5c1c"
+      },
+      {
+        "path": "evidence/replacement-web-status-qualification-v2.json",
+        "bytes": 2086,
+        "sha256": "8ff70974ecbe8ab3446097ebd551fc267b93bb2fcd8331c7800dc0f517e72023"
+      }
+    ],
+    "missing_required_stage2_files": [],
+    "missing_local_files": [],
+    "excluded_in_progress_violations": [],
+    "changed_after_manifest_capture": [],
+    "pg_and_no_dsn_source_hash_disagreement": [],
+    "qualification_file": "evidence/replacement-stage2-release-qualification-v2.json",
+    "qualification_file_digest_policy": "Digest reported after writing; this file does not contain a recursive hash of itself"
+  },
+  "frozen_core": {
+    "file_count": 90,
+    "sha256": "77c4c8d5895ef1efba8c4cfa59474cce928919b51754494444bd31de9c9167bc",
+    "worker_sha256": "49d62aae8d3081ff9c777f448dd8851805b89b9824b588da5c3fa6d082e9e64e",
+    "provider_sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1",
+    "status_adapter_sha256": "01318b0cdc5dce5c54051e375a4a08f31cda149136245ab597246ec9aa3a4c6f"
+  },
+  "release_exclusions": [
+    "In-progress backfill_identity modules, SQL, tests and source-evidence artifacts",
+    "In-progress backfill_nonminute_coverage SQL and tests"
+  ],
+  "notes": [
+    "Production worker planner member_limit is 5, bounded by the already-qualified SQL maximum; fixture default remains 1",
+    "All seven stage-2 applied forward SQL files and their tests are present",
+    "New backfill_status module and JavaScript DOM contract harness are present",
+    "Existing original-job, scope, authentication, uncertain-write, canonical, accounting, pacing, retained-reuse and family-scheduling tests remain passing"
+  ]
+}

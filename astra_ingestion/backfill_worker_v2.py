@@ -21,7 +21,7 @@ def fence(claim):
 class BackfillWorker:
     def __init__(self, store, provider, *, worker_id=None, lease_seconds=90,
                  source_revision="local-unversioned", capability_revision=None, after_commit=None,
-                 planning_enabled=False):
+                 planning_enabled=False, plan_member_limit=1):
         self.store, self.provider = store, provider
         self.worker_id = worker_id or str(uuid.uuid4())
         self.lease_seconds, self.source_revision = lease_seconds, source_revision
@@ -31,6 +31,7 @@ class BackfillWorker:
             "config_revision": os.environ.get("ASTRA_PROVIDER_CONFIG_REVISION", "initial")}).encode()).hexdigest()
         self.after_commit = after_commit
         self.planning_enabled, self.plan_complete, self._plan_cycle = planning_enabled, False, 0
+        self.plan_member_limit = max(1, min(int(plan_member_limit), 5))
 
     def call(self, operation, payload):
         return self.store._call(operation, payload)
@@ -41,7 +42,7 @@ class BackfillWorker:
         # is interleaved with planning, so admission does not delay useful work.
         if self.planning_enabled and not self.plan_complete:
             if self._plan_cycle % 5 == 0:
-                plan = self.call("backfill_plan_next", {"run_id": RUN_ID, "member_limit": 1,
+                plan = self.call("backfill_plan_next", {"run_id": RUN_ID, "member_limit": self.plan_member_limit,
                                   "supported_kinds": list(self.supported_kinds),
                                   "capability_revision": self.capability_revision})
                 self.plan_complete = bool(plan.get("plan_complete"))
@@ -59,8 +60,10 @@ class BackfillWorker:
                 committed = self.call("backfill_reuse_commit", {"claim": owned})
                 if self.after_commit is not None:
                     self.after_commit(claim)
-                self.verify_committed(claim, committed["body_sha256"], committed["record_count"])
-                source = self.call("backfill_reuse_verify", {"task_id": claim["id"], "page_no": claim["page_no"]})
+                readback = self.verify_committed(claim, committed["body_sha256"], committed["record_count"])
+                source = (readback.get("verification") or {}).get("retained_source_verification")
+                if not isinstance(source, dict):
+                    source = self.call("backfill_reuse_verify", {"task_id": claim["id"], "page_no": claim["page_no"]})
                 if not source.get("passed"):
                     raise RpcPersistenceError("Committed retained-source reference differs from its source; reconcile without copying or refetching")
                 return {"state": "backfill_reuse_committed", "run_id": claim["run_id"],
@@ -135,6 +138,18 @@ class BackfillWorker:
     def derive(self, claim, owned):
         from .backfill_features_v2 import derive_family
         scope = claim["scope"]
+        if claim["kind"] == "derive_intraday" and scope.get("prefer_retained_formula_cache"):
+            cached = self.call("backfill_feature_reuse_commit", {"claim": owned})
+            if cached.get("state") != "CACHE_NOT_REUSABLE":
+                if self.after_commit is not None:
+                    self.after_commit(claim)
+                proof = self.verify_committed(claim, cached["body_sha256"], cached["record_count"])
+                feature_proof = (proof.get("verification") or {}).get("retained_feature_verification")
+                if not isinstance(feature_proof, dict) or not feature_proof.get("passed"):
+                    raise RpcPersistenceError("Committed retained-feature reference lacks an independent matching source verification")
+                return {"state": "backfill_feature_reuse_committed", "run_id": claim["run_id"],
+                        "task_id": claim["id"], "family": claim["family"],
+                        "source_readback": feature_proof.get("state"), **cached}
         rows, lineage, after = [], [], None
         retained_rows, replacement_days = [], set()
         if claim["kind"] == "derive_breadth":
@@ -248,4 +263,4 @@ def from_settings(store, settings):
                                 paper=os.environ.get("APCA_API_BASE_URL", "https://paper-api.alpaca.markets") != "https://api.alpaca.markets")
     return BackfillWorker(store, provider, lease_seconds=settings.lease_seconds,
                           source_revision=os.environ.get("RENDER_GIT_COMMIT", "local-unversioned"),
-                          planning_enabled=True)
+                          planning_enabled=True, plan_member_limit=5)

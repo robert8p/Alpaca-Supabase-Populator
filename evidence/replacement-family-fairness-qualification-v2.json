@@ -1,0 +1,39 @@
+{
+  "qualification": "fixed3000-family-round-robin-v2.1",
+  "started_at": "2026-10-30T06:38:25.894009+00:00",
+  "completed_at": "2026-10-30T06:38:30.174648+00:00",
+  "elapsed_seconds": 4.281,
+  "tests_run": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "environment": "Disposable loopback PostgreSQL only; no remote requests or production changes",
+  "installed_test_stack": [
+    "runtime",
+    "retained_reader",
+    "reuse_commit",
+    "reuse_verify",
+    "delivery",
+    "breadth_material",
+    "delivery_performance",
+    "provider_pacing",
+    "family_fairness"
+  ],
+  "sha256": {
+    "sql/astra_backfill_family_fairness_v2.sql": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2",
+    "tests/ingestion/test_backfill_family_fairness_v2.py": "0dc0d95e53dd5276eda2c57d3b0d2a7292338b541ec96d0ac6939e0556d09d76"
+  },
+  "verified": [
+    "Durable per-run round-robin interleaves eight populated families despite a higher-priority reference and price backlog",
+    "Priority ordering remains intact within each family and cursor survives worker replacement",
+    "Actual candidate query over 6001 reference tasks uses family/priority index, reads one eligible candidate and has no sort node",
+    "Retained-gap dependencies and full-cohort breadth readiness remain enforced",
+    "Unsupported provider, persisted retry, active leases, generation and stop fences remain enforced",
+    "Claim turns do not increment provider reservations, committed pages or records; scheduling table is private"
+  ],
+  "limits": [
+    "At most sixteen family queries per claim, with an indexed LIMIT 1 lookup each; blocked candidates can still require traversal within one family",
+    "This is local qualification; parent must reconcile installation state and apply through existing controller"
+  ]
+}

@@ -16,9 +16,19 @@
     <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
     <section class="panel" aria-labelledby="backfill-title">
       <div class="panel-heading"><div><p class="eyebrow">FIXED 3,000-EQUITY BACKFILL</p><h2 id="backfill-title">September 2025 – July 2026</h2><p class="muted">The accepted cohort, 16 data families, and separately labelled support history. Exchange sessions use America/New_York.</p></div><span id="backfill-state" class="tag">Loading run</span></div>
-      <p id="backfill-progress" role="status" aria-live="polite">Reading durable progress…</p>
+      <p id="backfill-run" class="run-reference">Reading the existing run…</p>
+      <div id="backfill-error" class="notice" role="status" aria-live="polite" hidden></div>
+      <p id="backfill-progress">Reading durable progress…</p>
+      <dl class="facts backfill-facts">
+        <div><dt>Last useful data progress</dt><dd id="backfill-useful-progress">Unknown</dd></div>
+        <div><dt>Planning</dt><dd id="backfill-plan-state">Unknown</dd></div>
+        <div><dt>Applicable data coverage</dt><dd id="backfill-coverage-state">Not established</dd></div>
+        <div><dt>Page readbacks remaining</dt><dd id="backfill-readbacks">Unknown</dd></div>
+      </dl>
+      <p id="backfill-planner" class="muted">The full work denominator is unknown until the plan is sealed.</p>
+      <ul id="backfill-dependencies" class="provider-status" aria-label="Provider configuration"><li>Provider configuration has not been read yet.</li></ul>
       <p id="backfill-limits" class="help">Work completion and available data coverage are reported separately. This retrospectively selected cohort is not a contemporaneous or survivorship-free universe.</p>
-      <div class="table-wrap"><table><thead><tr><th>Family</th><th>Work</th><th>Finished / planned units</th><th>Available records</th><th>Retry / technical issues</th></tr></thead><tbody id="backfill-body"><tr><td colspan="5" class="empty">Loading replacement run…</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="backfill-table"><caption class="sr-only">All sixteen replacement families. Counts describe recorded work and observations, not a coverage certificate.</caption><thead><tr><th>Family</th><th>Work</th><th>Finished / currently planned</th><th>Observed records</th><th>Verified / archived pages</th><th>Pending / issues</th></tr></thead><tbody id="backfill-body"><tr><td colspan="6" class="empty">Loading replacement run…</td></tr></tbody></table></div>
       <p><a href="/api/backfill/status">Download current run and family report (JSON)</a></p>
     </section>
     <section class="metrics" aria-label="Workload summary">

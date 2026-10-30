@@ -164,6 +164,8 @@ def make_handler(settings, store):
                     self._send(200, (STATIC / filename).read_bytes(), mime)
                 elif path == "/api/jobs":
                     self._send(200, {"jobs": store.list_jobs(limit=50)})
+                elif path == "/api/backfill/status":
+                    self._send(200, store.backfill_status())
                 elif match := JOB_ROUTE.fullmatch(path):
                     job = store.get_job(match.group(1))
                     if job is None:
@@ -242,3 +244,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

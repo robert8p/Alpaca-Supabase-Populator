@@ -1,0 +1,45 @@
+{
+  "qualification": "fixed3000-family-due-recovery-priority-v2.2",
+  "qualified_at": "2026-10-30T06:50:15.244400+00:00",
+  "tests_run": 5,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "test_runner_elapsed_seconds": 3.507,
+  "environment": "Disposable loopback PostgreSQL only; no remote requests or production changes",
+  "command": "ASTRA_INGESTION_POSTGRES_TEST_URL=<disposable-loopback-db> python -m unittest discover -s tests/ingestion -p 'test_backfill_recovery_priority_v2.py' -v",
+  "sha256": {
+    "sql/astra_backfill_recovery_priority_v2.sql": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041",
+    "tests/ingestion/test_backfill_recovery_priority_v2.py": "bcd8701b95cafaaa0f15e50baffdfc86a3b45df16fc16dcc4a713cfbdf517e88"
+  },
+  "installed_test_stack": [
+    "runtime",
+    "retained_reader",
+    "reuse_commit",
+    "reuse_verify",
+    "delivery",
+    "breadth_material",
+    "delivery_performance",
+    "provider_pacing",
+    "family_fairness",
+    "recovery_priority"
+  ],
+  "verified": [
+    "An actual pacing-deferred task resumes once due before 100 pending tasks despite lower task priority",
+    "Migration leaves the existing deferred task and run accounting unchanged; claiming alone reserves no provider request",
+    "Expired leases resume before pending work and previous ownership is fenced",
+    "Live leases and future retries remain ineligible; a 90000-second provider deadline and cumulative accounting are preserved",
+    "Dependency and full-cohort breadth guards remain enforced inside family rotation",
+    "Actual recovery candidate query over 6000 pending tasks uses the partial recovery index, returns one row and contains no Sort node"
+  ],
+  "reconciliation": {
+    "index": "astra_ingestion_v1.backfill_tasks_recovery_turn_v2",
+    "function": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+    "marker": "backfill_due_recovery_priority_v2"
+  },
+  "limits": [
+    "Maximum 16 families and 32 indexed candidate probes per claim; unresolved candidates may still need traversal within a family",
+    "Root must reconcile the live definition and install the separate forward patch; previously applied fairness SQL was not modified"
+  ]
+}

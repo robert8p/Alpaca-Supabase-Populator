@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-30T06:23:08.736795+00:00",
+  "qualification": "replacement_provider_pacing_v2",
+  "result": "PASSED",
+  "tests_run": 4,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 0.863,
+  "database": "Disposable local PostgreSQL",
+  "external_source_requests": 0,
+  "remote_mutations": 0,
+  "source_sha256": {
+    "sql/astra_backfill_provider_pacing_v2.sql": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501",
+    "tests/ingestion/test_backfill_provider_pacing_v2.py": "95093d86f8d7f9935a375b3daac58b7df7737b2c8a34948f8ed2d07bfb642cab"
+  },
+  "verified_cases": [
+    "Both replacement providers reserve at one-second intervals",
+    "Existing90000-second provider Retry-After unchanged by migration and subsequent admission",
+    "Deferred pacing refunds page attempt and consumes no provider reservation",
+    "Legacy job scope,10-request/1000-record limits,deadline,counters and outer dispatcher unchanged",
+    "Real concurrent RPCs remain behind existing advisory lock and share one provider slot"
+  ],
+  "limitation": "Official plan basis supplied by root; this agent made no remote documentation request. No deployment claimed."
+}
