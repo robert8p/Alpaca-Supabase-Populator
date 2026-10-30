@@ -30,6 +30,7 @@ SQL_FILES=(
  "astra_ingestion_bulk_unit_binding_v1.sql",
  "astra_ingestion_bulk_provider_precall_v1.sql",
  "astra_ingestion_bulk_provider_response_quarantine_v1.sql",
+ "astra_ingestion_bulk_provider_atomic_receipt_v1.sql",
 )
 
 
@@ -449,6 +450,123 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
    self.precall(w,page=1,limit=3,request="8"*64)
   self.assertEqual(self.conn.execute(
    f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],1)
+
+
+ def transport_proof(self,w,*,request="9"*64,source="f"*64,
+                     bars_sha=None,provider_receipt="4"*64):
+  if bars_sha is None:
+   bars_sha=self.conn.execute(f"""
+    SELECT eligible_bars_sha256
+    FROM {self.schema}.bulk_provider_response_quarantine_v1
+    WHERE work_key=%s AND page_no=0
+   """,(w["work_key"],)).fetchone()[0]
+  self.conn.execute(f"""
+   INSERT INTO {self.schema}.bulk_provider_transport_proof_v1(
+    work_key,page_no,request_sha256,source_page_sha256,eligible_bars_sha256,
+    provider_https_receipt_sha256,origin)
+   VALUES (%s,0,%s,%s,%s,%s,'ALPACA_STOCK_BARS_1MIN_SIP_RAW')
+  """,(w["work_key"],request,source,bars_sha,provider_receipt))
+
+ def provider_atomic(self,w,*,owner="synthetic-owner",fence=None,page=0):
+  return self.sql("bulk_atomic_provider_page_v1",w["work_key"],owner,
+   fence if fence is not None else w["claim_fence"],page)
+
+ def test_atomic_provider_page_requires_separate_exact_provenance(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w)
+  with self.assertRaises(self.pg.Error):self.provider_atomic(w)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_output_v1").fetchone()[0],0)
+  self.transport_proof(w)
+  result=self.provider_atomic(w)
+  self.assertEqual(result["status"],
+   "ATOMically_COMMITTED_PENDING_INDEPENDENT_TRANSPORT_AND_SOURCE_ACCEPTANCE")
+  self.assertEqual(result["eligible_records_committed"],1)
+  self.assertFalse(result["coverage_certified"])
+  self.assertFalse(result["source_authenticity_independently_certified"])
+  snapshot=self.sql("bulk_provider_atomic_readback_v1",w["work_key"],0)
+  self.assertTrue(snapshot["consistent"])
+  self.assertEqual(snapshot["provider_records_observed"],1)
+  self.assertEqual((snapshot["actual_output_records"],snapshot["records_committed"]),(1,1))
+  self.assertEqual(self.conn.execute(
+   f"SELECT requests_committed,records_committed,last_page FROM {self.schema}.bulk_work_v1"
+   " WHERE work_key=%s",(w["work_key"],)).fetchone(),(1,1,0))
+  with self.assertRaises(self.pg.Error):self.provider_atomic(w)
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"UPDATE {self.schema}.bulk_provider_output_v1 SET ordinal=2")
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"DELETE FROM {self.schema}.bulk_provider_transport_proof_v1")
+  self.assertTrue(self.sql("bulk_provider_atomic_readback_v1",w["work_key"],0)["consistent"])
+
+ def test_atomic_provider_mismatched_transport_proof_never_commits(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w)
+  self.transport_proof(w,source="8"*64)
+  with self.assertRaises(self.pg.Error):self.provider_atomic(w)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_output_v1").fetchone()[0],0)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],0)
+  self.assertIsNone(self.sql("bulk_provider_atomic_readback_v1",w["work_key"],0))
+
+ def test_atomic_provider_rejects_stale_owner_and_user_stop(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w)
+  self.transport_proof(w)
+  for kw in ({"owner":"impostor"},{"fence":w["claim_fence"]+1},{"page":1}):
+   with self.subTest(kw=kw),self.assertRaises(self.pg.Error):
+    self.provider_atomic(w,**kw)
+  self.sql("bulk_stop_v1",MANIFEST,"explicit synthetic user stop")
+  with self.assertRaises(self.pg.Error):self.provider_atomic(w)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_receipt_v1").fetchone()[0],0)
+
+ def test_atomic_provider_zero_eligible_still_debits_real_request(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w,self.synthetic_stage(
+   provider_records_observed=1,eligible_records=0,
+   inclusive_end_records_excluded=1,eligible_bars=[]))
+  self.transport_proof(w)
+  result=self.provider_atomic(w)
+  self.assertEqual(result["eligible_records_committed"],0)
+  self.assertEqual(result["provider_records_consumed"],1)
+  snapshot=self.sql("bulk_provider_atomic_readback_v1",w["work_key"],0)
+  self.assertTrue(snapshot["consistent"])
+  self.assertEqual(snapshot["records_committed"],0)
+  self.assertEqual(snapshot["requests_committed"],1)
+  self.assertFalse(snapshot["coverage_certified"])
+  with self.assertRaises(self.pg.Error):
+   self.sql("bulk_verify_v1",w["work_key"],"synthetic-owner",w["claim_fence"],"1"*64)
+
+ def test_atomic_provider_schema_private_and_no_generic_transport_grant(self):
+  for table in ("bulk_provider_transport_proof_v1","bulk_provider_output_v1"):
+   self.assertTrue(self.conn.execute("""
+    SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n
+    ON n.oid=c.relnamespace WHERE n.nspname=%s AND c.relname=%s
+   """,(self.schema,table)).fetchone()[0])
+  for fn in ("bulk_atomic_provider_page_v1","bulk_provider_atomic_readback_v1"):
+   num=self.conn.execute("""
+    SELECT count(*) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+    CROSS JOIN LATERAL aclexplode(p.proacl) x
+    WHERE n.nspname=%s AND p.proname=%s
+      AND x.grantee=0 AND x.privilege_type='EXECUTE'
+   """,(self.schema,fn)).fetchone()[0]
+   self.assertEqual(num,0)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_transport_proof_v1").fetchone()[0],0)
+
 
 
 if __name__=="__main__":unittest.main()
