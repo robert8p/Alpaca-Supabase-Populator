@@ -44,6 +44,24 @@ async function run() {
   assert.match(text("backfill-limits"), /not additive/);
   assert.match(text("backfill-limits"), /Planner movement is not useful data progress/);
 
+  const detailed = JSON.parse(JSON.stringify(report));
+  detailed.runs[1].identity_refresh_pending_count = 3;
+  detailed.runs[1].identity_refresh_next_retry_at = "2026-10-30T08:01:00Z";
+  detailed.runs[1].identity_recalculation_pending_tasks = 5;
+  detailed.delivery.runs[1].families[0].nonminute_coverage = {
+    physical_receipt_records: 30, selected_derived_records: 0,
+    source_count_basis: "PHYSICAL_PROVIDER_RECORD_OCCURRENCES_NOT_GLOBAL_UNIQUE_EVENTS",
+    fields: [{field: "headline", period: "TARGET", observed_field_slots: 30, usable_values: 29,
+      missing_values: 1, null_or_unusable_reasons: {FIELD_NOT_RETURNED: 1}}]
+  };
+  context.renderBackfill(detailed);
+  assert.match(text("backfill-planner"), /3 identity updates await recalculation admission/);
+  assert.match(text("backfill-planner"), /5 affected calculations are queued or running/);
+  assert.match(text("backfill-body"), /Field availability/);
+  assert.match(text("backfill-body"), /29 usable \/ 30 observed; 1 missing/);
+  assert.match(text("backfill-body"), /repeated appearances/);
+  assert.equal(text("backfill-coverage-state"), "Not established");
+
   context.renderBackfill({runs:[{id:"minimal-run",status:"ACTIVE"}]});
   assert.equal(nodes.get("backfill-body").children.length, 16);
   assert.equal(text("backfill-plan-state"), "Unknown");

@@ -1,0 +1,900 @@
+{
+  "release": "replacement-stage3",
+  "captured_at": "2026-10-30T07:26:54.063681+00:00",
+  "base_published_commit": "2dbe666c86b3eeb0080bf6dd24ecc3b1fcb4fe2b",
+  "existing_controller_owner": "root-replacement-20261030T042603Z",
+  "test_modules": [
+    "test_asgi",
+    "test_backfill_adaptive_pages_v2",
+    "test_backfill_breadth_material_v2",
+    "test_backfill_canonical_performance_v2",
+    "test_backfill_delivery_performance_v2",
+    "test_backfill_delivery_reuse_v2",
+    "test_backfill_delivery_v2",
+    "test_backfill_family_fairness_v2",
+    "test_backfill_feature_reuse_v2",
+    "test_backfill_features_v2",
+    "test_backfill_identity_v2",
+    "test_backfill_nonminute_coverage_v2",
+    "test_backfill_pacing_fairness_v2",
+    "test_backfill_planner_v2",
+    "test_backfill_provider_pacing_v2",
+    "test_backfill_provider_v2",
+    "test_backfill_recovery_priority_v2",
+    "test_backfill_retained_reuse_v2",
+    "test_backfill_retained_s02_v2",
+    "test_backfill_retained_worker_v2",
+    "test_backfill_reuse_commit_v2",
+    "test_backfill_reuse_verify_v2",
+    "test_backfill_runtime_v2",
+    "test_backfill_source_dedup_v2",
+    "test_backfill_web_status_v2",
+    "test_backfill_worker_reuse_v2",
+    "test_backfill_worker_v2",
+    "test_bulk_authenticated_provider_transport",
+    "test_bulk_expected",
+    "test_bulk_http_store",
+    "test_bulk_ledger_postgres",
+    "test_bulk_manifest_admission",
+    "test_bulk_materializer_postgres",
+    "test_bulk_p01_p02_alpaca_request",
+    "test_bulk_p01_p02_alpaca_response",
+    "test_bulk_p01_p02_page_stage",
+    "test_bulk_p01_p02_source_probe",
+    "test_bulk_postgres",
+    "test_bulk_provider_precall",
+    "test_bulk_provider_precall_postgres",
+    "test_bulk_provider_quarantine_bridge",
+    "test_bulk_ref01",
+    "test_bulk_ref01_route_probe",
+    "test_bulk_ref01_ticker_projection",
+    "test_bulk_retained_gate_postgres",
+    "test_bulk_reuse_dispatch",
+    "test_bulk_runtime_port_postgres",
+    "test_bulk_scope",
+    "test_bulk_sources",
+    "test_bulk_unit_binding",
+    "test_bulk_unit_binding_postgres",
+    "test_config",
+    "test_ingestion_roles",
+    "test_models",
+    "test_postgres",
+    "test_reconcile",
+    "test_replacement_admission_v2",
+    "test_rpc_postgres",
+    "test_rpc_store",
+    "test_source",
+    "test_web",
+    "test_worker_store"
+  ],
+  "test_paths": [
+    "tests/ingestion/test_asgi.py",
+    "tests/ingestion/test_backfill_adaptive_pages_v2.py",
+    "tests/ingestion/test_backfill_breadth_material_v2.py",
+    "tests/ingestion/test_backfill_canonical_performance_v2.py",
+    "tests/ingestion/test_backfill_delivery_performance_v2.py",
+    "tests/ingestion/test_backfill_delivery_reuse_v2.py",
+    "tests/ingestion/test_backfill_delivery_v2.py",
+    "tests/ingestion/test_backfill_family_fairness_v2.py",
+    "tests/ingestion/test_backfill_feature_reuse_v2.py",
+    "tests/ingestion/test_backfill_features_v2.py",
+    "tests/ingestion/test_backfill_identity_v2.py",
+    "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+    "tests/ingestion/test_backfill_pacing_fairness_v2.py",
+    "tests/ingestion/test_backfill_planner_v2.py",
+    "tests/ingestion/test_backfill_provider_pacing_v2.py",
+    "tests/ingestion/test_backfill_provider_v2.py",
+    "tests/ingestion/test_backfill_recovery_priority_v2.py",
+    "tests/ingestion/test_backfill_retained_reuse_v2.py",
+    "tests/ingestion/test_backfill_retained_s02_v2.py",
+    "tests/ingestion/test_backfill_retained_worker_v2.py",
+    "tests/ingestion/test_backfill_reuse_commit_v2.py",
+    "tests/ingestion/test_backfill_reuse_verify_v2.py",
+    "tests/ingestion/test_backfill_runtime_v2.py",
+    "tests/ingestion/test_backfill_source_dedup_v2.py",
+    "tests/ingestion/test_backfill_web_status_v2.py",
+    "tests/ingestion/test_backfill_worker_reuse_v2.py",
+    "tests/ingestion/test_backfill_worker_v2.py",
+    "tests/ingestion/test_bulk_authenticated_provider_transport.py",
+    "tests/ingestion/test_bulk_expected.py",
+    "tests/ingestion/test_bulk_http_store.py",
+    "tests/ingestion/test_bulk_ledger_postgres.py",
+    "tests/ingestion/test_bulk_manifest_admission.py",
+    "tests/ingestion/test_bulk_materializer_postgres.py",
+    "tests/ingestion/test_bulk_p01_p02_alpaca_request.py",
+    "tests/ingestion/test_bulk_p01_p02_alpaca_response.py",
+    "tests/ingestion/test_bulk_p01_p02_page_stage.py",
+    "tests/ingestion/test_bulk_p01_p02_source_probe.py",
+    "tests/ingestion/test_bulk_postgres.py",
+    "tests/ingestion/test_bulk_provider_precall.py",
+    "tests/ingestion/test_bulk_provider_precall_postgres.py",
+    "tests/ingestion/test_bulk_provider_quarantine_bridge.py",
+    "tests/ingestion/test_bulk_ref01.py",
+    "tests/ingestion/test_bulk_ref01_route_probe.py",
+    "tests/ingestion/test_bulk_ref01_ticker_projection.py",
+    "tests/ingestion/test_bulk_retained_gate_postgres.py",
+    "tests/ingestion/test_bulk_reuse_dispatch.py",
+    "tests/ingestion/test_bulk_runtime_port_postgres.py",
+    "tests/ingestion/test_bulk_scope.py",
+    "tests/ingestion/test_bulk_sources.py",
+    "tests/ingestion/test_bulk_unit_binding.py",
+    "tests/ingestion/test_bulk_unit_binding_postgres.py",
+    "tests/ingestion/test_config.py",
+    "tests/ingestion/test_ingestion_roles.py",
+    "tests/ingestion/test_models.py",
+    "tests/ingestion/test_postgres.py",
+    "tests/ingestion/test_reconcile.py",
+    "tests/ingestion/test_replacement_admission_v2.py",
+    "tests/ingestion/test_rpc_postgres.py",
+    "tests/ingestion/test_rpc_store.py",
+    "tests/ingestion/test_source.py",
+    "tests/ingestion/test_web.py",
+    "tests/ingestion/test_worker_store.py"
+  ],
+  "excluded_test_paths": [
+    "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_v2.py",
+    "tests/ingestion/test_backfill_shared_records_v2.py"
+  ],
+  "excluded_scope": [
+    "All Massive relay Python, SQL, Edge function and tests; separate candidate under user action-time security approval hold.",
+    "All shared-record and contract-registry WIP files and tests.",
+    "Full original compressed identity source metadata is local evidence only."
+  ],
+  "payload_paths": [
+    "astra_ingestion/backfill_worker_v2.py",
+    "astra_ingestion/backfill_status.py",
+    "astra_ingestion/static/app.js",
+    "astra_ingestion/backfill_identity_v2.py",
+    "sql/astra_backfill_identity_v2.sql",
+    "sql/astra_backfill_nonminute_coverage_v2.sql",
+    "sql/astra_backfill_retained_s02_v2.sql",
+    "tests/ingestion/test_backfill_web_status_v2.py",
+    "tests/ingestion/backfill_status_ui_contract.js",
+    "tests/ingestion/test_backfill_identity_v2.py",
+    "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+    "tests/ingestion/test_backfill_retained_s02_v2.py",
+    "tests/ingestion/test_backfill_retained_worker_v2.py",
+    "evidence/replacement-identity-qualification-v2.json",
+    "evidence/replacement-identity-helper-real-source-proof-v2.json",
+    "evidence/replacement-identity-original-byte-profile-v2.json"
+  ],
+  "inputs": [
+    {
+      "path": "astra_ingestion/__init__.py",
+      "bytes": 102,
+      "sha256": "43f94056f0c4c9b351c026cc020b1e22f64c8f19ce6af42153560ea064c33749"
+    },
+    {
+      "path": "astra_ingestion/api.py",
+      "bytes": 10822,
+      "sha256": "6ef5247e18f6b43b6154c366e0f1a7c60ca262e85bec86b4542032f960fb05aa"
+    },
+    {
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "bytes": 33254,
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "bytes": 18462,
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "bytes": 27423,
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "path": "astra_ingestion/backfill_status.py",
+      "bytes": 7283,
+      "sha256": "1514a829957f8d209ca63d6486390a274362647ab6142228ac76fbe7012a38b4"
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e"
+    },
+    {
+      "path": "astra_ingestion/bulk_authenticated_provider_transport.py",
+      "bytes": 11430,
+      "sha256": "4ab587871e57e6179fa266c5ef315763f58215d281bd2a483e4572b68b25b35f"
+    },
+    {
+      "path": "astra_ingestion/bulk_expected.py",
+      "bytes": 11095,
+      "sha256": "306f00aa99b4dc1a930e221a2567e0c4ac77a1b6ef1fc7cb7109e83c02c86650"
+    },
+    {
+      "path": "astra_ingestion/bulk_http_store.py",
+      "bytes": 9769,
+      "sha256": "32de022c06d218990e89839c3567fc7eb8ba20696ce88ed5487984488e7a7b46"
+    },
+    {
+      "path": "astra_ingestion/bulk_manifest_admission.py",
+      "bytes": 9378,
+      "sha256": "cdf32d6ce541be314942ee01f584080b0b22baa0ce0a5b581d1848b991390b48"
+    },
+    {
+      "path": "astra_ingestion/bulk_p01_p02_alpaca_request.py",
+      "bytes": 6095,
+      "sha256": "81ebc63978972c0a5598dfdea720992718b49148bc35e95197c3f0264c312bea"
+    },
+    {
+      "path": "astra_ingestion/bulk_p01_p02_alpaca_response.py",
+      "bytes": 10538,
+      "sha256": "c16031e54f31c90b34632dcfb897fa6395f03fb49f35672e8a15cab726f0beba"
+    },
+    {
+      "path": "astra_ingestion/bulk_p01_p02_page_stage.py",
+      "bytes": 9233,
+      "sha256": "ea6fbc142d2aab57121902b2be8421860a34e312d541db56c773b2cd7d8eea92"
+    },
+    {
+      "path": "astra_ingestion/bulk_p01_p02_source_probe.py",
+      "bytes": 9788,
+      "sha256": "c99239681fd5e7757b4d6fa03ed5a802e200aed013a939dbfa5e63b83471f760"
+    },
+    {
+      "path": "astra_ingestion/bulk_provider_precall.py",
+      "bytes": 5721,
+      "sha256": "6581540fca236f1032ebe0d0926cebbf7c29552a6a69783e46522230bd117380"
+    },
+    {
+      "path": "astra_ingestion/bulk_provider_quarantine_bridge.py",
+      "bytes": 9514,
+      "sha256": "c8eeb207edd0c4bf4a88b8291a9d3a3d3122a968a459d8194ff3c72e58ebe085"
+    },
+    {
+      "path": "astra_ingestion/bulk_ref01.py",
+      "bytes": 8999,
+      "sha256": "88af8a8f6be947310fa123569e1d4ce233d47a056685bfa2d58d40066432ce66"
+    },
+    {
+      "path": "astra_ingestion/bulk_ref01_route_probe.py",
+      "bytes": 11904,
+      "sha256": "0c33dc6f240b734a2230093c7aca1f879f8d13c487b82b51a9c666566cf0baff"
+    },
+    {
+      "path": "astra_ingestion/bulk_ref01_ticker_projection.py",
+      "bytes": 8232,
+      "sha256": "99abe343ad9480b70d2f6de8df4f69dd7ddc40505d1be771ea4a238f7ab11f6b"
+    },
+    {
+      "path": "astra_ingestion/bulk_reuse_dispatch.py",
+      "bytes": 7898,
+      "sha256": "57c3e894d8fc18de9f28ed643eb691f2a33105f9f98de0a2d829acf41903f9cf"
+    },
+    {
+      "path": "astra_ingestion/bulk_scope.py",
+      "bytes": 16818,
+      "sha256": "7db7516b95e03956dc72c8aac6cc009492593781a81bfaee5a1fb175ed77db33"
+    },
+    {
+      "path": "astra_ingestion/bulk_sources.py",
+      "bytes": 4588,
+      "sha256": "c9ee26612c6bdb8fe4cc92f7db01c70e4012c61f3d9c38562eaee0effd49525c"
+    },
+    {
+      "path": "astra_ingestion/bulk_unit_binding.py",
+      "bytes": 6571,
+      "sha256": "62ff3b94b5b54c6a1fb71473ebcd351f73f0f0f6d163056889b17eff6ae81377"
+    },
+    {
+      "path": "astra_ingestion/cli.py",
+      "bytes": 1342,
+      "sha256": "1789f62e2f9d5101bebdab73059864794ea21540c1807e27a3da63b91aa2120e"
+    },
+    {
+      "path": "astra_ingestion/config.py",
+      "bytes": 3237,
+      "sha256": "431d775f11fc1372073ff3fba68823e6e079f389d45fc15a2c7768b277ebe5c9"
+    },
+    {
+      "path": "astra_ingestion/models.py",
+      "bytes": 5673,
+      "sha256": "b4e3e97a0102b6d869819cb103ca2dd05c5c06215c3a22827feac3f7036a5aaa"
+    },
+    {
+      "path": "astra_ingestion/reconcile.py",
+      "bytes": 2082,
+      "sha256": "2d857d332544717f1bb458ead92b49588db951f1827925267c7712f6943ca3df"
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 13918,
+      "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7"
+    },
+    {
+      "path": "astra_ingestion/serve.py",
+      "bytes": 727,
+      "sha256": "b18d66cb2ea433e2e71a71f2d0c40afbc4fdb7288ee9827a28608aef44941db9"
+    },
+    {
+      "path": "astra_ingestion/source.py",
+      "bytes": 9870,
+      "sha256": "c4d786d377fc25bb93ffe937b5a17b2a9c8dde1546de92f8df4041544fad5f7e"
+    },
+    {
+      "path": "astra_ingestion/static/app.js",
+      "bytes": 19753,
+      "sha256": "7f7ca44c5a9964d7ad5aba3917741d421a968a9d749764cae4d5d4065613ffd3"
+    },
+    {
+      "path": "astra_ingestion/static/index.html",
+      "bytes": 6874,
+      "sha256": "649f458a37fcbfd1d706de6f8cb34373a7e9194f784b1747b93497846d729184"
+    },
+    {
+      "path": "astra_ingestion/static/styles.css",
+      "bytes": 7137,
+      "sha256": "0e5210c2f3cbc3770d873c85b14bab1d94a900fc7b9a51d6d1a0dbd754313a27"
+    },
+    {
+      "path": "astra_ingestion/store.py",
+      "bytes": 31622,
+      "sha256": "c3fbdf2c964b417c9181eb29ed94958af4dd14ab492b8b5bec2685758172111f"
+    },
+    {
+      "path": "astra_ingestion/web.py",
+      "bytes": 11428,
+      "sha256": "81d31df62b75484e66f343b246ef82b7bd9660c861c7ec02e654ad9bb1be0f12"
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 6732,
+      "sha256": "00d9f7a16fc161a6e7b40938319e4bbe9a8c24c97ea29171b375a2e9241ca0b6"
+    },
+    {
+      "path": "evidence/replacement-calendar-v1.json",
+      "bytes": 54881,
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3"
+    },
+    {
+      "path": "evidence/replacement-cohort-v1.json",
+      "bytes": 946415,
+      "sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d"
+    },
+    {
+      "path": "evidence/replacement-identity-helper-real-source-proof-v2.json",
+      "bytes": 522,
+      "sha256": "9713d8de0893ca74816e7044ca960911f69e09078a7e3271d092996cc8496850"
+    },
+    {
+      "path": "evidence/replacement-identity-original-byte-profile-v2.json",
+      "bytes": 1035,
+      "sha256": "46d48a40f534b370989f1cc54b9acd72bc85972f6be83fa3f83a8922c0ed0230"
+    },
+    {
+      "path": "evidence/replacement-identity-qualification-v2.json",
+      "bytes": 7679,
+      "sha256": "5a7167fbc38d7c688d5221e7c78f714b39e02ffb76429550f4fc57f022972de3"
+    },
+    {
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "bytes": 23087,
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "path": "requirements-ingestion-dev.txt",
+      "bytes": 68,
+      "sha256": "e0d611ec15738cbcd0033e3b1b322283074c500ad67524acc666d7c3e5c57c0b"
+    },
+    {
+      "path": "requirements-ingestion.txt",
+      "bytes": 61,
+      "sha256": "afc95836ac7201a7a03e46dd0466c6f181a76b5d6fd19f6e0175289a4126840c"
+    },
+    {
+      "path": "sql/astra_backfill_adaptive_pages_v2.sql",
+      "bytes": 9439,
+      "sha256": "78aaf940c059cb6cb4b4977c50220984ebf0bbd0805935b8e00dd05159c887cb"
+    },
+    {
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "bytes": 16461,
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7"
+    },
+    {
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "bytes": 1812,
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "bytes": 6498,
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "bytes": 57461,
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    {
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "bytes": 6758,
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+    },
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "bytes": 30170,
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+    },
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "bytes": 53160,
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "path": "sql/astra_backfill_initialize_v2.sql",
+      "bytes": 41177,
+      "sha256": "627d5383b0f922daf8e36498f489c00e81a5a3f1268a6885fe720b426aaaa2de"
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "bytes": 29707,
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "bytes": 2920,
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c"
+    },
+    {
+      "path": "sql/astra_backfill_planner_v2.sql",
+      "bytes": 24085,
+      "sha256": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6"
+    },
+    {
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "bytes": 2865,
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+    },
+    {
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "bytes": 3880,
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041"
+    },
+    {
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "bytes": 17401,
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2"
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "bytes": 35599,
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "bytes": 9398,
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "bytes": 19399,
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "bytes": 49245,
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "bytes": 21403,
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_atomic_materializer_v1.sql",
+      "bytes": 8267,
+      "sha256": "dd9a16bbead84bf153d161850f85540339fad041a608a80662f56f1b3a39f79f"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_ledger_v1.sql",
+      "bytes": 20786,
+      "sha256": "97724bdbf1c9dbcf9b9b569d246440a2a272d21c86f05a4c61447bc3d6632661"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_provider_atomic_receipt_v1.sql",
+      "bytes": 13321,
+      "sha256": "76b475c3eefb9336618cee9bcb5a431e0df0539aa231df9a25d76ec9247c39a3"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_provider_precall_v1.sql",
+      "bytes": 11989,
+      "sha256": "2fddab5cd085f090c5352a89590e17e67478edf9fe350434fad2eeb74ecdaba1"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_provider_response_quarantine_v1.sql",
+      "bytes": 15009,
+      "sha256": "a2029ac3b53daf0d2ad30f94f94cf39ca0b936d63f0e992b26277423c3ef8ccf"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_restricted_reader_v1.sql",
+      "bytes": 5190,
+      "sha256": "3a65d3e8e8330c519e77e83153d438f573405add58284bc94c7a47e712a6dc40"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_retained_gate_v1.sql",
+      "bytes": 8142,
+      "sha256": "750938ca490b53538c8bb1a06995e4c1143178e9bf11100a64e82a69f78f703c"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_runtime_port_v1.sql",
+      "bytes": 3590,
+      "sha256": "e485f7bfed2237767ba1a7100036b458b531715484ea36e78419f34012b046a0"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_scope_catalogue_fix_v1.sql",
+      "bytes": 9336,
+      "sha256": "dbfd4eec42e15c62477f387ec269f874660ec87ba796d19e8477a0ee450ad154"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_scope_no_campaign_cutoff_v2.sql",
+      "bytes": 29072,
+      "sha256": "20c01acd08358eb840896e075118f283b35cbc785c02a29292808744017ba5ae"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_scope_v1.sql",
+      "bytes": 11632,
+      "sha256": "50c132e825b5acb41e1a65c7a4e5c61a0145ec68267cdd2a369a829b52ddd795"
+    },
+    {
+      "path": "sql/astra_ingestion_bulk_unit_binding_v1.sql",
+      "bytes": 11828,
+      "sha256": "2d68547aca7a4765044da91e0d3a9b8a6cec51b6989e27aea9de0afe80cf8010"
+    },
+    {
+      "path": "sql/astra_ingestion_independent_verifier_v1.sql",
+      "bytes": 12534,
+      "sha256": "b329995144922de51bcb76e1745b0a11b767f0d24e17848adc36f9efcf7ff844"
+    },
+    {
+      "path": "sql/astra_ingestion_observer_v1.sql",
+      "bytes": 10406,
+      "sha256": "4483633e6ff6b554f481223b4de0da0f1dcfa476af78a63030da53150e43de81"
+    },
+    {
+      "path": "sql/astra_ingestion_roles.sql",
+      "bytes": 6390,
+      "sha256": "126b5f7da0d8947ad50444d4e099e7811382de15fbe807f1601fc7d7a4381a56"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "bytes": 3162,
+      "sha256": "01d806e9b14a23d4069a56efcb884b0842066cef955f2f7deb591342e65b681e"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "bytes": 54228,
+      "sha256": "0f039753c680e2fe700007dd81a4a538b70e72ef9078051ae275028afc805352"
+    },
+    {
+      "path": "sql/astra_ingestion_schema_v1.sql",
+      "bytes": 9375,
+      "sha256": "66caed6f697a12cf04b407a1538bd31bb7d0149eb18a760a6e530cda8074547c"
+    },
+    {
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "bytes": 2266,
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae"
+    },
+    {
+      "path": "tests/ingestion/backfill_status_ui_contract.js",
+      "bytes": 6148,
+      "sha256": "078de023f0b30ca212342171d6e224115ded8644e0925deba931285793cea575"
+    },
+    {
+      "path": "tests/ingestion/test_asgi.py",
+      "bytes": 7171,
+      "sha256": "abc7982b059430a9b459c6af0cdadc7cdeb07d6bc98091ce94c623940ba58cd3"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_adaptive_pages_v2.py",
+      "bytes": 14802,
+      "sha256": "c6c3ae9559dfedd9e70b1346b46504d36aedbefab93758f845ddfccade5c3ff4"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_breadth_material_v2.py",
+      "bytes": 6895,
+      "sha256": "e8e88a8b20ef6169e2cdb63a0b9c5c27df849fb4cc8dcfb10a4170ece2696aca"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_canonical_performance_v2.py",
+      "bytes": 5378,
+      "sha256": "5ae08df62ef97ef904779c5d57d5bc394ebb2343c1138184d4997c6a9d0c1e3b"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_delivery_performance_v2.py",
+      "bytes": 2143,
+      "sha256": "517e179fb058198cc36451c72dfbd6c1987608d03d5ed9479ae907e52366d593"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_delivery_reuse_v2.py",
+      "bytes": 2879,
+      "sha256": "221bf70edc657fdac53458ba5bc25193e3f5a7280165d89dc31fc7818c5779ea"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_delivery_v2.py",
+      "bytes": 11832,
+      "sha256": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_fairness_v2.py",
+      "bytes": 9928,
+      "sha256": "0dc0d95e53dd5276eda2c57d3b0d2a7292338b541ec96d0ac6939e0556d09d76"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "bytes": 19668,
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_features_v2.py",
+      "bytes": 9700,
+      "sha256": "6f3dbfeeeec7adbd00fbc66cdf376fdb6caad794935917877fe2ae9601632813"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "bytes": 44378,
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "bytes": 15566,
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_pacing_fairness_v2.py",
+      "bytes": 10214,
+      "sha256": "6dabf41aa4dec08a2ced01ae2062e4993abb646645e2033c0f1a987f7e55f259"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_planner_v2.py",
+      "bytes": 12405,
+      "sha256": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_provider_pacing_v2.py",
+      "bytes": 8178,
+      "sha256": "95093d86f8d7f9935a375b3daac58b7df7737b2c8a34948f8ed2d07bfb642cab"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_provider_v2.py",
+      "bytes": 6032,
+      "sha256": "3825869be1fb25330497569b9b8f5d40a294f2672cd46a280d9453f69d98e0f0"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_recovery_priority_v2.py",
+      "bytes": 10612,
+      "sha256": "bcd8701b95cafaaa0f15e50baffdfc86a3b45df16fc16dcc4a713cfbdf517e88"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "bytes": 10844,
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "bytes": 13753,
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_worker_v2.py",
+      "bytes": 4497,
+      "sha256": "24fbaf5a5dfcf33c9046e0503fc60532ff75ddcabb6f7661b0206a22bfb1bbad"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "bytes": 8631,
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_verify_v2.py",
+      "bytes": 5428,
+      "sha256": "99fb8ed69ae70dcc866439481a3c322308a85d8937b3616603c70bba3c1e1db9"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "bytes": 15706,
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_source_dedup_v2.py",
+      "bytes": 7808,
+      "sha256": "5a391a2115e4fab94c36eb0a507acdbe0ac499d6065e26931b051ef018c96bf6"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_web_status_v2.py",
+      "bytes": 10264,
+      "sha256": "480cc54ed5f60e13a3adbd11c73297a89f3624be9d38f6d3b2113bcc9552d191"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "bytes": 9063,
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "bytes": 21360,
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_authenticated_provider_transport.py",
+      "bytes": 14978,
+      "sha256": "2f22ca34336d660e536594383c5c860bffb55a9d5bcc2e0a334ebe4ce0f32296"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_expected.py",
+      "bytes": 7821,
+      "sha256": "45b3963d1f5dcafb2c16d0a2d322498795499b5e6c3aa8aa6924294b454f457b"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_http_store.py",
+      "bytes": 7498,
+      "sha256": "53623199b9b9e80644a3aea110c54328082cebb43ac1dc900c64ba29bee83976"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_ledger_postgres.py",
+      "bytes": 13072,
+      "sha256": "413b301615319e0c3ed9fb2a1f043d31666fd22fcad30ab256e75323061188d0"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_manifest_admission.py",
+      "bytes": 8122,
+      "sha256": "f2a9783078c68bbe52c92f4113f1a10b85079318a347aac61eb5e1e96a8883b3"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_materializer_postgres.py",
+      "bytes": 12739,
+      "sha256": "9d6adca7cfde5f121e6404840f27ea0289b5c7844b1af73277f8f6b459060549"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_p01_p02_alpaca_request.py",
+      "bytes": 5757,
+      "sha256": "d5cedcf86af688859450f66de4f0bab89706b21196648700b5768f175d5004f9"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_p01_p02_alpaca_response.py",
+      "bytes": 8095,
+      "sha256": "e22cf784bb3e7e02c170bd78b960dbc10156dfbb6fcd697bac8f74059140af39"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_p01_p02_page_stage.py",
+      "bytes": 8664,
+      "sha256": "325d3ea56cdcb3e49d431160981464860edfb70cc2f33ce5e08c11513c0b511f"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_p01_p02_source_probe.py",
+      "bytes": 7249,
+      "sha256": "551c93aafc415954b99674f5ea38abe863e14ac73ca4891635a49f919033c41e"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_postgres.py",
+      "bytes": 22538,
+      "sha256": "10f6de80c7ed3a3ec541fe904c5006cb3e95d26b82dcd3e946cd8d6759324ed0"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_provider_precall.py",
+      "bytes": 5646,
+      "sha256": "73687014b8a60b12e1476c70552889f17f478f82287e74593de48e7cf71f4584"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_provider_precall_postgres.py",
+      "bytes": 26685,
+      "sha256": "00999db145b482fe4d15b0e9d9b9721959c4ec84352e1830bbf3914630ca0a17"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_provider_quarantine_bridge.py",
+      "bytes": 7799,
+      "sha256": "173edc716b2df3a3fc2489d881ac5d86201003681246264112a2752d50c82cbe"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_ref01.py",
+      "bytes": 6270,
+      "sha256": "a6d2ff6f7fb9408b04922d21c52f436aab71024f8b9ad9a79b23591f55de0b48"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_ref01_route_probe.py",
+      "bytes": 8742,
+      "sha256": "15fa38dc54168b2d5cc84acef058e1a67ed39995165d91d226e99a1107010d31"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_ref01_ticker_projection.py",
+      "bytes": 6843,
+      "sha256": "2086f292bb3f565a842002018c4ddd24747fc592cb3cf39ecea47d42c4d10409"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_retained_gate_postgres.py",
+      "bytes": 8781,
+      "sha256": "8e31ead258f29332848c8a723217660cf4933bc2e47b89dc41353b5998ecc514"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_reuse_dispatch.py",
+      "bytes": 9143,
+      "sha256": "0b0554750c6ef95c7ea74a0d85739c9e2c6e40b2a2ea45e89abf082757c9a630"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_runtime_port_postgres.py",
+      "bytes": 7261,
+      "sha256": "646eeecdb6eb0d6cf1750de27657eb9acc4c5628f3c6fa8036e2b8985147fac9"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_scope.py",
+      "bytes": 13271,
+      "sha256": "ac309c9eb57474e06096c837a86633982db5eec2891652315f78edc08151a0f9"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_sources.py",
+      "bytes": 3525,
+      "sha256": "994e24c0d9ee36daaeacf7dcbb08584b01f25208d07262dda1bece0f2ff97cf7"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_unit_binding.py",
+      "bytes": 5142,
+      "sha256": "7d65085ce22ea75831b13d400b44f363c68a1f4a6e921ae6178dc439653be5fa"
+    },
+    {
+      "path": "tests/ingestion/test_bulk_unit_binding_postgres.py",
+      "bytes": 10497,
+      "sha256": "50af065495080ddba06e591eee8dc7e441a8860bc26cc14761074bfe0890b318"
+    },
+    {
+      "path": "tests/ingestion/test_config.py",
+      "bytes": 3427,
+      "sha256": "d54d2000edfaf3d577e3fc25adc1c80cde6424d1dd7b6f3b706726c43a5c6b23"
+    },
+    {
+      "path": "tests/ingestion/test_ingestion_roles.py",
+      "bytes": 15527,
+      "sha256": "e3353d9a9cee46ec8cc8071a4e0f2a544cd38b2636b4aa7097905ae941c6364d"
+    },
+    {
+      "path": "tests/ingestion/test_models.py",
+      "bytes": 2805,
+      "sha256": "a6fed0810810e918cc8233f1167a76b63a0ccb02131c888876f3b5aef95bdfd3"
+    },
+    {
+      "path": "tests/ingestion/test_postgres.py",
+      "bytes": 13103,
+      "sha256": "9849e6b61c2e875130731d0210f5a56e858d57cdda4fc15e570e03e53836220d"
+    },
+    {
+      "path": "tests/ingestion/test_reconcile.py",
+      "bytes": 1895,
+      "sha256": "d66c11ffce5d3f0a9a7c06628139b7802c8021aec136f24e19fedb763c3e1dd6"
+    },
+    {
+      "path": "tests/ingestion/test_replacement_admission_v2.py",
+      "bytes": 2000,
+      "sha256": "3bd06d78644a6efbf1a3ac1239a155eb436af6a288af541c329d5efe3b5479da"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "bytes": 57672,
+      "sha256": "c1b4f9721889f9c85375a6b176b54f151aa4a8bd4824946d379f5f684b6e9a10"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_store.py",
+      "bytes": 8677,
+      "sha256": "62cde8a41370aa4ef546e70bc09fb791c9efe1f6c6c8c6bb03ca7e68882ab98e"
+    },
+    {
+      "path": "tests/ingestion/test_source.py",
+      "bytes": 6362,
+      "sha256": "c45e58a37217337889414b2626a185fa5157bf43add192e93580dc4571c0b2ba"
+    },
+    {
+      "path": "tests/ingestion/test_web.py",
+      "bytes": 10194,
+      "sha256": "546c3768084c781d94d45d144c9ec35b2e6d3ca014eba2d12fbb88fad4d19da9"
+    },
+    {
+      "path": "tests/ingestion/test_worker_store.py",
+      "bytes": 12854,
+      "sha256": "6e9cf7d62c8880f37993ffd9643e7a796555c4a341d21ff8b7db4f133cf9f758"
+    }
+  ]
+}

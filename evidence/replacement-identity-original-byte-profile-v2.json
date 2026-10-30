@@ -1,0 +1,22 @@
+{
+  "qualification": "BOUNDED_LOCAL_PROFILE_OF_ACTUAL_RETAINED_GZIP_BYTES",
+  "original_source_id": "4a715531-48f4-4dc9-99d2-8e3522b38c39",
+  "source_sha256": "8325d18763b4315cf33bcf7e1fe84f6c2ee1687eb76e334cb7626348078c4130",
+  "original_bytes": 295286,
+  "compressed_bytes": 38002,
+  "helper_iterations": 50,
+  "helper_mean_ms": 0.735,
+  "helper_median_ms": 0.689,
+  "helper_max_ms": 1.272,
+  "sql_original_profile_checks": 128,
+  "sql_batch_wall_ms": 9.071,
+  "sql_all_source_hashes_match": true,
+  "scope_limitations": [
+    "Local loopback PostgreSQL and warm repeated retained bytes; not a production latency guarantee.",
+    "SQL checks compressed-body hash and original-receipt metadata; Python verifies decompression and original-byte hash.",
+    "Original body was not copied to a deliverable."
+  ],
+  "helper_sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+  "sql_sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+  "verified_at": "2026-10-30T07:23:07.430785+00:00"
+}

@@ -111,6 +111,9 @@ function renderBackfill(snapshot) {
   if (metadata.planner_last_progress_at) planner.push(`Planner last advanced ${timestamp(metadata.planner_last_progress_at)}`);
   planner.push(sealed === true ? "The static plan is sealed; source pagination and discovered child work can add units." : "The full work denominator is unknown until the plan is sealed; current family totals can grow.");
   if (run?.next_retry_at) planner.push(`Next persisted retry: ${timestamp(run.next_retry_at)}.`);
+  if (knownCount(run?.identity_discovery_pending_count) > 0) planner.push(`${number(run.identity_discovery_pending_count)} members await retained identity discovery.`);
+  if (knownCount(run?.identity_refresh_pending_count) > 0) planner.push(`${number(run.identity_refresh_pending_count)} identity updates await recalculation admission${run.identity_refresh_next_retry_at ? `; next eligible ${timestamp(run.identity_refresh_next_retry_at)}` : ""}.`);
+  if (knownCount(run?.identity_recalculation_pending_tasks) > 0) planner.push(`${number(run.identity_recalculation_pending_tasks)} affected calculations are queued or running.`);
   $("backfill-planner").textContent = planner.join(" · ");
   const dependencies = run?.provider_dependencies || delivery?.provider_dependencies || [];
   $("backfill-dependencies").replaceChildren(...["Alpaca","Massive"].map(provider => {
@@ -142,6 +145,24 @@ function renderBackfill(snapshot) {
     const records = element("td", observedCount(f?.committed_records));
     if (knownCount(f?.referenced_existing_records) > 0) records.append(element("span", `${number(f.referenced_existing_records)} existing source references`, "subline"));
     if (knownCount(f?.support_records) > 0) records.append(element("span", `${number(f.support_records)} support-history records`, "subline"));
+    const coverage = f?.nonminute_coverage;
+    if (coverage) {
+      records.append(element("span", `${observedCount(coverage.physical_receipt_records)} physical records · ${observedCount(coverage.selected_derived_records)} selected calculation rows`, "subline"));
+      if (coverage.source_count_basis?.startsWith("PHYSICAL_PROVIDER_RECORD_OCCURRENCES")) records.append(element("span", "Provider counts include repeated appearances of the same article or event.", "subline"));
+      if (knownCount(coverage.identity_invalidated_output_records) > 0) records.append(element("span", `${number(coverage.identity_invalidated_output_records)} rows await recalculation after identity evidence changed`, "subline"));
+      if (coverage.fields?.length) {
+        const details = element("details"), summary = element("summary", "Field availability"), list = element("ul");
+        for (const field of coverage.fields) {
+          const period = field.period ? ` · ${pretty(field.period)}` : "";
+          const item = element("li", `${field.field || "Unknown field"}${period}: ${observedCount(field.usable_values)} usable / ${observedCount(field.observed_field_slots)} observed; ${observedCount(field.missing_values)} missing`);
+          const reasons = Object.entries(field.null_or_unusable_reasons || {}).map(([reason, count]) => `${pretty(reason)}: ${observedCount(count)}`);
+          if (reasons.length) item.append(element("span", reasons.join(" · "), "subline"));
+          list.append(item);
+        }
+        details.append(summary, list);
+        records.append(details);
+      }
+    }
     const issues = element("td", `${observedCount(pending)} pending · ${observedCount(running)} running`);
     issues.append(element("span", `${observedCount(retry)} retry · ${observedCount(technical)} technical / blocked`, "subline"));
     if (knownCount(f?.no_data_units) > 0 || knownCount(f?.provider_limited_units) > 0 || knownCount(f?.unresolved_units) > 0) issues.append(element("span", `${observedCount(f.no_data_units)} no data · ${observedCount(f.provider_limited_units)} provider limits · ${observedCount(f.unresolved_units)} unresolved`, "subline"));

@@ -1,0 +1,128 @@
+{
+  "release": "replacement-stage3",
+  "gate": "PASS",
+  "base_published_commit": "2dbe666c86b3eeb0080bf6dd24ecc3b1fcb4fe2b",
+  "generated_at": "2026-10-30T07:30:03.705317+00:00",
+  "publish_file_count": 19,
+  "paths": [
+    "astra_ingestion/backfill_worker_v2.py",
+    "astra_ingestion/backfill_status.py",
+    "astra_ingestion/static/app.js",
+    "astra_ingestion/backfill_identity_v2.py",
+    "sql/astra_backfill_identity_v2.sql",
+    "sql/astra_backfill_nonminute_coverage_v2.sql",
+    "sql/astra_backfill_retained_s02_v2.sql",
+    "tests/ingestion/test_backfill_web_status_v2.py",
+    "tests/ingestion/backfill_status_ui_contract.js",
+    "tests/ingestion/test_backfill_identity_v2.py",
+    "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+    "tests/ingestion/test_backfill_retained_s02_v2.py",
+    "tests/ingestion/test_backfill_retained_worker_v2.py",
+    "evidence/replacement-identity-qualification-v2.json",
+    "evidence/replacement-identity-helper-real-source-proof-v2.json",
+    "evidence/replacement-identity-original-byte-profile-v2.json",
+    "evidence/replacement-stage3-input-snapshot-v2.json",
+    "evidence/replacement-stage3-release-qualification-v2.json",
+    "evidence/replacement-stage3-file-manifest-v2.json"
+  ],
+  "files": [
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e"
+    },
+    {
+      "path": "astra_ingestion/backfill_status.py",
+      "bytes": 7283,
+      "sha256": "1514a829957f8d209ca63d6486390a274362647ab6142228ac76fbe7012a38b4"
+    },
+    {
+      "path": "astra_ingestion/static/app.js",
+      "bytes": 19753,
+      "sha256": "7f7ca44c5a9964d7ad5aba3917741d421a968a9d749764cae4d5d4065613ffd3"
+    },
+    {
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "bytes": 18462,
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "bytes": 53160,
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "bytes": 29707,
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "bytes": 35599,
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_web_status_v2.py",
+      "bytes": 10264,
+      "sha256": "480cc54ed5f60e13a3adbd11c73297a89f3624be9d38f6d3b2113bcc9552d191"
+    },
+    {
+      "path": "tests/ingestion/backfill_status_ui_contract.js",
+      "bytes": 6148,
+      "sha256": "078de023f0b30ca212342171d6e224115ded8644e0925deba931285793cea575"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "bytes": 44378,
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "bytes": 15566,
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "bytes": 13753,
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_worker_v2.py",
+      "bytes": 4497,
+      "sha256": "24fbaf5a5dfcf33c9046e0503fc60532ff75ddcabb6f7661b0206a22bfb1bbad"
+    },
+    {
+      "path": "evidence/replacement-identity-qualification-v2.json",
+      "bytes": 7679,
+      "sha256": "5a7167fbc38d7c688d5221e7c78f714b39e02ffb76429550f4fc57f022972de3"
+    },
+    {
+      "path": "evidence/replacement-identity-helper-real-source-proof-v2.json",
+      "bytes": 522,
+      "sha256": "9713d8de0893ca74816e7044ca960911f69e09078a7e3271d092996cc8496850"
+    },
+    {
+      "path": "evidence/replacement-identity-original-byte-profile-v2.json",
+      "bytes": 1035,
+      "sha256": "46d48a40f534b370989f1cc54b9acd72bc85972f6be83fa3f83a8922c0ed0230"
+    },
+    {
+      "path": "evidence/replacement-stage3-input-snapshot-v2.json",
+      "bytes": 33052,
+      "sha256": "ec5025816a1b62b37e064ae79ae4c20d54d33de81759883fcb9632627aa32557"
+    },
+    {
+      "path": "evidence/replacement-stage3-release-qualification-v2.json",
+      "bytes": 30077,
+      "sha256": "17d95548518c9620b707b1b275cccda0b2bb389d78acd5bdc6791ca305de3f8c"
+    }
+  ],
+  "self_reference_excluded_from_hash_records": "evidence/replacement-stage3-file-manifest-v2.json",
+  "duplicate_publish_paths": 0,
+  "missing_local_payload_files": [],
+  "excluded_candidate_violations": [],
+  "before_and_after_input_hashes_equal": true,
+  "source_blob_policy": "Full original compressed identity source metadata is excluded; only compact verified proof/profile artifacts are selected.",
+  "qualification_report_sha256": "17d95548518c9620b707b1b275cccda0b2bb389d78acd5bdc6791ca305de3f8c",
+  "explicit_publication_rule": "Publish only these19 paths against the recorded existing base. Never glob the workspace or include relay/shared-record/contract-registry candidates."
+}

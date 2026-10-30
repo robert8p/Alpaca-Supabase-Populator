@@ -63,6 +63,37 @@ class StatusAdapterTests(unittest.TestCase):
         self.assertNotIn("applicable_data_coverage_established", report["runs"][0]["metadata"])
         self.assertNotIn("delivery", report)
 
+    def test_nested_coverage_preserves_units_unknown_denominators_and_null_reasons(self):
+        data = snapshot()
+        family = data["delivery"]["runs"][0]["families"][0]
+        family["nonminute_coverage"] = {
+            "source_count_basis": "PHYSICAL_PROVIDER_RECORD_OCCURRENCES_NOT_GLOBAL_UNIQUE_EVENTS",
+            "logical_output_records": 2, "expected_applicable_records": None,
+            "coverage_fraction": None, "raw_body": "private-fixture-secret",
+            "variants": [{"source_variant": "alpaca_news", "physical_records": 2,
+                          "evidence": "private-fixture-secret"}],
+            "fields": [{"field": "headline", "period": "TARGET", "observed_field_slots": 2,
+                        "usable_values": 1, "missing_values": 1,
+                        "raw_body": "private-fixture-secret",
+                        "null_or_unusable_reasons": {"FIELD_NOT_RETURNED": 1,
+                            "private-fixture-secret": 7, "INVALID_SECRET": "private-fixture-secret"}}]}
+        report = self.store(data).backfill_status()
+        coverage = report["delivery"]["runs"][0]["families"][0]["nonminute_coverage"]
+        self.assertIsNone(coverage["expected_applicable_records"])
+        self.assertIsNone(coverage["coverage_fraction"])
+        self.assertEqual(coverage["logical_output_records"], 2)
+        self.assertEqual(coverage["fields"][0]["null_or_unusable_reasons"], {"FIELD_NOT_RETURNED": 1})
+        self.assertIn("NOT_GLOBAL_UNIQUE_EVENTS", coverage["source_count_basis"])
+        self.assertNotIn("private-fixture-secret", json.dumps(report))
+
+    def test_nested_coverage_has_explicit_size_bounds(self):
+        for coverage in ({"fields": [{}] * 513}, {"variants": [{}] * 33},
+                         {"fields": [{"null_or_unusable_reasons": []}]}):
+            data = snapshot()
+            data["delivery"]["runs"][0]["families"][0]["nonminute_coverage"] = coverage
+            with self.assertRaises(RpcPersistenceError):
+                self.store(data).backfill_status()
+
     def test_invalid_status_is_a_sanitized_persistence_failure(self):
         cases = [None, [], {"runs": None}, {"runs": [None]}, {"runs": [{}] * 21},
                  {"runs": [], "delivery": {"runs": None}},
