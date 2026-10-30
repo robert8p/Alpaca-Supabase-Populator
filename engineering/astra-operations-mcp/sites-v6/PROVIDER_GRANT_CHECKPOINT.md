@@ -10,9 +10,9 @@ Owner: ASTRA Operations MCP implementation chat, not an app controller. Dot owns
 
 ## Independent v6 source
 - Complete tested ZIP: Library `/ASTRA Operations/ASTRA_Operations_Provider_Qualification_v6.zip`
-- SHA-256 `b7360ac0462e33892d8b19b0273c839c65754d097fd73d53acd0a306a57d0581`.
+- SHA-256 `07fc5fea3b4d4d4333bbe57da11f45a167076cb75e2f3f4379a7c20dd236779f`.
 - Contents: unchanged v4 MCP handler and v5 provider adapter; added `grant_gate.mjs` and `test_grant_gate.mjs`; source digests, checkpoint, README and test output.
-- Executed `node --test test.mjs test_provider_contract.mjs test_grant_gate.mjs`: **48/48 pass** (13 v4, 16 v5, 16 v6 plus prior count reconciliation; actual total 48).
+- Executed `node --test test.mjs test_provider_contract.mjs test_grant_gate.mjs`: **45/45 pass** (13 v4, 16 v5, 16 v6; wildcard module discovery reports 48 but includes 3 source modules).
 - Fresh host-native grant verification contract for every provider call: pinned Site, exact provider/action/resource/scope, read-only, not revoked, bounded expiry, controller GET-only identity; rejects client-supplied credential fields, missing owner, wrong Site, expanded write scope and stale grants. No actual grant or provider access exists. Verifier provenance must be enforced by Sites native integration, never by caller headers.
 - No mutation tools, provider fetch pipeline, scanner changes or database changes.
 
