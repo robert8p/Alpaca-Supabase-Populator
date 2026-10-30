@@ -250,7 +250,13 @@ SET search_path=pg_catalog SET timezone='UTC' AS $$
   'provider_records_observed',s.provider_records_observed,
   'consistent',(s.eligible_bars_sha256=
     encode(sha256(convert_to(s.eligible_bars::text,'UTF8')),'hex')),
-  'bulk_output_committed',false)
+  'bulk_output_committed',EXISTS(
+    SELECT 1 FROM astra_ingestion_v1.bulk_receipt_v1 br
+    WHERE br.work_key=s.work_key AND br.page_no=s.page_no
+    AND br.requests_committed=1
+    AND br.records_committed=s.eligible_records
+    AND br.source_sha256=s.source_page_sha256
+    AND br.output_sha256=s.eligible_bars_sha256))
  FROM astra_ingestion_v1.bulk_provider_response_quarantine_v1 s
  WHERE s.work_key=p_work AND s.page_no=p_page
 $$;
