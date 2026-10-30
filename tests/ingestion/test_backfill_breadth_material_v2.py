@@ -1,6 +1,7 @@
 """Bounded breadth inputs, full-cohort readiness and transactional projection."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import unittest
 
@@ -9,6 +10,7 @@ import test_backfill_delivery_v2 as delivery
 ROOT=Path(__file__).resolve().parents[2]
 
 
+@unittest.skipUnless(os.environ.get('ASTRA_INGESTION_POSTGRES_TEST_URL'), 'Explicit disposable PostgreSQL required')
 class BreadthMaterialTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

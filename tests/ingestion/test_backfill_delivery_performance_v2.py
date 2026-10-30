@@ -1,5 +1,6 @@
 """Completion probes avoid full-plan work while any task remains runnable."""
 from pathlib import Path
+import os
 import unittest
 
 import test_backfill_delivery_v2 as delivery
@@ -7,6 +8,7 @@ import test_backfill_delivery_v2 as delivery
 ROOT=Path(__file__).resolve().parents[2]
 
 
+@unittest.skipUnless(os.environ.get('ASTRA_INGESTION_POSTGRES_TEST_URL'), 'Explicit disposable PostgreSQL required')
 class DeliveryPerformanceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

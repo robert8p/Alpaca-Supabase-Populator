@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-30T06:18:26.767875+00:00",
+  "qualification": "replacement_launch_core_v2",
+  "result": "PASSED",
+  "tests_run": 432,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 42.465,
+  "database": "Disposable loopback PostgreSQL at127.0.0.1:55432/astra_ingestion_qualification",
+  "python_compileall": "PASSED",
+  "javascript_syntax": "PASSED",
+  "excluded_optional_test_modules": [
+    "test_backfill_feature_reuse_v2"
+  ],
+  "external_source_requests": 0,
+  "remote_mutations": 0,
+  "claim_scope": "Local source/runtime qualification only; no deployment or useful ingestion progress claimed",
+  "source_sha256": {
+    "astra_ingestion/worker.py": "00d9f7a16fc161a6e7b40938319e4bbe9a8c24c97ea29171b375a2e9241ca0b6",
+    "astra_ingestion/backfill_worker_v2.py": "d134be438fdba347561efac46829f1fd6b22bddfd619a5bd23e3c378da0329e2",
+    "astra_ingestion/backfill_provider_v2.py": "ca9af7de7289f93e5bd342d247a47e0f843cc755a86836d068fcd4f10b5d39c7",
+    "astra_ingestion/backfill_features_v2.py": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f",
+    "astra_ingestion/rpc_store.py": "f71e9c9efdb26e1b1deb5cd6df262b23543e5f5dd90a00c5c2400def421b6310",
+    "astra_ingestion/api.py": "6ef5247e18f6b43b6154c366e0f1a7c60ca262e85bec86b4542032f960fb05aa",
+    "astra_ingestion/static/app.js": "3544ec5b2e08a243b41d72a326b7a0523b5f0c84e80a5de59e94bd8535300157",
+    "astra_ingestion/static/index.html": "39c499ca9b46f8a22dfdf55b05a4a48eec7d1689c7e0f8dcb0be5ddf1c89f16a",
+    "sql/astra_backfill_runtime_v2.sql": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a",
+    "sql/astra_backfill_retained_reuse_v2.sql": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2",
+    "sql/astra_backfill_reuse_commit_v2.sql": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535",
+    "sql/astra_backfill_reuse_verify_v2.sql": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5",
+    "sql/astra_backfill_delivery_v2.sql": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043",
+    "sql/astra_backfill_planner_v2.sql": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6",
+    "sql/astra_backfill_breadth_material_v2.sql": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7",
+    "sql/astra_backfill_delivery_performance_v2.sql": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a",
+    "tests/ingestion/test_backfill_worker_reuse_v2.py": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+  }
+}
