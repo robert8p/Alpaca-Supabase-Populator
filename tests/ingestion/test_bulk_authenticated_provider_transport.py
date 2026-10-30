@@ -270,6 +270,27 @@ class TransportStageTests(unittest.TestCase):
         self.assertEqual(q.provider_records_observed, 1)
         self.assertNotIn("10.1", repr(q))
 
+    def test_durable_predecessor_receipt_continues_through_https_quarantine(self):
+        p = plan()
+        prev = inspect_sip_response(p, response(token="QUJDRA=="))
+        c = claim(last_page=0, requests_committed=1, records_committed=1)
+        t = ticket(p, c)
+        receipt = dict(consistent=True, work_key=WORK, page_no=0,
+                       source_sha256=prev.page_sha256)
+        b = bound(p, c, t, previous=prev, previous_receipt=receipt)
+        observed = inspect(b, body=response([
+            bar("2026-09-02T13:31:00Z")]))
+        q = prepare_https_observation_quarantine(
+            b, observed, c, t, received_at_utc=NOW,
+            previous_receipt=receipt)
+        self.assertEqual(q.page_no, 1)
+        self.assertEqual(q.source_page_sha256, observed.witness.page_sha256)
+        self.assertFalse(q.transport_authorized)
+        with self.assertRaises(ScopeError):
+            prepare_https_observation_quarantine(
+                b, observed, c, t, received_at_utc=NOW,
+                previous_receipt={**receipt, "source_sha256": "f"*64})
+
     def test_https_quarantine_refuses_forged_or_mutated_transport(self):
         p, c = plan(), claim()
         t = ticket(p, c)
