@@ -3,6 +3,8 @@
 -- No production migration, public grants, provider transport or authorization
 -- to issue requests. Genuine external reviewer/HTTPS identity and hosted
 -- recovery gates must be separately proved before any production installation.
+-- Cumulative provider-record budgets INCLUDE valid excluded inclusive-end bars,
+-- not just eligible output. A terminal page cannot request another page.
 -- Each reservation permanently burns its page key: uncertain provider effects
 -- are NOT retried with a new idempotency key or a replacement owner.
 BEGIN;
@@ -99,7 +101,13 @@ BEGIN
  OR w.claim_until <= clock_timestamp() OR w.original_deadline <= clock_timestamp()
  OR w.attempts NOT BETWEEN 1 AND 2 OR w.last_page+1 IS DISTINCT FROM p_page
  OR w.requests_committed+1 > w.max_requests
- OR w.records_committed+p_records_reserved > w.max_records
+ OR GREATEST(w.records_committed,COALESCE((
+    SELECT sum(q.provider_records_observed)
+    FROM astra_ingestion_v1.bulk_provider_response_quarantine_v1 q
+    JOIN astra_ingestion_v1.bulk_receipt_v1 br
+      ON br.work_key=q.work_key AND br.page_no=q.page_no
+    WHERE q.work_key=p_work AND q.page_no<p_page
+   ),0)) + p_records_reserved > w.max_records
  OR w.source_receipt_sha256 !~ '^[0-9a-f]{64}$'
  THEN RAISE EXCEPTION 'provider request denied by claim, stop, deadline, budget or sequence'; END IF;
  -- Entire reviewed family population and exact security unit MUST be sealed.
@@ -156,9 +164,12 @@ BEGIN
    WHERE work_key=p_work AND page_no=p_page
  ) THEN RAISE EXCEPTION 'provider page already reserved or committed: reconcile, do not refetch'; END IF;
  IF p_page>0 AND NOT EXISTS (
-   SELECT 1 FROM astra_ingestion_v1.bulk_receipt_v1
-   WHERE work_key=p_work AND page_no=p_page-1 AND requests_committed=1
- ) THEN RAISE EXCEPTION 'provider continuation lacks previous committed receipt'; END IF;
+   SELECT 1 FROM astra_ingestion_v1.bulk_receipt_v1 br
+   JOIN astra_ingestion_v1.bulk_provider_response_quarantine_v1 q
+    ON q.work_key=br.work_key AND q.page_no=br.page_no
+   WHERE br.work_key=p_work AND br.page_no=p_page-1
+   AND br.requests_committed=1 AND q.next_page_required=true
+ ) THEN RAISE EXCEPTION 'provider continuation lacks a committed nonterminal predecessor'; END IF;
  INSERT INTO astra_ingestion_v1.bulk_provider_precall_v1(
    work_key,page_no,manifest_sha256,family,source_receipt_sha256,
    request_sha256,owner,fence,records_reserved,original_deadline)
