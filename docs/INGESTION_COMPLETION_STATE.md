@@ -1,4 +1,4 @@
-# ASTRA ingestion — replacement checkpoint v63
+# ASTRA ingestion — replacement checkpoint v64
 
 ## Active authority and scope
 
@@ -9,13 +9,13 @@ Classification: **RETROSPECTIVE_FIXED_COHORT**.
 Target: 2025-09-01 through2026-07-31 inclusive, America/New_York exchange dates.
 Families: REF01,REF03,P01,P02,D01,D02,D03,D04,D05,N01,N02,N03,S01,S02,CTX02,CTX06.
 Sources: existing Alpaca Algo Trader Plus and Massive Stocks Starter only.
-Population: exact previously accepted practical3000 membership, now being resolved from saved records. No reranking/substitution. No scoped provider acquisition until membership is reconciled.
+Population: exact previously accepted practical3000 membership is frozen in the replacement database. Cohort SHA256 `2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec`; ordered3000 member IDs SHA256 `a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e`. No reranking/substitution.
 No programme expiry. Requests/transactions/leases/attempts remain bounded and automatically resumable. Old canary quotas/deadlines apply only to their original jobs.
 
 ## Sole current implementation ownership
 
 Owner: originating controlling conversation `root-replacement-20261030T042603Z`.
-Finite claim expires **2026-10-30T06:30:00Z**.
+Finite claim expires **2026-10-30T07:15:00Z**.
 Prior scheduled run `b232445d-fd0c-8327-88fc-971f7562f77b` ended completed04:16:07Z; prior v61 claim RELEASED/RETIRED.
 Existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` has been retargeted to the exact full replacement instruction and temporarily paused while this owner implements safe supersession. Its original hourly recurrence is retained without expiry. No second controller was created.
 Local delegated agents may inspect/build independent files but have no production/repository write ownership.
@@ -51,3 +51,32 @@ Migration `astra_ingestion_supersede_gate_v2` applied successfully and read back
 The gate was qualified against disposable PostgreSQL16 with existing capability authentication, queued-task preservation, repeated application, and invalid-token rejection.
 Actual Alpaca calendar has230 target sessions. Minimum60-session daily support begins2025-06-05;20-session intraday support begins2025-08-04. Retain support separately.
 Actual Render deployment reconciliation confirms both services still LIVE on `2c809b69e131f84e1778486e74c2f89a273f59f9`; no replacement bulk execution is claimed.
+
+## Replacement runtime release checkpoint — 2026-10-30T05:51:10Z
+
+Applied and verified: old admission gate; separate v2 runtime; exact3000 frozen members; retained SIP reader; atomic retained-pointer commit and automatic gap children; independent retained-source verifier; all16-family delivery views, immutable full-plan seal and existing supervisor hook; bounded full planner; D03 projection and full-cohort breadth reader; narrow delivery performance extension.
+
+The run is ACTIVE with planning_complete=false. The deployed services are still on their original source until the explicit manual deployment below. No useful replacement page has committed at this checkpoint; do not claim unattended ingestion or full completion yet.
+
+The exact source under release contains all12 permitted-provider adapters, D01–D05/CTX06 frozen calculations, and the existing single worker extended with authenticated replacement claims. Its first action is backfill_plan_next with one member; it interleaves another bounded member every5 claim cycles until all3000 members plus230 breadth units are planned and the full manifest is sealed. Expected static workload is about957000 tasks, with separate conditional Alpaca news alternatives and dynamic option/gap children. REF03 is continuous audit and P02 shares the P01 retrieval.
+
+Source reuse references existing market_fixed_20250901_20260831.alpaca_sip_bars_1m through fixed provider asset/month scopes, recording no duplicate market rows. Fresh five-observation NVDA source comparison matched exactly; this is bounded qualification only. Missing, invalid or unqualified retained sessions create genuine Alpaca acquisition children. Company mapping remains unresolved unless historical evidence supports it.
+
+Exact calendar:230 target sessions; daily60-session support starts2025-06-05; intraday20-session support starts2025-08-04. Formula manifest SHA256 e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65. Retained D01 compact session caches are under an additional optional reuse extension; current calculations retain their version and missing-input reasons.
+
+Validation: full local PostgreSQL+application suite418 tests passed, plus final planner5 cases and breadth3 cases. New case counts are not useful output. Run the exact branch CI before deployment. Each real committed page requires independent subsequent-transaction readback.
+
+Usage includes separate diagnostics:1Alpaca +3Massive scoped requests, retained in evidence and metadata, separate from actual worker reservations. Massive connector successfully returned historical news, short-volume and short-interest samples. This proves connector reach for those scopes, not deployed-worker credential presence or family completion.
+
+### Executable next action and live proof
+
+Current root owner will publish this tested release, wait for exact-head CI, manually deploy existing worker srv-dbh9fko473hc739an8m0 and web srv-dbh85vl9fdbs7387rucg (autoDeploy off), verify Render reports LIVE at the tested commit, then verify actual planner cursor/pages/readbacks. Preserve full run; do not impose old canary limits. Confirm actual configured provider kinds from the worker heartbeat. If Massive is missing, keep healthy work active, record the exact credential dependency and use the already admitted Alpaca-news alternative where useful.
+
+Demonstrate automatic next task, real deferred retry, controlled restart without receipt duplication, and source-to-database readback. Then update this checkpoint with real run/deploy/evidence references, re-enable the same hourly implementation automation, and release this finite root lease. No competing controller. The live worker continues admitted work independently of chat.
+
+Do not stop healthy acquisition for unresolved identity or research qualification. Operational errors remain operational and require bounded repair. Finalizer cannot claim COMPLETE without full sealed task/date/member accounting, verified pages and actual coverage evidence. Unknown denominators remain unknown.
+
+
+## Interruption reconciliation — 2026-10-30T06:06:37Z
+
+Current database state confirms3000 frozen members, ACTIVE replacement run fence1, zero replacement tasks/pages/provider reservations, and installed planner/delivery/breadth functions. Old completed records remain preserved. GitHub branch head is1ae18985c86b4dea23767a646336b4d90f46639b. No uncertain GitHub branch mutation was dispatched during the interrupted checkpoint attempt. The same root owner continues; finite claim extended to07:15Z. This checkpoint publishes the retained work before the immediate tested worker release. No new controller and no cohort reranking.
