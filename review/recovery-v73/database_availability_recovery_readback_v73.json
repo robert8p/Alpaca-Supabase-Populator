@@ -1,0 +1,107 @@
+{
+  "schema": "replacement-database-availability-recovery-v73",
+  "database_recovery_read": {
+    "observed_at": "2026-10-30 15:24:50.052808+00",
+    "postmaster_started_at": "2026-10-30 15:23:17.23156+00",
+    "in_recovery": false,
+    "read_only": "off",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T15:45:00Z",
+    "pages_committed": 5554,
+    "records_committed": 671180,
+    "requests_reserved": 2923,
+    "source_bytes": 545223708,
+    "maintain_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+  },
+  "independent_progress_read": {
+    "observed_at": "2026-10-30 15:25:05.917909+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T15:45:00Z",
+    "pages_committed": 5554,
+    "records_committed": 671180,
+    "requests_reserved": 2923,
+    "source_bytes": 545223708,
+    "planner_next_member": "2338",
+    "planning_complete": "false",
+    "latest_page_commit": "2026-10-30 15:21:59.748+00",
+    "readbacks": 5554,
+    "since_final_repair_readback": {
+      "pages": 246,
+      "records": 28903,
+      "readbacks": 246,
+      "first_commit": "2026-10-30T14:45:20.376251+00:00",
+      "latest_commit": "2026-10-30T15:21:59.748+00:00",
+      "distinct_tasks": 246,
+      "matching_hashes_and_counts": 246
+    },
+    "subsequent_readback_failures": null
+  },
+  "safe_error_correlation": [
+    {
+      "administrator_termination": 0,
+      "process_id": "1255868",
+      "ready": 0,
+      "recovery_marker": 0,
+      "safe_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "shutdown_request": 0,
+      "sqlstate": "55P03",
+      "standby_disabled": 0,
+      "timestamp": "2026-10-30T15:21:55.922000"
+    },
+    {
+      "administrator_termination": 0,
+      "process_id": "1253292",
+      "ready": 0,
+      "recovery_marker": 0,
+      "safe_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "shutdown_request": 0,
+      "sqlstate": "55P03",
+      "standby_disabled": 0,
+      "timestamp": "2026-10-30T15:22:03.359000"
+    },
+    {
+      "administrator_termination": 0,
+      "process_id": "1255868",
+      "ready": 0,
+      "recovery_marker": 0,
+      "safe_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "shutdown_request": 0,
+      "sqlstate": "55P03",
+      "standby_disabled": 0,
+      "timestamp": "2026-10-30T15:22:05.950000"
+    },
+    {
+      "administrator_termination": 0,
+      "process_id": "1255869",
+      "ready": 0,
+      "recovery_marker": 0,
+      "safe_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "shutdown_request": 0,
+      "sqlstate": "55P03",
+      "standby_disabled": 0,
+      "timestamp": "2026-10-30T15:22:09.330000"
+    }
+  ],
+  "interpretation": [
+    "Successful read at 15:24:50 confirms database access restored, current server startup15:23:17.23156Z, recovery false and read_only off.",
+    "Owner, fence1, ACTIVE status, unexpired lease15:45 and installed baseline6c880 persist.",
+    "All5554 existing pages have independent readbacks at15:25:05. No page after15:21:59.748Z yet; database availability is not proof of resumed source acquisition.",
+    "Safe worker backfill_plan_next failure15:22:03.379541184Z matches outer rpc_dispatch line39 SQL55P03 at15:22:03.359000Z; it precedes the confirmed server restart.",
+    "The restart cause is not established by these bounded reads. Root did not request a restart or change infrastructure.",
+    "Fresh full source/catalog/permission reconciliation is still required immediately before any diagnostic installation."
+  ],
+  "observation_deadline_unchanged": "2026-10-30T15:45:00Z",
+  "changes_attempted_during_outage": []
+}

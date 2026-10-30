@@ -1,0 +1,164 @@
+[
+  {
+    "observed_at": "2026-10-30 15:08:46.656875+00",
+    "maintain": {
+      "metadata": {
+        "oid": "16041463",
+        "proacl": [
+          "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+          "astra_ingestion_monitor_owner_v1=X/astra_ingestion_rpc_owner_v1"
+        ],
+        "probin": null,
+        "procost": 100,
+        "prokind": "f",
+        "prolang": "13619",
+        "proname": "backfill_maintain_v2",
+        "prorows": 0,
+        "rolname": "astra_ingestion_rpc_owner_v1",
+        "pronargs": 1,
+        "proowner": "15985999",
+        "rolsuper": false,
+        "proconfig": [
+          "search_path=\"\"",
+          "statement_timeout=8s",
+          "lock_timeout=2s"
+        ],
+        "proretset": false,
+        "prosecdef": true,
+        "prorettype": "3802",
+        "prosqlbody": null,
+        "prosupport": "-",
+        "proargmodes": null,
+        "proargnames": [
+          "p_limit"
+        ],
+        "proargtypes": [
+          "23"
+        ],
+        "proisstrict": false,
+        "proparallel": "u",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v",
+        "rolcanlogin": false,
+        "proleakproof": false,
+        "pronamespace": "15984556",
+        "rolbypassrls": false,
+        "proallargtypes": null,
+        "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+        "pronargdefaults": 1
+      },
+      "source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+    },
+    "audit_table": {
+      "acl": [
+        "postgres=arwdDxtm/postgres",
+        "astra_ingestion_rpc_owner_v1=ar/postgres"
+      ],
+      "oid": "16041301",
+      "rls": true,
+      "owner": "16388",
+      "force_rls": false
+    },
+    "audit_sequence": {
+      "acl": [
+        "postgres=rwU/postgres",
+        "astra_ingestion_rpc_owner_v1=U/postgres"
+      ],
+      "oid": "16041300",
+      "name": "astra_ingestion_v1.backfill_audit_v2_id_seq",
+      "owner": "16388"
+    },
+    "existing_maintain_owner_privileges": {
+      "run_select": true,
+      "run_update": true,
+      "audit_delete": false,
+      "audit_insert": true,
+      "audit_select": true,
+      "audit_update": false,
+      "sequence_usage": true,
+      "sequence_update": false
+    },
+    "constraints": [
+      {
+        "name": "backfill_audit_v2_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "backfill_audit_v2_run_id_fkey",
+        "type": "f",
+        "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)"
+      }
+    ],
+    "triggers": [
+      {
+        "name": "RI_ConstraintTrigger_c_16041312",
+        "enabled": "O",
+        "function": "\"RI_FKey_check_ins\"()",
+        "internal": true,
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_16041312\" AFTER INSERT ON astra_ingestion_v1.backfill_audit_v2 FROM astra_ingestion_v1.backfill_runs_v2 NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()"
+      },
+      {
+        "name": "RI_ConstraintTrigger_c_16041313",
+        "enabled": "O",
+        "function": "\"RI_FKey_check_upd\"()",
+        "internal": true,
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_16041313\" AFTER UPDATE ON astra_ingestion_v1.backfill_audit_v2 FROM astra_ingestion_v1.backfill_runs_v2 NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()"
+      },
+      {
+        "name": "backfill_audit_immutable_v2",
+        "enabled": "O",
+        "function": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "internal": false,
+        "definition": "CREATE TRIGGER backfill_audit_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_audit_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()"
+      }
+    ],
+    "policies": [
+      {
+        "oid": "16041480",
+        "polcmd": "a",
+        "polname": "backfill_delivery_insert",
+        "polqual": null,
+        "polrelid": "16041301",
+        "polroles": [
+          "15985999"
+        ],
+        "polwithcheck": "{CONST :consttype 16 :consttypmod -1 :constcollid 0 :constlen 1 :constbyval true :constisnull false :location -1 :constvalue 1 [ 1 0 0 0 0 0 0 0 ]}",
+        "polpermissive": true
+      },
+      {
+        "oid": "16041475",
+        "polcmd": "r",
+        "polname": "backfill_delivery_read",
+        "polqual": "{CONST :consttype 16 :consttypmod -1 :constcollid 0 :constlen 1 :constbyval true :constisnull false :location -1 :constvalue 1 [ 1 0 0 0 0 0 0 0 ]}",
+        "polrelid": "16041301",
+        "polroles": [
+          "15985999"
+        ],
+        "polwithcheck": null,
+        "polpermissive": true
+      }
+    ],
+    "standard_roles": {
+      "anon": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      },
+      "service_role": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      },
+      "authenticated": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      }
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "prompt_sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+  "prompt_updated_at": "2026-10-30T15:07:12.508437+00:00",
+  "exact_published_prompt": true,
+  "is_enabled": true,
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "independent_readback": true,
+  "last_run": {
+    "id": "f42a5e8f-3164-832a-b9ba-11d00afb2ab8",
+    "recorded_status": "in_progress",
+    "scheduled_for": "2026-10-30T15:00:00Z",
+    "started_at": "2026-10-30T15:03:10.707309Z",
+    "completed_at": null,
+    "chat_ref": null
+  },
+  "latest_result_run_id": "ccd1bda0-c23c-8333-84d7-b64ceff4af05",
+  "delivery_status": "unknown",
+  "next_run_time": null
+}

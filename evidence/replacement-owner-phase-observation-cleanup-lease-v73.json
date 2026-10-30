@@ -1,0 +1,33 @@
+{
+  "audit": [
+    {
+      "id": 38,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 15:27:06.530532+00",
+      "evidence": {
+        "owner": "root-replacement-20261030T042603Z",
+        "reason": "Complete exact-head qualification, bounded phase observation and exact cleanup; preserve acquired work and diagnose the residual lock failure",
+        "request_id": "v73-phase-observation-cleanup-lease-20261030T1527Z",
+        "lease_until": "2026-10-30T16:15:00Z",
+        "same_controller": true,
+        "approval_unchanged": true,
+        "previous_lease_until": "2026-10-30T15:45:00Z",
+        "observation_deadline_unchanged": "2026-10-30T15:45:00Z"
+      }
+    }
+  ],
+  "independent_readback": [
+    {
+      "observed_at": "2026-10-30 15:27:13.806142+00",
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "status": "ACTIVE",
+      "fence": 1,
+      "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T16:15:00Z",
+      "matching_audit_count": 1
+    }
+  ],
+  "observation_deadline_unchanged": "2026-10-30T15:45:00Z",
+  "note": "Same existing controller lease only; no approval re-dating or observation-window extension."
+}

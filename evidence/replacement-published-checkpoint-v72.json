@@ -1,0 +1,104 @@
+{
+  "schema": "astra.published-checkpoint/1",
+  "version": "v72",
+  "commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+  "manifest": {
+    "path": "evidence/replacement-checkpoint-publication-manifest-v72.json",
+    "bytes": 18122,
+    "sha256": "7d4b2dd64303c7d5a19f12634d9c09322b5a9d73223fb7a993d6e6bdad15c2ef",
+    "git_blob_sha1": "cdca70c924719d466826cec7e08c8989a156566c"
+  },
+  "tree_verification": {
+    "tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+    "added": 51,
+    "changed": [
+      "docs/INGESTION_COMPLETION_STATE.md",
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+    ],
+    "all_payload_blobs_exact": true,
+    "all_other_existing_blobs_preserved": true,
+    "truncated": false
+  },
+  "independent_ref_readback": {
+    "ref": "refs/heads/feat/astra-ingestion-service",
+    "node_id": "REF_kwDOTt9e7NoAJ3JlZnMvaGVhZHMvZmVhdC9hc3RyYS1pbmdlc3Rpb24tc2VydmljZQ",
+    "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/refs/heads/feat/astra-ingestion-service",
+    "object": {
+      "sha": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+      "type": "commit",
+      "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/commits/1f1f423e4dd1db87eff92e8687b2d9c49ba63c01"
+    }
+  },
+  "database_audit": [
+    {
+      "id": 37,
+      "action": "IMPLEMENTATION_CHECKPOINT_PUBLISHED",
+      "recorded_at": "2026-10-30 15:10:23.865821+00",
+      "evidence": {
+        "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+        "version": "v72",
+        "request_id": "v72-checkpoint-and-existing-successor-1f1f423e",
+        "prompt_sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+        "same_schedule": true,
+        "manifest_sha256": "7d4b2dd64303c7d5a19f12634d9c09322b5a9d73223fb7a993d6e6bdad15c2ef",
+        "same_controller": true,
+        "prompt_updated_at": "2026-10-30T15:07:12.508437Z",
+        "full_mission_complete": false,
+        "prompt_readback_exact": true,
+        "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+        "residual_gate_contention": "PROVEN",
+        "completed_repairs_replayed": false,
+        "original_mission_preserved": true
+      }
+    }
+  ],
+  "database_readback": [
+    {
+      "observed_at": "2026-10-30 15:10:25.067253+00",
+      "checkpoint": {
+        "commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+        "version": "v72",
+        "recorded_at": "2026-10-30T15:10:23.857391+00:00",
+        "manifest_sha256": "7d4b2dd64303c7d5a19f12634d9c09322b5a9d73223fb7a993d6e6bdad15c2ef",
+        "published_and_ref_verified": true
+      },
+      "successor_checkpoint": {
+        "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+        "version": "v72",
+        "same_task": true,
+        "prompt_sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+        "prompt_updated_at": "2026-10-30T15:07:12.508437Z",
+        "schedule_preserved": true,
+        "full_original_mission_preserved": true,
+        "independent_prompt_readback_verified": true
+      },
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T15:45:00Z",
+      "checkpoint_audit_count": 1
+    }
+  ],
+  "same_task": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "prompt_sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+    "prompt_updated_at": "2026-10-30T15:07:12.508437+00:00",
+    "exact_published_prompt": true,
+    "is_enabled": true,
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+    "independent_readback": true,
+    "last_run": {
+      "id": "f42a5e8f-3164-832a-b9ba-11d00afb2ab8",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-10-30T15:00:00Z",
+      "started_at": "2026-10-30T15:03:10.707309Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "latest_result_run_id": "ccd1bda0-c23c-8333-84d7-b64ceff4af05",
+    "delivery_status": "unknown",
+    "next_run_time": null
+  },
+  "no_new_controller_or_task": true,
+  "source_worker_unchanged": true,
+  "mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45"
+}

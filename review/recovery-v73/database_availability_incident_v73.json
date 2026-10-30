@@ -1,0 +1,553 @@
+{
+  "schema": "replacement-bounded-database-availability-incident-v73",
+  "status": "OPEN_READ_ONLY_RECONCILIATION_BLOCKED",
+  "observed_root_query_time_bounds": {
+    "after": "2026-10-30T15:23:18Z",
+    "before": "2026-10-30T15:23:53Z"
+  },
+  "project": {
+    "ref": "oxzabweahkoimtevbbny",
+    "status": "ACTIVE_HEALTHY",
+    "postgres_version": "17.6.1.147"
+  },
+  "root_query_failure": {
+    "error": {
+      "name": "HttpException",
+      "message": "Failed to run sql query: FATAL:  57P03: the database system is not accepting connections\nDETAIL:  Hot standby mode is disabled.\n"
+    }
+  },
+  "database_log_window": {
+    "start": "2026-10-30T15:16:00Z",
+    "end": "2026-10-30T15:24:30Z",
+    "limit": 60,
+    "returned": 60,
+    "rows": [
+      {
+        "process_id": "2375",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:42.090000"
+      },
+      {
+        "process_id": "2374",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:42.085000"
+      },
+      {
+        "process_id": "2373",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:42.083000"
+      },
+      {
+        "process_id": "2372",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:42.080000"
+      },
+      {
+        "process_id": "2359",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.754000"
+      },
+      {
+        "process_id": "2358",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.165000"
+      },
+      {
+        "process_id": "2357",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.147000"
+      },
+      {
+        "process_id": "2356",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.128000"
+      },
+      {
+        "process_id": "2355",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.111000"
+      },
+      {
+        "process_id": "2354",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:40.014000"
+      },
+      {
+        "process_id": "2339",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.445000"
+      },
+      {
+        "process_id": "2338",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.439000"
+      },
+      {
+        "process_id": "2337",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.429000"
+      },
+      {
+        "process_id": "2336",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.422000"
+      },
+      {
+        "process_id": "2320",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.094000"
+      },
+      {
+        "process_id": "2316",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.071000"
+      },
+      {
+        "process_id": "2315",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.046000"
+      },
+      {
+        "process_id": "2314",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:38.031000"
+      },
+      {
+        "process_id": "2312",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.988000"
+      },
+      {
+        "process_id": "2309",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.803000"
+      },
+      {
+        "process_id": "2308",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.797000"
+      },
+      {
+        "process_id": "2307",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.794000"
+      },
+      {
+        "process_id": "2305",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.658000"
+      },
+      {
+        "process_id": "2304",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.655000"
+      },
+      {
+        "process_id": "2303",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.654000"
+      },
+      {
+        "process_id": "2274",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.450000"
+      },
+      {
+        "process_id": "2275",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.449000"
+      },
+      {
+        "process_id": "2273",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.445000"
+      },
+      {
+        "process_id": "2231",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.261000"
+      },
+      {
+        "process_id": "2230",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.256000"
+      },
+      {
+        "process_id": "2229",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.254000"
+      },
+      {
+        "process_id": "2228",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.239000"
+      },
+      {
+        "process_id": "2227",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.234000"
+      },
+      {
+        "process_id": "2226",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.234000"
+      },
+      {
+        "process_id": "2225",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.120000"
+      },
+      {
+        "process_id": "2224",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.114000"
+      },
+      {
+        "process_id": "2223",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.114000"
+      },
+      {
+        "process_id": "2181",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:37.012000"
+      },
+      {
+        "process_id": "2180",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.993000"
+      },
+      {
+        "process_id": "2179",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.979000"
+      },
+      {
+        "process_id": "2177",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.965000"
+      },
+      {
+        "process_id": "2178",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.964000"
+      },
+      {
+        "process_id": "2164",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.746000"
+      },
+      {
+        "process_id": "2163",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.736000"
+      },
+      {
+        "process_id": "2162",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.735000"
+      },
+      {
+        "process_id": "2153",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.623000"
+      },
+      {
+        "process_id": "2149",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.611000"
+      },
+      {
+        "process_id": "2148",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.610000"
+      },
+      {
+        "process_id": "2107",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.249000"
+      },
+      {
+        "process_id": "2105",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.237000"
+      },
+      {
+        "process_id": "2104",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.230000"
+      },
+      {
+        "process_id": "2062",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.137000"
+      },
+      {
+        "process_id": "2061",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.128000"
+      },
+      {
+        "process_id": "2060",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:36.126000"
+      },
+      {
+        "process_id": "2038",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:35.921000"
+      },
+      {
+        "process_id": "2037",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:35.919000"
+      },
+      {
+        "process_id": "2036",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:35.913000"
+      },
+      {
+        "process_id": "1882",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:34.747000"
+      },
+      {
+        "process_id": "1879",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:34.743000"
+      },
+      {
+        "process_id": "1878",
+        "safe_server_state": [
+          ""
+        ],
+        "sqlstate": "57P03",
+        "timestamp": "2026-10-30T15:23:34.738000"
+      }
+    ]
+  },
+  "safe_worker_failure": {
+    "hasMore": false,
+    "logs": [
+      {
+        "id": "648fc2ca-699a-432e-97de-324cdab28cbc",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_plan_next\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T15:22:03.379541184Z"
+      }
+    ],
+    "nextEndTime": "2026-10-30T15:22:03.379541184Z",
+    "nextStartTime": "2026-10-30T15:16:00Z"
+  },
+  "unchanged_checkpoint": {
+    "commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+    "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "same_task_enabled": true,
+    "last_run_status": "completed"
+  },
+  "last_successful_root_progress": {
+    "observed_at": "2026-10-30T15:16:07.118732Z",
+    "pages": 5444,
+    "readbacks": 5444,
+    "records": 656979,
+    "latest_page_commit": "2026-10-30T15:11:58.225314Z"
+  },
+  "changes_attempted_during_incident": [],
+  "interpretation": "The SQL read connection failed. Project control-plane ACTIVE_HEALTHY does not establish successful SQL availability. The 15:22 worker error has not yet been causally matched to this outage.",
+  "gate": "Fresh successful ownership/source/permission reconciliation required before activation; fixed observation deadline remains 15:45 UTC. No blind write retry or infrastructure restart."
+}
