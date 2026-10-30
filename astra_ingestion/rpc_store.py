@@ -27,13 +27,61 @@ MAX_RESPONSE_BYTES = 64 * 1024 * 1024
 RPC_TIMEOUT_SECONDS = 15
 TOKEN_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
 
+# Diagnostic labels only: this does not authorize any operation. The existing
+# remote capability gate remains the sole operation authorization boundary.
+RPC_DIAGNOSTIC_OPERATIONS = frozenset({
+    "health", "list_jobs", "get_job", "submit_job", "control_job", "claim_next",
+    "reserve_request", "commit_page", "verification_material", "finish_verification",
+    "fail_claim", "backfill_status", "backfill_claim", "backfill_reserve",
+    "backfill_commit", "backfill_defer", "backfill_verify", "backfill_material",
+    "backfill_work", "backfill_massive_archive_read", "backfill_massive_archive_commit",
+    "backfill_massive_archive_verify", "backfill_identity_material",
+    "backfill_identity_source_read", "backfill_identity_source_commit",
+    "backfill_identity_refresh", "backfill_breadth_material", "backfill_breadth_project",
+    "backfill_delivery_status", "backfill_finalize", "backfill_recover", "backfill_maintain",
+    "backfill_plan_snapshot", "backfill_seal_plan", "backfill_plan_next",
+    "backfill_reuse_read", "backfill_feature_reuse_commit", "backfill_feature_reuse_verify",
+    "backfill_reuse_verify", "backfill_reuse_commit", "backfill_relay_probe",
+    "backfill_relay_dispatch",
+})
+RPC_DIAGNOSTIC_REASONS = frozenset({
+    "UNEXPECTED_HTTP_STATUS", "REDIRECT_REFUSED", "RESPONSE_FORMAT",
+    "RESPONSE_BOUND", "RESPONSE_DEADLINE", "RESPONSE_INCOMPLETE",
+    "HTTP_AUTH_REJECTED", "HTTP_ERROR", "TRANSPORT_ERROR", "RESPONSE_DECODE",
+    "RESPONSE_ENVELOPE", "REMOTE_FAILURE_UNRECOGNIZED", "UNCLASSIFIED_PERSISTENCE_FAILURE",
+})
+
+
+def _diagnostic_label(value, allowed, fallback):
+    # A string subclass can supply a hostile __hash__/__eq__. Do not coerce,
+    # format or retain anything except one exact, bounded local enum value.
+    return value if type(value) is str and len(value) <= 64 and value in allowed else fallback
+
 
 class RpcPersistenceError(RuntimeError):
     """The caller must reconcile durable state before another mutation."""
 
+    def __init__(self, *args, reason_code=None):
+        super().__init__(*args)
+        self.rpc_operation = "UNKNOWN"
+        self.rpc_failure_reason = _diagnostic_label(
+            reason_code, RPC_DIAGNOSTIC_REASONS, "UNCLASSIFIED_PERSISTENCE_FAILURE")
+
 
 class RpcAuthenticationError(RpcPersistenceError):
     pass
+
+
+def rpc_failure_fields(error):
+    """Only fixed local labels may enter logs; never inspect messages or causes."""
+    if not isinstance(error, RpcPersistenceError):
+        return {}
+    attributes = BaseException.__getattribute__(error, "__dict__")
+    return {
+        "rpc_operation": _diagnostic_label(dict.get(attributes, "rpc_operation"), RPC_DIAGNOSTIC_OPERATIONS, "UNKNOWN"),
+        "rpc_failure_reason": _diagnostic_label(dict.get(attributes, "rpc_failure_reason"), RPC_DIAGNOSTIC_REASONS,
+                                                "UNCLASSIFIED_PERSISTENCE_FAILURE"),
+    }
 
 
 class _NoRedirect(HTTPRedirectHandler):
@@ -95,6 +143,15 @@ class RpcStore:
             _NoRedirect(), HTTPSHandler(context=ssl.create_default_context()))
 
     def _call(self, operation, payload):
+        try:
+            return self._call_once(operation, payload)
+        except RpcPersistenceError as error:
+            # Preserve the same fatal exception and uncertain-write semantics.
+            # No retry, remote body read, payload logging or credential access.
+            error.rpc_operation = _diagnostic_label(operation, RPC_DIAGNOSTIC_OPERATIONS, "UNKNOWN")
+            raise
+
+    def _call_once(self, operation, payload):
         encoded = json.dumps({"operation": operation, "payload": payload},
                              separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode("utf-8")
         if len(encoded) > MAX_REQUEST_BYTES:
@@ -111,57 +168,57 @@ class RpcStore:
         try:
             with self._opener.open(request, timeout=RPC_TIMEOUT_SECONDS) as response:
                 if response.status != 200:
-                    raise RpcPersistenceError("Unexpected persistence response; reconcile before continuing")
+                    raise RpcPersistenceError("Unexpected persistence response; reconcile before continuing", reason_code="UNEXPECTED_HTTP_STATUS")
                 if response.geturl() != self.endpoint:
-                    raise RpcPersistenceError("Persistence redirect refused")
+                    raise RpcPersistenceError("Persistence redirect refused", reason_code="REDIRECT_REFUSED")
                 content_type = response.headers.get("Content-Type", "").split(";", 1)[0].lower()
                 if content_type != "application/json" or response.headers.get("Content-Encoding", "identity") != "identity":
-                    raise RpcPersistenceError("Unexpected persistence response format")
+                    raise RpcPersistenceError("Unexpected persistence response format", reason_code="RESPONSE_FORMAT")
                 length = response.headers.get("Content-Length")
                 if length is not None and (not length.isdigit() or int(length) > MAX_RESPONSE_BYTES):
-                    raise RpcPersistenceError("Persistence response exceeds its bound")
+                    raise RpcPersistenceError("Persistence response exceeds its bound", reason_code="RESPONSE_BOUND")
                 chunks, total = [], 0
                 while True:
                     if monotonic() >= deadline:
-                        raise RpcPersistenceError("Persistence response deadline exceeded; reconcile before continuing")
+                        raise RpcPersistenceError("Persistence response deadline exceeded; reconcile before continuing", reason_code="RESPONSE_DEADLINE")
                     # read1 performs at most one underlying read. Unlike read(n),
                     # a peer cannot keep this call alive indefinitely by trickling
                     # bytes. The wall bound is the deadline plus one socket timeout.
                     chunk = response.read1(min(65536, MAX_RESPONSE_BYTES + 1 - total))
                     if monotonic() >= deadline:
-                        raise RpcPersistenceError("Persistence response deadline exceeded; reconcile before continuing")
+                        raise RpcPersistenceError("Persistence response deadline exceeded; reconcile before continuing", reason_code="RESPONSE_DEADLINE")
                     if not chunk:
                         break
                     chunks.append(chunk)
                     total += len(chunk)
                     if total > MAX_RESPONSE_BYTES:
-                        raise RpcPersistenceError("Persistence response exceeds its bound")
+                        raise RpcPersistenceError("Persistence response exceeds its bound", reason_code="RESPONSE_BOUND")
                 raw = b"".join(chunks)
                 if len(raw) > MAX_RESPONSE_BYTES or length is not None and len(raw) != int(length):
-                    raise RpcPersistenceError("Incomplete or oversized persistence response")
+                    raise RpcPersistenceError("Incomplete or oversized persistence response", reason_code="RESPONSE_INCOMPLETE")
         except HTTPError as exc:
             # Do not read error bodies or expose request objects/headers in logs.
             status = exc.code
             exc.close()
             if status in (401, 403):
-                raise RpcAuthenticationError("Ingestion capability was rejected") from None
-            raise RpcPersistenceError("Persistence HTTP outcome is unresolved; reconcile before continuing") from None
+                raise RpcAuthenticationError("Ingestion capability was rejected", reason_code="HTTP_AUTH_REJECTED") from None
+            raise RpcPersistenceError("Persistence HTTP outcome is unresolved; reconcile before continuing", reason_code="HTTP_ERROR") from None
         except (URLError, TimeoutError, OSError, HTTPException):
-            raise RpcPersistenceError("Persistence transport outcome is unresolved; reconcile before continuing") from None
+            raise RpcPersistenceError("Persistence transport outcome is unresolved; reconcile before continuing", reason_code="TRANSPORT_ERROR") from None
         try:
             envelope = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_object,
                                   parse_constant=_invalid_constant)
         except (UnicodeError, ValueError, RecursionError):
-            raise RpcPersistenceError("Persistence returned an invalid response") from None
+            raise RpcPersistenceError("Persistence returned an invalid response", reason_code="RESPONSE_DECODE") from None
         if not isinstance(envelope, dict) or type(envelope.get("ok")) is not bool:
-            raise RpcPersistenceError("Persistence returned an invalid envelope")
+            raise RpcPersistenceError("Persistence returned an invalid envelope", reason_code="RESPONSE_ENVELOPE")
         if envelope["ok"]:
             if set(envelope) != {"ok", "result"}:
-                raise RpcPersistenceError("Persistence returned an invalid success envelope")
+                raise RpcPersistenceError("Persistence returned an invalid success envelope", reason_code="RESPONSE_ENVELOPE")
             return envelope["result"]
         error = envelope.get("error")
         if set(envelope) != {"ok", "error"} or not isinstance(error, dict):
-            raise RpcPersistenceError("Persistence returned an invalid error envelope")
+            raise RpcPersistenceError("Persistence returned an invalid error envelope", reason_code="RESPONSE_ENVELOPE")
         # Use controlled local messages. A remote error must never echo credentials.
         failures = {
             "lease_lost": (LeaseLost, "Worker ownership or the job deadline is no longer valid"),
@@ -172,7 +229,7 @@ class RpcStore:
         }
         failure = failures.get(error.get("code"))
         if failure is None:
-            raise RpcPersistenceError("Persistence returned an unrecognized failure")
+            raise RpcPersistenceError("Persistence returned an unrecognized failure", reason_code="REMOTE_FAILURE_UNRECOGNIZED")
         raise failure[0](failure[1])
 
     @staticmethod

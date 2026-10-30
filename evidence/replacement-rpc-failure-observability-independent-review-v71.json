@@ -1,0 +1,97 @@
+{
+  "schema": "astra.reliability.rpc-observability-independent-review/1",
+  "recorded_at": "2026-10-30T12:17:34.900069+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "state": "REVIEWED_NO_BLOCKING_FINDINGS",
+  "scope": "Three-file diagnostic observability patch only; independently reviewed before separately authorized v3 worker integration.",
+  "files": {
+    "astra_ingestion/rpc_store.py": {
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+      "bytes": 17590
+    },
+    "astra_ingestion/worker.py": {
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "bytes": 7696
+    },
+    "tests/ingestion/test_rpc_failure_observability_v71.py": {
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9",
+      "bytes": 13856
+    }
+  },
+  "baseline": {
+    "astra_ingestion/rpc_store.py": {
+      "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7",
+      "bytes": 13918
+    },
+    "astra_ingestion/worker.py": {
+      "sha256": "00d9f7a16fc161a6e7b40938319e4bbe9a8c24c97ea29171b375a2e9241ca0b6",
+      "bytes": 6732
+    }
+  },
+  "independent_code_comparison": {
+    "old_call_algorithm_AST_equal_after_only16_reason_keywords_removed_and_internal_name_restored": true,
+    "RpcStore_constructor_and_all_other_existing_methods_AST_identical": true,
+    "endpoint_public_key_token_rules_redirect_handling_JSON_validation_and_store_factory_unchanged": true,
+    "RPC_timeout_seconds": 15,
+    "request_response_bounds_unchanged": true,
+    "existing_call_signature_and_return_values_unchanged": true,
+    "call_wrapper_invokes_original_algorithm_once_and_bare_reraises_same_exception": true,
+    "diagnostic_operation_allowlist_is_not_authorization_or_request_rewrite": true,
+    "new_exception_metadata_is_strict_plain_string_local_enum_only": true,
+    "metadata_revalidated_at_log_emission": true,
+    "only_existing_state_and_controlled_type_plus_rpc_operation_and_rpc_failure_reason_logged": true,
+    "no_exception_text_repr_cause_context_body_payload_token_headers_SQL_or_traceback_logged": true,
+    "unknown_non_RPC_exception_type_names_use_fixed_fallback": true,
+    "fatal_unknown_write_semantics_and_worker_exit1_unchanged": true,
+    "no_new_retry_authentication_permission_endpoint_credential_or_persistent_trust_change": true
+  },
+  "finding_fixed_before_acceptance": {
+    "issue": "Arbitrary short ASCII exception class names could themselves contain sensitive strings in error_type.",
+    "resolution": "Fixed local non-RPC type-label allowlist with Exception fallback; RPC subclass labels use fixed base labels; synthetic64hex hostile-name case added and passed."
+  },
+  "independent_tests": {
+    "command": "PYTHONPATH=.:tests/ingestion python3 -m unittest test_rpc_failure_observability_v71 test_backfill_massive_relay_v2 test_backfill_massive_relay_integration_review_v2 -v",
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 0.041,
+    "composition": {
+      "new_observability_cases": 12,
+      "unchanged_relay_adapter_cases": 14,
+      "frozen_worker_integration_cases": 3
+    },
+    "meaningful_checks": [
+      "HTTP error bodies never read; secret-bearing headers,URLs,messages,causes and payloads absent from bounded output",
+      "Unknown operations and hostile string/object metadata use fixed fallbacks without modifying submitted request",
+      "Exactly one15second opener call; same exception identity/args escapes; response deadlines unchanged",
+      "Real current worker performs no provider fetch,defer or retry after uncertain reservation",
+      "Actual CLI loop writes one bounded safe record and exits1",
+      "Concurrent calls retain per-exception operation context",
+      "Existing relay authentication,integrity and proposed integration contracts remain compatible"
+    ]
+  },
+  "frozen_relay_compatibility_before_separate_approved_promotion": {
+    "v2_manifest_payloads_checked_exact": 19,
+    "v3_manifest_payloads_checked_exact": 15,
+    "backfill_worker_v2_sha256_at_review": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "reviewed_v3_proposed_worker_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "this_diagnostic_patch_edits_backfill_worker_v2": false,
+    "frozen_package_or_security_review_modified_by_reviewer": false,
+    "TokenPattern_endpoint_public_key_helpers_and_RpcStore_call_interface_preserved": true,
+    "root_separate_promotion_boundary": "The root may separately promote the expressly approved four-line v3 integration90d->b682. This receipt records the preceding diagnostic review and does not claim the production worker must remain90d after that authorized promotion.",
+    "future_auth_definition_guard": "After approved relay installation,the live outer authenticated dispatcher hash changes by the reviewed relay hook; stale0616diagnostic SQL guards must be reconciled rather than bypassed."
+  },
+  "production_actions_by_reviewer": {
+    "calls": 0,
+    "writes": 0,
+    "deployments": 0,
+    "credential_reads_or_exports": 0
+  },
+  "limits": [
+    "This change improves future failure attribution; it does not establish the cause of the observed RPC failures or prove a reliability repair.",
+    "Root owns publication,CI,existing-service deployment and live readback.",
+    "Fresh SQL logs remained unavailable through both existing connectors; no clean-log claim is made.",
+    "Independent SQL timings did not justify a speculative claim-query repair; this review authorizes none."
+  ],
+  "blocking_findings": []
+}

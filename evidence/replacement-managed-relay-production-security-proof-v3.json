@@ -1,0 +1,54 @@
+{
+  "schema": "astra.managed-relay.production-security-proof/3",
+  "observed_at": "2026-10-30 12:19:07.412918+00",
+  "auth_after_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+  "inverse_exact_approved_auth_diff_restores_baseline": true,
+  "baseline_auth_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+  "access": {
+    "table": {
+      "acl": "{postgres=arwdDxtm/postgres,astra_ingestion_rpc_owner_v1=ar/postgres}",
+      "oid": "16458418",
+      "rls": true,
+      "owner": "postgres",
+      "immutable_trigger": 1
+    },
+    "helper": {
+      "acl": "{postgres=X/postgres,astra_ingestion_rpc_owner_v1=X/postgres}",
+      "oid": "16458444",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "security_definer": false
+    },
+    "api_access": {
+      "anon_table": false,
+      "anon_helper": false,
+      "rpc_owner_insert": true,
+      "rpc_owner_select": true,
+      "authenticated_table": false,
+      "authenticated_helper": false,
+      "rpc_owner_mutate_existing": false
+    },
+    "dispatch_count": 0,
+    "independent_runtime_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02"
+  },
+  "edge": {
+    "id": "36fca180-ab3c-4702-b296-ac206420ac66",
+    "version": 2,
+    "status": "ACTIVE",
+    "verify_jwt": false,
+    "ezbr_sha256": "191dc0bed984b304751ba3f98175463fd9021e9e84cfd8a1518a64cc8c7d0e6b"
+  },
+  "edge_file_readback_exact": {
+    "index.ts": {
+      "bytes": 15812,
+      "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97"
+    },
+    "replacement-relay-v2.mjs": {
+      "bytes": 12575,
+      "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83"
+    }
+  },
+  "credentials_read_or_exported": false
+}

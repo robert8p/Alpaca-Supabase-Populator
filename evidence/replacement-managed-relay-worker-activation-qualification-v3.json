@@ -1,0 +1,114 @@
+{
+  "schema": "astra.managed-relay.worker-activation-qualification/3",
+  "recorded_at": "2026-10-30T12:20:50.650935+00:00",
+  "state": "APPROVED_WORKER_SOURCE_PROMOTED_LOCALLY_QUALIFIED_NOT_DEPLOYED_BY_THIS_AGENT",
+  "review_id": "managed-massive-relay-v3-review-20261030",
+  "scope_sha256": "a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5",
+  "authority": "Existing controller delegated the exact approved worker integration after reporting fresh 12:14 UTC v3 approval, SQL installation at 12:17:26 UTC and exact Edge version 2 deployment. This local agent made no production call and does not substitute this statement for root live receipts.",
+  "worker": {
+    "before_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "after_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "review_patch_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "exact_review_patch": true,
+    "added_lines": 4,
+    "archived_before_promotion": true,
+    "baseline_path": "review/massive-relay-v3/activation/baseline_backfill_worker_v2.py"
+  },
+  "active_test_phase_adaptations": [
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "original_sha256": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+      "active_sha256": "415ee966f7821c8c0381fdc0787712c225283d9242a5179e216a14a28e66ae44",
+      "frozen_original_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "change": "Test-only post-activation phase binding to archived reviewed baseline; no installer, runtime approval or permission change"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "original_sha256": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+      "active_sha256": "586592caa77f7d29bc4758a92c4805ff28c8d13a979a72f50b7125ed141be0a7",
+      "frozen_original_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "change": "Test-only post-activation phase binding to archived reviewed baseline; no installer, runtime approval or permission change"
+    }
+  ],
+  "active_test_reference_scan": "All tests/ingestion Python references to base_worker_sha256, approved_worker_base_sha256, worker-integration-review, review-manifest-v2, the explicit 90d baseline pin and backfill_worker_v2.py were inspected. Only these two tests required phase adaptation; remaining worker path references are dynamic qualification metadata.",
+  "tests": {
+    "command": "ASTRA_INGESTION_POSTGRES_TEST_URL=<existing disposable loopback qualification database> PYTHONPATH=.:tests/ingestion python3 -m unittest test_backfill_massive_relay_v2 test_backfill_massive_relay_integration_review_v2 test_rpc_failure_observability_v71 test_backfill_massive_relay_postgres_v2 test_backfill_massive_relay_edge_v2 -v",
+    "discovered": 45,
+    "passed": 45,
+    "skipped": 0,
+    "failures": 0,
+    "seconds": 4.95,
+    "composition": {
+      "relay_adapter": 14,
+      "active_integration": 3,
+      "safe_rpc_failure_observability": 12,
+      "actual_postgresql_auth_scope_fence_integrity": 15,
+      "edge_handler_suite_wrapper": 1
+    },
+    "python_syntax_units": 6,
+    "node_syntax_units": 1,
+    "syntax_passed": true
+  },
+  "preservation": {
+    "all15approved_v3_payloads_byte_identical": true,
+    "original_v2_active_manifest_phase_deltas": [
+      "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "tests/ingestion/test_backfill_massive_relay_postgres_v2.py"
+    ],
+    "other17original_v2_active_paths_unchanged": true,
+    "both_original_test_payloads_retained_byte_exact_in_frozen_candidates": true,
+    "sql_edge_adapter_rpc_store_worker_cli_edited_by_this_agent": false
+  },
+  "compatible_diagnostic_inputs": {
+    "astra_ingestion/rpc_store.py": {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 17590,
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea"
+    },
+    "astra_ingestion/worker.py": {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 7696,
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    "tests/ingestion/test_rpc_failure_observability_v71.py": {
+      "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+      "bytes": 13856,
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9"
+    }
+  },
+  "production_actions_by_this_agent": {
+    "database_calls": 0,
+    "provider_requests": 0,
+    "deployments": 0,
+    "github_calls": 0,
+    "credential_reads_exports_or_creation": 0
+  },
+  "files": [
+    {
+      "path": "review/massive-relay-v3/activation/baseline_backfill_worker_v2.py",
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e"
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "bytes": 4973,
+      "sha256": "415ee966f7821c8c0381fdc0787712c225283d9242a5179e216a14a28e66ae44"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "bytes": 29004,
+      "sha256": "586592caa77f7d29bc4758a92c4805ff28c8d13a979a72f50b7125ed141be0a7"
+    },
+    {
+      "path": "review/massive-relay-v3/activation/worker-activation-and-test-phase-v3.diff",
+      "bytes": 5981,
+      "sha256": "8ff459d7435578708b8007837717734d0a61d4bc19e544f27fa8ef5e11dbc8c4"
+    }
+  ],
+  "remaining": "Independent activation review, root publication and required CI, then root deploys only the existing worker and verifies live readiness/progress. No extra security logic or widened approval is included."
+}

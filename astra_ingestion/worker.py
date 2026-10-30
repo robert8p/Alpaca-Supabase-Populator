@@ -13,6 +13,25 @@ from .models import IngestionSpec
 from .reconcile import compare_records
 from .source import AlpacaSource, SourceError, parse_page, record_key
 from .store import LeaseLost, QualityHold, RequestDeferred, Store
+from .rpc_store import RpcAuthenticationError, RpcPersistenceError, rpc_failure_fields
+
+RUNTIME_ERROR_TYPES = frozenset({
+    "ValueError", "TypeError", "RuntimeError", "KeyError", "AssertionError",
+    "TimeoutError", "OSError", "HTTPException", "URLError", "LeaseLost",
+    "QualityHold", "RequestDeferred", "SourceError", "ProviderProblem",
+    "IdentityMaterialError", "JSONDecodeError", "AttributeError", "IndexError",
+})
+
+
+def runtime_error_record(error):
+    """Bounded diagnostic labels; no exception text, payload, cause or traceback."""
+    if isinstance(error, RpcPersistenceError):
+        error_type = "RpcAuthenticationError" if isinstance(error, RpcAuthenticationError) else "RpcPersistenceError"
+    else:
+        error_type = type(error).__name__
+        if type(error_type) is not str or len(error_type) > 64 or error_type not in RUNTIME_ERROR_TYPES:
+            error_type = "Exception"
+    return {"state": "unresolved_runtime_error", "error_type": error_type, **rpc_failure_fields(error)}
 
 
 def verify_receipts(claim, receipts, actual):
@@ -127,7 +146,7 @@ def main():
                 print(json.dumps(outcome), flush=True)
         except Exception as exc:
             # Never print driver exceptions: they can contain connection details.
-            print(json.dumps({"state": "unresolved_runtime_error", "error_type": type(exc).__name__}), file=sys.stderr, flush=True)
+            print(json.dumps(runtime_error_record(exc)), file=sys.stderr, flush=True)
             return 1
         # Successful local reuse and calculations need no artificial provider
         # sleep. The database reserves provider-specific paced request slots.

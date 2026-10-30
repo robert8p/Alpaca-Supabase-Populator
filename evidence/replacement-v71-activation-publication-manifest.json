@@ -1,0 +1,88 @@
+{
+  "schema": "astra.replacement.activation-publication/71",
+  "parent_commit": "8774e059274610635111cc4e0fb2d74923c37545",
+  "approved_review_id": "managed-massive-relay-v3-review-20261030",
+  "actual_approved_at": "2026-10-30T12:14:00Z",
+  "confirmation_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+  "sql_installed_once_at": "2026-10-30T12:17:26.804513Z",
+  "old_v2_approval_preserved": true,
+  "relay_scope_unchanged": true,
+  "diagnostic_change_has_no_auth_retry_or_timeout_change": true,
+  "files": [
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "bytes": 4973,
+      "sha256": "415ee966f7821c8c0381fdc0787712c225283d9242a5179e216a14a28e66ae44"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "bytes": 29004,
+      "sha256": "586592caa77f7d29bc4758a92c4805ff28c8d13a979a72f50b7125ed141be0a7"
+    },
+    {
+      "path": "review/massive-relay-v3/activation/baseline_backfill_worker_v2.py",
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e"
+    },
+    {
+      "path": "review/massive-relay-v3/activation/worker-activation-and-test-phase-v3.diff",
+      "bytes": 5981,
+      "sha256": "8ff459d7435578708b8007837717734d0a61d4bc19e544f27fa8ef5e11dbc8c4"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-worker-activation-qualification-v3.json",
+      "bytes": 5988,
+      "sha256": "2e747a0cc07f2a97eb2d2c13dfffd4227936a2d5298125de8d8566771b341d95"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-activation-independent-review-v3.json",
+      "bytes": 10539,
+      "sha256": "949325b24cfa039d60256d31ca66e3a911c9fcdb042bccebee3de1f2de098d59"
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 17590,
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea"
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 7696,
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+      "bytes": 13856,
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9"
+    },
+    {
+      "path": "review/recovery-v71/rpc-failure-observability-v71.diff",
+      "bytes": 12288,
+      "sha256": "8360e04d464c5e73f598f5aa129c5d988aca57bb129a1c81d47d0f531b88b538"
+    },
+    {
+      "path": "evidence/replacement-rpc-failure-observability-qualification-v71.json",
+      "bytes": 4447,
+      "sha256": "e50b815f0d441a11c4b5d8cb9e20c42e0c832cc61120a338db6492b0165c21bf"
+    },
+    {
+      "path": "evidence/replacement-rpc-failure-observability-independent-review-v71.json",
+      "bytes": 5598,
+      "sha256": "d3df001008e6886b0e7ae1491a303c7b61edf781ed88aac58420898c56c981f7"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-approval-installation-receipt-v3.json",
+      "bytes": 9448,
+      "sha256": "78a01c29ee75368e28549249271c25db325ba82276f6b45dc3436b4193206c5c"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-production-security-proof-v3.json",
+      "bytes": 1788,
+      "sha256": "d2e1c1b621139ff8fbbc62e7f6d404645f9abfaa992886bfe85ec4c8660e53eb"
+    }
+  ]
+}
