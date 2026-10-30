@@ -20,6 +20,15 @@ class SharedRecordsTests(unittest.TestCase):
         s02.RetainedS02Tests.setUpClass.__func__(cls)
         f=cls.fixture('runTest')
         with f.admin() as conn:conn.execute(cls.rewrite((ROOT/'sql/astra_backfill_shared_records_v2.sql').read_text()))
+        # Fixture-only observation: production SQL and its timing bound are unchanged.
+        original_admin=cls.fixture.admin
+        def observed_admin(_cls):
+            conn=original_admin()
+            conn.execute("SET track_functions='all'")
+            return conn
+        cls.fixture.admin=classmethod(observed_admin)
+        with f.admin() as conn:
+            cls.database_profile=conn.execute("SELECT current_setting('server_version') server_version,current_setting('jit') jit,current_setting('jit_above_cost') jit_above_cost,current_setting('plan_cache_mode') plan_cache_mode").fetchone()
 
     rewrite=classmethod(s02.RetainedS02Tests.rewrite.__func__)
     task=runtime.BackfillRuntimeTests.task
@@ -44,14 +53,20 @@ class SharedRecordsTests(unittest.TestCase):
         else:
             body={'status':'OK','results':rows}
             if next_cursor:body['next_url']='https://api.massive.com'+request_for(c)['path']+'?cursor='+next_cursor
+        tick=perf_counter();self._commit_timings={}
         raw=json.dumps(body);request=request_for(c);records,cursor,quality=parse_response(c,request,raw.encode())
+        self._commit_timings['parse_seconds']=perf_counter()-tick;tick=perf_counter()
         with self.f.admin() as conn:conn.execute(f'UPDATE {self.f.schema}.source_limits SET next_request_at=0')
+        self._commit_timings['pacing_fixture_seconds']=perf_counter()-tick;tick=perf_counter()
         self.call('backfill_reserve',{'claim':self.fence(c)})
+        self._commit_timings['reserve_seconds']=perf_counter()-tick;tick=perf_counter()
         payload={'claim':self.fence(c),'raw_body':raw,'body_sha256':hashlib.sha256(raw.encode()).hexdigest(),
             'http_status':200,'request':request,'records':list(records),'next_cursor':cursor,'quality':list(quality),
             'headers':{},'fetched_at':'2026-10-30T10:00:00Z','adapter_version':'shared-record-fixture-v2'}
         self.call('backfill_commit',payload)
+        self._commit_timings['commit_seconds']=perf_counter()-tick;tick=perf_counter()
         if verify:self.verify(c)
+        self._commit_timings['verify_seconds']=perf_counter()-tick
         return payload
 
     def verify(self,c):
@@ -241,7 +256,15 @@ class SharedRecordsTests(unittest.TestCase):
 
     def test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl(self):
         c=self.new();rows=[self.article(id='article-'+str(i)) for i in range(1000)]
-        start=perf_counter();self.commit(c,rows);elapsed=perf_counter()-start;self.assertLess(elapsed,12)
+        with self.f.admin() as conn:
+            before_stats={x['funcname']:x for x in conn.execute("SELECT funcname,calls,total_time,self_time FROM pg_stat_user_functions WHERE schemaname=%s",(self.f.schema,)).fetchall()}
+        start=perf_counter();self.commit(c,rows);elapsed=perf_counter()-start
+        with self.f.admin() as conn:
+            after_stats=conn.execute("SELECT funcname,calls,total_time,self_time FROM pg_stat_user_functions WHERE schemaname=%s",(self.f.schema,)).fetchall()
+        delta=[{**{'function':x['funcname']},**{k:round(x[k]-before_stats.get(x['funcname'],{}).get(k,0),3) for k in ('calls','total_time','self_time')}} for x in after_stats]
+        diagnostic={'database':dict(self.database_profile),'operation_seconds':self._commit_timings,
+                    'function_milliseconds':sorted(delta,key=lambda x:x['total_time'],reverse=True)[:12]}
+        self.assertLess(elapsed,12,diagnostic)
         with self.f.admin() as conn:
             definition=conn.execute('SELECT pg_get_functiondef(%s::regprocedure) d',(self.f.schema+'.backfill_page_rows_v2(text,integer)',)).fetchone()['d']
             conn.execute(f'''CREATE OR REPLACE FUNCTION {self.f.schema}.backfill_page_rows_v2(p_task_id text,p_page_no integer)

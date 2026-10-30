@@ -1,0 +1,570 @@
+{
+  "investigation": "shared CI1,000-news239.080s bound failure",
+  "sql_sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+  "test_sha256": "a9dbc30b856c97f6678997c87d2d5161b101e9f94ba9621892c9cfbbc1987e73",
+  "reproduction_obtained": false,
+  "local_runs": [
+    {
+      "fixture": "astra-shared-performance-diagnosis",
+      "configuration": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "jit_inline_above_cost": "500000",
+        "jit_optimize_above_cost": "500000",
+        "plan_cache_mode": "auto",
+        "work_mem": "4MB",
+        "track_functions": "pl",
+        "shared_preload_libraries": ""
+      },
+      "tests": [
+        {
+          "name": "test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+          "passed": true,
+          "seconds": 0.7584
+        }
+      ],
+      "total_seconds": 1.5169,
+      "top_functions": [
+        {
+          "funcname": "rpc_dispatch",
+          "calls": 5,
+          "total_time": 680.297,
+          "self_time": 19.41
+        },
+        {
+          "funcname": "backfill_delivery_dispatch_v2",
+          "calls": 2,
+          "total_time": 470.415,
+          "self_time": 30.266
+        },
+        {
+          "funcname": "backfill_recheck_page_v2",
+          "calls": 1,
+          "total_time": 436.23,
+          "self_time": 5.484
+        },
+        {
+          "funcname": "backfill_shared_readback_trigger_v2",
+          "calls": 1,
+          "total_time": 312.566,
+          "self_time": 0.129
+        },
+        {
+          "funcname": "backfill_shared_project_v2",
+          "calls": 1,
+          "total_time": 312.437,
+          "self_time": 84.233
+        },
+        {
+          "funcname": "backfill_dispatch_v2",
+          "calls": 4,
+          "total_time": 193.57,
+          "self_time": 36.505
+        },
+        {
+          "funcname": "backfill_shared_meta_v2",
+          "calls": 1000,
+          "total_time": 112.122,
+          "self_time": 88.872
+        },
+        {
+          "funcname": "backfill_shared_refresh_v2",
+          "calls": 1,
+          "total_time": 108.703,
+          "self_time": 108.703
+        },
+        {
+          "funcname": "backfill_nonminute_readback_trigger_v2",
+          "calls": 1,
+          "total_time": 106.996,
+          "self_time": 0.055
+        },
+        {
+          "funcname": "backfill_nonminute_project_page_v2",
+          "calls": 1,
+          "total_time": 106.94,
+          "self_time": 83.818
+        },
+        {
+          "funcname": "rpc_canonical",
+          "calls": 18020,
+          "total_time": 100.498,
+          "self_time": 67.956
+        },
+        {
+          "funcname": "rpc_json_unique",
+          "calls": 10003,
+          "total_time": 49.649,
+          "self_time": 49.649
+        }
+      ]
+    },
+    {
+      "fixture": "astra-shared-performance-after-options",
+      "configuration": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "jit_inline_above_cost": "500000",
+        "jit_optimize_above_cost": "500000",
+        "plan_cache_mode": "auto",
+        "work_mem": "4MB",
+        "track_functions": "pl",
+        "shared_preload_libraries": ""
+      },
+      "tests": [
+        {
+          "name": "test_maximum_options_page_projects_within_the_bounded_verifier",
+          "passed": true,
+          "seconds": 5.6228
+        },
+        {
+          "name": "test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+          "passed": true,
+          "seconds": 0.7767
+        }
+      ],
+      "total_seconds": 7.2697,
+      "top_functions": [
+        {
+          "funcname": "rpc_dispatch",
+          "calls": 10,
+          "total_time": 6057.072,
+          "self_time": 57.262
+        },
+        {
+          "funcname": "backfill_delivery_dispatch_v2",
+          "calls": 4,
+          "total_time": 4205.071,
+          "self_time": 65.013
+        },
+        {
+          "funcname": "backfill_recheck_page_v2",
+          "calls": 2,
+          "total_time": 4129.323,
+          "self_time": 34.608
+        },
+        {
+          "funcname": "backfill_shared_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 2948.007,
+          "self_time": 0.088
+        },
+        {
+          "funcname": "backfill_shared_project_v2",
+          "calls": 2,
+          "total_time": 2947.919,
+          "self_time": 824.629
+        },
+        {
+          "funcname": "backfill_dispatch_v2",
+          "calls": 8,
+          "total_time": 1803.07,
+          "self_time": 191.835
+        },
+        {
+          "funcname": "backfill_shared_meta_v2",
+          "calls": 11000,
+          "total_time": 1206.198,
+          "self_time": 901.868
+        },
+        {
+          "funcname": "rpc_canonical",
+          "calls": 228139,
+          "total_time": 1151.493,
+          "self_time": 764.521
+        },
+        {
+          "funcname": "backfill_nonminute_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 1054.122,
+          "self_time": 0.117
+        },
+        {
+          "funcname": "backfill_nonminute_project_page_v2",
+          "calls": 2,
+          "total_time": 1054.004,
+          "self_time": 692.063
+        },
+        {
+          "funcname": "backfill_shared_refresh_v2",
+          "calls": 2,
+          "total_time": 835.708,
+          "self_time": 835.708
+        },
+        {
+          "funcname": "backfill_nonminute_field_reason_v2",
+          "calls": 175000,
+          "total_time": 529.046,
+          "self_time": 451.744
+        }
+      ]
+    },
+    {
+      "fixture": "astra-shared-performance-after-analyze",
+      "configuration": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "jit_inline_above_cost": "500000",
+        "jit_optimize_above_cost": "500000",
+        "plan_cache_mode": "auto",
+        "work_mem": "4MB",
+        "track_functions": "pl",
+        "shared_preload_libraries": ""
+      },
+      "tests": [
+        {
+          "name": "test_maximum_options_page_projects_within_the_bounded_verifier",
+          "passed": true,
+          "seconds": 4.974
+        },
+        {
+          "name": "test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+          "passed": true,
+          "seconds": 1.945
+        }
+      ],
+      "total_seconds": 7.8247,
+      "top_functions": [
+        {
+          "funcname": "rpc_dispatch",
+          "calls": 10,
+          "total_time": 6634.715,
+          "self_time": 53.335
+        },
+        {
+          "funcname": "backfill_delivery_dispatch_v2",
+          "calls": 4,
+          "total_time": 4917.597,
+          "self_time": 68.521
+        },
+        {
+          "funcname": "backfill_recheck_page_v2",
+          "calls": 2,
+          "total_time": 4840.989,
+          "self_time": 31.746
+        },
+        {
+          "funcname": "backfill_shared_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 3828.246,
+          "self_time": 0.088
+        },
+        {
+          "funcname": "backfill_shared_project_v2",
+          "calls": 2,
+          "total_time": 3828.158,
+          "self_time": 690.804
+        },
+        {
+          "funcname": "backfill_shared_refresh_v2",
+          "calls": 2,
+          "total_time": 1979.849,
+          "self_time": 1979.849
+        },
+        {
+          "funcname": "backfill_dispatch_v2",
+          "calls": 8,
+          "total_time": 1670.407,
+          "self_time": 169.006
+        },
+        {
+          "funcname": "backfill_shared_meta_v2",
+          "calls": 11000,
+          "total_time": 1083.614,
+          "self_time": 810.524
+        },
+        {
+          "funcname": "rpc_canonical",
+          "calls": 228139,
+          "total_time": 1072.285,
+          "self_time": 713.207
+        },
+        {
+          "funcname": "backfill_nonminute_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 899.579,
+          "self_time": 0.197
+        },
+        {
+          "funcname": "backfill_nonminute_project_page_v2",
+          "calls": 2,
+          "total_time": 899.38,
+          "self_time": 603.418
+        },
+        {
+          "funcname": "backfill_nonminute_field_reason_v2",
+          "calls": 175000,
+          "total_time": 462.302,
+          "self_time": 406.685
+        }
+      ]
+    },
+    {
+      "fixture": "astra-shared-performance-ordered-analyze",
+      "configuration": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "jit_inline_above_cost": "500000",
+        "jit_optimize_above_cost": "500000",
+        "plan_cache_mode": "auto",
+        "work_mem": "4MB",
+        "track_functions": "pl",
+        "shared_preload_libraries": ""
+      },
+      "tests": [
+        {
+          "name": "test_action_security_conflict_does_not_publish_arbitrary_top_level_symbol",
+          "passed": true,
+          "seconds": 0.3326
+        },
+        {
+          "name": "test_alpaca_split_is_shared_by_reference_and_other_actions_stay_n02",
+          "passed": true,
+          "seconds": 0.2519
+        },
+        {
+          "name": "test_contract_id_omission_does_not_change_symbol_identity",
+          "passed": true,
+          "seconds": 0.4161
+        },
+        {
+          "name": "test_contract_references_and_contract_session_bars_count_separately_with_conflicts",
+          "passed": true,
+          "seconds": 0.6265
+        },
+        {
+          "name": "test_disjoint_version_links_are_retained_and_conflicting_fields_are_not_usable",
+          "passed": true,
+          "seconds": 0.4244
+        },
+        {
+          "name": "test_maximum_options_page_projects_within_the_bounded_verifier",
+          "passed": true,
+          "seconds": 5.7457
+        },
+        {
+          "name": "test_missing_ids_use_explicit_content_fallback_without_inventing_article_identity",
+          "passed": true,
+          "seconds": 0.3415
+        },
+        {
+          "name": "test_new_york_publication_and_all_action_date_axes_include_boundary_events",
+          "passed": true,
+          "seconds": 0.3274
+        },
+        {
+          "name": "test_ordered_provider_updates_select_latest_and_provider_ids_do_not_cross_merge",
+          "passed": true,
+          "seconds": 0.5587
+        },
+        {
+          "name": "test_real_worker_verify_serializes_with_monitor_through_existing_gateway_lock",
+          "passed": true,
+          "seconds": 0.1993
+        },
+        {
+          "name": "test_repeated_article_is_one_record_with_distinct_security_links_and_all_receipts",
+          "passed": true,
+          "seconds": 0.4249
+        },
+        {
+          "name": "test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+          "passed": true,
+          "seconds": 2.8286
+        },
+        {
+          "name": "test_undated_bars_keep_distinct_contracts_and_source_member_provenance",
+          "passed": true,
+          "seconds": 0.4716
+        },
+        {
+          "name": "test_unverified_pages_are_excluded_and_catchup_is_bounded_idempotent",
+          "passed": true,
+          "seconds": 0.6203
+        }
+      ],
+      "total_seconds": 15.6414,
+      "top_functions": [
+        {
+          "funcname": "rpc_dispatch",
+          "calls": 136,
+          "total_time": 11632.696,
+          "self_time": 457.339
+        },
+        {
+          "funcname": "backfill_delivery_dispatch_v2",
+          "calls": 57,
+          "total_time": 8621.947,
+          "self_time": 968.688
+        },
+        {
+          "funcname": "backfill_recheck_page_v2",
+          "calls": 27,
+          "total_time": 7526.273,
+          "self_time": 84.011
+        },
+        {
+          "funcname": "backfill_shared_project_v2",
+          "calls": 30,
+          "total_time": 5393.264,
+          "self_time": 966.081
+        },
+        {
+          "funcname": "backfill_shared_readback_trigger_v2",
+          "calls": 24,
+          "total_time": 5356.275,
+          "self_time": 1.818
+        },
+        {
+          "funcname": "backfill_shared_refresh_v2",
+          "calls": 26,
+          "total_time": 2987.422,
+          "self_time": 2987.422
+        },
+        {
+          "funcname": "backfill_dispatch_v2",
+          "calls": 106,
+          "total_time": 2622.149,
+          "self_time": 649.159
+        },
+        {
+          "funcname": "backfill_nonminute_readback_trigger_v2",
+          "calls": 26,
+          "total_time": 1940.834,
+          "self_time": 2.03
+        },
+        {
+          "funcname": "backfill_nonminute_project_page_v2",
+          "calls": 32,
+          "total_time": 1940.397,
+          "self_time": 1584.131
+        },
+        {
+          "funcname": "backfill_shared_meta_v2",
+          "calls": 11028,
+          "total_time": 1309.867,
+          "self_time": 984.365
+        },
+        {
+          "funcname": "rpc_canonical",
+          "calls": 229073,
+          "total_time": 1292.8,
+          "self_time": 871.802
+        },
+        {
+          "funcname": "backfill_nonminute_field_reason_v2",
+          "calls": 175407,
+          "total_time": 545.252,
+          "self_time": 476.923
+        }
+      ]
+    },
+    {
+      "fixture": "astra-shared-performance-partial-analyze",
+      "configuration": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "jit_inline_above_cost": "500000",
+        "jit_optimize_above_cost": "500000",
+        "plan_cache_mode": "auto",
+        "work_mem": "4MB",
+        "track_functions": "pl",
+        "shared_preload_libraries": ""
+      },
+      "tests": [
+        {
+          "name": "test_maximum_options_page_projects_within_the_bounded_verifier",
+          "passed": true,
+          "seconds": 5.4488
+        },
+        {
+          "name": "test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+          "passed": true,
+          "seconds": 1.7496
+        }
+      ],
+      "total_seconds": 8.1674,
+      "top_functions": [
+        {
+          "funcname": "rpc_dispatch",
+          "calls": 10,
+          "total_time": 6880.089,
+          "self_time": 59.124
+        },
+        {
+          "funcname": "backfill_delivery_dispatch_v2",
+          "calls": 4,
+          "total_time": 4900.608,
+          "self_time": 85.455
+        },
+        {
+          "funcname": "backfill_recheck_page_v2",
+          "calls": 2,
+          "total_time": 4806.185,
+          "self_time": 35.687
+        },
+        {
+          "funcname": "backfill_shared_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 3700.03,
+          "self_time": 0.095
+        },
+        {
+          "funcname": "backfill_shared_project_v2",
+          "calls": 2,
+          "total_time": 3699.934,
+          "self_time": 709.899
+        },
+        {
+          "funcname": "backfill_dispatch_v2",
+          "calls": 8,
+          "total_time": 1927.855,
+          "self_time": 190.957
+        },
+        {
+          "funcname": "backfill_shared_refresh_v2",
+          "calls": 2,
+          "total_time": 1703.478,
+          "self_time": 1703.478
+        },
+        {
+          "funcname": "rpc_canonical",
+          "calls": 228139,
+          "total_time": 1246.197,
+          "self_time": 827.938
+        },
+        {
+          "funcname": "backfill_shared_meta_v2",
+          "calls": 11000,
+          "total_time": 1211.306,
+          "self_time": 902.827
+        },
+        {
+          "funcname": "backfill_nonminute_readback_trigger_v2",
+          "calls": 2,
+          "total_time": 974.156,
+          "self_time": 0.112
+        },
+        {
+          "funcname": "backfill_nonminute_project_page_v2",
+          "calls": 2,
+          "total_time": 974.044,
+          "self_time": 652.016
+        },
+        {
+          "funcname": "backfill_nonminute_field_reason_v2",
+          "calls": 175000,
+          "total_time": 510.009,
+          "self_time": 450.497
+        }
+      ]
+    }
+  ],
+  "production_changes": 0,
+  "source_changes": 0
+}
