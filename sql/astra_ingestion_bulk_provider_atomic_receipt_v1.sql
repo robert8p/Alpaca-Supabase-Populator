@@ -185,7 +185,7 @@ BEGIN
  OR (v_receipt->>'requests_committed')::int IS DISTINCT FROM 1
  THEN RAISE EXCEPTION 'atomic provider receipt mismatch'; END IF;
  RETURN jsonb_build_object(
-  'status','ATOMically_COMMITTED_PENDING_INDEPENDENT_TRANSPORT_AND_SOURCE_ACCEPTANCE',
+  'status','ATOMICALLY_COMMITTED_PENDING_INDEPENDENT_TRANSPORT_AND_SOURCE_ACCEPTANCE',
   'work_key',p_work,'page_no',p_page,'request_sha256',t.request_sha256,
   'receipt_sha256',q.source_page_sha256,
   'output_sha256',v_digest,'eligible_records_committed',v_count,
