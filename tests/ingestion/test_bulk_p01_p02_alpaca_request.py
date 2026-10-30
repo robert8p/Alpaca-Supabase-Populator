@@ -42,6 +42,16 @@ class AlpacaSeptemberRequestTests(unittest.TestCase):
         self.assertFalse(p.worker_admission_authorized)
         self.assertIn("NOT_AUTHORIZED", p.status)
 
+    def test_exact_mixed_case_symbol_is_preserved_but_never_approved(self):
+        # Original accepted cohort contains a mixed-case warrant-like alias.
+        # Its price-calendar eligibility remains unknown; no fallback to an
+        # uppercased or different security may be inferred.
+        p = candidate(dated_symbol="ADIGw")
+        self.assertEqual(p.symbol, "ADIGw")
+        self.assertEqual(p.request["symbols"], "ADIGw")
+        self.assertFalse(p.provider_submission_authorized)
+        self.assertFalse(p.worker_admission_authorized)
+
     def test_p02_supports_separately_calendar_verified_extended_range(self):
         p = candidate(
             "P02", session_start_utc="2026-09-02T08:00:00Z",
