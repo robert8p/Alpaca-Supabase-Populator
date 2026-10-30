@@ -169,6 +169,8 @@ def prepare_https_observation_quarantine(
     """
     if (not isinstance(bound, BoundHTTPSPage)
             or not isinstance(observation, HTTPSPageObservation)
+            or bound.status != "BOUND_NOT_ADMITTED_NOT_SENT"
+            or observation.status != "HTTPS_OBSERVED_NOT_INDEPENDENTLY_ATTESTED"
             or bound.provider_submission_authorized
             or observation.provider_provenance_accepted
             or observation.bulk_output_committed
