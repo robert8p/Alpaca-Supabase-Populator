@@ -1,0 +1,54 @@
+{
+  "version": "replacement-review-only-pytest-collection-boundary-v67",
+  "recorded_at": "2026-10-30T08:09:51.588051+00:00",
+  "root_published_commit": "3e8a7b94ec7dcea8a995fd20ce5df372b2677250",
+  "reported_ci_failure": {
+    "check_id": 41024263611,
+    "cause": "Root pytest recursively collected review-only candidate tests whose relay imports are intentionally absent from the published active source tree.",
+    "source": "Root GitHub check observation"
+  },
+  "change": {
+    "path": "review/massive-relay-v2/conftest.py",
+    "bytes": 350,
+    "sha256": "48b99a173ae56702bd3ac0197cd72e3e20b9bc9149e51a67f47317afed0f8832",
+    "collect_ignore": [
+      "candidates/tests"
+    ],
+    "resolved_repository_relative_target": "review/massive-relay-v2/candidates/tests"
+  },
+  "static_verification": {
+    "module_contains_only_docstring_and_literal_collect_ignore_assignment": true,
+    "exact_ignored_directory": "review/massive-relay-v2/candidates/tests",
+    "active_ingestion_directory": "tests/ingestion",
+    "active_ingestion_source_and_test_files_observed": 72,
+    "active_ingestion_paths_inside_ignored_directory": 0,
+    "blanket_test_exclusions_added": false,
+    "active_test_configuration_or_workflows_modified": false,
+    "frozen_review_payloads_verified_unchanged": 20,
+    "latest_four_status_file_hashes_still_match_exact_current_qualification": true
+  },
+  "local_pytest_collection_attempt": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "--collect-only",
+      "-q"
+    ],
+    "exit_code": 1,
+    "output": "No module named pytest",
+    "tests_imported_or_collected": 0,
+    "result": "NOT_EXECUTED_PYTEST_UNAVAILABLE",
+    "postgres_dsn_removed_from_attempt_environment": true
+  },
+  "actual_collection_and_full_suite_verification": "PENDING_EXACT_HEAD_GITHUB_PYTEST_CI",
+  "scope": "Only the held review test subtree is excluded. Active tests and existing test gates retain their original configuration. This static proof is not an executed pytest collection result.",
+  "local_files_created": [
+    "review/massive-relay-v2/conftest.py",
+    "evidence/replacement-review-pytest-boundary-v67.json"
+  ],
+  "network_calls": 0,
+  "postgres_calls": 0,
+  "package_installs": 0,
+  "frozen_relay_bytes_modified": false
+}
