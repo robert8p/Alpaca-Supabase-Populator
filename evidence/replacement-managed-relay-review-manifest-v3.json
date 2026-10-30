@@ -1,0 +1,149 @@
+{
+  "schema": "astra.managed-relay.review-manifest/3",
+  "state": "PREPARED_AND_INDEPENDENTLY_REVIEWED_NOT_APPROVED_NOT_APPLIED",
+  "recorded_at": "2026-10-30T11:47:27.488603+00:00",
+  "review_id": "managed-massive-relay-v3-review-20261030",
+  "scope_sha256": "a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5",
+  "installer": {
+    "path": "review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql",
+    "bytes": 21825,
+    "sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013"
+  },
+  "requires_fresh_explicit_action_time_approval": true,
+  "installation_window_minutes": 15,
+  "old_v2_approval_expired_and_not_reused": true,
+  "new_native_connection_or_credentials_required": false,
+  "supported_connector": "mcp__codex_apps__supabase_market_data_cloud_apply_migration",
+  "production_hold_preserved": true,
+  "root_owned_remaining_prerequisites": [
+    "Current ownership, scheduled successor, target and uncertain-write reconciliation",
+    "Actual existing-connector read-only exact-parser acceptance and no-write readback",
+    "Publication/final pin verification before specific owner approval"
+  ],
+  "independent_review": {
+    "path": "evidence/replacement-managed-relay-independent-review-v3.json",
+    "bytes": 8752,
+    "sha256": "48292282d29037106d0dc0b4e23c4d22262ed087a32248a30fa2be3c0a24f10e"
+  },
+  "inherited_v2_review_manifest": {
+    "path": "evidence/replacement-managed-relay-review-manifest-v2.json",
+    "bytes": 4055,
+    "sha256": "e9c3cf4664c9d04f525bf015deb09fb6113ba95cc358fe88cc94dafdbedf9f32"
+  },
+  "frozen_v2_payloads_verified_unchanged": 19,
+  "unchanged_runtime_inputs": [
+    {
+      "path": "supabase/functions/population-top3000-news-v1/index.ts",
+      "bytes": 15812,
+      "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+      "role": "held_review_candidate_not_yet_deployed"
+    },
+    {
+      "path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+      "bytes": 12575,
+      "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+      "role": "held_review_candidate_not_yet_deployed"
+    },
+    {
+      "path": "astra_ingestion/backfill_massive_relay_v2.py",
+      "bytes": 14520,
+      "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+      "role": "held_review_candidate_not_yet_deployed"
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+      "role": "existing_worker_base"
+    },
+    {
+      "path": "review/massive-relay-v2/worker-integration.patch",
+      "bytes": 950,
+      "sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+      "role": "held_review_candidate_not_yet_deployed"
+    },
+    {
+      "path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "role": "held_review_candidate_not_yet_deployed"
+    }
+  ],
+  "files": [
+    {
+      "path": "evidence/replacement-managed-relay-independent-review-v3.json",
+      "bytes": 8752,
+      "sha256": "48292282d29037106d0dc0b4e23c4d22262ed087a32248a30fa2be3c0a24f10e"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-qualification-v3.json",
+      "bytes": 5663,
+      "sha256": "2d54e9b2f2a8ee847d7b2cc213f7399a2dd3fc4475800df8b49416568dea0277"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-review-scope-v3.json",
+      "bytes": 6375,
+      "sha256": "3ccf33d43e7341179accf5201c2133bd6d0bb0a4d0118dd5bc4e436a32f634ec"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-security-review-v3.md",
+      "bytes": 11179,
+      "sha256": "104ed36a9bf2d125179951584ac38abac7efd3a618f1971ecb584b8e282b60fe"
+    },
+    {
+      "path": "review/massive-relay-v3/README.md",
+      "bytes": 2872,
+      "sha256": "7240521147c6151d99d74edbfe861849af21a2e95b78eb6b93a93d7b7f62f25b"
+    },
+    {
+      "path": "review/massive-relay-v3/apply-migration-wrapper-final-lf.txt",
+      "bytes": 775,
+      "sha256": "7571b009a9624948ecdccce7797d66b0e8cb7b9a737831d4f71e864b0f8f5cb4"
+    },
+    {
+      "path": "review/massive-relay-v3/apply-migration-wrapper-no-final-lf.txt",
+      "bytes": 774,
+      "sha256": "0dea7a99908099268f5d716520f16b26b90f3996dc3441bc2c1e252cb547191c"
+    },
+    {
+      "path": "review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql",
+      "bytes": 21825,
+      "sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013"
+    },
+    {
+      "path": "review/massive-relay-v3/independent_transport_review_v3.py",
+      "bytes": 5074,
+      "sha256": "70dc8944b25c85e3d13d8955035781ff878e7e5113c135a5c60f669e618eb509"
+    },
+    {
+      "path": "review/massive-relay-v3/installation_action_packet_v3.json",
+      "bytes": 26182,
+      "sha256": "3553228a1998d51fac23ab2402e0fe7593c48925d6a881425dd7d6038748768a"
+    },
+    {
+      "path": "review/massive-relay-v3/installer-security-v2-to-v3.diff",
+      "bytes": 4701,
+      "sha256": "6d66fb10015f3670f7dbd16510544fe747f6ce8c7337bb8e7589e950e054b89a"
+    },
+    {
+      "path": "review/massive-relay-v3/tests/test_managed_relay_connector_v3.py",
+      "bytes": 18767,
+      "sha256": "6d6f79a8b84041ba6fc787d118fdcc41d8f697bdbfdeb376582b8b3f7c8ba96c"
+    },
+    {
+      "path": "review/massive-relay-v3/tests/test_managed_relay_v3_source.py",
+      "bytes": 4955,
+      "sha256": "135ee07394ca69eb61a0c72e326dcc34f595abbfa03f2eff397b214972be2bac"
+    },
+    {
+      "path": "review/massive-relay-v3/transport_readonly_probe_action_v3.json",
+      "bytes": 5552,
+      "sha256": "d2e7a8bf44586cd3802658748eef8466ee695258f4d21b0ae295716db69a3852"
+    },
+    {
+      "path": "review/massive-relay-v3/transport_readonly_probe_v3.sql",
+      "bytes": 4954,
+      "sha256": "d5fb3052dab18dd2b7975f9bd0d773f35902de43b805b91cb97ee8f309c9b12f"
+    }
+  ]
+}
