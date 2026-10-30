@@ -150,7 +150,7 @@ class TransportStageTests(unittest.TestCase):
         c = claim(last_page=0, requests_committed=1, records_committed=1)
         t = ticket(p, c)
         receipt = dict(consistent=True, work_key=WORK, page_no=0,
-                       source_page_sha256=prev.page_sha256)
+                       source_sha256=prev.page_sha256)
         b = bound(p, c, t, previous=prev, previous_receipt=receipt)
         self.assertIn("page_token=QUJDRA%3D%3D", b.url)
         self.assertEqual(b.page_no, 1)
@@ -159,7 +159,7 @@ class TransportStageTests(unittest.TestCase):
         self.assertEqual(b.request_sha256, bound().request_sha256)
         with self.assertRaises(ScopeError):
             bound(p, c, t, previous=prev,
-                  previous_receipt={**receipt, "source_page_sha256": "f"*64})
+                  previous_receipt={**receipt, "source_sha256": "f"*64})
         with self.assertRaises(ScopeError):
             bound(p, c, t, previous=prev,
                   previous_receipt={**receipt, "consistent": False})
