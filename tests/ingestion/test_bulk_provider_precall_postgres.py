@@ -410,4 +410,45 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
 
 
 
+ def test_inclusive_end_records_count_against_all_page_budgets(self):
+  # One boundary observation is excluded from output but still consumed at
+  # the remote provider; it must not be available for another request.
+  self.reserve(records=10,requests=2)
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w,self.synthetic_stage(
+   provider_records_observed=2,eligible_records=1,
+   inclusive_end_records_excluded=1,
+   next_page_required=True,continuation_token_sha256="3"*64))
+  # Disposable generic receipt is a test fixture only. It MUST NOT be used
+  # for live provider authentication, production provenance or bulk admission.
+  self.sql("bulk_commit_page_v1",w["work_key"],"synthetic-owner",
+   w["claim_fence"],0,"f"*64,"d"*64,1,1)
+  self.add_request_review(page=1,limit=9,request="8"*64)
+  # Old behavior allowed 1 eligible+9 new = 10, although source consumed
+  # 2+9 = 11 > immutable record budget. Deny before provider submission.
+  with self.assertRaises(self.pg.Error):
+   self.precall(w,page=1,limit=9,request="8"*64)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],1)
+  self.assertEqual(self.conn.execute(
+   f"SELECT requests_committed,records_committed FROM {self.schema}.bulk_work_v1"
+   " WHERE work_key=%s",(w["work_key"],)).fetchone(),(1,1))
+
+ def test_terminal_provider_page_cannot_issue_another_request(self):
+  self.reserve(records=10,requests=2)
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w)  # terminal page: next_page_required=false
+  self.sql("bulk_commit_page_v1",w["work_key"],"synthetic-owner",
+   w["claim_fence"],0,"f"*64,"d"*64,1,1)
+  self.add_request_review(page=1,limit=3,request="8"*64)
+  with self.assertRaises(self.pg.Error):
+   self.precall(w,page=1,limit=3,request="8"*64)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],1)
+
+
 if __name__=="__main__":unittest.main()
