@@ -422,10 +422,10 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
    provider_records_observed=2,eligible_records=1,
    inclusive_end_records_excluded=1,
    next_page_required=True,continuation_token_sha256="3"*64))
-  # Disposable generic receipt is a test fixture only. It MUST NOT be used
-  # for live provider authentication, production provenance or bulk admission.
-  self.sql("bulk_commit_page_v1",w["work_key"],"synthetic-owner",
-   w["claim_fence"],0,"f"*64,"d"*64,1,1)
+  # Only the staged atomic output, receipt and separately pinned synthetic
+  # transport witness qualify as a predecessor; generic receipts do not.
+  self.transport_proof(w)
+  self.provider_atomic(w)
   self.add_request_review(page=1,limit=9,request="8"*64)
   # Old behavior allowed 1 eligible+9 new = 10, although source consumed
   # 2+9 = 11 > immutable record budget. Deny before provider submission.
@@ -443,8 +443,8 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
   w=self.claim()
   self.precall(w)
   self.quarantine(w)  # terminal page: next_page_required=false
-  self.sql("bulk_commit_page_v1",w["work_key"],"synthetic-owner",
-   w["claim_fence"],0,"f"*64,"d"*64,1,1)
+  self.transport_proof(w)
+  self.provider_atomic(w)
   self.add_request_review(page=1,limit=3,request="8"*64)
   with self.assertRaises(self.pg.Error):
    self.precall(w,page=1,limit=3,request="8"*64)
@@ -568,6 +568,24 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
    self.assertEqual(num,0)
   self.assertEqual(self.conn.execute(
    f"SELECT count(*) FROM {self.schema}.bulk_provider_transport_proof_v1").fetchone()[0],0)
+
+
+ def test_generic_receipt_cannot_authorize_provider_continuation(self):
+  self.reserve(records=10,requests=2)
+  self.review(provider=True)
+  w=self.claim()
+  self.precall(w)
+  self.quarantine(w,self.synthetic_stage(
+   next_page_required=True,continuation_token_sha256="3"*64))
+  # A malicious generic receipt alone cannot stand in for materialized source
+  # output or the separately authenticated transport-provenance boundary.
+  self.sql("bulk_commit_page_v1",w["work_key"],"synthetic-owner",
+   w["claim_fence"],0,"f"*64,"d"*64,1,1)
+  self.add_request_review(page=1,limit=3,request="8"*64)
+  with self.assertRaises(self.pg.Error):
+   self.precall(w,page=1,limit=3,request="8"*64)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],1)
 
 
 
