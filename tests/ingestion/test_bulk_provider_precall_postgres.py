@@ -121,6 +121,19 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
     identity_assurance_sha256,entitlement_assurance_sha256)
     VALUES (%s,%s,%s,%s)
    """,(MANIFEST,REPORT,"1"*64,"2"*64))
+   self.add_request_review()
+
+ def add_request_review(self,*,request="9"*64,limit=5,page=0):
+  work=self.conn.execute(
+   f"SELECT work_key FROM {self.schema}.bulk_work_v1 WHERE manifest_sha256=%s AND family='P01' AND unit_key='P01:a'",
+   (MANIFEST,)).fetchone()
+  if work is None:raise AssertionError("expected synthetic P01 unit")
+  self.conn.execute(f"""
+   INSERT INTO {self.schema}.bulk_provider_reviewed_request_v1(
+     work_key,page_no,manifest_sha256,family,source_receipt_sha256,
+     independent_report_sha256,request_sha256,records_reserved)
+   VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+  """,(work[0],page,MANIFEST,"P01",SOURCE,REPORT,request,limit))
 
  def claim(self):
   return self.sql("bulk_claim_v1",MANIFEST,"synthetic-owner",60)
@@ -140,6 +153,8 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
     manifest_sha256,independent_report_sha256,identity_assurance_sha256,
     entitlement_assurance_sha256) VALUES (%s,%s,%s,%s)
    """,(MANIFEST,REPORT,"1"*64,"2"*64))
+  with self.assertRaises(self.pg.Error):self.precall(w)
+  self.add_request_review()
   result=self.precall(w)
   self.assertEqual(result["status"],"RESERVED_NO_PROVIDER_TRANSPORT_GRANT")
   self.assertIs(result["provider_submission_authorized"],False)
@@ -194,8 +209,24 @@ class ProviderPrecallPostgresTests(unittest.TestCase):
   self.assertEqual(self.conn.execute(
    f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],0)
 
+ def test_request_digest_or_reserved_max_must_match_separate_review(self):
+  self.reserve()
+  self.review(provider=True)
+  w=self.claim()
+  for kw in ({"request":"8"*64},{"limit":6},{"limit":1}):
+   with self.subTest(case=kw),self.assertRaises(self.pg.Error):
+    self.precall(w,**kw)
+  self.assertEqual(self.conn.execute(
+   f"SELECT count(*) FROM {self.schema}.bulk_provider_precall_v1").fetchone()[0],0)
+  self.precall(w)
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"UPDATE {self.schema}.bulk_provider_reviewed_request_v1 SET request_sha256=%s",("7"*64,))
+  with self.assertRaises(self.pg.Error):
+   self.conn.execute(f"DELETE FROM {self.schema}.bulk_provider_reviewed_request_v1")
+
  def test_no_public_grants_or_production_provider_authority(self):
-  for table in ("bulk_provider_review_v1","bulk_provider_precall_v1"):
+  for table in ("bulk_provider_review_v1","bulk_provider_precall_v1",
+                "bulk_provider_reviewed_request_v1"):
    self.assertEqual(self.conn.execute("""
     SELECT relrowsecurity FROM pg_class c JOIN pg_namespace n
     ON n.oid=c.relnamespace WHERE n.nspname=%s AND c.relname=%s
