@@ -73,6 +73,19 @@ class Ref01TickerProjectionTests(unittest.TestCase):
         with self.assertRaises(ScopeError):
             inspect_ticker_projection_page(p, [row(matches=2, instrument_key=200)])
 
+    def test_mixed_case_retained_warrant_symbol_is_not_silently_excluded(self):
+        # The actual original accepted scope contains an ADIGw alias.
+        # It is absent from the tested fixed-window Alpaca relation.
+        # Preserve exact case and retain UNKNOWN, never force uppercase/N/A.
+        candidate = inspect_ticker_projection_page(
+            plan_ticker_projection(SRC),
+            [row(ticker="ADIGw", matches=0)])
+        self.assertEqual(candidate.unmatched, 1)
+        self.assertEqual(candidate.candidates[0].ticker, "ADIGw")
+        self.assertIsNone(candidate.candidates[0].instrument_key)
+        self.assertFalse(candidate.candidates[0].identity_certified)
+        self.assertFalse(candidate.coverage_certified)
+
     def test_source_drift_and_missing_candidate_change_receipt(self):
         p = plan_ticker_projection(SRC)
         one = inspect_ticker_projection_page(p, [row()])
@@ -101,7 +114,7 @@ class Ref01TickerProjectionTests(unittest.TestCase):
         for r in (
             row(accepted_company_receipt_sha256="bad"),
             row(company_key="company key with spaces"),
-            row(ticker="test"),
+            row(ticker="test with spaces"),
             row(instrument_key=None),
             row(instrument_key=True),
             row(matching_source_rows=-1),
