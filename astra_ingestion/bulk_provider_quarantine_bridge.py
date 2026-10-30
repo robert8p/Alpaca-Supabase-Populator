@@ -12,6 +12,7 @@ from hashlib import sha256
 from json import dumps, loads
 from typing import Any, Mapping
 
+from .bulk_authenticated_provider_transport import BoundHTTPSPage, HTTPSPageObservation
 from .bulk_p01_p02_alpaca_request import AlpacaSIPRequestPlan
 from .bulk_p01_p02_alpaca_response import SIPResponseWitness
 from .bulk_p01_p02_page_stage import build_sip_page_stage_candidate
@@ -148,3 +149,56 @@ def check_quarantine_summary(
     if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
         raise ScopeError("missing SQL source-array digest")
     return True
+
+
+def prepare_https_observation_quarantine(
+    bound: BoundHTTPSPage,
+    observation: HTTPSPageObservation,
+    claim: Mapping[str, Any],
+    reserved_ticket: Mapping[str, Any],
+    *,
+    received_at_utc: str,
+    previous_receipt: Mapping[str, Any] | None = None,
+) -> ProviderQuarantineEnvelope:
+    """Cross-check two source-only witnesses before constructing a quarantine.
+
+    This accepts a bounded *observed* HTTPS page; it DOES NOT authorize a live
+    HTTP call, attest true TLS provenance, write SQL, or admit bulk ingestion.
+    The production worker still requires an authenticated durable admission
+    adapter and a separate trusted transport pin.
+    """
+    if (not isinstance(bound, BoundHTTPSPage)
+            or not isinstance(observation, HTTPSPageObservation)
+            or bound.provider_submission_authorized
+            or observation.provider_provenance_accepted
+            or observation.bulk_output_committed
+            or bound.work_key != observation.work_key
+            or bound.page_no != observation.page_no
+            or bound.request_sha256 != observation.request_sha256
+            or bound.request_url_sha256 != observation.request_url_sha256
+            or bound.manifest_sha256 != observation.witness.manifest_sha256
+            or bound.plan.family != observation.witness.family
+            or bound.plan.instrument_key != observation.witness.instrument_key
+            or bound.plan.symbol != observation.witness.symbol
+            or observation.witness.page_no != bound.page_no):
+        raise ScopeError("HTTPS source observation does not match original bound request")
+    if (bound.page_no == 0 and previous_receipt is not None
+            or bound.page_no > 0 and previous_receipt is None):
+        raise ScopeError("HTTPS source continuation receipt missing or unexpected")
+    envelope = prepare_provider_quarantine_envelope(
+        bound.plan, observation.quarantinable_response(), claim, reserved_ticket,
+        received_at_utc=received_at_utc,
+        previous=bound.previous,
+        previous_receipt=previous_receipt,
+    )
+    if (envelope.work_key != bound.work_key
+            or envelope.page_no != bound.page_no
+            or envelope.fence != bound.fence
+            or envelope.request_sha256 != bound.request_sha256
+            or envelope.source_page_sha256 != observation.witness.page_sha256
+            or envelope.provider_records_observed != (
+                len(observation.witness.bars)
+                + observation.witness.excluded_end_bar_count
+            )):
+        raise ScopeError("HTTP source witness disagrees with immutable quarantine")
+    return envelope
