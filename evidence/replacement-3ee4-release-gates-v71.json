@@ -1,0 +1,411 @@
+{
+  "schema": "astra.replacement.exact-source-release-gates/1",
+  "observed_at": "2026-10-30 12:34:06 UTC",
+  "state": "ALL_FOUR_FIRST_ATTEMPT_GATES_PASSED",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "source_head": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "source_tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+  "failed_parent_head_retained": "d321e0e2ca2201d2664c9b885f67e73382629f19",
+  "failure_repair_receipt": "evidence/replacement-release-publication-collection-repair-v71.json",
+  "runs": [
+    {
+      "run_id": 41055667902,
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "head_sha": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41055667902",
+      "updated_at": "2026-10-30T12:29:33Z",
+      "job_id": 124062450024,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "tests": {
+        "passed": 708,
+        "skipped": 309,
+        "warnings": 1,
+        "seconds": 8.75
+      },
+      "summary": "708 passed, 309 skipped, 1 warning in 8.75s",
+      "required_steps": [
+        {
+          "name": "Compile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "JavaScript syntax",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Unit tests",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "all_job_steps_success": true
+    },
+    {
+      "run_id": 41055668137,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "head_sha": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41055668137",
+      "updated_at": "2026-10-30T12:32:47Z",
+      "job_id": 124062450776,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "tests": {
+        "passed": 627,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "seconds": 196.885
+      },
+      "summary": "Ran 627 tests in 196.885s; OK",
+      "required_steps": [
+        {
+          "name": "Set up Node for JavaScript syntax checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned runtime and ASGI test dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Require production adapters before qualification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run all ingestion qualification tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check application syntax",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Set up Node for JavaScript syntax checks",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "all_job_steps_success": true
+    },
+    {
+      "run_id": 41055657993,
+      "workflow": "release-gate",
+      "event": "push",
+      "head_sha": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41055657993",
+      "updated_at": "2026-10-30T12:29:35Z",
+      "job_id": 124062416478,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "tests": {
+        "passed": 708,
+        "skipped": 309,
+        "warnings": 1,
+        "seconds": 12.11
+      },
+      "summary": "708 passed, 309 skipped, 1 warning in 12.11s",
+      "required_steps": [
+        {
+          "name": "Compile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "JavaScript syntax",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Unit tests",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "all_job_steps_success": true
+    },
+    {
+      "run_id": 41055658194,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "head_sha": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41055658194",
+      "updated_at": "2026-10-30T12:33:01Z",
+      "job_id": 124062417714,
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "tests": {
+        "passed": 627,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "seconds": 206.314
+      },
+      "summary": "Ran 627 tests in 206.314s; OK",
+      "required_steps": [
+        {
+          "name": "Set up Node for JavaScript syntax checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned runtime and ASGI test dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Require production adapters before qualification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run all ingestion qualification tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check application syntax",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Set up Node for JavaScript syntax checks",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "all_job_steps_success": true
+    }
+  ],
+  "file_pin_readback": {
+    "tree_sha": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+    "truncated": false,
+    "entry_count": 713,
+    "files": [
+      {
+        "path": "astra_ingestion/backfill_massive_relay_v2.py",
+        "bytes": 14520,
+        "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+        "expected_blob": "9f97aa492261c85eae54af5f3162430ff588b4a6",
+        "actual_blob": "9f97aa492261c85eae54af5f3162430ff588b4a6",
+        "actual_size": 14520,
+        "passed": true
+      },
+      {
+        "path": "sql/astra_backfill_massive_relay_v2.sql",
+        "bytes": 21525,
+        "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+        "expected_blob": "20a665021ec75dc54fe8c3e1e5fdff03a46db7f5",
+        "actual_blob": "20a665021ec75dc54fe8c3e1e5fdff03a46db7f5",
+        "actual_size": 21525,
+        "passed": true
+      },
+      {
+        "path": "supabase/functions/population-top3000-news-v1/index.ts",
+        "bytes": 15812,
+        "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+        "expected_blob": "ae6068a25265ad799b4d95b9334e074909409bc9",
+        "actual_blob": "ae6068a25265ad799b4d95b9334e074909409bc9",
+        "actual_size": 15812,
+        "passed": true
+      },
+      {
+        "path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+        "bytes": 12575,
+        "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+        "expected_blob": "85a0fa21ccdbd01dfd4f4f62cc1dd5c707e00ae5",
+        "actual_blob": "85a0fa21ccdbd01dfd4f4f62cc1dd5c707e00ae5",
+        "actual_size": 12575,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_v2.py",
+        "bytes": 14370,
+        "sha256": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+        "expected_blob": "24b1dd25326625e80798b551cb11f4bde07b7309",
+        "actual_blob": "24b1dd25326625e80798b551cb11f4bde07b7309",
+        "actual_size": 14370,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+        "bytes": 534,
+        "sha256": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+        "expected_blob": "6d1e0db732bef30d7e9bf21bbf0853e923520abb",
+        "actual_blob": "6d1e0db732bef30d7e9bf21bbf0853e923520abb",
+        "actual_size": 534,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/managed_massive_relay_v2.test.mjs",
+        "bytes": 15309,
+        "sha256": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+        "expected_blob": "236cf491cf8318a03ca50714949a80a8695fadf0",
+        "actual_blob": "236cf491cf8318a03ca50714949a80a8695fadf0",
+        "actual_size": 15309,
+        "passed": true
+      },
+      {
+        "path": "review/massive-relay-v3/conftest.py",
+        "bytes": 494,
+        "sha256": "a6d39dc53f3263e72fcbe57dffbd43b12420f79b0ad0b58852a7a4d6d80edbbf",
+        "expected_blob": "fe5356d9a1ed78b8213a71125c801cda106d5e75",
+        "actual_blob": "fe5356d9a1ed78b8213a71125c801cda106d5e75",
+        "actual_size": 494,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_managed_relay_release_bindings_v3.py",
+        "bytes": 3024,
+        "sha256": "4f35a7ddc3c364c471b4cc2acfae5b8a70cee19d32acda2c11a4681ce0f744b9",
+        "expected_blob": "4a4d38b8e174dd4002d47376f320e2aed54b44a8",
+        "actual_blob": "4a4d38b8e174dd4002d47376f320e2aed54b44a8",
+        "actual_size": 3024,
+        "passed": true
+      },
+      {
+        "path": "evidence/replacement-release-publication-collection-repair-v71.json",
+        "bytes": 6438,
+        "sha256": "05a4877ec3f1530a0d88965ef7495a9c268334be8168b68de236aeb70f3aba4e",
+        "expected_blob": "96fb6c3ae3046822dd8357d5d08a4c53bcd9936e",
+        "actual_blob": "96fb6c3ae3046822dd8357d5d08a4c53bcd9936e",
+        "actual_size": 6438,
+        "passed": true
+      }
+    ],
+    "additional_activation_and_diagnostic_files": [
+      {
+        "path": "review/massive-relay-v3/activation/baseline_backfill_worker_v2.py",
+        "expected_blob": "27800f18a1ea20e05ebcc00c8819e7525cfafb7d",
+        "actual_blob": "27800f18a1ea20e05ebcc00c8819e7525cfafb7d",
+        "bytes": 22179,
+        "passed": true
+      },
+      {
+        "path": "astra_ingestion/backfill_worker_v2.py",
+        "expected_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+        "actual_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+        "bytes": 22439,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+        "expected_blob": "6fa4298142125569423d2880a237d06a0a9b2a9d",
+        "actual_blob": "6fa4298142125569423d2880a237d06a0a9b2a9d",
+        "bytes": 4973,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+        "expected_blob": "c6b34fdcd5279dc8a530e791e6e86dbe18097ef2",
+        "actual_blob": "c6b34fdcd5279dc8a530e791e6e86dbe18097ef2",
+        "bytes": 29004,
+        "passed": true
+      },
+      {
+        "path": "review/massive-relay-v3/activation/worker-activation-and-test-phase-v3.diff",
+        "expected_blob": "e485e2b7b09bcdd3e2b2b0eef0ac85eb47bf36fa",
+        "actual_blob": "e485e2b7b09bcdd3e2b2b0eef0ac85eb47bf36fa",
+        "bytes": 5981,
+        "passed": true
+      },
+      {
+        "path": "astra_ingestion/rpc_store.py",
+        "expected_blob": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+        "actual_blob": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+        "bytes": 17590,
+        "passed": true
+      },
+      {
+        "path": "astra_ingestion/worker.py",
+        "expected_blob": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+        "actual_blob": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+        "bytes": 7696,
+        "passed": true
+      },
+      {
+        "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+        "expected_blob": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+        "actual_blob": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+        "bytes": 13856,
+        "passed": true
+      },
+      {
+        "path": "review/recovery-v71/rpc-failure-observability-v71.diff",
+        "expected_blob": "c8cacb057084c8d426df78b1e3697a6b259f0c20",
+        "actual_blob": "c8cacb057084c8d426df78b1e3697a6b259f0c20",
+        "bytes": 12288,
+        "passed": true
+      },
+      {
+        "path": "evidence/replacement-managed-relay-worker-activation-qualification-v3.json",
+        "expected_blob": "d3aa7fd22e0daa6c63fdbd75f6bd4e8b1ea3cdcb",
+        "actual_blob": "d3aa7fd22e0daa6c63fdbd75f6bd4e8b1ea3cdcb",
+        "bytes": 5988,
+        "passed": true
+      },
+      {
+        "path": "evidence/replacement-managed-relay-activation-independent-review-v3.json",
+        "expected_blob": "c8e968e27effd779af1b9f1f527dc121f8bc03e1",
+        "actual_blob": "c8e968e27effd779af1b9f1f527dc121f8bc03e1",
+        "bytes": 10539,
+        "passed": true
+      },
+      {
+        "path": "evidence/replacement-rpc-failure-observability-qualification-v71.json",
+        "expected_blob": "03e6aab096392191ea3813d20f069ded1ce1e0d9",
+        "actual_blob": "03e6aab096392191ea3813d20f069ded1ce1e0d9",
+        "bytes": 4447,
+        "passed": true
+      },
+      {
+        "path": "evidence/replacement-rpc-failure-observability-independent-review-v71.json",
+        "expected_blob": "3d944df1f8d3aabb6f3121be2b7316dbb4a012aa",
+        "actual_blob": "3d944df1f8d3aabb6f3121be2b7316dbb4a012aa",
+        "bytes": 5598,
+        "passed": true
+      }
+    ],
+    "total_distinct_files": 23,
+    "all_expected_bytes_and_git_blob_hashes_match": true,
+    "method": "One immutable recursive Git tree read, not truncated, compared to Git blob hashes calculated from locally SHA-256-verified exact publication and activation/diagnostic artifacts"
+  },
+  "runtime_pins": {
+    "worker": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "adapter": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+    "rpc_store": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+    "worker_cli": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+  },
+  "observer_actions": {
+    "github_read_only": true,
+    "workflow_reruns": 0,
+    "deployments": 0,
+    "remote_mutations": 0
+  },
+  "limits": [
+    "CI establishes the tested source gates, not production deployment, live relay entitlement, source completeness or sustained reliability.",
+    "The release pytest runs intentionally skip 309 environment-specific tests; those are not counted as passed. Both actual PostgreSQL ingestion jobs executed 627 tests with OK and no skips.",
+    "Container logs include expected denial/error statements exercised by adversarial tests; final unittest and workflow outcomes determine test success."
+  ],
+  "next_action": "Existing controller may select this exact tested source for the already approved existing worker deployment after its current ownership/readiness reconciliation; this receipt itself performs no deployment."
+}

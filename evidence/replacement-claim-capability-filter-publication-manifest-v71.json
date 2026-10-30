@@ -1,0 +1,217 @@
+{
+  "schema": "astra.claim-capability.publication-manifest/1",
+  "created_at": "2026-10-30T12:46:28.414585+00:00",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "base_commit": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "base_tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+  "state": "PREPARED_LOCAL_NOT_PUBLISHED",
+  "scope": "Performance-only two-predicate SQL forward, active qualification and retained evidence.",
+  "reviewed_inner_before": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+  "reviewed_inner_after": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+  "unchanged_outer_auth": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+  "runtime_python_or_worker_changes": false,
+  "security_logic_or_frozen_relay_changes": false,
+  "existing_fixture_overwrites": false,
+  "historical_fixture_dependencies_absent_from_base": [],
+  "exact_base_staged_tests": {
+    "passed": 9,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "receipt": "review/recovery-v71/claim_capability_staged_publication_dependencies_v71.json"
+  },
+  "payload_count_excluding_manifest": 27,
+  "payload_bytes": 680222,
+  "files": [
+    {
+      "path": "evidence/replacement-3ee4-release-gates-v71.json",
+      "bytes": 15276,
+      "sha256": "4fc4fa5dd694ccaa27fc9c94871d8d299500be750ac01ea5199ee4632808f9da",
+      "git_blob_sha1": "bb5efd63c772c7e3c901bd68f7e36b16ccfa9bb3",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-approved-relay-worker-deployment-v71.json",
+      "bytes": 2405,
+      "sha256": "0ff4f1e72eb806afeca5c10f77db14ef3fe2a6bb0f442b12215b9fd011f88c0f",
+      "git_blob_sha1": "0347475e79e8a928c202a43b6e4222e9e0b6edd9",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-independent-review-v71.json",
+      "bytes": 16508,
+      "sha256": "7f94069b27e617a7731856ec2cf08ab3ff52314a9cc0720744e9b2556e92084f",
+      "git_blob_sha1": "d65169dc9bc55f7e169424e19c4a81c370417895",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-publication-readiness-v71.json",
+      "bytes": 5344,
+      "sha256": "a987ea04b291cedeaf6fe827c0b4f09197110624ea4048a3418244575798cc7f",
+      "git_blob_sha1": "9bae585d70ef2b51a5f76b6e0e5e6c39f89da0f7",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-qualification-v71.json",
+      "bytes": 15686,
+      "sha256": "4c05ecd655308790394f429bf5b357a867409dcd2c72d5c55f3cc538ff40b50b",
+      "git_blob_sha1": "d932ebb3d7ecf95ae4cad09f7435c53b3098d975",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-preactivation-reconciliation-v71.json",
+      "bytes": 5489,
+      "sha256": "41885ee69702feff272aa37b345c2886aa4840da3c4fbff53890e32f2e6ff62d",
+      "git_blob_sha1": "1bb408b3286faea89e8627d67679214aed485f12",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "bytes": 5781,
+      "sha256": "c88d5b7e7bc3202801864ddc943d130669e03bf0a4aef06b94126244ba668c7e",
+      "git_blob_sha1": "7e4f54ec6662fad79ea1f452eda6c42d6cfb3431",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/build_capability_publication_packet_v71.py",
+      "bytes": 7342,
+      "sha256": "1434a2a24b7decdbb20fc49c77db8e8586cdcd9877874951a20ae7738ff0de99",
+      "git_blob_sha1": "a1c804da94d6765d9cca0541b6e6be0d17598519",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_benchmark_result_v71.json",
+      "bytes": 125776,
+      "sha256": "69c0c9fae21ccdeea13bb41ab5a85c9526c4074d0ed09e59575fa662b9361922",
+      "git_blob_sha1": "5ee6a0a86f8d666ea46a6f016d4595933d5d86a3",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_benchmark_v71.py",
+      "bytes": 6765,
+      "sha256": "9904b0a175d6bc3f769953efd951e10b141a37681fa2770a15c7384309fa85de",
+      "git_blob_sha1": "bce3b6b65e7e350195ada0e2b07934e3cce96f1c",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_independent_qualification_v71.json",
+      "bytes": 2276,
+      "sha256": "a41c122a7b33e99fa976f610478cae21b72047fdeed33ddcbf9c305fe30d9d93",
+      "git_blob_sha1": "e53cc4e83656c9f8f736761034b8716474900359",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_publication_dependencies_v71.json",
+      "bytes": 32493,
+      "sha256": "f009309dc4515f70a6e51289aa8a58838cfe6549d2e564d283e413fb7de7e9ed",
+      "git_blob_sha1": "60785609c4f02f6cefbb9852a6e4c5acb4a59691",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_guard_fixture_failure_v71.json",
+      "bytes": 352,
+      "sha256": "42f07c948724a8cb0e2ca8b62f1eca348726ad33522194feb9cb815dbd23a98b",
+      "git_blob_sha1": "fd80a9b01e6e32b0bc933686baf1553bd14fd192",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_guard_rerun_v71.json",
+      "bytes": 609,
+      "sha256": "0b0635cc028f32e0a2764fa4b5972ff9ecdd134e361a455a60254ca1b90ef1dd",
+      "git_blob_sha1": "ef99dc4f07fee3524bcd2edf96a813592e913f4a",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_initial_result_v71.json",
+      "bytes": 246356,
+      "sha256": "faf5d4774ce0b3fe96473654328fa9b1e1a7dae50d27ed4f299ba894e12c7afd",
+      "git_blob_sha1": "fb8c39d16ce5399eb00965ef764baca253f59052",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_staged_publication_dependencies_v71.json",
+      "bytes": 33701,
+      "sha256": "9717ee04ddd54385acc1c85bcf8f554d1a0aec8eb8f57b6374cee3b824bf21e5",
+      "git_blob_sha1": "b84443c2dedbccb3b9f31edb278059c42deb94f0",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_staged_source_v71.json",
+      "bytes": 16802,
+      "sha256": "de84d4da3380741730e9bd8c07572dc536a25dc6c6ff5bb27f38c41f148028ee",
+      "git_blob_sha1": "567256dc510f3de479de94906503517c7552ec2f",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_capability_candidate_readonly_v71.sql",
+      "bytes": 3764,
+      "sha256": "8b38de32c920fab792f7c2c4de0a174b591f9523ab50d4ce690debe7dc6e3b97",
+      "git_blob_sha1": "ecdd34706c7ec9485ee3bfd0354a5095aaf037bb",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_capability_generic_readonly_v71.sql",
+      "bytes": 3770,
+      "sha256": "01aee5697072d41f09e1b842be8d23c908f0cd39cfeb50ff4ff87f1042252845",
+      "git_blob_sha1": "7749516ea826ccff790e419bba3ef5838da08fc1",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_readonly_custom_v71.sql",
+      "bytes": 3645,
+      "sha256": "fa86fc3f27d4ca987d5e5d11c728c8ac0272472d37cb89bc22a154851774cd11",
+      "git_blob_sha1": "2716d45fb62e96b5223c3a296dd36cff76546a2b",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/live_functions_1155.json",
+      "bytes": 49902,
+      "sha256": "8288e0494f183a5a70739015d63ce0a5a9d57cd67057de84436755fccb872c89",
+      "git_blob_sha1": "1293d5b8cad241c37475ff5c0157663ec36758c9",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/live_n01_capability_candidate_result.json",
+      "bytes": 25798,
+      "sha256": "b98412384e1a32d438cd83d237bee4b2b00c0c94e6d8b555f43a23356d7551a1",
+      "git_blob_sha1": "15b7bfe9b676cd601c7ba67962f6475e63988e2c",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/live_n01_capability_generic_result.json",
+      "bytes": 25427,
+      "sha256": "3a007a6c4028ceefcf10e25053895f26b5f197165c471f1a88f43ec293b65ddd",
+      "git_blob_sha1": "441d65a008fa4cd32ae5861dd464af0573049d5a",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/live_n01_custom_result.json",
+      "bytes": 155,
+      "sha256": "45854db15f5570315d5af2d56042c56e55110d72f34256287e5d694899c4408d",
+      "git_blob_sha1": "555bc18b4b7a7c5f4ded8fbd964903a65991a4d0",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v71/stage_capability_publication_v71.py",
+      "bytes": 2797,
+      "sha256": "3a71166aebe6ac0777517d019bd17c73c7a85496cf9bf26a21b457e973a9dd10",
+      "git_blob_sha1": "f9640f1067427dce64b99b3793dc89317aea5abf",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "bytes": 5513,
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "bytes": 20490,
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "base_state": "ABSENT"
+    }
+  ],
+  "application_is_separate": "Root must reconcile ownership, source and uncertain writes before applying the guarded SQL. Publishing test fixtures never authorizes replaying historical migrations."
+}

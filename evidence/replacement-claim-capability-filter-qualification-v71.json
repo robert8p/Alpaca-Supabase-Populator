@@ -1,0 +1,410 @@
+{
+  "schema": "astra.s02.review-result/1.0",
+  "record_kind": "RECOVERY_REPAIR_QUALIFICATION",
+  "version": "v71",
+  "created_at": "2026-10-30T12:37:33.571606+00:00",
+  "status": "COMPLETE",
+  "reason": "Qualified minimal capability-membership query-plan repair; independent review and controller-controlled application remain separate gates.",
+  "skill": {
+    "name": "astra-supervised-skills:failure-diagnosis-and-recovery",
+    "version": "1.2.1",
+    "contract_version": "1.0"
+  },
+  "execution_status": "LOCAL_QUALIFIED",
+  "installation_status": "NOT_INSTALLED_BY_PRODUCER",
+  "certification_status": "NONE",
+  "production_access_by_producer": false,
+  "scope": {
+    "project": "oxzabweahkoimtevbbny",
+    "run_id": "fixed3000-20250901-20260731-v1-20261030",
+    "owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "fixed_members": 3000,
+    "window": [
+      "2025-09-01",
+      "2026-07-31"
+    ],
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec"
+  },
+  "causal_evidence": {
+    "source": "Current root-controller supplied and retained read-only production probes; this producer made no production request.",
+    "scheduled_successor_evidence": "Root reconciled existing 12:00 successor result reporting PostgreSQL57014 at11:57:31 in backfill_dispatch_v2 line123 normal claim. Direct root SQL log retrieval failed; this is retained successor evidence.",
+    "original_n01": {
+      "asof": "2026-10-30T12:23:40Z",
+      "plan_mode": "force_custom_plan",
+      "outcome": "57014 statement timeout at8-second bound; no plan returned",
+      "read_only": true
+    },
+    "candidate_n01_custom": {
+      "execution_ms": 5604.352,
+      "planning_ms": 5.697,
+      "rows": 1,
+      "shared_hit_blocks": 10090,
+      "shared_read_blocks": 11896,
+      "dependency_subplan_loops": [
+        1
+      ],
+      "reuse_gap_subplan_loops": [
+        1
+      ],
+      "row_lock_node": false
+    },
+    "candidate_n01_generic": {
+      "execution_ms": 82.039,
+      "planning_ms": 5.174,
+      "rows": 1,
+      "shared_hit_blocks": 21985,
+      "shared_read_blocks": 0,
+      "dependency_subplan_loops": [
+        1
+      ],
+      "reuse_gap_subplan_loops": [
+        1
+      ],
+      "row_lock_node": false
+    },
+    "exact_candidate_change": "Replace one supported-kind IN subquery with =ANY(ARRAY(SELECT same set-returning function)) in the read-only normal candidate.",
+    "interpretation": "The source and plans support late capability filtering repeatedly evaluating dependency/reuse subplans over the unsupported prefix. The scalar InitPlan filters unsupported kinds at the task scan.",
+    "limits": [
+      "Production probes omitted FOR UPDATE and did not invoke the authenticated RPC.",
+      "The custom candidate still incurred11896 physical block reads;5.604s does not guarantee the entire multi-family claim finishes within its timeout.",
+      "The82ms generic candidate was warm-cache with no physical reads; it is not a controlled before/after speed ratio.",
+      "No claim of sustained worker recovery, stable deployment, complete ingestion, or completion certification is made."
+    ]
+  },
+  "change": {
+    "function": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+    "old_predicate": "q.kind IN (SELECT jsonb_array_elements_text(v_supported))",
+    "new_predicate": "q.kind = ANY(ARRAY(SELECT jsonb_array_elements_text(v_supported)))",
+    "exact_occurrences": 2,
+    "paths": [
+      "recovery",
+      "normal"
+    ],
+    "before_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+    "after_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "authentication_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "status_branch_sha256": "cee8f62d034a88e3fb5166fce2b4b4903cdd1aee802e2efebfc3f08cf6c0a5de",
+    "inverse_restores_entire_definition": true,
+    "status_branch_byte_identical": true,
+    "all_other_source_byte_identical": true,
+    "incremental_cost": 0,
+    "security_diff": {
+      "new_credentials": false,
+      "new_persistent_grants": false,
+      "new_trust_relationships": false,
+      "authentication_changes": false,
+      "acl_owner_security_config_changes": false,
+      "provider_capability_expansion": false
+    },
+    "preserved": [
+      "fixed membership and scope",
+      "run/family/active/fence predicates",
+      "provider dependency gates",
+      "terminal dependency and unfinished reuse-child gates",
+      "breadth readiness",
+      "32-kind admission bound and JSON type gate",
+      "recovery priority",
+      "family fairness/rotation",
+      "candidate ordering/limit/row locks",
+      "lease, generation and page fences",
+      "attempt/deadline limits",
+      "request reservations and committed counts",
+      "existing repairs",
+      "outer authenticated RPC",
+      "runtime status reporting"
+    ],
+    "installation_guards": [
+      "8-second statement and3-second lock bounds",
+      "existing implementation advisory lock",
+      "same active fixed run, fence1, immutable cohort hashes and exact historical dates",
+      "same existing implementation owner and unexpired lease, protected with run-row FOR SHARE",
+      "exactly3000 members",
+      "exact current inner and approved v3 outer source hashes",
+      "exactly two original predicates and no candidate predicate",
+      "expected exact transformed hash and inverse identity",
+      "unchanged function OID/owner/ACL/security/config metadata and complete outer source/metadata",
+      "unchanged status branch and unexpired lease immediately before commit",
+      "replay/drift rejects rather than overwriting; transaction rollback on any failed postcondition"
+    ]
+  },
+  "qualification": {
+    "postgres": "existing disposable PostgreSQL16 fixture on loopback; no production credentials",
+    "fixture_mapping": "Only fixture schema/role/run identifiers and expected fixture hashes replace live pins; SQL admission, transformations, transaction and postconditions execute unchanged.",
+    "unique_tests_qualified": 9,
+    "all_unique_tests_have_passed": true,
+    "skips": 0,
+    "initial_complete_run": {
+      "tests_run": 9,
+      "passed_methods": 8,
+      "failed_methods": 1,
+      "subtest_or_method_errors": 3,
+      "elapsed_seconds": 31.999052330000268
+    },
+    "targeted_corrected_rerun": {
+      "tests_run": 2,
+      "passed": true,
+      "elapsed_seconds": 1.474652104996494,
+      "tests": [
+        "test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback",
+        "test_forward_pins_exact_dual_change_and_security_boundaries"
+      ]
+    },
+    "retained_harness_corrections": [
+      {
+        "stage": "initial setup",
+        "observed": "setUpClass AttributeError because the reused status fixture required a full_query static helper",
+        "correction": "Bound the existing helper; no forward change."
+      },
+      {
+        "stage": "first complete run",
+        "observed": "The existing monotonic run-fence trigger rejected resetting a deliberate fence2 fixture to1; this caused3 errors within the one guard test.",
+        "correction": "Move real fence-drift rejection last; never reset or disable its trigger."
+      },
+      {
+        "stage": "first targeted rerun",
+        "observed": "The existing frozen-membership trigger rejected deletion of member3000 in the guard fixture.",
+        "correction": "Create a separate synthetic run initially containing2999 members; append its final member after rejection. No trigger bypass."
+      }
+    ],
+    "semantics": {
+      "three_valued_cases": 88,
+      "invalid_shapes_and_33_elements_rejected": true,
+      "empty_null_nonmatch_return_no_claim": true,
+      "duplicate_match_claims_once": true
+    },
+    "preservation": {
+      "only_two_predicates": true,
+      "metadata_oid_acl_owner_config": true,
+      "outer_authentication": true,
+      "status_branch": true,
+      "data_tables_unchanged": true
+    },
+    "fail_closed": [
+      "source_pin",
+      "auth_pin",
+      "status_pin",
+      "postimage_pin",
+      "wrong_owner",
+      "expired_lease",
+      "run_stop",
+      "postwrite_rollback",
+      "replay",
+      "2999_members",
+      "predicate_multiplicity",
+      "run_fence"
+    ],
+    "backlog": {
+      "unsupported": 22121,
+      "supported": 21922,
+      "unfinished_reuse_children": 73,
+      "normal_and_recovery": true,
+      "generic_and_custom": true,
+      "same_selected_id": true,
+      "full_q_projection": true,
+      "row_locks_preserved": true,
+      "authenticated_claim_after_forward": true,
+      "plans_summary": {
+        "normal": {
+          "force_generic_plan": {
+            "baseline": {
+              "execution_ms": 59.625,
+              "planning_ms": 0.029,
+              "rows": 1,
+              "shared_hit_blocks": 1337,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                22122
+              ],
+              "reuse_gap_subplan_loops": [
+                22122
+              ],
+              "row_lock_node": true
+            },
+            "candidate": {
+              "execution_ms": 12.996,
+              "planning_ms": 0.035,
+              "rows": 1,
+              "shared_hit_blocks": 1337,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                1
+              ],
+              "reuse_gap_subplan_loops": [
+                1
+              ],
+              "row_lock_node": true
+            }
+          },
+          "force_custom_plan": {
+            "baseline": {
+              "execution_ms": 66.581,
+              "planning_ms": 0.927,
+              "rows": 1,
+              "shared_hit_blocks": 45579,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                22122
+              ],
+              "reuse_gap_subplan_loops": [
+                22122
+              ],
+              "row_lock_node": true
+            },
+            "candidate": {
+              "execution_ms": 12.142,
+              "planning_ms": 0.781,
+              "rows": 1,
+              "shared_hit_blocks": 1337,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                1
+              ],
+              "reuse_gap_subplan_loops": [
+                1
+              ],
+              "row_lock_node": true
+            }
+          }
+        },
+        "recovery": {
+          "force_generic_plan": {
+            "baseline": {
+              "execution_ms": 55.149,
+              "planning_ms": 0.03,
+              "rows": 1,
+              "shared_hit_blocks": 1302,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                22122
+              ],
+              "reuse_gap_subplan_loops": [
+                22122
+              ],
+              "row_lock_node": true
+            },
+            "candidate": {
+              "execution_ms": 13.213,
+              "planning_ms": 0.029,
+              "rows": 1,
+              "shared_hit_blocks": 1302,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                1
+              ],
+              "reuse_gap_subplan_loops": [
+                1
+              ],
+              "row_lock_node": true
+            }
+          },
+          "force_custom_plan": {
+            "baseline": {
+              "execution_ms": 52.169,
+              "planning_ms": 1.433,
+              "rows": 1,
+              "shared_hit_blocks": 1302,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                22122
+              ],
+              "reuse_gap_subplan_loops": [
+                22122
+              ],
+              "row_lock_node": true
+            },
+            "candidate": {
+              "execution_ms": 12.093,
+              "planning_ms": 0.78,
+              "rows": 1,
+              "shared_hit_blocks": 1302,
+              "shared_read_blocks": 0,
+              "dependency_subplan_loops": [
+                1
+              ],
+              "reuse_gap_subplan_loops": [
+                1
+              ],
+              "row_lock_node": true
+            }
+          }
+        }
+      }
+    },
+    "authenticated_regressions": [
+      "recovery first, old owner fenced, future retry held, no count resets",
+      "unfinished reuse gap and breadth readiness block only affected work",
+      "incomplete cohort cannot claim until3000 members",
+      "real page reserve/commit/verify, lost acknowledgement idempotence, and next task successor"
+    ],
+    "independent_review": "Requested from /root/relay_v3_review; separate reviewer receipt to follow."
+  },
+  "evidence_refs": [
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "bytes": 5513
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "bytes": 20490
+    },
+    {
+      "path": "review/recovery-v71/live_functions_1155.json",
+      "sha256": "8288e0494f183a5a70739015d63ce0a5a9d57cd67057de84436755fccb872c89",
+      "bytes": 49902
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_readonly_custom_v71.sql",
+      "sha256": "fa86fc3f27d4ca987d5e5d11c728c8ac0272472d37cb89bc22a154851774cd11",
+      "bytes": 3645
+    },
+    {
+      "path": "review/recovery-v71/live_n01_custom_result.json",
+      "sha256": "45854db15f5570315d5af2d56042c56e55110d72f34256287e5d694899c4408d",
+      "bytes": 155
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_capability_candidate_readonly_v71.sql",
+      "sha256": "8b38de32c920fab792f7c2c4de0a174b591f9523ab50d4ce690debe7dc6e3b97",
+      "bytes": 3764
+    },
+    {
+      "path": "review/recovery-v71/live_n01_capability_candidate_result.json",
+      "sha256": "b98412384e1a32d438cd83d237bee4b2b00c0c94e6d8b555f43a23356d7551a1",
+      "bytes": 25798
+    },
+    {
+      "path": "review/recovery-v71/claim_n01_capability_generic_readonly_v71.sql",
+      "sha256": "01aee5697072d41f09e1b842be8d23c908f0cd39cfeb50ff4ff87f1042252845",
+      "bytes": 3770
+    },
+    {
+      "path": "review/recovery-v71/live_n01_capability_generic_result.json",
+      "sha256": "3a007a6c4028ceefcf10e25053895f26b5f197165c471f1a88f43ec293b65ddd",
+      "bytes": 25427
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_initial_result_v71.json",
+      "sha256": "faf5d4774ce0b3fe96473654328fa9b1e1a7dae50d27ed4f299ba894e12c7afd",
+      "bytes": 246356
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_guard_fixture_failure_v71.json",
+      "sha256": "42f07c948724a8cb0e2ca8b62f1eca348726ad33522194feb9cb815dbd23a98b",
+      "bytes": 352
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_qualification_guard_rerun_v71.json",
+      "sha256": "0b0635cc028f32e0a2764fa4b5972ff9ecdd134e361a455a60254ca1b90ef1dd",
+      "bytes": 609
+    }
+  ],
+  "limitations": [
+    "This is a performance-only repair qualification, not a relay security approval or ingestion completion certificate.",
+    "No production install or publication is performed by this child agent.",
+    "The controller must reconcile current ownership, source pins, installed outcome and progress immediately before action and read back afterward."
+  ],
+  "next_safe_action": "Independent review and focused qualification, then root-controlled publication/application under the existing owner; reconcile uncertain writes before retry and verify actual committed-page progress afterward."
+}

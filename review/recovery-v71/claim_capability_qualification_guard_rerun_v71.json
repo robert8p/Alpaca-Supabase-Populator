@@ -1,0 +1,27 @@
+{
+  "fail_closed": [
+    "source_pin",
+    "auth_pin",
+    "status_pin",
+    "postimage_pin",
+    "wrong_owner",
+    "expired_lease",
+    "run_stop",
+    "postwrite_rollback",
+    "replay",
+    "2999_members",
+    "predicate_multiplicity",
+    "run_fence"
+  ],
+  "schema": "astra.claim-capability-filter.qualification/1",
+  "passed": true,
+  "tests": 2,
+  "skipped": 0,
+  "elapsed_seconds": 1.474652104996494,
+  "failures": 0,
+  "errors": 0,
+  "test_names": [
+    "test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback",
+    "test_forward_pins_exact_dual_change_and_security_boundaries"
+  ]
+}

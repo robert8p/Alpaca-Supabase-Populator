@@ -1,0 +1,62 @@
+{
+  "schema": "astra.replacement.approved-relay-worker-deployment/v71",
+  "approval": {
+    "actual_approved_at": "2026-10-30T12:14:00Z",
+    "confirmation_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+    "approved_publication": "8774e059274610635111cc4e0fb2d74923c37545",
+    "installation_deadline": "2026-10-30T12:29:00Z",
+    "installed_at": "2026-10-30T12:17:26.804513Z",
+    "approval_redated": false,
+    "expired_v2_reused": false,
+    "installation_receipt": "evidence/replacement-managed-relay-approval-installation-receipt-v3.json"
+  },
+  "ownership_preflight": [
+    {
+      "observed_at": "2026-10-30 12:33:41.791192+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T13:00:00Z",
+      "approval_at": "2026-10-30T12:14:00Z",
+      "installed": "true",
+      "installed_sha": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013"
+    }
+  ],
+  "service": {
+    "service_id": "srv-dbh9fko473hc739an8m0",
+    "workspace_id": "tea-d562ma4hg0os73aejnfg",
+    "existing_service": true,
+    "automatic_deploy_disabled_verified": true,
+    "new_credentials_or_environment_configuration": false
+  },
+  "deployment": {
+    "commit": {
+      "createdAt": "2026-10-30T12:28:49Z",
+      "id": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "message": "Complete approved relay publication and preserve historical review test boundary"
+    },
+    "createdAt": "2026-10-30T12:36:05.653083Z",
+    "finishedAt": "2026-10-30T12:36:45.668499Z",
+    "id": "dep-dbi8ud942hec73cpm7qg",
+    "startedAt": "2026-10-30T12:36:05.651198Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T12:36:45.668728Z"
+  },
+  "exact_source": {
+    "worker_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "adapter_sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+    "all_four_ci_passed_attempt_1": true,
+    "ci_receipt": "evidence/replacement-3ee4-release-gates-v71.json"
+  },
+  "activation_verification": {
+    "deployment_terminal_live": true,
+    "capability_registration": "PENDING_SEPARATE_READBACK",
+    "relay_provider_acquisition": "PENDING_SEPARATE_READBACK",
+    "sustained_recovery_proven": false
+  },
+  "manual_deploy_trigger_count": 1,
+  "secrets_read_or_exported": false,
+  "new_subscription": false,
+  "new_controller": false
+}

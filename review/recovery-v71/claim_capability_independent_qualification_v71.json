@@ -1,0 +1,56 @@
+{
+  "assertion_evidence": {
+    "fail_closed": [
+      "source_pin",
+      "auth_pin",
+      "status_pin",
+      "postimage_pin",
+      "wrong_owner",
+      "expired_lease",
+      "run_stop",
+      "postwrite_rollback",
+      "replay",
+      "2999_members",
+      "predicate_multiplicity",
+      "run_fence"
+    ],
+    "preservation": {
+      "data_tables_unchanged": true,
+      "metadata_oid_acl_owner_config": true,
+      "only_two_predicates": true,
+      "outer_authentication": true,
+      "status_branch": true
+    },
+    "semantics": {
+      "duplicate_match_claims_once": true,
+      "empty_null_nonmatch_return_no_claim": true,
+      "invalid_shapes_and_33_elements_rejected": true,
+      "three_valued_cases": 88
+    }
+  },
+  "database": "disposable loopback PostgreSQL only; no production calls",
+  "elapsed_seconds": 2.88752,
+  "errors": 0,
+  "excluded_existing_producer_qualification": "test_news_prefix_with_73_reuse_children_keeps_normal_and_recovery_selection; scale benchmark was not repeated",
+  "failures": 0,
+  "observed_at": "2026-10-30T12:37:15.173478+00:00",
+  "pins": {
+    "sql/astra_backfill_claim_capability_filter_v2.sql": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+    "tests/ingestion/test_backfill_claim_capability_filter_v2.py": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+  },
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra-independent-claim-capability-local-qualification-v1",
+  "selected_tests": [
+    "CapabilityFilterSourceTests.test_forward_pins_exact_dual_change_and_security_boundaries",
+    "CapabilityFilterPostgreSQLTests.test_dependency_gap_and_breadth_guards",
+    "CapabilityFilterPostgreSQLTests.test_fail_closed_replay_drift_ownership_cohort_and_postwrite_rollback",
+    "CapabilityFilterPostgreSQLTests.test_forward_preserves_all_other_source_metadata_auth_status_and_data",
+    "CapabilityFilterPostgreSQLTests.test_incomplete_cohort_blocks_claim",
+    "CapabilityFilterPostgreSQLTests.test_real_page_successor_and_lost_ack",
+    "CapabilityFilterPostgreSQLTests.test_recovery_first_fences_and_accounting",
+    "CapabilityFilterPostgreSQLTests.test_three_valued_membership_and_unchanged_capability_admission"
+  ],
+  "skips": 0,
+  "success": true,
+  "tests_run": 8
+}
