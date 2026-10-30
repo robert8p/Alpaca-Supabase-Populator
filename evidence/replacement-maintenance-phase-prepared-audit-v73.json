@@ -1,0 +1,48 @@
+{
+  "audit": [
+    {
+      "id": 39,
+      "action": "MAINTENANCE_DIAGNOSTIC_PREPARED",
+      "recorded_at": "2026-10-30 15:33:38.322994+00",
+      "evidence": {
+        "tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+        "state": "PREPARED_NOT_INSTALLED_AWAITING_EXACT_HEAD_CI",
+        "commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+        "request_id": "v73-prepared-phase-package-3fddb6cf",
+        "baseline_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+        "manifest_sha256": "0c1b44fa60738665d676c73637d8c946c3b86d723fc3a2001c743b76b00ac94e",
+        "new_permissions": false,
+        "same_controller": true,
+        "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+        "approval_unchanged": true,
+        "observation_deadline": "2026-10-30T15:45:00Z",
+        "maximum_committed_samples": 4
+      }
+    }
+  ],
+  "independent_readback": [
+    {
+      "observed_at": "2026-10-30 15:33:51.364909+00",
+      "owner": "root-replacement-20261030T042603Z",
+      "fence": 1,
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T16:15:00Z",
+      "package": {
+        "tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+        "state": "PREPARED_NOT_INSTALLED_AWAITING_EXACT_HEAD_CI",
+        "commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+        "request_id": "v73-prepared-phase-package-3fddb6cf",
+        "baseline_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+        "manifest_sha256": "0c1b44fa60738665d676c73637d8c946c3b86d723fc3a2001c743b76b00ac94e",
+        "new_permissions": false,
+        "same_controller": true,
+        "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+        "approval_unchanged": true,
+        "observation_deadline": "2026-10-30T15:45:00Z",
+        "maximum_committed_samples": 4
+      },
+      "current_step": "Wait for all exact 3fddb6cf CI gates, then read-only ownership/source/permission preflight. Apply reviewed bounded observation only before fixed 15:45 UTC if useful; otherwise retain hold. Use ordinary existing monitor path and exact 6c880 cleanup under same lease. Preserve completed relay and reliability repairs.",
+      "matching_audit_count": 1
+    }
+  ]
+}

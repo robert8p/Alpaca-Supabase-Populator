@@ -1,0 +1,87 @@
+{
+  "schema": "replacement-maintenance-phase-exact-restoration-v73",
+  "publication_commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+  "installed_source_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+  "restored_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+  "postrestore_readback": {
+    "run": {
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T16:15:00Z",
+      "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec"
+    },
+    "schema": "astra.maintenance-phase-preflight-readback/1",
+    "complete": true,
+    "observed_at": "2026-10-30T15:45:10.404232+00:00",
+    "lock_timeout": "3s",
+    "maintain_oid": "16041463",
+    "member_count": 3000,
+    "source_state": "INSTALLED_BASELINE_6C880",
+    "install_ready": false,
+    "restore_ready": false,
+    "interpretation": "Snapshot catalog/ownership check only; no execution, elapsed-phase, recovery or coverage proof.",
+    "maintain_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "statement_timeout": "8s",
+    "audit_catalog_sha256": "1ad4807a7416e1f883fdbbe909e176ce7cce6ac4d6690f4afcb8a7ff90d3d5f1",
+    "observation_deadline": "2026-10-30 15:45:00+00",
+    "transaction_isolation": "repeatable read",
+    "transaction_read_only": "on",
+    "observation_window_open": false,
+    "maintain_metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d",
+    "unchanged_function_count": 13,
+    "hash_index_catalog_sha256": "bc1b9fa0e670feb47379e84b52b4b9ed8f3ff83c0e5adb3b64f51feb83a17536",
+    "other_schema_catalog_sha256": "66373fb7f806ba1564c537171835904146468848a366e8d72bdf121ef046f571",
+    "unchanged_function_pins_verified": {
+      "astra_ingestion_v1.monitor_tick_v1()": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "astra_ingestion_v1.backfill_s02_maintain_v2()": "40827de08ca59d1470a02aceff6ccc249e6b43bb8ef13ff39eddffa673e78939",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)": "f8f9ef6d8d9ada232b132170bde9922397a2b247dbc7e4b391cbca57b67b7063",
+      "astra_ingestion_v1.backfill_contract_maintain_v2()": "52007f177dca38faf48fab8773936173519dcbfa54af896b5ef6f902ad64c748",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+      "astra_ingestion_v1.backfill_shared_maintain_v2(integer)": "5da488f3e44e2521b64f58230b2bc6db3c34800ae4ac259166f4dc223c8ad2be",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+      "astra_ingestion_v1.backfill_minute_account_pending_v2(integer)": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2",
+      "astra_ingestion_v1.backfill_breadth_project_pending_v2(integer)": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+      "astra_ingestion_v1.backfill_nonminute_project_pending_v2(integer)": "ceb1889732da767e8815741a792347ccb91c33c53acd38eeff36f9176d063cec"
+    },
+    "all_metadata_permission_index_guards_match": true
+  },
+  "migration_history": [
+    {
+      "observed_at": "2026-10-30 15:45:08.661363+00",
+      "migration_history": [
+        {
+          "name": "astra_backfill_maintenance_phase_observation_v73",
+          "version": "20261030154059",
+          "body_bytes": 46180,
+          "body_sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+          "statement_count": 1
+        },
+        {
+          "name": "astra_backfill_maintenance_phase_observation_restore_v73",
+          "version": "20261030154455",
+          "body_bytes": 37584,
+          "body_sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+          "statement_count": 1
+        }
+      ]
+    }
+  ],
+  "retained_observations": [
+    {
+      "observed_at": "2026-10-30 15:45:11.893213+00",
+      "sample_count": 2,
+      "first_audit_id": 41,
+      "last_audit_id": 42,
+      "first_sample": "2026-10-30 15:42:09.813373+00",
+      "last_sample": "2026-10-30 15:44:02.762337+00"
+    }
+  ],
+  "original_catalogs_preserved": true,
+  "fixed_observation_deadline_unchanged": "2026-10-30T15:45:00Z",
+  "interpretation": "Diagnostic removed once after two ordinary monitor observations. Exact6c880 baseline and all other fingerprints restored/preserved. Source acquisition and audit evidence were not reset; phase measurements identify work cost and do not constitute the performance repair."
+}

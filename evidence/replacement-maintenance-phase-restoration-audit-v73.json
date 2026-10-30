@@ -1,0 +1,71 @@
+{
+  "audit": [
+    {
+      "id": 43,
+      "action": "MAINTENANCE_DIAGNOSTIC_RESTORED",
+      "recorded_at": "2026-10-30 15:46:31.666108+00",
+      "evidence": {
+        "tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+        "state": "RESTORED_EXACT_BASELINE_TWO_OBSERVATIONS_RETAINED",
+        "commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+        "request_id": "v73-restored-phase-observation-3fddb6cf",
+        "readback_at": "2026-10-30T15:41:15.953464Z",
+        "sample_count": 2,
+        "baseline_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+        "manifest_sha256": "0c1b44fa60738665d676c73637d8c946c3b86d723fc3a2001c743b76b00ac94e",
+        "new_permissions": false,
+        "same_controller": true,
+        "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+        "sample_audit_ids": [
+          41,
+          42
+        ],
+        "migration_version": "20261030154059",
+        "reinstall_allowed": false,
+        "approval_unchanged": true,
+        "observed_work_cost": "15:42 maintain9778.570ms: shared5320.806,contract2157.210,breadth1124.056,minute1097.945;15:44 maintain2725.346ms:contract2355.536,shared6.202",
+        "restore_readback_at": "2026-10-30T15:45:10.404232Z",
+        "observation_deadline": "2026-10-30T15:45:00Z",
+        "restored_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+        "installed_source_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+        "maximum_committed_samples": 4,
+        "restore_migration_version": "20261030154455",
+        "all_four_exact_ci_gates_passed": true,
+        "all_other_catalog_fingerprints_unchanged": true
+      }
+    }
+  ],
+  "independent_readback": {
+    "observed_at": "2026-10-30 15:46:48.130167+00",
+    "matching_audit_count": 1,
+    "package": {
+      "tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+      "state": "RESTORED_EXACT_BASELINE_TWO_OBSERVATIONS_RETAINED",
+      "commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+      "request_id": "v73-restored-phase-observation-3fddb6cf",
+      "readback_at": "2026-10-30T15:41:15.953464Z",
+      "sample_count": 2,
+      "baseline_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "manifest_sha256": "0c1b44fa60738665d676c73637d8c946c3b86d723fc3a2001c743b76b00ac94e",
+      "new_permissions": false,
+      "same_controller": true,
+      "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "sample_audit_ids": [
+        41,
+        42
+      ],
+      "migration_version": "20261030154059",
+      "reinstall_allowed": false,
+      "approval_unchanged": true,
+      "observed_work_cost": "15:42 maintain9778.570ms: shared5320.806,contract2157.210,breadth1124.056,minute1097.945;15:44 maintain2725.346ms:contract2355.536,shared6.202",
+      "restore_readback_at": "2026-10-30T15:45:10.404232Z",
+      "observation_deadline": "2026-10-30T15:45:00Z",
+      "restored_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "installed_source_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "maximum_committed_samples": 4,
+      "restore_migration_version": "20261030154455",
+      "all_four_exact_ci_gates_passed": true,
+      "all_other_catalog_fingerprints_unchanged": true
+    }
+  }
+}

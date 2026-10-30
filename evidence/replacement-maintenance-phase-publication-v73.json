@@ -1,0 +1,22 @@
+{
+  "schema": "replacement-maintenance-phase-publication-v73",
+  "published_commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+  "tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "manifest": {
+    "path": "evidence/replacement-maintenance-phase-observation-publication-manifest-v73.json",
+    "bytes": 31203,
+    "sha256": "0c1b44fa60738665d676c73637d8c946c3b86d723fc3a2001c743b76b00ac94e",
+    "git_blob_sha1": "89da72945a9e212fc23b915351c923f91b8e370d"
+  },
+  "packet_sha256": "a09a4c8a64adc909a348fafe1e362f6a18b650c68d08a44bc4ddac7e3af9e850",
+  "verification": {
+    "all_876_existing_blobs_retained": true,
+    "exactly_45_additions": true,
+    "all_new_blobs_exact": true,
+    "compare_and_swap_ref_update_verified": true
+  },
+  "installation_status": "NOT_INSTALLED_WAITING_EXACT_HEAD_CI_AND_FRESH_PREFLIGHT",
+  "fixed_deadline": "2026-10-30T15:45:00Z",
+  "same_owner_lease_until": "2026-10-30T16:15:00Z"
+}

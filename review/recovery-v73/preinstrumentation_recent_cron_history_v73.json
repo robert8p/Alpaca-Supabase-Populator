@@ -1,0 +1,83 @@
+{
+  "schema": "replacement-preinstrumentation-cron-history-v73",
+  "result": [
+    {
+      "observed_at": "2026-10-30 15:37:24.411718+00",
+      "monitor_runs": [
+        {
+          "jobid": 602,
+          "runid": 4068714,
+          "status": "succeeded",
+          "job_pid": 1257008,
+          "end_time": "2026-10-30T15:22:10.38017+00:00",
+          "elapsed_ms": 10340.596,
+          "start_time": "2026-10-30T15:22:00.039574+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068747,
+          "status": "succeeded",
+          "job_pid": 2408,
+          "end_time": "2026-10-30T15:24:04.259217+00:00",
+          "elapsed_ms": 4223.374,
+          "start_time": "2026-10-30T15:24:00.035843+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068749,
+          "status": "succeeded",
+          "job_pid": 2770,
+          "end_time": "2026-10-30T15:26:02.100721+00:00",
+          "elapsed_ms": 2074.832,
+          "start_time": "2026-10-30T15:26:00.025889+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068751,
+          "status": "succeeded",
+          "job_pid": 2831,
+          "end_time": "2026-10-30T15:28:07.635558+00:00",
+          "elapsed_ms": 7613.784,
+          "start_time": "2026-10-30T15:28:00.021774+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068753,
+          "status": "succeeded",
+          "job_pid": 2899,
+          "end_time": "2026-10-30T15:30:03.489159+00:00",
+          "elapsed_ms": 3462.715,
+          "start_time": "2026-10-30T15:30:00.026444+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068755,
+          "status": "succeeded",
+          "job_pid": 3571,
+          "end_time": "2026-10-30T15:32:05.738244+00:00",
+          "elapsed_ms": 5714.513,
+          "start_time": "2026-10-30T15:32:00.023731+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068757,
+          "status": "succeeded",
+          "job_pid": 3674,
+          "end_time": "2026-10-30T15:34:06.320451+00:00",
+          "elapsed_ms": 6280.985,
+          "start_time": "2026-10-30T15:34:00.039466+00:00"
+        },
+        {
+          "jobid": 602,
+          "runid": 4068759,
+          "status": "succeeded",
+          "job_pid": 3729,
+          "end_time": "2026-10-30T15:36:03.470032+00:00",
+          "elapsed_ms": 3435.928,
+          "start_time": "2026-10-30T15:36:00.034104+00:00"
+        }
+      ]
+    }
+  ],
+  "interpretation": "Whole cron602 durations before any v73 instrumentation. These include gate waiting, maintenance, monitor remainder and commit. Status succeeded does not prove that concurrent workers avoided lock timeouts."
+}

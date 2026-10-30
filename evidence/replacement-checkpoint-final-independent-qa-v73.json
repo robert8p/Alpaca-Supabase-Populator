@@ -1,0 +1,155 @@
+{
+  "base_commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+  "base_tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+  "canonical_documents_modified_by_reviewer": false,
+  "checks": {
+    "all_four_exact_head_ci_passes_and_merge_tree_identity_match": true,
+    "all_physical_counts_and_overlapping_delta_baselines_match": true,
+    "baseline6c880_full_metadata_other_sources_indexes_permissions_preserved": true,
+    "both_dedicated_pg17_runs_execute679_tests_without_skips": true,
+    "canonical_v72_documents_and_exact_v72_archives_unchanged": true,
+    "checkpoint_and_automation_shared_sections_identical": true,
+    "current_cursor_and_postprojection_state_not_historical_inputs": true,
+    "expired1545_observation_window_distinct_from_same_owner1615_lease": true,
+    "final_document_hashes_match_producer_pins": true,
+    "fixed3000_16families_dates_sources_cost_ownership_security_restrictions_preserved": true,
+    "fresh_successor_observation_bounds_not_redated_task_timestamps": true,
+    "fresh_worker55P03_exact_holder_match_separate_from_other_waiters": true,
+    "full_path_evidence_references_resolve": 49,
+    "future_repairs_require_evidence_qualification_independent_review_publication_exact_head_ci": true,
+    "global_phase_scope_and_unallocated_cron_remainder_limitations_preserved": true,
+    "historical_lookup_complete_current_candidate_identity_pinned": true,
+    "historical_page_receipts_are_temporal_candidates_not_backend_or_cost_proof": true,
+    "mission_exactly_once_at_automation_eof": true,
+    "no_new_owner_action_credential_controller_schedule_or_deployment_selected": true,
+    "no_postrestoration_acquisition_or_sustained_recovery_or_completion_claim": true,
+    "one_install_two_samples_one_exact_restore_no_replay": true,
+    "original_mission_bytes": 23046,
+    "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+    "phase_sums_and_cron_remainders_match_both_raw_samples": true,
+    "publication_and_same_task_reconciliation_precede_further_diagnosis": true,
+    "pure_read_profile_separate_from_mutating_helper_replay": true,
+    "rollback_handling_proposal_unselected_unknown_writes_remain_fatal": true,
+    "same_successor_id_enabled_schedule_and_prompt_preserved": true
+  },
+  "decision": "PASS_FOR_ROOT_CONTROLLED_CHECKPOINT_PUBLICATION_AND_SAME_TASK_PROMPT_REFRESH",
+  "key_evidence": [
+    {
+      "bytes": 17685,
+      "path": "evidence/replacement-maintenance-phase-observation-release-gates-v73.json",
+      "sha256": "6aa9e9d9d73780f39c615871ed6354fd999d7f38310622bad938b93daddf9668"
+    },
+    {
+      "bytes": 9545,
+      "path": "evidence/replacement-maintenance-phase-live-installation-v73.json",
+      "sha256": "4c88d55e1623b2610d30f9186e88390558cbf1b11282c993eacf5b80762e50bd"
+    },
+    {
+      "bytes": 5062,
+      "path": "evidence/replacement-maintenance-phase-exact-restoration-v73.json",
+      "sha256": "e0b9ef2eb07f02d205329f55ffe1cec592bb886b58d57861beb6bb90f49fe6d4"
+    },
+    {
+      "bytes": 3421,
+      "path": "evidence/replacement-maintenance-phase-restoration-audit-v73.json",
+      "sha256": "9d28782d2fa234d18680972c00e2f3c54ac7b3d8ddfb4677fabc25051a70a537"
+    },
+    {
+      "bytes": 1292,
+      "path": "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json",
+      "sha256": "9dcc94d943185a6661dc9070d09b7a268c719c6b18a2781e0fe502652f28878e"
+    },
+    {
+      "bytes": 7353,
+      "path": "review/recovery-v73/live_phase_samples_final_v73.json",
+      "sha256": "21a831c670eed522efe527f115c43f0976b3c9315a91f50e8ac53c4df9376f05"
+    },
+    {
+      "bytes": 3949,
+      "path": "review/recovery-v73/first_phase_live_failure_correlation_v73.json",
+      "sha256": "bc1303793b4cfa4989068b28e020f95ec0c1cfb43a0b939e13164dc977fc0427"
+    },
+    {
+      "bytes": 2400,
+      "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+      "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a"
+    },
+    {
+      "bytes": 4357,
+      "path": "review/recovery-v73/existing_successor_before_checkpoint_v73.json",
+      "sha256": "80b58901e814ad0de2797e7e2ad033be16eeaf6f5b550f10c37da94703a5da92"
+    },
+    {
+      "bytes": 5658,
+      "path": "review/recovery-v73/live_shared_historical_page_receipts_v73.json",
+      "sha256": "5241083218503d722467e46bc707857b00febe785b8d9b87a29f916f73957582"
+    },
+    {
+      "bytes": 11427,
+      "path": "review/recovery-v73/shared_historical_page_receipts_readonly_v73.sql",
+      "sha256": "8e2020a029811fd705b39a1cfa49cde4f710482ee91a81f0ad0c3299186c5a86"
+    }
+  ],
+  "limits": [
+    "This is local independent content and publication-scope QA, not a remote publication or task update receipt.",
+    "The root must reconcile current head and ownership before publication and independently read back the same existing task update.",
+    "Historical receipt timestamps and current postprojection reads cannot identify a historical internal query cost by themselves.",
+    "No replay of the expired observation installer, completed cleanup or installed fixes is authorized by this receipt."
+  ],
+  "passed": true,
+  "production_calls": 0,
+  "publication_builder_review": {
+    "additional_test_matrix": "Not repeated: unchanged guard logic already qualified in the v72 review; source comparison and current document/evidence checks are the relevant checks here.",
+    "artifact": {
+      "bytes": 13737,
+      "path": "review/recovery-v73/build_checkpoint_publication_v73.py",
+      "sha256": "865fd0ebac79f24ddaf27673e37729a306b46faa5b293e2f6a6d069df6ac10d0"
+    },
+    "comparison": "Independently compared against the hardened reviewed v72 builder. Changes are version/base/tree/history constants, scoped v73 paths and explicit v72 continuity seeds. Exact passed-QA base/document/progress bindings, canonical path confinement, symlink rejection, immutable existing evidence check, original mission EOF check and active-source replacement prohibition remain intact.",
+    "remote_or_production_calls": 0,
+    "scope": "Only two exact canonical replacements plus additive retained evidence and exact v72 archives; no existing active code, SQL, test or workflow replacement. Root remains sole publisher and task writer."
+  },
+  "remote_mutations": 0,
+  "reviewed_at_utc": "2026-10-30T15:56:18.012891+00:00",
+  "reviewed_documents": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v73/checkpoint-draft/INGESTION_COMPLETION_STATE_v73.draft.md",
+      "sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v73/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v73.draft.md",
+      "sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb"
+    }
+  },
+  "reviewed_progress_receipt": {
+    "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+    "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a"
+  },
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra.checkpoint-final-independent-qa/1",
+  "verified_current_state": {
+    "last_actual_page_commit": "2026-10-30 15:41:59.315192+00",
+    "owner_audit": 38,
+    "owner_lease": "2026-10-30T16:15:00Z",
+    "pages": 5650,
+    "physical_progress_cutoff": "2026-10-30 15:46:48.130167+00",
+    "physical_records_or_pointers": 680657,
+    "planner_next_member": 2359,
+    "planning_complete": false,
+    "postrestoration_acquisition_demonstrated": false,
+    "readbacks": 5650,
+    "reservations": 2980,
+    "restoration_audit": 43,
+    "restored_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "retained_sample_audit_ids": [
+      41,
+      42
+    ],
+    "since_v72_checkpoint_pages": 327,
+    "since_v72_checkpoint_records": 36493,
+    "since_v72_final_repair_pages": 342,
+    "since_v72_final_repair_records": 38380,
+    "source_bytes": 551219963,
+    "sustained_reliability_recovery": false
+  }
+}

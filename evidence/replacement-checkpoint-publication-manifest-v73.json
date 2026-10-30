@@ -1,0 +1,251 @@
+{
+  "schema": "astra.checkpoint-publication-manifest/1",
+  "created_at": "2026-10-30T15:56:46.866104+00:00",
+  "version": 73,
+  "state": "READY_LOCAL_NOT_PUBLISHED",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "base_commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+  "base_tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+  "canonical_replacements": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 46385,
+      "sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94",
+      "git_blob_sha1": "ed00c5f322dd887c7c26602cec16310e840bdc9e"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 69206,
+      "sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+      "git_blob_sha1": "a9cf7dce3b1df597b58df8abe04106b84247b223"
+    }
+  },
+  "exact_v72_archives": {
+    "docs/history/INGESTION_COMPLETION_STATE_v72.md": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.md": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283"
+  },
+  "canonical_bytes_equal_exact_reviewed_drafts": true,
+  "reviewed_draft_sources_not_duplicated_in_publication": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v73/checkpoint-draft/INGESTION_COMPLETION_STATE_v73.draft.md",
+      "sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v73/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v73.draft.md",
+      "sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb"
+    }
+  },
+  "all_other_existing_blobs_preserved": true,
+  "active_runtime_sql_tests_or_workflows_changed": false,
+  "mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+  "mission_exact_once_at_task_prompt_eof": true,
+  "root_final_qa_receipt": {
+    "path": "evidence/replacement-checkpoint-final-independent-qa-v73.json",
+    "sha256": "226e76e5e5c403b217dad8bf2c91f53fe5ace845e27a077e708e923c8bcfd500"
+  },
+  "root_final_progress_receipt": {
+    "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+    "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a"
+  },
+  "deferred_postpublication_paths": [],
+  "no_automation_write_or_controller_creation": true,
+  "no_publication_or_production_calls": true,
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 46385,
+      "sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94",
+      "git_blob_sha1": "ed00c5f322dd887c7c26602cec16310e840bdc9e",
+      "base_state": "REPLACE_CANONICAL"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 69206,
+      "sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+      "git_blob_sha1": "a9cf7dce3b1df597b58df8abe04106b84247b223",
+      "base_state": "REPLACE_CANONICAL"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v72.md",
+      "bytes": 30487,
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+      "git_blob_sha1": "27e59c8b2e71b9543883dcabbd323dcdc99497fb",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.md",
+      "bytes": 53389,
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+      "git_blob_sha1": "53b0ef3efbc86293114dc35a2efb4c0907ad8349",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-final-independent-qa-v73.json",
+      "bytes": 8045,
+      "sha256": "226e76e5e5c403b217dad8bf2c91f53fe5ace845e27a077e708e923c8bcfd500",
+      "git_blob_sha1": "26c89ada88ecc4c2de2c6eba5feda116fb28e577",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-exact-restoration-v73.json",
+      "bytes": 5062,
+      "sha256": "e0b9ef2eb07f02d205329f55ffe1cec592bb886b58d57861beb6bb90f49fe6d4",
+      "git_blob_sha1": "3dc462836fb11cd83637364ed0c1f15450516548",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-installation-audit-v73.json",
+      "bytes": 2444,
+      "sha256": "d4d909e158e204a25cf51c16087d4c6054e51e7842e6bf3a1fa48a2ed4e266af",
+      "git_blob_sha1": "3787aefd439fad7fec9f78959282e5c0493be2fd",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-live-installation-v73.json",
+      "bytes": 9545,
+      "sha256": "4c88d55e1623b2610d30f9186e88390558cbf1b11282c993eacf5b80762e50bd",
+      "git_blob_sha1": "3d985c246edc01ee5914713c95b6f8b3755b045c",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-release-gates-v73.json",
+      "bytes": 17685,
+      "sha256": "6aa9e9d9d73780f39c615871ed6354fd999d7f38310622bad938b93daddf9668",
+      "git_blob_sha1": "3c3226af66a0d8f92adc828d789aff9409186a7a",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-preflight-independent-review-v73.json",
+      "bytes": 2893,
+      "sha256": "a77af1105096cb9f239f44522980e6691b845492eab133a961545eb265571216",
+      "git_blob_sha1": "c4ecd4d3d955c485750026f37f76ee081cecb024",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-prepared-audit-v73.json",
+      "bytes": 2289,
+      "sha256": "607c0cab1e8ac71ab9a3f8492a41c91e31db86c81022935c6f26cb759312ec4d",
+      "git_blob_sha1": "60771e19f2fe72950d7c4fbf442439e21566fed4",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-publication-v73.json",
+      "bytes": 981,
+      "sha256": "f533fcbb3285ea53a8a1ea16ec9051867ab582ee6581b306bfb3221d9d56c5e1",
+      "git_blob_sha1": "04ce5552e44a563eb161a3280f0eb7c0b93a1117",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-restoration-audit-v73.json",
+      "bytes": 3421,
+      "sha256": "9d28782d2fa234d18680972c00e2f3c54ac7b3d8ddfb4677fabc25051a70a537",
+      "git_blob_sha1": "2dbf900460b2ed3e24f2a22fe4c4986084742635",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/build_checkpoint_publication_v73.py",
+      "bytes": 13737,
+      "sha256": "865fd0ebac79f24ddaf27673e37729a306b46faa5b293e2f6a6d069df6ac10d0",
+      "git_blob_sha1": "96818dc8dee0c94a6513d1aeab794de9f7f44408",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/checkpoint_publication_inputs_v73.json",
+      "bytes": 979,
+      "sha256": "75e2955bd8d2365f03edc1fd4b8865e2333d0f06b9a296405fc61bd1709bf929",
+      "git_blob_sha1": "d9c8b5dfc326525661d38cfa95b457dd2d83fd30",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/checkpoint_publication_inventory_v73.json",
+      "bytes": 29338,
+      "sha256": "ed92dc0404b86a819b33cff8cc24baf9edae05cd2693631f8c78c6b959c17ed3",
+      "git_blob_sha1": "a36a1b13e089f9e587f93fb82a4c0595c998009f",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/database_restart_bounded_log_classification_v73.json",
+      "bytes": 1390,
+      "sha256": "bf195c18fcc59e37d8fb4ab4a181543a59eef99d8c58da57124aa934e15dfb0e",
+      "git_blob_sha1": "3c2b5e17bcec2cc2b2625cc2d74ffd4ee318f6bc",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/existing_successor_before_checkpoint_v73.json",
+      "bytes": 4357,
+      "sha256": "80b58901e814ad0de2797e7e2ad033be16eeaf6f5b550f10c37da94703a5da92",
+      "git_blob_sha1": "c1fe04f1014d0fc7687a5551482da51f57b30bae",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/first_phase_live_failure_correlation_v73.json",
+      "bytes": 3949,
+      "sha256": "bc1303793b4cfa4989068b28e020f95ec0c1cfb43a0b939e13164dc977fc0427",
+      "git_blob_sha1": "d2359a9bb031c07e5156428c5f1e1d7ef25200e2",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_preflight_before_ci_completion_v73.json",
+      "bytes": 3214,
+      "sha256": "a2ad5028ba9754d8964d9e7262e9cbc13acc9b2f40b7dcdcbffb257815b48e19",
+      "git_blob_sha1": "058cc99887c153e087c2819da70be43ab6dc95a8",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_samples_final_v73.json",
+      "bytes": 7353,
+      "sha256": "21a831c670eed522efe527f115c43f0976b3c9315a91f50e8ac53c4df9376f05",
+      "git_blob_sha1": "fcdf59ee09efb074f723e425c3000aa66c7971a0",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_samples_first_v73.json",
+      "bytes": 5866,
+      "sha256": "8f250e38f86015cb4f1f6b6fa44cac84186b851365cd379663bdc7bdec7ebeb6",
+      "git_blob_sha1": "7e2071e37d8d8687009f8fa57c605e10b010b90b",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+      "bytes": 2400,
+      "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a",
+      "git_blob_sha1": "617cd30a1b6680cfcd69434e8856b7aafb3bfb31",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_shared_historical_page_receipts_v73.json",
+      "bytes": 5658,
+      "sha256": "5241083218503d722467e46bc707857b00febe785b8d9b87a29f916f73957582",
+      "git_blob_sha1": "5de2ccd70f66ba755b7f2356a7be52531e8c0c7f",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/live_shared_nested_definitions_after_restore_v73.json",
+      "bytes": 39286,
+      "sha256": "c377705922bd3cee5e9dfa8e8fed9ea3e5e08ae152591d50785ba9ae8138f760",
+      "git_blob_sha1": "1680be7bf5c0a43e964270508ee99c2495109963",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/phase_samples_cron_correlation_readonly_v73.sql",
+      "bytes": 31735,
+      "sha256": "6eeae4aba196b95b4693c6cdcf25b6fc43e42f33fa2983ab1d8ae63b81dcc891",
+      "git_blob_sha1": "17cb905aa7df50b52b2c5893e28cae2e2136a37a",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/preinstrumentation_recent_cron_history_v73.json",
+      "bytes": 2686,
+      "sha256": "1edf195344344646d3c315b25bc2d62365269ab62ac2e10cc4f71efba77a74ba",
+      "git_blob_sha1": "d423dbae0b33578e2bf931eb2b096b5b41b4d555",
+      "base_state": "ADDITIVE"
+    },
+    {
+      "path": "review/recovery-v73/shared_historical_page_receipts_readonly_v73.sql",
+      "bytes": 11427,
+      "sha256": "8e2020a029811fd705b39a1cfa49cde4f710482ee91a81f0ad0c3299186c5a86",
+      "git_blob_sha1": "fc5f6c8bc26232999178383892072385090be8c4",
+      "base_state": "ADDITIVE"
+    }
+  ]
+}
