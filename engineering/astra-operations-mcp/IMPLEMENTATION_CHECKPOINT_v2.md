@@ -1,0 +1,12 @@
+# ASTRA Operations MCP engineering checkpoint v2 — 2026-10-30
+Owner: Assess MCP Plugin Opportunities implementation chat https://chatgpt.com/c/6ae4ce37-54f0-83eb-9e51-6447e6a4d6ba
+Independent capability work only. Ingestion controller https://chatgpt.com/c/6ae206a6-9524-83ed-b103-7c23bcfe51e5 and scanner controller https://chatgpt.com/c/6adac650-cbe0-83eb-b09b-8cd8d61a16f7 remain sole app owners.
+Base source commit e694009d75f3fd91c69976befa0e12838e64efec.
+Verified ingestion API from astra_ingestion/api.py: GET /api/backfill/status, GET /api/jobs, GET /api/jobs/{id}; HTTP Basic; POST controls require X-Ingestion-Control, origin restrictions and Idempotency-Key on submit. No controller mutations authorised here.
+Render workspace tea-d562ma4hg0os73aejnfg; ingestion web srv-dbh85vl9fdbs7387rucg; worker srv-dbh9fko473hc739an8m0.
+Local source archive ASTRA_Operations_Engineering_Checkpoint_v2.zip, SHA256 a7425d84545eee05a5ca6c81e1096527a569abfbc12235e8df71b0e291dca224. Source files: operations.py, transport.py, test_operations.py, test_transport.py, checkpoint.json, README.md, SETUP_DECISION_FOR_DOT.md, requirements-operations.txt.
+18/18 tests passed in isolated local qualification, including JSON RPC initialize/tools/list/tools/call, auth fail-closed, mocked Render/GitHub/ingestion reads, redaction, allowlist, redirect refusal. Not a deployed or connected plugin.
+Sites MCP skill/backend not available in this session; no OAuth, new machine credential, host or provider write provisioned. No trading, production app, or subscription change.
+Action-time dot decision: H1 approve one isolated zero-incremental-cost Render MCP web service in existing workspace, autodeploy off, no credentials or public access until OAuth approved and verified. A1 separately approve owner-only OAuth read-only connection. R1/G1/I1 separate credential grants after effective scope review. Do not treat prior blanket approval as these specific confirmations.
+Precise executable successor: retrieve v2 archive from user Library, qualify production-grade OAuth resource server and a supported host; connect the read-only ingestion/status, Render inspect and GitHub workflow inspect tools using isolated identities only after action-time confirmation. Then prove hosted MCP call, fresh-chat readback and log redaction. Mutation tools remain held until controller fence/stop/admission receipt and readback semantics verified.
+Do not merge this branch or alter application controllers. Routine updates only through dot.
