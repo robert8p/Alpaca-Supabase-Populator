@@ -23,7 +23,7 @@ _OWNER = re.compile(r"[A-Za-z0-9_.:-]{1,128}\Z")
 
 
 def _utc(value: Any) -> datetime:
-    if not isinstance(value, str) or not value.endswith("Z"):
+    if not isinstance(value, str) or not (value.endswith("Z") or value.endswith("+00:00")):
         raise ScopeError("immutable reservation requires UTC Z timestamp")
     try:
         dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -127,10 +127,10 @@ def match_precall_candidate(
     }
     # No coercions of true/false, ints, hashes or timestamps. Additional
     # fields are refused to prevent ambiguous or contradictory privilege data.
-    if set(ticket) != set(expected) or any(
+    if (set(ticket) != set(expected) or any(
         type(ticket[k]) is not type(value) or ticket[k] != value
-        for k, value in expected.items()
-    ):
+        for k, value in expected.items() if k != "original_deadline"
+    ) or _utc(ticket.get("original_deadline")) != _utc(checked.original_job_deadline)):
         raise ScopeError("pre-call ticket does not bind exact provider plan and fence")
     return BoundPrecallCandidate(
         work, page_prior + 1, req_hash, checked.manifest_sha256,
