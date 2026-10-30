@@ -1,0 +1,88 @@
+{
+  "active_workspace_source_changes": 0,
+  "actual_read_import_dependencies": 76,
+  "authority_changes": [
+    "owner",
+    "generation",
+    "run_fence",
+    "lease",
+    "run_paused",
+    "credential_revoked",
+    "credential_expired"
+  ],
+  "base_commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "base_tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "candidate_archive": {
+    "bytes": 112325,
+    "path": "review/recovery-v77/defer-native-lock-retry/candidate_files_v77.json",
+    "sha256": "cc14634c7a0593bf4824e9a35ea678f1255a92a7799471e5df083343a2576cc4"
+  },
+  "committed_lost_ack_variants": [
+    "rate",
+    "dependency",
+    "adaptive"
+  ],
+  "complete_parent_blobs": 1095,
+  "deployment_hold": "Independent review, exact-head publication/CI, current source/boundary binding and root-controlled deployment/readback still required.",
+  "errors": 0,
+  "failures": 0,
+  "fresh_root_parent_tree_snapshot_sha256": "1cf1d65305cc0e2e86e0c4020cbfd9e25a498c7d71ce0ec8b410aa618306c636",
+  "inherited_unit_and_admission_methods": 42,
+  "layers": {
+    "http": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+    "postgresql": "ACTUAL_DISPOSABLE",
+    "postgrest_server": "NOT_RUN",
+    "production": "NOT_RUN",
+    "provider": "SYNTHETIC_NO_NETWORK"
+  },
+  "limits": [
+    "HTTP response mapping is simulated; actual disposable PG transaction behavior is real.",
+    "Authority-transition aborts are explicitly test-raised55P03; early/late lock abort cases use real native lock waits.",
+    "No effective external PostgREST environment proof or actual production-positive parser observation is claimed.",
+    "Confirmed abort retry remains bounded to existing three sends and15s RPC deadline; statement timeout57014/unknown ACK remain fatal.",
+    "This does not repair remaining gate-holder cost or prove sustained acquisition stability."
+  ],
+  "native_abort_cases": {
+    "early_gate": 1,
+    "late_effect_variants": [
+      "rate",
+      "dependency",
+      "adaptive"
+    ]
+  },
+  "new_test_methods": 9,
+  "passed": true,
+  "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "production_calls": 0,
+  "provider_calls": 0,
+  "publication_or_deployment": false,
+  "qualification": {
+    "bytes": 40817,
+    "path": "review/recovery-v77/defer-native-lock-retry/qualification_final_v77.json",
+    "sha256": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2"
+  },
+  "required_new_dependencies": 2,
+  "reviewed_artifact_pins": {
+    "astra_ingestion/rpc_store.py": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+    "review/recovery-v77/defer-native-lock-retry/qualification_final_v77.json": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2",
+    "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07",
+    "tests/ingestion/test_rpc_lock_abort_retry.py": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1"
+  },
+  "reviewed_existing_replacements": 2,
+  "schema": "astra.defer-retry-producer-qualification/1",
+  "seconds": 16.291,
+  "skips": 0,
+  "source_bundle": {
+    "bytes": 94056,
+    "path": "review/recovery-v77/defer-native-lock-retry/defer_source_bundle_v77.json",
+    "sha256": "24e6c46d90e03442607eef934501577bd53ae45a43ec7e30fba31bf2b5f008a7"
+  },
+  "source_closure": {
+    "bytes": 53615,
+    "path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+    "sha256": "46a8815030a25a5b4bd1974bec3997dc4fbcf668accf063a8effc717a8753609"
+  },
+  "tests": 51,
+  "unchanged_parent_dependencies": 72,
+  "unexpected_existing_blob_differences": 0
+}

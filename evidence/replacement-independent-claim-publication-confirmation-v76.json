@@ -1,0 +1,107 @@
+{
+  "schema": "astra.independent-claim-publication-confirmation/1",
+  "publication": {
+    "repository": "robert8p/Alpaca-Supabase-Populator",
+    "branch": "feat/astra-ingestion-service",
+    "pull_request": 93,
+    "commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+    "tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+    "parent": "e694009d75f3fd91c69976befa0e12838e64efec",
+    "packet_sha256": "9ad7fc28bdb10317bdfef968fb66658ae9012de34e8775d58ce73a7147a73b95"
+  },
+  "full_tree_verification": {
+    "tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+    "complete_recursive_read": true,
+    "expected_blobs": 1095,
+    "actual_blobs": 1095,
+    "new_additions": 32,
+    "retained_blobs": 1063,
+    "differences": 0,
+    "extras": 0,
+    "branch_ref_not_yet_updated": true
+  },
+  "create_tree": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "sha": "cc1c8702b0f9b43c52952736ed47566d8189e155"
+    },
+    "isError": false
+  },
+  "create_commit": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e"
+    },
+    "isError": false
+  },
+  "branch_compare_and_swap": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "success": true
+    },
+    "isError": false
+  },
+  "ownership_readback": [
+    {
+      "observed_at": "2026-10-30 19:41:10.93404+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T20:30:00Z",
+      "publication_state": "COMMIT_VERIFIED_REF_INVOCATION_RESERVED",
+      "commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "held_checkpoint_state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+      "audit66_count": 1
+    }
+  ],
+  "durable_audit": [
+    {
+      "id": 67,
+      "action": "INDEPENDENT_CLAIM_REPAIR_PUBLISHED",
+      "recorded_at": "2026-10-30 19:42:41.279458+00"
+    }
+  ],
+  "invocation_counts": {
+    "tree": 1,
+    "commit": 1,
+    "ref": 1,
+    "sql_install": 0,
+    "render_deploy_or_restart": 0
+  },
+  "original_checkpoint": {
+    "expected_tree": "e56dc140deeb00eb2a0aae4e7d572519d773ccd0",
+    "state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "remaining_recovery_budget": 0,
+    "original_invocation_outcome": "UNKNOWN",
+    "frozen_packet_sha256": "8806ef636f5be4220562b0ee52d64426f620461d8ad99adef5f9edd1f9724da3",
+    "must_not_overwrite_newer_repair": true
+  },
+  "reporting": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "progress_claim": "CI and publication only; acquisition not yet confirmed resumed.",
+  "independent_durable_readback": {
+    "observed_at": "2026-10-30T19:47:41.364483Z",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T20:30:00Z",
+    "publication_state": "PUBLISHED_CI_RUNNING_NOT_INSTALLED",
+    "commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+    "held_checkpoint_state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "audit67_count": 1
+  }
+}

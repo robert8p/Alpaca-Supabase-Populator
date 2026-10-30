@@ -1,0 +1,772 @@
+{
+  "active_workspace_changes": 0,
+  "defer_evidence": {
+    "cases": {
+      "authority_rechecks": {
+        "abort_layer": "ACTUAL_PG_TEST_RAISED_55P03_AFTER_EFFECTS",
+        "conditions": [
+          "owner",
+          "generation",
+          "run_fence",
+          "lease",
+          "run_paused",
+          "credential_revoked",
+          "credential_expired"
+        ],
+        "native_lock_abort_separately_covered": true,
+        "no_lease_renewal": true,
+        "no_provider_refetch": true
+      },
+      "committed_lost_ack": [
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "rate"
+        },
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "dependency"
+        },
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "adaptive"
+        }
+      ],
+      "controlled_invalid_scope": {
+        "business_unchanged": true,
+        "native_errors": 0,
+        "sends": 1
+      },
+      "early_native_gate_abort": {
+        "defer_sends": 2,
+        "native_lock_wait": true,
+        "provider_fetches": 1,
+        "serialized_request_equal": true,
+        "sqlstate": "55P03",
+        "unchanged_aborted_business_snapshot": true
+      },
+      "late_native_effect_abort": [
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "rate"
+        },
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "dependency"
+        },
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "adaptive"
+        }
+      ]
+    },
+    "current_nine_function_pins": [
+      {
+        "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+        "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+      },
+      {
+        "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+        "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+        "source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+        "source_sha256": "66968de9e4b6ed74deca00f6aaf63b3c44a3a6546f01fd8a7007d8fd7b2603f2"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_adapt_page_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+        "source_sha256": "10a17158429447e5734259e87b6ca45dbeb648b5234d98cbddeb35cd164c06b8"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+        "source_sha256": "137a9a944fe128a18476818abf3cb0971eda4e3316d087369169a6cbced5c955"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+        "source_sha256": "cec132e0d3b101d6d57915e57bffc1d3a74dc6101616fbd7c420808e44d68b93"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+        "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+      },
+      {
+        "signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+        "source_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342"
+      }
+    ],
+    "fixture_identifier_adaptation": "Existing disposable schema, roles, endpoint and retained source relation names only; sources normalize byte-exact.",
+    "layers": {
+      "http": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+      "postgresql": "ACTUAL_DISPOSABLE",
+      "postgrest_server": "NOT_RUN",
+      "production": "NOT_RUN",
+      "provider": "SYNTHETIC_NO_NETWORK"
+    },
+    "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)"
+  },
+  "deployment_hold": "INDEPENDENT_REVIEW_CURRENT_SOURCE_BINDING_PUBLICATION_EXACT_HEAD_CI_AND_ROOT_DEPLOYMENT_REQUIRED",
+  "errors": 0,
+  "external_provider_calls": 0,
+  "failures": 0,
+  "modules": [
+    "test_rpc_lock_abort_retry",
+    "test_rpc_store",
+    "test_rpc_failure_observability_v71",
+    "test_rpc_lock_abort_retry_postgres.PostgreSQLAdmissionTests",
+    "test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests",
+    "test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests"
+  ],
+  "opened_or_imported_dependencies": [
+    {
+      "bytes": 101,
+      "git_blob": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "parent_blob": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "path": "astra_ingestion/__init__.py",
+      "relationship": "UNCHANGED",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197"
+    },
+    {
+      "bytes": 33254,
+      "git_blob": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "parent_blob": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "bytes": 18462,
+      "git_blob": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "parent_blob": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "bytes": 27423,
+      "git_blob": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "parent_blob": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "bytes": 22439,
+      "git_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "parent_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "bytes": 3236,
+      "git_blob": "64db9fad536ee86930d784e4b197fb7582738273",
+      "parent_blob": "64db9fad536ee86930d784e4b197fb7582738273",
+      "path": "astra_ingestion/config.py",
+      "relationship": "UNCHANGED",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953"
+    },
+    {
+      "bytes": 5672,
+      "git_blob": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "parent_blob": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "path": "astra_ingestion/models.py",
+      "relationship": "UNCHANGED",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2"
+    },
+    {
+      "bytes": 2081,
+      "git_blob": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "parent_blob": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "path": "astra_ingestion/reconcile.py",
+      "relationship": "UNCHANGED",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba"
+    },
+    {
+      "bytes": 23247,
+      "git_blob": "b423c9cb6ca0adcdece631d12b36e00149dd5b1a",
+      "parent_blob": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "path": "astra_ingestion/rpc_store.py",
+      "relationship": "REPLACEMENT",
+      "sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11"
+    },
+    {
+      "bytes": 9869,
+      "git_blob": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "parent_blob": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "path": "astra_ingestion/source.py",
+      "relationship": "UNCHANGED",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f"
+    },
+    {
+      "bytes": 31621,
+      "git_blob": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "parent_blob": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "path": "astra_ingestion/store.py",
+      "relationship": "UNCHANGED",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef"
+    },
+    {
+      "bytes": 7696,
+      "git_blob": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "parent_blob": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "path": "astra_ingestion/worker.py",
+      "relationship": "UNCHANGED",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "bytes": 54881,
+      "git_blob": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "parent_blob": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "path": "evidence/replacement-calendar-v1.json",
+      "relationship": "UNCHANGED",
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3"
+    },
+    {
+      "bytes": 946415,
+      "git_blob": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "parent_blob": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "path": "evidence/replacement-cohort-v1.json",
+      "relationship": "UNCHANGED",
+      "sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d"
+    },
+    {
+      "bytes": 23087,
+      "git_blob": "92c384a927e5b46185f02b096661935aa9411502",
+      "parent_blob": "92c384a927e5b46185f02b096661935aa9411502",
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "relationship": "UNCHANGED",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "bytes": 131630,
+      "git_blob": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "parent_blob": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "relationship": "UNCHANGED",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f"
+    },
+    {
+      "bytes": 103870,
+      "git_blob": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "parent_blob": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "relationship": "UNCHANGED",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61"
+    },
+    {
+      "bytes": 94056,
+      "git_blob": "2f147b36b8e79971e4706357b96441ea5f5bd046",
+      "parent_blob": null,
+      "path": "review/recovery-v77/defer-native-lock-retry/defer_source_bundle_v77.json",
+      "relationship": "ADDITION",
+      "sha256": "24e6c46d90e03442607eef934501577bd53ae45a43ec7e30fba31bf2b5f008a7"
+    },
+    {
+      "bytes": 9439,
+      "git_blob": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "parent_blob": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "path": "sql/astra_backfill_adaptive_pages_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "78aaf940c059cb6cb4b4977c50220984ebf0bbd0805935b8e00dd05159c887cb"
+    },
+    {
+      "bytes": 16461,
+      "git_blob": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "parent_blob": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7"
+    },
+    {
+      "bytes": 1812,
+      "git_blob": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "parent_blob": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+    },
+    {
+      "bytes": 5513,
+      "git_blob": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "parent_blob": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c"
+    },
+    {
+      "bytes": 1599,
+      "git_blob": "f84691e94a180ae3546c65b23f946ce493116472",
+      "parent_blob": "f84691e94a180ae3546c65b23f946ce493116472",
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39"
+    },
+    {
+      "bytes": 28911,
+      "git_blob": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "parent_blob": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2"
+    },
+    {
+      "bytes": 6498,
+      "git_blob": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "parent_blob": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a"
+    },
+    {
+      "bytes": 57461,
+      "git_blob": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "parent_blob": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    {
+      "bytes": 6758,
+      "git_blob": "44dba451e77c207531b3326ba049d420647e51be",
+      "parent_blob": "44dba451e77c207531b3326ba049d420647e51be",
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+    },
+    {
+      "bytes": 10029,
+      "git_blob": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "parent_blob": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad"
+    },
+    {
+      "bytes": 30170,
+      "git_blob": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "parent_blob": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+    },
+    {
+      "bytes": 53160,
+      "git_blob": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "parent_blob": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "bytes": 2416,
+      "git_blob": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "parent_blob": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f"
+    },
+    {
+      "bytes": 29707,
+      "git_blob": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "parent_blob": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "bytes": 2920,
+      "git_blob": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "parent_blob": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c"
+    },
+    {
+      "bytes": 1680,
+      "git_blob": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "parent_blob": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "path": "sql/astra_backfill_planner_batch_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "afa7480ff4d926948c41908c9c9ae885dba06e00763ea7a26331917132ea74e6"
+    },
+    {
+      "bytes": 24085,
+      "git_blob": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "parent_blob": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "path": "sql/astra_backfill_planner_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6"
+    },
+    {
+      "bytes": 2865,
+      "git_blob": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "parent_blob": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+    },
+    {
+      "bytes": 3880,
+      "git_blob": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "parent_blob": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041"
+    },
+    {
+      "bytes": 17401,
+      "git_blob": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "parent_blob": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2"
+    },
+    {
+      "bytes": 35599,
+      "git_blob": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "parent_blob": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "bytes": 9398,
+      "git_blob": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "parent_blob": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535"
+    },
+    {
+      "bytes": 19399,
+      "git_blob": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "parent_blob": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5"
+    },
+    {
+      "bytes": 3720,
+      "git_blob": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "parent_blob": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7"
+    },
+    {
+      "bytes": 2423,
+      "git_blob": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "parent_blob": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7"
+    },
+    {
+      "bytes": 49245,
+      "git_blob": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "parent_blob": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "bytes": 46872,
+      "git_blob": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "parent_blob": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+    },
+    {
+      "bytes": 8435,
+      "git_blob": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "parent_blob": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424"
+    },
+    {
+      "bytes": 21403,
+      "git_blob": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "parent_blob": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+    },
+    {
+      "bytes": 8886,
+      "git_blob": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "parent_blob": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e"
+    },
+    {
+      "bytes": 3161,
+      "git_blob": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "parent_blob": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631"
+    },
+    {
+      "bytes": 54227,
+      "git_blob": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "parent_blob": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a"
+    },
+    {
+      "bytes": 2266,
+      "git_blob": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "parent_blob": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "relationship": "UNCHANGED",
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae"
+    },
+    {
+      "bytes": 14802,
+      "git_blob": "cef2d554d585e5fd69a0e91f3c273c90c9c8a065",
+      "parent_blob": "cef2d554d585e5fd69a0e91f3c273c90c9c8a065",
+      "path": "tests/ingestion/test_backfill_adaptive_pages_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "c6c3ae9559dfedd9e70b1346b46504d36aedbefab93758f845ddfccade5c3ff4"
+    },
+    {
+      "bytes": 20490,
+      "git_blob": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "parent_blob": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+    },
+    {
+      "bytes": 11247,
+      "git_blob": "fe24b611ed41052b533173cd3f22802070150ada",
+      "parent_blob": "fe24b611ed41052b533173cd3f22802070150ada",
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d"
+    },
+    {
+      "bytes": 11832,
+      "git_blob": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "parent_blob": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "path": "tests/ingestion/test_backfill_delivery_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3"
+    },
+    {
+      "bytes": 9928,
+      "git_blob": "c0f16b7c4cd32e589f5f7d6e4d2c3fe387def345",
+      "parent_blob": "c0f16b7c4cd32e589f5f7d6e4d2c3fe387def345",
+      "path": "tests/ingestion/test_backfill_family_fairness_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "0dc0d95e53dd5276eda2c57d3b0d2a7292338b541ec96d0ac6939e0556d09d76"
+    },
+    {
+      "bytes": 16964,
+      "git_blob": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "parent_blob": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424"
+    },
+    {
+      "bytes": 19668,
+      "git_blob": "dd01babeaf666ab90191796bc28d85923479368b",
+      "parent_blob": "dd01babeaf666ab90191796bc28d85923479368b",
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "bytes": 44378,
+      "git_blob": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "parent_blob": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "bytes": 15566,
+      "git_blob": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "parent_blob": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "bytes": 12405,
+      "git_blob": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "parent_blob": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "path": "tests/ingestion/test_backfill_planner_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5"
+    },
+    {
+      "bytes": 6032,
+      "git_blob": "0ee2294d5a9fd93d2d58be5dd6308adcb79f1101",
+      "parent_blob": "0ee2294d5a9fd93d2d58be5dd6308adcb79f1101",
+      "path": "tests/ingestion/test_backfill_provider_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "3825869be1fb25330497569b9b8f5d40a294f2672cd46a280d9453f69d98e0f0"
+    },
+    {
+      "bytes": 10844,
+      "git_blob": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "parent_blob": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "bytes": 13753,
+      "git_blob": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "parent_blob": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "bytes": 8631,
+      "git_blob": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "parent_blob": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "bytes": 22521,
+      "git_blob": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "parent_blob": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+    },
+    {
+      "bytes": 15706,
+      "git_blob": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "parent_blob": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "bytes": 12447,
+      "git_blob": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "parent_blob": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6"
+    },
+    {
+      "bytes": 9063,
+      "git_blob": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "parent_blob": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "bytes": 21360,
+      "git_blob": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "parent_blob": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "relationship": "UNCHANGED",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "bytes": 23970,
+      "git_blob": "3eda078918bac6d9806f205330d064bf9380b4a7",
+      "parent_blob": null,
+      "path": "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py",
+      "relationship": "ADDITION",
+      "sha256": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07"
+    },
+    {
+      "bytes": 13856,
+      "git_blob": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+      "parent_blob": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+      "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+      "relationship": "UNCHANGED",
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9"
+    },
+    {
+      "bytes": 17878,
+      "git_blob": "55cd6637002ec1f7384540fb5fce34fb1ad7535d",
+      "parent_blob": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "relationship": "REPLACEMENT",
+      "sha256": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1"
+    },
+    {
+      "bytes": 23452,
+      "git_blob": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "parent_blob": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "relationship": "UNCHANGED",
+      "sha256": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+    },
+    {
+      "bytes": 57671,
+      "git_blob": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "parent_blob": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "relationship": "UNCHANGED",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96"
+    },
+    {
+      "bytes": 8676,
+      "git_blob": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "parent_blob": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "path": "tests/ingestion/test_rpc_store.py",
+      "relationship": "UNCHANGED",
+      "sha256": "d908d96e5203b92f2d9f7aaa068fa31153dd0f11db0ccd9bfe564f411dd61080"
+    }
+  ],
+  "passed": true,
+  "production_calls": 0,
+  "repository_parent_commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "repository_parent_tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "runtime_base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "schema": "astra.defer-native-lock-retry-qualification/1",
+  "seconds": 16.291,
+  "skips": 0,
+  "stderr": "",
+  "stdout": "",
+  "test_log": "test_authentication_and_ownership_dispositions_after_abort_stop (test_rpc_lock_abort_retry.LockAbortRetryTests.test_authentication_and_ownership_dispositions_after_abort_stop) ... ok\ntest_complete_eof_without_content_length_is_allowed (test_rpc_lock_abort_retry.LockAbortRetryTests.test_complete_eof_without_content_length_is_allowed) ... ok\ntest_deadline_does_not_reset_or_launch_after_backoff_expiry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_deadline_does_not_reset_or_launch_after_backoff_expiry) ... ok\ntest_duplicate_framing_headers_are_not_read (test_rpc_lock_abort_retry.LockAbortRetryTests.test_duplicate_framing_headers_are_not_read) ... ok\ntest_error_stream_failures_and_trickling_never_retry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_error_stream_failures_and_trickling_never_retry) ... ok\ntest_exception_reason_cannot_authorize_retry_or_swallow_interrupt (test_rpc_lock_abort_retry.LockAbortRetryTests.test_exception_reason_cannot_authorize_retry_or_swallow_interrupt) ... ok\ntest_exhaustion_is_three_sends_with_only_fixed_safe_labels (test_rpc_lock_abort_retry.LockAbortRetryTests.test_exhaustion_is_three_sends_with_only_fixed_safe_labels) ... ok\ntest_ineligible_operations_statuses_origins_and_headers_are_not_read (test_rpc_lock_abort_retry.LockAbortRetryTests.test_ineligible_operations_statuses_origins_and_headers_are_not_read) ... ok\ntest_invalid_json_and_incomplete_or_oversized_error_fail_closed (test_rpc_lock_abort_retry.LockAbortRetryTests.test_invalid_json_and_incomplete_or_oversized_error_fail_closed) ... ok\ntest_seven_database_operations_retry_only_complete_native_error (test_rpc_lock_abort_retry.LockAbortRetryTests.test_seven_database_operations_retry_only_complete_native_error) ... ok\ntest_success_response_stream_cannot_be_reclassified_as_rollback (test_rpc_lock_abort_retry.LockAbortRetryTests.test_success_response_stream_cannot_be_reclassified_as_rollback) ... ok\ntest_two_retries_serialize_once_even_if_original_payload_changes (test_rpc_lock_abort_retry.LockAbortRetryTests.test_two_retries_serialize_once_even_if_original_payload_changes) ... ok\ntest_unknown_second_outcome_stops_even_after_a_confirmed_abort (test_rpc_lock_abort_retry.LockAbortRetryTests.test_unknown_second_outcome_stops_even_after_a_confirmed_abort) ... ok\ntest_worker_retries_commit_and_verification_without_provider_replay (test_rpc_lock_abort_retry.LockAbortRetryTests.test_worker_retries_commit_and_verification_without_provider_replay) ... ok\ntest_worker_unknown_commit_is_fatal_and_planner_abort_resumes_once (test_rpc_lock_abort_retry.LockAbortRetryTests.test_worker_unknown_commit_is_fatal_and_planner_abort_resumes_once) ... ok\ntest_wrong_sqlstates_and_application_envelopes_never_retry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_wrong_sqlstates_and_application_envelopes_never_retry) ... ok\ntest_bad_response_and_truncation_do_not_become_success (test_rpc_store.RpcBoundaryTests.test_bad_response_and_truncation_do_not_become_success) ... ok\ntest_capability_is_header_only_and_project_origin_is_pinned (test_rpc_store.RpcBoundaryTests.test_capability_is_header_only_and_project_origin_is_pinned) ... ok\ntest_committed_pacing_response_becomes_deferred_without_another_request (test_rpc_store.RpcBoundaryTests.test_committed_pacing_response_becomes_deferred_without_another_request) ... ok\ntest_http_failure_is_redacted_and_never_retried (test_rpc_store.RpcBoundaryTests.test_http_failure_is_redacted_and_never_retried) ... ok\ntest_production_factory_has_no_direct_database_fallback (test_rpc_store.RpcBoundaryTests.test_production_factory_has_no_direct_database_fallback) ... ok\ntest_redirects_never_forward_credentials (test_rpc_store.RpcBoundaryTests.test_redirects_never_forward_credentials) ... ok\ntest_scope_readback_must_match_submitted_scope (test_rpc_store.RpcBoundaryTests.test_scope_readback_must_match_submitted_scope) ... ok\ntest_service_role_and_other_project_anon_keys_are_rejected (test_rpc_store.RpcBoundaryTests.test_service_role_and_other_project_anon_keys_are_rejected) ... ok\ntest_timeout_never_retries_or_calls_source_after_uncertain_reservation (test_rpc_store.RpcBoundaryTests.test_timeout_never_retries_or_calls_source_after_uncertain_reservation) ... ok\ntest_trickling_response_cannot_reset_whole_response_deadline (test_rpc_store.RpcBoundaryTests.test_trickling_response_cannot_reset_whole_response_deadline) ... ok\ntest_unknown_error_and_remote_message_do_not_leak (test_rpc_store.RpcBoundaryTests.test_unknown_error_and_remote_message_do_not_leak) ... ok\ntest_verification_snapshot_rejects_corrupted_record_keys (test_rpc_store.RpcBoundaryTests.test_verification_snapshot_rejects_corrupted_record_keys) ... ok\ntest_actual_cli_fails_once_and_logs_only_bounded_safe_fields (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_actual_cli_fails_once_and_logs_only_bounded_safe_fields) ... ok\ntest_constructor_and_mutated_attributes_use_strict_fixed_fallbacks (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_constructor_and_mutated_attributes_use_strict_fixed_fallbacks) ... ok\ntest_current_replacement_worker_does_not_fetch_defer_or_retry_uncertain_reservation (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_current_replacement_worker_does_not_fetch_defer_or_retry_uncertain_reservation) ... ok\ntest_custom_rpc_exception_type_name_cannot_add_data_to_log (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_custom_rpc_exception_type_name_cannot_add_data_to_log) ... ok\ntest_failure_context_is_per_exception_not_shared_between_concurrent_calls (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_failure_context_is_per_exception_not_shared_between_concurrent_calls) ... ok\ntest_handled_database_dispositions_keep_existing_exception_classes (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_handled_database_dispositions_keep_existing_exception_classes) ... ok\ntest_malformed_response_categories_do_not_echo_remote_content (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_malformed_response_categories_do_not_echo_remote_content) ... ok\ntest_remote_failures_receive_local_labels_without_reading_error_bodies (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_remote_failures_receive_local_labels_without_reading_error_bodies) ... ok\ntest_same_exception_identity_and_args_escape_without_retry (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_same_exception_identity_and_args_escape_without_retry) ... ok\ntest_success_keeps_response_request_origin_headers_and_timeout (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_success_keeps_response_request_origin_headers_and_timeout) ... ok\ntest_unknown_operations_do_not_become_log_labels_or_change_request (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_unknown_operations_do_not_become_log_labels_or_change_request) ... ok\ntest_whole_response_deadline_is_unchanged (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_whole_response_deadline_is_unchanged) ... ok\ntest_missing_dsn_is_an_error_in_dedicated_ingestion_gate (test_rpc_lock_abort_retry_postgres.PostgreSQLAdmissionTests.test_missing_dsn_is_an_error_in_dedicated_ingestion_gate) ... ok\ntest_missing_dsn_is_an_explicit_skip_in_other_contexts (test_rpc_lock_abort_retry_postgres.PostgreSQLAdmissionTests.test_missing_dsn_is_an_explicit_skip_in_other_contexts) ... ok\ntest_defer_rejects_ambiguous_errors_and_keeps_same_deadline_budget (test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_defer_rejects_ambiguous_errors_and_keeps_same_deadline_budget) ... ok\ntest_dsn_admission_keeps_dedicated_gate_strict (test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_dsn_admission_keeps_dedicated_gate_strict) ... ok\ntest_only_one_operation_literal_changes_runtime (test_rpc_defer_lock_abort_retry_v77.DeferSourceAndBoundaryTests.test_only_one_operation_literal_changes_runtime) ... ok\ntest_committed_defer_lost_ack_never_retries_or_refetches (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_committed_defer_lost_ack_never_retries_or_refetches) ... ok\ntest_current_nine_function_sources_and_security_catalog (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_current_nine_function_sources_and_security_catalog) ... ok\ntest_early_native_gate_abort_retries_only_identical_defer (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_early_native_gate_abort_retries_only_identical_defer) ... ok\ntest_invalid_scoped_adaptive_receipt_stays_controlled_single_send (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_invalid_scoped_adaptive_receipt_stays_controlled_single_send) ... ok\ntest_late_native_abort_rolls_back_all_three_effect_branches (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_late_native_abort_rolls_back_all_three_effect_branches) ... ok\ntest_retry_rechecks_all_existing_authority_without_renewal (test_rpc_defer_lock_abort_retry_v77.DeferPostgreSQLTests.test_retry_rechecks_all_existing_authority_without_renewal) ... ok\n\n----------------------------------------------------------------------\nRan 51 tests in 16.259s\n\nOK\n",
+  "tests": 51,
+  "unexpected_existing_blob_differences": []
+}

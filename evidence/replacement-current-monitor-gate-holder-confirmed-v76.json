@@ -1,0 +1,204 @@
+{
+  "schema": "astra.current-monitor-gate-holder-confirmed/1",
+  "request_id": "v76-passive-gate-holder-and-cron-confirmed",
+  "state": "ONE_PASSIVE_READ_COMPLETED",
+  "snapshot": {
+    "objid": 2353466532,
+    "schema": "astra.single-gate-blocker-snapshot/1",
+    "classid": 164451,
+    "gate_key": 706314020261028,
+    "objsubid": 1,
+    "gate_locks": [
+      {
+        "pid": 31310,
+        "mode": "ExclusiveLock",
+        "granted": true,
+        "waitstart": null,
+        "blocker_pids": [],
+        "blocker_pid_list_limited": false
+      },
+      {
+        "pid": 30915,
+        "mode": "ExclusiveLock",
+        "granted": false,
+        "waitstart": "2026-10-30T20:04:00.113718+00:00",
+        "blocker_pids": [
+          31310
+        ],
+        "blocker_pid_list_limited": false
+      }
+    ],
+    "sampled_at": "2026-10-30T20:04:02.605779+00:00",
+    "started_at": "2026-10-30T20:04:02.560846+00:00",
+    "limitations": [
+      "This is one current dynamic snapshot; no absence proves an earlier timeout or future freedom from contention.",
+      "pg_locks, pg_stat_activity and pg_blocking_pids can change during the statement despite repeatable-read.",
+      "Function labels are fixed allowlisted substrings in top-level statement text; comments, truncation and hidden queries can affect classification. No inner call-stack identity or cron-run identity is established.",
+      "Blocker PID zero can denote a prepared transaction; absent activity may reflect termination or visibility.",
+      "The same global gate can serve other operations. Exact current PID edges do not bind an earlier worker request without separate temporal evidence.",
+      "No helper-phase cost, cursor cost, whole-claim duration or sustained recovery is measured."
+    ],
+    "sample_count": 1,
+    "related_activity": [
+      {
+        "pid": 30915,
+        "state": "active",
+        "wait_event": "advisory",
+        "xact_start": "2026-10-30T20:04:00.112582+00:00",
+        "query_start": "2026-10-30T20:04:00.113374+00:00",
+        "backend_type": "client backend",
+        "state_change": "2026-10-30T20:04:00.113375+00:00",
+        "backend_start": "2026-10-30T19:54:06.417838+00:00",
+        "wait_event_type": "Lock",
+        "query_text_visible_to_capture": true,
+        "allowlisted_function_name_seen": "astra_ingestion_rpc_v1"
+      },
+      {
+        "pid": 31310,
+        "state": "active",
+        "wait_event": "DataFileRead",
+        "xact_start": "2026-10-30T20:04:00.025858+00:00",
+        "query_start": "2026-10-30T20:04:00.025858+00:00",
+        "backend_type": "client backend",
+        "state_change": "2026-10-30T20:04:00.025859+00:00",
+        "backend_start": "2026-10-30T20:04:00.008683+00:00",
+        "wait_event_type": "IO",
+        "query_text_visible_to_capture": true,
+        "allowlisted_function_name_seen": "monitor_tick_v1"
+      }
+    ],
+    "gate_rows_limited": false,
+    "maximum_gate_rows": 8,
+    "transaction_isolation": "repeatable read",
+    "transaction_read_only": "on",
+    "view_read_finished_at": "2026-10-30T20:04:02.629125+00:00",
+    "related_pid_set_limited": false,
+    "any_blocker_pid_list_limited": false,
+    "dynamic_views_are_mvcc_atomic": false,
+    "maximum_related_activity_rows": 24,
+    "activity_rows_missing_or_hidden": false,
+    "maximum_blocker_pids_per_gate_row": 8,
+    "function_name_label_is_execution_identity_proof": false,
+    "raw_sql_headers_payload_application_names_returned": false
+  },
+  "cron_correlation": {
+    "observed_at": "2026-10-30 20:05:12.155008+00",
+    "bounded_selected_runs": [
+      {
+        "jobid": 602,
+        "runid": 4069027,
+        "status": "succeeded",
+        "job_pid": 31310,
+        "end_time": "2026-10-30T20:04:08.925984+00:00",
+        "start_time": "2026-10-30T20:04:00.025541+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 8.900443,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069025,
+        "status": "succeeded",
+        "job_pid": 31251,
+        "end_time": "2026-10-30T20:02:02.191183+00:00",
+        "start_time": "2026-10-30T20:02:00.023577+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 2.167606,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069023,
+        "status": "succeeded",
+        "job_pid": 31205,
+        "end_time": "2026-10-30T20:00:02.684634+00:00",
+        "start_time": "2026-10-30T20:00:00.025389+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 2.659245,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069021,
+        "status": "succeeded",
+        "job_pid": 31157,
+        "end_time": "2026-10-30T19:58:10.694691+00:00",
+        "start_time": "2026-10-30T19:58:00.028878+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 10.665813,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069019,
+        "status": "succeeded",
+        "job_pid": 31005,
+        "end_time": "2026-10-30T19:56:05.269895+00:00",
+        "start_time": "2026-10-30T19:56:00.026399+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 5.243496,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069017,
+        "status": "succeeded",
+        "job_pid": 30899,
+        "end_time": "2026-10-30T19:54:08.828394+00:00",
+        "start_time": "2026-10-30T19:54:00.027373+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 8.801021,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069015,
+        "status": "succeeded",
+        "job_pid": 30250,
+        "end_time": "2026-10-30T19:52:03.546463+00:00",
+        "start_time": "2026-10-30T19:52:00.023957+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 3.522506,
+        "exact_expected_monitor_command": true
+      },
+      {
+        "jobid": 602,
+        "runid": 4069013,
+        "status": "succeeded",
+        "job_pid": 30183,
+        "end_time": "2026-10-30T19:50:02.196273+00:00",
+        "start_time": "2026-10-30T19:50:00.023341+00:00",
+        "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+        "elapsed_seconds": 2.172932,
+        "exact_expected_monitor_command": true
+      }
+    ],
+    "existing_job602": {
+      "jobid": 602,
+      "active": true,
+      "schedule": "*/2 * * * *",
+      "command_sha256": "81f169da25ff0d1d9f551a92b430a13b27d48654200f5e086dd7158c1008eeef",
+      "exact_expected_monitor_command": true
+    },
+    "recent_window_rows": 256
+  },
+  "query_sha256": "fc3388a75e80c97c8369d131789e24ec0a87da2a6b7aa28fa442840a8d86ebfe",
+  "query_dispatches": 1,
+  "remaining_automatic_query_budget": 0,
+  "intentional_p0001_readonly_transport": true,
+  "executing_holder_confirmed_at_snapshot": {
+    "pid": 31310,
+    "job_id": 602,
+    "run_id": 4069027,
+    "exact_command": "SELECT astra_ingestion_v1.monitor_tick_v1();",
+    "waiter_pid": 30915,
+    "waiter_top_level_function_label": "astra_ingestion_rpc_v1",
+    "sampled_at": "2026-10-30T20:04:02.605779+00:00"
+  },
+  "interpretation": "At20:04:02.605779, monitor job602 backend31310 holds the shared transaction advisory gate and RPC backend30915 waits on that exact holder. Bounded cron evidence maps the PID to the exact monitor command/run, which finished20:04:08.925984 after8.900443s. The19:58 monitor run lasted10.665813s and overlapped the defer failure, but its historical exact blocking edge/request remains unproved. Current holder is identified; phase cost and complete lock-hold duration are not measured.",
+  "maintain_schedule_changed": false,
+  "manual_restart_or_cancel": false,
+  "sql_helpers_or_providers_invoked": false,
+  "next_executable_step": "Continue selected defer-only actual rollback/lostACK qualification and independent review. Use retained current monitor/maintenance/shared/contract source evidence to prepare any phase-specific cost diagnosis; do not replay expiredv73 instrumentation or alter schedule/global gate/security. No repeat passive snapshot under this exhausted budget.",
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY"
+}

@@ -1,0 +1,178 @@
+{
+  "schema": "astra.claim-cursor-live-installation/1",
+  "request_id": "v76-claim-cursor-installation-readback-verified",
+  "state": "INSTALLED_READBACK_VERIFIED_OBSERVATION_PENDING",
+  "commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "migration": {
+    "name": "astra_backfill_claim_provider_cursor_v76",
+    "version": "20261030195049",
+    "statement_count": 1,
+    "array_dimensions": 1,
+    "array_lower_bound": 1,
+    "single_statement_bytes": 49483,
+    "single_statement_sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+    "diagnostic_joined_lf_sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094"
+  },
+  "candidate_private_source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+  "private_oid": "16040232",
+  "private_metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+  "apply_dispatches": 1,
+  "apply_success": true,
+  "restore_dispatches": 0,
+  "ci_receipt_sha256": "c77c9862409a7a33988f7d23919bb94ca5cfa029ad27ee2782b5a73b5e9de942",
+  "source_readback": {
+    "run": {
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "reporting": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+      "lease_until": "2026-10-30T20:30:00Z",
+      "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec"
+    },
+    "schema": "astra.claim-cursor-postinstall-source-readback/1",
+    "mismatches": [],
+    "observed_at": "2026-10-30T19:50:55.041114+00:00",
+    "function_count": 75,
+    "matched_functions": 75,
+    "ownership_acquired": false,
+    "transaction_bounds": {
+      "read_only": true,
+      "lock_timeout_3s": true,
+      "repeatable_read": true,
+      "statement_timeout_8s": true
+    },
+    "bounded_member_count": 3000,
+    "selected_shared_source": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+    "source_and_scope_ready": true,
+    "observed_catalog_sha256": "45b100f4359e6dbd7633dde4239a035529d73959ad8a377e2b64c9002abbdc55",
+    "owner_scope_lease_matches": true,
+    "application_helpers_invoked": false,
+    "gateway_external_configuration_verified": false
+  },
+  "supplement_readback": {
+    "run": {
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T20:30:00Z",
+      "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+      "cohort_manifest_sha256": "4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f"
+    },
+    "schema": "astra.claim-cursor-postinstall-supplement/1",
+    "maintain": {
+      "oid": "16041463",
+      "source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d"
+    },
+    "observed_at": "2026-10-30T19:50:53.808481+00:00",
+    "provider_index": {
+      "live": true,
+      "ready": true,
+      "valid": true,
+      "method": "btree",
+      "index_oid": "16040160",
+      "table_oid": "16040120",
+      "definition": "CREATE INDEX backfill_tasks_provider_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, provider, status, kind)",
+      "table_matches": true
+    },
+    "maintain_matches": true,
+    "migration_history": [
+      {
+        "name": "astra_backfill_claim_provider_cursor_v76",
+        "version": "20261030195049",
+        "statement_count": 1,
+        "array_dimensions": 1,
+        "array_lower_bound": 1,
+        "single_statement_bytes": 49483,
+        "single_statement_sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+        "diagnostic_joined_lf_sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094"
+      }
+    ],
+    "history_comparison": "Exactly one row and one one-based statement; exact UTF-8 bytes/hash. Joined-LF hash is diagnostic only.",
+    "ownership_acquired": false,
+    "supplement_matches": true,
+    "transaction_bounds": {
+      "read_only": true,
+      "lock_timeout_3s": true,
+      "repeatable_read": true,
+      "statement_timeout_8s": true
+    },
+    "provider_index_matches": true,
+    "history_row_count_complete": true,
+    "application_helpers_invoked": false,
+    "history_rows_seen_up_to_two": 1,
+    "held_identity_activation_authorized": false,
+    "fixed_scope_finite_live_lease_matches": true,
+    "main_75_source_readback_still_required": true,
+    "unique_migration_exact_content_matches": true
+  },
+  "worker_source": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "worker_deploy_or_restart_dispatches": 0,
+  "preinstall_verified_pages": 7859,
+  "preinstall_latest_commit": "2026-10-30T19:43:56.860977Z",
+  "postinstall_conservative_observation_start": "2026-10-30T19:50:55.041114+00:00",
+  "postinstall_acquisition_proven": false,
+  "sustained_recovery_proven": false,
+  "old_checkpoint_host_hold_preserved": true,
+  "held_identity_private_source_guard_now_stale": true,
+  "held_identity_required_next_step": "Preserve frozen qualified archive and its old28ae guard. Any later activation requires explicit reviewed rebind to actualdbe8 plus qualification and actual-head CI; not silently relax or bypass.",
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "installation_reservation_result": [
+    {
+      "id": 69,
+      "action": "CLAIM_CURSOR_SINGLE_INSTALL_RESERVED",
+      "recorded_at": "2026-10-30 19:50:42.932988+00"
+    }
+  ],
+  "preinstall_sources": [
+    {
+      "evidence": {
+        "run": {
+          "id": "fixed3000-20250901-20260731-v1-20261030",
+          "fence": 1,
+          "owner": "root-replacement-20261030T042603Z",
+          "status": "ACTIVE",
+          "reporting": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+          "lease_until": "2026-10-30T20:30:00Z",
+          "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec"
+        },
+        "schema": "astra.claim-cursor-preinstall-source-readback/1",
+        "mismatches": [],
+        "observed_at": "2026-10-30T19:49:33.19269+00:00",
+        "function_count": 75,
+        "matched_functions": 75,
+        "ownership_acquired": false,
+        "transaction_bounds": {
+          "read_only": true,
+          "lock_timeout_3s": true,
+          "repeatable_read": true,
+          "statement_timeout_8s": true
+        },
+        "bounded_member_count": 3000,
+        "selected_shared_source": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+        "source_and_scope_ready": true,
+        "observed_catalog_sha256": "e8c5180bcb3257c7c86ec273d872b518cf2c7d90572b2e52e0847d91cfa0ccd6",
+        "owner_scope_lease_matches": true,
+        "application_helpers_invoked": false,
+        "gateway_external_configuration_verified": false
+      }
+    }
+  ],
+  "preinstall_history_and_incident_readback": [
+    {
+      "observed_at": "2026-10-30 19:49:53.262802+00",
+      "prior_claim_migration_rows_up_to_two": 0,
+      "audit68_count": 1,
+      "acquisition_state": "INTERMITTENT_ACQUISITION_BEFORE_REPAIR_CI_RUNNING",
+      "latest_verified_pages": "7859",
+      "held_checkpoint_state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD"
+    }
+  ],
+  "apply_result": {
+    "success": true
+  },
+  "no_security_source_subscription_or_cost_expansion": true
+}

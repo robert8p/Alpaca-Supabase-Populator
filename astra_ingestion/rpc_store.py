@@ -32,7 +32,7 @@ TOKEN_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
 # fenced RPC. This is a retry policy, never an operation authorization gate.
 LOCK_ABORT_RETRY_OPERATIONS = frozenset({
     "backfill_claim", "backfill_reserve", "backfill_commit",
-    "backfill_reuse_commit", "backfill_verify", "backfill_plan_next",
+    "backfill_reuse_commit", "backfill_verify", "backfill_plan_next", "backfill_defer",
 })
 LOCK_ABORT_RETRY_DELAYS = (0.25, 0.75)
 MAX_LOCK_ABORT_ERROR_BYTES = 8192

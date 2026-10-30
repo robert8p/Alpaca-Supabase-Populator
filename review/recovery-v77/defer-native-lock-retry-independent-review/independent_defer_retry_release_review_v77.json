@@ -1,0 +1,348 @@
+{
+  "base_commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "base_tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "blocking_findings": [],
+  "decision": "PASS_EXACT_LOCAL_CANDIDATE_REVIEW_PUBLICATION_CI_AND_ACTION_TIME_DEPLOYMENT_GATES_REMAIN",
+  "dependency_and_publication_scope": {
+    "a71_claim_repair_preserved": true,
+    "active_workspace_files_still_baseline_at_review": true,
+    "actual_files": 76,
+    "all_rehashed_independently": true,
+    "archive_three_payloads_roundtrip": true,
+    "held_checkpoint_or_identity_package_used": false,
+    "parent_leaves": 1095,
+    "raw_duplicate_candidate_test_files_must_not_be_published_under_review": true,
+    "relationship_counts": {
+      "ADDITION": 2,
+      "REPLACEMENT": 2,
+      "UNCHANGED": 72
+    },
+    "source_bundle_required_explicit_addition": true,
+    "unexpected_drift": []
+  },
+  "exact_runtime_diff": {
+    "candidate_retry_allowlist": [
+      "backfill_claim",
+      "backfill_commit",
+      "backfill_defer",
+      "backfill_plan_next",
+      "backfill_reserve",
+      "backfill_reuse_commit",
+      "backfill_verify"
+    ],
+    "identity_material_material_feature_reuse_remain_excluded": true,
+    "new_sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+    "old_sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403",
+    "one_literal_inverse_recovers_entire_baseline": true,
+    "only_added_operation": "backfill_defer"
+  },
+  "historical_outcome_limits": [
+    "The17:12 and19:58 HTTP_ERROR outcomes remain uncorrelated and unknown. Temporal native55P03 rows do not identify their task, claim, transaction result or holder.",
+    "The separate20:04 observed monitor holder is a current lock-edge proof, not evidence of the historical request outcome.",
+    "No existing failed operation is replayed or requeued by this local review.",
+    "Post-claim-repair acquisition does not establish sustained absence of contention or authorize broader retry operations."
+  ],
+  "passed": true,
+  "qualification": {
+    "authority_cases": {
+      "abort_layer": "ACTUAL_PG_TEST_RAISED_55P03_AFTER_EFFECTS",
+      "conditions": [
+        "owner",
+        "generation",
+        "run_fence",
+        "lease",
+        "run_paused",
+        "credential_revoked",
+        "credential_expired"
+      ],
+      "native_lock_abort_separately_covered": true,
+      "no_lease_renewal": true,
+      "no_provider_refetch": true
+    },
+    "authority_error_origin_limitation": "The seven authority-transition cases use a test-raised nativeSQLSTATE55P03 after effects; real native advisory-lock waits are separately exercised in the early and three late-effect cases.",
+    "failure_resolution": "Two first attempts each passed42 inherited non-PG cases but had two missing-published-fixture import errors before database setup. Exact retained imports were added to the isolated stage; final51-case execution passed. Neither failed attempt is labeled green.",
+    "independent_actual_pg_rerun": false,
+    "independent_boundary": {
+      "bytes": 4735,
+      "database_execution": false,
+      "errors": 0,
+      "failures": 0,
+      "network_events": [],
+      "path": "review/recovery-v77/defer-native-lock-retry-independent-review/independent_boundary_qualification_v77.json",
+      "sha256": "45e65336bb776337e282f0300a4daeefc0b3b2b2d22a7c9bac3f054422dafc97",
+      "skips": 0,
+      "tests": 19
+    },
+    "independent_review_method": "Inspected all new SQL/worker test bodies and retained actual results; independently reran19 non-PG strict classifier/source-boundary tests, verified the exact runtime inverse and every76 actual dependency hash/blob against the published parent proof.",
+    "native_transaction_cases": {
+      "committed_lost_ack_variants": [
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "rate"
+        },
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "dependency"
+        },
+        {
+          "actual_commit": true,
+          "defer_is_not_idempotent": true,
+          "defer_sends": 1,
+          "fatal_reason": "TRANSPORT_ERROR",
+          "provider_fetches": 1,
+          "variant": "adaptive"
+        }
+      ],
+      "early_gate": {
+        "defer_sends": 2,
+        "native_lock_wait": true,
+        "provider_fetches": 1,
+        "serialized_request_equal": true,
+        "sqlstate": "55P03",
+        "unchanged_aborted_business_snapshot": true
+      },
+      "invalid_scope": {
+        "business_unchanged": true,
+        "native_errors": 0,
+        "sends": 1
+      },
+      "late_effect_variants": [
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "rate"
+        },
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "dependency"
+        },
+        {
+          "business_rollback_exact": true,
+          "defer_sends": 2,
+          "native_sqlstate": "55P03",
+          "provider_fetches": 1,
+          "real_effects_reached": true,
+          "retained_sequence_gap": true,
+          "variant": "adaptive"
+        }
+      ]
+    },
+    "producer": {
+      "bytes": 40817,
+      "errors": 0,
+      "failures": 0,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_final_v77.json",
+      "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+      "seconds": 16.291,
+      "sha256": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2",
+      "skips": 0,
+      "tests": 51
+    },
+    "producer_layers": {
+      "http": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+      "postgresql": "ACTUAL_DISPOSABLE",
+      "postgrest_server": "NOT_RUN",
+      "production": "NOT_RUN",
+      "provider": "SYNTHETIC_NO_NETWORK"
+    },
+    "retained_failed_attempts": [
+      {
+        "bytes": 23513,
+        "database_setup_ran": false,
+        "import_errors": 2,
+        "passed_cases": 42,
+        "path": "review/recovery-v77/defer-native-lock-retry/qualification_attempt1_v77.json",
+        "qualification_passed": false,
+        "sha256": "069412ec810b7d48968ba7360b1275df87bdb75a19cff2c61c57fa2d4add9e3d",
+        "tests": 44
+      },
+      {
+        "bytes": 23882,
+        "database_setup_ran": false,
+        "import_errors": 2,
+        "passed_cases": 42,
+        "path": "review/recovery-v77/defer-native-lock-retry/qualification_attempt2_v77.json",
+        "qualification_passed": false,
+        "sha256": "562c849ed82bf8ea539e09a366fe347e1dc5c6b8d08e28a57b7d739ce5d84d7f",
+        "tests": 44
+      }
+    ]
+  },
+  "remaining_release_gates": [
+    "Root publishes only these reviewed active changes and explicit dependencies/evidence from the current parent under normal controls; preserve all1095 parent blobs except the two reviewed replacements.",
+    "Required exact-published-head CI must pass, including the dedicated PostgreSQL qualification gate. LocalPostgreSQL16.15 is not production-major or effective-gateway proof.",
+    "Root obtains current source/OID/full metadata and relevant effect-catalog/owner/fence/finite-lease/scope confirmation, binding dbe8/private, adaptation10a171, existing autha9 and shared7f.",
+    "Root separately selects and performs the existing worker deployment; no automatic approval, deployment, restart or claim replay is conferred by this receipt.",
+    "Preserve the frozen denied checkpoint and identity holds; no stale-tree ref update, denied-action retry, extra operation or hidden rebase."
+  ],
+  "review_actions": {
+    "independent_non_postgresql_tests": 19,
+    "independent_postgresql_runs": 0,
+    "local_additive_review_artifacts_only": true,
+    "production_mutations": 0,
+    "production_queries": 0,
+    "provider_calls": 0,
+    "retry_allowlist_edits": 0,
+    "runtime_changes": 0,
+    "security_changes": 0
+  },
+  "reviewed_active_changes": [
+    {
+      "archive_stage_byte_equal": true,
+      "bytes": 23247,
+      "git_blob": "b423c9cb6ca0adcdece631d12b36e00149dd5b1a",
+      "parent_blob": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+      "target_path": "astra_ingestion/rpc_store.py"
+    },
+    {
+      "archive_stage_byte_equal": true,
+      "bytes": 17878,
+      "git_blob": "55cd6637002ec1f7384540fb5fce34fb1ad7535d",
+      "parent_blob": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "sha256": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1",
+      "target_path": "tests/ingestion/test_rpc_lock_abort_retry.py"
+    },
+    {
+      "archive_stage_byte_equal": true,
+      "bytes": 23970,
+      "git_blob": "3eda078918bac6d9806f205330d064bf9380b4a7",
+      "parent_blob": null,
+      "sha256": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07",
+      "target_path": "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py"
+    }
+  ],
+  "reviewed_artifact_pins": {
+    "astra_ingestion/rpc_store.py": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+    "evidence/replacement-claim-cursor-live-installation-v76.json": "53d1bde98e9fc7f16dba65877870f8b0819478a2e2d748efcde7b5f8eb5a676e",
+    "review/recovery-v76/defer-retry-independent-review/source_effect_preliminary_v76.json": "a8637589bf7c2a09fb2b4d24e5b9e3df2319fe744fbd01b4959a75e8256751ab",
+    "review/recovery-v76/defer-source-effect-diagnosis/fresh_adaptation_and_dispatch_readback_v76.json": "dd8a2a79e705046fd68c8d8d469d4ab161828c127df79e65939867df8ea02b23",
+    "review/recovery-v77/defer-native-lock-retry-independent-review/independent_boundary_qualification_v77.json": "45e65336bb776337e282f0300a4daeefc0b3b2b2d22a7c9bac3f054422dafc97",
+    "review/recovery-v77/defer-native-lock-retry-independent-review/qualify_independent_boundary_v77.py": "6921311ba53e992a5df1ab031b209a45b75ff329b620581bfc37ea52df8d9c00",
+    "review/recovery-v77/defer-native-lock-retry/candidate_files_v77.json": "cc14634c7a0593bf4824e9a35ea678f1255a92a7799471e5df083343a2576cc4",
+    "review/recovery-v77/defer-native-lock-retry/defer_source_bundle_v77.json": "24e6c46d90e03442607eef934501577bd53ae45a43ec7e30fba31bf2b5f008a7",
+    "review/recovery-v77/defer-native-lock-retry/installed_source_reconciliation_v77.json": "7e27556078c64aa149badba47b5a8a4ad8e6b67f3353fc32b1f124cdbcb32cb1",
+    "review/recovery-v77/defer-native-lock-retry/qualification_final_v77.json": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2",
+    "review/recovery-v77/defer-native-lock-retry/runtime_security_diff_v77.patch": "5d148d0aca574e0e4b231daff9441e1e2908beeef47ee3be23bd9196c1f8ebc4",
+    "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07",
+    "tests/ingestion/test_rpc_lock_abort_retry.py": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1"
+  },
+  "reviewer": "/root/relay_v3_review",
+  "runtime_base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "schema": "astra.independent-defer-native-lock-retry-release-review/1",
+  "security_and_behavior_review": {
+    "actual_defer_disposition": "A successful defer moves the task away from RUNNING to RETRY_WAIT, BLOCKED_EXTERNAL or OPERATIONAL_ERROR and clears owner and lease_until. It does not remain RUNNING.",
+    "bounded_load_tradeoff": "A newly classified rollback may add at most two database sends within the existing policy. This is additional bounded database traffic and is not proof that monitor contention is repaired.",
+    "existing_authorization_unchanged": "The database already authorizes backfill_defer for the worker. This change selects an existing transport rollback policy; it adds no operation grant, role, credential, trust relationship or endpoint.",
+    "fences_and_budgets": "No task scope/cursor/page/generation/fence/attempt/reservation/deadline reset or renewal is introduced. Existing actor/capability checks run again for every sent request.",
+    "managed_gateway_contract": "The actual PostgREST service was not exercised by local qualification, and effective external gateway environment is not observed. The prior explicit managed-gateway native-error contract assumption remains disclosed; it is not recast as measured configuration.",
+    "not_idempotent": "No committed-defer acknowledgement branch exists. Once the disposition commits, the original owned-task check normally fails; safety depends on newly confirmed rollback rather than idempotence. A committed/lost ACK is still one send and fatal.",
+    "provider_boundary": "The retry loop resends only the already serialized database RPC. It does not replay provider fetch, source acquisition or the enclosing worker unit.",
+    "unchanged_transport": "The trusted HTTPS endpoint, nativeHTTP500/55P03 envelope/framing classifier, duplicate/nonfinite/truncation rejection, serialization, fixed0.25/0.75 delays, maximum3 sends, shared15-second deadline, response bounds, logs and ambiguous-result behavior are byte-identical to1deb.",
+    "unknown_results": "Timeouts, lost acknowledgements, malformed/unknown responses, successful-response stream failures, wrong SQLSTATE/status/origin and controlled application errors cannot authorize a resend. Existing fatal behavior remains."
+  },
+  "source_effect_closure": {
+    "adaptation_source": "10a17158429447e5734259e87b6ca45dbeb648b5234d98cbddeb35cd164c06b8",
+    "branch_effects": {
+      "adaptive": "Only exact SOURCE_PAGE_TOO_LARGE receipt may reduce the reserved current page limit under unchanged request/digest/opaque-cursor/budget checks.",
+      "credential_dependency": "Existing provider-dependency upsert bound to provider and worker capability revision.",
+      "generic": "Append immutable exception and update disposition/next retry; task becomes non-RUNNING, owner/lease cleared.",
+      "rate_limit": "Existing monotonic provider-wide source_limits.next_request_at update."
+    },
+    "installed_private_defer_branch_byte_exact": true,
+    "new_table_or_external_effect_boundary_identified": false,
+    "protected_context_sources": [
+      {
+        "path": "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql",
+        "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4"
+      },
+      {
+        "path": "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql",
+        "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+      }
+    ],
+    "selected_direct_write_tables": [
+      "astra_ingestion_v1.backfill_tasks_v2",
+      "astra_ingestion_v1.source_limits",
+      "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "astra_ingestion_v1.backfill_exceptions_v2"
+    ],
+    "selected_route_functions": [
+      {
+        "metadata_sha256": "412040bbed9e8a96e9c7231c1f1474326c0eacf7a8157043703983c68b2d1f51",
+        "oid": "15986030",
+        "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+        "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+      },
+      {
+        "metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e",
+        "oid": "15986028",
+        "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+        "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+      },
+      {
+        "metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+        "observed_at": "2026-10-30T19:50:55.041114Z",
+        "oid": "16040232",
+        "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+        "source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+      },
+      {
+        "metadata_sha256": "b38638977e51719c6c676c9275a0a39dd08369ce227e9bfccfa494393013a8c9",
+        "oid": "16040229",
+        "signature": "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+        "source_sha256": "66968de9e4b6ed74deca00f6aaf63b3c44a3a6546f01fd8a7007d8fd7b2603f2"
+      },
+      {
+        "metadata_sha256": "7295d0d91e40c12c8b9e94c71e9f28432711725b25b41133abc0654523a320b9",
+        "observed_at": "2026-10-30 19:09:56.169629+00",
+        "oid": "16043406",
+        "signature": "astra_ingestion_v1.backfill_adapt_page_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+        "source_sha256": "10a17158429447e5734259e87b6ca45dbeb648b5234d98cbddeb35cd164c06b8"
+      },
+      {
+        "metadata_sha256": "f2f58574bb151c5724f1603f02b7de08edfac96d7bafdf61205437ee984c0249",
+        "oid": "16040230",
+        "signature": "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+        "source_sha256": "137a9a944fe128a18476818abf3cb0971eda4e3316d087369169a6cbced5c955"
+      },
+      {
+        "metadata_sha256": "66202ea9fc847009d44c7d3bfd994e81b3cdfbdcdccee4cbbd734a00fb1031ba",
+        "oid": "16043402",
+        "signature": "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+        "source_sha256": "cec132e0d3b101d6d57915e57bffc1d3a74dc6101616fbd7c420808e44d68b93"
+      },
+      {
+        "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+        "oid": "16040224",
+        "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+        "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+      },
+      {
+        "metadata_sha256": "bbfae27a0704b8b6407dce8326b658bf97cee9efbb24aab2ef4ec4640574a116",
+        "oid": "16043404",
+        "signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+        "source_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342"
+      }
+    ],
+    "source_and_catalog_freshness": "Retained source/table/trigger/policy/index evidence is reviewed, not newly queried here. Action-time current source/catalog/owner confirmation remains mandatory.",
+    "trigger_and_sequence_limits": "Task scope/page-limit UPDATE guards remain; INSERT-only task triggers do not execute. A rollback may leave identity sequence gaps, but no business duplicate or reset permission. No page/readback acquisition is written by this branch."
+  }
+}

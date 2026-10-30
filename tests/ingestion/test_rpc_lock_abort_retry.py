@@ -90,9 +90,9 @@ class LockAbortRetryTests(unittest.TestCase):
             self.assertNotIn(forbidden, encoded)
             self.assertNotIn(forbidden, str(error))
 
-    def test_six_database_operations_retry_only_complete_native_error(self):
+    def test_seven_database_operations_retry_only_complete_native_error(self):
         expected = {"backfill_claim", "backfill_reserve", "backfill_commit", "backfill_reuse_commit",
-                    "backfill_verify", "backfill_plan_next"}
+                    "backfill_verify", "backfill_plan_next", "backfill_defer"}
         self.assertEqual(rpc.LOCK_ABORT_RETRY_OPERATIONS, expected)
         for operation in sorted(expected):
             with self.subTest(operation=operation):

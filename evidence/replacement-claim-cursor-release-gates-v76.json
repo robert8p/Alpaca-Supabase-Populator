@@ -1,0 +1,197 @@
+{
+  "schema": "astra.claim-cursor-exact-head-ci/1",
+  "passed": true,
+  "verified_at": "2026-10-30T19:50:12.385218+00:00",
+  "head_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "tree_sha": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "synthetic_pr_merge_sha": "3c3552d468364037e4a08de78e94df49da2c86e3",
+  "synthetic_pr_merge_tree_equals_published_tree": true,
+  "actual_run_count": 4,
+  "all_actual_runs_and_steps_passed": true,
+  "run_attempts": [
+    1
+  ],
+  "dedicated_tests_each": 720,
+  "dedicated_skips_each": 0,
+  "new_cases_explicitly_once_in_each_dedicated_job": 9,
+  "actual_postgres_version": "17.11",
+  "outcomes": [
+    {
+      "run_id": 41117234352,
+      "job_id": 124274515163,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "head_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_sha": "3c3552d468364037e4a08de78e94df49da2c86e3",
+      "checkout_tree_sha": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "started_at": "2026-10-30T19:41:05Z",
+      "completed_at": "2026-10-30T19:48:25Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41117234352",
+      "tests": 720,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "postgres_version": "17.11",
+      "explicit_new_cases_once": 9,
+      "test_seconds": 415.148,
+      "decoded_log_sha256": "a541a65c13b5d4f3c7b298af6ac65dea77769a290906f7ecf97e3b78f6038557"
+    },
+    {
+      "run_id": 41117225811,
+      "job_id": 124274487386,
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_attempt": 1,
+      "head_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_tree_sha": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "started_at": "2026-10-30T19:41:02Z",
+      "completed_at": "2026-10-30T19:49:01Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41117225811",
+      "tests": 720,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "postgres_version": "17.11",
+      "explicit_new_cases_once": 9,
+      "test_seconds": 417.371,
+      "decoded_log_sha256": "2ab598615d26e28cab247679ad79929a81dec94c9148be42e8b61ff4baf13c44"
+    },
+    {
+      "run_id": 41117234372,
+      "job_id": 124274514891,
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "head_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_sha": "3c3552d468364037e4a08de78e94df49da2c86e3",
+      "checkout_tree_sha": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "started_at": "2026-10-30T19:41:05Z",
+      "completed_at": "2026-10-30T19:41:40Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41117234372",
+      "passed_tests": 734,
+      "skipped_tests": 376,
+      "warnings": 1,
+      "errors": 0,
+      "failures": 0,
+      "test_seconds": 13.09,
+      "decoded_log_sha256": "88237e7fbb78543bb50181b8bc66e12cb2f3f74795aa1c4167a070a5745dcf97",
+      "skip_interpretation": "General release has no disposable PostgreSQL service. Its explicit skips do not replace either dedicated zero-skip gate."
+    },
+    {
+      "run_id": 41117225947,
+      "job_id": 124274487537,
+      "workflow": "release-gate",
+      "event": "push",
+      "run_attempt": 1,
+      "head_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_sha": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+      "checkout_tree_sha": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+      "status": "completed",
+      "conclusion": "success",
+      "all_steps_passed": true,
+      "started_at": "2026-10-30T19:41:02Z",
+      "completed_at": "2026-10-30T19:41:37Z",
+      "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41117225947",
+      "passed_tests": 734,
+      "skipped_tests": 376,
+      "warnings": 1,
+      "errors": 0,
+      "failures": 0,
+      "test_seconds": 10.08,
+      "decoded_log_sha256": "3c681de9e221af2640264406f7f979f4a14e1e1c494bc72bef541c5647d9a4f9",
+      "skip_interpretation": "General release has no disposable PostgreSQL service. Its explicit skips do not replace either dedicated zero-skip gate."
+    }
+  ],
+  "new_case_ids": [
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_actual_authenticated_claim_provider_resolution_fairness_attempts_and_fence",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_custom_and_generic_plans_keep_correlated_existing_index_lookups",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_forward_restore_preserve_data_oid_metadata_and_permissions",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_guard_rejections_and_final_boundary_rollback",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_native_late_abort_rolls_back_worker_dependencies_fairness_and_attempt",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_replay_and_paused_terminal_restore_preserve_status",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_semantic_matrix_empty_null_duplicate_status_provider_and_run",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_dsn_admission_both_workflow_contexts",
+    "test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_exact_inverse_and_reproducible_guarded_sources"
+  ],
+  "source_artifacts": [
+    {
+      "path": "sql/astra_backfill_claim_provider_cursor_v76.sql",
+      "sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+      "bytes": 49483
+    },
+    {
+      "path": "sql/astra_backfill_claim_provider_cursor_restore_v76.sql",
+      "sha256": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+      "bytes": 49421
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_provider_cursor_v76.py",
+      "sha256": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464",
+      "bytes": 25439
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "bytes": 32478
+    }
+  ],
+  "evidence": [
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/initial_run_job_and_commit_readback_v76.json",
+      "sha256": "9e63054cbae728ce1e32f7ce4bb8fddf0dbb28efff768b1113fb94c3e81ec10a",
+      "bytes": 12792
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/final_run_job_and_commit_readback_v76.json",
+      "sha256": "d1f44a47e6af252051db2521027275eb3b8e577bd24af997b3b7559d47bd319d",
+      "bytes": 19581
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/general_release_logs_verified_v76.json",
+      "sha256": "73d9054b0eaecba804a81f7a361bf0f10a2bbea8d9a33c2053b3c2dd2ec62d8a",
+      "bytes": 1813
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/expected_test_inventory_v76.json",
+      "sha256": "ece67d007fd827345b9226289493f79ab02dcb9849cb0ecc5a2aac9217a16ce7",
+      "bytes": 1419
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/unchanged_workflow_definitions_v76.json",
+      "sha256": "1b19ec0d919409e6775bc72351fbfa544e1fea3893ff23ef524699abc8bf042b",
+      "bytes": 5432
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/poll_history_v76.json",
+      "sha256": "c8caa90e87467ec13abc28da62ab50dc17889f5a0882788ff6a29a7c80645744",
+      "bytes": 16360
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/dedicated_job_124274515163_verified_v76.json",
+      "sha256": "bc058f34d2b626464703ebc38733f1e22c36a7a03d705848941caf1f78fee753",
+      "bytes": 5585
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-ci/dedicated_job_124274487386_verified_v76.json",
+      "sha256": "f8a6512c8c3ced4e743844d536bd6c67afe69d04fcb27810ae55f0c33c9921fd",
+      "bytes": 5577
+    }
+  ],
+  "workflow_triggers_reruns_cancels_edits_or_deployments": 0,
+  "production_sql_calls": 0,
+  "decoded_log_downloads_per_completed_job": 1,
+  "held_v75_checkpoint_and_identity_packages": "Unchanged and excluded from this exact revision.",
+  "activation": "NOT_PERFORMED_BY_CI_REVIEWER. Root must reconcile current ownership/source metadata and apply the exact guarded forward once, then separately read back and observe ordinary progress."
+}

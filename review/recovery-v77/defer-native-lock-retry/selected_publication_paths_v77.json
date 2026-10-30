@@ -1,0 +1,120 @@
+{
+  "active_payload_archive": "review/recovery-v77/defer-native-lock-retry/candidate_files_v77.json",
+  "active_targets": [
+    {
+      "bytes": 23247,
+      "git_blob": "b423c9cb6ca0adcdece631d12b36e00149dd5b1a",
+      "parent_blob": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11",
+      "target_path": "astra_ingestion/rpc_store.py"
+    },
+    {
+      "bytes": 17878,
+      "git_blob": "55cd6637002ec1f7384540fb5fce34fb1ad7535d",
+      "parent_blob": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "sha256": "939d655c2ae59e97d7ad62466147bb4dc7f3be320d2a6f385fc1e5fae94f42b1",
+      "target_path": "tests/ingestion/test_rpc_lock_abort_retry.py"
+    },
+    {
+      "bytes": 23970,
+      "git_blob": "3eda078918bac6d9806f205330d064bf9380b4a7",
+      "parent_blob": null,
+      "sha256": "7a9f8b76091187812b3439617eb936c224947ddf0b52d5e93937579eb0392e07",
+      "target_path": "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py"
+    }
+  ],
+  "actual_dependency_count": 76,
+  "expected_changed_existing_paths": [
+    "astra_ingestion/rpc_store.py",
+    "tests/ingestion/test_rpc_lock_abort_retry.py"
+  ],
+  "explicit_exclusions": [
+    "Held v75 checkpoint tree and identity activation payload",
+    "All other active runtime files",
+    "Canonical checkpoint and task prompt",
+    "Raw duplicate test modules under review",
+    "Unselected authoring stage/builder and stale workspace dependencies"
+  ],
+  "parent_commit": "a71e9df014a4f0b66818ff47b2f85f1adbf6623e",
+  "parent_tree": "cc1c8702b0f9b43c52952736ed47566d8189e155",
+  "review_artifacts": [
+    {
+      "bytes": 112325,
+      "path": "review/recovery-v77/defer-native-lock-retry/candidate_files_v77.json",
+      "sha256": "cc14634c7a0593bf4824e9a35ea678f1255a92a7799471e5df083343a2576cc4"
+    },
+    {
+      "bytes": 94056,
+      "path": "review/recovery-v77/defer-native-lock-retry/defer_source_bundle_v77.json",
+      "sha256": "24e6c46d90e03442607eef934501577bd53ae45a43ec7e30fba31bf2b5f008a7"
+    },
+    {
+      "bytes": 53615,
+      "path": "review/recovery-v77/defer-native-lock-retry/defer_source_effect_closure_v77.json",
+      "sha256": "46a8815030a25a5b4bd1974bec3997dc4fbcf668accf063a8effc717a8753609"
+    },
+    {
+      "bytes": 3641,
+      "path": "review/recovery-v77/defer-native-lock-retry/producer_qualification_v77.json",
+      "sha256": "66646e06f3e8718ec690c12fb590d5ae83fd3cc7b87d68ef045b464c5c1fe698"
+    },
+    {
+      "bytes": 40817,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_final_v77.json",
+      "sha256": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2"
+    },
+    {
+      "bytes": 1237,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_history_v77.json",
+      "sha256": "6fd269d6a816f2361ab5c739d1905c76f404905805b8cecd37747bd9918492bc"
+    },
+    {
+      "bytes": 23513,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_attempt1_v77.json",
+      "sha256": "069412ec810b7d48968ba7360b1275df87bdb75a19cff2c61c57fa2d4add9e3d"
+    },
+    {
+      "bytes": 23882,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_attempt2_v77.json",
+      "sha256": "562c849ed82bf8ea539e09a366fe347e1dc5c6b8d08e28a57b7d739ce5d84d7f"
+    },
+    {
+      "bytes": 40817,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualification_attempt3_v77.json",
+      "sha256": "c9ae801d8f80bcb4654a2b7bbfc16b11ea1cd2e5896fdc2a1b5cc60e724068d2"
+    },
+    {
+      "bytes": 510,
+      "path": "review/recovery-v77/defer-native-lock-retry/runtime_security_diff_v77.patch",
+      "sha256": "5d148d0aca574e0e4b231daff9441e1e2908beeef47ee3be23bd9196c1f8ebc4"
+    },
+    {
+      "bytes": 4150,
+      "path": "review/recovery-v77/defer-native-lock-retry/qualify_defer_retry_v77.py",
+      "sha256": "2214635f54c110e09da17b5dc241ca97b5f4cab248a28eb859ca35bbda898c69"
+    },
+    {
+      "bytes": 6968,
+      "path": "review/recovery-v77/defer-native-lock-retry/RELEASE_NOTES_v77.md",
+      "sha256": "5b2b82078079a37bde863cfdcd642f9a546d7b6abd66e7b1136ed4c45d871bfd"
+    },
+    {
+      "bytes": 3181,
+      "path": "evidence/replacement-independent-claim-publication-confirmation-v76.json",
+      "sha256": "f46e98fc2657a80243c252a41b0f9036fb8e01a7c08447e5fbf687f11c7e47d6"
+    },
+    {
+      "bytes": 7451,
+      "path": "evidence/replacement-claim-cursor-live-installation-v76.json",
+      "sha256": "53d1bde98e9fc7f16dba65877870f8b0819478a2e2d748efcde7b5f8eb5a676e"
+    },
+    {
+      "bytes": 4717,
+      "path": "review/recovery-v76/defer-source-effect-diagnosis/fresh_adaptation_and_dispatch_readback_v76.json",
+      "sha256": "dd8a2a79e705046fd68c8d8d469d4ab161828c127df79e65939867df8ea02b23"
+    }
+  ],
+  "review_receipt_to_add": "review/recovery-v77/defer-native-lock-retry-independent-review/independent_final_release_review_v77.json",
+  "schema": "astra.defer-retry-selected-publication-paths/1",
+  "unexpected_existing_dependency_differences": 0
+}
