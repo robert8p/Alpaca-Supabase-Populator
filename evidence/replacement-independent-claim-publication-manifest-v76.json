@@ -1,0 +1,234 @@
+{
+  "schema": "astra.independent-claim-publication-manifest/1",
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "base_tree": "3599d2822a30b658666ab219e8eeca728f3917df",
+  "existing_blobs_preserved": 1063,
+  "existing_replacements": [],
+  "selected_files_excluding_manifest": [
+    {
+      "path": "evidence/replacement-acquisition-stall-initial-evidence-v76.json",
+      "bytes": 5394,
+      "sha256": "37cdac43b0aa7dfe7c668de538343fd184b77fe486f6ad39df0b729f8058d225",
+      "git_blob_sha1": "6cb88abb84d8c8fc9efca4c75934fbf43dbc344b",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-acquisition-stall-verified-baseline-v76.json",
+      "bytes": 4518,
+      "sha256": "bc2b4b92c216f81096e2f2a1129ac86e2d6e224d5d93f39ac94abcc16174fb16",
+      "git_blob_sha1": "e045362a2a9d2914909deb34bb153c85548be94c",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-claim-cursor-producer-qualification-v76.json",
+      "bytes": 11965,
+      "sha256": "97c7cc0bf82f4e9e8d399283098fb6e4d8b6b55273bbb39dc50ad796a4f784fd",
+      "git_blob_sha1": "92c2b406d8435410b1289683cd659e33a4a396d9",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-claim-cursor-readonly-comparison-v76.json",
+      "bytes": 19144,
+      "sha256": "3e2093e81ac368a46eadb4bbdf3e90e35d6ae78136da6ff4e4f84841c4d0d96f",
+      "git_blob_sha1": "e81193f4137208a53d1035dfe010023cc123a494",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/build_independent_claim_publication_v76.py",
+      "bytes": 6593,
+      "sha256": "98484106940b0a6d68fb14670f22e4140afbfe2247d0638a71b5cbe27c5cdd91",
+      "git_blob_sha1": "2bd7ca5ad152a889eba6b01fd9eeedff7f46f289",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_cursor_select_v76.sql",
+      "bytes": 334,
+      "sha256": "36ab6afb3fa6eebe376ab55e85b4ee23d603895a2c51f490ed5747efaef8f4c1",
+      "git_blob_sha1": "da37a6d0d72b997002f7c85cb64be3f9c59b38c0",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_private_dispatch_v76.sql",
+      "bytes": 32456,
+      "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+      "git_blob_sha1": "6a306ec5f1da65bdea5ddf851b703559d7aa8503",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/build_claim_cursor_repair_v76.py",
+      "bytes": 11589,
+      "sha256": "6db373d94af83a49585cf5e6e1f6e7367f54b5f32f2ba6c89f318976c21f56d4",
+      "git_blob_sha1": "9de601209aadc31dfb9048dad98849fed9764cf8",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_cursor_select_v76.sql",
+      "bytes": 359,
+      "sha256": "12f6d77e607498122e2cf3a6bb2ccfc8833c0867667a5ae43552f128ca4b2701",
+      "git_blob_sha1": "57eb42bcb92dae006b3ee77169b2b227bc460149",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "bytes": 32478,
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "git_blob_sha1": "8a3a0fbc4395f85749de821264c3ec474eb1dabb",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_derivation_v76.json",
+      "bytes": 3695,
+      "sha256": "3368eb7281959316af697bce47b1a14623f4e0ac10f5da9a944ca47d4246b37c",
+      "git_blob_sha1": "fd6f9c7fc34d460811c142d6f30d1ba81628cef7",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_guard_pins_v76.json",
+      "bytes": 8408,
+      "sha256": "e11f0f3dbecc5bb67ff47caad46312cd210973fc6acf27449b54dcbf01b8e90d",
+      "git_blob_sha1": "fcf4124b8b428ef667d1226d1d57d009040862a9",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_queryshape_v76.patch",
+      "bytes": 1222,
+      "sha256": "530c8a1f817800470d3a23668bfd8563186aa1030180c0b0e04c47085f541cfc",
+      "git_blob_sha1": "d133830de5f75eb6db3c1e75523687eba95a9dc1",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/independent_claim_cursor_release_review_v76.json",
+      "bytes": 13405,
+      "sha256": "fc071c0d1c4a76cdcaf3bea15af23b07497298b5eedc40887ad950802b411066",
+      "git_blob_sha1": "481ffd48529379b2ee213c460b8093ea515803f5",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/independent_source_qualification_v76.json",
+      "bytes": 2037,
+      "sha256": "b4c72562eaff602afdd2835e56bda2a15895ee74016caafda2eca48081e8a518",
+      "git_blob_sha1": "516024374aa8597936a88e6a16d28e466fd7b4a4",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt0_bootstrap_v76.json",
+      "bytes": 292,
+      "sha256": "2a752c74c9b88668488999c34343d420d793a587ed7bf57b4baa544ee3e8cf46",
+      "git_blob_sha1": "d49001dc33fafaedbafb1075d83c9f90652e7d98",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt1_v76.json",
+      "bytes": 34331,
+      "sha256": "88da6a7efbbfc8963a670bbf9ccdfd6ee05b59da38ca6440f5b06086c772095b",
+      "git_blob_sha1": "a2eb22b1a36377ae655367afeb9cd9c61bcfbf4c",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt2_v76.json",
+      "bytes": 33884,
+      "sha256": "64711fd3b0a55d7ec70cfb24b6c3f482ef78aa28254e90017e89c0cafcf2fb93",
+      "git_blob_sha1": "14e34d42b75319f6e0bf8ac2aeb065e2b5794592",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json",
+      "bytes": 48784,
+      "sha256": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03",
+      "git_blob_sha1": "b8244515f75870919af2d44df92105584bfab85d",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualify_claim_cursor_v76.py",
+      "bytes": 3858,
+      "sha256": "ac0c10c6bb4e529eb2a0eebbdf31e24bb3c37ddfb7a2a8690c6f8d48159ded79",
+      "git_blob_sha1": "ad930040d1762356d6ee7f048894b316aa9ff476",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/claim_bounded_state_readonly_v76.sql",
+      "bytes": 10023,
+      "sha256": "b949150524ca3fd3ba493f7ca269fac5e5a63605b64de382262dd562a0832fc9",
+      "git_blob_sha1": "2888ea0260fc233d4111d622f261435f99a09392",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/claim_bounded_state_result_v76.json",
+      "bytes": 38260,
+      "sha256": "bfb41b47108747b734b8a403cfc37056d69a1808c0ff2704f737083e05522e3b",
+      "git_blob_sha1": "b44a2b72140af1e89b73e0abd2919d0e05842fca",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/independent_state_and_cursor_preliminary_review_v76.json",
+      "bytes": 8228,
+      "sha256": "d58cd0f3252d5f274bd379ff09aaeab662a83c30bbca01c6f5ceb194e5e3f9a0",
+      "git_blob_sha1": "65842c979117a24de9aee0cc422aa39697113863",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/preceding_helper_inputs_v76.json",
+      "bytes": 2963,
+      "sha256": "a550b912e8a3ce639220689ddcb01e2fa4ecdaf15867be381766dcf9543d32ba",
+      "git_blob_sha1": "a0055d323c5a18e669cd51e8299dc2e3df9ff6b6",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/preinstall_performance_advisors_v76.json",
+      "bytes": 15086,
+      "sha256": "57f02be203e6390a16fd9aa61c36aaaf24b5cbf53ca7a4442e40c6282562df42",
+      "git_blob_sha1": "b7fafdd975413cc908bc76c62d7fd5ee97fd001e",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/preinstall_security_advisors_v76.json",
+      "bytes": 1277,
+      "sha256": "a8d2d9f2f2e91fecbbc3693ace47494fc3f4407de68a242b914dfe24a5860bfa",
+      "git_blob_sha1": "5d632484bf6fee9e70eb10d56824bc646ae621f7",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/claim-stall/prepublication_existing_worker_state_v76.json",
+      "bytes": 893,
+      "sha256": "35edfb2e8a723247678e6c8b87e68ce46a73129cd3afe6f3a70f816607cb57d1",
+      "git_blob_sha1": "b9951a12038c7a96059aeb22d87a7f8ec91b99b2",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v76/independent_claim_publication_paths_v76.json",
+      "bytes": 2346,
+      "sha256": "94f3c97deeb93a59765bc313dba8458df06062977c02984a0c4b3e4ebde938d1",
+      "git_blob_sha1": "90b37412873bff61521675fb19cabbe312cfc400",
+      "mode": "100644"
+    },
+    {
+      "path": "sql/astra_backfill_claim_provider_cursor_restore_v76.sql",
+      "bytes": 49421,
+      "sha256": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+      "git_blob_sha1": "28efbf6e571ea5956b5d3148f433736928598ef5",
+      "mode": "100644"
+    },
+    {
+      "path": "sql/astra_backfill_claim_provider_cursor_v76.sql",
+      "bytes": 49483,
+      "sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+      "git_blob_sha1": "53922f7acc8d6edee1924d2842de5d77ae45e5b4",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_provider_cursor_v76.py",
+      "bytes": 25439,
+      "sha256": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464",
+      "git_blob_sha1": "18a88a6c6d4f59e51960da2bf46ca0cb2cb74cba",
+      "mode": "100644"
+    }
+  ],
+  "scope": "Independent query-only claim cursor repair, tests and evidence; no held v75 checkpoint or identity rollout",
+  "held_checkpoint_preserved": {
+    "packet_sha256": "8806ef636f5be4220562b0ee52d64426f620461d8ad99adef5f9edd1f9724da3",
+    "expected_tree": "e56dc140deeb00eb2a0aae4e7d572519d773ccd0",
+    "state": "HOST_REJECTED_NO_RETRY_HOLD"
+  },
+  "later_checkpoint_rule": "Reconcile against the then-current head and retain this independent repair; never advance the branch to the held historical tree over a newer repair.",
+  "activation_gate": "Exact new-source CI, current ownership/source reconciliation and one guarded SQL migration with independent readback; no Render rollout or manual restart."
+}

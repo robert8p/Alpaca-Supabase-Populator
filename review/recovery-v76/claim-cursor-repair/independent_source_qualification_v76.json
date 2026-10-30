@@ -1,0 +1,39 @@
+{
+  "active_artifact_pins": {
+    "sql/astra_backfill_claim_provider_cursor_restore_v76.sql": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+    "sql/astra_backfill_claim_provider_cursor_v76.sql": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+    "tests/ingestion/test_backfill_claim_provider_cursor_v76.py": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464"
+  },
+  "actual_dependency_rehash": {
+    "all_producer_rows_rehashed_against_frozen_stage_and_base": true,
+    "builder_included": true,
+    "counts": {
+      "ADDITIVE": 7,
+      "EXACT": 74
+    },
+    "files": 81
+  },
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "base_tree": "3599d2822a30b658666ab219e8eeca728f3917df",
+  "errors": 0,
+  "failures": 0,
+  "finished_at": "2026-10-30T19:29:25.456262+00:00",
+  "limits": [
+    "This independently reruns two source/admission cases only; the seven actual PostgreSQL cases remain separately attributed to the producer qualification.",
+    "No production, GitHub, provider or database request was dispatched."
+  ],
+  "log": "test_dsn_admission_both_workflow_contexts (test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_dsn_admission_both_workflow_contexts) ... ok\ntest_exact_inverse_and_reproducible_guarded_sources (test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_exact_inverse_and_reproducible_guarded_sources) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.007s\n\nOK\n",
+  "passed": true,
+  "postgresql_calls": 0,
+  "producer_qualification": {
+    "path": "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json",
+    "sha256": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03"
+  },
+  "production_calls": 0,
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra.claim-cursor-independent-source-qualification/1",
+  "skips": 0,
+  "socket_connect_calls": 0,
+  "started_at": "2026-10-30T19:29:25.319941+00:00",
+  "tests_run": 2
+}

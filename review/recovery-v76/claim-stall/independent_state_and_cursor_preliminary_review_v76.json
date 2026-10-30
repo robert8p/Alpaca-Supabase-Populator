@@ -1,0 +1,124 @@
+{
+  "schema": "astra.claim-stall-state-and-cursor-preliminary-independent-review/1",
+  "reviewed_at": "2026-10-30T19:20:33.875917+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "read_only_state_probe_static_pass": true,
+  "candidate_query_semantics_static_pass": true,
+  "candidate_installation_admitted": false,
+  "qualification_status": "Author preparing actual PostgreSQL full-claim/semantic tests and guarded forward; no final release admission in this receipt.",
+  "state_probe": {
+    "pin": {
+      "path": "review/recovery-v76/claim-stall/claim_bounded_state_readonly_v76.sql",
+      "sha256": "b949150524ca3fd3ba493f7ca269fac5e5a63605b64de382262dd562a0832fc9",
+      "bytes": 10023
+    },
+    "source_pins": {
+      "public.astra_ingestion_rpc_v1(text,jsonb)": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25"
+    },
+    "transaction": "READ ONLY REPEATABLE READ",
+    "statement_seconds": 8,
+    "lock_seconds": 3,
+    "scope": "Fixed run/owner/fence/cohort, bounded3000 member confirmation and soleACTIVE run; lease expiry reported only.",
+    "bounded_reads": [
+      "4 named index definitions/statistics",
+      "5 relation estimates",
+      "at most257 worker rows and8 displayed",
+      "2 fixed-provider dependency rows",
+      "1 family-turn row",
+      "at most2 ordered queue heads for each of16 families, only if the exact valid/ready/live family-turn index matches"
+    ],
+    "excluded": [
+      "Mutating application helpers",
+      "Explicit advisory or row locks",
+      "Provider calls",
+      "DML/DDL",
+      "Repeated completed cursor EXPLAIN"
+    ],
+    "limits": [
+      "Head samples do not prove total runnable population or absence.",
+      "Retry/lease/attempt flags exclude dependency/reuse-gap/breadth evaluation and are not full claimability.",
+      "Worker registrations can roll back with failed claims.",
+      "Catalog statistics are estimates; run counters are physical accounting, not new independent-readback proof.",
+      "The five source hashes are sufficient guards for this observation, not full deployment metadata/security admission.",
+      "An expired lease may be observed but is neither renewed nor converted into write authority."
+    ]
+  },
+  "cursor_candidate": {
+    "baseline_pin": {
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_private_dispatch_v76.sql",
+      "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+      "bytes": 32456
+    },
+    "candidate_pin": {
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "bytes": 32478
+    },
+    "derivation_pin": {
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_derivation_v76.json",
+      "sha256": "3368eb7281959316af697bce47b1a14623f4e0ac10f5da9a944ca47d4246b37c",
+      "bytes": 3695
+    },
+    "diff_pin": {
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_queryshape_v76.patch",
+      "sha256": "530c8a1f817800470d3a23668bfd8563186aa1030180c0b0e04c47085f541cfc",
+      "bytes": 1222
+    },
+    "one_block_inverse_byte_exact": true,
+    "semantics": [
+      "For each unchanged active-run/provider outer row, EXISTS and a correlated SELECT1 LIMIT1 lateral witness produce exactly zero or one projected result.",
+      "Duplicate matching tasks cannot multiply rows; empty sets, null nonmatching predicate inputs and excluded statuses/providers behave equally.",
+      "The projected run_id/provider types, fixedprovider literals and all task predicates are unchanged.",
+      "Original query has no ORDER BY; loop body is unchanged, uses fixedv_now and run/provider-keyed writes. Other claim/auth/fence/lease/attempt/fairness/dependency order and logic remain byte-exact."
+    ],
+    "qualification_required": [
+      "Actual generic/custom unforced planner behavior and focused null/empty/duplicate/status/provider equivalence.",
+      "Full authenticated claim/dependency resolution behavior, authority and budget/fairness preservation; meaningful rollback and wrapper guard tests.",
+      "Exact source/OID/fullmetadata and surrounding source/catalog admission before and after any guarded installation."
+    ]
+  },
+  "live_read_comparison": {
+    "receipt": {
+      "path": "evidence/replacement-claim-cursor-readonly-comparison-v76.json",
+      "sha256": "3e2093e81ac368a46eadb4bbdf3e90e35d6ae78136da6ff4e4f84841c4d0d96f",
+      "bytes": 19144
+    },
+    "interpretation": "The retained baseline performed substantially more task/index work than the separate LATERAL read, both returning2 rows. Different snapshots/cache states do not establish a guaranteed ratio. The921.891ms cursor read is not full claim time or proof that it alone exhausted the invocation. Two preceding identity helpers and gate/other work can consume cumulative budget.",
+    "no_production_helpers_invoked_by_reviewer": true
+  },
+  "independent_publication_scope": {
+    "admissible_in_principle": true,
+    "root_selected_path": "Separate narrow SQL/test/evidence-only publication from freshly verifiede694 on the existing branch/PR93 under ordinary connector controls, all required exact-head CI, then guarded SQL-only installation with the existing worker unchanged.",
+    "not_the_denied_action": "It does not create or publish the denied68-entry checkpoint/e56 or activate the held16-entry identity package.",
+    "preservation": [
+      "Keep frozen68packet8806/e56 and all old invocation/host-denial evidence immutable and held.",
+      "No new credential, route, permission, controller or host-control bypass. Stop on any new host rejection.",
+      "Preserve every unrelated current branch blob and use fresh parent/head CAS; no canonical checkpoint replacement in this repair packet.",
+      "A future checkpoint must preserve the independently published repair. Never set the changed branch tree to stalee56. Any later held-checkpoint integration requires separate reviewed current-head reconciliation and its genuine hold resolution.",
+      "Olde694 CI or local fixtures are not mislabeled as exact new-source CI.",
+      "Before the held identity rollout can later activate, explicitly reconcile its old28ae source pin with any separately installed reviewed cursor source; do not silently relax validation."
+    ]
+  },
+  "gate_scope_evidence": {
+    "original_mission": {
+      "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+      "sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+      "bytes": 23046
+    },
+    "mission_interpretation": "Original user mission explicitly authorizes scoped database repair, requires continued independent work after a refusal, meaningful changed-scope checks, and the exact tested revision through the authorized process. It does not itself state a universal GitHub-CI requirement.",
+    "current_implementation_prompt": {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "sha256": "7af363ed4ff4c74119987e4381f583a8ae437fd9d7af8894467471bbfc811d05",
+      "bytes": 84239
+    },
+    "scope_precision": "The broad v73 repair/publication/CI sentence is in retained historical continuation text, whose status/next-action statements are superseded. The current v75 identity rollout has an explicit artifact-specific publication/CI gate. Root has now explicitly selected publication and required exact-head CI for this independent cursor repair; this review preserves that route without waiver or reinterpretation of the denied checkpoint action."
+  },
+  "remote_calls": 0,
+  "production_mutations": 0,
+  "tests_rerun": false,
+  "active_source_changes": 0
+}

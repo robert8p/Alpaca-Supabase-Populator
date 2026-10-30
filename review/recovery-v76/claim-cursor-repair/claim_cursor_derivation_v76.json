@@ -1,0 +1,62 @@
+{
+  "baseline_source_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+  "byte_exact_inverse_to_28ae": true,
+  "candidate_source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+  "change_count": 1,
+  "comparison_input": {
+    "path": "evidence/replacement-claim-cursor-readonly-comparison-v76.json",
+    "sha256": "3e2093e81ac368a46eadb4bbdf3e90e35d6ae78136da6ff4e4f84841c4d0d96f"
+  },
+  "files": [
+    {
+      "bytes": 334,
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_cursor_select_v76.sql",
+      "sha256": "36ab6afb3fa6eebe376ab55e85b4ee23d603895a2c51f490ed5747efaef8f4c1"
+    },
+    {
+      "bytes": 32456,
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_private_dispatch_v76.sql",
+      "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+    },
+    {
+      "bytes": 359,
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_cursor_select_v76.sql",
+      "sha256": "12f6d77e607498122e2cf3a6bb2ccfc8833c0867667a5ae43552f128ca4b2701"
+    },
+    {
+      "bytes": 32478,
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+    },
+    {
+      "bytes": 1222,
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_queryshape_v76.patch",
+      "sha256": "530c8a1f817800470d3a23668bfd8563186aa1030180c0b0e04c47085f541cfc"
+    }
+  ],
+  "limits": [
+    "The original cursor measured921.891ms in one current-snapshot read, not the full claim duration.",
+    "Candidate0.325ms used a separate cache/snapshot state; no guaranteed ratio.",
+    "57014 at the FOR line identifies cancellation location only; preceding identity helpers and other cumulative costs remain competing contributors.",
+    "No production helper was called or changed by these derivations."
+  ],
+  "new_block": "   SELECT rr.id run_id,pp.provider FROM astra_ingestion_v1.backfill_runs_v2 rr CROSS JOIN (VALUES('Alpaca'),('Massive')) pp(provider) CROSS JOIN LATERAL (SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 st WHERE st.run_id=rr.id AND st.provider=pp.provider AND st.status IN ('PENDING','RETRY_WAIT','BLOCKED_EXTERNAL') LIMIT 1) present WHERE rr.status='ACTIVE'",
+  "old_block": "   SELECT rr.id run_id,pp.provider FROM astra_ingestion_v1.backfill_runs_v2 rr CROSS JOIN (VALUES('Alpaca'),('Massive')) pp(provider)\n   WHERE rr.status='ACTIVE' AND EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 st WHERE st.run_id=rr.id AND st.provider=pp.provider AND st.status IN ('PENDING','RETRY_WAIT','BLOCKED_EXTERNAL'))",
+  "root_compared_query_normalization_equal": true,
+  "schema": "astra.claim-cursor-queryshape-derivation/1",
+  "semantic_contract": [
+    "Same active run and same two provider literals.",
+    "Same task run/provider/status predicates; LIMIT1 yields exactly one lateral witness iff EXISTS is true.",
+    "Multiple qualifying tasks cannot multiply provider rows.",
+    "No order was promised by the original SELECT; provider iterations are independent within the same transaction.",
+    "No helper order, auth, gate, lease, attempt, timeout, dependency-update body or result changes."
+  ],
+  "source_input": {
+    "path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+    "sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88"
+  },
+  "source_signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+  "status": "PREPARED_LOCAL_ONLY_NOT_INSTALLED",
+  "target_oid": 16040232,
+  "unchanged_metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6"
+}

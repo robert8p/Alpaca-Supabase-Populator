@@ -1,0 +1,6 @@
+{
+  "passed": false,
+  "tests_run": 0,
+  "database_setup_reached": false,
+  "reason": "Actual-read audit hook referenced importlib.util before explicitly importing that submodule; AttributeError before test-module import. Runner-only import corrected; runtime candidate and SQL unchanged."
+}
