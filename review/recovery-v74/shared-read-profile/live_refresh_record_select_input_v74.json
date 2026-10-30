@@ -1,0 +1,995 @@
+{
+  "run": {
+    "id": "fixed3000-20250901-20260731-v1-20261030",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "status": "ACTIVE",
+    "lease_until": "2026-10-30T16:45:00Z",
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec"
+  },
+  "nodes": [
+    {
+      "path": [
+        0
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Hash Join",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 92074,
+      "temp_writes": 2213,
+      "actual_loops": 1,
+      "shared_reads": 1962,
+      "parent_relationship": null,
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Function Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        2
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Nested Loop",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4107,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        2,
+        2
+      ],
+      "relation": "backfill_shared_versions_v2",
+      "join_type": null,
+      "node_type": "Index Scan",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 4107,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 893,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        3
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4104,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 891,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        3,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4104,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 891,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        4
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Hash Join",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4107,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": 0
+    },
+    {
+      "path": [
+        0,
+        4,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 3,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 2,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        4,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Hash",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4104,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 891,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        4,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4104,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 891,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        5
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        5,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        6
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Unique",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4113,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        6,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Sort",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4113,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        6,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4107,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        7
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 836,
+      "actual_rows": 20000,
+      "shared_hits": 3775,
+      "temp_writes": 837,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        7,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Sort",
+      "temp_reads": 836,
+      "actual_rows": 20000,
+      "shared_hits": 3775,
+      "temp_writes": 837,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        7,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Nested Loop",
+      "temp_reads": 0,
+      "actual_rows": 20000,
+      "shared_hits": 3775,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        7,
+        1,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        7,
+        1,
+        1,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Function Scan",
+      "temp_reads": 0,
+      "actual_rows": 20,
+      "shared_hits": 3775,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 254,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 83775,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Merge Join",
+      "temp_reads": 836,
+      "actual_rows": 20000,
+      "shared_hits": 3775,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 836,
+      "actual_rows": 20000,
+      "shared_hits": 3775,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Materialize",
+      "temp_reads": 0,
+      "actual_rows": 19981,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Merge Join",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        2,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        2,
+        1,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Sort",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        8,
+        1,
+        2,
+        1,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Hash Join",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        1
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Merge Join",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4113,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 893,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        1,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Materialize",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 83775,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        1,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 83775,
+      "temp_writes": 1181,
+      "actual_loops": 1,
+      "shared_reads": 254,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Hash",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        3
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 0,
+      "parent_relationship": "SubPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        9,
+        3,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Function Scan",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        10
+      ],
+      "relation": null,
+      "join_type": "Left",
+      "node_type": "Nested Loop",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 1696,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        10,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 1696,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        10,
+        2
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 0,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        10,
+        2,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Function Scan",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": 0,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        11
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Aggregate",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4186,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 815,
+      "parent_relationship": "InitPlan",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        11,
+        1
+      ],
+      "relation": null,
+      "join_type": "Inner",
+      "node_type": "Nested Loop",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4186,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 815,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        11,
+        1,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 0,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 0,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        11,
+        1,
+        2
+      ],
+      "relation": "backfill_shared_occurrences_v2",
+      "join_type": null,
+      "node_type": "Index Only Scan",
+      "temp_reads": 0,
+      "actual_rows": 1,
+      "shared_hits": 4186,
+      "temp_writes": 0,
+      "actual_loops": 1000,
+      "shared_reads": 815,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        12
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 0,
+      "actual_rows": 1000,
+      "shared_hits": 4186,
+      "temp_writes": 0,
+      "actual_loops": 1,
+      "shared_reads": 815,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        13
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "Hash",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 2213,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "Inner",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    },
+    {
+      "path": [
+        0,
+        13,
+        1
+      ],
+      "relation": null,
+      "join_type": null,
+      "node_type": "CTE Scan",
+      "temp_reads": 836,
+      "actual_rows": 1000,
+      "shared_hits": 87888,
+      "temp_writes": 2213,
+      "actual_loops": 1,
+      "shared_reads": 1147,
+      "parent_relationship": "Outer",
+      "rows_removed_filter": null,
+      "rows_removed_join_filter": null
+    }
+  ],
+  "schema": "astra.shared-pure-read-profile/1",
+  "page_no": 0,
+  "task_id": "backfill-plan-e0b79e51a28872e6abbee0d1f23c340ab77857acfa36dc3fbd85dba162329bec",
+  "complete": true,
+  "component": "REFRESH_RECORD_SELECT_INPUT",
+  "raw_bytes": 711481,
+  "key_source": "CURRENT_IMMUTABLE_PAGE_OCCURRENCES",
+  "body_sha256": "9adb2b2051d81b7906efd0776a2ff759912a5eda0c216a605098515b0ec1a720",
+  "keys_sha256": "1c5f143b14fe02bca3a26c9728632aabf4eb71f88941d7b9cf1bc6d19e974245",
+  "observed_at": "2026-10-30T16:08:39.993334+00:00",
+  "planning_ms": 2.486,
+  "execution_ms": 1626.759,
+  "lock_timeout": "3s",
+  "member_count": 3000,
+  "interpretation": [
+    "A full SELECT projection is evaluated; no COUNT wrapper can prune its output expressions.",
+    "This already-projected immutable page is a temporal candidate, not a proved individual cause of audit41 shared time.",
+    "Summary and refresh inputs read current persisted after-state; they do not reconstruct historical old_summary or initial insert work.",
+    "These independently bounded calls have separate snapshots and cache conditions; no uncontrolled latency ratio is justified.",
+    "A dynamic direct-role SELECT plan does not establish the original cached function plan, write/trigger cost, lock wait or whole-phase recovery."
+  ],
+  "source_pin_count": 15,
+  "key_derivation_ms": 16.92,
+  "statement_timeout": "8s",
+  "current_occurrences": 1000,
+  "current_distinct_keys": 1000,
+  "retained_page_records": 1000,
+  "transaction_isolation": "repeatable read",
+  "transaction_read_only": "on",
+  "advisory_lock_acquired": false,
+  "temporal_origin_audit_id": 41,
+  "page_backend_identity_proven": false,
+  "source_and_metadata_pins_verified": true,
+  "mutating_helpers_or_provider_calls": false,
+  "source_and_readback_integrity_verified": true,
+  "execution_role_matches_shared_project_owner": true,
+  "raw_source_metadata_values_keys_or_plan_expressions_returned": false
+}

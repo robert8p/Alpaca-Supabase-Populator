@@ -1,0 +1,217 @@
+{
+  "policies": [
+    {
+      "name": "mdl_instrument_reference_insert",
+      "check": "(provider = ANY (ARRAY['alpaca'::text, 'binance'::text, 'coinbase'::text, 'twelvedata'::text]))",
+      "roles": "{1221108}",
+      "using": null,
+      "command": "a",
+      "relation": "instruments",
+      "permissive": true
+    },
+    {
+      "name": "mdl_instrument_reference_read",
+      "check": null,
+      "roles": "{1221106,1221108,1221112,1221110}",
+      "using": "true",
+      "command": "r",
+      "relation": "instruments",
+      "permissive": true
+    },
+    {
+      "name": "mdl_instrument_reference_update",
+      "check": "(provider = ANY (ARRAY['alpaca'::text, 'binance'::text, 'coinbase'::text, 'twelvedata'::text]))",
+      "roles": "{1221108}",
+      "using": "true",
+      "command": "w",
+      "relation": "instruments",
+      "permissive": true
+    }
+  ],
+  "relations": [
+    {
+      "oid": "17506",
+      "rls": true,
+      "kind": "r",
+      "name": "instruments",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1444566",
+      "rls": false,
+      "kind": "r",
+      "name": "market_provenance.alpaca_populator_jobs_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1444840",
+      "rls": false,
+      "kind": "r",
+      "name": "reference.alpaca_fixed_window_instruments_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1444913",
+      "rls": false,
+      "kind": "p",
+      "name": "market_fixed_20250901_20260831.alpaca_sip_bars_1m",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1494144",
+      "rls": true,
+      "kind": "r",
+      "name": "reference.massive_security_master_observation_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1494340",
+      "rls": true,
+      "kind": "r",
+      "name": "reference.equity_reference_state_event_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "1494361",
+      "rls": true,
+      "kind": "r",
+      "name": "reference.equity_security_state_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "12174622",
+      "rls": true,
+      "kind": "r",
+      "name": "market_factors_20250901_20260731_v1.precursor_identity_day_reconciliation_v8",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13092988",
+      "rls": true,
+      "kind": "r",
+      "name": "market_governance.remediation_change_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13093914",
+      "rls": true,
+      "kind": "r",
+      "name": "market_governance.remediation_source_batch_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13093959",
+      "rls": true,
+      "kind": "r",
+      "name": "market_governance.remediation_source_response_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13094272",
+      "rls": false,
+      "kind": "r",
+      "name": "market_factors_20250901_20260731_v1.security_daily_features_remediated_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13094369",
+      "rls": false,
+      "kind": "v",
+      "name": "reference.equity_identity_day_overrides_remediation_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": " SELECT (c.after_row ->> 'instrument_key'::text)::integer AS instrument_key,\n    (c.after_row ->> 'observation_date'::text)::date AS session_date,\n    c.after_row ->> 'ticker'::text AS native_symbol,\n    c.after_row ->> 'name'::text AS name,\n    c.after_row ->> 'raw_type'::text AS raw_type,\n    c.after_row ->> 'composite_figi'::text AS composite_figi,\n    c.after_row ->> 'share_class_figi'::text AS share_class_figi,\n    c.after_row ->> 'cik'::text AS cik,\n    c.after_row ->> 'primary_exchange'::text AS primary_exchange,\n    c.after_row ->> 'currency_name'::text AS currency_name,\n    (c.after_row ->> 'source_observed_at'::text)::timestamp with time zone AS source_acquired_at,\n    (c.after_row ->> 'provider_last_updated_utc'::text)::timestamp with time zone AS provider_updated_at,\n    c.created_at AS identity_reconciled_at,\n    'EXACT_DATE_NATIVE_TRADING_VARIANT_VERIFIED'::text AS identity_state,\n    false AS strict_historical_first_receipt,\n    c.change_id,\n    c.after_sha256\n   FROM market_governance.remediation_change_v1 c\n     JOIN reference.equity_reference_state_event_v1 e ON e.event_id = ((c.row_identity ->> 'event_id'::text)::bigint)\n  WHERE c.run_id = 'market_data_remediation_20261008_v1'::text AND c.operation = 'EXACT_DATE_NATIVE_TRADING_VARIANT_CORRECTION'::text AND encode(sha256(convert_to(to_jsonb(e.*)::text, 'UTF8'::name)), 'hex'::text) = c.before_sha256;"
+    },
+    {
+      "oid": "13118762",
+      "rls": false,
+      "kind": "r",
+      "name": "astra_shared_equity_features_20260928_v1.feature_session_cache_remediated_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "13118777",
+      "rls": false,
+      "kind": "v",
+      "name": "astra_shared_equity_features_20260928_v1.shared_identity_contract_remediated_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": " SELECT instrument_key,\n    session_date,\n    alpaca_asset_id,\n    identity_anchor,\n    identity_eligible,\n    identity_recorded_at,\n    currency_code,\n    native_source_symbol,\n    internal_instrument_id,\n    internal_uuid_matches,\n    sha256(convert_to(jsonb_build_array(instrument_key, session_date, alpaca_asset_id, identity_anchor, identity_eligible, identity_recorded_at, currency_code, native_source_symbol, internal_instrument_id, internal_uuid_matches)::text, 'UTF8'::name)) AS identity_contract_sha256\n   FROM ( SELECT d.instrument_key,\n            d.session_date,\n            u.alpaca_asset_id,\n            d.identity_anchor,\n            d.identity_anchor IS NOT NULL AND (d.quality_flags & 12) = 0 AS identity_eligible,\n            GREATEST(d.built_at, o.identity_reconciled_at, r.ingested_at, st.latest_loaded_at) AS identity_recorded_at,\n            upper(COALESCE(NULLIF(o.currency_name, ''::text), NULLIF(r.raw_payload ->> 'currency_name'::text, ''::text),\n                CASE\n                    WHEN st.n = 1 THEN NULLIF(st.currency_name, ''::text)\n                    ELSE NULL::text\n                END)) AS currency_code,\n            COALESCE(o.native_symbol,\n                CASE\n                    WHEN r.identity_certification_state = 'CERTIFIED_EXACT_DATE_COMPOSITE_AND_SHARE_FIGI_NATIVE_SOURCE_RECONCILED_V8'::text THEN r.historical_source_symbol\n                    ELSE NULL::text\n                END) AS native_source_symbol,\n                CASE\n                    WHEN pm.n = 1 THEN pm.internal_id\n                    ELSE NULL::uuid\n                END AS internal_instrument_id,\n            COALESCE(pm.n, 0) AS internal_uuid_matches\n           FROM market_factors_20250901_20260731_v1.security_daily_features_remediated_v1 d\n             JOIN reference.alpaca_fixed_window_instruments_v1 u USING (instrument_key)\n             LEFT JOIN reference.equity_identity_day_overrides_remediation_v1 o USING (instrument_key, session_date)\n             LEFT JOIN market_factors_20250901_20260731_v1.precursor_identity_day_reconciliation_v8 r USING (instrument_key, session_date)\n             LEFT JOIN LATERAL ( SELECT count(*)::integer AS n,\n                    min(s.currency_name) AS currency_name,\n                    max(s.loaded_at) AS latest_loaded_at\n                   FROM reference.equity_security_state_v1 s\n                  WHERE s.instrument_key = d.instrument_key AND d.session_date >= s.valid_from AND d.session_date < s.valid_to) st ON true\n             LEFT JOIN ( SELECT i.metadata ->> 'id'::text AS native_asset_uuid,\n                    count(*)::integer AS n,\n                    min(i.id::text)::uuid AS internal_id\n                   FROM instruments i\n                  WHERE i.provider = 'alpaca'::text AND NULLIF(i.metadata ->> 'id'::text, ''::text) IS NOT NULL\n                  GROUP BY (i.metadata ->> 'id'::text)) pm ON pm.native_asset_uuid = u.alpaca_asset_id::text) x;"
+    },
+    {
+      "oid": "15156963",
+      "rls": true,
+      "kind": "r",
+      "name": "population_top3000_202608_202609_v1.source_document",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "15434389",
+      "rls": true,
+      "kind": "r",
+      "name": "population_top3000_202608_202609_v1.massive_shortinterest_page_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    },
+    {
+      "oid": "15434432",
+      "rls": true,
+      "kind": "r",
+      "name": "population_top3000_202608_202609_v1.massive_shortinterest_record_v1",
+      "owner": "postgres",
+      "foreign": false,
+      "force_rls": false,
+      "view_definition": null
+    }
+  ],
+  "observed_at": "2026-10-30T16:36:06.958651+00:00",
+  "relation_count": 18,
+  "root_relations": 11,
+  "policy_function_dependencies": []
+}

@@ -1,0 +1,19 @@
+{
+  "observations": [
+    {
+      "observed_at": "2026-10-30 16:18:52.738471+00",
+      "connector_current_user": "postgres",
+      "connector_session_user": "postgres",
+      "database_name": "postgres",
+      "connector_session_settings_only": {
+        "pgrst.db_tx_end": null,
+        "response.status": null,
+        "response.headers": null,
+        "pgrst.db_pre_request": null
+      },
+      "allowlisted_role_settings": null,
+      "allowlisted_database_role_settings": null
+    }
+  ],
+  "visibility_limit": "These are connector-session and allowlisted PostgreSQL role/database catalog settings. They do not by themselves reveal effective PostgREST environment/file settings or prove absence of an externally configured pre-request hook. No secrets or unrelated settings were selected."
+}

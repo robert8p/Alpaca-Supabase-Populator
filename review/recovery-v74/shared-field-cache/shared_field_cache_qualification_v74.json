@@ -1,0 +1,210 @@
+{
+  "schema": "astra.shared-field-cache-local-qualification/1",
+  "production_calls": 0,
+  "selected_for_activation": false,
+  "source_inverse_and_link_statement_preservation": true,
+  "environment": {
+    "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "jit": "on",
+    "work_mem": "4MB",
+    "plan_cache_mode": "auto",
+    "track_functions": "none"
+  },
+  "field_state_edge_cases": [
+    {
+      "chosen_fields": [],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x"
+      ],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x"
+      ],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "y"
+      ],
+      "voted_fields": [
+        "x",
+        "y"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x",
+        "z"
+      ],
+      "voted_fields": [
+        "z",
+        "x",
+        "a"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [],
+      "voted_fields": [],
+      "rows": 0,
+      "equal": true
+    }
+  ],
+  "whole_function_equivalence": {
+    "single_multiple_null_partial_and_tied_versions": true,
+    "chosen_missing_other_candidate_field": true,
+    "present_source_jsonnull": true,
+    "conflict_order_identical": true,
+    "all_shared_sources_records_links_counters_and_receipts_identical": true,
+    "real_successor_page_after_candidate_verified": true,
+    "metadata_oid_acl_owner_config_identical": true
+  },
+  "scaled": {
+    "records": 1000,
+    "fields_per_record": 20,
+    "raw_bytes": 711481,
+    "retained_versions_toast_bytes": 2048000,
+    "full_tuple_output_sha256": "940b230888187933da8f61dc56bd6fef5932d7718cba4923302a42c9d1bb90cb",
+    "full_output_equivalent": true,
+    "normal_and_generic_measurements": [
+      {
+        "mode": "auto",
+        "variant": "before",
+        "execution_ms": 275.862,
+        "planning_ms": 0.823,
+        "actual_rows": 1000,
+        "shared_hits": 69000,
+        "shared_reads": 0,
+        "temp_reads": 831,
+        "temp_writes": 2182,
+        "fields_aggregate_extra_shared_hits": 60000,
+        "chosen_fields_rows": null
+      },
+      {
+        "mode": "auto",
+        "variant": "after",
+        "execution_ms": 191.083,
+        "planning_ms": 1.08,
+        "actual_rows": 1000,
+        "shared_hits": 12000,
+        "shared_reads": 0,
+        "temp_reads": 2188,
+        "temp_writes": 4209,
+        "fields_aggregate_extra_shared_hits": 0,
+        "chosen_fields_rows": 20000
+      },
+      {
+        "mode": "auto",
+        "variant": "after",
+        "execution_ms": 187.756,
+        "planning_ms": 0.94,
+        "actual_rows": 1000,
+        "shared_hits": 12000,
+        "shared_reads": 0,
+        "temp_reads": 2188,
+        "temp_writes": 4209,
+        "fields_aggregate_extra_shared_hits": 0,
+        "chosen_fields_rows": 20000
+      },
+      {
+        "mode": "auto",
+        "variant": "before",
+        "execution_ms": 200.51,
+        "planning_ms": 0.942,
+        "actual_rows": 1000,
+        "shared_hits": 69000,
+        "shared_reads": 0,
+        "temp_reads": 831,
+        "temp_writes": 2182,
+        "fields_aggregate_extra_shared_hits": 60000,
+        "chosen_fields_rows": null
+      },
+      {
+        "mode": "force_generic_plan",
+        "variant": "before",
+        "execution_ms": 216.391,
+        "planning_ms": 0.706,
+        "actual_rows": 1000,
+        "shared_hits": 69000,
+        "shared_reads": 0,
+        "temp_reads": 831,
+        "temp_writes": 2182,
+        "fields_aggregate_extra_shared_hits": 60000,
+        "chosen_fields_rows": null
+      },
+      {
+        "mode": "force_generic_plan",
+        "variant": "after",
+        "execution_ms": 165.124,
+        "planning_ms": 0.738,
+        "actual_rows": 1000,
+        "shared_hits": 12000,
+        "shared_reads": 0,
+        "temp_reads": 2188,
+        "temp_writes": 4209,
+        "fields_aggregate_extra_shared_hits": 0,
+        "chosen_fields_rows": 20000
+      },
+      {
+        "mode": "force_generic_plan",
+        "variant": "after",
+        "execution_ms": 179.609,
+        "planning_ms": 0.108,
+        "actual_rows": 1000,
+        "shared_hits": 12000,
+        "shared_reads": 0,
+        "temp_reads": 2188,
+        "temp_writes": 4209,
+        "fields_aggregate_extra_shared_hits": 0,
+        "chosen_fields_rows": 20000
+      },
+      {
+        "mode": "force_generic_plan",
+        "variant": "before",
+        "execution_ms": 235.683,
+        "planning_ms": 0.102,
+        "actual_rows": 1000,
+        "shared_hits": 69000,
+        "shared_reads": 0,
+        "temp_reads": 831,
+        "temp_writes": 2182,
+        "fields_aggregate_extra_shared_hits": 60000,
+        "chosen_fields_rows": null
+      }
+    ],
+    "candidate_whole_refresh_ms": 303.4072459995514,
+    "whole_function_snapshot_identical": true,
+    "limits": "Warm local PostgreSQL16.15 with synthetic values; no production cold-cache or whole-cron improvement claim. Temporary spill and storage geometry remain explicit."
+  },
+  "passed": true,
+  "tests": 4,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 6.126273346992093,
+  "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "test_sha256": "c700ca24e463f56f6dc368c75b61de6a099fcce6817fb9731f510f4172d957db",
+  "error_details": [],
+  "failure_details": []
+}

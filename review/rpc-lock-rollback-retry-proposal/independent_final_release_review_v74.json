@@ -1,0 +1,136 @@
+{
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "database_effect_closure": {
+    "checks": 50,
+    "defaults": 82,
+    "defaults_and_checks": "Built-ins, constants, CURRENT_USER, clock_timestamp, identity generation and the already closed page-limit-cap helper; no new external effect found.",
+    "expression_or_partial_indexes": 16,
+    "external_hash_function_sha256": "3d2af9589f2171964f77ecb2a5739e7417d12775833c0b3c884a61438689dae5",
+    "foreign_relations": 0,
+    "functions": 73,
+    "index_expression_review": "Built-in JSON/text operators, lower/coalesce, constants and boolean expressions; zero custom function dependencies. Eight operator classes, all pg_catalog btree/hash.",
+    "indexes": 84,
+    "manual_markers": "compute_feature_sessions_remediated_v1 and feature_grid_remediated_v1 occur as regprocedure source-hash references, not invocations. INSERT target column lists are relation syntax.",
+    "native_error_path": "Selected wrappers contain no response.status customization and do not catch 55P03 into a matching native error envelope. Controlled application outcomes remain ok/result or ok/error and are not retryable.",
+    "nondeferrable_no_action_foreign_keys": 44,
+    "noninternal_triggers": 31,
+    "ordinary_bar_partition_children": 12,
+    "read_views": 2,
+    "recursive_read_relations": 18,
+    "retained_read_review": "The two complete view definitions use built-in hashes/casts/projections/joins. Three scoped policies use literal/provider-array expressions and have zero function dependencies.",
+    "retained_read_roots": 11,
+    "rewrite_rules": 0,
+    "source_or_callable_network_effect_found": false,
+    "write_policies": 64,
+    "write_policy_expressions": "Literal true or absent; zero function dependencies.",
+    "write_tables": 44,
+    "write_tables_ordinary_persistent": true
+  },
+  "decision": "PASS_SCOPED_RELEASE_REVIEW_PENDING_EXACT_PUBLISHED_HEAD_CI_AND_CURRENT_SOURCE_RECONCILIATION",
+  "decision_detail": "No identified implementation, selected database-effect, or security-scope blocker. The exact candidate is suitable for publication and the required CI gates. Deployment remains with the existing root controller after current-state reconciliation, retaining the explicitly unobserved effective-gateway boundary. This review does not assert that hidden external configuration or request-level effects were inspected.",
+  "gateway_boundary": {
+    "not_observed": "Effective external PostgREST environment/file configuration, live gateway session and production-positive classification were not observable through the available evidence.",
+    "observed": "Connector session and allowlisted role/database catalogs at 16:18:52 did not contain selected db_pre_request, db_tx_end or response override settings.",
+    "release_classification": "Disclosed boundary limitation, not an identified source/configuration defect. No credentials, bypass, service or configuration change is requested. Root must retain this limitation in the deployment decision and may use an already authorized read-only configuration source if one becomes available.",
+    "residual_assumption": "The native-shaped response from the pinned authenticated endpoint is the gateway report of an aborted request transaction; an unknown external pre-request hook could have effects outside the reviewed RPC closure. Negative connector-session settings are not proof that such external configuration is impossible."
+  },
+  "method": {
+    "combined_execution": "Separate producer combined shared/retry qualification: 56 cases, zero failures/errors/skips; 82 actual opened/imported dependencies with no unexpected existing-blob drift. No redundant PostgreSQL rerun by this reviewer.",
+    "database_boundary": "Independently traced the selected wrapper/dispatch routes and retained source closure; inspected fresh table/default/check/FK/rule, read/view/RLS, write-policy and index-expression receipts. False function-call markers were classified explicitly.",
+    "independent_execution": "42 non-PostgreSQL cases previously run by this reviewer: 16 new transport/worker cases, two workflow admission cases and 24 existing RPC boundary/observability cases, zero failures/errors/skips. That immutable receipt remains distinct.",
+    "producer_execution": "Final 48-case producer receipt independently inspected: 48 passed, zero failures/errors/skips, 12.496 seconds. Six cases use actual disposable PostgreSQL transactions; HTTP envelopes are simulated after rollback.",
+    "production_or_provider_calls_by_reviewer": 0,
+    "production_writes_by_reviewer": 0,
+    "runtime": "Independently inspected the complete baseline-to-candidate diff, strict classifier and resend loop, all new unit methods and six actual PostgreSQL methods. Current bytes rehashed at finalization."
+  },
+  "passed": true,
+  "remaining_release_conditions": [
+    "Publish only the exact bound runtime/test/evidence payloads; existing immutable review and qualification receipts remain unchanged.",
+    "Pass every required exact-published-head CI gate, with the dedicated ingestion workflow executing all 24 new cases and zero skips. Existing earlier commit gates do not qualify this candidate.",
+    "Reconcile current ownership, source/catalog pins and any separate shared-field installation before deployment; preserve the sole existing controller.",
+    "Root retains the documented gateway visibility limitation and observes later ordinary worker outcomes without claiming a production-positive retry before evidence exists.",
+    "All excluded operations and unknown outcomes remain fatal. This bounded change does not claim complete restart elimination, sustained ingestion recovery or mission completion."
+  ],
+  "required_ci_observed_by_this_review": false,
+  "retry_contract": {
+    "admission": "Only the HTTPError raised by opener.open for the exact fixed HTTPS RPC URL, native integer HTTP 500, unambiguous JSON/identity framing and complete strict UTF-8 JSON body <=8192 bytes containing exactly code/message/details/hint with string native code 55P03 and specified field types. Duplicate keys/nonfinite JSON, partial/oversized/trickling body and response-stream exceptions fail closed.",
+    "backoff_seconds": [
+      0.25,
+      0.75
+    ],
+    "deadline_limit": "One shared deadline and reduced subsequent socket timeouts; the pre-existing outstanding blocked socket read can extend wall-clock time. No hard 15-second wall-clock guarantee.",
+    "identity": "One serialization and the same Request bytes, headers, endpoint, operation, claim, provider body and cursor across permitted resends.",
+    "max_total_sends": 3,
+    "not_retry_evidence": [
+      "Message or context text",
+      "Application ok/error envelopes",
+      "Caller-created exception/reason labels",
+      "Other HTTP statuses or SQLSTATEs",
+      "Errors reading an already opened successful response",
+      "Provider responses",
+      "Operations outside the six-string allowlist"
+    ],
+    "operations": [
+      "backfill_claim",
+      "backfill_reserve",
+      "backfill_commit",
+      "backfill_reuse_commit",
+      "backfill_verify",
+      "backfill_plan_next"
+    ],
+    "remote_error_disclosure": "Remote message/details/hint are discarded and never logged or propagated. Exhaustion uses a fixed sanitized reason.",
+    "scope_preserved": "No worker/provider loop replay, provider refetch, new credential/endpoint/grant/configuration, lease or fence bypass, schedule or restart-policy change. Each resend traverses the existing authentication and authority checks.",
+    "shared_deadline_seconds": 15,
+    "unknown_outcomes": "Remain fatal immediately, including a later ambiguous outcome after an earlier confirmed abort; no automatic replay after a lost commit or reservation ACK."
+  },
+  "reviewed_artifact_pins": {
+    "astra_ingestion/rpc_store.py": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403",
+    "review/recovery-v74/combined-release/combined_active_dependency_qualification_v74.json": "6517788ab3f5e888969e59fab5e395e77032bf301d46396cde86c0f089cc6162",
+    "review/recovery-v74/retry_closure_callees_and_catalog_v74.json": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f",
+    "review/recovery-v74/retry_closure_root_definitions_v74.json": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61",
+    "review/recovery-v74/retry_gateway_setting_catalog_v74.json": "c045e794740f6f4fb1ee8940535234764be4bb8573dee8e7f4cabe606a565aaf",
+    "review/recovery-v74/retry_read_relation_boundary_v74.json": "7441273fb43374e10299c4c6a08c567f73d4fd868662e776050764e1287e9f63",
+    "review/recovery-v74/retry_table_boundary_catalog_v74.json": "c032007b09778154929b546a4ffc5f2ee482c0fc72fcc4188cda478022b26607",
+    "review/recovery-v74/retry_view_and_rls_boundary_v74.json": "0178799c42c5166d0bc4c05a01b3dd7651f6d571282a789dc1779a3fcbcc3955",
+    "review/recovery-v74/retry_write_index_boundary_v74.json": "8aeaa95617c8f335a0e62ed98bce7ceabbfc2132ad9a8c5653e4b352053aec34",
+    "review/recovery-v74/retry_write_policy_boundary_v74.json": "c4b1924c6e5f606ec940ce2bdd3a76c11eedbb98f9c2ac35118414049bfac61d",
+    "review/rpc-lock-rollback-retry-proposal/IMPLEMENTATION_REVIEW.md": "c00ca485c5fac826e1d75312a17db38a2325d668f6e46b31591801fc19a1e52f",
+    "review/rpc-lock-rollback-retry-proposal/baseline/rpc_store.py": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+    "review/rpc-lock-rollback-retry-proposal/dependency_audit.json": "d870e0dfcdade51057147b2b28863834f8a6c0146d5a98d00fe450bd4e61b589",
+    "review/rpc-lock-rollback-retry-proposal/frozen_publication_scope.json": "03ef5f5ed25a91a59e8224bbb1fb9a75f9103437e7b671cb56fa16b2ec1e8b55",
+    "review/rpc-lock-rollback-retry-proposal/independent_unit_qualification_v74.json": "68a1c580fa73df79c9d21827e29ff6e576d8400f5b3481786ab616562a3e19f5",
+    "review/rpc-lock-rollback-retry-proposal/local_release_manifest.json": "2a930b25acbc4f71e7e5fcf9ef56193086ec68f13489078ac3bc43f11427800a",
+    "review/rpc-lock-rollback-retry-proposal/qualification_final.json": "e7f3a6cb15ec888634bfbae3ef5cb59869b8c7962041b989fc1707ad06682e2e",
+    "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88",
+    "review/rpc-lock-rollback-retry-proposal/retry_source_closure.json": "cde0cd8a860cfeafcb44c59e2b091628fd867ba87dcd8b7a3572ca633299c4c8",
+    "review/rpc-lock-rollback-retry-proposal/runtime.patch": "c7a3c055387410ba8895a312dfe1e6dccbb0035b0f3fad19c394b5d673b98d19",
+    "tests/ingestion/test_rpc_lock_abort_retry.py": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468",
+    "tests/ingestion/test_rpc_lock_abort_retry_postgres.py": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+  },
+  "reviewed_at": "2026-10-30T16:45:12.690553+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "root_deployment_claimed": false,
+  "schema": "astra.rpc-lock-abort-retry-independent-release-review/1",
+  "security_expansion_required": false,
+  "source_reconciliation": {
+    "reporting_only_rebase": "This review preserves its original a3bc qualification base. Rebase to a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62/tree71db22123ba2db26d1135916cb91081b03bab2cb requires the separate exact dependency/replacement packet proof; it does not re-date the tests.",
+    "required": "If the separately reviewed shared-field optimization is installed first, bind its actual readback and exact current source/catalog closure before retry deployment. Do not silently treat the earlier b18 catalog as current.",
+    "reviewed_live_shared_refresh_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+    "separately_reviewed_candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4"
+  },
+  "transaction_review": {
+    "actual_cases": [
+      "Outer advisory gate abort followed by one successful claim",
+      "Late native abort rolls back task/page/run rows before an identical commit succeeds without provider refetch",
+      "Committed lost ACK remains fatal with one committed page and no resend",
+      "Reserved lost ACK remains fatal with one reservation and no provider fetch",
+      "Owner/generation/run-fence/claim-lease/run-state/credential expiry or revocation rechecks after abort",
+      "Planner gate abort leaves cursor/tasks unchanged, followed by one member admitted once"
+    ],
+    "actual_postgrest_server_run": false,
+    "http_layer": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+    "nonrollback_effects": "Sequence allocation and emitted logs may survive rollback; the proof concerns transactional domain rows, counters and receipts.",
+    "postgresql_layer": "ACTUAL_DISPOSABLE_POSTGRESQL_16_15",
+    "production_positive_classifier_observed": false
+  }
+}

@@ -1,0 +1,402 @@
+{
+  "deployment_hold": "INDEPENDENT_REVIEW_AND_EXACT_PUBLISHED_HEAD_CI_REQUIRED",
+  "errors": 1,
+  "failures": 2,
+  "modules": [
+    "test_rpc_lock_abort_retry",
+    "test_rpc_lock_abort_retry_postgres",
+    "test_rpc_store",
+    "test_rpc_failure_observability_v71"
+  ],
+  "opened_or_imported_dependencies": [
+    {
+      "bytes": 101,
+      "path": "astra_ingestion/__init__.py",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197"
+    },
+    {
+      "bytes": 33254,
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "bytes": 18462,
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "bytes": 27423,
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "bytes": 22439,
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "bytes": 3236,
+      "path": "astra_ingestion/config.py",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953"
+    },
+    {
+      "bytes": 5672,
+      "path": "astra_ingestion/models.py",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2"
+    },
+    {
+      "bytes": 2081,
+      "path": "astra_ingestion/reconcile.py",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba"
+    },
+    {
+      "bytes": 23229,
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    },
+    {
+      "bytes": 9869,
+      "path": "astra_ingestion/source.py",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f"
+    },
+    {
+      "bytes": 31621,
+      "path": "astra_ingestion/store.py",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef"
+    },
+    {
+      "bytes": 7696,
+      "path": "astra_ingestion/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "bytes": 54881,
+      "path": "evidence/replacement-calendar-v1.json",
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3"
+    },
+    {
+      "bytes": 946415,
+      "path": "evidence/replacement-cohort-v1.json",
+      "sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d"
+    },
+    {
+      "bytes": 23087,
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "bytes": 16461,
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7"
+    },
+    {
+      "bytes": 1812,
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+    },
+    {
+      "bytes": 5513,
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c"
+    },
+    {
+      "bytes": 1599,
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39"
+    },
+    {
+      "bytes": 28911,
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2"
+    },
+    {
+      "bytes": 6498,
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a"
+    },
+    {
+      "bytes": 57461,
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    {
+      "bytes": 6758,
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+    },
+    {
+      "bytes": 10029,
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad"
+    },
+    {
+      "bytes": 30170,
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+    },
+    {
+      "bytes": 53160,
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "bytes": 2416,
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f"
+    },
+    {
+      "bytes": 29707,
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "bytes": 2920,
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c"
+    },
+    {
+      "bytes": 2865,
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+    },
+    {
+      "bytes": 3880,
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041"
+    },
+    {
+      "bytes": 17401,
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2"
+    },
+    {
+      "bytes": 35599,
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "bytes": 9398,
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535"
+    },
+    {
+      "bytes": 19399,
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5"
+    },
+    {
+      "bytes": 3720,
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7"
+    },
+    {
+      "bytes": 2423,
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7"
+    },
+    {
+      "bytes": 49245,
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "bytes": 46872,
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+    },
+    {
+      "bytes": 8435,
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424"
+    },
+    {
+      "bytes": 21403,
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+    },
+    {
+      "bytes": 8886,
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e"
+    },
+    {
+      "bytes": 3161,
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631"
+    },
+    {
+      "bytes": 54227,
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a"
+    },
+    {
+      "bytes": 2266,
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae"
+    },
+    {
+      "bytes": 20490,
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+    },
+    {
+      "bytes": 11247,
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d"
+    },
+    {
+      "bytes": 11832,
+      "path": "tests/ingestion/test_backfill_delivery_v2.py",
+      "sha256": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3"
+    },
+    {
+      "bytes": 16964,
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424"
+    },
+    {
+      "bytes": 19668,
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "bytes": 44378,
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "bytes": 15566,
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "bytes": 12405,
+      "path": "tests/ingestion/test_backfill_planner_v2.py",
+      "sha256": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5"
+    },
+    {
+      "bytes": 10844,
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "bytes": 13753,
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "bytes": 8631,
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "bytes": 22521,
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+    },
+    {
+      "bytes": 15706,
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "bytes": 12447,
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6"
+    },
+    {
+      "bytes": 9063,
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "bytes": 21360,
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "bytes": 13856,
+      "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9"
+    },
+    {
+      "bytes": 17858,
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468"
+    },
+    {
+      "bytes": 18203,
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "8ea877b82753530471c069560735500411335e76328f9d21ecc1d3195b748092"
+    },
+    {
+      "bytes": 57671,
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96"
+    },
+    {
+      "bytes": 8676,
+      "path": "tests/ingestion/test_rpc_store.py",
+      "sha256": "d908d96e5203b92f2d9f7aaa068fa31153dd0f11db0ccd9bfe564f411dd61080"
+    }
+  ],
+  "postgresql_evidence": {
+    "cases": {
+      "authority_rechecks": [
+        "owner",
+        "generation",
+        "run_fence",
+        "lease",
+        "run_paused",
+        "credential_revoked"
+      ],
+      "committed_lost_ack": {
+        "actual_commit": true,
+        "fatal_reason": "TRANSPORT_ERROR",
+        "final": {
+          "pages_committed": 1,
+          "readbacks": 0,
+          "records_committed": 1,
+          "requests_reserved": 1
+        },
+        "provider_fetches": 1,
+        "resends": 0
+      },
+      "late_native_commit_abort": {
+        "final": {
+          "pages_committed": 1,
+          "readbacks": 1,
+          "records_committed": 1,
+          "requests_reserved": 1
+        },
+        "provider_fetches": 1,
+        "rolled_back_after_writes": true,
+        "same_commit_bytes": true,
+        "sequence_gap_expected": true,
+        "sqlstate": "55P03"
+      },
+      "reservation_lost_ack": {
+        "provider_fetches": 0,
+        "resends": 0,
+        "reservation_count": 1
+      }
+    },
+    "layers": {
+      "http": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+      "postgresql": "ACTUAL_DISPOSABLE",
+      "postgrest_server": "NOT_RUN",
+      "production": "NOT_RUN"
+    },
+    "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)"
+  },
+  "production_calls": 0,
+  "provider_calls": 0,
+  "schema": "astra.rpc-confirmed-lock-abort-retry-qualification/1",
+  "seconds": 6.028,
+  "skips": 0,
+  "status": "FAIL_OR_SKIPPED",
+  "stderr": "",
+  "stdout": "",
+  "test_log": "test_authentication_and_ownership_dispositions_after_abort_stop (test_rpc_lock_abort_retry.LockAbortRetryTests.test_authentication_and_ownership_dispositions_after_abort_stop) ... ok\ntest_complete_eof_without_content_length_is_allowed (test_rpc_lock_abort_retry.LockAbortRetryTests.test_complete_eof_without_content_length_is_allowed) ... ok\ntest_deadline_does_not_reset_or_launch_after_backoff_expiry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_deadline_does_not_reset_or_launch_after_backoff_expiry) ... ok\ntest_duplicate_framing_headers_are_not_read (test_rpc_lock_abort_retry.LockAbortRetryTests.test_duplicate_framing_headers_are_not_read) ... ok\ntest_error_stream_failures_and_trickling_never_retry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_error_stream_failures_and_trickling_never_retry) ... ok\ntest_exception_reason_cannot_authorize_retry_or_swallow_interrupt (test_rpc_lock_abort_retry.LockAbortRetryTests.test_exception_reason_cannot_authorize_retry_or_swallow_interrupt) ... ok\ntest_exhaustion_is_three_sends_with_only_fixed_safe_labels (test_rpc_lock_abort_retry.LockAbortRetryTests.test_exhaustion_is_three_sends_with_only_fixed_safe_labels) ... ok\ntest_ineligible_operations_statuses_origins_and_headers_are_not_read (test_rpc_lock_abort_retry.LockAbortRetryTests.test_ineligible_operations_statuses_origins_and_headers_are_not_read) ... ok\ntest_invalid_json_and_incomplete_or_oversized_error_fail_closed (test_rpc_lock_abort_retry.LockAbortRetryTests.test_invalid_json_and_incomplete_or_oversized_error_fail_closed) ... ok\ntest_six_database_operations_retry_only_complete_native_error (test_rpc_lock_abort_retry.LockAbortRetryTests.test_six_database_operations_retry_only_complete_native_error) ... ok\ntest_success_response_stream_cannot_be_reclassified_as_rollback (test_rpc_lock_abort_retry.LockAbortRetryTests.test_success_response_stream_cannot_be_reclassified_as_rollback) ... ok\ntest_two_retries_serialize_once_even_if_original_payload_changes (test_rpc_lock_abort_retry.LockAbortRetryTests.test_two_retries_serialize_once_even_if_original_payload_changes) ... ok\ntest_unknown_second_outcome_stops_even_after_a_confirmed_abort (test_rpc_lock_abort_retry.LockAbortRetryTests.test_unknown_second_outcome_stops_even_after_a_confirmed_abort) ... ok\ntest_worker_retries_commit_and_verification_without_provider_replay (test_rpc_lock_abort_retry.LockAbortRetryTests.test_worker_retries_commit_and_verification_without_provider_replay) ... ok\ntest_worker_unknown_commit_is_fatal_and_planner_abort_resumes_once (test_rpc_lock_abort_retry.LockAbortRetryTests.test_worker_unknown_commit_is_fatal_and_planner_abort_resumes_once) ... ok\ntest_wrong_sqlstates_and_application_envelopes_never_retry (test_rpc_lock_abort_retry.LockAbortRetryTests.test_wrong_sqlstates_and_application_envelopes_never_retry) ... ok\ntest_committed_but_lost_ack_is_never_retried (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_committed_but_lost_ack_is_never_retried) ... ok\ntest_exact_auth_private_source_contract_and_native_gate_retry (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_exact_auth_private_source_contract_and_native_gate_retry) ... FAIL\ntest_late_native_abort_rolls_back_writes_and_commit_fetches_once (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_late_native_abort_rolls_back_writes_and_commit_fetches_once) ... ok\ntest_planner_gate_abort_retries_without_advancing_cursor_twice (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_planner_gate_abort_retries_without_advancing_cursor_twice) ... FAIL\ntest_reserved_but_lost_ack_never_fetches (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_reserved_but_lost_ack_never_fetches) ... ok\ntest_retry_rechecks_real_authority_and_never_renews_or_refetches (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_retry_rechecks_real_authority_and_never_renews_or_refetches) ... \n  test_retry_rechecks_real_authority_and_never_renews_or_refetches (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_retry_rechecks_real_authority_and_never_renews_or_refetches) (condition='credential_expired') ... ERROR\ntest_bad_response_and_truncation_do_not_become_success (test_rpc_store.RpcBoundaryTests.test_bad_response_and_truncation_do_not_become_success) ... ok\ntest_capability_is_header_only_and_project_origin_is_pinned (test_rpc_store.RpcBoundaryTests.test_capability_is_header_only_and_project_origin_is_pinned) ... ok\ntest_committed_pacing_response_becomes_deferred_without_another_request (test_rpc_store.RpcBoundaryTests.test_committed_pacing_response_becomes_deferred_without_another_request) ... ok\ntest_http_failure_is_redacted_and_never_retried (test_rpc_store.RpcBoundaryTests.test_http_failure_is_redacted_and_never_retried) ... ok\ntest_production_factory_has_no_direct_database_fallback (test_rpc_store.RpcBoundaryTests.test_production_factory_has_no_direct_database_fallback) ... ok\ntest_redirects_never_forward_credentials (test_rpc_store.RpcBoundaryTests.test_redirects_never_forward_credentials) ... ok\ntest_scope_readback_must_match_submitted_scope (test_rpc_store.RpcBoundaryTests.test_scope_readback_must_match_submitted_scope) ... ok\ntest_service_role_and_other_project_anon_keys_are_rejected (test_rpc_store.RpcBoundaryTests.test_service_role_and_other_project_anon_keys_are_rejected) ... ok\ntest_timeout_never_retries_or_calls_source_after_uncertain_reservation (test_rpc_store.RpcBoundaryTests.test_timeout_never_retries_or_calls_source_after_uncertain_reservation) ... ok\ntest_trickling_response_cannot_reset_whole_response_deadline (test_rpc_store.RpcBoundaryTests.test_trickling_response_cannot_reset_whole_response_deadline) ... ok\ntest_unknown_error_and_remote_message_do_not_leak (test_rpc_store.RpcBoundaryTests.test_unknown_error_and_remote_message_do_not_leak) ... ok\ntest_verification_snapshot_rejects_corrupted_record_keys (test_rpc_store.RpcBoundaryTests.test_verification_snapshot_rejects_corrupted_record_keys) ... ok\ntest_actual_cli_fails_once_and_logs_only_bounded_safe_fields (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_actual_cli_fails_once_and_logs_only_bounded_safe_fields) ... ok\ntest_constructor_and_mutated_attributes_use_strict_fixed_fallbacks (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_constructor_and_mutated_attributes_use_strict_fixed_fallbacks) ... ok\ntest_current_replacement_worker_does_not_fetch_defer_or_retry_uncertain_reservation (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_current_replacement_worker_does_not_fetch_defer_or_retry_uncertain_reservation) ... ok\ntest_custom_rpc_exception_type_name_cannot_add_data_to_log (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_custom_rpc_exception_type_name_cannot_add_data_to_log) ... ok\ntest_failure_context_is_per_exception_not_shared_between_concurrent_calls (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_failure_context_is_per_exception_not_shared_between_concurrent_calls) ... ok\ntest_handled_database_dispositions_keep_existing_exception_classes (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_handled_database_dispositions_keep_existing_exception_classes) ... ok\ntest_malformed_response_categories_do_not_echo_remote_content (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_malformed_response_categories_do_not_echo_remote_content) ... ok\ntest_remote_failures_receive_local_labels_without_reading_error_bodies (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_remote_failures_receive_local_labels_without_reading_error_bodies) ... ok\ntest_same_exception_identity_and_args_escape_without_retry (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_same_exception_identity_and_args_escape_without_retry) ... ok\ntest_success_keeps_response_request_origin_headers_and_timeout (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_success_keeps_response_request_origin_headers_and_timeout) ... ok\ntest_unknown_operations_do_not_become_log_labels_or_change_request (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_unknown_operations_do_not_become_log_labels_or_change_request) ... ok\ntest_whole_response_deadline_is_unchanged (test_rpc_failure_observability_v71.RpcFailureObservabilityTests.test_whole_response_deadline_is_unchanged) ... ok\n\n======================================================================\nERROR: test_retry_rechecks_real_authority_and_never_renews_or_refetches (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_retry_rechecks_real_authority_and_never_renews_or_refetches) (condition='credential_expired')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 55, in open\n    envelope = case.f.rpc(operation, document[\"payload\"], actor=\"worker\",\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_postgres.py\", line 148, in rpc\n    return conn.execute(f'SELECT {endpoint}(%s,%s::jsonb) AS value',(operation,json.dumps(payload))).fetchone()['value']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.LockNotAvailable: synthetic late abort for authority transition\nCONTEXT:  PL/pgSQL function astra_rpc_test_04981c8a6406.retry_fixture_fault_fn() line 5 at RAISE\nSQL statement \"UPDATE astra_rpc_test_04981c8a6406.backfill_runs_v2 SET pages_committed=pages_committed+1,records_committed=records_committed+v_count,source_bytes=source_bytes+octet_length(v_raw),last_progress_at=v_now WHERE id=t.run_id\"\nPL/pgSQL function astra_rpc_test_04981c8a6406.backfill_dispatch_v2(text,jsonb) line 308 at SQL statement\nPL/pgSQL function astra_rpc_test_04981c8a6406.rpc_dispatch(text,jsonb) line 63 at RETURN\nSQL function \"astra_rpc_endpoint_04981c8a6406\" statement 1\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 286, in test_retry_rechecks_real_authority_and_never_renews_or_refetches\n    BackfillWorker(store, provider, worker_id=\"retry-worker\").run_once()\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/backfill_worker_v2.py\", line 119, in run_once\n    committed = self.call(\"backfill_commit\", payload)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/backfill_worker_v2.py\", line 43, in call\n    return self.store._call(operation, payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 158, in _call\n    return self._call_once(operation, payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 184, in _call_once\n    raw = self._exchange_once(request, deadline, timeout)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 239, in _exchange_once\n    response = self._opener.open(request, timeout=timeout)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 66, in open\n    self.after_abort(operation, code)\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 282, in <lambda>\n    opener.after_abort = lambda operation, code: original_callback(operation, code) if code == \"55P03\" else None\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 277, in aborted\n    conn.execute(f\"UPDATE {self.f.schema}.runtime_credentials SET expires_at=clock_timestamp()-interval '1 second' WHERE actor='worker'\")\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.CheckViolation: new row for relation \"runtime_credentials\" violates check constraint \"runtime_credentials_check\"\nDETAIL:  Failing row contains (a0fab1377f49a759b57f63318262ebe89fabfc990e8e93ceac2984561482b9d4, worker, 2026-10-30 16:07:43.875071+00, 2026-10-30 16:07:43.001883+00, null).\n\n======================================================================\nFAIL: test_exact_auth_private_source_contract_and_native_gate_retry (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_exact_auth_private_source_contract_and_native_gate_retry)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 177, in test_exact_auth_private_source_contract_and_native_gate_retry\n    self.assertEqual(actual, expected)\nAssertionError: '3569d9629d1e5ced5f1ee59d540b170c59c906ec5ce15f777c0dbe4e775a236b' != 'a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520'\n- 3569d9629d1e5ced5f1ee59d540b170c59c906ec5ce15f777c0dbe4e775a236b\n+ a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520\n\n\n======================================================================\nFAIL: test_planner_gate_abort_retries_without_advancing_cursor_twice (test_rpc_lock_abort_retry_postgres.PostgreSQLLockAbortTests.test_planner_gate_abort_retries_without_advancing_cursor_twice)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 55, in open\n    envelope = case.f.rpc(operation, document[\"payload\"], actor=\"worker\",\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_postgres.py\", line 148, in rpc\n    return conn.execute(f'SELECT {endpoint}(%s,%s::jsonb) AS value',(operation,json.dumps(payload))).fetchone()['value']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.ProgrammingError: Operation is outside this capability\nCONTEXT:  PL/pgSQL function astra_rpc_test_04981c8a6406.rpc_dispatch(text,jsonb) line 32 at RAISE\nSQL function \"astra_rpc_endpoint_04981c8a6406\" statement 1\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 310, in test_planner_gate_abort_retries_without_advancing_cursor_twice\n    result = store._call(\"backfill_plan_next\", {\"run_id\": self.run, \"member_limit\": 1,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 158, in _call\n    return self._call_once(operation, payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 184, in _call_once\n    raw = self._exchange_once(request, deadline, timeout)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/astra_ingestion/rpc_store.py\", line 239, in _exchange_once\n    response = self._opener.open(request, timeout=timeout)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 66, in open\n    self.after_abort(operation, code)\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 304, in aborted\n    self.assertEqual((operation, code), (\"backfill_plan_next\", \"55P03\"))\nAssertionError: Tuples differ: ('backfill_plan_next', 'PT403') != ('backfill_plan_next', '55P03')\n\nFirst differing element 1:\n'PT403'\n'55P03'\n\n- ('backfill_plan_next', 'PT403')\n?                          --\n\n+ ('backfill_plan_next', '55P03')\n?                         ++\n\n\n----------------------------------------------------------------------\nRan 46 tests in 6.001s\n\nFAILED (failures=2, errors=1)\n",
+  "tests": 46
+}

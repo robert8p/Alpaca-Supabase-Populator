@@ -1,0 +1,98 @@
+{
+  "schema": "astra.shared-field-cache-local-qualification/1",
+  "production_calls": 0,
+  "selected_for_activation": false,
+  "source_inverse_and_link_statement_preservation": true,
+  "environment": {
+    "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "jit": "on",
+    "work_mem": "4MB",
+    "plan_cache_mode": "auto",
+    "track_functions": "none"
+  },
+  "field_state_edge_cases": [
+    {
+      "chosen_fields": [],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x"
+      ],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x"
+      ],
+      "voted_fields": [
+        "x"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "y"
+      ],
+      "voted_fields": [
+        "x",
+        "y"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [
+        "x",
+        "z"
+      ],
+      "voted_fields": [
+        "z",
+        "x",
+        "a"
+      ],
+      "rows": 1,
+      "equal": true
+    },
+    {
+      "chosen_fields": [],
+      "voted_fields": [],
+      "rows": 0,
+      "equal": true
+    }
+  ],
+  "whole_function_equivalence": {
+    "single_multiple_null_partial_and_tied_versions": true,
+    "chosen_missing_other_candidate_field": true,
+    "present_source_jsonnull": true,
+    "conflict_order_identical": true,
+    "all_shared_sources_records_links_counters_and_receipts_identical": true,
+    "real_successor_page_after_candidate_verified": true,
+    "metadata_oid_acl_owner_config_identical": true
+  },
+  "passed": false,
+  "tests": 4,
+  "errors": 1,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 3.0930849599972134,
+  "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "test_sha256": "700c7e0e2349d946efae9e4a0730a0cb94c404cb0cf350d7573f9790c3f616a4",
+  "error_details": [
+    {
+      "test": "test_scaled_full_output_and_normal_generic_plan_cost (__main__.PostgreSQL.test_scaled_full_output_and_normal_generic_plan_cost)",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v74/shared-field-cache/qualify_shared_field_cache_v74.py\", line 153, in test_scaled_full_output_and_normal_generic_plan_cost\n    cur.execute(command);full[label]=sorted(cur.fetchall(),key=lambda x:x[1])\n    ^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/cursor.py\", line 97, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.UniqueViolation: duplicate key value violates unique constraint \"backfill_shared_records_v2_pkey\"\nDETAIL:  Key (run_id, record_key)=(run-d0613f5b2020416085fc1a694fe99c10, Alpaca:CONTRACT_REFERENCE:00472369019b9f6ce7f62c809eb9fb4b20a2ef06ace083e0ad3e62c2e72a08e0) already exists.\n"
+    }
+  ],
+  "failure_details": []
+}

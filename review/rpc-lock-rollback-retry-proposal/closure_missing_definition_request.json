@@ -1,0 +1,556 @@
+{
+  "status": "INCOMPLETE_SOURCE_CLOSURE",
+  "source_catalog": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+  "function_signatures": [
+    "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+    "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()",
+    "astra_ingestion_v1.backfill_breadth_ready_v2(text)",
+    "astra_ingestion_v1.backfill_contract_child_trigger_v2()",
+    "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)",
+    "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)",
+    "astra_ingestion_v1.backfill_contract_prove_child_v2(text)",
+    "astra_ingestion_v1.backfill_contract_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_contract_register_child_v2(text)",
+    "astra_ingestion_v1.backfill_date_v2(text)",
+    "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)",
+    "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+    "astra_ingestion_v1.backfill_evidence_guard_v2()",
+    "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+    "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+    "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+    "astra_ingestion_v1.backfill_identity_discover_pending_v2()",
+    "astra_ingestion_v1.backfill_identity_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)",
+    "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)",
+    "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)",
+    "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+    "astra_ingestion_v1.backfill_minute_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+    "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+    "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+    "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+    "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+    "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+    "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+    "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+    "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)",
+    "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+    "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+    "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+    "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)",
+    "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)",
+    "astra_ingestion_v1.backfill_run_guard_v2()",
+    "astra_ingestion_v1.backfill_s02_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+    "astra_ingestion_v1.backfill_shared_readback_trigger_v2()",
+    "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+    "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+    "astra_ingestion_v1.backfill_stamp_v2(text)",
+    "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+    "astra_ingestion_v1.backfill_task_guard_v2()",
+    "astra_ingestion_v1.backfill_try_finalize_v2(text)",
+    "astra_ingestion_v1.backfill_uri_component_v2(text)",
+    "astra_ingestion_v1.rpc_ascii_string(text)",
+    "astra_ingestion_v1.rpc_canonical(jsonb)",
+    "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+    "astra_ingestion_v1.rpc_json_unique(json)",
+    "public.astra_ingestion_rpc_v1(text,jsonb)"
+  ],
+  "missing_definitions": [
+    {
+      "oid": "16041453",
+      "signature": "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+      "source_sha256": "8c56d42ab4a7d315ca6fdcb3c0bf2466ea216d5e01a8728d613c4277983603d1",
+      "metadata_sha256": "6ec58e5299867df918914dffbd84d5f399633a1cbcf6b3c24cd039a92d1efd87"
+    },
+    {
+      "oid": "16041710",
+      "signature": "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()",
+      "source_sha256": "ab9192e93060b022d23ae9e590f196b644f837b23b7a46c3119a8cbe9d0e399f",
+      "metadata_sha256": "e4c87556ccbd5ffbe38c67818ba1757226e1ec76fa346bfe63e92b93ccd39a68"
+    },
+    {
+      "oid": "16061389",
+      "signature": "astra_ingestion_v1.backfill_contract_prove_child_v2(text)",
+      "source_sha256": "bfc62c4adc8272fb6ec2fe2256e96aacfff8ca8ec0daa579db5c48306bc00ff6",
+      "metadata_sha256": "62dcf1507147afda188fe6d52d7852189d2a5a3612e1f3db7044101b3f3985be"
+    },
+    {
+      "oid": "16061398",
+      "signature": "astra_ingestion_v1.backfill_contract_readback_trigger_v2()",
+      "source_sha256": "c80e1a8e0f9e2652e062f4c1c85f15d7c92054659deb98eb75e520debd699ab5",
+      "metadata_sha256": "76ce4ad4df634752cc479545899ba8f5a425b33bb29118cccbb3e2b64b2eccba"
+    },
+    {
+      "oid": "16040226",
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278"
+    },
+    {
+      "oid": "16042638",
+      "signature": "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+      "source_sha256": "df376e09d4c2e87bc3506d94cd93f3e33e568f49cbb48ef8802a91b0c752f25f",
+      "metadata_sha256": "ddcab3bc4262069d46c981a192698475d4110ede710f1ef82884e9ede873c1e9"
+    },
+    {
+      "oid": "16047728",
+      "signature": "astra_ingestion_v1.backfill_identity_readback_trigger_v2()",
+      "source_sha256": "f9bc1959eea5677f14ee03e900f1997b98155402b894840abc4d45f8a2355b6b",
+      "metadata_sha256": "8c8a82ebd5b65b456b905936311946bcfe6a07e2b4ba982cf22f73e290c780a2"
+    },
+    {
+      "oid": "16047701",
+      "signature": "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)",
+      "source_sha256": "b40886170f7bc62f55d7ddb463dae92183c14b1d8a6b961bae9aa8a7e0eb47a2",
+      "metadata_sha256": "2f5cc0361c6be297ab8d5799f32bb62899ae3d831f149b386e8bd1fd021cc6ab"
+    },
+    {
+      "oid": "16047708",
+      "signature": "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)",
+      "source_sha256": "57062be6be4f75829d43e859c30555dcd186d7f02e861283d8a59037ebb9c49f",
+      "metadata_sha256": "7ab9026bea935acf8946c36241d9c6ffea724db8939d22faa11895f0a92dd3e1"
+    },
+    {
+      "oid": "16047950",
+      "signature": "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+      "source_sha256": "ce0a9883fba5c7e04e82e69230f6f60e229b38a88845d3a33748274c99016aa7",
+      "metadata_sha256": "d53307ba14472d7bef0c04b09b38d990d3b984ec0ddd05773265da5612b1a8a3"
+    },
+    {
+      "oid": "16042602",
+      "signature": "astra_ingestion_v1.backfill_minute_readback_trigger_v2()",
+      "source_sha256": "43fdf84063928deb1ab8bc511ddaae6a53f66dcf249b0fd1af30d34939065d24",
+      "metadata_sha256": "b05aa88f377f9e5988cb1fa417ed6ffac7171738d81fd89bb888bce16b6f8625"
+    },
+    {
+      "oid": "16047822",
+      "signature": "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()",
+      "source_sha256": "1571e19bb63fe6dcc77d778b4ddd77b949020dd203071c746df3989046783884",
+      "metadata_sha256": "cdc97df2f105195b598cb614880703df03e4451ffaf4b53fdb9b79d4a874b788"
+    },
+    {
+      "oid": "16043404",
+      "signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+      "source_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342",
+      "metadata_sha256": "bbfae27a0704b8b6407dce8326b658bf97cee9efbb24aab2ef4ec4640574a116"
+    },
+    {
+      "oid": "16041470",
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e",
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63"
+    },
+    {
+      "oid": "16041026",
+      "signature": "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)",
+      "source_sha256": "6933edc531c5ed74ab0786dd9d865d07f332bbb931e9f043aa3c9b618d1e9f2e",
+      "metadata_sha256": "ffcd60c2d8fd667d8d44ca233fd5aac8544223105a23a7bc0440fa7631552376"
+    },
+    {
+      "oid": "16040222",
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f"
+    },
+    {
+      "oid": "16047954",
+      "signature": "astra_ingestion_v1.backfill_s02_readback_trigger_v2()",
+      "source_sha256": "caf72927d0ed97d663be52d972fa6157c4281b4a7aba9ef21e3810459f63f927",
+      "metadata_sha256": "4820ca22717f809e42f27b9d05e186a5cc59d964608cd65639aa16890e58928d"
+    },
+    {
+      "oid": "16050108",
+      "signature": "astra_ingestion_v1.backfill_shared_readback_trigger_v2()",
+      "source_sha256": "f2c47d98d85d9ea1b826ea671e299af5f02741ae19037b4915f6d8decf4eb666",
+      "metadata_sha256": "95332ee3b240952bf9f9c2a01c5361068de323e37069cfea30e700d2d50b5af9"
+    },
+    {
+      "oid": "16041467",
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3"
+    },
+    {
+      "oid": "15986013",
+      "signature": "astra_ingestion_v1.rpc_ascii_string(text)",
+      "source_sha256": "346a67e18573fbfc3b80c2fda528f3474290483a5e13ca5d29e58bfcd5afbb6d",
+      "metadata_sha256": "c9fb8b6139a7f6c649ed71092cdc40671afa16f78ad6fa09f4f12f549eb56527"
+    }
+  ],
+  "write_tables": [
+    "astra_ingestion_v1.backfill_audit_v2",
+    "astra_ingestion_v1.backfill_contract_child_links_v2",
+    "astra_ingestion_v1.backfill_contract_enumeration_v2",
+    "astra_ingestion_v1.backfill_contract_registered_children_v2",
+    "astra_ingestion_v1.backfill_contract_state_v2",
+    "astra_ingestion_v1.backfill_contract_work_v2",
+    "astra_ingestion_v1.backfill_exceptions_v2",
+    "astra_ingestion_v1.backfill_family_turn_v2",
+    "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+    "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+    "astra_ingestion_v1.backfill_identity_refresh_v2",
+    "astra_ingestion_v1.backfill_identity_roots_v2",
+    "astra_ingestion_v1.backfill_identity_source_members_v2",
+    "astra_ingestion_v1.backfill_pages_v2",
+    "astra_ingestion_v1.backfill_plan_coverage_v2",
+    "astra_ingestion_v1.backfill_plan_manifests_v2",
+    "astra_ingestion_v1.backfill_plan_units_v2",
+    "astra_ingestion_v1.backfill_provider_dependencies_v2",
+    "astra_ingestion_v1.backfill_readbacks_v2",
+    "astra_ingestion_v1.backfill_runs_v2",
+    "astra_ingestion_v1.backfill_tasks_v2",
+    "astra_ingestion_v1.backfill_workers_v2",
+    "astra_ingestion_v1.source_limits"
+  ],
+  "triggers": [
+    {
+      "name": "backfill_contract_child_insert_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "enabled": "O",
+      "function_sha256": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b",
+      "definition_sha256": "7f83faa8e5c7269c046502bed38a732854d2ba4519dabafe3599855be6fdf927",
+      "function_signature": "astra_ingestion_v1.backfill_contract_child_trigger_v2()"
+    },
+    {
+      "name": "backfill_execution_page_limit_v2",
+      "type": 23,
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "enabled": "O",
+      "function_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342",
+      "definition_sha256": "03592512f7bf87b15d4e07dd46212fc36885d1dac4253bbe6dad46b75ba1a73e",
+      "function_signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()"
+    },
+    {
+      "name": "backfill_static_plan_snapshot_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "enabled": "O",
+      "function_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "definition_sha256": "4b34d0b66c2226913b9b6ef48b65c5e2949a824b43726eccf59661a6dce53ca5",
+      "function_signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()"
+    },
+    {
+      "name": "backfill_task_scope_v2",
+      "type": 23,
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "enabled": "O",
+      "function_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "definition_sha256": "41afff79986d77c622da846e1bec0fae3ef21de4bcee83e7baeec30c0752db47",
+      "function_signature": "astra_ingestion_v1.backfill_task_guard_v2()"
+    },
+    {
+      "name": "contract_links_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "c53d0c59c6f4092e6346a4f6c36d38c15cefc51b4233cbbf66787eac20e9d93a",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "contract_links_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "c339b58afdb97dc0e983f3d17f3c566dbf4b7b3020f0b15ba3e565ee92ce508b",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_exception_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_exceptions_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "2afa3889789dd782ee476ea35bc70496512ea12f66f83756f680bbd477fec7c3",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_breadth_project_on_commit_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_pages_v2",
+      "enabled": "O",
+      "function_sha256": "ab9192e93060b022d23ae9e590f196b644f837b23b7a46c3119a8cbe9d0e399f",
+      "definition_sha256": "341e1ebf8e153d583003b05be10573d4d40c576a2f1388cf657bf17bb4650e62",
+      "function_signature": "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()"
+    },
+    {
+      "name": "backfill_page_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_pages_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "e20fd2d2b1930a11596710749d6c46daabea51b3ec6c40e5ad5680a156e2ddba",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_run_immutable_v2",
+      "type": 19,
+      "table": "astra_ingestion_v1.backfill_runs_v2",
+      "enabled": "O",
+      "function_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "definition_sha256": "302556881ba89b4585e0d40e437fd481e493591385aac52c9858f6c8705a0147",
+      "function_signature": "astra_ingestion_v1.backfill_run_guard_v2()"
+    },
+    {
+      "name": "backfill_identity_discovery_gap_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "a714392e08194853efa5831ceb1473161940256cf5281a354f49c559efe21d99",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_audit_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_audit_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "8daa1a075773888fdedf8af0dd6dac66c5130472133492f12ac0a2670636b3f6",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_plan_manifest_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "1a963085b3923d0d8138b6aaf747512818e6d406cbf66bb76aa54685f5ec5d63",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_plan_units_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_plan_units_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "2639a9cda7ab0fb8f0d99ca0db5710f60632e34f8ed6165120e271da09c1d055",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_contract_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "c80e1a8e0f9e2652e062f4c1c85f15d7c92054659deb98eb75e520debd699ab5",
+      "definition_sha256": "e6a86939ad5e85373dbe2b698bb46855c37cbedb3af55a59cdab95de51d2f2cb",
+      "function_signature": "astra_ingestion_v1.backfill_contract_readback_trigger_v2()"
+    },
+    {
+      "name": "backfill_identity_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "f9bc1959eea5677f14ee03e900f1997b98155402b894840abc4d45f8a2355b6b",
+      "definition_sha256": "8bb352e7315fe77361c07ef906b1bb5d3505f82c9807ca3446ae61458ebd0797",
+      "function_signature": "astra_ingestion_v1.backfill_identity_readback_trigger_v2()"
+    },
+    {
+      "name": "backfill_minute_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "43fdf84063928deb1ab8bc511ddaae6a53f66dcf249b0fd1af30d34939065d24",
+      "definition_sha256": "38b33b4b81fc893bd3fd3644994b4cfeec80eb215304317a4ce364a8c46cc3b2",
+      "function_signature": "astra_ingestion_v1.backfill_minute_readback_trigger_v2()"
+    },
+    {
+      "name": "backfill_nonminute_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "1571e19bb63fe6dcc77d778b4ddd77b949020dd203071c746df3989046783884",
+      "definition_sha256": "6e09b89587a95fdcb2cb7a3b081bed838911f621dce51d2f70e671265ca20636",
+      "function_signature": "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()"
+    },
+    {
+      "name": "backfill_readback_immutable_v2",
+      "type": 58,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "definition_sha256": "f7ebfb7ba1929887389c6e97e211d9fd871efff5677dfa072674181d4b34d9cf",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    },
+    {
+      "name": "backfill_s02_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "caf72927d0ed97d663be52d972fa6157c4281b4a7aba9ef21e3810459f63f927",
+      "definition_sha256": "bd4bf41fdd123ebe497848d60bbedd7e69d032d8cf6a2bcf2e13deb84997ce66",
+      "function_signature": "astra_ingestion_v1.backfill_s02_readback_trigger_v2()"
+    },
+    {
+      "name": "backfill_shared_readback_v2",
+      "type": 5,
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "enabled": "O",
+      "function_sha256": "f2c47d98d85d9ea1b826ea671e299af5f02741ae19037b4915f6d8decf4eb666",
+      "definition_sha256": "7f867ffffdebb4981d6c6fc4e654db0a74061925c2e8231b3f3638f458733e4d",
+      "function_signature": "astra_ingestion_v1.backfill_shared_readback_trigger_v2()"
+    }
+  ],
+  "edges": {
+    "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+      "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_task_guard_v2()": [
+      "astra_ingestion_v1.backfill_task_guard_v2()"
+    ],
+    "astra_ingestion_v1.backfill_contract_child_trigger_v2()": [
+      "astra_ingestion_v1.backfill_contract_child_trigger_v2()",
+      "astra_ingestion_v1.backfill_contract_register_child_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_register_child_v2(text)": [
+      "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)",
+      "astra_ingestion_v1.backfill_contract_prove_child_v2(text)",
+      "astra_ingestion_v1.backfill_contract_register_child_v2(text)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.rpc_canonical(jsonb)": [
+      "astra_ingestion_v1.rpc_ascii_string(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)": [
+      "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)"
+    ],
+    "astra_ingestion_v1.backfill_stamp_v2(text)": [
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_breadth_ready_v2(text)",
+      "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)",
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+      "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "astra_ingestion_v1.backfill_uri_component_v2(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_owned_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_uri_component_v2(text)": [
+      "astra_ingestion_v1.backfill_uri_component_v2(text)"
+    ],
+    "astra_ingestion_v1.rpc_json_unique(json)": [
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)": [
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_page_limit_cap_v2(text)": [
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_breadth_ready_v2(text)": [
+      "astra_ingestion_v1.backfill_breadth_ready_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": [
+      "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)"
+    ],
+    "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)": [
+      "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_identity_discover_pending_v2()": [
+      "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()"
+    ],
+    "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)": [
+      "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+      "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)"
+    ],
+    "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_plan_next_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+      "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": [
+      "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_snapshot_task_v2(text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)": [
+      "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_date_v2(text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)": [
+      "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)"
+    ],
+    "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)": [
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)"
+    ],
+    "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_try_finalize_v2(text)": [
+      "astra_ingestion_v1.backfill_stamp_v2(text)",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+      "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_page_rows_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.rpc_dispatch(text,jsonb)": [
+      "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_plan_next_v2(jsonb)"
+    ],
+    "public.astra_ingestion_rpc_v1(text,jsonb)": [
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)"
+    ]
+  },
+  "limitations": [
+    "Branch slicing is manually reviewed against exact pinned wrappers; all other reachable helper bodies conservatively included.",
+    "Missing trigger/helper bodies can expose further callees; this is a request inventory, not a completed closure proof."
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "active_additions": [
+    {
+      "bytes": 17858,
+      "git_blob": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468"
+    },
+    {
+      "bytes": 23452,
+      "git_blob": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+    }
+  ],
+  "active_replacements": [
+    {
+      "bytes": 23229,
+      "git_blob": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    }
+  ],
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "base_dependency_tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+  "base_runtime_revision": "3ee4_verified_deployed_runtime",
+  "deployment": false,
+  "deployment_gates": [
+    {
+      "gate": "independent_final_boundary_review",
+      "note": "Independent unit/runtime review does not itself claim full gateway/catalog boundary approval.",
+      "state": "PENDING_ROOT_REVIEW"
+    },
+    {
+      "gate": "effective_gateway_boundary",
+      "note": "No selected hook/transaction/response setting in connector/role/database catalogs; external PostgREST environment/file configuration is not observable. Root decision must retain this assumption or use already-authorized authoritative evidence.",
+      "state": "VISIBILITY_LIMIT_DISCLOSED"
+    },
+    {
+      "gate": "selected_source_reconciliation",
+      "note": "Current closure binds shared refresh b18. If the separately reviewed7f538 optimization installs, bind the fresh selected source before deployment.",
+      "state": "REQUIRED_BEFORE_DEPLOYMENT"
+    },
+    {
+      "gate": "exact_published_head_CI",
+      "note": "Require every actual push/PR gate, dedicated ingestion zero skips with all24 new tests explicitly executed, and any PR merge-tree equality.",
+      "state": "NOT_RUN"
+    },
+    {
+      "gate": "root_deployment_decision",
+      "note": "No publication, deployment, production call, permission/configuration change or provider request was performed by this author.",
+      "state": "NOT_AUTHORIZED_BY_THIS_ARTIFACT"
+    }
+  ],
+  "live_boundary_evidence": [
+    {
+      "bytes": 798,
+      "git_blob": "71b6589a637344968d9ab12ad96d9c5c61a2f637",
+      "path": "review/recovery-v74/retry_gateway_setting_catalog_v74.json",
+      "sha256": "c045e794740f6f4fb1ee8940535234764be4bb8573dee8e7f4cabe606a565aaf"
+    },
+    {
+      "bytes": 59048,
+      "git_blob": "d23d4b0e24032d26f63895120ad8ad278b5e946a",
+      "path": "review/recovery-v74/retry_table_boundary_catalog_v74.json",
+      "sha256": "c032007b09778154929b546a4ffc5f2ee482c0fc72fcc4188cda478022b26607"
+    },
+    {
+      "bytes": 8752,
+      "git_blob": "2c3c44f9a51bf3cff0c420590345f77d24a26568",
+      "path": "review/recovery-v74/retry_read_relation_boundary_v74.json",
+      "sha256": "7441273fb43374e10299c4c6a08c567f73d4fd868662e776050764e1287e9f63"
+    },
+    {
+      "bytes": 9968,
+      "git_blob": "93fe8370dc911ec30e25058bdfe7762786d7b13d",
+      "path": "review/recovery-v74/retry_view_and_rls_boundary_v74.json",
+      "sha256": "0178799c42c5166d0bc4c05a01b3dd7651f6d571282a789dc1779a3fcbcc3955"
+    },
+    {
+      "bytes": 15351,
+      "git_blob": "b2d34ad75e712471d6be3268f47fd3383f2cb5b1",
+      "path": "review/recovery-v74/retry_write_policy_boundary_v74.json",
+      "sha256": "c4b1924c6e5f606ec940ce2bdd3a76c11eedbb98f9c2ac35118414049bfac61d"
+    },
+    {
+      "bytes": 9641,
+      "git_blob": "d869b6f1291e96b14abb3e397e72615000ea85f5",
+      "path": "review/recovery-v74/retry_write_index_boundary_v74.json",
+      "sha256": "8aeaa95617c8f335a0e62ed98bce7ceabbfc2132ad9a8c5653e4b352053aec34"
+    }
+  ],
+  "prepared_at": "2026-10-30T16:40:11.937790+00:00",
+  "production_calls": 0,
+  "proofs": [
+    {
+      "bytes": 447083,
+      "git_blob": "bde2db68186dab95f1049296f703c7f87bf3ce6d",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "sha256": "e7f3a6cb15ec888634bfbae3ef5cb59869b8c7962041b989fc1707ad06682e2e"
+    },
+    {
+      "bytes": 8989,
+      "git_blob": "9d6f401cde83963e57ca36cbb1e8e7f3c0da90b3",
+      "path": "review/rpc-lock-rollback-retry-proposal/independent_unit_qualification_v74.json",
+      "sha256": "68a1c580fa73df79c9d21827e29ff6e576d8400f5b3481786ab616562a3e19f5"
+    },
+    {
+      "bytes": 27036,
+      "git_blob": "d0a64691c490d6de37307fda65de241dedbbfcae",
+      "path": "review/rpc-lock-rollback-retry-proposal/dependency_audit.json",
+      "sha256": "d870e0dfcdade51057147b2b28863834f8a6c0146d5a98d00fe450bd4e61b589"
+    },
+    {
+      "bytes": 86925,
+      "git_blob": "ad27b0d9d024fc0b6f482d53ef33c3e58bef6f16",
+      "path": "review/rpc-lock-rollback-retry-proposal/retry_source_closure.json",
+      "sha256": "cde0cd8a860cfeafcb44c59e2b091628fd867ba87dcd8b7a3572ca633299c4c8"
+    },
+    {
+      "bytes": 313688,
+      "git_blob": "4a6c8e6b74eba3abb740ed9929beb00ddc325656",
+      "path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88"
+    },
+    {
+      "bytes": 17366,
+      "git_blob": "a6bb8dfbc7a85f5b6fe3a01fdbcc6e1dc23748c9",
+      "path": "review/rpc-lock-rollback-retry-proposal/IMPLEMENTATION_REVIEW.md",
+      "sha256": "c00ca485c5fac826e1d75312a17db38a2325d668f6e46b31591801fc19a1e52f"
+    },
+    {
+      "bytes": 13279,
+      "git_blob": "c282763dbe2952041de7b18c7f17c4e47b94ad86",
+      "path": "review/rpc-lock-rollback-retry-proposal/runtime.patch",
+      "sha256": "c7a3c055387410ba8895a312dfe1e6dccbb0035b0f3fad19c394b5d673b98d19"
+    },
+    {
+      "bytes": 3529,
+      "git_blob": "596d37ca33f91dcf53c988f5c952da11f42961ed",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_history.json",
+      "sha256": "38ca78f2344db8289f68720db4ca29170fc519d238c758bba1cb5fc07f504acf"
+    },
+    {
+      "bytes": 501864,
+      "git_blob": "ee6ff2e5d3bf14867cf97ec43789e7940e90589a",
+      "path": "review/recovery-v74/combined-release/combined_active_dependency_qualification_v74.json",
+      "sha256": "6517788ab3f5e888969e59fab5e395e77032bf301d46396cde86c0f089cc6162"
+    }
+  ],
+  "publication": false,
+  "publication_target_base_commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+  "publication_target_base_tree": "71db22123ba2db26d1135916cb91081b03bab2cb",
+  "qualification": {
+    "actual_postgresql_tests": 6,
+    "actual_postgrest_server": "NOT_RUN",
+    "combined_actual_dependencies": 82,
+    "combined_tests": 56,
+    "errors": 0,
+    "failures": 0,
+    "http_layer": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+    "independent_non_pg_tests": 42,
+    "local_postgresql": "16.15",
+    "new_tests": 24,
+    "producer_tests": 48,
+    "skips": 0
+  },
+  "remaining_fatal_classes": [
+    "all legacy/relay/other operations outside the exact six",
+    "ambiguous transport or success-response failure",
+    "other SQLSTATE or HTTP status",
+    "incomplete/malformed/untrusted error response",
+    "authentication/ownership/integrity rejection",
+    "retry/deadline exhaustion"
+  ],
+  "remaining_fatal_worker_operations": [
+    "health",
+    "backfill_defer",
+    "backfill_material",
+    "backfill_reuse_read",
+    "backfill_reuse_verify",
+    "backfill_breadth_material",
+    "backfill_identity_material",
+    "backfill_identity_source_read",
+    "backfill_identity_source_commit",
+    "backfill_massive_archive_commit",
+    "backfill_feature_reuse_commit"
+  ],
+  "required_new_actual_read_inputs": [
+    {
+      "bytes": 103870,
+      "git_blob": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61"
+    },
+    {
+      "bytes": 131630,
+      "git_blob": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f"
+    }
+  ],
+  "runtime_behavior": {
+    "allowlisted_operations": [
+      "backfill_claim",
+      "backfill_reserve",
+      "backfill_commit",
+      "backfill_reuse_commit",
+      "backfill_verify",
+      "backfill_plan_next"
+    ],
+    "arbitrary_reason_string_cannot_authorize_retry": true,
+    "backoff_seconds": [
+      0.25,
+      0.75
+    ],
+    "classifier_implementation": "private boolean confirmation only from opener.open HTTPError",
+    "error_body_limit_bytes": 8192,
+    "provider_or_worker_replay": false,
+    "same_rpc_only": true,
+    "same_serialized_request_bytes": true,
+    "shared_deadline_seconds": 15,
+    "total_send_limit": 3,
+    "unknown_write_handling": "FATAL_NO_RETRY"
+  },
+  "schema": "astra.confirmed-lock-abort-retry-local-release/1",
+  "source_closure": {
+    "checks": 50,
+    "defaults": 82,
+    "expression_or_partial_indexes": 16,
+    "foreign_relations": 0,
+    "functions": 73,
+    "index_function_dependencies": 0,
+    "index_operator_classes": "8 pg_catalog btree/hash classes",
+    "indexes": 84,
+    "no_action_foreign_keys": 44,
+    "nontransactional_domain_effects_found": false,
+    "ordinary_bar_partitions": 12,
+    "read_policies": 3,
+    "read_views": 2,
+    "recursive_read_relations": 18,
+    "sequence_or_log_rollback_claimed": false,
+    "shared_refresh_baseline": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+    "triggers": 31,
+    "write_policies": 64,
+    "write_tables": 44
+  },
+  "status": "LOCAL_IMPLEMENTATION_AND_QUALIFICATION_COMPLETE_DEPLOYMENT_HELD"
+}

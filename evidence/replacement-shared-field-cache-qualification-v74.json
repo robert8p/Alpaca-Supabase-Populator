@@ -1,0 +1,317 @@
+{
+  "schema": "astra.shared-field-cache-producer-review/1",
+  "created_at": "2026-10-30T16:20:16.650138+00:00",
+  "state": "QUALIFIED_LOCAL_CANDIDATE_NOT_SELECTED_OR_INSTALLED",
+  "passed": true,
+  "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "function": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+  "live_evidence": {
+    "path": "review/recovery-v74/shared-read-profile/live_refresh_record_select_input_v74.json",
+    "sha256": "1057872794a684bfc3040ddb7d64dc4d14486f7ebdb2a1efb916f59a0d789ac5",
+    "bytes": 22903
+  },
+  "live_evidence_limits": [
+    "One current after-state pure SELECT, not the historical write or exclusive whole-phase cost.",
+    "Exact fields aggregate has80000more shared hits than its input; repeated detoast remains an inference because per-node timing was disabled."
+  ],
+  "source_preservation": {
+    "exact_three_local_edits_and_inverse": true,
+    "remaining_source_byte_identical": true,
+    "second_link_statement_byte_identical": true,
+    "no_new_permissions_or_resources": true,
+    "no_auth_owner_config_scope_fence_order_or_accounting_changes": true
+  },
+  "tests": {
+    "count": 4,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "seconds": 6.126273346992093,
+    "six_field_state_cases": [
+      {
+        "chosen_fields": [],
+        "voted_fields": [
+          "x"
+        ],
+        "rows": 1,
+        "equal": true
+      },
+      {
+        "chosen_fields": [
+          "x"
+        ],
+        "voted_fields": [
+          "x"
+        ],
+        "rows": 1,
+        "equal": true
+      },
+      {
+        "chosen_fields": [
+          "x"
+        ],
+        "voted_fields": [
+          "x"
+        ],
+        "rows": 1,
+        "equal": true
+      },
+      {
+        "chosen_fields": [
+          "y"
+        ],
+        "voted_fields": [
+          "x",
+          "y"
+        ],
+        "rows": 1,
+        "equal": true
+      },
+      {
+        "chosen_fields": [
+          "x",
+          "z"
+        ],
+        "voted_fields": [
+          "z",
+          "x",
+          "a"
+        ],
+        "rows": 1,
+        "equal": true
+      },
+      {
+        "chosen_fields": [],
+        "voted_fields": [],
+        "rows": 0,
+        "equal": true
+      }
+    ],
+    "whole_function": {
+      "single_multiple_null_partial_and_tied_versions": true,
+      "chosen_missing_other_candidate_field": true,
+      "present_source_jsonnull": true,
+      "conflict_order_identical": true,
+      "all_shared_sources_records_links_counters_and_receipts_identical": true,
+      "real_successor_page_after_candidate_verified": true,
+      "metadata_oid_acl_owner_config_identical": true
+    },
+    "scaled": {
+      "records": 1000,
+      "fields_per_record": 20,
+      "raw_bytes": 711481,
+      "retained_versions_toast_bytes": 2048000,
+      "full_tuple_output_sha256": "940b230888187933da8f61dc56bd6fef5932d7718cba4923302a42c9d1bb90cb",
+      "full_output_equivalent": true,
+      "normal_and_generic_measurements": [
+        {
+          "mode": "auto",
+          "variant": "before",
+          "execution_ms": 275.862,
+          "planning_ms": 0.823,
+          "actual_rows": 1000,
+          "shared_hits": 69000,
+          "shared_reads": 0,
+          "temp_reads": 831,
+          "temp_writes": 2182,
+          "fields_aggregate_extra_shared_hits": 60000,
+          "chosen_fields_rows": null
+        },
+        {
+          "mode": "auto",
+          "variant": "after",
+          "execution_ms": 191.083,
+          "planning_ms": 1.08,
+          "actual_rows": 1000,
+          "shared_hits": 12000,
+          "shared_reads": 0,
+          "temp_reads": 2188,
+          "temp_writes": 4209,
+          "fields_aggregate_extra_shared_hits": 0,
+          "chosen_fields_rows": 20000
+        },
+        {
+          "mode": "auto",
+          "variant": "after",
+          "execution_ms": 187.756,
+          "planning_ms": 0.94,
+          "actual_rows": 1000,
+          "shared_hits": 12000,
+          "shared_reads": 0,
+          "temp_reads": 2188,
+          "temp_writes": 4209,
+          "fields_aggregate_extra_shared_hits": 0,
+          "chosen_fields_rows": 20000
+        },
+        {
+          "mode": "auto",
+          "variant": "before",
+          "execution_ms": 200.51,
+          "planning_ms": 0.942,
+          "actual_rows": 1000,
+          "shared_hits": 69000,
+          "shared_reads": 0,
+          "temp_reads": 831,
+          "temp_writes": 2182,
+          "fields_aggregate_extra_shared_hits": 60000,
+          "chosen_fields_rows": null
+        },
+        {
+          "mode": "force_generic_plan",
+          "variant": "before",
+          "execution_ms": 216.391,
+          "planning_ms": 0.706,
+          "actual_rows": 1000,
+          "shared_hits": 69000,
+          "shared_reads": 0,
+          "temp_reads": 831,
+          "temp_writes": 2182,
+          "fields_aggregate_extra_shared_hits": 60000,
+          "chosen_fields_rows": null
+        },
+        {
+          "mode": "force_generic_plan",
+          "variant": "after",
+          "execution_ms": 165.124,
+          "planning_ms": 0.738,
+          "actual_rows": 1000,
+          "shared_hits": 12000,
+          "shared_reads": 0,
+          "temp_reads": 2188,
+          "temp_writes": 4209,
+          "fields_aggregate_extra_shared_hits": 0,
+          "chosen_fields_rows": 20000
+        },
+        {
+          "mode": "force_generic_plan",
+          "variant": "after",
+          "execution_ms": 179.609,
+          "planning_ms": 0.108,
+          "actual_rows": 1000,
+          "shared_hits": 12000,
+          "shared_reads": 0,
+          "temp_reads": 2188,
+          "temp_writes": 4209,
+          "fields_aggregate_extra_shared_hits": 0,
+          "chosen_fields_rows": 20000
+        },
+        {
+          "mode": "force_generic_plan",
+          "variant": "before",
+          "execution_ms": 235.683,
+          "planning_ms": 0.102,
+          "actual_rows": 1000,
+          "shared_hits": 69000,
+          "shared_reads": 0,
+          "temp_reads": 831,
+          "temp_writes": 2182,
+          "fields_aggregate_extra_shared_hits": 60000,
+          "chosen_fields_rows": null
+        }
+      ],
+      "candidate_whole_refresh_ms": 303.4072459995514,
+      "whole_function_snapshot_identical": true,
+      "limits": "Warm local PostgreSQL16.15 with synthetic values; no production cold-cache or whole-cron improvement claim. Temporary spill and storage geometry remain explicit."
+    },
+    "environment": {
+      "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+      "jit": "on",
+      "work_mem": "4MB",
+      "plan_cache_mode": "auto",
+      "track_functions": "none"
+    }
+  },
+  "performance_tradeoff": {
+    "buffer_work_reduced": true,
+    "temporary_reads_blocks": [
+      831,
+      2188
+    ],
+    "temporary_writes_blocks": [
+      2182,
+      4209
+    ],
+    "no_guaranteed_production_speedup": true,
+    "local_pg16_15_vs_production_pg17_6": true,
+    "cold_cache_not_tested": true,
+    "whole_cron_or_contract_phase_recovery_not_claimed": true
+  },
+  "initial_failed_attempts_retained": [
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_cache_qualification_attempt1_v74.json",
+      "sha256": "cb454c9cf8fbf3fda0ae275e114b0c4b343cea79b79987fb5fcd5c194a1583e4",
+      "bytes": 3585,
+      "passed": false,
+      "tests": 1,
+      "errors": 1,
+      "failures": 0,
+      "explanation": "Restricted sandbox could not connect to the existing loopback fixture. Source inverse passed; no database fixture was initialized. The established loopback permission override resolved transport."
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_cache_qualification_attempt2_v74.json",
+      "sha256": "8b55d17834c5dacadf59b828d92cfa73e71d0f9f4cbfd242bc362c243d4a0875",
+      "bytes": 3091,
+      "passed": false,
+      "tests": 4,
+      "errors": 1,
+      "failures": 0,
+      "explanation": "Three focused cases passed; benchmark fixture extraction still named the production schema after schema mapping, so its disposable INSERT without conflict suffix raised23505. No production artifact was affected. Exact-target replacement and no-DML assertion corrected the harness."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "review/recovery-v74/shared-field-cache/baseline_shared_refresh_v74.sql",
+      "sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+      "bytes": 7577
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql",
+      "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "bytes": 7795
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_refresh_field_cache_v74.diff",
+      "sha256": "f79858dc11706d88a4c361b59ef9b752af7657d481bc162f31bfb3e4e5bc937e",
+      "bytes": 1861
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_cache_derivation_v74.json",
+      "sha256": "8339577009a426252567393fa2c4c5506ee9db4a40a5dffe5bbef123490fc358",
+      "bytes": 2490
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/qualify_shared_field_cache_v74.py",
+      "sha256": "c700ca24e463f56f6dc368c75b61de6a099fcce6817fb9731f510f4172d957db",
+      "bytes": 15039
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_cache_qualification_v74.json",
+      "sha256": "5980fb8f32ed1e32e68bb2637dfcc7e6f2c804408b891e3471438820b4033b32",
+      "bytes": 5637
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_fixture_closure_v74.json",
+      "sha256": "6c01c6faca09c65e57c9807788dd5fd364a99efa096502a9394a85f63b9ebe63",
+      "bytes": 20233
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/prepare_shared_field_fixture_v74.py",
+      "sha256": "6bf6cdce6a6ae496098293ddd71c1252ca5c46fc759d4108798a024f8dc540c8",
+      "bytes": 2177
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/build_shared_field_cache_v74.py",
+      "sha256": "b797108f8064771ec55ae8cb6597a5d8fce08276b3361137dff6fb2228b1b755",
+      "bytes": 3859
+    }
+  ],
+  "remaining_gates": [
+    "Independent exact-source review",
+    "If selected, one bounded candidate-only read may establish live plan effects without function installation",
+    "A forward requires exact source/metadata/owner/fence/cohort/lease guards, rollback tests, publication and exact-head CI before any production change"
+  ],
+  "production_calls_by_author": 0,
+  "production_mutations": 0,
+  "active_forward_written": false
+}

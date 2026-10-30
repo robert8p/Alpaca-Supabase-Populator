@@ -1,0 +1,264 @@
+{
+  "schema": "astra.shared-field-active-qualification/1",
+  "passed": true,
+  "tests": 8,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 7.527573315004702,
+  "modules": {
+    "test_backfill_shared_field_cache_v74": {
+      "schema": "astra.shared-field-cache-local-qualification/1",
+      "production_calls": 0,
+      "selected_for_activation": false,
+      "environment": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "work_mem": "4MB",
+        "plan_cache_mode": "auto",
+        "track_functions": "none"
+      },
+      "field_state_edge_cases": [
+        {
+          "chosen_fields": [],
+          "voted_fields": [
+            "x"
+          ],
+          "rows": 1,
+          "equal": true
+        },
+        {
+          "chosen_fields": [
+            "x"
+          ],
+          "voted_fields": [
+            "x"
+          ],
+          "rows": 1,
+          "equal": true
+        },
+        {
+          "chosen_fields": [
+            "x"
+          ],
+          "voted_fields": [
+            "x"
+          ],
+          "rows": 1,
+          "equal": true
+        },
+        {
+          "chosen_fields": [
+            "y"
+          ],
+          "voted_fields": [
+            "x",
+            "y"
+          ],
+          "rows": 1,
+          "equal": true
+        },
+        {
+          "chosen_fields": [
+            "x",
+            "z"
+          ],
+          "voted_fields": [
+            "z",
+            "x",
+            "a"
+          ],
+          "rows": 1,
+          "equal": true
+        },
+        {
+          "chosen_fields": [],
+          "voted_fields": [],
+          "rows": 0,
+          "equal": true
+        }
+      ],
+      "scaled": {
+        "records": 1000,
+        "fields_per_record": 20,
+        "raw_bytes": 711481,
+        "retained_versions_toast_bytes": 2048000,
+        "full_tuple_output_sha256": "65267b26adeb025380ab9897e34a1d1c4d1fa3a45502f8828a5842ddfc00a67a",
+        "full_output_equivalent": true,
+        "normal_and_generic_measurements": [
+          {
+            "mode": "auto",
+            "variant": "before",
+            "execution_ms": 200.901,
+            "planning_ms": 1.021,
+            "actual_rows": 1000,
+            "shared_hits": 69000,
+            "shared_reads": 0,
+            "temp_reads": 831,
+            "temp_writes": 2182,
+            "fields_aggregate_extra_shared_hits": 60000,
+            "fields_aggregate_extra_buffer_fetches": 60000,
+            "chosen_fields_rows": null
+          },
+          {
+            "mode": "auto",
+            "variant": "after",
+            "execution_ms": 144.894,
+            "planning_ms": 1.008,
+            "actual_rows": 1000,
+            "shared_hits": 12000,
+            "shared_reads": 0,
+            "temp_reads": 2188,
+            "temp_writes": 4209,
+            "fields_aggregate_extra_shared_hits": 0,
+            "fields_aggregate_extra_buffer_fetches": 0,
+            "chosen_fields_rows": 20000
+          },
+          {
+            "mode": "auto",
+            "variant": "after",
+            "execution_ms": 146.937,
+            "planning_ms": 0.799,
+            "actual_rows": 1000,
+            "shared_hits": 12000,
+            "shared_reads": 0,
+            "temp_reads": 2188,
+            "temp_writes": 4209,
+            "fields_aggregate_extra_shared_hits": 0,
+            "fields_aggregate_extra_buffer_fetches": 0,
+            "chosen_fields_rows": 20000
+          },
+          {
+            "mode": "auto",
+            "variant": "before",
+            "execution_ms": 188.952,
+            "planning_ms": 0.842,
+            "actual_rows": 1000,
+            "shared_hits": 69000,
+            "shared_reads": 0,
+            "temp_reads": 831,
+            "temp_writes": 2182,
+            "fields_aggregate_extra_shared_hits": 60000,
+            "fields_aggregate_extra_buffer_fetches": 60000,
+            "chosen_fields_rows": null
+          },
+          {
+            "mode": "force_generic_plan",
+            "variant": "before",
+            "execution_ms": 185.147,
+            "planning_ms": 0.713,
+            "actual_rows": 1000,
+            "shared_hits": 69000,
+            "shared_reads": 0,
+            "temp_reads": 831,
+            "temp_writes": 2182,
+            "fields_aggregate_extra_shared_hits": 60000,
+            "fields_aggregate_extra_buffer_fetches": 60000,
+            "chosen_fields_rows": null
+          },
+          {
+            "mode": "force_generic_plan",
+            "variant": "after",
+            "execution_ms": 148.83,
+            "planning_ms": 1.189,
+            "actual_rows": 1000,
+            "shared_hits": 12000,
+            "shared_reads": 0,
+            "temp_reads": 2188,
+            "temp_writes": 4209,
+            "fields_aggregate_extra_shared_hits": 0,
+            "fields_aggregate_extra_buffer_fetches": 0,
+            "chosen_fields_rows": 20000
+          },
+          {
+            "mode": "force_generic_plan",
+            "variant": "after",
+            "execution_ms": 149.283,
+            "planning_ms": 0.112,
+            "actual_rows": 1000,
+            "shared_hits": 12000,
+            "shared_reads": 0,
+            "temp_reads": 2188,
+            "temp_writes": 4209,
+            "fields_aggregate_extra_shared_hits": 0,
+            "fields_aggregate_extra_buffer_fetches": 0,
+            "chosen_fields_rows": 20000
+          },
+          {
+            "mode": "force_generic_plan",
+            "variant": "before",
+            "execution_ms": 191.717,
+            "planning_ms": 0.105,
+            "actual_rows": 1000,
+            "shared_hits": 69000,
+            "shared_reads": 0,
+            "temp_reads": 831,
+            "temp_writes": 2182,
+            "fields_aggregate_extra_shared_hits": 60000,
+            "fields_aggregate_extra_buffer_fetches": 60000,
+            "chosen_fields_rows": null
+          }
+        ],
+        "candidate_whole_refresh_ms": 256.91966799786314,
+        "whole_function_snapshot_identical": true,
+        "limits": "Warm local PostgreSQL16.15 with synthetic values; no production cold-cache or whole-cron improvement claim. Temporary spill and storage geometry remain explicit."
+      },
+      "whole_function_equivalence": {
+        "single_multiple_null_partial_and_tied_versions": true,
+        "chosen_missing_other_candidate_field": true,
+        "present_source_jsonnull": true,
+        "conflict_order_identical": true,
+        "all_shared_sources_records_links_counters_and_receipts_identical": true,
+        "real_successor_page_after_candidate_verified": true,
+        "metadata_oid_acl_owner_config_identical": true
+      },
+      "source_inverse_and_link_statement_preservation": true
+    },
+    "test_backfill_shared_field_cache_installation_v74": {
+      "schema": "astra.shared-field-migration-qualification/1",
+      "production_calls": 0,
+      "paused_cleanup_preserves_status_and_data": true,
+      "fail_closed": [
+        "source",
+        "full_metadata",
+        "owner",
+        "fence",
+        "cohort",
+        "member_count",
+        "expired_lease",
+        "postreplacement_exception",
+        "postreplacement_metadata",
+        "postreplacement_expiry",
+        "presnapshot_pinned_source_drift"
+      ],
+      "success_restore_replay": {
+        "same_oid_acl_owner_config": true,
+        "run_member_task_provider_worker_turn_page_readback_snapshot_identical": true,
+        "both_strict_replays_rejected": true
+      }
+    }
+  },
+  "active_paths": [
+    {
+      "path": "tests/ingestion/test_backfill_shared_field_cache_v74.py",
+      "sha256": "6ed056ec347cfe6f43706a5e06f2f7ab013e179a70711f4bb3ab20e0cd65dac8"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_field_cache_installation_v74.py",
+      "sha256": "f4856947f23dae88df8e5d1ce7de72363a1034fa6ea1c9052a8f8c5100caaef0"
+    },
+    {
+      "path": "sql/astra_backfill_shared_field_cache_v74.sql",
+      "sha256": "b11210b980ad7afb4f821b184d2682d1d3123406da6cf47ece4bb9855803777b"
+    },
+    {
+      "path": "sql/astra_backfill_shared_field_cache_restore_v74.sql",
+      "sha256": "4fa9d60877b25355445f0d3b8b630d87630f1e2bb00a5896a1bb83fcd4fef376"
+    }
+  ],
+  "production_calls": 0,
+  "no_inherited_duplicate_cases": true,
+  "hosted_ci_wallclock_speedup_assertions": false,
+  "error_details": [],
+  "failure_details": []
+}

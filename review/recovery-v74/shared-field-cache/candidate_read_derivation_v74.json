@@ -1,0 +1,24 @@
+{
+  "schema": "astra.shared-candidate-read-derivation/1",
+  "baseline_probe": {
+    "path": "review/recovery-v74/shared-read-profile/shared_refresh_record_select_input_readonly_v74.sql",
+    "sha256": "b86543db1a2f95b9e085c4b716c8bcaf184c1dfdf9f87479c4a3bd14dab5af65"
+  },
+  "candidate_probe": {
+    "path": "review/recovery-v74/shared-field-cache/shared_candidate_record_select_readonly_v74.sql",
+    "sha256": "45250ea783d7421768573ea614b7998b024a235a3e05c806fe54a26436a3cd08",
+    "bytes": 24686
+  },
+  "candidate_definition_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "installed_function_guard_unchanged": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "all15_baseline_source_metadata_pins_identical": true,
+  "readonly_wrapper_fixed_page_keys_and_bounds_identical": true,
+  "changes": [
+    "Only the full SELECT body uses the qualified candidate",
+    "Only result annotation explicitly identifies the candidate and still-installed baseline"
+  ],
+  "mechanical_inverse_equals_selected_baseline_probe": true,
+  "production_calls": 0,
+  "baseline_probe_must_not_be_replayed": true,
+  "interpretation": "Separate snapshots/cache state preclude a controlled latency ratio. This tests read access and IO behavior only; function not installed and no full-phase recovery claim."
+}

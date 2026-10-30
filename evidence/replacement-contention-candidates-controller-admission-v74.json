@@ -1,0 +1,68 @@
+{
+  "schema": "astra.controller-qualified-repair-admission/1",
+  "controller": "root-replacement-20261030T042603Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "base_commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+  "status": "ELIGIBLE_FOR_PUBLICATION_AND_REQUIRED_CI_NOT_YET_APPLIED_OR_DEPLOYED",
+  "authority": "Existing replacement-mission and concrete contention-repair instructions; latest reporting-only steering preserves implementation and schedules. No new or expanded persistent access is requested or exercised.",
+  "reporting": {
+    "mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "specific_owner_actions": "Retain exact package/security diff for dot to relay if scope materially changes; no bypass.",
+    "platform_push_email_muting_verified": false
+  },
+  "shared_candidate": {
+    "target": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+    "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+    "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+    "independent_review_sha256": "cf32e11d70f409d7e9b175cff8390fd0aecda3cd93b7f37377026363cbc9a88a",
+    "action_after_gates": "Apply the exact guarded forward once through the existing connector. Read back target and all protected metadata/source pins. Preserve exact restore package; do not repeat an uncertain write.",
+    "observed_benefit": "Repeated chosen-field JSON extraction buffer work eliminated in synthetic qualification and the bounded retained-page candidate SELECT.",
+    "limits": [
+      "Higher temporary I/O observed.",
+      "Separate-cache reads do not prove a controlled speedup or whole maintenance latency.",
+      "Contract phase remains an independent unresolved cost."
+    ]
+  },
+  "rpc_candidate": {
+    "runtime_sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403",
+    "independent_review_sha256": "693c5ffde93dea40ac06414e8f11bc824afef780563a034db0d8574528fd655a",
+    "operations": [
+      "backfill_claim",
+      "backfill_reserve",
+      "backfill_commit",
+      "backfill_reuse_commit",
+      "backfill_verify",
+      "backfill_plan_next"
+    ],
+    "bounded_policy": "Only a fully read exact native-shaped HTTP500/SQLSTATE55P03 response from the exact existing HTTPS RPC may cause identical-byte retry. At most3 total sends,0.25/0.75-second backoffs,8192-byte error bound and one original15-second deadline; existing possible socket-timeout tail is retained.",
+    "ambiguous_results": "Remain fatal and require durable reconciliation; lost acknowledgement and stream/transport failures never trigger retry.",
+    "source_fetches": "No provider/relay operation or enclosing worker unit is replayed; existing provider reservation and pacing checks remain authoritative.",
+    "effect_boundary": "73 functions,31 triggers,44 write tables/defaults/checks/FKs/64policies/84indexes and18 retained relations/two views/12ordinary partitions reviewed. Ordinary database effects roll back on the admitted native abort; sequence gaps and database logs are outside that rollback claim.",
+    "gateway_visibility_decision": {
+      "observed": "Allowlisted connector/role/database settings show no selected pre-request hook or response/transaction customization. Reviewed selected SQL emits ordinary ok envelopes and does not synthesize native error HTTP status bodies.",
+      "unobserved": "Effective external PostgREST process environment/file configuration cannot be read through the available connector.",
+      "controller_judgment": "Proceed conditionally using the existing trusted managed HTTPS/PostgREST error contract. Native database abort handling and exact trusted error-envelope checks are sufficiently supported for this bounded existing-operation reliability repair. This is not a claim of exhaustive gateway-environment verification. There is no evidence of a contrary customization; stop and reconcile if one appears.",
+      "not_authorized": "No gateway configuration change, server-file read, new connection credential, grant or trust relationship."
+    },
+    "test_limits": "Actual disposable PostgreSQL16.15 rollback tests used an explicitly simulated HTTP envelope. No production-positive retry or actual local PostgREST test is claimed."
+  },
+  "security_diff": {
+    "new_grants_roles_or_credentials": false,
+    "new_persistent_trust_relationship": false,
+    "new_source_or_subscription": false,
+    "endpoint_or_tls_change": false,
+    "auth_capability_fence_lease_integrity_change": false,
+    "relay_approval_reused_for_new_scope": false,
+    "existing_managed_relay_unchanged": true
+  },
+  "cost_diff": "No subscription, instance size, schedule or provider-budget change. A confirmed database rollback may use up to two additional bounded same-RPC sends within the existing deadline; it does not authorize extra provider fetches.",
+  "required_before_application_or_deployment": [
+    "Reconcile the same active owner/fence/unexpired lease and any scheduled successor.",
+    "Publish exactly the reviewed candidate and dependencies; independently verify CAS head, complete tree and unchanged base blobs.",
+    "Require every actually triggered exact-head push/PR release gate, including all32 new dedicated-ingestion tests and zero dedicated-ingestion skips. Verify merge tree equals published tree where applicable.",
+    "Read fresh source and security pins. If the shared repair is installed first, bind its actual7f538 source in the retry deployment decision; do not pretend oldb18 remains live.",
+    "For worker rollout, use only the existing worker service with exact reviewed commit, one bounded manual deployment, no environment edit and no unrelated service change.",
+    "After application/rollout, independently verify actual source/deployment and acquired-page/readback progress. A restart is not a recovery proof."
+  ],
+  "completion": "Mission and sustained reliability remain unproved; continue remaining authorized ingestion and contract contention investigation."
+}

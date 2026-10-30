@@ -1,0 +1,101 @@
+{
+  "schema": "astra.shared-field-cache-independent-static-review/1",
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T16:24:42.837402+00:00",
+  "passed": true,
+  "scope": "CANDIDATE_SEMANTICS_LOCAL_QUALIFICATION_AND_READ_ONLY_PROBE_ONLY",
+  "activation_review_complete": false,
+  "production_calls_by_reviewer": 0,
+  "database_tests_run_by_reviewer": 0,
+  "artifact_pins": {
+    "review/recovery-v74/shared-field-cache/baseline_shared_refresh_v74.sql": {
+      "sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+      "bytes": 7577
+    },
+    "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql": {
+      "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "bytes": 7795
+    },
+    "review/recovery-v74/shared-field-cache/shared_refresh_field_cache_v74.diff": {
+      "sha256": "f79858dc11706d88a4c361b59ef9b752af7657d481bc162f31bfb3e4e5bc937e",
+      "bytes": 1861
+    },
+    "review/recovery-v74/shared-field-cache/shared_field_cache_derivation_v74.json": {
+      "sha256": "8339577009a426252567393fa2c4c5506ee9db4a40a5dffe5bbef123490fc358",
+      "bytes": 2490
+    },
+    "review/recovery-v74/shared-field-cache/qualify_shared_field_cache_v74.py": {
+      "sha256": "c700ca24e463f56f6dc368c75b61de6a099fcce6817fb9731f510f4172d957db",
+      "bytes": 15039
+    },
+    "review/recovery-v74/shared-field-cache/shared_field_cache_qualification_v74.json": {
+      "sha256": "5980fb8f32ed1e32e68bb2637dfcc7e6f2c804408b891e3471438820b4033b32",
+      "bytes": 5637
+    },
+    "review/recovery-v74/shared-field-cache/shared_candidate_record_select_readonly_v74.sql": {
+      "sha256": "45250ea783d7421768573ea614b7998b024a235a3e05c806fe54a26436a3cd08",
+      "bytes": 24686
+    },
+    "review/recovery-v74/shared-field-cache/candidate_read_derivation_v74.json": {
+      "sha256": "c8eed66bb76706387ba088edfd9c3143638bb45cb8bf8fe101df628b4084f3fd",
+      "bytes": 1338
+    },
+    "evidence/replacement-shared-field-cache-qualification-v74.json": {
+      "sha256": "e79700687c472b4ef53955d341477fab3c4d0eb4d6004ded56552138abf97728",
+      "bytes": 10670
+    }
+  },
+  "independent_mechanical_checks": {
+    "candidate_three_edit_inverse_matches_exact_installed_baseline": true,
+    "remaining_link_statements_byte_identical": true,
+    "probe_query_equals_complete_candidate_select_with_only_bound_parameter_substitution": true,
+    "no_data_mutating_or_ddl_statement_in_profiled_select": true,
+    "probe_inverse_matches_exact_baseline_wrapper": true,
+    "all_fifteen_source_and_metadata_guards_unchanged": true,
+    "still_installed_shared_function_guard_is_baseline": true
+  },
+  "semantic_findings": [
+    "chosen is DISTINCT ON(record_key); JSONB objects contain one value per field key. The materialized chosen_fields left join therefore contributes at most one match per vote and does not multiply candidate counts.",
+    "A missing key produces SQL NULL on both paths and invokes the existing fallback. A present JSON null stays a JSONB null value and does not invoke COALESCE fallback.",
+    "The votes, candidate/version counts, version selection, deterministic row ordering, conflict ordering, date cleanup, record output, ON CONFLICT update and complete link-refresh statements are unchanged.",
+    "The candidate adds no callable surface, grants, roles, settings, schedule, persistent index/table, authentication path, lease/fence change or accounting bypass."
+  ],
+  "qualification_review": {
+    "producer_cases": 4,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "actual_database": "PostgreSQL 16.15 disposable local fixture",
+    "reviewed_test_code": true,
+    "covered": "Six missing/null field-aggregation cases; actual single/multiple/null/tied provider versions and rare field conflicts; complete shared record/link/source/count/receipt snapshots; real follow-on page; same function metadata/OID; exact 1000-row full tuples at 711481 source bytes; normal and forced-generic plan work.",
+    "initial_failed_attempts_preserved": true,
+    "snapshot_limit": "The inherited snapshot covers eleven shared/projection/page/readback tables. It is not a separately asserted snapshot of every run/task accounting table."
+  },
+  "performance_tradeoff": {
+    "shared_hits_local_before": 69000,
+    "shared_hits_local_after": 12000,
+    "fields_aggregate_extra_shared_hits_before": 60000,
+    "fields_aggregate_extra_shared_hits_after": 0,
+    "temp_read_blocks_before": 831,
+    "temp_read_blocks_after": 2188,
+    "temp_written_blocks_before": 2182,
+    "temp_written_blocks_after": 4209,
+    "interpretation": "Materializing chosen fields replaces repeated JSONB extraction with additional intermediate rows and spill. Local warm timing improves in this fixture, while higher temporary I/O is a real tradeoff. No production latency ratio or whole-cron recovery is established."
+  },
+  "read_only_probe_review": {
+    "source_pin_count": 15,
+    "transaction_read_only": "on",
+    "isolation": "repeatable read",
+    "statement_timeout": "8s",
+    "lock_timeout": "3s",
+    "full_projection_evaluated": true,
+    "fixed_page_integrity_and_current_key_bounds_preserved": true,
+    "owner_fence_cohort_lease_guards_preserved": true,
+    "sanitized_bounded_plan_metrics_only": true,
+    "mutating_helper_or_provider_calls": false,
+    "explicit_gate_or_row_lock": false,
+    "safe_named_p0001_transport": true,
+    "limitations": "Current projected after-state only, separate snapshot/cache state, direct role/dynamic plan, and no original write/trigger or exclusive phase-cost reproduction."
+  },
+  "recommendation": "No blocker to the bounded candidate-only read or continued guarded-forward/restore preparation. Final activation still requires review of exact wrapper/test bytes, publication and required exact-head CI, fresh ownership/source reconciliation and root-only application/readback. Do not replay the original baseline probe merely for a latency ratio."
+}

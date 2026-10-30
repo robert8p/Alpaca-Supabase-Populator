@@ -1,0 +1,1544 @@
+{
+  "catalog_observed_at": "2026-10-30 16:12:26.057593+00",
+  "deployment_hold": "INDEPENDENT_REVIEW_EFFECTIVE_GATEWAY_BOUNDARY_AND_EXACT_PUBLISHED_HEAD_CI_REQUIRED",
+  "edges": {
+    "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_breadth_project_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_breadth_project_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_date_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()": [
+      "astra_ingestion_v1.backfill_breadth_project_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_breadth_ready_v2(text)": [
+      "astra_ingestion_v1.backfill_breadth_ready_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_contract_child_trigger_v2()": [
+      "astra_ingestion_v1.backfill_contract_child_trigger_v2()",
+      "astra_ingestion_v1.backfill_contract_register_child_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)": [
+      "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_prove_child_v2(text)": [
+      "astra_ingestion_v1.backfill_contract_prove_child_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_contract_readback_trigger_v2()",
+      "astra_ingestion_v1.backfill_contract_readback_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_contract_readback_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)",
+      "astra_ingestion_v1.backfill_contract_readback_v2(text,integer)",
+      "astra_ingestion_v1.backfill_contract_register_child_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_contract_register_child_v2(text)": [
+      "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)",
+      "astra_ingestion_v1.backfill_contract_prove_child_v2(text)",
+      "astra_ingestion_v1.backfill_contract_register_child_v2(text)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_date_v2(text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_breadth_ready_v2(text)",
+      "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)",
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+      "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "astra_ingestion_v1.backfill_uri_component_v2(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_evidence_guard_v2()": [
+      "astra_ingestion_v1.backfill_evidence_guard_v2()"
+    ],
+    "astra_ingestion_v1.backfill_feature_reuse_summary_v2(text)": [
+      "astra_ingestion_v1.backfill_feature_reuse_summary_v2(text)",
+      "astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(bytea,bytea,smallint[],smallint[],timestamp with time zone[],double precision[],integer,integer,integer,integer)"
+    ],
+    "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_feature_reuse_summary_v2(text)",
+      "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)": [
+      "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)": [
+      "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+      "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)"
+    ],
+    "astra_ingestion_v1.backfill_identity_discover_pending_v2()": [
+      "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+      "astra_ingestion_v1.backfill_identity_discover_pending_v2()"
+    ],
+    "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)": [
+      "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)"
+    ],
+    "astra_ingestion_v1.backfill_identity_project_v2(text,date,text,text,jsonb)": [
+      "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)",
+      "astra_ingestion_v1.backfill_identity_project_v2(text,date,text,text,jsonb)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_identity_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)",
+      "astra_ingestion_v1.backfill_identity_project_v2(text,date,text,text,jsonb)",
+      "astra_ingestion_v1.backfill_identity_readback_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": [
+      "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)"
+    ],
+    "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)": [
+      "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)"
+    ],
+    "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)",
+      "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_s02_source_check_v2(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_minute_account_v2(text)": [
+      "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+      "astra_ingestion_v1.backfill_minute_account_v2(text)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_minute_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_minute_account_v2(text)",
+      "astra_ingestion_v1.backfill_minute_readback_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)": [
+      "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_field_value_v2(jsonb,text,text)": [
+      "astra_ingestion_v1.backfill_nonminute_field_value_v2(jsonb,text,text)"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_project_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)",
+      "astra_ingestion_v1.backfill_nonminute_field_value_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_nonminute_project_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_nonminute_project_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_owned_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_page_limit_cap_v2(text)": [
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_page_limit_guard_v2()": [
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "astra_ingestion_v1.backfill_page_limit_guard_v2()"
+    ],
+    "astra_ingestion_v1.backfill_page_rows_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)": [
+      "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)"
+    ],
+    "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)": [
+      "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)"
+    ],
+    "astra_ingestion_v1.backfill_plan_next_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+      "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)": [
+      "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)"
+    ],
+    "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+      "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)": [
+      "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+      "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_run_guard_v2()": [
+      "astra_ingestion_v1.backfill_run_guard_v2()"
+    ],
+    "astra_ingestion_v1.backfill_s02_project_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)",
+      "astra_ingestion_v1.backfill_nonminute_field_value_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_s02_project_v2(text,integer)"
+    ],
+    "astra_ingestion_v1.backfill_s02_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_s02_project_v2(text,integer)",
+      "astra_ingestion_v1.backfill_s02_readback_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_s02_source_check_v2(text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_s02_source_check_v2(text)",
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": [
+      "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_shared_apply_delta_v2(text,jsonb,jsonb)": [
+      "astra_ingestion_v1.backfill_shared_apply_delta_v2(text,jsonb,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_shared_meta_v2(text,text,text,text,jsonb)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)",
+      "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)",
+      "astra_ingestion_v1.backfill_shared_meta_v2(text,text,text,text,jsonb)",
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_shared_project_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "astra_ingestion_v1.backfill_shared_apply_delta_v2(text,jsonb,jsonb)",
+      "astra_ingestion_v1.backfill_shared_meta_v2(text,text,text,text,jsonb)",
+      "astra_ingestion_v1.backfill_shared_project_v2(text,integer)",
+      "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_shared_summary_v2(text,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_shared_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_shared_project_v2(text,integer)",
+      "astra_ingestion_v1.backfill_shared_readback_trigger_v2()"
+    ],
+    "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_shared_summary_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_shared_summary_v2(text,jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_snapshot_insert_v2()": [
+      "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_snapshot_task_v2(text)": [
+      "astra_ingestion_v1.backfill_date_v2(text)",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_stamp_v2(text)": [
+      "astra_ingestion_v1.backfill_stamp_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)": [
+      "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.backfill_task_guard_v2()": [
+      "astra_ingestion_v1.backfill_task_guard_v2()"
+    ],
+    "astra_ingestion_v1.backfill_try_finalize_v2(text)": [
+      "astra_ingestion_v1.backfill_stamp_v2(text)",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)"
+    ],
+    "astra_ingestion_v1.backfill_uri_component_v2(text)": [
+      "astra_ingestion_v1.backfill_uri_component_v2(text)"
+    ],
+    "astra_ingestion_v1.rpc_ascii_string(text)": [
+      "astra_ingestion_v1.rpc_ascii_string(text)"
+    ],
+    "astra_ingestion_v1.rpc_canonical(jsonb)": [
+      "astra_ingestion_v1.rpc_ascii_string(text)",
+      "astra_ingestion_v1.rpc_canonical(jsonb)"
+    ],
+    "astra_ingestion_v1.rpc_dispatch(text,jsonb)": [
+      "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)"
+    ],
+    "astra_ingestion_v1.rpc_json_unique(json)": [
+      "astra_ingestion_v1.rpc_json_unique(json)"
+    ],
+    "astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(bytea,bytea,smallint[],smallint[],timestamp with time zone[],double precision[],integer,integer,integer,integer)": [
+      "astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(bytea,bytea,smallint[],smallint[],timestamp with time zone[],double precision[],integer,integer,integer,integer)"
+    ],
+    "public.astra_ingestion_rpc_v1(text,jsonb)": [
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "public.astra_ingestion_rpc_v1(text,jsonb)"
+    ]
+  },
+  "effect_markers_requiring_manual_classification": {},
+  "exact_source_bundle": {
+    "path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+    "sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88"
+  },
+  "external_read_relation_boundary": {
+    "foreign_tables": 0,
+    "ordinary_bar_partition_children": 12,
+    "policy_function_dependencies": 0,
+    "recursive_relations": 18,
+    "recursive_views": 2,
+    "scoped_rls_policies": 3,
+    "status": "REVIEWED_BUILTIN_HASHES_CASTS_PROJECTIONS_JOINS_AND_LITERAL_PROVIDER_ARRAY_POLICIES_ONLY_NO_FDW",
+    "top_level_relations": 11,
+    "view_count": 1
+  },
+  "functions": [
+    {
+      "metadata_sha256": "6ec58e5299867df918914dffbd84d5f399633a1cbcf6b3c24cd039a92d1efd87",
+      "oid": "16041453",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_bar_usable_v2(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "8c56d42ab4a7d315ca6fdcb3c0bf2466ea216d5e01a8728d613c4277983603d1"
+    },
+    {
+      "metadata_sha256": "c7bbd00a871bfcb3ad26752336b485723dc40bd0ef7c8fe2dd09425c3d0cf63c",
+      "oid": "16041709",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_breadth_project_page_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "1a08877860bcee438baa95b6d3eea5913936137de7ff9b68a3315f58fc595cbc"
+    },
+    {
+      "metadata_sha256": "e4c87556ccbd5ffbe38c67818ba1757226e1ec76fa346bfe63e92b93ccd39a68",
+      "oid": "16041710",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "ab9192e93060b022d23ae9e590f196b644f837b23b7a46c3119a8cbe9d0e399f"
+    },
+    {
+      "metadata_sha256": "0428757a8fe4d79d812df63e12dacf8b09e86738178115345319a7b99027d2d7",
+      "oid": "16041713",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_breadth_ready_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "7cee71f71e1d60a2316760f43c87fea0af1e10e4a5b36d545094136a055ed668"
+    },
+    {
+      "metadata_sha256": "93972cb8f42f951d2ddb3cf5007f075ad3be9249c68cd4ce2ccf625765f6253c",
+      "oid": "16061395",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "f72da3cb88f30d3ac66e2e20a51bd2dfd55195bc76ae2997decdc6b10020d7c1"
+    },
+    {
+      "metadata_sha256": "ffa322b9144f304cc7315c8e2c8c849753ce2f726eb9fa04c6bf87c55d8d1429",
+      "oid": "16061391",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_child_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b"
+    },
+    {
+      "metadata_sha256": "dcdce8b8fff0d0c718c9209c6f1ba285dcf6f78ac5a1a0132061adb8eae20940",
+      "oid": "16061393",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "e79997417569efc1295fbf8dbbb3b90e8b0c82ded972e213fc1b1e69dffc3c0c"
+    },
+    {
+      "metadata_sha256": "ff29484283f28e94b2d1f16144826a7b01939b14181d1001f509989953735d23",
+      "oid": "16061388",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_key_v2(text,timestamp with time zone,timestamp with time zone,text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "d5349e3ec4e084dcd53a0ace556e81afe1f8f76b94c6f358cf8e493238a89f90"
+    },
+    {
+      "metadata_sha256": "62dcf1507147afda188fe6d52d7852189d2a5a3612e1f3db7044101b3f3985be",
+      "oid": "16061389",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_prove_child_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "bfc62c4adc8272fb6ec2fe2256e96aacfff8ca8ec0daa579db5c48306bc00ff6"
+    },
+    {
+      "metadata_sha256": "76ce4ad4df634752cc479545899ba8f5a425b33bb29118cccbb3e2b64b2eccba",
+      "oid": "16061398",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "c80e1a8e0f9e2652e062f4c1c85f15d7c92054659deb98eb75e520debd699ab5"
+    },
+    {
+      "metadata_sha256": "c2912c459bfa4da574ec42418b5d79ff147028b47eb95d50439073c7b8ca73f4",
+      "oid": "16061397",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_readback_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "e3f4f7e5750ddff917c1e064ff0c0977173003d9e1a1aad22864cf8ef74adad3"
+    },
+    {
+      "metadata_sha256": "4576bbb21331286f5fa9abfa53636c328ddbeec740c724dd26f428c36306b7bf",
+      "oid": "16061390",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_contract_register_child_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "c5756d3872e552716bffb575025942500946e0e0a8a19c29ef29326b8bc78795"
+    },
+    {
+      "metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958",
+      "oid": "16041364",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_date_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9"
+    },
+    {
+      "metadata_sha256": "0a79599559dc045555cf15a0d944d6229a73ba9d08a196d86ce734fa1e454215",
+      "oid": "16041464",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "5a8512f1b74fcbb44c05baf353a4e403e01972b08fe20dfdfac0e95b94d9fc05"
+    },
+    {
+      "metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+      "oid": "16040232",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+    },
+    {
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278",
+      "oid": "16040226",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8"
+    },
+    {
+      "metadata_sha256": "1ade9f47958d36b23cd004777d6707ec7c5913b28d5c6a8118c5ec9c4ddf247d",
+      "oid": "16042635",
+      "provenance": "exact inverse of established feature fixture namespace/formula-pin substitutions; fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_feature_reuse_summary_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "0ee266785af57d88e872b0ea84db0704cae71f631a5e109ea015e832abef0f7f"
+    },
+    {
+      "metadata_sha256": "ddcab3bc4262069d46c981a192698475d4110ede710f1ef82884e9ede873c1e9",
+      "oid": "16042638",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_feature_reuse_verify_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "df376e09d4c2e87bc3506d94cd93f3e33e568f49cbb48ef8802a91b0c752f25f"
+    },
+    {
+      "metadata_sha256": "14cd9c5ca819ab8260882fa519cef21c739dee8c08ec875cf4d1b149452266a1",
+      "oid": "16047721",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_build_material_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "5a183210c541994d4280ebf18fbc9bb1ea1316d7f203ba2595d4e6651b5be97b"
+    },
+    {
+      "metadata_sha256": "3e622a7b63838337becebf96a5ea1f634c105aa0eb8c9ee25e301bca25063b4e",
+      "oid": "16047702",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "a29d8555922f0bd26bde8cf648604f4c9d99fc83af56909f177d23eb374aba80"
+    },
+    {
+      "metadata_sha256": "42f1f804d3f2a13d9788464f2c38d9743bb991c67ffd1368261971041aef9466",
+      "oid": "16047703",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_discover_pending_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618"
+    },
+    {
+      "metadata_sha256": "766cbdf63cc13b885c14a2d994d22a57989dfa4ad63b7c1042a04a058254d5ae",
+      "oid": "16047700",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "7c1c23af1ac58d33df4fe627138ec4b36584d1eed4cccb86d778a7054c8901e2"
+    },
+    {
+      "metadata_sha256": "8372f11cc89e45edc07e916162eb68707ffcf2b03cc07a984b4bffdc84a8c476",
+      "oid": "16047704",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_project_v2(text,date,text,text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "f0900e0be411e0091265cf9030f35960e68e350edce532a018af3f76087172ad"
+    },
+    {
+      "metadata_sha256": "8c8a82ebd5b65b456b905936311946bcfe6a07e2b4ba982cf22f73e290c780a2",
+      "oid": "16047728",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "f9bc1959eea5677f14ee03e900f1997b98155402b894840abc4d45f8a2355b6b"
+    },
+    {
+      "metadata_sha256": "035a468bafa8d2c262cb8fbc2b22b0266091f757a146349e3195ffa758b56749",
+      "oid": "16047730",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25"
+    },
+    {
+      "metadata_sha256": "2f5cc0361c6be297ab8d5799f32bb62899ae3d831f149b386e8bd1fd021cc6ab",
+      "oid": "16047701",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_source_meta_v2(uuid,date,boolean)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b40886170f7bc62f55d7ddb463dae92183c14b1d8a6b961bae9aa8a7e0eb47a2"
+    },
+    {
+      "metadata_sha256": "7ab9026bea935acf8946c36241d9c6ffea724db8939d22faa11895f0a92dd3e1",
+      "oid": "16047708",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_identity_source_verify_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "57062be6be4f75829d43e859c30555dcd186d7f02e861283d8a59037ebb9c49f"
+    },
+    {
+      "metadata_sha256": "d53307ba14472d7bef0c04b09b38d990d3b984ec0ddd05773265da5612b1a8a3",
+      "oid": "16047950",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_massive_archive_verify_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "ce0a9883fba5c7e04e82e69230f6f60e229b38a88845d3a33748274c99016aa7"
+    },
+    {
+      "metadata_sha256": "65d6e485b0cbd9d9c79f92e4545e3a4f5d8058990be6c50ba7bbefde7f84fa83",
+      "oid": "16042600",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_minute_account_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "c6df9817116ffb65191b83307bb495a92a114cb795005ddeb78bcc5b5665eea3"
+    },
+    {
+      "metadata_sha256": "b05aa88f377f9e5988cb1fa417ed6ffac7171738d81fd89bb888bce16b6f8625",
+      "oid": "16042602",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_minute_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "43fdf84063928deb1ab8bc511ddaae6a53f66dcf249b0fd1af30d34939065d24"
+    },
+    {
+      "metadata_sha256": "b2ccdc8db5d173291485e688e99e3fbacf2928b4f3dc464a51c31f1f2a4655ac",
+      "oid": "16047819",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_nonminute_field_reason_v2(jsonb,text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "806b0acab6e7cab1f085cb0310f781ffe29806f83df04ab65351a7cc59bde107"
+    },
+    {
+      "metadata_sha256": "62c171ec15703370063332b36b713d1dd1b27a0f5f3306e0efee8922b0d92aaa",
+      "oid": "16047817",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_nonminute_field_spec_v2(text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "bcea12a2a66ae2915e7f0332ee461e576b94e94dfe637ed4617eb77e1398e740"
+    },
+    {
+      "metadata_sha256": "5737d3ab6adfd4939770f2aed28efe19e96215bfe917d721dc4452be29e6470f",
+      "oid": "16047818",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_nonminute_field_value_v2(jsonb,text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "89f3febe8cbdcf2a267abc40d3041f3502f631efffee37af49505a7a512ef1ea"
+    },
+    {
+      "metadata_sha256": "96eaebcd5366895853103b74137cfe2fafd976ad358d1d8a71c6bf8cc7cd02fc",
+      "oid": "16047820",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_nonminute_project_page_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "6c2747b895a0315b866e44d532d4ac7c0b386d797529b17169d4473bb2eb089d"
+    },
+    {
+      "metadata_sha256": "cdc97df2f105195b598cb614880703df03e4451ffaf4b53fdb9b79d4a874b788",
+      "oid": "16047822",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "1571e19bb63fe6dcc77d778b4ddd77b949020dd203071c746df3989046783884"
+    },
+    {
+      "metadata_sha256": "b38638977e51719c6c676c9275a0a39dd08369ce227e9bfccfa494393013a8c9",
+      "oid": "16040229",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_owned_v2(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "66968de9e4b6ed74deca00f6aaf63b3c44a3a6546f01fd8a7007d8fd7b2603f2"
+    },
+    {
+      "metadata_sha256": "66202ea9fc847009d44c7d3bfd994e81b3cdfbdcdccee4cbbd734a00fb1031ba",
+      "oid": "16043402",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_page_limit_cap_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "cec132e0d3b101d6d57915e57bffc1d3a74dc6101616fbd7c420808e44d68b93"
+    },
+    {
+      "metadata_sha256": "bbfae27a0704b8b6407dce8326b658bf97cee9efbb24aab2ef4ec4640574a116",
+      "oid": "16043404",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342"
+    },
+    {
+      "metadata_sha256": "4da6442ed58d9db9a0482776e0e5c7c7982b791885e9e741ebe7faeb5a16b1ce",
+      "oid": "16041365",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "e0d0a4bceb9f107c00f770546ef0a200ccb9dd7ca48df01c9c821569ac3b897c"
+    },
+    {
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63",
+      "oid": "16041470",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e"
+    },
+    {
+      "metadata_sha256": "451fc31979ef3f45d2ce545dbf10d0e094802205f8c63745c8e5f537e26b5cd8",
+      "oid": "16041634",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "43cad29e52e904715384c6f578d4e667c89f4b49d7425d8d3a594097879ea87d"
+    },
+    {
+      "metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875",
+      "oid": "16041635",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d"
+    },
+    {
+      "metadata_sha256": "2298d7d2dc6af8f2360df643ed9c05067e625103fe3e09ba59b3fdc1a7ed1f69",
+      "oid": "16041469",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "67c4b74348ad271d59bc21a901cbfee650ecc91c3a86713b2e29f308094f1ad2"
+    },
+    {
+      "metadata_sha256": "d61aca570decb7e5ce22e30f4f76fa036bf5ad2de1a192ff15e5f64a600c93d5",
+      "oid": "16041633",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_plan_task_id_v2(text,text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "bfceb00e9d47189ad17b3e98b1511629dbbee7f28bbb9436e92387ec17ec53e0"
+    },
+    {
+      "metadata_sha256": "437fe86234dcef0e89c0a5137707b3dc5da780c5a10dbd376f25e6c70e39a595",
+      "oid": "16041451",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37"
+    },
+    {
+      "metadata_sha256": "f2f58574bb151c5724f1603f02b7de08edfac96d7bafdf61205437ee984c0249",
+      "oid": "16040230",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_request_valid_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "137a9a944fe128a18476818abf3cb0971eda4e3316d087369169a6cbced5c955"
+    },
+    {
+      "metadata_sha256": "a079c8a2ab9e1140c512d193062409a55d90ffa885b5b15fb0ea004ca9f29c65",
+      "oid": "16041018",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "0354b16d68c89ee7a390f839f958422fc685d09b57f22513d60776624292742e"
+    },
+    {
+      "metadata_sha256": "a3ef83f135e9b6416c2145a631a1268902817b99e65ec09034c684204b375430",
+      "oid": "16040678",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_reuse_read_v2(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "53a014b1694ccaa3ff67f43116398b456845f6f51a25ebee42b43d5fd2bfd574"
+    },
+    {
+      "metadata_sha256": "ffcd60c2d8fd667d8d44ca233fd5aac8544223105a23a7bc0440fa7631552376",
+      "oid": "16041026",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_reuse_verify_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "6933edc531c5ed74ab0786dd9d865d07f332bbb931e9f043aa3c9b618d1e9f2e"
+    },
+    {
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f",
+      "oid": "16040222",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c"
+    },
+    {
+      "metadata_sha256": "7d29cf102802da5c3624d300ec48f21f29fd67e3981bd1d8ef9e510b89bc68aa",
+      "oid": "16047952",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_s02_project_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b12e23c561c681beeaa4c57434f679f40541a6fd93f37bb160ec259f461dbadd"
+    },
+    {
+      "metadata_sha256": "4820ca22717f809e42f27b9d05e186a5cc59d964608cd65639aa16890e58928d",
+      "oid": "16047954",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_s02_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "caf72927d0ed97d663be52d972fa6157c4281b4a7aba9ef21e3810459f63f927"
+    },
+    {
+      "metadata_sha256": "66cc22f6bae74ddc41d0457dfb161a6e4f7774dcdc7b70cb3e825d05728245fb",
+      "oid": "16047946",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_s02_source_check_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "5ee524dd5bb03164fa0ae36979d6ea3aad827565f2208b9bf08b8e8ac7786798"
+    },
+    {
+      "metadata_sha256": "26059708eb74c9b3f291e98da0a74b3b2c381073ec04feb947c07e5fa91a2f8c",
+      "oid": "16041471",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "6b1b74c618a0f555fd023f7e9980e94c11d1beb556d89815e7e16f6018c5d296"
+    },
+    {
+      "metadata_sha256": "d1e88a81dc1adb60fa626afae0ff7becdabbb1ebfc8cee165815f9d23ee05b3d",
+      "oid": "16050112",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_apply_delta_v2(text,jsonb,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "a221c414728aa7c83fbbe21d529689f814ea803f67c374adf3a9758f4a2b2142"
+    },
+    {
+      "metadata_sha256": "7ba7980da1cf48d21e24069551dcb1a90e0ba1aa4d2fd05d8314c60375c67988",
+      "oid": "16050103",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_meta_v2(text,text,text,text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b7b0b8f8d3787b9370643dbe810938f6fbca75d3cfe50a0e007d3ae6970d3932"
+    },
+    {
+      "metadata_sha256": "bee9e5f3036a2d9942dcdbda4be8f2c0b52a994fcb36af0e524dfa2286e3a973",
+      "oid": "16050107",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_project_v2(text,integer)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "78ceb1e794e9725ae8d0365ec92081c769853fa1c8345ab96c4adaf6e786fb9d"
+    },
+    {
+      "metadata_sha256": "95332ee3b240952bf9f9c2a01c5361068de323e37069cfea30e700d2d50b5af9",
+      "oid": "16050108",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_readback_trigger_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "f2c47d98d85d9ea1b826ea671e299af5f02741ae19037b4915f6d8decf4eb666"
+    },
+    {
+      "metadata_sha256": "05efbf80a36ecaf99c1ecf1c3bde8372489963c867bd98708f5fc12223b05f43",
+      "oid": "16050105",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4"
+    },
+    {
+      "metadata_sha256": "d3909c720833eda3a75c6e8b0c2daecebe96f7e65790e0223d8660087e305975",
+      "oid": "16050111",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_shared_summary_v2(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "e6459ef0b9dbe71bcd0ede375e904154b3d4278c6af27f033fc0c942ee9e0a78"
+    },
+    {
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3",
+      "oid": "16041467",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e"
+    },
+    {
+      "metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418",
+      "oid": "16041466",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2"
+    },
+    {
+      "metadata_sha256": "856f7ff9d6b6003077951a7a9180edef189289569171bf521482a438bc8d293e",
+      "oid": "16041363",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_stamp_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "63988e76443273e860cfc5cc7929dd2282c5525d9e824c443e79c03b15e6a1e9"
+    },
+    {
+      "metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc",
+      "oid": "16041465",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633"
+    },
+    {
+      "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+      "oid": "16040224",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+    },
+    {
+      "metadata_sha256": "b02f80cc81536478c1e5f742b618557fc6a99ed332ddf68b787c9931bac887fb",
+      "oid": "16041460",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_try_finalize_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "f8f9ef6d8d9ada232b132170bde9922397a2b247dbc7e4b391cbca57b67b7063"
+    },
+    {
+      "metadata_sha256": "2f8d26bd051fc8f94448dea97dc0761736599604354ae1ff184afb24d51d0e65",
+      "oid": "16040231",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.backfill_uri_component_v2(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "54c35b507b79100e9963e864f8aae57d9a18a059005ef3e8abb95f0e691d0afd"
+    },
+    {
+      "metadata_sha256": "c9fb8b6139a7f6c649ed71092cdc40671afa16f78ad6fa09f4f12f549eb56527",
+      "oid": "15986013",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.rpc_ascii_string(text)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "346a67e18573fbfc3b80c2fda528f3474290483a5e13ca5d29e58bfcd5afbb6d"
+    },
+    {
+      "metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd",
+      "oid": "15986014",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb"
+    },
+    {
+      "metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e",
+      "oid": "15986028",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+    },
+    {
+      "metadata_sha256": "0b2b59fc06fb1d77a64f63cc3325d2690cdf5fb95c41da6655dd5df437c649a5",
+      "oid": "15986024",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "astra_ingestion_v1.rpc_json_unique(json)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "be069a746b43d164afdfe719fd934eb682653e3e7a9f138b85f0063cb2702823"
+    },
+    {
+      "acl": "{postgres=X/postgres}",
+      "config": [
+        "search_path=pg_catalog"
+      ],
+      "fresh_metadata_status": "CONFIRMED_IN_TABLE_BOUNDARY_CAPTURE",
+      "language": "sql",
+      "oid": "13118782",
+      "owner": "postgres",
+      "parallel": "s",
+      "provenance": "retained exact immutable SQL hash function; live wrapper checks this exact source hash before execution",
+      "runtime_source_guard": "exact hash checked by feature reuse summary before call",
+      "security_definer": false,
+      "signature": "astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(bytea,bytea,smallint[],smallint[],timestamp with time zone[],double precision[],integer,integer,integer,integer)",
+      "source_path": "evidence/retained-feature-reuse-functions.json",
+      "source_sha256": "3d2af9589f2171964f77ecb2a5739e7417d12775833c0b3c884a61438689dae5",
+      "strict": true,
+      "volatility": "i"
+    },
+    {
+      "oid": "15986030",
+      "provenance": "actual disposable pg_get_functiondef; explicit fixture substitutions reversed; exact fresh live hash match",
+      "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "source_path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61"
+    },
+    {
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f"
+    },
+    {
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "sha256": "e7f3a6cb15ec888634bfbae3ef5cb59869b8c7962041b989fc1707ad06682e2e"
+    },
+    {
+      "path": "review/rpc-lock-rollback-retry-proposal/retained_exact_function_sources.json",
+      "sha256": "4779ea8392fccda290e714d515b019eaef30fced356c697d089756966cc9f985"
+    },
+    {
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "path": "review/recovery-v74/retry_table_boundary_catalog_v74.json",
+      "sha256": "c032007b09778154929b546a4ffc5f2ee482c0fc72fcc4188cda478022b26607"
+    },
+    {
+      "path": "review/recovery-v74/retry_read_relation_boundary_v74.json",
+      "sha256": "7441273fb43374e10299c4c6a08c567f73d4fd868662e776050764e1287e9f63"
+    },
+    {
+      "path": "review/recovery-v74/retry_gateway_setting_catalog_v74.json",
+      "sha256": "c045e794740f6f4fb1ee8940535234764be4bb8573dee8e7f4cabe606a565aaf"
+    },
+    {
+      "path": "review/recovery-v74/retry_view_and_rls_boundary_v74.json",
+      "sha256": "0178799c42c5166d0bc4c05a01b3dd7651f6d571282a789dc1779a3fcbcc3955"
+    },
+    {
+      "path": "review/recovery-v74/retry_write_policy_boundary_v74.json",
+      "sha256": "c4b1924c6e5f606ec940ce2bdd3a76c11eedbb98f9c2ac35118414049bfac61d"
+    },
+    {
+      "path": "review/recovery-v74/retry_write_index_boundary_v74.json",
+      "sha256": "8aeaa95617c8f335a0e62ed98bce7ceabbfc2132ad9a8c5653e4b352053aec34"
+    }
+  ],
+  "limitations": [
+    "Function and noninternal-trigger source closure is not effective gateway configuration proof.",
+    "No actual PostgREST server or production-positive retry classification was exercised.",
+    "Native SQL errors rolled back application rows in actual local transactions; sequence consumption and logs can survive rollback.",
+    "Database effect review is bounded to the73 callable functions,44 write relations,31 triggers and18 retained-read/view relation closure plus12 ordinary bar partitions.",
+    "Source pins are observed baseline pins; a selected shared-refresh b18-to-7f538 change requires final current-source reconciliation before deployment."
+  ],
+  "manual_marker_classification": {
+    "astra_ingestion_v1.backfill_audit_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_breadth_inputs_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_breadth_projected_pages_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_child_links_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_child_proofs_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_enumeration_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_parent_links_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_registered_children_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_contract_state_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_exceptions_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_family_turn_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_calculation_receipts_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_discovered_members_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_discovery_gaps_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_evidence_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_refresh_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_roots_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_identity_sources_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_minute_projection_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_minute_sessions_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_nonminute_pages_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_pages_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_plan_coverage_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_plan_manifests_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_plan_units_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_provider_dependencies_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_readbacks_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_s02_occurrences_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_shared_pages_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_tasks_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_ingestion_v1.backfill_workers_v2": "RELATION_TARGET_COLUMN_LIST_SYNTAX_NOT_FUNCTION_INVOCATION",
+    "astra_shared_equity_features_20260928_v1.compute_feature_sessions_remediated_v1": "REGPROCEDURE_SOURCE_HASH_CHECK_ONLY_NOT_INVOKED",
+    "astra_shared_equity_features_20260928_v1.feature_grid_remediated_v1": "REGPROCEDURE_SOURCE_HASH_CHECK_ONLY_NOT_INVOKED"
+  },
+  "missing_definitions": [],
+  "operation_routes": {
+    "backfill_claim": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)"
+    ],
+    "backfill_commit": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)"
+    ],
+    "backfill_plan_next": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_plan_next_v2(jsonb)"
+    ],
+    "backfill_reserve": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)"
+    ],
+    "backfill_reuse_commit": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)"
+    ],
+    "backfill_verify": [
+      "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "astra_ingestion_v1.backfill_delivery_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)",
+      "astra_ingestion_v1.backfill_try_finalize_v2(text)"
+    ]
+  },
+  "qualified_calls_requiring_manual_classification": {
+    "astra_ingestion_v1.backfill_breadth_project_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "astra_ingestion_v1.backfill_breadth_projected_pages_v2"
+    ],
+    "astra_ingestion_v1.backfill_contract_admit_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "astra_ingestion_v1.backfill_tasks_v2"
+    ],
+    "astra_ingestion_v1.backfill_contract_enqueue_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_contract_enumeration_v2"
+    ],
+    "astra_ingestion_v1.backfill_contract_prove_child_v2(text)": [
+      "astra_ingestion_v1.backfill_contract_child_proofs_v2"
+    ],
+    "astra_ingestion_v1.backfill_contract_register_child_v2(text)": [
+      "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "astra_ingestion_v1.backfill_contract_state_v2"
+    ],
+    "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": [
+      "astra_ingestion_v1.backfill_exceptions_v2",
+      "astra_ingestion_v1.backfill_family_turn_v2",
+      "astra_ingestion_v1.backfill_pages_v2",
+      "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "astra_ingestion_v1.backfill_workers_v2"
+    ],
+    "astra_ingestion_v1.backfill_feature_reuse_summary_v2(text)": [
+      "astra_shared_equity_features_20260928_v1.compute_feature_sessions_remediated_v1",
+      "astra_shared_equity_features_20260928_v1.feature_grid_remediated_v1"
+    ],
+    "astra_ingestion_v1.backfill_identity_discover_member_v2(text,text)": [
+      "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "astra_ingestion_v1.backfill_tasks_v2"
+    ],
+    "astra_ingestion_v1.backfill_identity_mark_changed_v2(text,text,date)": [
+      "astra_ingestion_v1.backfill_identity_refresh_v2"
+    ],
+    "astra_ingestion_v1.backfill_identity_project_v2(text,date,text,text,jsonb)": [
+      "astra_ingestion_v1.backfill_identity_evidence_v2"
+    ],
+    "astra_ingestion_v1.backfill_identity_readback_trigger_v2()": [
+      "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "astra_ingestion_v1.backfill_identity_sources_v2"
+    ],
+    "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": [
+      "astra_ingestion_v1.backfill_identity_roots_v2",
+      "astra_ingestion_v1.backfill_tasks_v2"
+    ],
+    "astra_ingestion_v1.backfill_minute_account_v2(text)": [
+      "astra_ingestion_v1.backfill_minute_projection_v2",
+      "astra_ingestion_v1.backfill_minute_sessions_v2"
+    ],
+    "astra_ingestion_v1.backfill_nonminute_project_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_nonminute_pages_v2"
+    ],
+    "astra_ingestion_v1.backfill_plan_insert_v2(text,bigint,text,text,text,text,jsonb,text[],integer)": [
+      "astra_ingestion_v1.backfill_tasks_v2"
+    ],
+    "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_readbacks_v2"
+    ],
+    "astra_ingestion_v1.backfill_reuse_commit_v2(jsonb)": [
+      "astra_ingestion_v1.backfill_tasks_v2"
+    ],
+    "astra_ingestion_v1.backfill_s02_project_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_s02_occurrences_v2"
+    ],
+    "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": [
+      "astra_ingestion_v1.backfill_audit_v2",
+      "astra_ingestion_v1.backfill_plan_manifests_v2"
+    ],
+    "astra_ingestion_v1.backfill_shared_project_v2(text,integer)": [
+      "astra_ingestion_v1.backfill_shared_pages_v2"
+    ],
+    "astra_ingestion_v1.backfill_snapshot_task_v2(text)": [
+      "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "astra_ingestion_v1.backfill_plan_units_v2"
+    ],
+    "astra_ingestion_v1.backfill_try_finalize_v2(text)": [
+      "astra_ingestion_v1.backfill_audit_v2"
+    ]
+  },
+  "roots_observed_at": "2026-10-30 16:10:08.30674+00",
+  "schema": "astra.confirmed-lock-abort-source-closure/1",
+  "source_count": 73,
+  "status": "SCOPED_DATABASE_EFFECT_CLOSURE_COMPLETE_GATEWAY_BOUNDARY_DISCLOSED",
+  "triggers": [
+    {
+      "definition_sha256": "8daa1a075773888fdedf8af0dd6dac66c5130472133492f12ac0a2670636b3f6",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_audit_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_audit_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "3ea9351643757d8736cf5f6c38e71a8c7d4cc52d9346410b75054b1a5fb3d547",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_breadth_input_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "aef3213dc09ee912df6d8333e9cc0913dcfa3048dfa5eeb8ef0cc579401bb72b",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_breadth_projection_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "c53d0c59c6f4092e6346a4f6c36d38c15cefc51b4233cbbf66787eac20e9d93a",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "contract_links_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "243f449bcb656418632d206e7884747e085cceb77fb9f10cc6d0bcf754afc48f",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "contract_links_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "c339b58afdb97dc0e983f3d17f3c566dbf4b7b3020f0b15ba3e565ee92ce508b",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "contract_links_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "2afa3889789dd782ee476ea35bc70496512ea12f66f83756f680bbd477fec7c3",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_exception_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_exceptions_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "a714392e08194853efa5831ceb1473161940256cf5281a354f49c559efe21d99",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_identity_discovery_gap_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "cf07a15b9b2cd1a297d7f32668e515c49ad3b964de6c721be53d8076f15f6048",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_identity_evidence_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "4906c7123b0faed80d5c142500183552e735064fd340f242f7526c3da9960a71",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_nonminute_projection_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "341e1ebf8e153d583003b05be10573d4d40c576a2f1388cf657bf17bb4650e62",
+      "enabled": "O",
+      "function_sha256": "ab9192e93060b022d23ae9e590f196b644f837b23b7a46c3119a8cbe9d0e399f",
+      "function_signature": "astra_ingestion_v1.backfill_breadth_projection_trigger_v2()",
+      "name": "backfill_breadth_project_on_commit_v2",
+      "table": "astra_ingestion_v1.backfill_pages_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "e20fd2d2b1930a11596710749d6c46daabea51b3ec6c40e5ad5680a156e2ddba",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_page_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_pages_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "1a963085b3923d0d8138b6aaf747512818e6d406cbf66bb76aa54685f5ec5d63",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_plan_manifest_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "2639a9cda7ab0fb8f0d99ca0db5710f60632e34f8ed6165120e271da09c1d055",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_plan_units_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_plan_units_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "e6a86939ad5e85373dbe2b698bb46855c37cbedb3af55a59cdab95de51d2f2cb",
+      "enabled": "O",
+      "function_sha256": "c80e1a8e0f9e2652e062f4c1c85f15d7c92054659deb98eb75e520debd699ab5",
+      "function_signature": "astra_ingestion_v1.backfill_contract_readback_trigger_v2()",
+      "name": "backfill_contract_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "8bb352e7315fe77361c07ef906b1bb5d3505f82c9807ca3446ae61458ebd0797",
+      "enabled": "O",
+      "function_sha256": "f9bc1959eea5677f14ee03e900f1997b98155402b894840abc4d45f8a2355b6b",
+      "function_signature": "astra_ingestion_v1.backfill_identity_readback_trigger_v2()",
+      "name": "backfill_identity_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "38b33b4b81fc893bd3fd3644994b4cfeec80eb215304317a4ce364a8c46cc3b2",
+      "enabled": "O",
+      "function_sha256": "43fdf84063928deb1ab8bc511ddaae6a53f66dcf249b0fd1af30d34939065d24",
+      "function_signature": "astra_ingestion_v1.backfill_minute_readback_trigger_v2()",
+      "name": "backfill_minute_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "6e09b89587a95fdcb2cb7a3b081bed838911f621dce51d2f70e671265ca20636",
+      "enabled": "O",
+      "function_sha256": "1571e19bb63fe6dcc77d778b4ddd77b949020dd203071c746df3989046783884",
+      "function_signature": "astra_ingestion_v1.backfill_nonminute_readback_trigger_v2()",
+      "name": "backfill_nonminute_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "f7ebfb7ba1929887389c6e97e211d9fd871efff5677dfa072674181d4b34d9cf",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_readback_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "bd4bf41fdd123ebe497848d60bbedd7e69d032d8cf6a2bcf2e13deb84997ce66",
+      "enabled": "O",
+      "function_sha256": "caf72927d0ed97d663be52d972fa6157c4281b4a7aba9ef21e3810459f63f927",
+      "function_signature": "astra_ingestion_v1.backfill_s02_readback_trigger_v2()",
+      "name": "backfill_s02_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "7f867ffffdebb4981d6c6fc4e654db0a74061925c2e8231b3f3638f458733e4d",
+      "enabled": "O",
+      "function_sha256": "f2c47d98d85d9ea1b826ea671e299af5f02741ae19037b4915f6d8decf4eb666",
+      "function_signature": "astra_ingestion_v1.backfill_shared_readback_trigger_v2()",
+      "name": "backfill_shared_readback_v2",
+      "table": "astra_ingestion_v1.backfill_readbacks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "302556881ba89b4585e0d40e437fd481e493591385aac52c9858f6c8705a0147",
+      "enabled": "O",
+      "function_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "function_signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "name": "backfill_run_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_runs_v2",
+      "type": 19
+    },
+    {
+      "definition_sha256": "445ad3be9d177fc133aaa0de50ff1dfb32cb185b6a3923f7394e7bee821989b0",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "backfill_s02_occurrences_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "df8371eeda6284d47a147906e02527087af8c9f33f0c13c68556a341aa9353c1",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "shared_evidence_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "25a150fc2586c1a7d8a0c7d15c2ca5bb403dc0d002bff32b96a9469b31319ff5",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "shared_evidence_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "447474ae930e6dd337edbd18d8ddf2b8412e23883dcbbe8202f519469bea57fd",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "shared_evidence_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_shared_version_links_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "69f242f4e76eb6bfc207ddde16d408d15023ca26c6b019da66a5f01c34a489b3",
+      "enabled": "O",
+      "function_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "function_signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "name": "shared_evidence_immutable_v2",
+      "table": "astra_ingestion_v1.backfill_shared_versions_v2",
+      "type": 58
+    },
+    {
+      "definition_sha256": "7f83faa8e5c7269c046502bed38a732854d2ba4519dabafe3599855be6fdf927",
+      "enabled": "O",
+      "function_sha256": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b",
+      "function_signature": "astra_ingestion_v1.backfill_contract_child_trigger_v2()",
+      "name": "backfill_contract_child_insert_v2",
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "03592512f7bf87b15d4e07dd46212fc36885d1dac4253bbe6dad46b75ba1a73e",
+      "enabled": "O",
+      "function_sha256": "5845e4b5c3a547452008358c1b526427cb35d14007429f3695ff38918664f342",
+      "function_signature": "astra_ingestion_v1.backfill_page_limit_guard_v2()",
+      "name": "backfill_execution_page_limit_v2",
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "type": 23
+    },
+    {
+      "definition_sha256": "4b34d0b66c2226913b9b6ef48b65c5e2949a824b43726eccf59661a6dce53ca5",
+      "enabled": "O",
+      "function_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "function_signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "name": "backfill_static_plan_snapshot_v2",
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "type": 5
+    },
+    {
+      "definition_sha256": "41afff79986d77c622da846e1bec0fae3ef21de4bcee83e7baeec30c0752db47",
+      "enabled": "O",
+      "function_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "function_signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "name": "backfill_task_scope_v2",
+      "table": "astra_ingestion_v1.backfill_tasks_v2",
+      "type": 23
+    }
+  ],
+  "unresolved_qualified_markers": [],
+  "write_relation_boundary": {
+    "checks": 50,
+    "defaults": 82,
+    "expression_or_partial_indexes": 16,
+    "index_expression_review": "built-in JSON/text operators, lower/coalesce, literals and boolean comparisons only",
+    "index_function_dependencies": 0,
+    "index_operator_classes": [
+      {
+        "access_method": "btree",
+        "name": "bool_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "date_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "int4_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "int8_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "text_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "hash",
+        "name": "text_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "timestamptz_ops",
+        "namespace": "pg_catalog"
+      },
+      {
+        "access_method": "btree",
+        "name": "uuid_ops",
+        "namespace": "pg_catalog"
+      }
+    ],
+    "indexes": 84,
+    "manual_check_review": "built-ins and already closed backfill_page_limit_cap_v2 only",
+    "manual_default_review": "literals, CURRENT_USER, clock_timestamp, and identity generation only",
+    "nondeferrable_no_action_foreign_keys": 44,
+    "observed_at": "2026-10-30T16:33:22.799606+00:00",
+    "ordinary_persistent_tables": 44,
+    "rewrite_rules": 0,
+    "rls_expression_review": "64 policies; USING/WITH CHECK are only literal true or absent",
+    "rls_function_dependencies": 0,
+    "rls_policies": 64,
+    "rollback_exception": "identity/sequence allocation is not reclaimed"
+  },
+  "write_tables": [
+    "astra_ingestion_v1.backfill_audit_v2",
+    "astra_ingestion_v1.backfill_breadth_inputs_v2",
+    "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+    "astra_ingestion_v1.backfill_contract_child_links_v2",
+    "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+    "astra_ingestion_v1.backfill_contract_enumeration_v2",
+    "astra_ingestion_v1.backfill_contract_parent_links_v2",
+    "astra_ingestion_v1.backfill_contract_registered_children_v2",
+    "astra_ingestion_v1.backfill_contract_state_v2",
+    "astra_ingestion_v1.backfill_contract_work_v2",
+    "astra_ingestion_v1.backfill_exceptions_v2",
+    "astra_ingestion_v1.backfill_family_turn_v2",
+    "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+    "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+    "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+    "astra_ingestion_v1.backfill_identity_evidence_v2",
+    "astra_ingestion_v1.backfill_identity_refresh_v2",
+    "astra_ingestion_v1.backfill_identity_roots_v2",
+    "astra_ingestion_v1.backfill_identity_source_members_v2",
+    "astra_ingestion_v1.backfill_identity_sources_v2",
+    "astra_ingestion_v1.backfill_minute_projection_v2",
+    "astra_ingestion_v1.backfill_minute_sessions_v2",
+    "astra_ingestion_v1.backfill_nonminute_pages_v2",
+    "astra_ingestion_v1.backfill_pages_v2",
+    "astra_ingestion_v1.backfill_plan_coverage_v2",
+    "astra_ingestion_v1.backfill_plan_manifests_v2",
+    "astra_ingestion_v1.backfill_plan_units_v2",
+    "astra_ingestion_v1.backfill_provider_dependencies_v2",
+    "astra_ingestion_v1.backfill_readbacks_v2",
+    "astra_ingestion_v1.backfill_runs_v2",
+    "astra_ingestion_v1.backfill_s02_occurrences_v2",
+    "astra_ingestion_v1.backfill_s02_projection_v2",
+    "astra_ingestion_v1.backfill_shared_counts_v2",
+    "astra_ingestion_v1.backfill_shared_dates_v2",
+    "astra_ingestion_v1.backfill_shared_fields_v2",
+    "astra_ingestion_v1.backfill_shared_links_v2",
+    "astra_ingestion_v1.backfill_shared_occurrences_v2",
+    "astra_ingestion_v1.backfill_shared_pages_v2",
+    "astra_ingestion_v1.backfill_shared_records_v2",
+    "astra_ingestion_v1.backfill_shared_version_links_v2",
+    "astra_ingestion_v1.backfill_shared_versions_v2",
+    "astra_ingestion_v1.backfill_tasks_v2",
+    "astra_ingestion_v1.backfill_workers_v2",
+    "astra_ingestion_v1.source_limits"
+  ]
+}

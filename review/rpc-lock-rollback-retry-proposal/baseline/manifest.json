@@ -1,0 +1,9 @@
+{
+  "deployed_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "source_sha256": {
+    "astra_ingestion/rpc_store.py": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+    "astra_ingestion/worker.py": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+    "astra_ingestion/backfill_worker_v2.py": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+  },
+  "implementation_status": "LOCAL_ONLY_NO_ACTIVATION"
+}

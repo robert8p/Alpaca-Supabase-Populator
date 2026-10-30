@@ -1,0 +1,169 @@
+{
+  "schema": "astra.shared-field-cache-final-independent-review/1",
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T16:33:45.956742+00:00",
+  "passed": true,
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "decision": "EXACT_REVIEWED_BYTES_ELIGIBLE_FOR_PUBLICATION_AND_REQUIRED_CI; ROOT_ONLY_GUARDED_ACTIVATION_AFTER_GATES",
+  "reviewed_artifact_pins": {
+    "sql/astra_backfill_shared_field_cache_v74.sql": "b11210b980ad7afb4f821b184d2682d1d3123406da6cf47ece4bb9855803777b",
+    "sql/astra_backfill_shared_field_cache_restore_v74.sql": "4fa9d60877b25355445f0d3b8b630d87630f1e2bb00a5896a1bb83fcd4fef376",
+    "tests/ingestion/test_backfill_shared_field_cache_v74.py": "6ed056ec347cfe6f43706a5e06f2f7ab013e179a70711f4bb3ab20e0cd65dac8",
+    "tests/ingestion/test_backfill_shared_field_cache_installation_v74.py": "f4856947f23dae88df8e5d1ce7de72363a1034fa6ea1c9052a8f8c5100caaef0",
+    "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+    "review/recovery-v74/shared-field-cache/shared_field_active_qualification_v74.json": "6de189f693c165361e906f5f62dea76451a0c054c638813ba5c31166b2d3268e"
+  },
+  "prior_semantic_and_probe_review": {
+    "path": "review/recovery-v74/shared-field-cache/independent_candidate_and_probe_review_v74.json",
+    "sha256": "702c14f861582eb61c808c93132b95652cceaa6427ef06ac7f21c12d5064871e"
+  },
+  "candidate": {
+    "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+    "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+    "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+    "exact_three_edit_inverse_verified": true,
+    "link_statement_and_all_remaining_logic_byte_identical": true,
+    "missing_sql_null_and_present_json_null_preserved": true,
+    "unique_chosen_record_and_json_field_join_preserves_vote_cardinality": true,
+    "no_identity_scope_conflict_order_authentication_accounting_logic_change": true
+  },
+  "wrapper_review": {
+    "exact_forward_and_restore_replacement_bytes_verified": true,
+    "active_and_review_copies_equal": true,
+    "full_target_metadata_including_oid_acl_owner_config_preserved": true,
+    "fourteen_other_exact_source_metadata_pins_before_and_after": true,
+    "lock_order": [
+      "existing global transaction advisory gate",
+      "existing fixed run FOR SHARE"
+    ],
+    "writable_read_committed_required": true,
+    "statement_timeout": "8s",
+    "lock_timeout": "3s",
+    "fixed_owner_fence_cohort_manifest_3000_members_and_live_lease_before_after": true,
+    "forward_active_only": true,
+    "restore_any_existing_owned_status_preserving_status": true,
+    "strict_replays_rejected": true,
+    "pre_snapshot_other_source_drift_caught_by_final_pin_check": true,
+    "all_checked_other_functions_namespace_relations_indexes_constraints_triggers_policies_roles_memberships_preserved": true,
+    "no_provider_or_mutating_helper_invocation_by_wrapper": true,
+    "only_persistent_mutation_is_target_create_or_replace_function": true,
+    "no_new_grant_role_credential_table_index_endpoint_or_schedule": true
+  },
+  "qualification_review": {
+    "receipt_path": "review/recovery-v74/shared-field-cache/shared_field_active_qualification_v74.json",
+    "receipt_sha256": "6de189f693c165361e906f5f62dea76451a0c054c638813ba5c31166b2d3268e",
+    "producer_cases": 8,
+    "producer_errors": 0,
+    "producer_failures": 0,
+    "producer_skips": 0,
+    "producer_elapsed_seconds": 7.527573315004702,
+    "database": "PostgreSQL 16.15 disposable local fixture",
+    "active_source_test_methods": 2,
+    "actual_database_methods": 6,
+    "case_coverage": "Full tuple and shared-projection equivalence, six missing/null field states, version/conflict ordering and real follow-on page; 1000-record/20-field scale work; exact install/restore with OID/ACL/catalog and eight core run/member/task/provider/worker/turn/page/readback table snapshots; source/metadata/owner/fence/cohort/member-count/lease rejection; genuine pre-catalog source-drift rejection; postreplacement exception/metadata/lease rollback; strict replay rejection; paused restore without activation.",
+    "fixture_substitutions": "Disposable namespace/run/role/catalog pins are explicitly mapped; production SQL guards are unchanged.",
+    "initial_failed_static_comment_match_attempt_retained": true,
+    "wallclock_speedup_not_a_hosted_ci_gate": true,
+    "no_inherited_duplicate_cases": true
+  },
+  "independent_execution": {
+    "static_test_cases": 2,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "test_log": "test_exact_three_local_changes_and_complete_inverse (test_backfill_shared_field_cache_v74.Source.test_exact_three_local_changes_and_complete_inverse) ... ok\ntest_guarded_migration_scope_and_lock_order (test_backfill_shared_field_cache_installation_v74.SourceTests.test_guarded_migration_scope_and_lock_order) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+    "missing_dsn_admission_checks": [
+      {
+        "class": "test_backfill_shared_field_cache_v74.PostgreSQL",
+        "workflow": "ASTRA ingestion qualification",
+        "expected_disposition": "RuntimeError",
+        "passed": true
+      },
+      {
+        "class": "test_backfill_shared_field_cache_v74.PostgreSQL",
+        "workflow": "release-gate",
+        "expected_disposition": "SkipTest",
+        "passed": true
+      },
+      {
+        "class": "test_backfill_shared_field_cache_v74.PostgreSQL",
+        "workflow": null,
+        "expected_disposition": "SkipTest",
+        "passed": true
+      },
+      {
+        "class": "test_backfill_shared_field_cache_installation_v74.PostgreSQLTests",
+        "workflow": "ASTRA ingestion qualification",
+        "expected_disposition": "RuntimeError",
+        "passed": true
+      },
+      {
+        "class": "test_backfill_shared_field_cache_installation_v74.PostgreSQLTests",
+        "workflow": "release-gate",
+        "expected_disposition": "SkipTest",
+        "passed": true
+      },
+      {
+        "class": "test_backfill_shared_field_cache_installation_v74.PostgreSQLTests",
+        "workflow": null,
+        "expected_disposition": "SkipTest",
+        "passed": true
+      }
+    ],
+    "database_cases_rerun_by_reviewer": 0,
+    "reason": "Exact source and actual producer database outcomes were independently inspected; optional duplicate scale runs were not performed."
+  },
+  "retained_live_read_interpretation": {
+    "reads": [
+      {
+        "path": "review/recovery-v74/shared-read-profile/live_refresh_record_select_input_v74.json",
+        "sha256": "1057872794a684bfc3040ddb7d64dc4d14486f7ebdb2a1efb916f59a0d789ac5",
+        "observed_at": "2026-10-30T16:08:39.993334+00:00",
+        "execution_ms": 1626.759,
+        "planning_ms": 2.486,
+        "keys_sha256": "1c5f143b14fe02bca3a26c9728632aabf4eb71f88941d7b9cf1bc6d19e974245",
+        "rows": 1000,
+        "shared_hits": 92074,
+        "shared_reads": 1962,
+        "temp_reads": 836,
+        "temp_writes": 2213,
+        "maximum_aggregate_extra_shared_hits": 80000
+      },
+      {
+        "path": "review/recovery-v74/shared-field-cache/live_candidate_record_select_v74.json",
+        "sha256": "2b2585e4483f7ebab39ca3c2c9d23b11f90dfad14306f04d79c6f24e3275f155",
+        "observed_at": "2026-10-30T16:23:36.982178+00:00",
+        "execution_ms": 1451.017,
+        "planning_ms": 6.107,
+        "keys_sha256": "1c5f143b14fe02bca3a26c9728632aabf4eb71f88941d7b9cf1bc6d19e974245",
+        "rows": 1000,
+        "shared_hits": 16033,
+        "shared_reads": 2003,
+        "temp_reads": 1606,
+        "temp_writes": 3658,
+        "maximum_aggregate_extra_shared_hits": 0
+      }
+    ],
+    "same_fixed_occurrence_keys": true,
+    "shared_buffer_fetches_before": 94036,
+    "shared_buffer_fetches_candidate": 18036,
+    "fields_aggregate_extra_shared_hits_before": 80000,
+    "fields_aggregate_extra_shared_hits_candidate": 0,
+    "temporary_io_increased": true,
+    "no_controlled_latency_ratio": true,
+    "no_original_cached_write_plan_or_whole_cron_recovery_proof": true,
+    "candidate_was_not_installed_by_these_reads": true
+  },
+  "limits_and_release_conditions": [
+    "Local PostgreSQL 16.15 is not production-major qualification; both required dedicated exact-head CI runs and the other required gates must pass before activation.",
+    "The live candidate SELECT used the same fixed page keys but a separate snapshot/cache state. It demonstrates less repeated buffer work and more temporary spill, not a controlled runtime speedup.",
+    "The ordinary helper still performs writes and link/summary work outside this selected read. Neither the expensive historical page attribution nor sustained cron/worker recovery is proved.",
+    "Root must reconcile same owner/lease, unchanged exact source/catalog and any uncertain prior write before applying once; read back exact installed 7f538 source and unchanged metadata independently.",
+    "The reviewed restore is source-only, not a data rollback. It preserves existing status and requires the same unexpired owner/fence/cohort guards.",
+    "A separately deployed 55P03 retry must freshly reconcile its source closure after this shared-function replacement; this review does not activate or approve a different runtime payload."
+  ],
+  "production_calls_by_reviewer": 0,
+  "production_writes_by_reviewer": 0,
+  "required_ci_observed_by_this_review": false,
+  "root_selection_or_installation_claimed": false
+}

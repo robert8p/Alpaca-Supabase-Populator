@@ -1,0 +1,10 @@
+{
+  "status": "RETAINED_FIXTURE_ASSERTION_FAILURE",
+  "tests": 16,
+  "failures": 1,
+  "errors": 0,
+  "skips": 0,
+  "failure": "Worker test expected backfill_page_committed; existing deployed worker merges committed result last and returns page_committed.",
+  "correction": "Only the new test assertion was aligned with the unchanged worker result.",
+  "production_calls": 0
+}

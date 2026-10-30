@@ -1,0 +1,10 @@
+{
+  "sha256": "b86543db1a2f95b9e085c4b716c8bcaf184c1dfdf9f87479c4a3bd14dab5af65",
+  "exact_source_select_extraction": true,
+  "common_guard_wrapper_identical": true,
+  "selected_component": "REFRESH_RECORD_SELECT_INPUT",
+  "no_mutating_function_calls_or_statements": true,
+  "bounded_read_only": true,
+  "local_fixture_tests_required": false,
+  "reported_successor_parse_and_metadata_not_repeated": true
+}

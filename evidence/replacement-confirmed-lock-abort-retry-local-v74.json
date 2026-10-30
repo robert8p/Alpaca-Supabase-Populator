@@ -1,0 +1,89 @@
+{
+  "active_artifact_pins": {
+    "astra_ingestion/rpc_store.py": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403",
+    "tests/ingestion/test_rpc_lock_abort_retry.py": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468",
+    "tests/ingestion/test_rpc_lock_abort_retry_postgres.py": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+  },
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "combined_qualification": {
+    "bytes": 501864,
+    "git_blob": "ee6ff2e5d3bf14867cf97ec43789e7940e90589a",
+    "path": "review/recovery-v74/combined-release/combined_active_dependency_qualification_v74.json",
+    "sha256": "6517788ab3f5e888969e59fab5e395e77032bf301d46396cde86c0f089cc6162"
+  },
+  "counts": {
+    "actual_postgresql_tests": 6,
+    "actual_postgrest_server": "NOT_RUN",
+    "combined_actual_dependencies": 82,
+    "combined_tests": 56,
+    "errors": 0,
+    "failures": 0,
+    "http_layer": "SIMULATED_DOCUMENTED_POSTGREST_ENVELOPE",
+    "independent_non_pg_tests": 42,
+    "local_postgresql": "16.15",
+    "new_tests": 24,
+    "producer_tests": 48,
+    "skips": 0
+  },
+  "dependency_audit": {
+    "bytes": 27036,
+    "git_blob": "d0a64691c490d6de37307fda65de241dedbbfcae",
+    "path": "review/rpc-lock-rollback-retry-proposal/dependency_audit.json",
+    "sha256": "d870e0dfcdade51057147b2b28863834f8a6c0146d5a98d00fe450bd4e61b589"
+  },
+  "deployment_gates": [
+    {
+      "gate": "independent_final_boundary_review",
+      "note": "Independent unit/runtime review does not itself claim full gateway/catalog boundary approval.",
+      "state": "PENDING_ROOT_REVIEW"
+    },
+    {
+      "gate": "effective_gateway_boundary",
+      "note": "No selected hook/transaction/response setting in connector/role/database catalogs; external PostgREST environment/file configuration is not observable. Root decision must retain this assumption or use already-authorized authoritative evidence.",
+      "state": "VISIBILITY_LIMIT_DISCLOSED"
+    },
+    {
+      "gate": "selected_source_reconciliation",
+      "note": "Current closure binds shared refresh b18. If the separately reviewed7f538 optimization installs, bind the fresh selected source before deployment.",
+      "state": "REQUIRED_BEFORE_DEPLOYMENT"
+    },
+    {
+      "gate": "exact_published_head_CI",
+      "note": "Require every actual push/PR gate, dedicated ingestion zero skips with all24 new tests explicitly executed, and any PR merge-tree equality.",
+      "state": "NOT_RUN"
+    },
+    {
+      "gate": "root_deployment_decision",
+      "note": "No publication, deployment, production call, permission/configuration change or provider request was performed by this author.",
+      "state": "NOT_AUTHORIZED_BY_THIS_ARTIFACT"
+    }
+  ],
+  "final_qualification": {
+    "bytes": 447083,
+    "git_blob": "bde2db68186dab95f1049296f703c7f87bf3ce6d",
+    "path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+    "sha256": "e7f3a6cb15ec888634bfbae3ef5cb59869b8c7962041b989fc1707ad06682e2e"
+  },
+  "independent_unit_review": {
+    "bytes": 8989,
+    "git_blob": "9d6f401cde83963e57ca36cbb1e8e7f3c0da90b3",
+    "path": "review/rpc-lock-rollback-retry-proposal/independent_unit_qualification_v74.json",
+    "sha256": "68a1c580fa73df79c9d21827e29ff6e576d8400f5b3481786ab616562a3e19f5"
+  },
+  "local_release_manifest": {
+    "bytes": 9769,
+    "git_blob": "650b737c5ee7dddc7a95491cb6fe0bbb7260ab1b",
+    "path": "review/rpc-lock-rollback-retry-proposal/local_release_manifest.json",
+    "sha256": "2a930b25acbc4f71e7e5fcf9ef56193086ec68f13489078ac3bc43f11427800a"
+  },
+  "production_calls": 0,
+  "publication_target_base_commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+  "schema": "astra.confirmed-lock-abort-retry-producer-qualification/1",
+  "scoped_source_closure": {
+    "bytes": 86925,
+    "git_blob": "ad27b0d9d024fc0b6f482d53ef33c3e58bef6f16",
+    "path": "review/rpc-lock-rollback-retry-proposal/retry_source_closure.json",
+    "sha256": "cde0cd8a860cfeafcb44c59e2b091628fd867ba87dcd8b7a3572ca633299c4c8"
+  },
+  "status": "LOCAL_IMPLEMENTATION_AND_QUALIFICATION_COMPLETE_DEPLOYMENT_HELD"
+}

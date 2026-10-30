@@ -1,0 +1,85 @@
+{
+  "corrections": {
+    "1": "New worker expectation corrected to existing merged page_committed state; worker source unchanged.",
+    "3_and_4": "Missing imports/stale foundation detected while staging; exact immutable-base files used instead of copying stale workspace files.",
+    "5": "Final missing delivery-fixture import supplied from the verified base.",
+    "6": "Older fixture auth omitted planner routing; credential-expiry fixture violated created_at/expires_at ordering. Fresh exact root/callee definitions installed and fixture timestamps corrected.",
+    "7": "Exact24 source pins matched and planner retry passed; older table fixture lacked the published adaptive page_limit column. Added the unchanged published adaptive-page migration.",
+    "8": "46 cases passed; retained as pre-admission-test qualification.",
+    "final": "Two explicit no-DSN admission-context cases added; all48 passed without changing runtime."
+  },
+  "production_calls": 0,
+  "retained_attempts": [
+    {
+      "errors": 0,
+      "failures": 1,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_1_unit.json",
+      "sha256": "02b6da1374c79833087ad5750c415501d0e9e9f99912dedb5c82b2e34c2490aa",
+      "skips": 0,
+      "status": "RETAINED_FIXTURE_ASSERTION_FAILURE",
+      "tests": 16
+    },
+    {
+      "errors": 4,
+      "failures": 0,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_3.json",
+      "sha256": "4fd9a066c6f48a70895c0b4237ee2de09760809a028c3902d4dd5873927943d7",
+      "skips": 0,
+      "status": "FAIL_OR_SKIPPED",
+      "tests": 4
+    },
+    {
+      "errors": 4,
+      "failures": 0,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_4.json",
+      "sha256": "4fd9a066c6f48a70895c0b4237ee2de09760809a028c3902d4dd5873927943d7",
+      "skips": 0,
+      "status": "FAIL_OR_SKIPPED",
+      "tests": 4
+    },
+    {
+      "errors": 1,
+      "failures": 0,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_5.json",
+      "sha256": "350654fb9f02e081cf378d0e347ad17937d0219809ae7f0ea6b1dfe1eb48be4a",
+      "skips": 0,
+      "status": "FAIL_OR_SKIPPED",
+      "tests": 41
+    },
+    {
+      "errors": 1,
+      "failures": 2,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_6.json",
+      "sha256": "eb8ddfa9ee8b99bd2cad57482f7a9d2d702f08676eb50df266e3a02fdd468d71",
+      "skips": 0,
+      "status": "FAIL_OR_SKIPPED",
+      "tests": 46
+    },
+    {
+      "errors": 7,
+      "failures": 4,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_7.json",
+      "sha256": "f3d1f358150762e7c6e29e8fb8179ec942c51083dbda3de2361c245094c0c60f",
+      "skips": 0,
+      "status": "FAIL_OR_SKIPPED",
+      "tests": 46
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_8.json",
+      "sha256": "924f00de93186b00c09a6919bfd9d9fff6ef24eed741a7371367c267be865faf",
+      "skips": 0,
+      "status": "PASS",
+      "tests": 46
+    }
+  ],
+  "runtime_regression_inferred_from_fixture_failures": false,
+  "schema": "astra.confirmed-lock-abort-qualification-history/1",
+  "unretained_runner_failure": {
+    "attempt": 2,
+    "exact_traceback_retained": false,
+    "reason": "The original runner indexed a missing PostgreSQL test module after import failure. Its receipt-writing lookup was made fail-safe. No PostgreSQL or production call occurred.",
+    "status": "RUNNER_ERROR_BEFORE_RECEIPT_WRITE"
+  }
+}
