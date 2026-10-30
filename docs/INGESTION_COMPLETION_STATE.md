@@ -1,82 +1,68 @@
-# ASTRA ingestion — replacement checkpoint v64
+# ASTRA ingestion — replacement checkpoint v65
 
-## Active authority and scope
+## Current execution and ownership
 
-Rob's full ten-section replacement instruction is adopted in [REPLACEMENT_BACKFILL_MISSION_20261030.md](REPLACEMENT_BACKFILL_MISSION_20261030.md), SHA256 `62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45`. It replaces the old Aug–Sep2026/all24-family mission and incompatible admission/acceptance requirements. Old checkpoints are retained as history, not current scope.
+Updated 2026-10-30T06:38:08Z (01:38 America/Cancun). Status: **ACTIVE — USEFUL BACKFILL RUNNING; FULL DELIVERY INCOMPLETE**.
 
-New run identifier: `fixed3000-20250901-20260731-v1-20261030`.
-Classification: **RETROSPECTIVE_FIXED_COHORT**.
-Target: 2025-09-01 through2026-07-31 inclusive, America/New_York exchange dates.
-Families: REF01,REF03,P01,P02,D01,D02,D03,D04,D05,N01,N02,N03,S01,S02,CTX02,CTX06.
-Sources: existing Alpaca Algo Trader Plus and Massive Stocks Starter only.
-Population: exact previously accepted practical3000 membership is frozen in the replacement database. Cohort SHA256 `2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec`; ordered3000 member IDs SHA256 `a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e`. No reranking/substitution.
-No programme expiry. Requests/transactions/leases/attempts remain bounded and automatically resumable. Old canary quotas/deadlines apply only to their original jobs.
+The same originating owner `root-replacement-20261030T042603Z` retains a finite implementation lease through **2026-10-30T07:15:00Z**. The database and this checkpoint now agree on that lease. Existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` is enabled with its original hourly recurrence and no expiry. It must reconcile current ownership before implementation writes. No replacement controller or service has been created.
 
-## Sole current implementation ownership
+Run: `fixed3000-20250901-20260731-v1-20261030`, fence1. Existing PR93/branch `feat/astra-ingestion-service` in `robert8p/Alpaca-Supabase-Populator`. Deployed executable revision: `13ae192ef28b26f4f658f9c16a4992f4ed73cb2e`. Exact revision passed both GitHub ingestion qualification and release gates.
 
-Owner: originating controlling conversation `root-replacement-20261030T042603Z`.
-Finite claim expires **2026-10-30T07:15:00Z**.
-Prior scheduled run `b232445d-fd0c-8327-88fc-971f7562f77b` ended completed04:16:07Z; prior v61 claim RELEASED/RETIRED.
-Existing implementation automation `6ae2a4c96bbc819182133e17e9b7f779` has been retargeted to the exact full replacement instruction and temporarily paused while this owner implements safe supersession. Its original hourly recurrence is retained without expiry. No second controller was created.
-Local delegated agents may inspect/build independent files but have no production/repository write ownership.
-Before future shared writes, reconcile actual task/run state, current head, this finite lease and database stop/fences; use exact-head CAS.
+## Fixed authority and cohort
 
-## Verified live starting state
+All ten sections of [the replacement instruction](REPLACEMENT_BACKFILL_MISSION_20261030.md) remain active, SHA256 `62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45`.
 
-At2026-10-30T04:32:54.468429Z, app schema has exactly two completed legacy jobs: original156-record canary and78-record crash qualification; zero active claims and no queued old job. Preserve these immutable scopes/keys/deadlines/receipts/counters.
-No live bulk ledger or bulk worker exists. The current worker only processes legacy Alpaca bar jobs. Prior327-test candidate is staged source, not a running bulk ingestion pipeline.
-Existing worker is Render `srv-dbh9fko473hc739an8m0`, web `srv-dbh85vl9fdbs7387rucg`, workspace `tea-d562ma4hg0os73aejnfg`. Existing branch remainsfeat/astra-ingestion-service; manual deploy; no new service/cost.
-The old runtime dispatcher uses real api/worker capabilities and advisory transaction lock706314020261028. Extend that existing authenticated runtime; do not fabricate a hosted user principal or treat a synthetic callback as provider evidence.
+Target: 2025-09-01–2026-07-31, America/New_York exchange dates. Families: REF01, REF03, P01, P02, D01, D02, D03, D04, D05, N01, N02, N03, S01, S02, CTX02, CTX06. Sources: existing Alpaca Algo Trader Plus and Massive Stocks Starter only. F01–F06/CTX07/CTX14 preserved outside acquisition; D06 preservation-only. No programme expiry; bounded calls, transactions, task leases and attempts.
 
-## Current implementation work
+The accepted saved snapshot `population_top3000_202608_202609_v1.ref01_practical_snapshot_v1.content->companies` was directly reconciled with frozen membership and selection order at06:19:01Z: **3000 saved, 3000 frozen, zero differences**. Root acceptance event24407 governs membership. The immutable snapshot's older false acceptance flag does not supersede the later accepted receipt.
 
-1. Old-scope admission is now closed at the authenticated database boundary. Persist a distinct replacement run and freeze the exact saved cohort.
-2. Extend the existing application queue/worker with family-aware bounded tasks, receipts, truthful dispositions, retries and automatic continuation.
-3. Reuse verified equivalent existing source observations by mapped reference where practical. Do not count direct SEC/FINRA/other sources in two-plan completion.
-4. Connect the first useful provider/reuse batch, verify readback and successor, then keep full-scope work running while implementing remaining adapters/calculations.
-5. Keep raw acquisition independent of per-unit identity/research-quality gaps. Operational failures remain operational failures, never provider absences.
-6. Retarget all app continuation/supervision paths; preserve unrelated scanners/controllers and excluded datasets.
+- Snapshot SHA256: `2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec`.
+- Acceptance receipt SHA256: `20b9dac759857e9b510ccaeca33e4a94d8c748d588fb0cc27740cc66c389b5f9`.
+- Ordered member-ID SHA256: `a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e`.
+- Evidence: [saved cohort reconciliation](../evidence/replacement-saved-cohort-reconciliation.json).
+- Never invoke `ref01_practical_material_v1`; never rerank, substitute or shrink members.
+- Classification remains RETROSPECTIVE_FIXED_COHORT, not contemporaneous or survivorship-free.
 
-All16 families remain in accounting. F01–F06,CTX07,CTX14 are outside acquisition; D06preservation-only. Current full backfill state is **IMPLEMENTING / NOT_YET_RUNNING**, not complete. Database admission supersession is verified; the new-run deployment is not yet claimed.
+Actual calendar:230 target sessions; daily60-session support starts2025-06-05; intraday20-session support starts2025-08-04. Formula manifest SHA256 `e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65`.
 
-## Evidence and continuation
+## Verified deployment, useful data and continuity
 
-Current source before replacement: `b3e2912f00812dd11122be116f98be9499a4908f`; old checkpoint archived at [history/INGESTION_COMPLETION_STATE_v61.md](history/INGESTION_COMPLETION_STATE_v61.md).
-The implementation owner is active in this conversation and will publish concrete queue/run/release receipts and restore this same scheduled writer after establishing safe resumption. Never restore the old24-family/Aug–Sep scope from archived docs or former automation prompts.
-Existing disabled independent reviewer/closeout have unresolved requires_user_action states; do not impersonate their acceptance or bypass actual platform restrictions. Independent local/source/readback work continues meanwhile.
+Existing worker `srv-dbh9fko473hc739an8m0` deployed revision13ae at06:29:50Z. Existing web `srv-dbh85vl9fdbs7387rucg` deployed the same revision at06:30:04Z. Workspace `tea-d562ma4hg0os73aejnfg`; no new paid instance.
 
-## Verified replacement milestone — 2026-10-30T05:03:57Z
+Useful source began with NVDA reference and two 290-record daily series (raw and split-adjusted), then AAPL and further fixed members. Each complete initial series includes230 target+60 support sessions. Retained SIP source references progressed automatically, including20,018 NVDA September and21,951 October minute observations. Missing retained support creates genuine acquisition children; it is not labelled provider absence.
 
-Migration `astra_ingestion_supersede_gate_v2` applied successfully and read back. Original `submit_job` now returns SUPERSEDED_BY_SCOPE_CHANGE after normal capability authentication; original `claim_next` returns null after the shared transaction lock. Existing completed job counters remain 156/2 and78/1; zero active claims. No queued original work required relabeling.
-The gate was qualified against disposable PostgreSQL16 with existing capability authentication, queued-task preservation, repeated application, and invalid-token rejection.
-Actual Alpaca calendar has230 target sessions. Minimum60-session daily support begins2025-06-05;20-session intraday support begins2025-08-04. Retain support separately.
-Actual Render deployment reconciliation confirms both services still LIVE on `2c809b69e131f84e1778486e74c2f89a273f59f9`; no replacement bulk execution is claimed.
+At06:38:08Z:
+-134 physical committed pages,15,258 physical records/pointers,84 provider reservations.
+-133 pages independently read back; all133 hashes matched. The newest live page was awaiting its subsequent readback at that instant.
+-768,136 retained minute observations were referenced, provenance-qualified and source-usable in completed readbacks.
+-Planner cursor29 (next frozen selection order), planning_complete=false.
+-No operational task error had been observed in the preceding reconciliation; identity limitations remain explicit.
+-These are different units. Do not sum raw/split variants, shared P01/P02 data or retained pointers into one unique-observation total.
 
-## Replacement runtime release checkpoint — 2026-10-30T05:51:10Z
+Controlled restart `dep-dbi3ki4s728c73c8fnrg` was triggered once at06:33:44Z and became LIVE06:34:28Z on the same revision13ae. Old worker3874b7b4-3693-472d-a386-fa979c417a32 was replaced by2952b01e-7c23-48e8-9947-2fa1f5c058f6. All75 pre-restart page keys/hashes remain unchanged; zero duplicates;34 pages committed after the old worker's final heartbeat by06:37:23Z. Automatic successors are executing from the same durable queue.
 
-Applied and verified: old admission gate; separate v2 runtime; exact3000 frozen members; retained SIP reader; atomic retained-pointer commit and automatic gap children; independent retained-source verifier; all16-family delivery views, immutable full-plan seal and existing supervisor hook; bounded full planner; D03 projection and full-cohort breadth reader; narrow delivery performance extension.
+Evidence: [first useful batch](../evidence/replacement-first-useful-batch.json), [restart proof](../evidence/replacement-controlled-restart-proof.json), [live accounting](../evidence/replacement-live-progress-v65.json).
 
-The run is ACTIVE with planning_complete=false. The deployed services are still on their original source until the explicit manual deployment below. No useful replacement page has committed at this checkpoint; do not claim unattended ingestion or full completion yet.
+## Installed work and retained engineering
 
-The exact source under release contains all12 permitted-provider adapters, D01–D05/CTX06 frozen calculations, and the existing single worker extended with authenticated replacement claims. Its first action is backfill_plan_next with one member; it interleaves another bounded member every5 claim cycles until all3000 members plus230 breadth units are planned and the full manifest is sealed. Expected static workload is about957000 tasks, with separate conditional Alpaca news alternatives and dynamic option/gap children. REF03 is continuous audit and P02 shares the P01 retrieval.
+Installed runtime, exact fixed cohort, planner, retained-source read/commit/verification, delivery views/finalizer, breadth projection/material, performance extension, paid-provider pacing, retained/fresh source deduplication, and retained D01 feature reuse. Applied migrations remain immutable.
 
-Source reuse references existing market_fixed_20250901_20260831.alpaca_sip_bars_1m through fixed provider asset/month scopes, recording no duplicate market rows. Fresh five-observation NVDA source comparison matched exactly; this is bounded qualification only. Missing, invalid or unqualified retained sessions create genuine Alpaca acquisition children. Company mapping remains unresolved unless historical evidence supports it.
+Forward source-dedup SHA256 `f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5`; feature-reuse SHA256 `28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61`; pacing SHA256 `50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501`. Their source publication is included in the next tested forward release; do not reapply because a local output was interrupted.
 
-Exact calendar:230 target sessions; daily60-session support starts2025-06-05; intraday20-session support starts2025-08-04. Formula manifest SHA256 e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65. Retained D01 compact session caches are under an additional optional reuse extension; current calculations retain their version and missing-input reasons.
+Optional worker cache wiring is locally qualified, not yet deployed: full449-test PostgreSQL suite passed; actual worker cache-hit/fallback paths passed. Additional family fairness and adaptive-page changes are being qualified under this same owner. These test counts are engineering evidence, not ingestion completion.
 
-Validation: full local PostgreSQL+application suite418 tests passed, plus final planner5 cases and breadth3 cases. New case counts are not useful output. Run the exact branch CI before deployment. Each real committed page requires independent subsequent-transaction readback.
+Original legacy canary/restart jobs and their234 records/3 requests remain immutable and outside new-run usage. Old admission remains closed.
 
-Usage includes separate diagnostics:1Alpaca +3Massive scoped requests, retained in evidence and metadata, separate from actual worker reservations. Massive connector successfully returned historical news, short-volume and short-interest samples. This proves connector reach for those scopes, not deployed-worker credential presence or family completion.
+## Genuine remaining dependencies and executable continuation
 
-### Executable next action and live proof
+1. Publish and deploy the exact tested forward release: wire retained D01 cache reuse, make persisted family rotation prevent a price/reference backlog from starving news/actions/options, and persist adaptive execution page limits without changing immutable scope/cursors. Verify exact deployed commit and actual family progress.
+2. Demonstrate the new run's persisted deferred-retry execution path. A heartbeat or unit test alone is insufficient; retain actual scheduled deferral and later progress evidence.
+3. Implement progressive historical-identity reconciliation and affected derivation recomputation. Current provider anchors remain unresolved; raw acquisition continues. Missing resolution logic is an implementation issue, not an exhausted provider gap.
+4. Improve non-minute per-field coverage accounting: distinguish source variants, derived rows, usable values and NULL reasons; do not add overlapping raw/split/derived counts. Keep unknown expected denominators unknown.
+5. Expose replacement-run status in the existing app, and continue the full bounded planner, acquisition, independent readbacks and finalizer. Do not stop after this first useful batch.
+6. **Massive worker credential remains BLOCKED_EXTERNAL**: actual heartbeat advertises Alpaca kinds only; `MASSIVE_WORKER_CREDENTIAL / RUNTIME_CAPABILITY_UNAVAILABLE` is persisted. Massive connector historical probes succeeded, but do not supply a deployable secret. Use the existing Massive account API key as `MASSIVE_API_KEY` in this worker environment through an authorised owner setup when available. Do not request a new plan or infer provider absence. Keep Alpaca, reuse and calculations active; the admitted Alpaca-news alternative is planned.
+7. At safe handoff, refresh this same task's executable prompt and release the root implementation lease. The enabled task must reconcile remote state before taking the next bounded repair step. Preserve disabled independent reviewer/closeout platform states and unrelated scanners.
 
-Current root owner will publish this tested release, wait for exact-head CI, manually deploy existing worker srv-dbh9fko473hc739an8m0 and web srv-dbh85vl9fdbs7387rucg (autoDeploy off), verify Render reports LIVE at the tested commit, then verify actual planner cursor/pages/readbacks. Preserve full run; do not impose old canary limits. Confirm actual configured provider kinds from the worker heartbeat. If Massive is missing, keep healthy work active, record the exact credential dependency and use the already admitted Alpaca-news alternative where useful.
+No full-family completion or unattended-proof completion is claimed yet. Full delivery requires all3000 members, all16 workflows, sealed complete plan, pagination/contract enumeration, truthful terminal outcomes, independent readbacks, actual data coverage and stable outputs. Operational failures must remain operational. Continue healthy bulk work while repairing affected units.
 
-Demonstrate automatic next task, real deferred retry, controlled restart without receipt duplication, and source-to-database readback. Then update this checkpoint with real run/deploy/evidence references, re-enable the same hourly implementation automation, and release this finite root lease. No competing controller. The live worker continues admitted work independently of chat.
-
-Do not stop healthy acquisition for unresolved identity or research qualification. Operational errors remain operational and require bounded repair. Finalizer cannot claim COMPLETE without full sealed task/date/member accounting, verified pages and actual coverage evidence. Unknown denominators remain unknown.
-
-
-## Interruption reconciliation — 2026-10-30T06:06:37Z
-
-Current database state confirms3000 frozen members, ACTIVE replacement run fence1, zero replacement tasks/pages/provider reservations, and installed planner/delivery/breadth functions. Old completed records remain preserved. GitHub branch head is1ae18985c86b4dea23767a646336b4d90f46639b. No uncertain GitHub branch mutation was dispatched during the interrupted checkpoint attempt. The same root owner continues; finite claim extended to07:15Z. This checkpoint publishes the retained work before the immediate tested worker release. No new controller and no cohort reranking.
+Previous checkpoint retained at [v64](history/INGESTION_COMPLETION_STATE_v64.md).

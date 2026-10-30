@@ -1,0 +1,568 @@
+{
+  "schema": "astra.replacement.restart-proof/1.0",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "source_revision": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+  "before": {
+    "run": {
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "pages": 75,
+      "status": "ACTIVE",
+      "requests": 48,
+      "planner_next": 17,
+      "last_progress_at": "2026-10-30T06:33:40.677316+00:00",
+      "physical_records": 8263,
+      "implementation_metadata": {
+        "planner_phase": "MEMBERS",
+        "cohort_artifact": "evidence/replacement-cohort-v1.json",
+        "planner_version": "fixed3000-plan-v2.1",
+        "instruction_path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+        "planning_complete": false,
+        "cohort_accepted_at": "2026-10-24T12:20:33.866518Z",
+        "implementation_owner": "root-replacement-20261030T042603Z",
+        "selection_limitations": "Selected after target period; not contemporaneous or survivorship-free",
+        "cohort_artifact_sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d",
+        "provider_pacing_policy": {
+          "version": "fixed3000-paid-provider-pacing-v2.1",
+          "applied_at": "2026-10-30T06:29:36.467642+00:00",
+          "coordination": "Existing authenticated RPC advisory lock706314020261028 and shared source_limits row lock",
+          "legacy_policy": "Original job quotas, deadlines, counters and dispatcher are unchanged",
+          "provider_plans": {
+            "Alpaca": {
+              "name": "Algo Trader Plus",
+              "source_ref": "https://alpaca.markets/data",
+              "application_interval_seconds": 1
+            },
+            "Massive": {
+              "name": "Stocks Starter",
+              "source_ref": "https://massive.com/pricing?product=stocks",
+              "source_verified_by": "Controlling engineering owner",
+              "source_verified_date": "2026-10-30",
+              "published_plan_description": "Unlimited API Calls",
+              "application_interval_seconds": 1
+            }
+          },
+          "worker_topology": "Existing worker service only; no extra workers or instances provisioned",
+          "retry_after_policy": "Preserve any later stored provider deadline; honour finite Retry-After without reducing it to this baseline",
+          "minimum_interval_seconds": {
+            "Alpaca": 1,
+            "Massive": 1
+          },
+          "application_maximum_reservations_per_minute_per_provider": 60
+        },
+        "cohort_acceptance_sha256": "20b9dac759857e9b510ccaeca33e4a94d8c748d588fb0cc27740cc66c389b5f9",
+        "cohort_members_id_sha256": "a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e",
+        "planner_last_progress_at": "2026-10-30T06:33:32.001923+00:00",
+        "implementation_lease_until": "2026-10-30T06:30:00Z",
+        "planner_next_breadth_index": 0,
+        "diagnostic_provider_requests": {
+          "total": 4,
+          "Alpaca": 1,
+          "Massive": 3,
+          "evidence_refs": [
+            "evidence/retained-alpaca-source-check.json",
+            "evidence/replacement-massive-historical-probes-v2.json"
+          ],
+          "separate_from_worker_reservations": true
+        },
+        "planner_next_selection_order": 17,
+        "planner_expected_static_count": 5280,
+        "scheduled_implementation_task": "6ae2a4c96bbc819182133e17e9b7f779",
+        "planner_preexisting_static_count": 0
+      }
+    },
+    "running": null,
+    "workers": [
+      {
+        "worker_id": "3874b7b4-3693-472d-a386-fa979c417a32",
+        "observed_at": "2026-10-30T06:33:38.025654+00:00",
+        "source_revision": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse"
+        ],
+        "capability_revision": "4a254b20c103ad31a55fbe9f42dc6b4f2a5dfdc075d408ef0d4dff0e3a40d1fe"
+      }
+    ],
+    "observed_at": "2026-10-30T06:33:41.919006+00:00",
+    "page_manifest": [
+      [
+        "backfill-plan-04c5218086138f3eb0f5ed7fd19ed9a15e9b59f306f44d39e8340e1f7e81f47f",
+        0,
+        "69074821c0d1ef8472f29d19cb355092dc116c16c3dc96535c440a2e62ce6fea"
+      ],
+      [
+        "backfill-plan-04f95e3a27bc7fb5b86d18ae46a9f6856ec61c79b9c935fcc010827d8a1be86e",
+        0,
+        "3c3ba464e7cea219dccedeff2fcd7cf3c7579a7ff13ed30940bbc605f146bc4c"
+      ],
+      [
+        "backfill-plan-0c3378e694d05472723b89de5e6cfce5b5fa30638c584ff79014a7c9546eabb5",
+        0,
+        "a3d895c30d9273a38f20d04c9e74ac87378ab14b7e482b3391f7d7ac380a3fef"
+      ],
+      [
+        "backfill-plan-0d0fa3eb540ddb0b4653f99d366f1095241af06a04493074e50dbd81cffc9827",
+        0,
+        "84406b6a7508d71e0211ab38f22ac655b048b290bd8a00ab07f8d626a99a8d84"
+      ],
+      [
+        "backfill-plan-0f06e8cb4c918d1eda606dc57f6bac90bcc4f08914e93fae1fb1e908301684cb",
+        0,
+        "a9a54c48fa9671411f4404739d76d6f1cd6fe50e2929f681aca7eeb6c772077b"
+      ],
+      [
+        "backfill-plan-147b3024e4e5785282f76ef2311ad5db7d3a55b805ce45ababa5afbca33d136c",
+        0,
+        "a75510d937c0437828cc4ec943d5e46de2a3e112475f6fc0c636a0b57c1f70f1"
+      ],
+      [
+        "backfill-plan-1570cb49e0fc70e10fc55d9046e2daa769f0b6835d82eb0d7c6ab55a2bf359d7",
+        0,
+        "ec2a723386b2e4a9156356d7db5e8847b2b179f9c5287586031b45d6de949109"
+      ],
+      [
+        "backfill-plan-1f2ab028429c72d3220bd5d500f3d1d75823e79afecdf8ecc1ac2836e5186128",
+        0,
+        "807f8db88bb9e557e207eeb71a8fc837b87cbb4f4bed5623c7f761e270e04108"
+      ],
+      [
+        "backfill-plan-1f37e9a34392bead565c734dbbac5d9a1b1e0793f60942282cd4c53d6f406fe8",
+        0,
+        "9bf7a3ab5efafc9a1b29292bd4affab52e5be8a8c5569594221dc7afa5674f0d"
+      ],
+      [
+        "backfill-plan-21719cf233996aba8dc660853e166b359cc22c5303dfac289ba46b30dce467c6",
+        0,
+        "b2821088ad83a9bd965be34a2fe02185515a8b661108bbc25b241393cc8e8fe4"
+      ],
+      [
+        "backfill-plan-2390180455a38d0ad05dd23396915f09d550e1b2a1891c8a34aa8ec6b37abc3f",
+        0,
+        "7bbb2c2558ded9fa71f2a9d21fe972bba607a5449a3e7420b4223fc2300caf8d"
+      ],
+      [
+        "backfill-plan-23e50d8541e9755f090ef28dfa9b8f3915dfbc6830f87b5d9c4a8d8f3ec72b4c",
+        0,
+        "f9d6e68cc6ae01fe30adaaaedc65a7436e395953e2c63ddbd813234d89e9213d"
+      ],
+      [
+        "backfill-plan-2573959b10159d7e4b9b4f838ae6448395248cbd4544345328d33f979419603a",
+        0,
+        "38eedfab41e1277ac6f9772acb9ff6665052585287d51c63cf3e8438a13f8d3d"
+      ],
+      [
+        "backfill-plan-36c1ba0624a360181e4fa01089aa8235d05a5dbca901dcbfc9a3cf2829d1bf46",
+        0,
+        "845abbab90a22fe10268f08d175c856286a988acdc9117e70c466a170c789996"
+      ],
+      [
+        "backfill-plan-371f16a1ca9dc874af9e101ba26db155830b99f99b67326a734fc9fdbfc3b6d6",
+        0,
+        "53f86d689186064a96adb5bfe36c3bb9a282498d8481c636cbd2671dc759270d"
+      ],
+      [
+        "backfill-plan-3baeb0a0fd6de32f638f37fe92a44732f6d7bd210a8402e622157a6cd2566a38",
+        0,
+        "052f3805121bc2fb0b0433a88fdff6719a9915a344a4288433e88a3fac343038"
+      ],
+      [
+        "backfill-plan-3e109121aeeb129bbe8e5b6c54e2caa4b8346c87c1a0bd309c83f4ea509b61dd",
+        0,
+        "4c5541f18b93cecfa8eea665b556f7967e11e29a7197920afe6f626ee719fd6d"
+      ],
+      [
+        "backfill-plan-5106387fa4e898c9a27111153ca69cd741dab4a106e5233bb2e519295ce9d44b",
+        0,
+        "71b2e3ea9e4acb5612adf6d1ca1f11747ae3989978922bae31fc3631d552b900"
+      ],
+      [
+        "backfill-plan-5684c1d146f30f2dd842bdb343218923bb9b3075b1b6fd55a620ce3c8044f062",
+        0,
+        "71b2e3ea9e4acb5612adf6d1ca1f11747ae3989978922bae31fc3631d552b900"
+      ],
+      [
+        "backfill-plan-5b24410d1c5ee2ea7ca87ae330db902cf011bc6d236be222ff72c3a07e07fa16",
+        0,
+        "685e6f681d59c17306bd8f0abeecfe3ca79939408b042563f2ac1918d49c789b"
+      ],
+      [
+        "backfill-plan-5c9c61d37803f60b92bc2521066e097deff31e92b0d1ac32fdd69d98142bf6f1",
+        0,
+        "bc4c3876169e9e2610a4c69899062e507f6f7232c1c666ebead90766b45ceb7c"
+      ],
+      [
+        "backfill-plan-663cd7941aacbb43a3c39cea79b7aed81595117c96e5e971ca117337a9bfe1b6",
+        0,
+        "b089d18e27dbe0acf310230a3721e338da0baae62dc24b9155c71ca04342ab75"
+      ],
+      [
+        "backfill-plan-69f824fbf29ab98679bba626530fedbc67b73181bcdff037f97d6e25c55c8331",
+        0,
+        "d50923ef1f75a28be753767e7934033e96c92342a632fe11b87a1b131af67859"
+      ],
+      [
+        "backfill-plan-72ac024f6cc96ded0f5cd3c08dde1b0c00144b45130216460fa49d89b902bac4",
+        0,
+        "e591b8610fb0b865ca25dfbd602397e7796e8e8d99fd2c8a2f230e9690632d9e"
+      ],
+      [
+        "backfill-plan-747e4880ecd4688b238a7b5b0e9024a9a3076da97db63c6dd7ff02b868dc119e",
+        0,
+        "f9d6e68cc6ae01fe30adaaaedc65a7436e395953e2c63ddbd813234d89e9213d"
+      ],
+      [
+        "backfill-plan-75b59d73358d374728a953786359d65d9f60a697430936f29225aa4d5fd3afaf",
+        0,
+        "a75510d937c0437828cc4ec943d5e46de2a3e112475f6fc0c636a0b57c1f70f1"
+      ],
+      [
+        "backfill-plan-769c02632fd1c50cc500ad75a2a28fb39443386e47ce35ea461264473722ef75",
+        0,
+        "c80ec79cc1a035beccf944460270d48196b936cb7e304549d7619135f5058f24"
+      ],
+      [
+        "backfill-plan-770f2847173c63f50d5a8a0fbc2e32b88c25f3641fad3e8895a907e05cdc3f1a",
+        0,
+        "1f83422b8988ec3ff26c33c6cbcade64cb9155e09b0230622f5122409fadd1a9"
+      ],
+      [
+        "backfill-plan-7fdf048477bab632020b97b4cce8f9f77997ac7a4c9e11ba1f924a8ff81f0e4a",
+        0,
+        "a9a54c48fa9671411f4404739d76d6f1cd6fe50e2929f681aca7eeb6c772077b"
+      ],
+      [
+        "backfill-plan-82d7f43fbab9966b816edc65676a1e32cac2679eb40203d62d46b0616ff07ec9",
+        0,
+        "059a9da0bef33bcdab2a41a7e85b997a9f80b6e21578be81bc24ce929f3b60c0"
+      ],
+      [
+        "backfill-plan-876435500a4119daaaaf0e1a16a2ec57517fd8768a2717068c9d0f671753dcff",
+        0,
+        "c80ec79cc1a035beccf944460270d48196b936cb7e304549d7619135f5058f24"
+      ],
+      [
+        "backfill-plan-8acbae52931a426e6aca763b88c8a9f5cd2a5a6c74ceab83a941c1351e1f3144",
+        0,
+        "d50923ef1f75a28be753767e7934033e96c92342a632fe11b87a1b131af67859"
+      ],
+      [
+        "backfill-plan-8f8068bc86f72883f5fa1788319472a593123cd8a5d763c01fa3666256844773",
+        0,
+        "813e18a1682f67de3147e838234af25f2617afe0d565fe0707ae475b1c5196ef"
+      ],
+      [
+        "backfill-plan-93cb23750299ed92ee2b3bd41c4ed7cd79f154a41412641cdbd66c8089cddb09",
+        0,
+        "fd8c65a2a4c06de0646f7e5e51788b314e8db427456f45a5419ac34d528b907b"
+      ],
+      [
+        "backfill-plan-9a64cd638545cb142bada53496c6ea8512291d520638315a18f577de41a4aa81",
+        0,
+        "39411fb4dbb31661877ed69e08fa9430500cfcabebec54be1b7fcde4ed41bc92"
+      ],
+      [
+        "backfill-plan-9b0911cd78e4f47050b4e839a8dc8011677e6914a4f58d479d58f90dd4ea56e1",
+        0,
+        "052f3805121bc2fb0b0433a88fdff6719a9915a344a4288433e88a3fac343038"
+      ],
+      [
+        "backfill-plan-9d70fa61f33649dae83be0e2c2d4903d59872ebdc4f6f9c740f1896cf70bf396",
+        0,
+        "9bf7a3ab5efafc9a1b29292bd4affab52e5be8a8c5569594221dc7afa5674f0d"
+      ],
+      [
+        "backfill-plan-a1497bb9bc0238b2dfdae6505cf43ae6e37533a8f085cdc4c64f16c3dba51cdf",
+        0,
+        "3eed84d06beca1152f4fe158a521f4150f3338a316b85647014663d918455a99"
+      ],
+      [
+        "backfill-plan-a6f0ece6a812c8a68e33573c46f6c5122f9b1d7883ad43d5feecd21fd2a92c2b",
+        0,
+        "d10c95cff5b997587d541adf29c3a2ae2ea3f40a36ef8a7bd73605dd97219050"
+      ],
+      [
+        "backfill-plan-b00c6ba9a722cf23ff8f858d02b8bde1d33e1dd1905df665d941b45d14024206",
+        0,
+        "28a4cce11e95358a19359831e75d210263b781a43aac24db449fafacd4e3e14a"
+      ],
+      [
+        "backfill-plan-b4d7465d70e32cd1e049860cb27138c228c38edb67b581cb472175936076937a",
+        0,
+        "ab660b4dab1b960e4b6366f2b5ee2905aae03f58c9c43e176b76c273724668ef"
+      ],
+      [
+        "backfill-plan-b5e5f3c6da129c4eee795c472fed7cf06a495c954fe9595801db2ca4ee512035",
+        0,
+        "66a32584f8a697a616f520355f8b22e25cb98298e414172b51a7f7725a9a2fa7"
+      ],
+      [
+        "backfill-plan-b7480f2eaeadc838094e8a298020c66bf8e973ba81119be75a485ceb0cc932cd",
+        0,
+        "8161a0f9a9bb51ea877a16b390b50fe3eacee315a3ed7dbe7986ee9b0b147354"
+      ],
+      [
+        "backfill-plan-b9fd281c00906d9365acc6656a07ac484a456466bae4d6a439b5d2c39607c4dc",
+        0,
+        "a05f191d049f097888e79f3b5b889a243efdeba7cf5aed86144e404f985cc688"
+      ],
+      [
+        "backfill-plan-be1b78def0e3be4f1e740cd7f1fcd7c8cb79bdc0697e25945bbb1834f3db29c2",
+        0,
+        "84cb9666d862865f7b3825d105ead99be1a9c727d231d4c25fb40722aa38ff93"
+      ],
+      [
+        "backfill-plan-c04b04d6f0e12e90e8a31fb68f4f9215fedf887ddedba67b018ad19dd7ca5ed5",
+        0,
+        "a4a970c3edd3ee0f24ac31d18243315b92bd283fbe2ee06b049a15a2456f0b27"
+      ],
+      [
+        "backfill-plan-c058381eb9376eaacb5d0ee1e952c54c7a133aa5947528dbaa3d366423c05a85",
+        0,
+        "8eec0a84efca79aef33b5c9543d75a247b466b2ddbba80cf59802e05015cb319"
+      ],
+      [
+        "backfill-plan-c36f6411478a4ce959f5f3befd0797b7e03a82f886ec2e6e06b64a5152f675b9",
+        0,
+        "25e19b7fb24f47044a406306805a7b9290f18ffe82f9e39fa1bb7d18dd49bfd9"
+      ],
+      [
+        "backfill-plan-c3f25348b44bec5001e2a711e709f647a7fdb948dd5350e2535b15a212b4723a",
+        0,
+        "84406b6a7508d71e0211ab38f22ac655b048b290bd8a00ab07f8d626a99a8d84"
+      ],
+      [
+        "backfill-plan-c7283dedcde754e5eb5bdaf5b50be326b525d183dae5e029e927b298f16cfe3b",
+        0,
+        "69bc7e35c12d1e42f5f49f34f38b32ea9755b7623806f7b263f697b097822995"
+      ],
+      [
+        "backfill-plan-c8f16e815c1a6e5908a78b77fba3679320916991f21982170967924fa4367a24",
+        0,
+        "77ba709b77c7fc2af8397fb90be53dfd2f07e8b607c62e1dc01d032999840475"
+      ],
+      [
+        "backfill-plan-cb56758bd7d12016cc1e730c093b0c0c21c4fc9efafb565863ae1bdda3f4b602",
+        0,
+        "31d9621b862ebe927ae6170e1965b6670ca7843ce4a516d123a281c2057610c9"
+      ],
+      [
+        "backfill-plan-cceb6096b202d2771c6a2bf36f1b3ce7f346421743c3c4191d86136d006813a9",
+        0,
+        "4b0684b7c5233c8605f2094eae87ff23243a48b8a9286aceaee5d6a2d6890948"
+      ],
+      [
+        "backfill-plan-ced6a9914e1a842e274bf1513e2ad57c0d3dbf1503879455129146aa9c79d1a6",
+        0,
+        "059a9da0bef33bcdab2a41a7e85b997a9f80b6e21578be81bc24ce929f3b60c0"
+      ],
+      [
+        "backfill-plan-d3cb4ec7d7ff39fe3408823f5ff7d70717423bef163831073ab15e5600f19c65",
+        0,
+        "9ae50f409a589c88c08acdf428763e1506b692184045fc707dfe5f89403470d5"
+      ],
+      [
+        "backfill-plan-d3e57bd41559130629930edf18bf334b18f06f9cd14b5eaceaa0fbee083cdaa3",
+        0,
+        "4d98c0e788ca0b25ffd50c3e1dc8d9676d0ce09caaa715af039e6df451be980f"
+      ],
+      [
+        "backfill-plan-d4e6dd954b812382196e4bb3fcbe85683de88a8b831c31c8057784fb45d15e0a",
+        0,
+        "fd8c65a2a4c06de0646f7e5e51788b314e8db427456f45a5419ac34d528b907b"
+      ],
+      [
+        "backfill-plan-d5e38e91d84fae8b7d71fb5222889808b1dc62a63a05a7efc1a30f22465bf24e",
+        0,
+        "1fb1c72a62beccaa41fa8983774f038083878371cdb19f3fb9100709fc76dee0"
+      ],
+      [
+        "backfill-plan-d8b7791b068970308384ba57e669fd9378c7d7ee7c7fa736c582b9ff84d5adfa",
+        0,
+        "d1bc079d760a2d921ab87caf5272c26fd1482ae31006d1811a8dd8c405c18c5f"
+      ],
+      [
+        "backfill-plan-d99020f845a2cc059d3399c7a495c5414ec8b9bd031f7e1fc4560ff92bf4db4c",
+        0,
+        "5f5fc97ea253d96af81af60857b397da5e1b8c726ff66dad3ad319e835b28b1e"
+      ],
+      [
+        "backfill-plan-dae02daa9783965490e32bfa68522804948bad065edf25a2e9789fcffce58e22",
+        0,
+        "a4a970c3edd3ee0f24ac31d18243315b92bd283fbe2ee06b049a15a2456f0b27"
+      ],
+      [
+        "backfill-plan-de04810cc6439c0d6dfdb614c67cdb93c2e9a7b85c1aa3129507c422e7ed3607",
+        0,
+        "b4b9087ad17f027029884020cdd257f7869a4d0b76455f10e4494be8b7777004"
+      ],
+      [
+        "backfill-plan-dfe6c24ceaf2d0db47c2925c2015d93cf5031afa1479f629005985f9658a9383",
+        0,
+        "00d1dfa2641a54ace2a2acd665151cea28be552796d3ac858a63aed80adc8f1c"
+      ],
+      [
+        "backfill-plan-e05b255077a20a13c352747f7ada4cc766ac0c03dd23294dd020e25d27734257",
+        0,
+        "4ef9cd4f12a8e1fc643967be45307306de5492dd890f364c3818469c168aec4b"
+      ],
+      [
+        "backfill-plan-e31b9925fdbb5a1d8ce0a2eb53f0ee1fa8afe3ac0ba5ce52c49ba44fd9857ab9",
+        0,
+        "75f0a402d852f04ff9e1ca369a7af68ddac8b39ad9d29d10f0bcd10f6c125a32"
+      ],
+      [
+        "backfill-plan-e5190e76478f0d1046a38bdad03da7b954eec1ea2dbea1874be7fc8a04b56b48",
+        0,
+        "ec2a723386b2e4a9156356d7db5e8847b2b179f9c5287586031b45d6de949109"
+      ],
+      [
+        "backfill-plan-e865cecd0763e82e339423925b161c0041adc0a6c7e933b40fee1a1237866248",
+        0,
+        "69074821c0d1ef8472f29d19cb355092dc116c16c3dc96535c440a2e62ce6fea"
+      ],
+      [
+        "backfill-plan-e9553349a1b6cf75297bd400c55a3d0ff8340a7b3157cfbd99afea605e13a14d",
+        0,
+        "e2c4ad70b23f027d3d358d3d1d80f997baae147b36a86581ede208ab72861459"
+      ],
+      [
+        "backfill-plan-eb65a812d6d4281e5b1e859ec357126b8f8c223c4d8b8b2a32fa9624fec4bf38",
+        0,
+        "355f5b0b050bb6b2fd36591f96e22f6df56f9e4301713e5b03f653534d8a10aa"
+      ],
+      [
+        "backfill-plan-f6094057ca013f5f356e1b49edd7cd97adb730f26c6f61b934a9953138e21f7a",
+        0,
+        "a3d895c30d9273a38f20d04c9e74ac87378ab14b7e482b3391f7d7ac380a3fef"
+      ],
+      [
+        "backfill-plan-f73e48c4bb070e51db5772d59e21198dd6ac785747060fbbb2d4a27877098a14",
+        0,
+        "ab660b4dab1b960e4b6366f2b5ee2905aae03f58c9c43e176b76c273724668ef"
+      ],
+      [
+        "backfill-plan-f7c1744f04e52558852166280c4c847d8b66374198d797bdbf63391e7becd0db",
+        0,
+        "f40327365954bb7764f66e43c3e065fcfd96156d55b30d4cdda35064b26df618"
+      ],
+      [
+        "backfill-plan-f977de381369d07338945dbb03131f2f154479b0152b446f7d7d48b940ea5ab8",
+        0,
+        "0d9e5dbd2f77a1c25e8425b3d789bf60eb183fddc7a48a7593979341ed655400"
+      ],
+      [
+        "backfill-plan-fe3bd66575aa212b0fc7e416c1fcab0ff8b37c5e0b17e398891caa2d3768be29",
+        0,
+        "be04d6664e334de59c19536752efcd70ffd4e0a3f7d7ef0f9412df9364add63d"
+      ],
+      [
+        "backfill-plan-ffb805f7cbe8624ef565f6d924d6d84c1bf7579574fb0c9cdc4bacad7f27f2e7",
+        0,
+        "1dc4b9bf08b7eecf5efa2f36040fdda4655f66551a7b7f7d27195add200a8209"
+      ]
+    ],
+    "page_fingerprint": "b74e8f732857f5b1acd77e1fe5fcff30d34ce8834222ce4cd19b4c6bc34f1632"
+  },
+  "after": {
+    "by_kind": [
+      {
+        "kind": "retained_reuse",
+        "pages": 46,
+        "physical_records": 46
+      },
+      {
+        "kind": "alpaca_reference",
+        "pages": 26,
+        "physical_records": 26
+      },
+      {
+        "kind": "alpaca_stock_bars",
+        "pages": 52,
+        "physical_records": 14020
+      }
+    ],
+    "pages_now": 124,
+    "exceptions": [
+      {
+        "n": 46,
+        "code": "IDENTITY_OR_QUALITY_UNRESOLVED",
+        "state": "IDENTITY_OR_QUALITY_UNRESOLVED",
+        "last_at": "2026-10-30T06:37:22.144018+00:00",
+        "first_at": "2026-10-30T06:30:04.654167+00:00"
+      }
+    ],
+    "observed_at": "2026-10-30T06:37:23.589185+00:00",
+    "latest_commit": "2026-10-30T06:37:22.124631+00:00",
+    "verify_tables": [
+      "backfill_readbacks_v2"
+    ],
+    "old_page_count": 75,
+    "page_keys_duplicated": 0,
+    "old_pages_missing_or_changed": 0,
+    "pages_after_old_worker_last_heartbeat": 34
+  },
+  "deploy": {
+    "commit": {
+      "createdAt": "2026-10-30T06:19:32Z",
+      "id": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+      "message": "Keep PostgreSQL-only tests in configured qualification; record exact accepted cohort reconciliation"
+    },
+    "createdAt": "2026-10-30T06:33:44.176896Z",
+    "finishedAt": "2026-10-30T06:34:28.184903Z",
+    "id": "dep-dbi3ki4s728c73c8fnrg",
+    "startedAt": "2026-10-30T06:33:44.174869Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T06:34:28.185052Z"
+  },
+  "workers": [
+    {
+      "worker_id": "2952b01e-7c23-48e8-9947-2fa1f5c058f6",
+      "observed_at": "2026-10-30T06:36:53.463413+00:00",
+      "source_revision": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+      "supported_kinds": [
+        "alpaca_reference",
+        "alpaca_stock_bars",
+        "alpaca_news",
+        "alpaca_actions",
+        "alpaca_option_contracts",
+        "alpaca_option_bars",
+        "derive_daily",
+        "derive_intraday",
+        "derive_breadth",
+        "retained_reuse"
+      ],
+      "capability_revision": "4a254b20c103ad31a55fbe9f42dc6b4f2a5dfdc075d408ef0d4dff0e3a40d1fe"
+    },
+    {
+      "worker_id": "3874b7b4-3693-472d-a386-fa979c417a32",
+      "observed_at": "2026-10-30T06:34:45.726556+00:00",
+      "source_revision": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+      "supported_kinds": [
+        "alpaca_reference",
+        "alpaca_stock_bars",
+        "alpaca_news",
+        "alpaca_actions",
+        "alpaca_option_contracts",
+        "alpaca_option_bars",
+        "derive_daily",
+        "derive_intraday",
+        "derive_breadth",
+        "retained_reuse"
+      ],
+      "capability_revision": "4a254b20c103ad31a55fbe9f42dc6b4f2a5dfdc075d408ef0d4dff0e3a40d1fe"
+    }
+  ],
+  "limitations": [
+    "No claim of full cohort completion.",
+    "Deferred-retry live proof remains pending."
+  ]
+}
