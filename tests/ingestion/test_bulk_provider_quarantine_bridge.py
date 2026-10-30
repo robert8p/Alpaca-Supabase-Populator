@@ -103,7 +103,7 @@ class QuarantineBridgeTests(unittest.TestCase):
 
     def test_unverified_ticket_or_claim_cannot_be_promoted(self):
         cases=(
-           {"c":claim(claim_fence=4)},
+           {"c":claim(claim_fence=4),"t":ticket()},
            {"c":claim(stopped=True)},
            {"c":claim(claim_until="2026-10-30T02:01:00Z")},
            {"c":claim(attempts=3)},
