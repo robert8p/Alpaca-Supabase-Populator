@@ -105,6 +105,15 @@ BEGIN
  AND f.independent_report_sha256=a.independent_report_sha256
  AND f.expected_units=f.observed_units;
  IF n<>24 THEN RAISE EXCEPTION 'complete 24-family source-backed review absent'; END IF;
+ -- One unreviewed reserved unit invalidates admission for the ENTIRE manifest.
+ IF EXISTS (
+  SELECT 1 FROM astra_ingestion_v1.bulk_work_v1 x
+  LEFT JOIN astra_ingestion_v1.bulk_reviewed_unit_v1 y
+  ON y.manifest_sha256=x.manifest_sha256 AND y.family=x.family
+  AND y.unit_key=x.unit_key AND y.source_receipt_sha256=x.source_receipt_sha256
+  AND y.independent_report_sha256=a.independent_report_sha256
+  WHERE x.manifest_sha256=v_manifest AND y.unit_key IS NULL
+ ) THEN RAISE EXCEPTION 'manifest contains unreviewed source work'; END IF;
  SELECT * INTO u FROM astra_ingestion_v1.bulk_reviewed_unit_v1
  WHERE manifest_sha256=v_manifest AND family=w.family
  AND unit_key=w.unit_key AND source_receipt_sha256=w.source_receipt_sha256
