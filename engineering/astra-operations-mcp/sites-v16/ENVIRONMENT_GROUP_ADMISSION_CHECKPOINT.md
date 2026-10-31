@@ -1,0 +1,38 @@
+# ASTRA Operations v16 — Render environment-group pre-dispatch admission guard
+
+**2026-10-31 UTC | Source-only safety correction. NOT live controller/provider integration.**
+
+## Reconciled starting state
+- Immutable v15 checkpoint: `612afc9ea41e8f299014fd8fdbd3542fc5530053`, `engineering/astra-operations-mcp/sites-v15/TERMINAL_SETTLEMENT_CHECKPOINT.md`; verified v15 source/test/dependency blobs `01e83a01140b8c371452679f759f3a1fb3bea390`, `af12d8583c2cbb41ac7eea2012b88445bd08e976`, `1b67067791e250c38f95aa9286f6c7ba1400fea9`.
+- Existing issue [#94](https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94) open, **already acknowledged** in ingestion backfill audit 96, **deferred** behind active reliability repairs. Correct immutable [v11 contract](https://github.com/robert8p/Alpaca-Supabase-Populator/blob/db0efa4140ae6d59b4c8f36d0d0ebd39b5ff3cd0/engineering/astra-operations-mcp/sites-v11/docs/OWNER_PORT_ADOPTION_CONTRACT.md) and readback in [existing issue comment 6534994041](https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94#issuecomment-6534994041). No redundant acknowledgement requested.
+- Ingestion branch `feat/astra-ingestion-service` HEAD observed `f5cd20baaac9e42b2074afc1d459b4968e8b3306`, no verified cross-provider owner-native `lookupExact/admitExact/reserveAndDispatchUnderOwnerGuard/readbackExact`. Existing Basic credential is control-capable and prohibited for Sites. Workflow trigger still absent on implementation/default branch at inspected path.
+- Existing ASTRA implementation task `6ae4d6e1e2a48191aa7edaf9464f77e5` was **enabled** and current last run `in_progress` at inspection, schedule unchanged and timezone Europe/London.
+
+## Material new defect and correction
+Official [Render link service API](https://api-docs.render.com/reference/link-service-to-env-group) and [Render environment/secret docs](https://render.com/docs/configure-environment-variables) establish that group linkage inherits environment variables and secret files (raw response can expose values) and starts a deploy; collisions among multiple environment groups have **no guaranteed precedence**. v15 guarded readback by holding an unproved deployment, but still could pass a generic `grant_verified` receipt to owner reservation/dispatch **before** owner-verified group contents metadata, collision inventory and explicit secret/deploy effects existed.
+
+The new dormant `controller-owner-port-v16.mjs` fails closed for **new** `render_link_environment_group` after exact idempotency lookup and **before** admission/dispatch: `environment_group_effect_admission_unimplemented`. Historical exact-key readback remains permitted and no replay is possible. This is a **temporary executable gate**, not retirement: the existing ingestion owner alone can later implement an immutable effect-admission record and causal deployment readback before the gate is lifted. No alternative runtime, provider executor or second journal/controller has been introduced.
+
+The v16 test suite reproduces the old gap on v15 with **one source-only reservation reached**, while corrected v16 causes **zero admissions/reservations**. It also verifies historical readback and unchanged configuration-only operation handling. All provider effects and permissions remain unverified in real runtime.
+
+## Archived, tested deliverable
+- Library: `/ASTRA Operations/ASTRA_Operations_Environment_Group_Admission_Guard_v16.zip`, ID `libfile_1609f697ef408191bb6b05fa13f65fbb`.
+- Exact ZIP SHA-256 `2e5fd6ddcda5fc3a50907b3e832abf983c73f5eab533ffac0d8c13e07109d15b`, size **1,156,314 bytes**. Library upload succeeded, independent materialization matched byte-for-byte and SHA, ZIP CRC clean.
+- Embeds v15 original archive byte-for-byte SHA-256 `1664a1cefe5579b7fd22d515e07932d0071eaece88b7e002c50b8fdd951b37bd`. Manifest verifies **26 files** and hashes. Fresh ZIP extraction reran **196/196 source-only tests** (189 v15 + 7 new) on Node22, **0 failures**.
+- GitHub review source: `sites-v16/controller-owner-port-v16.mjs` blob `9b72f8d61eaca96b09d6045886f20b212b8bc1ec`, SHA-256 `5dcd796b40e4eadf55e67ade1507b1a0eebb3ca296fd0d6c7251d4c11a179e70`.
+- Test: `sites-v16/controller-owner-port-v16.test.mjs` blob `87c5afd3c1068be58ea5f5e5a8dad5fb1388793d`, SHA-256 `76d41a80900d1ab434a3349104bd603a17f4512fd7e48eda7f14adf761ed7ade`.
+- Documentation: `sites-v16/ENVIRONMENT_GROUP_EFFECT_ADMISSION_V16.md` blob `76db7fe1582d442eafe3f9020e0f4c2866f4d11d`, SHA-256 `ffbeca35675ef6ffb63376e45277799fd7d613fce2045c57f0dd9a909576b67f`.
+- Exact source-only review dependencies also published alongside: `controller-owner-port-v15.mjs` blob `01e83a01140b8c371452679f759f3a1fb3bea390` and `controller-operations-v10.mjs` blob `1b67067791e250c38f95aa9286f6c7ba1400fea9`. Historical `v10-json-v1` digest preserved; no compatibility reinterpretation.
+
+## Independent setup qualification / still blocked
+- [GitHub App installation tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app): the issuer can restrict minted tokens to a specified repository and permissions; without those restrictions the token inherits all accessible repositories and permissions; 1-hour expiry. **Actual installation, Actions:Write scope, secure destination and revocation not verified; no token requested or minted.**
+- [Render scoped-key beta](https://render.com/blog/scoped-api-keys-private-beta) remains account-eligibility **UNKNOWN**, not denied. Exposed read-only connector inventory has no entitlement inspection action; no provider/credential call performed. Native Sites `sites_list_plugin_eligibility` unavailable. Render Free worker creation unsupported, existing worker `srv-dbh9fko473hc739an8m0` must not be duplicated.
+- GitHub dispatch only with owner-authorised default-branch `workflow_dispatch` + effective Actions:Write and controller-causal successful run readback. Render service PATCH remains **configuration only, not deployment**. Link group remains blocked until exact group metadata, secret inheritance, collision/deploy consent and causal readback are integrated by existing owner.
+- No provider access grant is ready for action-time confirmation.
+
+## Next executable actions and owners
+1. **Ingestion controller:** continue active reliability repair. Issue #94 remains accepted/deferred. After its own owner stop/fence/release admission, provide actual immutable/change/resource-lock port and any GET-only status identity; qualify group-secret/deployment effects and workflow trigger through its own release. Do not interrupt it from this plugin task.
+2. **ASTRA implementation owner:** next hourly iteration recheck issue #94 and ingestion HEAD read-only, then qualify real port only if available; otherwise perform further factual provider/permission/schema work or an evidenced material source correction. No repetitive mock-only claims.
+3. **Dot:** sole release and consolidated routine reporting. Request only action-time owner confirmation with exact account/install, effective provider-enforced scope, target, secure destination, expiry/revocation, effect/cost, controller stop/fence/release authority.
+
+No provider credentials, production calls/writes, new Site/plugin/OAuth/host/worker, app-controller mutation, workflow/default-branch changes, PR approval, trade, scanner change, paid resource or secret disclosure. Published native Site source `3d260fbe95d3600c1519e28d49af7be36c9f4712` unchanged. N1 unpublished commit `984892c6be8ddaae805ec305bf257111c196ee4b` remains archived; no retry of interrupted branch write.
