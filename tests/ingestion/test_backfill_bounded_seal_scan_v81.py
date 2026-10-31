@@ -216,11 +216,51 @@ class BoundedSealPostgreSQLTests(unittest.TestCase):
             'false_null_keys_excluded': True, 'short_page_below_deleted_upper_finishes': True,
             'acquisition_fields_preserved': True}
 
+    def v82_outside_key(self, progress, position, label):
+        """Choose a synthetic key only after the fixture DB proves its ordering.
+
+        Compare against the actual task column, not Python ordering or a forced
+        C collation. A small finite candidate pool fails closed if no key fits.
+        """
+        self.assertIn(position, ('behind', 'beyond'))
+        boundary = progress['last_examined_id' if position == 'behind' else 'upper_id']
+        self.assertIsNotNone(boundary)
+        candidates = ([f'00000000-v82-{label}-behind', f'0-v82-{label}-behind',
+                       f'a-v82-{label}-behind'] if position == 'behind' else
+                      [f'zzzzzzzz-v82-{label}-beyond', boundary + f'-v82-{label}-beyond'])
+        operator = '<' if position == 'behind' else '>'
+        with self.f.admin() as conn:
+            collation = dict(conn.execute("""SELECT (SELECT datcollate FROM pg_database WHERE datname=current_database()) database_lc_collate,
+                (SELECT datctype FROM pg_database WHERE datname=current_database()) database_lc_ctype,
+                a.attcollation::text task_id_collation_oid,
+                a.attcollation::regcollation::text task_id_collation,
+                c.collprovider::text task_id_collation_provider,
+                c.collisdeterministic task_id_collation_deterministic
+                FROM pg_attribute a JOIN pg_collation c ON c.oid=a.attcollation
+                WHERE a.attrelid=%s::regclass AND a.attname='id' AND NOT a.attisdropped""",
+                (self.f.schema + '.backfill_tasks_v2',)).fetchone())
+            selected = conn.execute(f"""SELECT candidate.id
+                FROM unnest(%s::text[]) WITH ORDINALITY AS candidate(id, ordinal)
+                JOIN {self.f.schema}.backfill_tasks_v2 boundary ON boundary.id=%s
+                WHERE candidate.id {operator} boundary.id
+                AND NOT EXISTS(SELECT 1 FROM {self.f.schema}.backfill_tasks_v2 existing
+                               WHERE existing.id=candidate.id)
+                ORDER BY candidate.ordinal LIMIT 1""", (candidates, boundary)).fetchone()
+        self.assertIsNotNone(selected, (position, boundary, collation))
+        key = selected['id']
+        RESULT.setdefault('v82_fixture_ordering', {})[label + ':' + position] = {
+            'key': key, 'position': position, 'observed_boundary': boundary,
+            'last_examined_id': progress['last_examined_id'], 'upper_id': progress['upper_id'],
+            'predicate': 'candidate.id ' + operator + ' boundary.id',
+            'predicate_proved_by_fixture_postgresql': True, 'collation': collation}
+        return key
+
     def test_02_enabled_insert_trigger_handles_behind_and_beyond_range(self):
         self.begin_scan(); count = self.seed_complete_static_workflows()
         metadata = self.metadata(); metadata['planner_expected_static_count'] = count + 2; self.set_metadata(metadata)
         first = self.plan(); self.assertFalse(first['scan_complete']); progress = self.metadata()[KEY]
-        behind, beyond = '!!!!!!!!-v81-behind', progress['upper_id'] + '-v81-beyond'
+        behind = self.v82_outside_key(progress, 'behind', 'enabled')
+        beyond = self.v82_outside_key(progress, 'beyond', 'enabled')
         with self.f.admin() as conn:
             self.assertTrue(conn.execute('SELECT %s::text<%s::text AND %s::text>%s::text ok', (behind, progress['last_examined_id'], beyond, progress['upper_id'])).fetchone()['ok'])
         self.insert([behind, beyond]); self.assertTrue({behind, beyond}.issubset(self.unit_ids()))
@@ -237,9 +277,27 @@ class BoundedSealPostgreSQLTests(unittest.TestCase):
                 self.setUp()
             self.begin_scan(); self.seed_complete_static_workflows()
             first = self.plan(); self.assertFalse(first['scan_complete']); progress = self.metadata()[KEY]
-            key = '!!!!!!!3-v81-missed' if position == 'behind' else progress['upper_id'] + '-v81-missed'
+            key = self.v82_outside_key(progress, position, 'missed')
             self.insert([key], snapshot=False)
+            # Prove that this deliberately unsnapshotted row cannot be visited
+            # by the remaining frozen interval under the task column collation.
+            with self.f.admin() as conn:
+                placement = dict(conn.execute(f"""SELECT id<%s::text behind,
+                    id>%s::text beyond FROM {self.f.schema}.backfill_tasks_v2
+                    WHERE id=%s""", (progress['last_examined_id'], progress['upper_id'], key)).fetchone())
+                trigger = conn.execute("""SELECT tgenabled FROM pg_trigger
+                    WHERE tgrelid=%s::regclass AND tgname='backfill_static_plan_snapshot_v2'""",
+                    (self.f.schema + '.backfill_tasks_v2',)).fetchone()
+            self.assertIs(placement[position], True)
+            self.assertEqual(trigger['tgenabled'], 'O')
+            self.assertNotIn(key, self.unit_ids())
             self.scan_to_end(first=first); before = self.rows()
+            self.assertIs(self.metadata()[KEY]['complete'], True)
+            self.assertEqual(self.metadata()[KEY]['upper_id'], progress['upper_id'])
+            self.assertNotIn(key, self.unit_ids())
+            RESULT['v82_fixture_ordering']['missed:' + position].update({
+                'inserted_row_placement': placement, 'snapshot_trigger_reenabled': True,
+                'absent_before_and_after_completed_scan': True})
             result = self.f.rpc('backfill_plan_next', {'run_id': self.run, 'member_limit': 1, 'supported_kinds': planner.KINDS}, actor='worker')
             self.assertFalse(result['ok']); self.assertEqual(self.rows(), before)
             self.assertNotIn(key, self.unit_ids()); self.assertEqual(self.rows()['backfill_plan_manifests_v2'], [])
@@ -248,7 +306,28 @@ class BoundedSealPostgreSQLTests(unittest.TestCase):
 
     def test_04_real_snapshot_and_cursor_faults_rollback_then_lost_ack_resumes(self):
         self.begin_scan()
-        ids = ['!!!!atomic-v81-' + str(i) for i in range(3)]; self.insert(ids, snapshot=False)
+        ids = ['00000000-v82-atomic-' + str(i).zfill(4) for i in range(3)]
+        self.insert(ids, snapshot=False)
+        # Use the same unfiltered global ID order and 500-ID bound as the first
+        # scan page. Do not infer reachability from punctuation or Python sort.
+        with self.f.admin() as conn:
+            first_page = [row['id'] for row in conn.execute(
+                f'SELECT id FROM {self.f.schema}.backfill_tasks_v2 ORDER BY id LIMIT 500').fetchall()]
+            collation = dict(conn.execute("""SELECT (SELECT datcollate FROM pg_database WHERE datname=current_database()) database_lc_collate,
+                (SELECT datctype FROM pg_database WHERE datname=current_database()) database_lc_ctype,
+                a.attcollation::text task_id_collation_oid,
+                a.attcollation::regcollation::text task_id_collation
+                FROM pg_attribute a WHERE a.attrelid=%s::regclass AND a.attname='id'""",
+                (self.f.schema + '.backfill_tasks_v2',)).fetchone())
+        self.assertTrue(set(ids).issubset(first_page), (ids, first_page, collation))
+        ids = [key for key in first_page if key in set(ids)]
+        self.assertEqual(len(ids), 3)
+        self.assertTrue(set(ids).isdisjoint(self.unit_ids()))
+        RESULT.setdefault('v82_fixture_ordering', {})['atomic:first_page'] = {
+            'page_size': len(first_page), 'page_first_id': first_page[0],
+            'page_last_id': first_page[-1], 'ids_in_postgresql_order': ids,
+            'positions_zero_based': [first_page.index(key) for key in ids],
+            'all_fault_rows_in_first_bounded_page': True, 'collation': collation}
         before = self.rows()
         for point in ('snapshot', 'cursor'):
             with self.f.admin() as conn:
