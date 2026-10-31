@@ -1,0 +1,151 @@
+/**
+ * v16 environment-group pre-dispatch effect-admission correction of the source-only controller-owned port. NOT a provider adapter or executor.
+ * The port MUST be injected by the existing application controller, never by MCP input.
+ * No admission/permission claim follows from successful synthetic tests.
+ */
+import {validate, validateReceipt, digest, safeOperationId} from './controller-operations-v10.mjs';
+
+export const CONTROLLER_PORT_CONTRACT='astra-existing-controller-atomic-v16';
+const required=['lookupExact','admitExact','reserveAndDispatchUnderOwnerGuard','readbackExact'];
+const blocked=code=>({state:'blocked',code,executed:false,replay_permitted:false});
+const isObject=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
+const isRevision=x=>typeof x==='string'&&x.length>=1&&x.length<=72&&/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(x);
+const isChangeId=x=>typeof x==='string'&&x.length>=12&&x.length<=96&&/^[a-zA-Z0-9][a-zA-Z0-9._:-]*$/.test(x);
+const clockAt=clock=>{const t=clock();return typeof t==='number'&&Number.isFinite(t)&&t>=0?t:null;};
+const freezeCopy=x=>{
+ const c=structuredClone(x);
+ function freeze(v){if(v&&typeof v==='object'){for(const part of Object.values(v))freeze(part);Object.freeze(v);}return v;}
+ return freeze(c);
+};
+const safeRow=(r,hash)=>isObject(r)&&r.digest===hash&&safeOperationId(r.operation_id)&&isChangeId(r.change_id)&&isRevision(r.revision)&&['PREPARED','DISPATCHING','UNKNOWN','ACCEPTED','CONFIRMED','REJECTED'].includes(r.state);
+/**
+ * Only controller-owned *causal* evidence may qualify a completed state;
+ * desired configuration, elapsed time and standalone provider status do not.
+ */
+/**
+ * A controller's immutable row and its causal proof must refer to the *same*
+ * operation, revision and change. Never use mere provider desired state, a
+ * GitHub run ID, a Render config PATCH, or a partially completed workflow to
+ * infer completed side effects. Requires owner-verified causal fields, NOT
+ * caller-supplied permissions. Historical v11 receipts are not upgraded.
+ *
+ * Real integration stays blocked until the ingestion controller implements
+ * this contract and proves owner-atomic reservation and readback. These checks
+ * are necessary, not sufficient, to establish production provenance.
+ */
+export function causalProofValid(row,request){
+ if(!safeRow(row,digest(request)))return false;
+ const c=row.causal;
+ if(!isObject(c)||c.operation_id!==row.operation_id||c.digest!==row.digest||
+    c.change_id!==row.change_id||c.revision!==row.revision)return false;
+ if(request.operation==='render_update_worker')return c.kind==='provider_ack'&&
+   c.acknowledged===true&&c.source==='controller_captured_provider_response'&&
+   c.service_id===request.target.service_id&&c.workspace_id===request.target.workspace_id&&
+   c.auto_deploy_trigger==='off'&&c.provider_effect==='configuration_updated_not_deployed';
+ // Render environment-group linking inherits secrets AND triggers a deploy.
+ // The link API acknowledgement carries no uniquely correlated deploy result.
+ // Hold the result until a separately designed real owner-side linkage+deploy
+ // settlement port passes acceptance. No synthetic "deploy succeeded" flag.
+ if(request.operation==='render_link_environment_group')return false;
+ if(request.operation==='github_workflow_dispatch')return c.kind==='workflow_run'&&
+   Number.isSafeInteger(c.run_id)&&c.run_id>0&&
+   Number.isSafeInteger(c.workflow_id)&&c.workflow_id>0&&
+   Number.isSafeInteger(c.run_attempt)&&c.run_attempt>=1&&
+   c.event==='workflow_dispatch'&&c.workflow===request.target.workflow&&
+   c.ref===request.params.ref&&c.repository===request.target.repository&&
+   typeof row.admitted_head_sha==='string'&&/^[0-9a-f]{40}$/.test(row.admitted_head_sha)&&
+   c.head_sha===row.admitted_head_sha&&
+   c.status==='completed'&&c.conclusion==='success'&&
+   c.source==='controller_correlated_github_readback'&&
+   c.controller_correlation===row.operation_id;
+ return false;
+}
+/**
+ * This helper cannot itself prove a real port serializes stop/fence or persists reservations.
+ * Those are independent owner-side acceptance criteria. It never resubmits an unknown intent.
+ */
+export async function delegateThroughOwnerPort(x,port,{clock=()=>Date.now()/1000}={}){
+ const invalid=validate(x);if(invalid)return blocked(invalid);
+ // Render does not offer a Free background-worker plan. V10's candidate worker
+ // has plan:'free' and cannot satisfy a genuine zero-incremental-cost admission.
+ // Keep creation in backlog for a separately reviewed, correctly priced spec;
+ // do not silently substitute a paid plan or duplicate the existing worker.
+ if(x.operation==='render_create_worker')return blocked('worker_creation_plan_and_cost_unqualified');
+ if(!port||required.some(k=>typeof port[k]!=='function'))return blocked('atomic_owner_port_unbound');
+ if(typeof clock!=='function'||clockAt(clock)===null)return blocked('invalid_clock');
+ const request=freezeCopy(x),hash=digest(request);
+ let prior;
+ try{prior=await port.lookupExact({idempotency_key:request.idempotency_key,request_digest:hash});}
+ catch{return blocked('exact_lookup_unavailable');}
+ if(!isObject(prior)||prior.state===undefined)return blocked('exact_lookup_unverified');
+ if(prior.state!=='absent'){
+  if(!safeRow(prior,hash))return blocked('idempotency_conflict_or_unverified');
+  // Pure historical readback: never dispatch the same (or changed) intent again.
+  return await projectReadback(request,port,prior.operation_id,hash,true,prior);
+ }
+ // Material v15 defect: a generic grant_verified receipt could admit a NEW
+ // Render environment-group link despite no owner-verified inventory of its
+ // inherited env values / secret files, variable collision handling, or the
+ // automatic deployment it triggers. Merely holding readback AFTER dispatch
+ // does not prevent those irreversible side effects.
+ //
+ // The existing four-method controller port has no such immutable effect
+ // admission. Fail closed BEFORE admit/reserve/dispatch. Historical exact-key
+ // readback remains available above. This capability stays on the deferred
+ // owner backlog; lift this gate ONLY after a real controller-owned contract
+ // binds immutable group/service effect evidence, explicit secret/deploy
+ // authority, physical resource lock, and causal deployment settlement.
+ if(request.operation==='render_link_environment_group')
+  return blocked('environment_group_effect_admission_unimplemented');
+ let receipt;
+ try{receipt=await port.admitExact({request,request_digest:hash});}
+ catch{return blocked('owner_admission_unavailable');}
+ const checkedAt=clockAt(clock);
+ if(checkedAt===null)return blocked('invalid_clock');
+ const admissionError=validateReceipt(receipt,request,checkedAt);
+ if(admissionError)return blocked(admissionError);
+ // Even this is only a preflight; the REAL owner port must atomically revalidate
+ // stop, current fence, lease, expiry and action-time grant before provider dispatch.
+ const immediatelyBefore=clockAt(clock);
+ if(immediatelyBefore===null||immediatelyBefore>=receipt.expiry)return blocked('stale_or_no_readback');
+ let intent;
+ try{
+  intent=await port.reserveAndDispatchUnderOwnerGuard({request,request_digest:hash,admission:receipt,hash_version:'v10-json-v1'});
+ }catch{return blocked('uncertain_owner_dispatch_no_retry');}
+ if(!safeRow(intent,hash))return blocked('unverified_owner_dispatch_no_retry');
+ return await projectReadback(request,port,intent.operation_id,hash,false,intent);
+}
+async function projectReadback(request,port,operationId,hash,reused,expected){
+ let rb;
+ try{rb=await port.readbackExact({idempotency_key:request.idempotency_key,operation_id:operationId,request_digest:hash});}
+ catch{return blocked('readback_unavailable_no_retry');}
+ if(!safeRow(rb,hash)||rb.operation_id!==operationId)return blocked('readback_unverified_no_retry');
+ // A pinned GitHub head SHA must exist in the ORIGINAL controller reservation or
+ // historical exact-key lookup, not first appear in a later readback. Otherwise
+ // a late-attested SHA could turn an unpinned workflow into apparent success.
+ if(request.operation==='github_workflow_dispatch'&&
+    (typeof expected.admitted_head_sha!=='string'||!/^[0-9a-f]{40}$/.test(expected.admitted_head_sha)))
+    return blocked('original_owner_sha_pin_unverified_no_retry');
+ if(rb.change_id!==expected.change_id||rb.revision!==expected.revision||
+    (expected.admitted_head_sha!==undefined&&rb.admitted_head_sha!==expected.admitted_head_sha))
+    return blocked('immutable_identity_mismatch_no_retry');
+ // Final outcomes are immutable: a previously CONFIRMED or REJECTED receipt
+ // changing its state between owner lookup/reservation and readback is a
+ // consistency failure, NOT permission to reclassify the old operation.
+ if((expected.state==='CONFIRMED'||expected.state==='REJECTED')&&rb.state!==expected.state)
+    return blocked('terminal_owner_state_conflict_no_retry');
+ const safe={operation_id:operationId,change_id:rb.change_id,revision:rb.revision,executed:false,reused,replay_permitted:false};
+ if(rb.state==='CONFIRMED'&&causalProofValid(rb,request))
+   return {...safe,state:'complete',causal_verified:true,
+     ...(request.operation==='render_update_worker'?{deploy_verified:false,configuration_only:true}:{}),
+     ...(request.operation==='github_workflow_dispatch'?{workflow_success_verified:true}:{})};
+ // UNKNOWN, PREPARED, DISPATCHING and ACCEPTED are not proof of *no* provider
+ // effect. A later REJECTED label cannot clear their uncertainty without an
+ // owner-designed, causally verified negative-outcome contract. No replay.
+ if(rb.state==='REJECTED'&&expected.state!=='REJECTED')
+    return {...safe,state:'held',code:'negative_outcome_not_causally_proved',causal_verified:false};
+ if(rb.state==='REJECTED')return {...safe,state:'rejected',causal_verified:false};
+ // PREPARED or DISPATCHING also cannot settle while the executor may still send.
+ // CONFIRMED without a matching causal acknowledgement is conservatively held.
+ return {...safe,state:'held',code:rb.state==='CONFIRMED'?'causal_proof_missing':'owner_operation_not_causally_settled',causal_verified:false};
+}
