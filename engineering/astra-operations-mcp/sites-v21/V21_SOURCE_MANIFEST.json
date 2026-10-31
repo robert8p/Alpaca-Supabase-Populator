@@ -1,0 +1,165 @@
+{
+  "date": "2026-10-31",
+  "embedded_prior_source_zip": "v21/source-inputs/ASTRA_Operations_Render_PATCH_Outbound_Body_Confinement_v20.zip",
+  "embedded_prior_zip_sha256": "60588b1e54491aab56a65c5a1f0d2d5202e9d30aacbd4d9ffa74ee953ac2557e",
+  "member_sha256": {
+    "v21/TERMINAL_CAUSAL_CHECKPOINT.md": {
+      "sha256": "ca7f9c9b2b57f0adb42e73d31890d57003b44ccac225b3253fc62b20aaf906d6",
+      "size_bytes": 5900
+    },
+    "v21/candidate/lib/controller-operations-v10-correction.test.mjs": {
+      "sha256": "9d24c4794ca9852275eedd000108aa776d13a1e99f4834c882b04907a24b77f1",
+      "size_bytes": 5342
+    },
+    "v21/candidate/lib/controller-operations-v10.mjs": {
+      "sha256": "52799e24613afd16036ba7ad739911627cbf479735baa78c16ccf4e8345b31f7",
+      "size_bytes": 6537
+    },
+    "v21/candidate/lib/controller-operations-v10.test.mjs": {
+      "sha256": "b11df270eb9a80c36f7be9c767cc68876380c6f5bb43da4de44a64c3ba17fde9",
+      "size_bytes": 4989
+    },
+    "v21/candidate/lib/controller-owner-port-v11.mjs": {
+      "sha256": "6f8d7308df5101b2d18d5705c3c15cde50433b20161624b2bedea0cbb63f556d",
+      "size_bytes": 6509
+    },
+    "v21/candidate/lib/controller-owner-port-v11.test.mjs": {
+      "sha256": "c31e9cc4e21dc3287ca89c7cc8377a2bfb7bc70b915be1bd1fc2f234574938ae",
+      "size_bytes": 12956
+    },
+    "v21/candidate/lib/controller-owner-port-v14.mjs": {
+      "sha256": "3765624dcbd4bbd84310f097b5bef04f4f2b4f575cf18f2087f955d1c21e3da9",
+      "size_bytes": 7985
+    },
+    "v21/candidate/lib/controller-owner-port-v14.test.mjs": {
+      "sha256": "1c11fe6f543429e67191dfb8f8505cd62d49f3006ce3b7f474fe6c55457b30ba",
+      "size_bytes": 9481
+    },
+    "v21/candidate/lib/controller-owner-port-v15.mjs": {
+      "sha256": "1c39264f901a79609441f11b5b526acd7715a3eed931ac6eb6bee32cda86642e",
+      "size_bytes": 9222
+    },
+    "v21/candidate/lib/controller-owner-port-v15.test.mjs": {
+      "sha256": "a3380b9a67b6767be1dfec60ffe27c3f290289a74a8e803a42afd8769b829317",
+      "size_bytes": 6254
+    },
+    "v21/candidate/lib/controller-owner-port-v16.mjs": {
+      "sha256": "5dcd796b40e4eadf55e67ade1507b1a0eebb3ca296fd0d6c7251d4c11a179e70",
+      "size_bytes": 10181
+    },
+    "v21/candidate/lib/controller-owner-port-v16.test.mjs": {
+      "sha256": "76d41a80900d1ab434a3349104bd603a17f4512fd7e48eda7f14adf761ed7ade",
+      "size_bytes": 4174
+    },
+    "v21/candidate/lib/controller-owner-port-v17.mjs": {
+      "sha256": "31d091b1e89d780509a8a25c85c23ef02d89c8d3399ea508409c663f4728c567",
+      "size_bytes": 12590
+    },
+    "v21/candidate/lib/controller-owner-port-v17.test.mjs": {
+      "sha256": "cafb22a005a6b32dcfc9ac7d8499d0e4343e28aaf37d14a9de59ea1559768ef9",
+      "size_bytes": 9602
+    },
+    "v21/candidate/lib/controller-owner-port-v18.mjs": {
+      "sha256": "60cc57753538fed9ef03042affe601a4f9aef4af3a1b59b3ad1c88a18b9fc7b3",
+      "size_bytes": 12956
+    },
+    "v21/candidate/lib/controller-owner-port-v18.test.mjs": {
+      "sha256": "3a46326763af6a45be98f76b06e8c12078c0ed9b18f252f22a90b19886aeb081",
+      "size_bytes": 5524
+    },
+    "v21/candidate/lib/controller-owner-port-v19.mjs": {
+      "sha256": "f1ecd6e4b3c380a71568e9ab59cfd62f33580217ca61b75eabf372d480a8c63e",
+      "size_bytes": 15765
+    },
+    "v21/candidate/lib/controller-owner-port-v19.test.mjs": {
+      "sha256": "fa0dfb0eac7dd4b05076f6b6c89905254d63b4b36e927cdbd7055c2b88223eeb",
+      "size_bytes": 8469
+    },
+    "v21/candidate/lib/controller-owner-port-v20.mjs": {
+      "sha256": "94f8570e5cf46d20f586672ee0f9ac6ba80751b1b9b685c288996277bfe0f62d",
+      "size_bytes": 16922
+    },
+    "v21/candidate/lib/controller-owner-port-v20.test.mjs": {
+      "sha256": "06b81aa04a3a0fc5e40fa60cde035b1c75229cde98614d5285b3098833e834a6",
+      "size_bytes": 10425
+    },
+    "v21/candidate/lib/controller-owner-port-v21.mjs": {
+      "sha256": "c5f214f8fc3ec0908377c42319b0e934694b1a55192f74965dda5cf2ee5b0ea9",
+      "size_bytes": 17621
+    },
+    "v21/candidate/lib/controller-owner-port-v21.test.mjs": {
+      "sha256": "4792878a0f980de2e13a2edf6fa6ab91aa6f4c708f7255cc61b6b14014ec057e",
+      "size_bytes": 9275
+    },
+    "v21/candidate/lib/direct-provider-admission.mjs": {
+      "sha256": "3038fe8afe221cc5716718a66a87d82e377dab811509b731e96e2307926cad19",
+      "size_bytes": 3924
+    },
+    "v21/candidate/lib/direct-provider-admission.test.mjs": {
+      "sha256": "93b934df003c933217381cc44b6d8edbe2be2bd1ac6c5ae536cd6d9e35f7fe84",
+      "size_bytes": 3389
+    },
+    "v21/candidate/lib/provider-connector-v8.mjs": {
+      "sha256": "317f96de7a7352086fcf0801bfec3b0935b541bf7cc34f2a0fbe7536f26fa094",
+      "size_bytes": 6044
+    },
+    "v21/candidate/lib/provider-connector-v8.test.mjs": {
+      "sha256": "f94014ffe7a7d246369f33e572a9a84cd4b0ba1f1e7da2f2208a82a123937a38",
+      "size_bytes": 8549
+    },
+    "v21/candidate/lib/provider-effects-v13.mjs": {
+      "sha256": "e1f1cb9e23c1d99a2fb04d2c23411f043299848c49bb31f2e6fca5a621399a95",
+      "size_bytes": 6384
+    },
+    "v21/candidate/lib/provider-effects-v13.test.mjs": {
+      "sha256": "03fe88cb38ee22d53c575cfa0875ef0fb9837d23115d8f7cd101b04a0a90ae47",
+      "size_bytes": 5894
+    },
+    "v21/candidate/lib/provider-permission-contract-v9.mjs": {
+      "sha256": "d9d35311ea645d4879ddc3b634a8182ce5f1fee2e8081f9173a10e40e36df0fa",
+      "size_bytes": 6092
+    },
+    "v21/candidate/lib/provider-permission-contract-v9.test.mjs": {
+      "sha256": "796fc61e25fdc6bad9ce140d412595aa9a8e2ccb071268a4f0a2da9a59f179c3",
+      "size_bytes": 5833
+    },
+    "v21/candidate/lib/strict-provider-projections-v9.mjs": {
+      "sha256": "3754630b741217f2ed226f9f894e2c95a2f827c1bfc1d2db46c607662a111eac",
+      "size_bytes": 4386
+    },
+    "v21/candidate/lib/strict-provider-projections-v9.test.mjs": {
+      "sha256": "20bda9e79285b394aeb2310ba714d407e77cc9e644826a102fb67b9041ddb8ef",
+      "size_bytes": 5695
+    },
+    "v21/docs/TERMINAL_CAUSAL_IMMUTABILITY_V21.md": {
+      "sha256": "ca7f9c9b2b57f0adb42e73d31890d57003b44ccac225b3253fc62b20aaf906d6",
+      "size_bytes": 5900
+    },
+    "v21/evidence/v20-reproduction-baseline-260.tap": {
+      "sha256": "f3c44f8ef47b5574db6b33d58f02d2e5bbd5b13e62956a93696b173788ed741b",
+      "size_bytes": 49253
+    },
+    "v21/evidence/v21-check.txt": {
+      "sha256": "bad295e161c3f98c069645735c146c4b741a4a34cb127d2084b2208be7bc6851",
+      "size_bytes": 189
+    },
+    "v21/evidence/v21-full-275.tap": {
+      "sha256": "d15016eaed7f33b134cc06a9397de3144f182ee07943e441b244d34b215cf95a",
+      "size_bytes": 52789
+    },
+    "v21/package.json": {
+      "sha256": "d2d3c76312385d2b39535b473f095a8c633430b1e37b2374b6dae8b22d2db0a8",
+      "size_bytes": 459
+    },
+    "v21/source-inputs/ASTRA_Operations_Render_PATCH_Outbound_Body_Confinement_v20.zip": {
+      "sha256": "60588b1e54491aab56a65c5a1f0d2d5202e9d30aacbd4d9ffa74ee953ac2557e",
+      "size_bytes": 18812853
+    }
+  },
+  "new_test_count": 15,
+  "node_major": 22,
+  "prior_test_count": 260,
+  "qualification": "source-only; no owner integration or provider operation",
+  "total_test_count": 275,
+  "version": "v21"
+}
