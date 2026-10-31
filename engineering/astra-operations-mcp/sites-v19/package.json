@@ -1,0 +1,11 @@
+{
+  "name": "astra-operations-render-patch-causal-response-v19",
+  "version": "0.0.19",
+  "private": true,
+  "type": "module",
+  "description": "Source-only owner-injected PATCH response binding; not provider integration",
+  "scripts": {
+    "test": "node --test candidate/lib/*.test.mjs",
+    "check": "node --check candidate/lib/controller-owner-port-v19.mjs && node --check candidate/lib/controller-owner-port-v19.test.mjs"
+  }
+}
