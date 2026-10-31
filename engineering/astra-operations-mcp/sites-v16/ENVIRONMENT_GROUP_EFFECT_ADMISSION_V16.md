@@ -1,0 +1,31 @@
+# ASTRA Operations v16 — source-only environment-group side-effect pre-admission
+
+**Scope:** Existing ASTRA Operations MCP implementation-owner branch only; no Site/plugin publication, app-controller change, provider adapter, credential, production operation, second journal/controller/worker or spend. Existing ingestion and EQ17 controllers remain sole application execution owners. Dot remains sole private Site/plugin publisher.
+
+## Substantive v15 safety defect reproduced and corrected
+
+`delegateThroughOwnerPort` v15 accepted a syntactically valid `render_link_environment_group` under a *generic* `grant_verified`/`release_gate_verified` receipt and could invoke `reserveAndDispatchUnderOwnerGuard` even though no owner-native binding of **which environment values/secret files would be inherited**, conflicting keys, protected environment policy or the **automatic deployment** existed. Holding the outcome at `UNKNOWN` **after** the call is not safe preflight: access inheritance and deployment may already have occurred.
+
+The independent v15 fixture reproduces 1 reservation for a new, otherwise generic-approved link, despite zero group-effect assessment fields. Corrected `controller-owner-port-v16.mjs` first performs the existing immutable exact-key lookup and preserves historical read-only reconciliation. For a **new** group link it then blocks with `environment_group_effect_admission_unimplemented` **before** admission and guarded dispatch. It never trusts caller-declared `groupId`, `grant_verified` or a synthetic `deploy_complete` as adequate secret/deployment approval. This is deliberately a temporary owner-contract gate, not a retirement of the capability; a future version may lift it only after real ingestion-owner implementation and independent acceptance.
+
+## Official provider evidence (public docs only)
+
+- [Render link service API](https://api-docs.render.com/reference/link-service-to-env-group): `POST /v1/env-groups/{envGroupId}/services/{serviceId}` grants access to shared environment variables and secret files; response may include `envVars[].value` and `secretFiles[].content`. Never log/raw-return a response.
+- [Render environment variables and secrets](https://render.com/docs/configure-environment-variables): linking a group triggers a new service deploy. Service-specific environment values take precedence over group values; among multiple groups sharing a key, documented precedence is **not guaranteed** and may change. An inventory of key names/secret file names and collision resolution is therefore necessary; **do not acquire raw secret values** for qualification.
+- [GitHub App installation tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app): default minted installation token inherits all accessible repositories and permissions; issuer can reduce to exact repository and permissions, token expires after one hour. No GitHub App installation ID, effective Actions:Write grant or secure destination verified, and no token minted. GitHub workflow `workflow_dispatch` is still absent at the inspected default-branch path.
+- [Render scoped API keys beta](https://render.com/blog/scoped-api-keys-private-beta): private beta, actual account entitlement remains unknown; scopes limited by owner permissions. No supported entitlement-inspection tool is exposed and none was called.
+
+## Deferred owner port acceptance for lifting group-link block
+
+The **existing ingestion controller**, after reliability repair and issue #94 release admission, must establish an owner-verified, immutable and fenced effect record bound to (a) exact workspace, service, group ID, group revision/contents metadata and physical resource lock; (b) group key names and secret-file names, protected-environment membership and service/other-group collision policy, without disclosing values; (c) separate explicit action-time consent for inherited credential/secret reachability and automatic deployment, with current cost/release/stop/fence/lease guard; (d) PREPARED/DISPATCHING/UNKNOWN durable operation no-replay semantics; and (e) real controller-correlated link+deploy settlement, not only HTTP 200 or desired state. Existing four-method owner-port contract currently does **not** provide this effect identity. No new port runtime or second ledger may be created by the MCP client.
+
+## Other retained constraints
+
+- Unchanged v10 `v10-json-v1` (`SHA256(JSON.stringify(request))`) digest; no silent migration. Source-only v15 SHA pin and terminal/negative causal rules remain unchanged. `render_create_worker` remains blocked for unqualified plan/cost. `render_update_worker` remains configuration-only, not deployment; `github_workflow_dispatch` remains behind an owner-released default-branch workflow and effective Actions:Write, with exact pinned SHA/success settlement.
+- Existing issue [#94](https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94) already acknowledged in ingestion backfill audit 96, deferred behind active reliability work. Immutable [v11 contract](https://github.com/robert8p/Alpaca-Supabase-Populator/blob/db0efa4140ae6d59b4c8f36d0d0ebd39b5ff3cd0/engineering/astra-operations-mcp/sites-v11/docs/OWNER_PORT_ADOPTION_CONTRACT.md) remains authoritative and must not be sought on stale `feat/astra-operations-mcp-20261030`.
+- Current ingestion HEAD at read-only check `f5cd20baaac9e42b2074afc1d459b4968e8b3306`, no verified cross-provider owner port. Workflow trigger absent. Existing worker `srv-dbh9fko473hc739an8m0` must not be duplicated.
+- This patch runs purely local simulations. A passing test does **not** establish real controller serialization, provider write, deployment, authorization, account eligibility or integration.
+
+## Test evidence
+
+Full original v15 archive SHA256 `1664a1cefe5579b7fd22d515e07932d0071eaece88b7e002c50b8fdd951b37bd` embedded unchanged. Node22 suite: **196/196** source-only checks passed = **189 v15 historical + 7 v16 tests**. The v16 tests explicitly show the unqualified link reaching reservation under v15 and being refused before admission under v16, while allowing no-mutation historical readback and independent configuration-only operations.
