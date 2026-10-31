@@ -1,0 +1,430 @@
+{
+  "version": "replacement-v67-explicit-publication-manifest",
+  "prepared_at": "2026-10-30T08:05:39.613164+00:00",
+  "state": "READY_FOR_ROOT_PUBLICATION_AND_EXACT_HEAD_RELEASE_CHECKS",
+  "base_executable_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+  "canonical_checkpoint_version": 67,
+  "owner": "root-replacement-20261030T042603Z",
+  "owner_lease_until": "2026-10-30T08:30:00Z",
+  "publication_paths": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+    "docs/history/INGESTION_COMPLETION_STATE_v66.md",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v66.md",
+    "sql/astra_backfill_maintenance_fairness_v2.sql",
+    "tests/ingestion/test_backfill_maintenance_fairness_v2.py",
+    "sql/astra_backfill_shared_records_v2.sql",
+    "tests/ingestion/test_backfill_shared_records_v2.py",
+    "sql/astra_backfill_contract_registry_v2.sql",
+    "tests/ingestion/test_backfill_contract_registry_v2.py",
+    "evidence/replacement-stage3-publish-and-deploy-v2.json",
+    "evidence/replacement-live-progress-v67.json",
+    "evidence/replacement-live-progress-v67-supplement.json",
+    "evidence/replacement-shared-record-qualification-v2.json",
+    "evidence/replacement-shared-delivery-forward-qualification-v2.json",
+    "evidence/replacement-contract-registry-qualification-v2.json",
+    "evidence/replacement-contract-registry-independent-static-review-v2.json",
+    "evidence/replacement-v67-publication-qualification-map.json",
+    "evidence/replacement-shared-status-release-qualification-v2.json",
+    "astra_ingestion/backfill_status.py",
+    "astra_ingestion/static/app.js",
+    "tests/ingestion/test_backfill_web_status_v2.py",
+    "tests/ingestion/backfill_status_ui_contract.js",
+    "review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql",
+    "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/index.ts",
+    "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+    "review/massive-relay-v2/candidates/astra_ingestion/backfill_massive_relay_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+    "review/massive-relay-v2/candidates/tests/ingestion/managed_massive_relay_v2.test.mjs",
+    "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+    "review/massive-relay-v2/worker-integration.patch",
+    "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+    "review/massive-relay-v2/worker-integration-review.json",
+    "evidence/replacement-managed-relay-review-scope-v2.json",
+    "evidence/replacement-managed-relay-qualification-v2.json",
+    "evidence/replacement-managed-relay-security-review-v2.md",
+    "evidence/replacement-managed-relay-rpc-auth.diff",
+    "evidence/replacement-managed-relay-edge-handler.diff",
+    "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+    "evidence/replacement-apply-migration-wrapper-template.txt",
+    "evidence/replacement-managed-relay-review-manifest-v2.json",
+    "evidence/replacement-managed-relay-review-publication-manifest-v2.json",
+    "evidence/replacement-independent-forward-live-v67.json",
+    "evidence/replacement-managed-relay-final-live-hold-v2.json"
+  ],
+  "payload_count": 46,
+  "groups": {
+    "canonical_checkpoint_and_automation": [
+      "docs/INGESTION_COMPLETION_STATE.md",
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+    ],
+    "historical_v66_backups": [
+      "docs/history/INGESTION_COMPLETION_STATE_v66.md",
+      "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v66.md"
+    ],
+    "applied_independent_sql_and_tests": [
+      "sql/astra_backfill_maintenance_fairness_v2.sql",
+      "tests/ingestion/test_backfill_maintenance_fairness_v2.py",
+      "sql/astra_backfill_shared_records_v2.sql",
+      "tests/ingestion/test_backfill_shared_records_v2.py",
+      "sql/astra_backfill_contract_registry_v2.sql",
+      "tests/ingestion/test_backfill_contract_registry_v2.py"
+    ],
+    "independent_qualification_and_live_evidence": [
+      "evidence/replacement-stage3-publish-and-deploy-v2.json",
+      "evidence/replacement-live-progress-v67.json",
+      "evidence/replacement-live-progress-v67-supplement.json",
+      "evidence/replacement-shared-record-qualification-v2.json",
+      "evidence/replacement-shared-delivery-forward-qualification-v2.json",
+      "evidence/replacement-contract-registry-qualification-v2.json",
+      "evidence/replacement-contract-registry-independent-static-review-v2.json",
+      "evidence/replacement-v67-publication-qualification-map.json",
+      "evidence/replacement-shared-status-release-qualification-v2.json"
+    ],
+    "latest_status_source_and_tests": [
+      "astra_ingestion/backfill_status.py",
+      "astra_ingestion/static/app.js",
+      "tests/ingestion/test_backfill_web_status_v2.py",
+      "tests/ingestion/backfill_status_ui_contract.js"
+    ],
+    "review_only_relay_payloads_and_mapped_manifest": [
+      "review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql",
+      "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/index.ts",
+      "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+      "review/massive-relay-v2/candidates/astra_ingestion/backfill_massive_relay_v2.py",
+      "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_v2.py",
+      "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+      "review/massive-relay-v2/candidates/tests/ingestion/managed_massive_relay_v2.test.mjs",
+      "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "review/massive-relay-v2/worker-integration.patch",
+      "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+      "review/massive-relay-v2/worker-integration-review.json",
+      "evidence/replacement-managed-relay-review-scope-v2.json",
+      "evidence/replacement-managed-relay-qualification-v2.json",
+      "evidence/replacement-managed-relay-security-review-v2.md",
+      "evidence/replacement-managed-relay-rpc-auth.diff",
+      "evidence/replacement-managed-relay-edge-handler.diff",
+      "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+      "evidence/replacement-apply-migration-wrapper-template.txt",
+      "evidence/replacement-managed-relay-review-manifest-v2.json",
+      "evidence/replacement-managed-relay-review-publication-manifest-v2.json"
+    ],
+    "additional_live_reconciliation": [
+      "evidence/replacement-independent-forward-live-v67.json",
+      "evidence/replacement-managed-relay-final-live-hold-v2.json"
+    ]
+  },
+  "publish_this_manifest_itself_in_addition_to_payload_paths": true,
+  "manifest_path": "evidence/replacement-v67-publication-manifest.json",
+  "files": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "group": "canonical_checkpoint_and_automation",
+      "bytes": 21047,
+      "sha256": "fcf76a940873a11902a3903edcb3b96bc3326668ed0b3f605a93d9a4093283b1"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "group": "canonical_checkpoint_and_automation",
+      "bytes": 35161,
+      "sha256": "e6a4802f8edb44d7d1a4cb35ebb126b20857a2a321f70a8a6b7d9b80eb7b56f2"
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v66.md",
+      "group": "historical_v66_backups",
+      "bytes": 11379,
+      "sha256": "4cd4ce545e0fb8e8b10f3ae428cefcf94a44b7adda4ad3bb08b2f96a98101f29"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v66.md",
+      "group": "historical_v66_backups",
+      "bytes": 29090,
+      "sha256": "4e2e9fee094bdf01d389553c98dabd00975f2f85e9181e5a42f21ea900dedad7"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_fairness_v2.sql",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 1862,
+      "sha256": "3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_fairness_v2.py",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 5692,
+      "sha256": "8f06f9710bb01ba088c1e288d19b78391b4f1235eea7bd8eb95a75e522e0f6db"
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 46872,
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_records_v2.py",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 21895,
+      "sha256": "a9dbc30b856c97f6678997c87d2d5161b101e9f94ba9621892c9cfbbc1987e73"
+    },
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 28911,
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_contract_registry_v2.py",
+      "group": "applied_independent_sql_and_tests",
+      "bytes": 13078,
+      "sha256": "4ac7d1e09a08bf805e6ba87f016ac702438ec6c456d5e442999f7c1bfe0941fa"
+    },
+    {
+      "path": "evidence/replacement-stage3-publish-and-deploy-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 5992,
+      "sha256": "cdf6ebb63dee580ba8fb1560ea93e4172b1f6fefa5590fab45722892b8935eb3"
+    },
+    {
+      "path": "evidence/replacement-live-progress-v67.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 496,
+      "sha256": "fe17071c8d3f1d51e6809afd5de93be4aeab73bec6d1b507d27f6e8dc9a95184"
+    },
+    {
+      "path": "evidence/replacement-live-progress-v67-supplement.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 2476,
+      "sha256": "df769667d4c074aa7988bf4c6af635d7cb4c70227b6bd93b054875834fcb72aa"
+    },
+    {
+      "path": "evidence/replacement-shared-record-qualification-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 5831,
+      "sha256": "b10745324aeb02d607ab4ae202985637339ca2efcb8ef71e18ea79923ed4aebc"
+    },
+    {
+      "path": "evidence/replacement-shared-delivery-forward-qualification-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 1769,
+      "sha256": "db3c250b700d3be84f3642e38ebf62bcb3850834aed896818e063ab57fb57711"
+    },
+    {
+      "path": "evidence/replacement-contract-registry-qualification-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 5169,
+      "sha256": "54b6af33400c9dd4c31ba8b3a8e48d10be809975b1210107d281ca29e6703bf3"
+    },
+    {
+      "path": "evidence/replacement-contract-registry-independent-static-review-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 5833,
+      "sha256": "f534389c3c5c9544eccae417e84f77e9de6ba7d2512d0262254352162e5032eb"
+    },
+    {
+      "path": "evidence/replacement-v67-publication-qualification-map.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 3892,
+      "sha256": "ac51c5f115bbf446e6dc8b4c42934707bf5a3bb223028b9b6916d715ee2de41f"
+    },
+    {
+      "path": "evidence/replacement-shared-status-release-qualification-v2.json",
+      "group": "independent_qualification_and_live_evidence",
+      "bytes": 1557,
+      "sha256": "9ed676fd5c9351683d3401fc0d04d8a81fbafff0f9cd3a6f41dbe68b3b78c127"
+    },
+    {
+      "path": "astra_ingestion/backfill_status.py",
+      "group": "latest_status_source_and_tests",
+      "bytes": 9651,
+      "sha256": "5cf6393e949db58f6b1250757fb0dce2da990b6cdd410f79f9db79d76f21bb6d"
+    },
+    {
+      "path": "astra_ingestion/static/app.js",
+      "group": "latest_status_source_and_tests",
+      "bytes": 22575,
+      "sha256": "f4b94b1a64f08f0a6cf545821ddd4b30c9a6b9a53082afca67ea3f9e51bd7c30"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_web_status_v2.py",
+      "group": "latest_status_source_and_tests",
+      "bytes": 14497,
+      "sha256": "0c6b9450664d299f39fe415c331aa2eb8ebad70d96c66651902c6facb4ff82f9"
+    },
+    {
+      "path": "tests/ingestion/backfill_status_ui_contract.js",
+      "group": "latest_status_source_and_tests",
+      "bytes": 8737,
+      "sha256": "f7566f9dea5004a5ff936799485d1dc558d71ad734f79dbd52c56f8c574eaa9b"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 21525,
+      "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/index.ts",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 15812,
+      "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 12575,
+      "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/astra_ingestion/backfill_massive_relay_v2.py",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 14520,
+      "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 28976,
+      "sha256": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_v2.py",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 14370,
+      "sha256": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 534,
+      "sha256": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/tests/ingestion/managed_massive_relay_v2.test.mjs",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 15309,
+      "sha256": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84"
+    },
+    {
+      "path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 4781,
+      "sha256": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177"
+    },
+    {
+      "path": "review/massive-relay-v2/worker-integration.patch",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 950,
+      "sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e"
+    },
+    {
+      "path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "path": "review/massive-relay-v2/worker-integration-review.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 892,
+      "sha256": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-review-scope-v2.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 5297,
+      "sha256": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-qualification-v2.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 7317,
+      "sha256": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-security-review-v2.md",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 16829,
+      "sha256": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-rpc-auth.diff",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 3487,
+      "sha256": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-edge-handler.diff",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 1073,
+      "sha256": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22"
+    },
+    {
+      "path": "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 8542,
+      "sha256": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83"
+    },
+    {
+      "path": "evidence/replacement-apply-migration-wrapper-template.txt",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 774,
+      "sha256": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-review-manifest-v2.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 4055,
+      "sha256": "e9c3cf4664c9d04f525bf015deb09fb6113ba95cc358fe88cc94dafdbedf9f32"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-review-publication-manifest-v2.json",
+      "group": "review_only_relay_payloads_and_mapped_manifest",
+      "bytes": 9797,
+      "sha256": "7e5c7ddad509e1302e1e8f53f52769f15c34e403c6f01e30c29aaeaa2b805eda"
+    },
+    {
+      "path": "evidence/replacement-independent-forward-live-v67.json",
+      "group": "additional_live_reconciliation",
+      "bytes": 2216,
+      "sha256": "0b057789b0080a35456506ea1bda5e07ace835cd613d89af4c4d9b95cfd3fd56"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-final-live-hold-v2.json",
+      "group": "additional_live_reconciliation",
+      "bytes": 2276,
+      "sha256": "c8fb2b1113f1b2d01d2bf8732d6662abda6a8952e6cb3914e4f8b37da5964c38"
+    }
+  ],
+  "excluded_active_relay_source_paths": [
+    "sql/astra_backfill_massive_relay_v2.sql",
+    "supabase/functions/population-top3000-news-v1/index.ts",
+    "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+    "astra_ingestion/backfill_massive_relay_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_v2.py",
+    "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+    "tests/ingestion/managed_massive_relay_v2.test.mjs",
+    "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py"
+  ],
+  "pending_performance_forward_excluded_until_frozen_and_qualified": true,
+  "latest_status_exact_head_github_gate": "REQUIRED_PENDING",
+  "latest_status_currently_deployed": false,
+  "ingestion_worker_source_unchanged_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+  "relay_publication_is_not_activation": true,
+  "relay_state": "AWAITING_ACTION_TIME_CONFIRMATION",
+  "relay_review_scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+  "notes": [
+    "Independent maintenance/shared/registry SQL is already applied; reconcile before any retry.",
+    "Do not activate or integrate held relay candidate source paths.",
+    "The earlier combined 29-test evidence does not cover latest status file hashes; see qualification map.",
+    "Review-only files preserve their frozen reviewed bytes."
+  ],
+  "latest_status_local_focused_suite": {
+    "passed": 12,
+    "seconds": 0.298,
+    "source": "evidence/replacement-shared-status-release-qualification-v2.json",
+    "exact_four_file_hash_match": true
+  }
+}

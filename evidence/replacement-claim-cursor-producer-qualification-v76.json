@@ -1,0 +1,191 @@
+{
+  "activation_sequence": [
+    "Independently review these exact artifacts; root builds only their additive packet against fresh e694 through ordinary host controls.",
+    "Publish and verify exact resulting tree with all1063 existing blobs preserved, then verify all triggered exact-head push/PR gates and explicit nine-case ingestion execution with zero skips.",
+    "Reconcile current same-owner finite lease and source/metadata; root selects one guarded forward migration. If any native/host failure occurs, reconcile outcome before another action.",
+    "Read back dbe8/OID/full metadata, all seven unchanged pins and index/catalog preservation separately. Observe ordinary worker claims/pages/readbacks and errors without manual restart.",
+    "Use exact restore only after selection and still-valid same-owner authority if a demonstrated regression warrants it; do not reset attempts or state.",
+    "Any future held identity activation must explicitly rebind/review the changed private source. The old75-pin28ae readback must fail closed, never be silently rewritten/reused."
+  ],
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "base_tree": "3599d2822a30b658666ab219e8eeca728f3917df",
+  "baseline_private_source_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+  "candidate_private_source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+  "candidate_status": "PREPARED_QUALIFIED_NOT_PUBLISHED_NOT_INSTALLED",
+  "dependency_closure": {
+    "actual_reads_and_imports": 81,
+    "additive_inputs": 7,
+    "exact_e694_blobs": 74,
+    "existing_replacements": 0,
+    "receipt_field": "actual_dependencies",
+    "unexpected_differences": 0
+  },
+  "full_target_metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+  "limits": [
+    "Local actual database is PostgreSQL16.15; new exact-head PostgreSQL17 CI remains mandatory before activation.",
+    "Synthetic status is enforced as Index Only Scan Filter, with0 rows removed in both retained positive-input plans. LIMIT1 bounds emitted witnesses, not total examined entries for arbitrary data.",
+    "The cursor has no query parameters; forced custom/generic modes are observations, not proof of distinct parameter-sensitive PLpgSQL SPI cached plans.",
+    "Root live old921.891ms/new0.325ms are separate pure-SELECT cache/snapshot observations. Neither a guaranteed speed ratio nor a whole-claim or whole-cron duration.",
+    "Native57014 at the original FOR identifies cancellation location only; gate wait, preceding helpers and cumulative budget remain possible contributors. Later null helper-input snapshot does not reconstruct19:00.",
+    "No production SQL/helper/provider or network request was performed by the producer. No actual production recovery is claimed.",
+    "Fence/cohort/member guard-expression mutations test fail-closed conditions; they are not claimed as production membership/fence changes.",
+    "Existing e694 six-operation retry and shared7f repair remain. This is not an identity_material or defer retry rollout."
+  ],
+  "meaningful_tests": [
+    "Exact one-block inverse to28ae and byte-reproducible guarded SQL; dedicated no-DSN hard error versus explicit general-gate skip.",
+    "Empty/null/duplicate/status/provider/other-run SELECT equivalence matrix.",
+    "Unforced existing-index method under custom/generic planner modes on a28002-task synthetic relation; two correlated run/provider probes and at mostone emitted witness perprobe.",
+    "Actual authenticated baseline/candidate claim: Alpaca capability, durable Massive block, changed Massive capability resolution, blocked-task release, REF01/N01/REF03 family order, attempts/generation/fence and no request reservation.",
+    "API-role rejection and stale claim fence rejection; gateway and outsider cannot directly execute private dispatcher.",
+    "Forward/restore preserve sampled state tables, audit, complete target metadata/OID and security catalog; replay fails closed.",
+    "Nineteen pre/post guard rejection cases, including source, metadata, owner, finite lease, status, expected fence/cohort/member expressions, provider index, transaction bounds, pre-snapshot auth/index drift and postreplacement auth/catalog/lease/run drift.",
+    "Paused and operational-terminal exact restore preserves status and rows; wrong-owner cleanup fails.",
+    "Actual two-connection native55P03 after task update proves full statement rollback; the later ordinary claim gets generation1 and attempt1."
+  ],
+  "passed": true,
+  "publication_holds": {
+    "canonical_docs": "excluded",
+    "existing_runtime_files": "unchanged",
+    "held_identity16": "unchanged unbound hold; excluded",
+    "held_v75_checkpoint68": "unchanged host-rejected hold; excluded"
+  },
+  "qualification": {
+    "errors": 0,
+    "failures": 0,
+    "path": "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json",
+    "postgresql": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "seconds": 7.729960569995455,
+    "sha256": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03",
+    "skips": 0,
+    "tests": 9
+  },
+  "retained_failed_attempts": [
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt0_bootstrap_v76.json",
+      "reason": "Audit-runner importlib.util import missing before any test/database setup; runner corrected."
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt1_v76.json",
+      "reason": "Header-comment lock-order match and nonportable requirement that status be in Index Cond; actual SQL behavior and guard cases passed."
+    },
+    {
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt2_v76.json",
+      "reason": "Enriched nonqualifying-row fixture still used status as index-node Filter; no candidate or guard change. Independent reviewer accepted the corrected portable correlated-index assertion."
+    }
+  ],
+  "reviewed_artifact_pins": {
+    "sql/astra_backfill_claim_provider_cursor_restore_v76.sql": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+    "sql/astra_backfill_claim_provider_cursor_v76.sql": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+    "tests/ingestion/test_backfill_claim_provider_cursor_v76.py": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464"
+  },
+  "schema": "astra.claim-provider-cursor-producer-qualification/1",
+  "scope": "One exact private-dispatch provider-cursor query-shape replacement; SQL-only installation after independent review and exact published-head CI.",
+  "security_and_integrity": [
+    "No Python runtime, authentication, role, grant, RLS, provider budget, worker retry, task state policy, timeout setting, schedule or Render configuration change.",
+    "Both wrappers require writable READ COMMITTED with8s statement/3s lock budget, then existing global advisory gate and same-run FOR SHARE.",
+    "Fixed run, same implementation owner, finite unexpired implementation lease, fence1, fixed cohort/manifest and3000 members checked before and after.",
+    "Forward requires ACTIVE; restore permits any existing status under identical ownership/source/metadata guards and never changes status or data.",
+    "Target exact source and full pg_proc metadata/OID checked; seven unchanged function source/metadata pins protect public/auth, preceding discover/refresh, installed shared7f, maintenance6c and verifier0ccd.",
+    "Existing provider index exact definition/method/table/valid-ready-live checked both before and after; no new index or schema change.",
+    "All other ASTRA/public-wrapper function catalogs, relation ACL/RLS, index definitions, constraints, triggers, policies and relevant role/membership catalogs compared before/after.",
+    "Same run row preserved byte-equivalent. Native late claim lock error rolls back worker registration, provider dependency, task generation/attempt and fairness writes; identity sequence gaps are not claimed erased."
+  ],
+  "selected_input_pins": [
+    {
+      "bytes": 49483,
+      "path": "sql/astra_backfill_claim_provider_cursor_v76.sql",
+      "sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094"
+    },
+    {
+      "bytes": 49421,
+      "path": "sql/astra_backfill_claim_provider_cursor_restore_v76.sql",
+      "sha256": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893"
+    },
+    {
+      "bytes": 25439,
+      "path": "tests/ingestion/test_backfill_claim_provider_cursor_v76.py",
+      "sha256": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464"
+    },
+    {
+      "bytes": 32456,
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_private_dispatch_v76.sql",
+      "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+    },
+    {
+      "bytes": 32478,
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+    },
+    {
+      "bytes": 334,
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_cursor_select_v76.sql",
+      "sha256": "36ab6afb3fa6eebe376ab55e85b4ee23d603895a2c51f490ed5747efaef8f4c1"
+    },
+    {
+      "bytes": 359,
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_cursor_select_v76.sql",
+      "sha256": "12f6d77e607498122e2cf3a6bb2ccfc8833c0867667a5ae43552f128ca4b2701"
+    },
+    {
+      "bytes": 1222,
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_queryshape_v76.patch",
+      "sha256": "530c8a1f817800470d3a23668bfd8563186aa1030180c0b0e04c47085f541cfc"
+    },
+    {
+      "bytes": 3695,
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_derivation_v76.json",
+      "sha256": "3368eb7281959316af697bce47b1a14623f4e0ac10f5da9a944ca47d4246b37c"
+    },
+    {
+      "bytes": 11589,
+      "path": "review/recovery-v76/claim-cursor-repair/build_claim_cursor_repair_v76.py",
+      "sha256": "6db373d94af83a49585cf5e6e1f6e7367f54b5f32f2ba6c89f318976c21f56d4"
+    },
+    {
+      "bytes": 8408,
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_guard_pins_v76.json",
+      "sha256": "e11f0f3dbecc5bb67ff47caad46312cd210973fc6acf27449b54dcbf01b8e90d"
+    },
+    {
+      "bytes": 3858,
+      "path": "review/recovery-v76/claim-cursor-repair/qualify_claim_cursor_v76.py",
+      "sha256": "ac0c10c6bb4e529eb2a0eebbdf31e24bb3c37ddfb7a2a8690c6f8d48159ded79"
+    },
+    {
+      "bytes": 292,
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt0_bootstrap_v76.json",
+      "sha256": "2a752c74c9b88668488999c34343d420d793a587ed7bf57b4baa544ee3e8cf46"
+    },
+    {
+      "bytes": 34331,
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt1_v76.json",
+      "sha256": "88da6a7efbbfc8963a670bbf9ccdfd6ee05b59da38ca6440f5b06086c772095b"
+    },
+    {
+      "bytes": 33884,
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt2_v76.json",
+      "sha256": "64711fd3b0a55d7ec70cfb24b6c3f482ef78aa28254e90017e89c0cafcf2fb93"
+    },
+    {
+      "bytes": 48784,
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json",
+      "sha256": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03"
+    },
+    {
+      "bytes": 19144,
+      "path": "evidence/replacement-claim-cursor-readonly-comparison-v76.json",
+      "sha256": "3e2093e81ac368a46eadb4bbdf3e90e35d6ae78136da6ff4e4f84841c4d0d96f"
+    },
+    {
+      "bytes": 4518,
+      "path": "evidence/replacement-acquisition-stall-verified-baseline-v76.json",
+      "sha256": "bc2b4b92c216f81096e2f2a1129ac86e2d6e224d5d93f39ac94abcc16174fb16"
+    },
+    {
+      "bytes": 2963,
+      "path": "review/recovery-v76/claim-stall/preceding_helper_inputs_v76.json",
+      "sha256": "a550b912e8a3ce639220689ddcb01e2fa4ecdaf15867be381766dcf9543d32ba"
+    }
+  ],
+  "target_oid": "16040232"
+}

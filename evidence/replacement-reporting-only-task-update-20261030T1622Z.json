@@ -1,0 +1,47 @@
+{
+  "schema": "astra.reporting-only-task-update/1",
+  "authority": {
+    "source": "Current user communication-only update relaying Rob",
+    "source_time": "2026-10-30T16:22:00Z",
+    "time_precision": "minute",
+    "approval_scope": "Reporting instructions only; existing mission and action-time approval controls unchanged"
+  },
+  "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "previous_updated_at": "2026-10-30T16:04:48.542203+00:00",
+  "updated_at": "2026-10-30T16:27:39.839131+00:00",
+  "previous_prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+  "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+  "prompt_exact_independent_readback": true,
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "schedule_unchanged": true,
+  "is_enabled": true,
+  "timezone": "Europe/London",
+  "timezone_unchanged": true,
+  "last_run": {
+    "id": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+    "recorded_status": "completed",
+    "scheduled_for": "2026-10-30T16:00:00Z",
+    "started_at": "2026-10-30T15:56:59.587040Z",
+    "completed_at": "2026-10-30T16:04:23.189315Z",
+    "chat_ref": {
+      "type": "chatgpt",
+      "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+    }
+  },
+  "delivery_status": "unknown",
+  "delivery_control": {
+    "per_task_mute_field_exposed": false,
+    "prompt_only_suppression": true,
+    "platform_push_email_muting_verified": false,
+    "global_chatgpt_android_settings_changed": false
+  },
+  "invariants": {
+    "same_controller": true,
+    "no_new_task": true,
+    "no_executor_pause": true,
+    "worker_and_recovery_execution_unchanged": true,
+    "original_mission_unchanged_and_once_at_eof": true,
+    "source_cost_security_completion_controls_unchanged": true
+  },
+  "owner_action_policy": "Persist exact reviewable owner-action/confirmation payload for dot to relay. Required approval remains a hold until genuine in-scope approval is received; no bypass or re-dating."
+}

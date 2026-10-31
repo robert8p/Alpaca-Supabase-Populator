@@ -1,0 +1,138 @@
+{
+  "recorded_utc": "2026-10-29T04:24:00Z",
+  "purpose": "Final clean-source release readback; evidence-limited acceptance",
+  "source_application_sha": "2c809b69e131f84e1778486e74c2f89a273f59f9",
+  "post_report_doc_commit_only": true,
+  "pr": 93,
+  "ci": [
+    {
+      "id": 40816993392,
+      "kind": "ingestion-PR",
+      "result": "success"
+    },
+    {
+      "id": 40816988828,
+      "kind": "ingestion-push",
+      "result": "success"
+    },
+    {
+      "id": 40816993388,
+      "kind": "release-PR",
+      "result": "success"
+    },
+    {
+      "id": 40816988677,
+      "kind": "release-push",
+      "result": "success"
+    }
+  ],
+  "render": {
+    "workspace": "tea-d562ma4hg0os73aejnfg",
+    "worker": {
+      "service": "srv-dbh9fko473hc739an8m0",
+      "deploy": "dep-dbhcihe7bikc73e8qad0",
+      "sha": "2c809b69e131f84e1778486e74c2f89a273f59f9",
+      "status": "live",
+      "live_at": "2026-10-29T04:19:53.039533Z"
+    },
+    "web": {
+      "service": "srv-dbh85vl9fdbs7387rucg",
+      "deploy": "dep-dbhcilgm7kps73ehkv3g",
+      "sha": "2c809b69e131f84e1778486e74c2f89a273f59f9",
+      "status": "live",
+      "live_at": "2026-10-29T04:20:22.018432Z"
+    },
+    "manual_deploy": true,
+    "blueprint_auto_sync": false,
+    "existing_monthly_compute_usd": 14
+  },
+  "source_integrity": {
+    "worker_blob_sha": "9cfefdde070538f2fa26f5ab562efc1c8c63a253",
+    "original_qualified_worker_blob_same": true,
+    "temporary_crash_or_gateway_hook_in_final_worker": false
+  },
+  "live_ledger": {
+    "original_job": {
+      "id": "fab354f9-c8fc-4158-add9-4aff025594bf",
+      "status": "completed",
+      "requests": 2,
+      "records": 156,
+      "receipts": 2,
+      "restricted_verifier_pass": 2
+    },
+    "forced_crash_job": {
+      "id": "astra-postcommit-crash-20261029-0410-job",
+      "status": "completed",
+      "requests": 1,
+      "records": 78,
+      "receipts": 1,
+      "restricted_verifier_pass": 1
+    },
+    "active_claims": 0,
+    "aggregate_records": 234,
+    "aggregate_receipts": 3
+  },
+  "production_automation": {
+    "progress_monitor": {
+      "job_id": 602,
+      "cron": "*/2 * * * *",
+      "active": true,
+      "observations_through_0424utc": 71,
+      "last_observation_utc": "2026-10-29T04:24:00.030460Z",
+      "fail_closed_incidents": 2,
+      "autonomous_lease_expired_incident": "2026-10-29T04:02:00.032486Z"
+    },
+    "restricted_verifier": {
+      "job_id": 603,
+      "cron": "*/2 * * * *",
+      "active": true,
+      "passed_original_records": 156,
+      "passed_crash_fixture_records": 78
+    }
+  },
+  "process_crash": {
+    "process_exit_code": 87,
+    "render_event_type": "server_failed",
+    "instance": "srv-dbh9fko473hc739an8m0-9lwnw",
+    "atomic_commit_utc": "2026-10-29T04:08:32.476100Z",
+    "old_process_exit_marker_utc": "2026-10-29T04:08:32.576976Z",
+    "automatic_successor_start_utc": "2026-10-29T04:08:35.245562Z",
+    "successor_only_claimed_verification": true,
+    "replayed_provider_request": false,
+    "original_deadline_preserved": true,
+    "recovered_verified_records": 78,
+    "actual_host_eviction": false,
+    "cross_instance_zero_overlap_proven": false
+  },
+  "transport": {
+    "project_publishable_key_valid_anon_tested": true,
+    "private_schema_verifier_http": 406,
+    "default_public_private_verifier_http": 404,
+    "public_dispatcher_correct_shape_without_capability_http": 401,
+    "real_authenticated_user_jwt_tested": false,
+    "sql_authenticated_and_anon_role_execute_denied": true
+  },
+  "campaign": {
+    "new_provider_requests": 1,
+    "provider_request_limit": 10,
+    "new_records": 78,
+    "new_record_limit": 1000,
+    "new_paid_resources": 0
+  },
+  "remaining_evidence_gaps": [
+    "No supported actual physical-host eviction proof; same-instance forced process death and restart are established",
+    "Strict inter-instance no-overlap during a rolling deployment is not independently proved",
+    "No genuine authenticated-user JWT presented through external HTTPS gateway",
+    "Final independent reviewer acceptance outstanding"
+  ],
+  "historical_coverage": "NOT_CERTIFIED",
+  "bulk_ingestion_authorised": false,
+  "library_report": {
+    "id": "libfile_34450bd336048191bd29df8786cd4d40",
+    "path": "/ASTRA Ingestion/ASTRA_Ingestion_Final_Release_Review_20261029.md",
+    "sha256": "4c8545791743f2d3709ba1172ea20cc2b68115a9f51115aaef8d4cc21cce7300"
+  },
+  "previous_original_canary_audit": "libfile_dcfd71df63248191ba61293c51b84921",
+  "previous_reliability_report": "libfile_9b466ad815b48191ae49fd30233bd6c8",
+  "readback_note": "This release records proven bounded gates only, with remaining evidence limitations kept explicit. No new provider request, runtime job mutation or deploy occurred during this readback."
+}

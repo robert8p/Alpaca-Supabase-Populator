@@ -1,0 +1,72 @@
+{
+  "schema": "astra.independent-candidate-estimate-evidence-review/1",
+  "reviewer": "/root/plugin_handoff_v78",
+  "status": "PASS_BOUNDED_ESTIMATE_EVIDENCE_ONLY_CANDIDATE_REMAINS_HELD",
+  "observed_at": "2026-10-31T00:09:20.086109+00:00",
+  "inputs": {
+    "actual_result": {
+      "path": "review/recovery-v79/snapshot-selector/candidate_estimate_after_timeout_actual_result_v79.json",
+      "sha256": "adf311f204ca0e88c9db449ea9d6362e52a85da3677efe10f2d6c42fec7dc77f",
+      "bytes": 16415
+    },
+    "evidence": {
+      "path": "review/recovery-v79/snapshot-selector/candidate_estimate_after_timeout_evidence_v79.json",
+      "sha256": "24f4afd3bab3d34d49214b47432fb362ed7cf30d78b82ad6fcf00b7a1aa539f7",
+      "bytes": 15149
+    },
+    "proposal": {
+      "path": "review/recovery-v79/snapshot-selector/candidate_selector_estimate_after_timeout_proposal_v79.json",
+      "sha256": "28b5b423356199873ce8745b1b2b60e7c2df34a45714cee4496aa1202a44f5d8",
+      "bytes": 6924
+    },
+    "query": {
+      "path": "review/recovery-v79/snapshot-selector/candidate_selector_estimate_after_timeout_readonly_v79.sql",
+      "sha256": "3f18d1e4477ae22ee8a28d77bed90299ea650a8d1c0a6c1430e445b98f203e6e",
+      "bytes": 20975
+    }
+  },
+  "verification": {
+    "raw_expected_P0001_decodes_exactly_to_evidence": true,
+    "terminal_context": "inline_code_block line 165 at RAISE",
+    "bounded_safe_payload_bytes": 12475,
+    "all_13_source_OID_metadata_pins_match": true,
+    "all_2_immediate_global_PK_proofs_match": true,
+    "current_owner_fence_lease_guard_match": true,
+    "exact_candidate_literal_and_sha_match": true,
+    "read_only_repeatable_read_8s_3s_settings_match": true,
+    "plan_count": 1,
+    "sanitized_node_count": 10,
+    "selector_executions": 0,
+    "business_helper_calls": 0,
+    "explicit_application_or_advisory_locks": 0,
+    "actual_rows_and_times": "null or absent, not measured zeros"
+  },
+  "interpretation": {
+    "shape": "Limit has a materialized global missing-ID InitPlan Gather -> Merge Anti Join with task-PK and plan-unit-PK Index Only Scans. Outer Sort -> Nested Loop consumes the CTE and performs a filtered Subquery -> keyed task-PK Index Scan.",
+    "estimated_missing_ids": 13052,
+    "matched_lookup_estimated_rows_per_invocation": 1,
+    "estimated_top_total_cost": 117111.52,
+    "supported_inference": "This observed estimate chooses the intended global ID anti-join and keyed lookup shape. It does not show the feared broad filtered task heap scan reappearing in this candidate plan.",
+    "limits": [
+      "The 13052 count and all costs are planner estimates; they are not actual rows, elapsed time, or a runtime improvement.",
+      "Index Only Scan does not establish zero heap fetches. No actual node loops, buffers, waits or cache state were measured.",
+      "The 8s measurement failed earlier while inside EXPLAIN ANALYZE. This later estimate does not identify which work consumed that budget or reproduce the prior cancelled physical plan.",
+      "This is a constant-bound connector-role plan, not a normal worker cached-plan observation.",
+      "The helper second query, snapshot writes, later hash/count/coverage and SEAL stages remain unmeasured here.",
+      "Ordinary relation locks can occur despite zero explicit application/advisory locks."
+    ]
+  },
+  "disposition": {
+    "candidate_source_sha256": "9e8efdf1b22893393d31bcf04d9eab785feb2c4579693007ab7ad6e98bc828ac",
+    "candidate_activation": "HELD_AFTER_FAILED_8S_PRODUCTION_MEASUREMENT",
+    "production_measurement_failure_retained": "54c18e8af2d29c9361ce390e5f63a6c8243dcf8adf406332717f5f5227de0c75",
+    "no_query_retry_activation_or_scope_expansion_authorized": true,
+    "next_selection": "Root must select any genuinely new bounded diagnostic or separately qualified recovery from this evidence; do not replay the consumed measurement or substitute estimated cost for its failed performance gate."
+  },
+  "review_actions": {
+    "external_calls": 0,
+    "production_writes": 0,
+    "new_tests": 0,
+    "frozen_packet_edits": 0
+  }
+}

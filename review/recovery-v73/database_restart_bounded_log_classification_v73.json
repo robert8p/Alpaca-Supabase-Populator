@@ -1,0 +1,40 @@
+{
+  "schema": "replacement-bounded-restart-log-classification-v73",
+  "window": {
+    "start": "2026-10-30T15:22:30Z",
+    "end": "2026-10-30T15:24:50Z"
+  },
+  "result": {
+    "result": [
+      {
+        "events": 9,
+        "first_seen": "2026-10-30T15:23:18.271000",
+        "last_seen": "2026-10-30T15:23:18.763000",
+        "no_space": 0,
+        "out_of_memory": 0,
+        "process_signal": 0,
+        "ready": 0,
+        "reinitializing": 0,
+        "severity": "FATAL",
+        "shutdown_request": 0,
+        "sqlstate": "57P03",
+        "standby_disabled": 0
+      },
+      {
+        "events": 119,
+        "first_seen": "2026-10-30T15:23:18.913000",
+        "last_seen": "2026-10-30T15:23:42.090000",
+        "no_space": 0,
+        "out_of_memory": 0,
+        "process_signal": 0,
+        "ready": 0,
+        "reinitializing": 0,
+        "severity": "FATAL",
+        "shutdown_request": 0,
+        "sqlstate": "57P03",
+        "standby_disabled": 1
+      }
+    ]
+  },
+  "interpretation": "The returned safe log fields show128 FATAL57P03 connection rejections from15:23:18.271 to15:23:42.090,119 with the hot-standby-disabled detail. This bounded classifier does not identify the restart initiator or root cause; absence of matching markers does not rule out platform maintenance, resource pressure or other causes. No infrastructure changes or restarts were requested by root."
+}

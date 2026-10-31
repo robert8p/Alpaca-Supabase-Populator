@@ -1,0 +1,227 @@
+--- a/astra_ingestion/rpc_store.py
++++ b/astra_ingestion/rpc_store.py
+@@ -2,7 +2,8 @@
+ 
+ Runtime services hold only a public project key and their own capability token.
+ They never receive a database login, project signing secret or service-role key.
+-An uncertain HTTP result is fatal to that worker invocation: no mutation retries.
++An uncertain HTTP result is fatal to that worker invocation. Only a complete
++PostgREST lock-abort response can retry an explicitly listed database RPC.
+ """
+ from __future__ import annotations
+ 
+@@ -10,7 +11,7 @@
+ import re
+ import ssl
+ from http.client import HTTPException
+-from time import monotonic
++from time import monotonic, sleep
+ from urllib.error import HTTPError, URLError
+ from urllib.parse import urlsplit
+ from urllib.request import HTTPRedirectHandler, HTTPSHandler, Request, build_opener
+@@ -26,6 +27,15 @@
+ MAX_RESPONSE_BYTES = 64 * 1024 * 1024
+ RPC_TIMEOUT_SECONDS = 15
+ TOKEN_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
++
++# These database-only calls still pass through the existing authenticated,
++# fenced RPC. This is a retry policy, never an operation authorization gate.
++LOCK_ABORT_RETRY_OPERATIONS = frozenset({
++    "backfill_claim", "backfill_reserve", "backfill_commit",
++    "backfill_reuse_commit", "backfill_verify", "backfill_plan_next",
++})
++LOCK_ABORT_RETRY_DELAYS = (0.25, 0.75)
++MAX_LOCK_ABORT_ERROR_BYTES = 8192
+ 
+ # Diagnostic labels only: this does not authorize any operation. The existing
+ # remote capability gate remains the sole operation authorization boundary.
+@@ -49,6 +59,7 @@
+     "RESPONSE_BOUND", "RESPONSE_DEADLINE", "RESPONSE_INCOMPLETE",
+     "HTTP_AUTH_REJECTED", "HTTP_ERROR", "TRANSPORT_ERROR", "RESPONSE_DECODE",
+     "RESPONSE_ENVELOPE", "REMOTE_FAILURE_UNRECOGNIZED", "UNCLASSIFIED_PERSISTENCE_FAILURE",
++    "LOCK_ABORT_RETRY_EXHAUSTED",
+ })
+ 
+ 
+@@ -147,7 +158,8 @@
+             return self._call_once(operation, payload)
+         except RpcPersistenceError as error:
+             # Preserve the same fatal exception and uncertain-write semantics.
+-            # No retry, remote body read, payload logging or credential access.
++            # Only the transport's strict lock-abort path may retry; an exception
++            # label supplied by a caller cannot authorize a resend.
+             error.rpc_operation = _diagnostic_label(operation, RPC_DIAGNOSTIC_OPERATIONS, "UNKNOWN")
+             raise
+ 
+@@ -165,8 +177,74 @@
+             "Cache-Control": "no-store",
+         })
+         deadline = monotonic() + RPC_TIMEOUT_SECONDS
+-        try:
+-            with self._opener.open(request, timeout=RPC_TIMEOUT_SECONDS) as response:
++        timeout = RPC_TIMEOUT_SECONDS
++        eligible = type(operation) is str and operation in LOCK_ABORT_RETRY_OPERATIONS
++        for attempt in range(len(LOCK_ABORT_RETRY_DELAYS) + 1):
++            try:
++                raw = self._exchange_once(request, deadline, timeout)
++            except HTTPError as exc:
++                try:
++                    status = exc.code
++                    confirmed = eligible and self._confirmed_lock_abort(exc, deadline)
++                finally:
++                    exc.close()
++                if status in (401, 403):
++                    raise RpcAuthenticationError("Ingestion capability was rejected", reason_code="HTTP_AUTH_REJECTED") from None
++                if not confirmed:
++                    raise RpcPersistenceError("Persistence HTTP outcome is unresolved; reconcile before continuing", reason_code="HTTP_ERROR") from None
++                # The exact request bytes, claim, reservation and provider page
++                # stay in this call. No provider method or enclosing work unit
++                # is replayed, and the deadline is never reset after an abort.
++                if attempt >= len(LOCK_ABORT_RETRY_DELAYS):
++                    raise RpcPersistenceError("Persistence lock retry budget exhausted; reconcile before continuing", reason_code="LOCK_ABORT_RETRY_EXHAUSTED") from None
++                delay = LOCK_ABORT_RETRY_DELAYS[attempt]
++                if monotonic() + delay >= deadline:
++                    raise RpcPersistenceError("Persistence lock retry budget exhausted; reconcile before continuing", reason_code="LOCK_ABORT_RETRY_EXHAUSTED") from None
++                sleep(delay)
++                timeout = min(RPC_TIMEOUT_SECONDS, deadline - monotonic())
++                if timeout <= 0:
++                    raise RpcPersistenceError("Persistence lock retry budget exhausted; reconcile before continuing", reason_code="LOCK_ABORT_RETRY_EXHAUSTED") from None
++                continue
++            break
++        try:
++            envelope = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_object,
++                                  parse_constant=_invalid_constant)
++        except (UnicodeError, ValueError, RecursionError):
++            raise RpcPersistenceError("Persistence returned an invalid response", reason_code="RESPONSE_DECODE") from None
++        if not isinstance(envelope, dict) or type(envelope.get("ok")) is not bool:
++            raise RpcPersistenceError("Persistence returned an invalid envelope", reason_code="RESPONSE_ENVELOPE")
++        if envelope["ok"]:
++            if set(envelope) != {"ok", "result"}:
++                raise RpcPersistenceError("Persistence returned an invalid success envelope", reason_code="RESPONSE_ENVELOPE")
++            return envelope["result"]
++        error = envelope.get("error")
++        if set(envelope) != {"ok", "error"} or not isinstance(error, dict):
++            raise RpcPersistenceError("Persistence returned an invalid error envelope", reason_code="RESPONSE_ENVELOPE")
++        # Use controlled local messages. A remote error must never echo credentials.
++        failures = {
++            "lease_lost": (LeaseLost, "Worker ownership or the job deadline is no longer valid"),
++            "quality_hold": (QualityHold, "Persistence rejected the operation under its ingestion quality rules"),
++            "request_deferred": (RequestDeferred, "Shared provider pacing"),
++            "not_found": (KeyError, "The requested ingestion job does not exist"),
++            "conflict": (ValueError, "The operation violates the ingestion contract or current job state"),
++        }
++        failure = failures.get(error.get("code"))
++        if failure is None:
++            raise RpcPersistenceError("Persistence returned an unrecognized failure", reason_code="REMOTE_FAILURE_UNRECOGNIZED")
++        raise failure[0](failure[1])
++
++    def _exchange_once(self, request, deadline, timeout):
++        """One send; ambiguous transport/response outcomes always propagate."""
++        try:
++            response = self._opener.open(request, timeout=timeout)
++        except HTTPError:
++            # Only the response obtained when opening this request can supply
++            # rollback evidence. A later stream failure is always ambiguous.
++            raise
++        except (URLError, TimeoutError, OSError, HTTPException):
++            raise RpcPersistenceError("Persistence transport outcome is unresolved; reconcile before continuing", reason_code="TRANSPORT_ERROR") from None
++        try:
++            with response:
+                 if response.status != 200:
+                     raise RpcPersistenceError("Unexpected persistence response; reconcile before continuing", reason_code="UNEXPECTED_HTTP_STATUS")
+                 if response.geturl() != self.endpoint:
+@@ -196,41 +274,63 @@
+                 raw = b"".join(chunks)
+                 if len(raw) > MAX_RESPONSE_BYTES or length is not None and len(raw) != int(length):
+                     raise RpcPersistenceError("Incomplete or oversized persistence response", reason_code="RESPONSE_INCOMPLETE")
+-        except HTTPError as exc:
+-            # Do not read error bodies or expose request objects/headers in logs.
+-            status = exc.code
+-            exc.close()
+-            if status in (401, 403):
+-                raise RpcAuthenticationError("Ingestion capability was rejected", reason_code="HTTP_AUTH_REJECTED") from None
+-            raise RpcPersistenceError("Persistence HTTP outcome is unresolved; reconcile before continuing", reason_code="HTTP_ERROR") from None
+         except (URLError, TimeoutError, OSError, HTTPException):
+             raise RpcPersistenceError("Persistence transport outcome is unresolved; reconcile before continuing", reason_code="TRANSPORT_ERROR") from None
+-        try:
++        return raw
++
++    def _confirmed_lock_abort(self, response, deadline):
++        """Recognize one fixed PostgREST error; never return remote error data.
++
++        This relies on the reviewed fixed RPC contract: ordinary outcomes use
++        the ok envelope and never manufacture custom HTTP-status error bodies.
++        A code in a provider response, application envelope or exception text is
++        not rollback evidence. Uncertain/incomplete bodies fail closed.
++        """
++        if type(response.code) is not int or response.code != 500 or response.geturl() != self.endpoint:
++            return False
++        headers = response.headers
++        if headers is None:
++            return False
++        # Ambiguous framing is ineligible, even if a first header looks valid.
++        for name in ("Content-Type", "Content-Encoding", "Content-Length", "Transfer-Encoding"):
++            if hasattr(headers, "get_all") and len(headers.get_all(name, [])) > 1:
++                return False
++        if (headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "application/json"
++                or headers.get("Content-Encoding", "identity").strip().lower() != "identity"):
++            return False
++        length = headers.get("Content-Length")
++        transfer = headers.get("Transfer-Encoding")
++        if transfer is not None and (transfer.strip().lower() != "chunked" or length is not None):
++            return False
++        if length is not None and (not length.isascii() or not length.isdigit()
++                                   or len(length) > 10 or int(length) > MAX_LOCK_ABORT_ERROR_BYTES):
++            return False
++        try:
++            chunks, total = [], 0
++            while True:
++                if monotonic() >= deadline:
++                    return False
++                chunk = response.read1(min(1024, MAX_LOCK_ABORT_ERROR_BYTES + 1 - total))
++                if monotonic() >= deadline:
++                    return False
++                if not chunk:
++                    break
++                chunks.append(chunk)
++                total += len(chunk)
++                if total > MAX_LOCK_ABORT_ERROR_BYTES:
++                    return False
++            raw = b"".join(chunks)
++            if length is not None and len(raw) != int(length):
++                return False
+             envelope = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_object,
+                                   parse_constant=_invalid_constant)
+-        except (UnicodeError, ValueError, RecursionError):
+-            raise RpcPersistenceError("Persistence returned an invalid response", reason_code="RESPONSE_DECODE") from None
+-        if not isinstance(envelope, dict) or type(envelope.get("ok")) is not bool:
+-            raise RpcPersistenceError("Persistence returned an invalid envelope", reason_code="RESPONSE_ENVELOPE")
+-        if envelope["ok"]:
+-            if set(envelope) != {"ok", "result"}:
+-                raise RpcPersistenceError("Persistence returned an invalid success envelope", reason_code="RESPONSE_ENVELOPE")
+-            return envelope["result"]
+-        error = envelope.get("error")
+-        if set(envelope) != {"ok", "error"} or not isinstance(error, dict):
+-            raise RpcPersistenceError("Persistence returned an invalid error envelope", reason_code="RESPONSE_ENVELOPE")
+-        # Use controlled local messages. A remote error must never echo credentials.
+-        failures = {
+-            "lease_lost": (LeaseLost, "Worker ownership or the job deadline is no longer valid"),
+-            "quality_hold": (QualityHold, "Persistence rejected the operation under its ingestion quality rules"),
+-            "request_deferred": (RequestDeferred, "Shared provider pacing"),
+-            "not_found": (KeyError, "The requested ingestion job does not exist"),
+-            "conflict": (ValueError, "The operation violates the ingestion contract or current job state"),
+-        }
+-        failure = failures.get(error.get("code"))
+-        if failure is None:
+-            raise RpcPersistenceError("Persistence returned an unrecognized failure", reason_code="REMOTE_FAILURE_UNRECOGNIZED")
+-        raise failure[0](failure[1])
++        except (UnicodeError, ValueError, RecursionError, URLError, TimeoutError, OSError, HTTPException):
++            return False
++        return (type(envelope) is dict and set(envelope) == {"code", "message", "details", "hint"}
++                and type(envelope["code"]) is str and envelope["code"] == "55P03"
++                and type(envelope["message"]) is str
++                and (envelope["details"] is None or type(envelope["details"]) is str)
++                and (envelope["hint"] is None or type(envelope["hint"]) is str))
+ 
+     @staticmethod
+     def _claim(claim):

@@ -1,0 +1,19 @@
+[
+  {
+    "observed_at": "2026-10-30 16:12:58.345921+00",
+    "id": 2282,
+    "task_id": "backfill-plan-d54009e35cd9cd283f26e6c455425be613d24af035420b982f964c3ba97bfa54",
+    "recorded_at": "2026-10-30 13:21:50.913209+00",
+    "http_status": "404",
+    "provider": "Alpaca",
+    "method": "GET",
+    "host": "paper-api.alpaca.markets",
+    "path": "/v2/assets/EQR",
+    "query_parameter_keys": null,
+    "fetched_at": "2026-10-30T13:21:50.837049Z",
+    "retained_body_sha256": "4a75f72d833cb6e5e877fd24abaecf7dbbe0bfd3cef46a31fce1763d1546a427",
+    "recomputed_body_sha256": "4a75f72d833cb6e5e877fd24abaecf7dbbe0bfd3cef46a31fce1763d1546a427",
+    "contains_asset_not_found": true,
+    "body_bytes": 53
+  }
+]

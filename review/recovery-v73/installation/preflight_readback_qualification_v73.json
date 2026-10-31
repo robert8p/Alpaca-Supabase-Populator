@@ -1,0 +1,33 @@
+{
+  "schema": "astra.maintenance-phase-readonly-qualification/1",
+  "production_calls": 0,
+  "sql_sha256": "81fe51a5e9788b3858469b48e95d2c4ce3aa8a9ef86faf36fed7a52ac6e92b94",
+  "cases": [
+    {
+      "case": "baseline_readonly",
+      "install_ready": true,
+      "rows_and_catalog_unchanged": true
+    },
+    {
+      "case": "candidate_readonly",
+      "restore_ready": true,
+      "other_schema_fingerprint_equal": true
+    },
+    {
+      "case": "four_transaction_bounds_rejected",
+      "count": 4,
+      "rows_and_catalog_unchanged": true
+    },
+    {
+      "case": "null_owner_rejected",
+      "rows_and_catalog_unchanged": true
+    }
+  ],
+  "passed": true,
+  "errors": 0,
+  "failures": 0,
+  "skips": 0,
+  "case_count": 4,
+  "elapsed_seconds": 1.838,
+  "maximum_safe_result_bytes": 3206
+}

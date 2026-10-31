@@ -1,0 +1,64 @@
+{
+  "blocking_findings": [],
+  "external_mutations": 0,
+  "limitations": [
+    "This is source/static review only; the query was not executed by this reviewer.",
+    "Index availability and relation/time ceilings do not prove a chosen query plan or low production runtime.",
+    "Current MVCC snapshot cannot attribute a historical lock holder, slow phase, or application request.",
+    "Stored proof/registration fields are metadata, not a new completeness proof.",
+    "Global-next-cursor rows may include other runs internally, but only their count is returned; task/context payload output is restricted to the fixed run.",
+    "Ordinary relation locks still occur during read-only queries; the output now accurately disclaims only application/advisory locks.",
+    "No renewal of the prior cron/instrumentation/read budgets and no repair or deployment admission."
+  ],
+  "production_calls": 0,
+  "query": {
+    "bytes": 13417,
+    "path": "review/recovery-v78/gate-duration/current_contract_input_context_readonly_v78.sql",
+    "sha256": "d7fe9d4a94524f45b68a9844390b8d291f160edf5cf7e3485c5973019529111e"
+  },
+  "resolved_review_findings": [
+    "Nullable start/end lease predicates changed to NOT COALESCE(isfinite AND clock comparison,false).",
+    "Status/fence/cohort/manifest comparisons changed to IS DISTINCT FROM, retaining valid-state behavior.",
+    "P0001 transport now explicitly documents exact prefix/JSON success recognition and no automatic retry.",
+    "Output flag renamed to accurately scope its no-lock claim."
+  ],
+  "reviewer": "/root/plugin_handoff_v78",
+  "root_action_required": "Root independently selects at most one fresh bounded observation under current legitimate owner and verifies this exact query hash immediately before dispatch.",
+  "schema": "astra.independent-bounded-context-read-review/1",
+  "static_checks": {
+    "active_run_bound": 1,
+    "dot_only_reporting_guard": true,
+    "enumeration_relation_bytes_ceiling": 16777216,
+    "exact_existing_owner_and_fixed_run": true,
+    "explicit_critical_metadata_pins": 2,
+    "finite_lease_start_and_finish_fail_closed": true,
+    "fixed_member_count_bound": 3000,
+    "full_metadata_pins": 8,
+    "function_source_oid_pins": 10,
+    "lock_timeout": "3s",
+    "next_readback_limit": 32,
+    "no_application_claim_or_advisory_lock": true,
+    "no_automatic_successor": true,
+    "no_business_helper_invocation": true,
+    "no_persistent_instrumentation_or_migration": true,
+    "no_provider_call": true,
+    "no_raw_body_or_credential_selection": true,
+    "output_json_bytes_ceiling": 32768,
+    "partial_missing_function_rejected_by_NOT_FOUND": true,
+    "pending_enumeration_limit": 2,
+    "read_only_repeatable_transaction": true,
+    "readback_relation_bytes_ceiling": 67108864,
+    "required_valid_ready_live_indexes": 9,
+    "scalar_state_comparisons_fail_closed": true,
+    "statement_timeout": "8s",
+    "two_scan_cursor_index_definitions_exact": true
+  },
+  "status": "STATIC_PASS_ROOT_MAY_SELECT_ONE_REQUEST_NO_DISPATCH_BY_REVIEWER",
+  "transport": {
+    "admission": "Treat only the exact prefix followed by valid bounded JSON with expected schema/scope/guard evidence as a completed observation. Preserve all other errors as incomplete observations.",
+    "claim": "The intentional exception aborts a read-only transaction and carries the observation; it is not a failed business mutation.",
+    "kind": "DELIBERATE_READ_ONLY_P0001_ABORT",
+    "recognized_prefix": "ASTRA_CURRENT_CONTRACT_CONTEXT_V78:",
+    "retry": "No automatic retry; this review supplies no additional read budget."
+  }
+}

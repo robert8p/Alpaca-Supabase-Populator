@@ -1,0 +1,26 @@
+{
+  "probe": {
+    "passed": true,
+    "elapsed_seconds": 0.029597004999232013,
+    "synthetic_records": 1000,
+    "synthetic_raw_bytes": 705542,
+    "actual_eligible_batch_count": 10,
+    "existing_parent_links": 0,
+    "source_and_contract_tables_unchanged": true,
+    "raw_source_sentinel_and_parsed_symbols_absent": true,
+    "only_allowlisted_plan_metrics": true,
+    "no_advisory_lock": true,
+    "result_bytes": 6073
+  },
+  "schema": "astra.contract-read-diagnostic-qualification/1",
+  "passed": true,
+  "tests": 3,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 2.0776342090030084,
+  "production_calls": 0,
+  "sql_sha256": "192d2ced210709b5d6dbda33b42c3aaaaf10371b26b64f2212af4123748fbf13",
+  "test_sha256": "d14659fdad484fc8e9bee91a30338af8092b10fa4994027e89a2fba3cfe5805d",
+  "fixture_adaptation": "Schema, run/task IDs, commit time and corresponding local source hashes only. Synthetic source has the exact observed1000records/705542bytes; actual current admission logic remains unchanged."
+}

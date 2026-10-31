@@ -1,0 +1,35 @@
+{
+  "observed_after": "2026-10-30T09:19:51Z",
+  "observed_before": "2026-10-30T09:23:12Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "issue": "Full delivery status exceeded an 8-second bounded read deadline at the current larger queue size.",
+  "failed_read": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to run sql query: ERROR:  57014: canceling statement due to statement timeout\\nCONTEXT:  SQL function \\\"backfill_delivery_status_v2\\\" statement 1\\n\"}}"
+      }
+    ],
+    "structuredContent": {
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "isError": true
+  },
+  "diagnosis": {
+    "method": "One read-only EXPLAIN ANALYZE BUFFERS FORMAT JSON of the fetched current status function's SELECT, exact fixed run substituted.",
+    "diagnostic_statement_timeout_seconds": 20,
+    "production_runtime_deadline_changed": false,
+    "execution_ms": 8802.817,
+    "planning_ms": 127.456,
+    "family_subplan_ms": 8776.441,
+    "returned_families": 16,
+    "full_plan_path": "evidence/replacement-current-status-plan-compact-v2.json",
+    "full_plan_sha256": "d7905a1f47fff624a964b44bc94cb14563159e68c67c023b4333ff3bc16a292f",
+    "current_source_path": "evidence/current-delivery-status-source-20261030.sql",
+    "original_pretty_plan_sha256": "ab83a5cd4a3f27ae01ce8048ad50ba5518510b2dc6c58a9ecb4ee58f98ba23c3"
+  },
+  "effects": "Read-only; no uncertain write or acquisition replay.",
+  "next_step": "Reconcile the measured family subplan, qualify a narrowly targeted equivalent query repair, retain original runtime limits, and prove full live report before web deployment.",
+  "worker_scope": "Independent existing worker continues; report failure is not classified as provider absence or successful coverage gap.",
+  "relay": "Held pending specific user action-time confirmation."
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "astra.maintenance-combined.independent-review-pins/1",
+  "frozen_receipt_pins": {
+    "evidence/replacement-maintenance-task-hash-index-independent-review-v72.json": "3154d9c7937d0374e11e8ecc0221c6b5c559a2fa1191b180f092415548e9a19c",
+    "evidence/replacement-readback-transaction-race-independent-review-v72.json": "f0d81a1898736ec44a685d5a3ff95f0b1ae3caca0175b435b2d5d9602ca65b1f",
+    "review/recovery-v72/maintenance_index_independent_test_result_v72.json": "96f9d2a972b689e9b7e7d351fde95de242d9d72991328a2e2714737046594e77",
+    "review/recovery-v72/qualify_maintenance_index_independently_v72.py": "047b0d8664b662f96a9c320dd68a1956f532b356c249a7cb9752ecae9eaa0046"
+  },
+  "extra_paths": []
+}

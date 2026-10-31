@@ -1,0 +1,160 @@
+{
+  "version": "managed-relay-exact-transport-diagnosis-v2",
+  "investigation_scope": "READ_ONLY_SOURCE_AND_DOCUMENTATION_REVIEW",
+  "decision": "NO_VERIFIED_COMPATIBLE_EXISTING_TRANSPORT",
+  "reviewed_package": {
+    "path": "sql/astra_backfill_massive_relay_v2.sql",
+    "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "bytes": 21525,
+    "final_byte_ascii": 10,
+    "review_id": "managed-massive-relay-v2-review-20261030",
+    "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+    "manifest_files_checked": 19,
+    "all_manifest_bytes_and_hashes_match": true,
+    "edits": 0
+  },
+  "controller_reported_live_reconciliation": {
+    "first_apply_at": "2026-10-30T09:59:47Z",
+    "outcome": "PRE_DDL_ABORT",
+    "reason": "Actual migration wrapper ends with semicolon ASCII59; admitted exact wrapper requires trailing LF ASCII10",
+    "execute_sql_connectors": "Both existing connectors append source/user/date comments",
+    "prior_approval_at": "2026-10-30T09:53:00Z",
+    "prior_approval_expired_at": "2026-10-30T10:08:00Z",
+    "hold_audit": 14,
+    "hold_audit_at": "2026-10-30T10:11:10.683584Z",
+    "both_apply_migration_connectors_directly_probed": true,
+    "generic_apply_migration_probe": "Controller's additional aborting read-only DO also returned final_character_ascii59, terminal_line_feedfalse, and commit-semicolon suffix; no DDL or migration-history write",
+    "later_controller_audits": {"unchanged_package_alignment_audit":15,"lease_renewal_audit":16,"lease_renewal_observed_at":"2026-10-30T10:16:48Z","lease_until":"2026-10-30T10:55:00Z"},
+    "latest_relay_absence_readback_at": "2026-10-30T10:17:32Z",
+    "latest_relay_absence_readback": "Ledger and helper NULL; candidate_applied false",
+    "outer_rpc_hash_readback_at": "2026-10-30T10:19:02Z",
+    "outer_rpc_hash": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "relay_objects_and_grants_present": false,
+    "observer_did_not_repeat_database_probes": true
+  },
+  "options": [
+    {
+      "transport": "Existing Supabase execute_sql tools",
+      "exposed_inputs": [
+        "query",
+        "project_id only on general connector"
+      ],
+      "supported_raw_toggle": false,
+      "outcome": "INCOMPATIBLE_AS_OBSERVED",
+      "basis": "Current tool schema offers no option to disable appended comments or preserve exact raw bytes; controller already observed comments on both"
+    },
+    {
+      "transport": "Existing Supabase apply_migration tools",
+      "exposed_inputs": [
+        "name",
+        "query",
+        "project_id only on general connector"
+      ],
+      "supported_wrapper_whitespace_toggle": false,
+      "outcome": "INCOMPATIBLE_AS_OBSERVED",
+      "basis": "No caller-exposed control over the final generated wrapper newline; controller directly probed both existing migration connectors with aborting read-only DO requests and observed final ASCII59"
+    },
+    {
+      "transport": "Supabase Dashboard SQL Editor",
+      "outcome": "NO_SUPPORTED_EXACT_RAW_MODE_FOUND",
+      "basis": "Official Supabase guidance states that Dashboard SQL Editor queries receive source/user/date metadata comments. Current public Studio source exposes disable_statement_timeout for transaction/timeout handling, not a disable-comments or preserve-raw flag.",
+      "timeout_option_is_not_byte_preservation": true
+    },
+    {
+      "transport": "Supabase Management API POST /v1/projects/{ref}/database/query",
+      "documented_inputs": [
+        "query",
+        "parameters",
+        "read_only"
+      ],
+      "outcome": "NO_BYTE_PRESERVATION_CONTRACT_OR_EXISTING_RAW_CONNECTOR_SETTING",
+      "basis": "Official API documents no metadata-suppression or exact-byte flag. Official MCP already forwards query through this endpoint. Bypassing the exposed connector through a new token/API client would require access outside the current constraints and was not attempted."
+    },
+    {
+      "transport": "Supabase CLI linked/remote project query",
+      "outcome": "NOT_AN_INDEPENDENT_RAW_TRANSPORT",
+      "basis": "Current official CLI source routes linked project queries through the same Management API and requires its existing CLI credential mechanism. No credential files or environment values were inspected, and no CLI login/link was attempted.",
+      "source_revision": "c6cab585959912d346bd186984d9b03fde738e1b"
+    },
+    {
+      "transport": "Native PostgreSQL simple-query connection",
+      "outcome": "SUPPORTED_IN_PRINCIPLE_BUT_NOT_ESTABLISHED_AS_AN_EXISTING_AUTHORIZED_CHANNEL",
+      "basis": "PostgreSQL documents that psql -c sends its command string as one request and PQexec supports a complete multi-statement command string. Supabase documents native PostgreSQL client connections. Such a client can submit the unchanged full file, including final LF, without changing the validator. No existing authorized production native connection is exposed or confirmed here.",
+      "readiness_requirements": [
+        "An owner-confirmed already-authorized native connection; no credential export or new role/security relationship",
+        "Read the file bytes without trimming or line-ending normalization and verify the reviewed hash",
+        "Submit the entire body as one simple-query request, not statement-by-statement",
+        "Read-only transport proof first, with no validator edits, current_query substitutions or other bypasses",
+        "Fresh action-time confirmation only after transport readiness is established"
+      ]
+    }
+  ],
+  "supported_next_step": {
+    "current": "Keep exact package held; report transport blocker",
+    "unblock_condition": "Provider-supported exact transport through an existing connector, or owner confirmation of an already-authorized native PostgreSQL connection with successful read-only byte-preservation proof",
+    "renewal_alone_resolves_transport": false,
+    "no_package_change_needed_for_native_protocol": true
+  },
+  "prepared_renewal_scope": {
+    "status": "DRAFT_ONLY_NOT_READY_TO_EXECUTE_UNTIL_TRANSPORT_IS_PROVEN",
+    "request_text": "Renew the action-time approval for the exact unchanged managed-massive-relay-v2-review-20261030 package: migration SHA-256 4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d, review scope SHA-256 7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe, and the unchanged 19-file review manifest. Execution remains limited to the existing controller, once, through a verified already-authorized transport preserving the exact reviewed SQL. This includes only the package's existing reviewed changes; it authorizes no validator or package-byte edits, credential access/export, additional permission changes, additional security relationships or scope expansion.",
+    "pre_action": "Controller must reconcile current hold/state and verify the same hashes and transport before recording the new 15-minute approval"
+  },
+  "sources": [
+    {
+      "title": "Supabase Management API: Run a query",
+      "url": "https://supabase.com/docs/reference/api/v1-run-a-query",
+      "supports": "POST query body fields; no exposed raw-preservation parameter"
+    },
+    {
+      "title": "Official Supabase guidance: Identifying Dashboard SQL Editor Activity by User",
+      "url": "https://github.com/orgs/supabase/discussions/49317",
+      "supports": "Dashboard appends source/user/date metadata comments"
+    },
+    {
+      "title": "Official Studio executeSql source",
+      "url": "https://github.com/supabase/supabase/blob/1915615dcaf2fea1de753be8d1157bb8ed7f4669/apps/studio/data/sql/execute-sql-mutation.ts",
+      "supports": "Timeout/transaction option; body forwards query and disable_statement_timeout; no raw mode"
+    },
+    {
+      "title": "Official Supabase MCP platform source",
+      "url": "https://github.com/supabase/mcp/blob/main/packages/mcp-server-supabase/src/platform/api-platform.ts",
+      "supports": "executeSql forwards query/parameters/read_only; applyMigration forwards name/query"
+    },
+    {
+      "title": "Official CLI query handler",
+      "url": "https://github.com/supabase/cli/blob/c6cab585959912d346bd186984d9b03fde738e1b/apps/cli/src/commands/db/query/query.handler.ts",
+      "supports": "Linked route uses Management API; direct route uses native session.queryRaw"
+    },
+    {
+      "title": "PostgreSQL psql documentation",
+      "url": "https://www.postgresql.org/docs/current/app-psql.html",
+      "supports": "Each -c SQL command string is one server request"
+    },
+    {
+      "title": "PostgreSQL libpq PQexec documentation",
+      "url": "https://www.postgresql.org/docs/current/libpq-exec.html",
+      "supports": "Full multi-statement command string accepted by simple query API"
+    },
+    {
+      "title": "Supabase native PostgreSQL client documentation",
+      "url": "https://supabase.com/docs/guides/database/psql",
+      "supports": "Native client connection is supported"
+    },
+    {
+      "title": "Supabase changelog",
+      "url": "https://supabase.com/changelog",
+      "supports": "Current changelog inspected; no relevant raw-preservation transport option identified"
+    }
+  ],
+  "actions": {
+    "production_sql_calls": 0,
+    "database_probes": 0,
+    "credential_reads_or_exports": 0,
+    "new_security_relationships": 0,
+    "package_edits": 0,
+    "browser_or_session_access": 0,
+    "remote_mutations": 0,
+    "workflow_reruns": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "astra.shared-field-cache-local-qualification/1",
+  "production_calls": 0,
+  "selected_for_activation": false,
+  "source_inverse_and_link_statement_preservation": true,
+  "passed": false,
+  "tests": 1,
+  "errors": 1,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 0.08210470700578298,
+  "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "test_sha256": "700c7e0e2349d946efae9e4a0730a0cb94c404cb0cf350d7573f9790c3f616a4",
+  "error_details": [
+    {
+      "test": "setUpClass (__main__.PostgreSQL)",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v74/shared-field-cache/qualify_shared_field_cache_v74.py\", line 44, in setUpClass\n    super().setUpClass()\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_shared_refresh_performance_v2.py\", line 26, in setUpClass\n    shared.SharedRecordsTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_shared_records_v2.py\", line 20, in setUpClass\n    s02.RetainedS02Tests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_retained_s02_v2.py\", line 21, in setUpClass\n    identity.IdentityPostgreSQLTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_identity_v2.py\", line 196, in setUpClass\n    cache.CompactFeatureReuseTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_feature_reuse_v2.py\", line 19, in setUpClass\n    pointer.RetainedReuseCommitTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_reuse_commit_v2.py\", line 17, in setUpClass\n    reuse.RetainedReuseTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_retained_reuse_v2.py\", line 19, in setUpClass\n    runtime.BackfillRuntimeTests.setUpClass.__func__(cls)\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_backfill_runtime_v2.py\", line 20, in setUpClass\n    cls.fixture.setUpClass()\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/tests/ingestion/test_rpc_postgres.py\", line 51, in setUpClass\n    cls.store.migrate()\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/astra_ingestion/store.py\", line 175, in migrate\n    with self.transaction() as conn:\n         ^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py\", line 137, in __enter__\n    return next(self.gen)\n           ^^^^^^^^^^^^^^\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/astra_ingestion/store.py\", line 95, in transaction\n    conn = self.connect()\n           ^^^^^^^^^^^^^^\n  File \"/tmp/replacement-shared-field-cache-fixture-v74/astra_ingestion/store.py\", line 77, in connect\n    return psycopg.connect(self.database_url, **options)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 118, in connect\n    raise last_ex.with_traceback(None)\npsycopg.OperationalError: connection is bad: no error details available\n"
+    }
+  ],
+  "failure_details": []
+}

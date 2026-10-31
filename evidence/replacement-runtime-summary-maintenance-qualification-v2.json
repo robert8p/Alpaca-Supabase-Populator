@@ -1,0 +1,172 @@
+{
+  "version": "replacement-runtime-summary-maintenance-qualification-v2",
+  "qualified_at": "2026-10-30T11:05:22.585567+00:00",
+  "scope": "Independent local qualification of a normal nonunique index maintenance deadline; no production action, credential access, relay activation or runtime-limit change.",
+  "files": {
+    "sql/astra_backfill_runtime_summary_index_maintenance_v2.sql": {
+      "sha256": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+      "bytes": 2837
+    },
+    "tests/ingestion/test_backfill_runtime_summary_maintenance_v2.py": {
+      "sha256": "f60e0c12b66fc4fb0a40e1343b7b61b8581fa3fa79177b10f7885272ceb22068",
+      "bytes": 7249
+    }
+  },
+  "retained_artifacts": {
+    "sql/astra_backfill_runtime_summary_index_v2.sql": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+    "sql/astra_backfill_runtime_status_performance_v2.sql": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+    "evidence/replacement-runtime-status-performance-qualification-v2.json": "431f0b71d5349027786422e0d5cf7d075657706c8728a8a20321f5c8202891e8"
+  },
+  "exact_change": {
+    "after_begin_only_statement_timeout_changes": true,
+    "previous_seconds": 8,
+    "maintenance_do_seconds": 20,
+    "lock_timeout_seconds": 3,
+    "ordinary_nonconcurrent_create_index": true,
+    "same_nonunique_seven_key_definition": true,
+    "same_source_type_and_existing_name_guards": true,
+    "runtime_provider_relay_timeouts_unchanged": true,
+    "no_grants_functions_data_or_worker_changes": true
+  },
+  "qualification": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 25.761375196998415,
+    "performance": {
+      "blocked_build": {
+        "seconds": 3.008594467995863,
+        "sqlstate": "55P03",
+        "index_absent_after_rollback": true
+      },
+      "successful_build": {
+        "tasks": 5000,
+        "seconds": 0.027646198999718763,
+        "index_bytes": 368640,
+        "index_valid_ready_nonunique": true,
+        "same_seven_keys": true,
+        "complete_status_values_equal": true,
+        "table_oid_owner_acl_options_unchanged": true,
+        "runtime_functions_and_timeouts_unchanged": true,
+        "session_settings_restored_after_commit": true,
+        "existing_name_replay_rejected": true
+      },
+      "whole_do_timeout": {
+        "seconds": 20.00420351199864,
+        "sqlstate": "57014",
+        "delay_inside_same_do_after_index": true,
+        "index_absent_after_rollback": true,
+        "outer_rpc_definition_unchanged": true
+      }
+    }
+  },
+  "no_dsn": {
+    "tests": 3,
+    "skipped": 3,
+    "failures": 0,
+    "errors": 0,
+    "exit_code": 0
+  },
+  "python_compile_passed": true,
+  "protected_files": {
+    "all_before_after_hashes_equal": true,
+    "relay_manifest_entries": 19,
+    "hashes_before": {
+      "sql/astra_backfill_massive_relay_v2.sql": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+      "supabase/functions/population-top3000-news-v1/index.ts": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+      "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+      "astra_ingestion/backfill_massive_relay_v2.py": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+      "tests/ingestion/test_backfill_massive_relay_postgres_v2.py": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+      "tests/ingestion/test_backfill_massive_relay_v2.py": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+      "tests/ingestion/test_backfill_massive_relay_edge_v2.py": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+      "tests/ingestion/managed_massive_relay_v2.test.mjs": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+      "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+      "review/massive-relay-v2/worker-integration.patch": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+      "review/massive-relay-v2/backfill_worker_v2.py.proposed": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "review/massive-relay-v2/worker-integration-review.json": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1",
+      "evidence/replacement-managed-relay-review-scope-v2.json": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4",
+      "evidence/replacement-managed-relay-qualification-v2.json": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13",
+      "evidence/replacement-managed-relay-security-review-v2.md": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0",
+      "evidence/replacement-managed-relay-rpc-auth.diff": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846",
+      "evidence/replacement-managed-relay-edge-handler.diff": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22",
+      "evidence/replacement-relay-existing-auth-reconciliation-v2.json": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83",
+      "evidence/replacement-apply-migration-wrapper-template.txt": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7",
+      "astra_ingestion/backfill_worker_v2.py": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+      "sql/astra_backfill_runtime_summary_index_v2.sql": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+      "sql/astra_backfill_runtime_status_performance_v2.sql": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+      "evidence/replacement-runtime-status-performance-qualification-v2.json": "431f0b71d5349027786422e0d5cf7d075657706c8728a8a20321f5c8202891e8",
+      "sql/astra_backfill_runtime_summary_index_maintenance_v2.sql": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+      "tests/ingestion/test_backfill_runtime_summary_maintenance_v2.py": "f60e0c12b66fc4fb0a40e1343b7b61b8581fa3fa79177b10f7885272ceb22068"
+    },
+    "hashes_after": {
+      "sql/astra_backfill_massive_relay_v2.sql": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+      "supabase/functions/population-top3000-news-v1/index.ts": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+      "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+      "astra_ingestion/backfill_massive_relay_v2.py": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+      "tests/ingestion/test_backfill_massive_relay_postgres_v2.py": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+      "tests/ingestion/test_backfill_massive_relay_v2.py": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+      "tests/ingestion/test_backfill_massive_relay_edge_v2.py": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+      "tests/ingestion/managed_massive_relay_v2.test.mjs": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+      "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+      "review/massive-relay-v2/worker-integration.patch": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+      "review/massive-relay-v2/backfill_worker_v2.py.proposed": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "review/massive-relay-v2/worker-integration-review.json": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1",
+      "evidence/replacement-managed-relay-review-scope-v2.json": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4",
+      "evidence/replacement-managed-relay-qualification-v2.json": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13",
+      "evidence/replacement-managed-relay-security-review-v2.md": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0",
+      "evidence/replacement-managed-relay-rpc-auth.diff": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846",
+      "evidence/replacement-managed-relay-edge-handler.diff": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22",
+      "evidence/replacement-relay-existing-auth-reconciliation-v2.json": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83",
+      "evidence/replacement-apply-migration-wrapper-template.txt": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7",
+      "astra_ingestion/backfill_worker_v2.py": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+      "sql/astra_backfill_runtime_summary_index_v2.sql": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+      "sql/astra_backfill_runtime_status_performance_v2.sql": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+      "evidence/replacement-runtime-status-performance-qualification-v2.json": "431f0b71d5349027786422e0d5cf7d075657706c8728a8a20321f5c8202891e8",
+      "sql/astra_backfill_runtime_summary_index_maintenance_v2.sql": "d690b72cfea50dfa0696eca54e0ae3870649f31cba44bf41a9dd08afe218113f",
+      "tests/ingestion/test_backfill_runtime_summary_maintenance_v2.py": "f60e0c12b66fc4fb0a40e1343b7b61b8581fa3fa79177b10f7885272ceb22068"
+    }
+  },
+  "parent_supplied_live_evidence": {
+    "artifact": "evidence/replacement-runtime-status-live-v70.json",
+    "artifact_sha256": "208e0cd3f4ed9d2dea9664935e1f20870a5160eb0dee8075deb147b7efe7b9b4",
+    "combined_database_ms": 6848.01,
+    "authenticated_rpc_proof": false,
+    "outer_advisory_lock_measured": false,
+    "two_prior_8_second_builds_timed_out": true,
+    "authoritative_absence_after_second_attempt": {
+      "observed_at": "2026-10-30 10:56:58.810698+00",
+      "optional_index": null,
+      "auth_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "pages_committed": 3876,
+      "records_committed": 469747,
+      "requests_reserved": 1910,
+      "last_progress_at": "2026-10-30 10:53:18.52764+00",
+      "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+      "approval_at": "2026-10-30T09:53:00Z",
+      "relay_ledger": null,
+      "relay_helper": null
+    },
+    "separate_claim_timeout_artifact": "evidence/replacement-claim-timeout-reconciliation-v70.json",
+    "separate_claim_timeout_artifact_sha256": "90a324708e5f257055519cc02c65e810e68f441929d947b117ca8f3d593336fd"
+  },
+  "causality": "The worker statement timeout at 10:53:28.600 is independently localized to the normal claim candidate, before both optional index attempts. Status polling is not established as its cause; this index is report maintenance, not a demonstrated claim repair.",
+  "operational_assessment": {
+    "bounded_attempt_justification": "The report takes 6.848 seconds and two reconciled ordinary index builds exhausted 8 seconds. A separately reviewed 20-second maintenance attempt can be justified to give the same nonunique build a finite larger budget; local timing does not predict production disk latency.",
+    "blocking": "The shared transaction advisory lock and ordinary CREATE INDEX can block authenticated RPCs and task writers. Existing 3-second caller lock deadlines can yield temporary failures or worker restarts. Ordinary table readers remain compatible with the index table lock but authenticated RPCs also share the advisory lock.",
+    "wall_clock_limit": "20 seconds is the whole DO execution budget, including advisory acquisition, guards and build, not a hard maximum wall-clock pause. Locks survive until COMMIT or ROLLBACK; cancellation, commit and transport acknowledgement may add time.",
+    "in_flight_provider_work": "A worker returning from an already completed provider request may fail before persistence while waiting for the advisory lock. Preserve existing claim/reservation/fence/reconciliation semantics; this migration changes none of them.",
+    "reconciliation": "Read authoritative index absence or presence/validity after any failed or uncertain result before another attempt. The script rejects every existing name; do not blindly replay.",
+    "acceptance_needed": "After a successful production build, read back index validity, keys, function/auth hashes and current worker progress. Measure the real combined report under existing runtime limits. Authenticated application-path timing remains a separate proof."
+  },
+  "limitations": [
+    "The successful build uses 5,000 wide local task rows and validates semantics, metadata and settings; it is not a production build-time forecast.",
+    "The retained 120,000-row qualification establishes index-only eligibility after local visibility maintenance. At low visibility the planner may still choose a heap-based Bitmap Heap Scan.",
+    "No production call or mutation was performed by this qualification. The parent owns any application and authoritative reconciliation.",
+    "Relay approval and its frozen 19-file package are unchanged; this independent maintenance artifact does not renew or implement relay approval."
+  ],
+  "independent_review": {
+    "reviewer": "replacement_overlap_finish",
+    "result": "Accepted exact SQL d690b72c pending this focused test gate; no semantic, ACL or boundedness objection."
+  }
+}

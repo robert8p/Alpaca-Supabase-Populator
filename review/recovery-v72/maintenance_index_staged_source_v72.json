@@ -1,0 +1,619 @@
+{
+  "schema": "astra.maintenance-index.staged-source/1",
+  "base_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "base_tree": "60ba98872222e1c7f285296fc48300e326ee6fda",
+  "files": [
+    {
+      "path": "astra_ingestion/__init__.py",
+      "bytes": 101,
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197",
+      "git_blob_sha1": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "bytes": 33254,
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f",
+      "git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "bytes": 18462,
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+      "git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "bytes": 27423,
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1",
+      "git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/config.py",
+      "bytes": 3236,
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953",
+      "git_blob_sha1": "64db9fad536ee86930d784e4b197fb7582738273",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/models.py",
+      "bytes": 5672,
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2",
+      "git_blob_sha1": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/reconcile.py",
+      "bytes": 2081,
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba",
+      "git_blob_sha1": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 17590,
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+      "git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/source.py",
+      "bytes": 9869,
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f",
+      "git_blob_sha1": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/store.py",
+      "bytes": 31621,
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef",
+      "git_blob_sha1": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 7696,
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "bytes": 23087,
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7",
+      "git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "bytes": 5781,
+      "sha256": "c88d5b7e7bc3202801864ddc943d130669e03bf0a4aef06b94126244ba668c7e",
+      "git_blob_sha1": "7e4f54ec6662fad79ea1f452eda6c42d6cfb3431",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "review/recovery-v71/live_cron_functions_1331.json",
+      "bytes": 10882,
+      "sha256": "fd58830bfdfa5002bcc986da052223da4c87e140c0dd262e17db0dd333b59472",
+      "git_blob_sha1": "d85eba119466102a6f9f4a6759c217ad312309e9",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "review/recovery-v72/audit_maintenance_index_dependencies_v72.py",
+      "bytes": 3950,
+      "sha256": "b73bab475e7b57f5e4797238c0c20b708237fcf3c614437923ff6db259df6417",
+      "git_blob_sha1": "11298c10fd88c9206074566890b8e09c7c5e0d8a",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/audit_readback_race_dependencies_v72.py",
+      "bytes": 3956,
+      "sha256": "92361f4cbad20f09ea8e0a016b01cd4bd728ea53d87d4adb15f91e954b7fe956",
+      "git_blob_sha1": "4bf180d071e46aa39376308ad0a69fac2d281432",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/maintenance_index_forward_derivation_v72.json",
+      "bytes": 3041,
+      "sha256": "8c9feb1d1bef3ca27fd5686fae4f9ca06fa0c592ee2b214385bfae07d8776001",
+      "git_blob_sha1": "006f037e871c10c725df6db8ad3c5a05acc1efab",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_hardened_initial_v72.json",
+      "bytes": 2162,
+      "sha256": "687f362beff035c5e7a715f4d4d4419e74a6bd9f8dcb8af1418e464af7638836",
+      "git_blob_sha1": "a458be53e05aa0cbf93bda5cd7e1011ad37c0d7f",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_initial_v72.json",
+      "bytes": 2013,
+      "sha256": "89a6d62ed8772b06cacc9fada4ffc1de1e3ea8961f7823f63819805f996ba32a",
+      "git_blob_sha1": "f35ecc3cd51490e3415d023236df2d57807e8c38",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/active_paths_v72.json",
+      "bytes": 2254,
+      "sha256": "dffa6cb5c6b3c891b54a0aa65580283faff07a2be03db3d8e5b36a32e0dfab69",
+      "git_blob_sha1": "0873bd2d1d7bdf63824bd763ecd69d362b081651",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/baseline_maintain_v2.sql",
+      "bytes": 2805,
+      "sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+      "git_blob_sha1": "268f068d97bc0e3319b9176b8b404dc0b6c91546",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/build_readback_transaction_race_v72.py",
+      "bytes": 9775,
+      "sha256": "16853a8ee55d0ea4ca3c42b6733719e4452615fbbe1a04b009dba7b41bad59fc",
+      "git_blob_sha1": "7397269d9b9620b673cfad0221acead10a7c9293",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql",
+      "bytes": 2849,
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "git_blob_sha1": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/ci_admission_qualification_v72.json",
+      "bytes": 834,
+      "sha256": "7347ff5c57e26a21ee6bfa93d3171cbd6186e2feb8b56ca1e302069aa0d38cb5",
+      "git_blob_sha1": "d386f8ee15f6f1b72fa28c3a20cdb40d1c9b20e0",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/derivation_initial_v72.json",
+      "bytes": 4023,
+      "sha256": "ee1d50e98244f6a0979d519ee7e5d4be2ae5b58bd077118f4a9eb4ec504a4e30",
+      "git_blob_sha1": "dccb03db58c9f8fb058e0d18a93712e89e730955",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/derivation_v72.json",
+      "bytes": 4095,
+      "sha256": "5834d479e8d13ca97c98f481d0f6923dc60abe3773a602abb1bb1762f3f192f0",
+      "git_blob_sha1": "424cf5dd8ab15aac61d54bcd7c996b975215241a",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/forward_readback_transaction_race_v72.sql",
+      "bytes": 6902,
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b",
+      "git_blob_sha1": "f249b7d2bf17fd05939576c5db6e25cbf7fcc55e",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/forward_readback_transaction_race_v72_initial.sql",
+      "bytes": 6052,
+      "sha256": "d1ba93fe5d8c6d6254c2e9936ccabfe0f13c05b20483bfdc7ebf5ed29bd4883b",
+      "git_blob_sha1": "10260cd72ebfc43d68b5d38efc50f2be23c71a18",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/prepare_active_paths_v72.py",
+      "bytes": 6561,
+      "sha256": "c7159c135d3bac7506dcc60e8b73e2e47611448659f2cd7491d8c15cdf3e158d",
+      "git_blob_sha1": "6f0822e029c02d1409bd99bdee17ca1f0ab416c6",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_attempt_1.json",
+      "bytes": 5464,
+      "sha256": "12daf64763141edfd283ea7900128777081d4ee68f4f5f9d9e447702bff4455a",
+      "git_blob_sha1": "a3b1c20e07bede495f41567e588529de9451e59b",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_attempt_2.json",
+      "bytes": 5333,
+      "sha256": "6a5676a96c04cf105a4a7d2d82551052f354d041a99df5bd8f6dcbecca058425",
+      "git_blob_sha1": "9319795160a0045db4442c2e1f6b53a9a8f966fe",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualification_v72.json",
+      "bytes": 5333,
+      "sha256": "6a5676a96c04cf105a4a7d2d82551052f354d041a99df5bd8f6dcbecca058425",
+      "git_blob_sha1": "9319795160a0045db4442c2e1f6b53a9a8f966fe",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualify_ci_admission_v72.py",
+      "bytes": 3781,
+      "sha256": "3642080f8f7bc60cc490243084ba20cfdb585db899eee751afd3219397994fb2",
+      "git_blob_sha1": "8ac665e82c0e5e13b5f177797f5f719f716b5e1a",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/qualify_readback_transaction_race_v72.py",
+      "bytes": 23225,
+      "sha256": "2aba42681bb161c2d79274fdc44053a04b836e5de69608476c62aab24fe73d8e",
+      "git_blob_sha1": "bb54e0c5f457ae93e847c2d1661cf92342729b50",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/readback_transaction_race_v72.diff",
+      "bytes": 1053,
+      "sha256": "16a77cca4cbc410229e79a808b6ff893249f23842993972a7d4b89b46a29faeb",
+      "git_blob_sha1": "35b8db55ba67ebac361a8fe41f2e2f70610b0652",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "review/recovery-v72/readback-transaction-race/unchanged_recheck_page_v2.sql",
+      "bytes": 6749,
+      "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+      "git_blob_sha1": "2499744a5da670d034d1ce495dee8c294a25ee21",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "bytes": 16461,
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7",
+      "git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "bytes": 13522,
+      "sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+      "git_blob_sha1": "dc420ad040e49ddb7108f4955b166e765c653b32",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "bytes": 1812,
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a",
+      "git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "bytes": 5513,
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "bytes": 1599,
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39",
+      "git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "bytes": 28911,
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+      "git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "bytes": 6498,
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a",
+      "git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "bytes": 57461,
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043",
+      "git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "bytes": 6758,
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2",
+      "git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "bytes": 10029,
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad",
+      "git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "bytes": 30170,
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61",
+      "git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "bytes": 53160,
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+      "git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "bytes": 2416,
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f",
+      "git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "bytes": 13725,
+      "sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203",
+      "git_blob_sha1": "df67b7ad5a435b10892bad2cda87aedc4a24139f",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "bytes": 29707,
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+      "git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "bytes": 2920,
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c",
+      "git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "bytes": 2865,
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501",
+      "git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "bytes": 6902,
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b",
+      "git_blob_sha1": "f249b7d2bf17fd05939576c5db6e25cbf7fcc55e",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "bytes": 3880,
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041",
+      "git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "bytes": 17401,
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2",
+      "git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "bytes": 35599,
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+      "git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "bytes": 9398,
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535",
+      "git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "bytes": 19399,
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5",
+      "git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "bytes": 3720,
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+      "git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "bytes": 2423,
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+      "git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "bytes": 49245,
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a",
+      "git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "bytes": 46872,
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+      "git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "bytes": 8435,
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424",
+      "git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "bytes": 21403,
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5",
+      "git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "bytes": 8886,
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e",
+      "git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "bytes": 3161,
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631",
+      "git_blob_sha1": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "bytes": 54227,
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a",
+      "git_blob_sha1": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "bytes": 2266,
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae",
+      "git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "bytes": 20490,
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "bytes": 11247,
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d",
+      "git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "bytes": 16964,
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424",
+      "git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "bytes": 19668,
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14",
+      "git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "bytes": 44378,
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce",
+      "git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_task_indexes_v2.py",
+      "bytes": 13957,
+      "sha256": "50108ef354e9d3c36b76e6f3b55f31306067f2c20ee4a749b4c5eded931a2145",
+      "git_blob_sha1": "5c1fcb2d27abc15de3cd1bf7be2fee69b5f7b919",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "bytes": 15566,
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae",
+      "git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_readback_transaction_race_v2.py",
+      "bytes": 22510,
+      "sha256": "04312d34e94331fb79981b7b0032560a3128a84aab01d1a32c9efbb53021ae83",
+      "git_blob_sha1": "40c89b78550d48c693a334847230dd6235462a76",
+      "state": "NEW_EXPLICIT"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "bytes": 10844,
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210",
+      "git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "bytes": 13753,
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4",
+      "git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "bytes": 8631,
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f",
+      "git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "bytes": 22521,
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961",
+      "git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "bytes": 15706,
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048",
+      "git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "bytes": 12447,
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6",
+      "git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "bytes": 9063,
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf",
+      "git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "bytes": 21360,
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32",
+      "git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "state": "IDENTICAL_BASE"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "bytes": 57671,
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96",
+      "git_blob_sha1": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "state": "IDENTICAL_BASE"
+    }
+  ],
+  "stage": "/tmp/replacement-maintenance-index-staged-v72",
+  "all_existing_dependencies_exact_base": true,
+  "remote_mutations": false
+}

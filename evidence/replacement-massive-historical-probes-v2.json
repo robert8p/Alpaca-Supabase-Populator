@@ -1,0 +1,90 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "purpose": "Bounded connector entitlement and historical-reach diagnostics; not completed acquisition workflows",
+  "request_count": 3,
+  "provider": "Massive",
+  "response_representation": "Connector-returned CSV, not original provider HTTP JSON; HTTP metadata and exact original retrieval timestamps unavailable",
+  "observed_before_utc": "2026-10-30T05:48:53Z",
+  "probes": [
+    {
+      "request": {
+        "path": "/v2/reference/news",
+        "params": {
+          "ticker": "NVDA",
+          "published_utc.gte": "2025-09-01T04:00:00Z",
+          "published_utc.lte": "2025-09-02T03:59:59Z",
+          "sort": "published_utc",
+          "order": "asc",
+          "limit": 5
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "id,publisher_name,publisher_homepage_url,publisher_logo_url,publisher_favicon_url,title,author,published_utc,article_url,tickers,image_url,description,keywords,insights\n9864c1baaacaa9e913eba838a56c53d3892b23f2b5f492670274d2ad14d5f0c4,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,\"Synthetic Media Market Expected to Reach USD 16.84 Billion by 2032, Driven by AI Content Adoption, Generative AI Innovations, and Gaming Applications | Report by SNS Insider\",Sns Insider,2025-09-01T14:00:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142180/0/en/Synthetic-Media-Market-Expected-to-Reach-USD-16-84-Billion-by-2032-Driven-by-AI-Content-Adoption-Generative-AI-Innovations-and-Gaming-Applications-Report-by-SNS-Insider.html,\"[\"\"IBM\"\", \"\"MSFT\"\", \"\"NVDA\"\", \"\"ADBE\"\", \"\"GOOG\"\", \"\"GOOGL\"\"]\",https://ml.globenewswire.com/Resource/Download/d6272c2e-d204-41b8-b545-a6e2e24f85c2,\"The synthetic media market is projected to grow from USD 4.96 billion in 2024 to USD 16.84 billion by 2032, driven by AI content adoption, generative AI innovations, and increasing demand across entertainment, marketing, and gaming industries.\",\"[\"\"synthetic media\"\", \"\"AI\"\", \"\"generative AI\"\", \"\"market growth\"\", \"\"content creation\"\"]\",\"[{\"\"ticker\"\": \"\"IBM\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as a key player in the rapidly expanding synthetic media market with strong potential for growth\"\"}, {\"\"ticker\"\": \"\"MSFT\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Listed among key players in an emerging technology market with significant projected growth\"\"}, {\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Positioned as a key player in synthetic media, benefiting from AI and generative technology advancements\"\"}, {\"\"ticker\"\": \"\"ADBE\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Included among leading companies in the synthetic media market, indicating technological relevance\"\"}, {\"\"ticker\"\": \"\"GOOG\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Recognized as a key player in synthetic media technologies with strong AI capabilities\"\"}, {\"\"ticker\"\": \"\"GOOGL\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Recognized as a key player in synthetic media technologies with strong AI capabilities\"\"}]\"\n4867752b3c71a534abb41aaa55aa5d1cf0eca0f48d17a9d0c797830261feb642,The Motley Fool,https://www.fool.com/,https://s3.massive.com/public/assets/news/logos/themotleyfool.svg,https://s3.massive.com/public/assets/news/favicons/themotleyfool.ico,The Best ETFs to Invest In Right Now,Joe Tenebruso,2025-09-01T16:31:00Z,https://www.fool.com/investing/2025/09/01/the-best-etfs-to-invest-in-right-now/?source=iedfolrf0000001,\"[\"\"SOXX\"\", \"\"VYM\"\", \"\"NVDA\"\", \"\"AMD\"\", \"\"INTC\"\"]\",https://g.foolcdn.com/editorial/images/831487/artifical-intelligence-gettyimages-1276832742.jpg,\"The article explores two promising ETF investment opportunities: the iShares Semiconductor ETF for capitalizing on the AI chip market growth, and the Vanguard High Dividend Yield ETF for generating passive income through diversified dividend stocks.\",\"[\"\"AI\"\", \"\"semiconductors\"\", \"\"ETFs\"\", \"\"dividends\"\", \"\"investing\"\"]\",\"[{\"\"ticker\"\": \"\"SOXX\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Positioned to benefit from the rapidly expanding semiconductor market, with projected industry growth from $697 billion to $2 trillion by 2040\"\"}, {\"\"ticker\"\": \"\"VYM\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Offers high dividend yield (2.6%), broad diversification across 580 stocks, and very low expense ratio\"\"}, {\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Key player in semiconductor industry, prominently featured in iShares Semiconductor ETF holdings\"\"}, {\"\"ticker\"\": \"\"AMD\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Major semiconductor company positioned to benefit from AI and chip market growth\"\"}, {\"\"ticker\"\": \"\"INTC\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Included in semiconductor ETF, but no strong positive or negative indicators provided\"\"}]\"\nea2a2569b3061cd6767a724ac11a534ecc1e7422e3459b0f9352f18b17a9c0e7,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,How Trump Could Unlock America’s “Hidden Endowment”,Jim Rickards,2025-09-01T17:45:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142268/0/en/How-Trump-Could-Unlock-America-s-Hidden-Endowment.html,\"[\"\"NVDA\"\"]\",https://www.globenewswire.com/news-release/2025/09/01/3142268/0/en/How-Trump-Could-Unlock-America-s-Hidden-Endowment.html,\"Former CIA advisor Jim Rickards suggests the U.S. is on the verge of unlocking massive mineral resources across federal lands, potentially worth trillions of dollars, following a Supreme Court decision that removes previous regulatory barriers.\",\"[\"\"mineral resources\"\", \"\"federal lands\"\", \"\"Supreme Court\"\", \"\"Chevron Doctrine\"\", \"\"economic opportunity\"\"]\",\"[{\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as an example of technology using minerals, with no direct impact on the company's prospects\"\"}]\"\n216839d671b2446dd616ae6f7dcb8072eb170ffb3f9c6e2d8ea1e094e799f7be,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,Government’s Best Hidden Secret May Soon Be Unlocked,Jim Rickards,2025-09-01T22:00:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142288/0/en/Government-s-Best-Hidden-Secret-May-Soon-Be-Unlocked.html,\"[\"\"NVDA\"\"]\",https://www.globenewswire.com/news-release/2025/09/01/3142288/0/en/Government-s-Best-Hidden-Secret-May-Soon-Be-Unlocked.html,\"Former CIA advisor Jim Rickards suggests a Supreme Court decision overturning the Chevron Doctrine could unlock trillions in mineral resources across U.S. federal lands, potentially creating massive economic opportunities similar to the Homestead Act.\",\"[\"\"mineral resources\"\", \"\"Supreme Court\"\", \"\"Chevron Doctrine\"\", \"\"federal lands\"\", \"\"mining\"\", \"\"economic opportunity\"\"]\",\"[{\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as an example of technology using critical minerals, but not directly analyzed in the article's economic projection\"\"}]\"\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "id,publisher_name,publisher_homepage_url,publisher_logo_url,publisher_favicon_url,title,author,published_utc,article_url,tickers,image_url,description,keywords,insights\n9864c1baaacaa9e913eba838a56c53d3892b23f2b5f492670274d2ad14d5f0c4,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,\"Synthetic Media Market Expected to Reach USD 16.84 Billion by 2032, Driven by AI Content Adoption, Generative AI Innovations, and Gaming Applications | Report by SNS Insider\",Sns Insider,2025-09-01T14:00:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142180/0/en/Synthetic-Media-Market-Expected-to-Reach-USD-16-84-Billion-by-2032-Driven-by-AI-Content-Adoption-Generative-AI-Innovations-and-Gaming-Applications-Report-by-SNS-Insider.html,\"[\"\"IBM\"\", \"\"MSFT\"\", \"\"NVDA\"\", \"\"ADBE\"\", \"\"GOOG\"\", \"\"GOOGL\"\"]\",https://ml.globenewswire.com/Resource/Download/d6272c2e-d204-41b8-b545-a6e2e24f85c2,\"The synthetic media market is projected to grow from USD 4.96 billion in 2024 to USD 16.84 billion by 2032, driven by AI content adoption, generative AI innovations, and increasing demand across entertainment, marketing, and gaming industries.\",\"[\"\"synthetic media\"\", \"\"AI\"\", \"\"generative AI\"\", \"\"market growth\"\", \"\"content creation\"\"]\",\"[{\"\"ticker\"\": \"\"IBM\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as a key player in the rapidly expanding synthetic media market with strong potential for growth\"\"}, {\"\"ticker\"\": \"\"MSFT\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Listed among key players in an emerging technology market with significant projected growth\"\"}, {\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Positioned as a key player in synthetic media, benefiting from AI and generative technology advancements\"\"}, {\"\"ticker\"\": \"\"ADBE\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Included among leading companies in the synthetic media market, indicating technological relevance\"\"}, {\"\"ticker\"\": \"\"GOOG\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Recognized as a key player in synthetic media technologies with strong AI capabilities\"\"}, {\"\"ticker\"\": \"\"GOOGL\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Recognized as a key player in synthetic media technologies with strong AI capabilities\"\"}]\"\n4867752b3c71a534abb41aaa55aa5d1cf0eca0f48d17a9d0c797830261feb642,The Motley Fool,https://www.fool.com/,https://s3.massive.com/public/assets/news/logos/themotleyfool.svg,https://s3.massive.com/public/assets/news/favicons/themotleyfool.ico,The Best ETFs to Invest In Right Now,Joe Tenebruso,2025-09-01T16:31:00Z,https://www.fool.com/investing/2025/09/01/the-best-etfs-to-invest-in-right-now/?source=iedfolrf0000001,\"[\"\"SOXX\"\", \"\"VYM\"\", \"\"NVDA\"\", \"\"AMD\"\", \"\"INTC\"\"]\",https://g.foolcdn.com/editorial/images/831487/artifical-intelligence-gettyimages-1276832742.jpg,\"The article explores two promising ETF investment opportunities: the iShares Semiconductor ETF for capitalizing on the AI chip market growth, and the Vanguard High Dividend Yield ETF for generating passive income through diversified dividend stocks.\",\"[\"\"AI\"\", \"\"semiconductors\"\", \"\"ETFs\"\", \"\"dividends\"\", \"\"investing\"\"]\",\"[{\"\"ticker\"\": \"\"SOXX\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Positioned to benefit from the rapidly expanding semiconductor market, with projected industry growth from $697 billion to $2 trillion by 2040\"\"}, {\"\"ticker\"\": \"\"VYM\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Offers high dividend yield (2.6%), broad diversification across 580 stocks, and very low expense ratio\"\"}, {\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Key player in semiconductor industry, prominently featured in iShares Semiconductor ETF holdings\"\"}, {\"\"ticker\"\": \"\"AMD\"\", \"\"sentiment\"\": \"\"positive\"\", \"\"sentiment_reasoning\"\": \"\"Major semiconductor company positioned to benefit from AI and chip market growth\"\"}, {\"\"ticker\"\": \"\"INTC\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Included in semiconductor ETF, but no strong positive or negative indicators provided\"\"}]\"\nea2a2569b3061cd6767a724ac11a534ecc1e7422e3459b0f9352f18b17a9c0e7,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,How Trump Could Unlock America’s “Hidden Endowment”,Jim Rickards,2025-09-01T17:45:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142268/0/en/How-Trump-Could-Unlock-America-s-Hidden-Endowment.html,\"[\"\"NVDA\"\"]\",https://www.globenewswire.com/news-release/2025/09/01/3142268/0/en/How-Trump-Could-Unlock-America-s-Hidden-Endowment.html,\"Former CIA advisor Jim Rickards suggests the U.S. is on the verge of unlocking massive mineral resources across federal lands, potentially worth trillions of dollars, following a Supreme Court decision that removes previous regulatory barriers.\",\"[\"\"mineral resources\"\", \"\"federal lands\"\", \"\"Supreme Court\"\", \"\"Chevron Doctrine\"\", \"\"economic opportunity\"\"]\",\"[{\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as an example of technology using minerals, with no direct impact on the company's prospects\"\"}]\"\n216839d671b2446dd616ae6f7dcb8072eb170ffb3f9c6e2d8ea1e094e799f7be,GlobeNewswire Inc.,https://www.globenewswire.com,https://s3.massive.com/public/assets/news/logos/globenewswire.svg,https://s3.massive.com/public/assets/news/favicons/globenewswire.ico,Government’s Best Hidden Secret May Soon Be Unlocked,Jim Rickards,2025-09-01T22:00:00Z,https://www.globenewswire.com/news-release/2025/09/01/3142288/0/en/Government-s-Best-Hidden-Secret-May-Soon-Be-Unlocked.html,\"[\"\"NVDA\"\"]\",https://www.globenewswire.com/news-release/2025/09/01/3142288/0/en/Government-s-Best-Hidden-Secret-May-Soon-Be-Unlocked.html,\"Former CIA advisor Jim Rickards suggests a Supreme Court decision overturning the Chevron Doctrine could unlock trillions in mineral resources across U.S. federal lands, potentially creating massive economic opportunities similar to the Homestead Act.\",\"[\"\"mineral resources\"\", \"\"Supreme Court\"\", \"\"Chevron Doctrine\"\", \"\"federal lands\"\", \"\"mining\"\", \"\"economic opportunity\"\"]\",\"[{\"\"ticker\"\": \"\"NVDA\"\", \"\"sentiment\"\": \"\"neutral\"\", \"\"sentiment_reasoning\"\": \"\"Mentioned as an example of technology using critical minerals, but not directly analyzed in the article's economic projection\"\"}]\"\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/stocks/v1/short-volume",
+        "params": {
+          "ticker": "NVDA",
+          "date.gte": "2025-09-02",
+          "date.lte": "2025-09-02",
+          "limit": 5
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ticker,date,total_volume,short_volume,exempt_volume,non_exempt_volume,short_volume_ratio,nyse_short_volume,nyse_short_volume_exempt,nasdaq_carteret_short_volume,nasdaq_carteret_short_volume_exempt,nasdaq_chicago_short_volume,nasdaq_chicago_short_volume_exempt,adf_short_volume,adf_short_volume_exempt\nNVDA,2025-09-02,115385797.0,46136694.0,418623.0,45718071.0,39.98,2396248,200,42996315,418423,744131,0,0,0\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "ticker,date,total_volume,short_volume,exempt_volume,non_exempt_volume,short_volume_ratio,nyse_short_volume,nyse_short_volume_exempt,nasdaq_carteret_short_volume,nasdaq_carteret_short_volume_exempt,nasdaq_chicago_short_volume,nasdaq_chicago_short_volume_exempt,adf_short_volume,adf_short_volume_exempt\nNVDA,2025-09-02,115385797.0,46136694.0,418623.0,45718071.0,39.98,2396248,200,42996315,418423,744131,0,0,0\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/stocks/v1/short-interest",
+        "params": {
+          "ticker": "NVDA",
+          "settlement_date.gte": "2026-07-15",
+          "settlement_date.lte": "2026-07-31",
+          "limit": 5
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "settlement_date,ticker,short_interest,avg_daily_volume,days_to_cover\n2026-07-15,NVDA,324052767,131174356,2.47\n2026-07-31,NVDA,292667375,127011756,2.3\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "settlement_date,ticker,short_interest,avg_daily_volume,days_to_cover\n2026-07-15,NVDA,324052767,131174356,2.47\n2026-07-31,NVDA,292667375,127011756,2.3\n"
+          },
+          "isError": false
+        }
+      }
+    }
+  ]
+}

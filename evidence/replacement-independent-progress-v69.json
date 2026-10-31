@@ -1,0 +1,214 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "scope": "Same fixed3000 run, fence1, unchanged worker and controller.",
+  "observations": [
+    {
+      "observed_at": "2026-10-30 09:10:26.607805+00",
+      "planner_marker": 6519,
+      "single_member_bound": 6754,
+      "breadth_bound_preserved": 17380,
+      "next_member": "1590",
+      "pages_committed": 2025,
+      "records_committed": 241495,
+      "requests_reserved": 990,
+      "last_progress_at": "2026-10-30 09:10:26.427564+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:14:20.165656+00",
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:20:00Z",
+      "next_member": "1609",
+      "planning_complete": "false",
+      "pages_committed": 2122,
+      "records_committed": 254129,
+      "requests_reserved": 1034,
+      "last_progress_at": "2026-10-30 09:14:16.529978+00",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      },
+      "latest_workers": [
+        {
+          "worker_id": "6dde714d-1a30-4674-b52a-8c57f95c3f2c",
+          "observed_at": "2026-10-30T09:14:14.758593+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        },
+        {
+          "worker_id": "57b1aafe-fb13-49ea-9faf-0bd807563df1",
+          "observed_at": "2026-10-30T08:58:04.255931+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-30 09:18:04.527682+00",
+      "shared_refresh_source_sha256": "7cbf387da2848ed79b4643b45ab83706e3923cfa020a044c614dc0d57e945770",
+      "installed_marker": 179,
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z",
+      "next_member": "1629",
+      "planning_complete": "false",
+      "pages_committed": 2220,
+      "records_committed": 267062,
+      "requests_reserved": 1082,
+      "last_progress_at": "2026-10-30 09:17:56.507018+00",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      },
+      "readbacks": 2220,
+      "readback_mismatches": 0,
+      "unread_pages": 0,
+      "operational_error_tasks": 0,
+      "latest_worker": [
+        {
+          "worker_id": "6dde714d-1a30-4674-b52a-8c57f95c3f2c",
+          "observed_at": "2026-10-30T09:17:56.756567+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    },
+    {
+      "observed_at": "2026-10-30 09:27:28.899613+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "pages_committed": 2473,
+      "records_committed": 298341,
+      "requests_reserved": 1209,
+      "source_bytes": 273832858,
+      "last_progress_at": "2026-10-30 09:27:26.719814+00",
+      "next_member": "1680",
+      "planning_complete": "false",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z",
+      "readbacks": 2472,
+      "unread_pages": 1,
+      "latest_worker": [
+        {
+          "worker_id": "6dde714d-1a30-4674-b52a-8c57f95c3f2c",
+          "observed_at": "2026-10-30T09:27:25.229433+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    }
+  ],
+  "delta_0918_to_0927": {
+    "pages": 253,
+    "records_or_pointers": 31279,
+    "reservations": 127
+  },
+  "physical_page_receipts_by_task_family": [
+    {
+      "observed_at": "2026-10-30 09:19:51.259109+00",
+      "family": "CTX02",
+      "committed_pages": 158,
+      "physical_records_or_pointers": 150624,
+      "latest_committed_at": "2026-10-30 09:19:35.07441+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259128+00",
+      "family": "D01",
+      "committed_pages": 212,
+      "physical_records_or_pointers": 19662,
+      "latest_committed_at": "2026-10-30 09:19:43.017427+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.25913+00",
+      "family": "D02",
+      "committed_pages": 285,
+      "physical_records_or_pointers": 81590,
+      "latest_committed_at": "2026-10-30 09:19:44.246588+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259131+00",
+      "family": "D03",
+      "committed_pages": 211,
+      "physical_records_or_pointers": 4019,
+      "latest_committed_at": "2026-10-30 09:19:45.352182+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259132+00",
+      "family": "D04",
+      "committed_pages": 212,
+      "physical_records_or_pointers": 4038,
+      "latest_committed_at": "2026-10-30 09:19:48.066588+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259133+00",
+      "family": "D05",
+      "committed_pages": 212,
+      "physical_records_or_pointers": 4038,
+      "latest_committed_at": "2026-10-30 09:19:48.963212+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259134+00",
+      "family": "N01",
+      "committed_pages": 201,
+      "physical_records_or_pointers": 8470,
+      "latest_committed_at": "2026-10-30 09:19:31.453637+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259134+00",
+      "family": "N02",
+      "committed_pages": 209,
+      "physical_records_or_pointers": 1011,
+      "latest_committed_at": "2026-10-30 09:19:32.552838+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259135+00",
+      "family": "P01",
+      "committed_pages": 279,
+      "physical_records_or_pointers": 279,
+      "latest_committed_at": "2026-10-30 09:19:42.049946+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259136+00",
+      "family": "REF01",
+      "committed_pages": 246,
+      "physical_records_or_pointers": 246,
+      "latest_committed_at": "2026-10-30 09:19:41.118254+00"
+    },
+    {
+      "observed_at": "2026-10-30 09:19:51.259137+00",
+      "family": "S02",
+      "committed_pages": 45,
+      "physical_records_or_pointers": 45,
+      "latest_committed_at": "2026-10-30 09:14:36.461797+00"
+    }
+  ],
+  "counting_limits": [
+    "Counts include source records, derived records and retained-data pointers, with overlapping observations.",
+    "Grouping physical pages by task family is not a complete16-family coverage report; shared projections can deliver other families.",
+    "The09:27 sample had one new committed page awaiting verification; do not rewrite it as zero."
+  ],
+  "automation": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "last_root_prompt_update": "2026-10-30T09:27:08.059114+00:00",
+    "same_hourly_schedule": true,
+    "programme_expiry": null,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T09:50:00Z",
+    "lease_audit": 7
+  },
+  "current_remaining_work": [
+    "Resolve qualified index-based report count repair and full live report deadline.",
+    "Select exact qualified web revision and verify deployment, if report issue resolved.",
+    "Continue all16-family backfill and complete cohort planning, acquisition, derivations, readback and honest final accounting."
+  ],
+  "relay_security_hold": "AWAITING_ACTION_TIME_CONFIRMATION; no relay application, grants, Edge deployment, worker integration, credential configuration or live probe."
+}

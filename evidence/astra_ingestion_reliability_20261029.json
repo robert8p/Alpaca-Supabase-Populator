@@ -1,0 +1,115 @@
+{
+  "date_utc": "2026-10-29T03:21:34.072266Z",
+  "programme": "ASTRA ingestion reliability",
+  "candidate_source_repaired": "8f7463c9fb80055234de48e46f7d8fe33787588d",
+  "deployed_web_and_worker": "bd7b5bed714ef0afbd2015e6f6c1c0fd54b7d9fb",
+  "ci": {
+    "ingestion_run": 40810483824,
+    "release_run": 40810483769,
+    "results": "both success exact deployed revision",
+    "regression_reference_ingestion_run": 40809523944,
+    "regression_reference_release_run": 40809523938
+  },
+  "deploys": {
+    "worker": {
+      "id": "dep-dbhbjnm1egvs73f3tn8g",
+      "live": "2026-10-29T03:14:12.569408Z"
+    },
+    "web": {
+      "id": "dep-dbhbkcpsrm7s73fcoen0",
+      "live": "2026-10-29T03:15:53.951492Z"
+    }
+  },
+  "monitor": {
+    "cron_job": 602,
+    "schedule": "every two minutes",
+    "independent_owner": "astra_ingestion_monitor_owner_v1",
+    "durable_ticks": 39,
+    "last_tick": "2026-10-29T03:20:00.0311Z",
+    "synthetic_fault": {
+      "job_id": "astra-ingestion-observer-fault-20261029-0312",
+      "reason": "deadline_overdue",
+      "detected_at": "2026-10-29T03:12:22.881327Z",
+      "disposition": "FAIL_CLOSED_MANUAL_REVIEW",
+      "requests": 0,
+      "records": 0,
+      "synthetic_job_deleted_before_commit": true,
+      "detector_invoked_transactionally": true,
+      "autonomous_cron_fault_detection_tested": false
+    }
+  },
+  "independent_verifier": {
+    "cron_job": 603,
+    "schedule": "every two minutes",
+    "restricted_owner": "astra_ingestion_verifier_owner_v1",
+    "effective_rights": "read only source/target and write independent attestations; cannot write ingestion or credentials",
+    "sql_role_denials": [
+      "anon SQLSTATE 42501",
+      "authenticated SQLSTATE 42501"
+    ],
+    "original_canary": {
+      "AAPL": {
+        "time": "2026-10-29T03:12:00.176025Z",
+        "source": 78,
+        "stored": 78,
+        "receipts": 1,
+        "status": "passed",
+        "hashes_equal": true
+      },
+      "MSFT": {
+        "time": "2026-10-29T03:14:00.165137Z",
+        "source": 78,
+        "stored": 78,
+        "receipts": 1,
+        "status": "passed",
+        "hashes_equal": true
+      }
+    },
+    "external_https_gateway_actor_tested": false
+  },
+  "hosted_replacement": {
+    "synthetic_verify_only_job": "astra-verify-only-20261029-bd7b-job",
+    "received_at": "2026-10-29T03:16:51.051418Z",
+    "original_deadline_seconds": 600,
+    "staged_phase": "loaded",
+    "source": "exact copy of original retained AAPL receipt and records; no new provider request",
+    "worker_claimed": "2026-10-29T03:16:52.836653Z",
+    "worker_verified": "2026-10-29T03:16:52.976920Z",
+    "instance": "srv-dbh9fko473hc739an8m0-svxfw",
+    "render_log_at": "2026-10-29T03:16:53.030763Z",
+    "metric": "one worker instance in 30-second samples 03:14 through 03:17 UTC",
+    "independent_sql_verified": "2026-10-29T03:18:00.165213Z",
+    "synthetic_cleanup": "2026-10-29T03:18:40.520758Z",
+    "all_fixture_data_removed": true,
+    "physical_host_kill_tested": false,
+    "zero_overlap_before_start_proven": false
+  },
+  "final_database": {
+    "jobs": 1,
+    "records": 156,
+    "receipts": 2,
+    "original_requests": 2,
+    "original_status": "completed",
+    "original_scope_hash": "893249da7775de9e75421b185280bfb837b3e37fc0b1926b1069544560e24cf1",
+    "two_original_restricted_attestations": "passed",
+    "active_claims": 0,
+    "synthetic_job_remaining": 0
+  },
+  "campaign_usage": {
+    "new_provider_requests": 0,
+    "new_paid_resources": 0,
+    "new_bulk_jobs": 0
+  },
+  "report": {
+    "library_file_id": "libfile_9b466ad815b48191ae49fd30233bd6c8",
+    "path": "/ASTRA Ingestion/ASTRA_Ingestion_Reliability_Qualification_20261029.md",
+    "sha256": "0e03620134a0e96d0d1bbacc227363ec46233cfbcacc34b60af0488f4dedaa4d"
+  },
+  "remaining": [
+    "physical forced process/host crash immediately after fresh atomic commit",
+    "explicit zero-overlap old-process exit before replacement starts (current evidence only post-rollout)",
+    "external HTTPS gateway actor denial using actual runtime identity",
+    "independent release closeout"
+  ],
+  "certification": "NOT_CERTIFIED"
+}

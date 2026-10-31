@@ -1,0 +1,112 @@
+{
+  "result": [
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242184",
+      "mentioned_processes": [],
+      "process_id": "1243675",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:22:01.047000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "ERROR",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:21:49.519000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242186",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:21:47.520000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "ERROR",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:16:03.335000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242938",
+      "mentioned_processes": [],
+      "process_id": "1242186",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:16:02.484000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242938",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:16:01.335000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242186",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:15:57.492000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242184",
+      "mentioned_processes": [],
+      "process_id": "1242186",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:15:22.486000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242186",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:14:57.534000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "ERROR",
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:14:44.497000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242186",
+      "mentioned_processes": [],
+      "process_id": "1242184",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:14:42.497000"
+    },
+    {
+      "elapsed_marker": "",
+      "holder_marker": "Process holding the lock: 1242184",
+      "mentioned_processes": [],
+      "process_id": "1242186",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:14:17.491000"
+    }
+  ]
+}

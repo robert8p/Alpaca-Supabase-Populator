@@ -1,0 +1,13 @@
+--- a/astra_ingestion/backfill_worker_v2.py
++++ b/astra_ingestion/backfill_worker_v2.py
+@@ -331,6 +331,10 @@
+     provider = BackfillProvider(settings.api_key, settings.secret_key,
+                                 os.environ.get("MASSIVE_API_KEY", os.environ.get("POLYGON_API_KEY", "")),
+                                 paper=os.environ.get("APCA_API_BASE_URL", "https://paper-api.alpaca.markets") != "https://api.alpaca.markets")
++    if settings.api_url:
++        from .backfill_massive_relay_v2 import MassiveRelay, ProviderWithManagedMassive
++        provider = ProviderWithManagedMassive(provider, MassiveRelay(
++            settings.api_url, settings.publishable_key, settings.rpc_token))
+     return BackfillWorker(store, provider, lease_seconds=settings.lease_seconds,
+                           source_revision=os.environ.get("RENDER_GIT_COMMIT", "local-unversioned"),
+                           planning_enabled=True, plan_member_limit=5,

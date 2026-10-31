@@ -1,0 +1,156 @@
+{
+  "syntax_and_source_guard_fixture_passed": true,
+  "probe_count": 17,
+  "elapsed_seconds": 0.8603520510005183,
+  "cases": [
+    {
+      "label": "generic",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "CTX06",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "REF01",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "REF03",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "P01",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "P02",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "D01",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "D02",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "D03",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "D04",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "D05",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "N01",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "N02",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "N03",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "S01",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "S02",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    },
+    {
+      "label": "CTX02",
+      "one_estimated_plan": true,
+      "lockrows_retained": true,
+      "no_actual_execution_metrics": true,
+      "prepared_statements_remaining": 0
+    }
+  ],
+  "production_call": false,
+  "claim_executed": false,
+  "protected_worker_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+  "version": "replacement-claim-plan-probe-qualification-v70",
+  "scope": "Local syntax, source-guard and nonexecution qualification only; no production timing or claim recovery inference.",
+  "files": {
+    "evidence/replacement-claim-normal-generic-plan-probe-v70.sql": {
+      "sha256": "3722f125e7040215fc04b79206b242aeb5a2be9afa3b5005b468f085b64571dc",
+      "bytes": 4857
+    },
+    "evidence/replacement-claim-normal-custom-plan-probes-v70.json": {
+      "sha256": "346dd11dd9c83ac28ac84e627a5362b8fd3d86b472ec65e47b8e484a75ec603c",
+      "bytes": 82953
+    },
+    "evidence/replacement-claim-plan-probes-v70.md": {
+      "sha256": "ac29d3f05c704d6798bdc6b1fb83e4ea7beedc828cc4e1a1b24fb25f4bad0be5",
+      "bytes": 2457
+    }
+  },
+  "limits": {
+    "statement_seconds": 8,
+    "lock_seconds": 3,
+    "transaction_read_only": true,
+    "analyze": false,
+    "historical_parameter_snapshot": "2026-10-30T11:00:49.547058Z",
+    "failed_family_known": false,
+    "actual_worker_cached_plan_known": false,
+    "outer_authenticated_rpc_measured": false,
+    "actual_advisory_lock_hold_measured": false
+  }
+}

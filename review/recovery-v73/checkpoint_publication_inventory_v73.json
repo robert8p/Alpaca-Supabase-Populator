@@ -1,0 +1,712 @@
+{
+  "schema": "astra.checkpoint-publication-inventory/1",
+  "created_at": "2026-10-30T15:56:46.864507+00:00",
+  "state": "FINAL_QA_BOUND",
+  "base_commit": "3fddb6cf196e289e79eb9bfaef45d56965b64eca",
+  "base_tree": "bd41e2f106d412ebebf3e72f854c2665ae616aa8",
+  "base_tree_entries": 970,
+  "truncated": false,
+  "permitted_replacements": [
+    "docs/INGESTION_COMPLETION_STATE.md",
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+  ],
+  "canonical_v72_archives": {
+    "docs/history/INGESTION_COMPLETION_STATE_v72.md": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+    "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.md": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283"
+  },
+  "new_candidate_files": [
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v72.md",
+      "bytes": 30487,
+      "sha256": "3efdf5fdced9176457d5943fd829983e0afcaf4fc43eebdaa40d143c7903b0c3",
+      "git_blob_sha1": "27e59c8b2e71b9543883dcabbd323dcdc99497fb"
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v72.md",
+      "bytes": 53389,
+      "sha256": "01b010fc7e35fa9b60bd7d7f4d8792834fa870ca689ac2d5c79f86b89aa6a283",
+      "git_blob_sha1": "53b0ef3efbc86293114dc35a2efb4c0907ad8349"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-final-independent-qa-v73.json",
+      "bytes": 8045,
+      "sha256": "226e76e5e5c403b217dad8bf2c91f53fe5ace845e27a077e708e923c8bcfd500",
+      "git_blob_sha1": "26c89ada88ecc4c2de2c6eba5feda116fb28e577"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-exact-restoration-v73.json",
+      "bytes": 5062,
+      "sha256": "e0b9ef2eb07f02d205329f55ffe1cec592bb886b58d57861beb6bb90f49fe6d4",
+      "git_blob_sha1": "3dc462836fb11cd83637364ed0c1f15450516548"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-installation-audit-v73.json",
+      "bytes": 2444,
+      "sha256": "d4d909e158e204a25cf51c16087d4c6054e51e7842e6bf3a1fa48a2ed4e266af",
+      "git_blob_sha1": "3787aefd439fad7fec9f78959282e5c0493be2fd"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-live-installation-v73.json",
+      "bytes": 9545,
+      "sha256": "4c88d55e1623b2610d30f9186e88390558cbf1b11282c993eacf5b80762e50bd",
+      "git_blob_sha1": "3d985c246edc01ee5914713c95b6f8b3755b045c"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-release-gates-v73.json",
+      "bytes": 17685,
+      "sha256": "6aa9e9d9d73780f39c615871ed6354fd999d7f38310622bad938b93daddf9668",
+      "git_blob_sha1": "3c3226af66a0d8f92adc828d789aff9409186a7a"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-preflight-independent-review-v73.json",
+      "bytes": 2893,
+      "sha256": "a77af1105096cb9f239f44522980e6691b845492eab133a961545eb265571216",
+      "git_blob_sha1": "c4ecd4d3d955c485750026f37f76ee081cecb024"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-prepared-audit-v73.json",
+      "bytes": 2289,
+      "sha256": "607c0cab1e8ac71ab9a3f8492a41c91e31db86c81022935c6f26cb759312ec4d",
+      "git_blob_sha1": "60771e19f2fe72950d7c4fbf442439e21566fed4"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-publication-v73.json",
+      "bytes": 981,
+      "sha256": "f533fcbb3285ea53a8a1ea16ec9051867ab582ee6581b306bfb3221d9d56c5e1",
+      "git_blob_sha1": "04ce5552e44a563eb161a3280f0eb7c0b93a1117"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-restoration-audit-v73.json",
+      "bytes": 3421,
+      "sha256": "9d28782d2fa234d18680972c00e2f3c54ac7b3d8ddfb4677fabc25051a70a537",
+      "git_blob_sha1": "2dbf900460b2ed3e24f2a22fe4c4986084742635"
+    },
+    {
+      "path": "review/recovery-v73/build_checkpoint_publication_v73.py",
+      "bytes": 13737,
+      "sha256": "865fd0ebac79f24ddaf27673e37729a306b46faa5b293e2f6a6d069df6ac10d0",
+      "git_blob_sha1": "96818dc8dee0c94a6513d1aeab794de9f7f44408"
+    },
+    {
+      "path": "review/recovery-v73/checkpoint_publication_inputs_v73.json",
+      "bytes": 979,
+      "sha256": "75e2955bd8d2365f03edc1fd4b8865e2333d0f06b9a296405fc61bd1709bf929",
+      "git_blob_sha1": "d9c8b5dfc326525661d38cfa95b457dd2d83fd30"
+    },
+    {
+      "path": "review/recovery-v73/database_restart_bounded_log_classification_v73.json",
+      "bytes": 1390,
+      "sha256": "bf195c18fcc59e37d8fb4ab4a181543a59eef99d8c58da57124aa934e15dfb0e",
+      "git_blob_sha1": "3c2b5e17bcec2cc2b2625cc2d74ffd4ee318f6bc"
+    },
+    {
+      "path": "review/recovery-v73/existing_successor_before_checkpoint_v73.json",
+      "bytes": 4357,
+      "sha256": "80b58901e814ad0de2797e7e2ad033be16eeaf6f5b550f10c37da94703a5da92",
+      "git_blob_sha1": "c1fe04f1014d0fc7687a5551482da51f57b30bae"
+    },
+    {
+      "path": "review/recovery-v73/first_phase_live_failure_correlation_v73.json",
+      "bytes": 3949,
+      "sha256": "bc1303793b4cfa4989068b28e020f95ec0c1cfb43a0b939e13164dc977fc0427",
+      "git_blob_sha1": "d2359a9bb031c07e5156428c5f1e1d7ef25200e2"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_preflight_before_ci_completion_v73.json",
+      "bytes": 3214,
+      "sha256": "a2ad5028ba9754d8964d9e7262e9cbc13acc9b2f40b7dcdcbffb257815b48e19",
+      "git_blob_sha1": "058cc99887c153e087c2819da70be43ab6dc95a8"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_samples_final_v73.json",
+      "bytes": 7353,
+      "sha256": "21a831c670eed522efe527f115c43f0976b3c9315a91f50e8ac53c4df9376f05",
+      "git_blob_sha1": "fcdf59ee09efb074f723e425c3000aa66c7971a0"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_samples_first_v73.json",
+      "bytes": 5866,
+      "sha256": "8f250e38f86015cb4f1f6b6fa44cac84186b851365cd379663bdc7bdec7ebeb6",
+      "git_blob_sha1": "7e2071e37d8d8687009f8fa57c605e10b010b90b"
+    },
+    {
+      "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+      "bytes": 2400,
+      "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a",
+      "git_blob_sha1": "617cd30a1b6680cfcd69434e8856b7aafb3bfb31"
+    },
+    {
+      "path": "review/recovery-v73/live_shared_historical_page_receipts_v73.json",
+      "bytes": 5658,
+      "sha256": "5241083218503d722467e46bc707857b00febe785b8d9b87a29f916f73957582",
+      "git_blob_sha1": "5de2ccd70f66ba755b7f2356a7be52531e8c0c7f"
+    },
+    {
+      "path": "review/recovery-v73/live_shared_nested_definitions_after_restore_v73.json",
+      "bytes": 39286,
+      "sha256": "c377705922bd3cee5e9dfa8e8fed9ea3e5e08ae152591d50785ba9ae8138f760",
+      "git_blob_sha1": "1680be7bf5c0a43e964270508ee99c2495109963"
+    },
+    {
+      "path": "review/recovery-v73/phase_samples_cron_correlation_readonly_v73.sql",
+      "bytes": 31735,
+      "sha256": "6eeae4aba196b95b4693c6cdcf25b6fc43e42f33fa2983ab1d8ae63b81dcc891",
+      "git_blob_sha1": "17cb905aa7df50b52b2c5893e28cae2e2136a37a"
+    },
+    {
+      "path": "review/recovery-v73/preinstrumentation_recent_cron_history_v73.json",
+      "bytes": 2686,
+      "sha256": "1edf195344344646d3c315b25bc2d62365269ab62ac2e10cc4f71efba77a74ba",
+      "git_blob_sha1": "d423dbae0b33578e2bf931eb2b096b5b41b4d555"
+    },
+    {
+      "path": "review/recovery-v73/shared_historical_page_receipts_readonly_v73.sql",
+      "bytes": 11427,
+      "sha256": "8e2020a029811fd705b39a1cfa49cde4f710482ee91a81f0ad0c3299186c5a86",
+      "git_blob_sha1": "fc5f6c8bc26232999178383892072385090be8c4"
+    }
+  ],
+  "existing_references_preserved": [
+    {
+      "path": "docs/REPLACEMENT_BACKFILL_MISSION_20261030.md",
+      "base_git_blob_sha1": "f17b2114483f2f503e2bc104660894ba1ec5e66d",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "docs/history/INGESTION_COMPLETION_STATE_v71.md",
+      "base_git_blob_sha1": "bc6eb2bf302b0934342494d8e35ea841d2463081",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "docs/history/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v71.md",
+      "base_git_blob_sha1": "2334707a922810b4af02a452007f575a33877359",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-3ee4-release-gates-v71.json",
+      "base_git_blob_sha1": "bb5efd63c772c7e3c901bd68f7e36b16ccfa9bb3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-approved-relay-live-acquisition-v71.json",
+      "base_git_blob_sha1": "66b8681df54ffe861f0ef2ffc9caf672634bbf9b",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-approved-relay-worker-deployment-v71.json",
+      "base_git_blob_sha1": "0347475e79e8a928c202a43b6e4222e9e0b6edd9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-checkpoint-ci-v72.json",
+      "base_git_blob_sha1": "8e23d58a57d890444b8df43834931009fe79df31",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-live-installation-v71.json",
+      "base_git_blob_sha1": "bda0fb3f52d0f9805417f24a987164c06ef9adf9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-release-gates-v71.json",
+      "base_git_blob_sha1": "5d5d21e5d923f3655ad2e2a851dc0fa798850ed5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v72.json",
+      "base_git_blob_sha1": "4bae2d718b96331baba9667c2beed2dcefc256c9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-live-installation-v72.json",
+      "base_git_blob_sha1": "840bedb133963b4ac0d663a24a8a742515293e73",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-publication-manifest-v72.json",
+      "base_git_blob_sha1": "3ac852bef7fe2b24dcbfe15181852f45e1b9d358",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-combined-release-gates-v72.json",
+      "base_git_blob_sha1": "3f795ed10d3cb791e5dbbcf4a864509c19bed75a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-installation-audit-v72.json",
+      "base_git_blob_sha1": "d74dfb95db28f7f44789410ba8adf4be054cf6af",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-independent-review-v73.json",
+      "base_git_blob_sha1": "c1d4492a8a6f7ae6d3dae1c9898146af725e4b68",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-publication-manifest-v73.json",
+      "base_git_blob_sha1": "89da72945a9e212fc23b915351c923f91b8e370d",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-qualification-v73.json",
+      "base_git_blob_sha1": "e6b978becd0e5c82e847bb17d9e9a15daab371fa",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-repair-publication-v72.json",
+      "base_git_blob_sha1": "ea065a98de629a7048d3d930c6e9de28546bdc84",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-task-hash-index-independent-review-v72.json",
+      "base_git_blob_sha1": "1693c7b84ed4ad8aaede534c7c720bbd6bbc242c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-maintenance-task-hash-index-qualification-v72.json",
+      "base_git_blob_sha1": "9eeb8931f5bd962a1dffeb892a4abde3c208e8dd",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-managed-relay-approval-installation-receipt-v3.json",
+      "base_git_blob_sha1": "ece3e4bd6dbfe50039dea9d27c3e5e9e17b2e115",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-managed-relay-production-security-proof-v3.json",
+      "base_git_blob_sha1": "1aaa323fe28fc1759913d18bb75b13d413b0904c",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json",
+      "base_git_blob_sha1": "c9e8b646a42c358b779c0650c268ff573a022297",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-owner-residual-recovery-lease-v72.json",
+      "base_git_blob_sha1": "539b86c3306a4ebb7583df16e8cedcdc6e2597e3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v72.json",
+      "base_git_blob_sha1": "c61b6211d3e784d29f4420b575c326624dc15275",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "evidence/replacement-readback-transaction-race-independent-review-v72.json",
+      "base_git_blob_sha1": "a71f97559ddc9a78eb6db70caf006774c52df6e3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_committed_progress_1346.json",
+      "base_git_blob_sha1": "8d678a397e23d4d27f0eefdd30c6b5b6a12963ea",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_ingestion_cron_run_pid_proof_1331.json",
+      "base_git_blob_sha1": "8f600ebba57851e9a59dbb6a75607f6319575f77",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_monitor_second_holder_correlation_1326.json",
+      "base_git_blob_sha1": "21957327358b24b163ce6d13cdabc0b3abd081bf",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_relay_n02_date_reconciliation_1308.json",
+      "base_git_blob_sha1": "c0df6c218bb7930666448ea18ee22d2a8e9158a8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_relay_target_support_readback_1308.json",
+      "base_git_blob_sha1": "e46077c1276d53030a237301a4170e0f8bc113f8",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/breadth_hash_index_installation_readback_v72.json",
+      "base_git_blob_sha1": "3aa7f46d961cffdc6447a430995f5cc3df3864e4",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/initial_postinstall_runtime_observation_v72.json",
+      "base_git_blob_sha1": "c88febdbf123c9795855e63a645f8cb62d6ff950",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/live_postinstall_selector_profile_v72.json",
+      "base_git_blob_sha1": "44da86fa98c41d3d7f233e02d295dda736de5292",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/postrepair_progress_and_residual_failure_v72.json",
+      "base_git_blob_sha1": "1327cb6f23193cb6fccef999f0228ef747b5b5b5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/preinstall_exact_index_history_inventory_v72.json",
+      "base_git_blob_sha1": "09767a644730847471e451eea3b339b7e299ee66",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/preinstall_health_advisors_v72.json",
+      "base_git_blob_sha1": "ff31098b215826a7ef4976b99a53068572580f53",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/preinstall_runtime_failures_1429.json",
+      "base_git_blob_sha1": "636eb7bd4d7d89d14e85ca04167646d28fbb21fd",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/preinstall_safe_rpc_errors_1430.json",
+      "base_git_blob_sha1": "c67a9d6ef78e5a63291d07861bbf55cf27cd8814",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/prepublication_reconciliation_v72.json",
+      "base_git_blob_sha1": "d90f46163741494552d7a308f8b5679a4c00d368",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v72/readback_transaction_race_actual_reason_1410.json",
+      "base_git_blob_sha1": "08f34eeedb0c75c91f8b4b081edaf6cfe5b912e1",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py",
+      "base_git_blob_sha1": "356a4758c55b601da078a0a57a473fbe6270d8d2",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/baseline_maintain_installed_v73.sql",
+      "base_git_blob_sha1": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/build_maintenance_phase_observation_v73.py",
+      "base_git_blob_sha1": "1dfc22dc8cda440780fcd5743159eb2899c2cba6",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/build_phase_observation_publication_v73.py",
+      "base_git_blob_sha1": "a2f76f1fe8d363186a160ca8b0ec7c2f61498bcc",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_initial_v73.sql",
+      "base_git_blob_sha1": "499fe0c9cec0bd7ac8950a27d93ea38445a785ee",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_v73.sql",
+      "base_git_blob_sha1": "33597009236865984e86411ac6492e4a4c68f553",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/database_availability_incident_v73.json",
+      "base_git_blob_sha1": "13a3b28645a2765ca3e81a30cfc058306b18979a",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/database_availability_recovery_readback_v73.json",
+      "base_git_blob_sha1": "e2a1bf7bd781f6d5162d723b0164c309655e856f",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/independent_progress_during_phase_preparation_v73.json",
+      "base_git_blob_sha1": "4aeb232735fd8b934d5999502fa702587ddfaf5d",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_observation_installation_v73.py",
+      "base_git_blob_sha1": "8b67a1914db49cb98e08805bc0ad4cde8005f6e5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_preflight_readback_v73.py",
+      "base_git_blob_sha1": "10cb2c9fd45c5c03cd071fba2a8a6259bab0d732",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/forward_maintenance_phase_observation_v73.sql",
+      "base_git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/installation_manifest_v73.json",
+      "base_git_blob_sha1": "a885092a9d0bd449dbb5b673c349140b805138f6",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/maintenance_phase_preflight_readback_readonly_v73.sql",
+      "base_git_blob_sha1": "2c4f3e84379b13b0ec88502366cdc3c1de4df487",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_derivation_v73.json",
+      "base_git_blob_sha1": "df63d923a80b03b47b4aaa39b017be02b9084514",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_qualification_v73.json",
+      "base_git_blob_sha1": "71a3f9f09052277196c43967f2c30b555cc50226",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_attempt_1_v73.json",
+      "base_git_blob_sha1": "4aabe25cbf4ce4fdec7dbed4a0cc5d0e2cc201ab",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_final_v73.json",
+      "base_git_blob_sha1": "4e55c86ce773f8f7b459696f9cf8986d7d254fa2",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/qualify_phase_preflight_readback_v73.py",
+      "base_git_blob_sha1": "d0fc8fa6a5c12e917236442bea369058ce7b6907",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/installation/restore_maintenance_phase_observation_v73.sql",
+      "base_git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/live_phase_observation_permission_inventory_v73.json",
+      "base_git_blob_sha1": "f56e1336872c4c915ecab3329a4235441406cf25",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_active_qualification_v73.json",
+      "base_git_blob_sha1": "f55816f3910dd03f480fa4508fa3f70bb47da583",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_derivation_v73.json",
+      "base_git_blob_sha1": "97b7167431202a2d6dc50357fb81bc9c1bd089f1",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_independent_test_result_v73.json",
+      "base_git_blob_sha1": "3b2040915ddeb80011f48b0ae535d7962f64e6a9",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_proposal_v73.md",
+      "base_git_blob_sha1": "a6f1243dc5bbf20303ace21ef59f7da20a9da80e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_1_v73.json",
+      "base_git_blob_sha1": "811889a459dfc5d4a7791c7aa0a36eb3fc033ef4",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_2_v73.json",
+      "base_git_blob_sha1": "3a84c3daabb8a517455f556f1b7f347b16b77c06",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_3_v73.json",
+      "base_git_blob_sha1": "09d6b6ccfb8e63abdf43bd10bd20f295a372366f",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_4_v73.json",
+      "base_git_blob_sha1": "3242a2e55970719e761e6b751714f7749e3041c7",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_v73.diff",
+      "base_git_blob_sha1": "907760096a85aa2222a180c7d8cf122d5d40f05e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/phase_publication_review_pins_v73.json",
+      "base_git_blob_sha1": "4e722c04e0f5edef80217b21921c031f9db0479b",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/postrestart_independent_acquisition_v73.json",
+      "base_git_blob_sha1": "907b7b3a2844ad7212bf5a8561b6a18d4ae1ab84",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_independently_v73.py",
+      "base_git_blob_sha1": "7dc65ae6c8fa0d65280f5489917c229fe1f7ced0",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_v73.py",
+      "base_git_blob_sha1": "41d971928b365b4a375c65c7a36ca798dedccfe6",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_breadth_pending_hash_index_v2.sql",
+      "base_git_blob_sha1": "dc420ad040e49ddb7108f4955b166e765c653b32",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql",
+      "base_git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_v73.sql",
+      "base_git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_minute_pending_hash_index_v2.sql",
+      "base_git_blob_sha1": "df67b7ad5a435b10892bad2cda87aedc4a24139f",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "sql/astra_backfill_readback_transaction_race_v2.sql",
+      "base_git_blob_sha1": "f249b7d2bf17fd05939576c5db6e25cbf7fcc55e",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py",
+      "base_git_blob_sha1": "4e2c77873cf360e0d32176c28303309c9fbb8db5",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py",
+      "base_git_blob_sha1": "84e4dfbdee91fe19911fcb8f999648e784ad3a96",
+      "preserved_existing_blob": true,
+      "local_copy_matches_base": true
+    }
+  ],
+  "existing_local_drift_excluded": [
+    {
+      "path": "evidence/replacement-controlled-restart-proof.json",
+      "base_git_blob_sha1": "8ecc09aff081da9534d4e7989d65fe0ac8541e92",
+      "local_git_blob_sha1": "13463952029e31496b3fd25e9015d91563a703d3",
+      "published": false
+    },
+    {
+      "path": "evidence/replacement-live-progress-v65.json",
+      "base_git_blob_sha1": "fff26891e6ed79a0049736ff2cb19de1d691f4b1",
+      "local_git_blob_sha1": "2b9c2b53b0ba21e07a38e06195224d118fe7c680",
+      "published": false
+    }
+  ],
+  "unavailable_references": [],
+  "excluded_references": [
+    "review/recovery-v73/checkpoint-draft/INGESTION_COMPLETION_STATE_v73.draft.md",
+    "review/recovery-v73/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v73.draft.md"
+  ],
+  "excluded_classes": [
+    "Nine stale local runtime/foundation differences",
+    "active SQL/test changes",
+    "timing contingency and prototypes",
+    "__pycache__ and pyc",
+    "unapproved checkpoint drafts"
+  ],
+  "required_final_inputs": {
+    "state": "ROOT_FINAL_DRAFT_QA_PASSED",
+    "qa_receipt": {
+      "path": "<actual passed QA JSON>",
+      "sha256": "<actual hash>"
+    },
+    "approved_documents": {
+      "docs/INGESTION_COMPLETION_STATE.md": {
+        "path": "<root-approved final draft path>",
+        "sha256": "<actual final draft hash>"
+      },
+      "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+        "path": "<root-approved final draft path>",
+        "sha256": "<actual final draft hash>"
+      }
+    },
+    "progress_receipt": {
+      "path": "<actual final progress receipt>",
+      "sha256": "<actual hash>"
+    }
+  },
+  "remote_or_production_calls": 0,
+  "canonical_local_files_written": false
+}

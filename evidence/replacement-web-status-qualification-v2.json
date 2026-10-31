@@ -1,0 +1,34 @@
+{
+  "qualification": "replacement-web-status-v2",
+  "qualified_at": "2026-10-30T06:46:55.232375+00:00",
+  "tests_run": 43,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "elapsed_seconds": 0.415,
+  "environment": "Local ASGI and standard-library HTTP transports with mocks; Node DOM contract; no remote requests",
+  "route": "GET /api/backfill/status",
+  "sha256": {
+    "astra_ingestion/backfill_status.py": "01318b0cdc5dce5c54051e375a4a08f31cda149136245ab597246ec9aa3a4c6f",
+    "astra_ingestion/rpc_store.py": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7",
+    "astra_ingestion/web.py": "81d31df62b75484e66f343b246ef82b7bd9660c861c7ec02e654ad9bb1be0f12",
+    "astra_ingestion/static/index.html": "649f458a37fcbfd1d706de6f8cb34373a7e9194f784b1747b93497846d729184",
+    "astra_ingestion/static/app.js": "8cea854ca8ed67e1399772da56cf38dec74dbcfd26948e21e24690b57cd29afc",
+    "astra_ingestion/static/styles.css": "0e5210c2f3cbc3770d873c85b14bab1d94a900fc7b9a51d6d1a0dbd754313a27",
+    "tests/ingestion/test_backfill_web_status_v2.py": "aefd3361c9bd7221c1f4420c21d5a006ff65ede7818925f006b6b709ef06a71e",
+    "tests/ingestion/backfill_status_ui_contract.js": "5936895806e025433694d336246b40b91b74d32b358a122dd13748b3f3a84d6c"
+  },
+  "verified": [
+    "Both web transports require authentication and return no-store read-only status",
+    "Status adapter calls only the existing backfill_status RPC and strips private evidence and arbitrary metadata",
+    "All 16 families displayed; delivery matched by run ID with active-run preference",
+    "Unknown planning, coverage and counts are explicit; Massive dependency remains visible",
+    "Useful data progress is distinct from planner movement and physical records from existing source references",
+    "Failed status reads preserve history refresh and mark previous values stale; subsequent successful reads recover",
+    "Original job auth, submission and control contracts remain passing"
+  ],
+  "not_run": [
+    "Live browser inspection or production deployment; parent owns production"
+  ]
+}

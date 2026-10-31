@@ -1,0 +1,66 @@
+{
+  "activation_admitted": false,
+  "candidate_archive": {
+    "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+    "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e"
+  },
+  "candidate_source_path": "review/recovery-v81/bounded-seal-scan/candidate_planner_definition_v81.sql",
+  "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+  "current_catalog_assessment": {
+    "path": "review/recovery-v81/cursor-integrity/current_trigger_scope_assessment_v81.json",
+    "sha256": "9702884aa786beb37e239a5b615bc7b44c000e56416b0ceb2cce525f75839259"
+  },
+  "limitations": [
+    "No new PostgreSQL test, production read or activation executed by this reviewer. Producer owns focused actual-PG tests.",
+    "500 IDs bound cardinality and helper invocations, not wall time or total helper work; actual exact-page plan/performance qualification remains required.",
+    "A completed scan is not a complete plan or proof of acquisition. The final aggregate and sealer runtime remain unmeasured.",
+    "Catalog facts are point-in-time; root must reconcile current owner, source/key/trigger guards and uncertain operations before activation.",
+    "The observed replication mode belongs to the diagnostic session; no universal historical or future privileged-writer guarantee is asserted.",
+    "New missing work behind/above the cursor must fail the unchanged final sealer; it does not authorize automatic cursor reset."
+  ],
+  "prior_review": {
+    "path": "review/recovery-v81/cursor-integrity/candidate_53cc_cursor_review_v81.json",
+    "sha256": "5acd5422270ce856e5b7f01e00143dc3f9c78f735457f56916d360b09a49e78a"
+  },
+  "production_calls": 0,
+  "protected_pin_counts": {
+    "functions": 17,
+    "primary_keys": 2,
+    "triggers": 5
+  },
+  "provider_calls": 0,
+  "resolved_before_qualification": [
+    {
+      "finding": "Initial draft key cardinality16 vs15",
+      "resolution": "Corrected to15 before candidate53cc froze."
+    },
+    {
+      "finding": "Completed-history lower bound and full-terminal boundary",
+      "resolution": "Both guards added to b4d891; prior53cc bytes retained."
+    }
+  ],
+  "scan_basis_sha256_independently_recomputed": "1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb",
+  "schema": "astra.bounded-seal-scan-cursor-atomicity-review/1",
+  "source_inverse_exact": true,
+  "status": "STATIC_PASS_FOR_FOCUSED_QUALIFICATION_ONLY",
+  "task_id_note_correction": {
+    "path": "review/recovery-v81/cursor-integrity/task_id_constraint_correction_v81.json",
+    "sha256": "fdb84a08aa6ad32c7718ee62fb7df2e266fd6ded4d589430150b0d66ef704759"
+  },
+  "tests_executed": 0,
+  "unchanged_final_accounting_and_sealer_suffix_bytes": 1542,
+  "unchanged_prefix_bytes": 18221,
+  "verified_findings": [
+    "The original active-run/cohort/member/calendar/planner-version/supported-kind checks and shared gate/row lock prefix are byte-identical.",
+    "Only the SEAL generic snapshot-call/more-return fragment is replaced. The separate initial planner snapshot call remains unchanged.",
+    "The upper bound and each array page use the same task ID ordering/collation; at most500 global IDs are collected before any scope lookup or helper call.",
+    "Global plan-unit presence is checked by task_id only. Exact v78 dynamic exclusions and unchanged helper true-return accounting are preserved.",
+    "The cursor advances by examined IDs, including pages wholly matched, dynamic or foreign-run; NULL distinguishes unstarted from an actual identifier.",
+    "All15 persisted keys are required with no extras; run/fence/cohort/manifest/expected count/source-catalog basis are bound and integer/timestamp shape checks fail closed.",
+    "Completed and incomplete accounting now bound all prior pages to500 IDs, with correct full-terminal equality and short/empty terminal alternatives.",
+    "Exactly one run metadata key is updated in the existing transaction after real helper effects; no exception handler swallows rollback. Snapshot/coverage writes and cursor therefore share the existing transaction outcome.",
+    "Every newly processed page always returns JSON boolean plan_complete:false, including the terminal page. It does not touch last_progress_at or source counters.",
+    "A later call validates completed progress then executes the unchanged full count/hash and real sealer; prior page durability is outside that later failing transaction.",
+    "Current origin-enabled insertion trigger invokes the unchanged snapshot helper atomically for new tasks; unchanged final missing-snapshot validation remains the integrity backstop for missing later or historical insertions."
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "astra.readback-transaction-race-derivation/1",
+  "status": "PREPARATION_ONLY_NOT_ACTIVATION_AUTHORITY",
+  "baseline_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+  "candidate_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+  "unchanged_recheck_sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+  "function_pins": {
+    "backfill_recheck_page_v2(text,integer)": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+    "backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+  },
+  "expected_maintain_metadata": {
+    "oid": "16041463",
+    "proacl": [
+      "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+      "astra_ingestion_monitor_owner_v1=X/astra_ingestion_rpc_owner_v1"
+    ],
+    "probin": null,
+    "procost": 100,
+    "prokind": "f",
+    "prolang": "13619",
+    "proname": "backfill_maintain_v2",
+    "prorows": 0,
+    "pronargs": 1,
+    "proowner": "15985999",
+    "proconfig": [
+      "search_path=\"\"",
+      "statement_timeout=8s",
+      "lock_timeout=2s"
+    ],
+    "proretset": false,
+    "prosecdef": true,
+    "prorettype": "3802",
+    "prosqlbody": null,
+    "prosupport": "-",
+    "proargmodes": null,
+    "proargnames": [
+      "p_limit"
+    ],
+    "proargtypes": [
+      "23"
+    ],
+    "proisstrict": false,
+    "proparallel": "u",
+    "protrftypes": null,
+    "provariadic": "0",
+    "provolatile": "v",
+    "proleakproof": false,
+    "pronamespace": "15984556",
+    "proallargtypes": null,
+    "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+    "pronargdefaults": 1
+  },
+  "run": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "root_source_revision": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "predicate_change": {
+    "before": "  WHERE rr.status IN ('ACTIVE','PARTIAL_OPERATIONAL_FAILURE','BLOCKED_EXTERNAL') AND NOT EXISTS(",
+    "after": "  WHERE rr.status IN ('ACTIVE','PARTIAL_OPERATIONAL_FAILURE','BLOCKED_EXTERNAL') AND pg.committed_at<transaction_timestamp() AND NOT EXISTS(",
+    "occurrences": 1
+  },
+  "reversed_candidate_equals_exact_baseline": true,
+  "unchanged_verifier_and_auth_pins_rechecked_after_replacement": true,
+  "authority": "Current root instruction: local preparation and disposable-PG qualification only; no production dispatch.",
+  "source_receipts": [
+    "review/recovery-v71/live_backfill_maintain_1332.json",
+    "review/recovery-v71/live_maintenance_helpers_1335.json",
+    "review/recovery-v72/readback_transaction_race_actual_reason_1410.json"
+  ],
+  "artifacts": {
+    "baseline_maintain_v2.sql": {
+      "sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+      "bytes": 2805
+    },
+    "candidate_maintain_readback_transaction_v72.sql": {
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "bytes": 2849
+    },
+    "unchanged_recheck_page_v2.sql": {
+      "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+      "bytes": 6749
+    },
+    "forward_readback_transaction_race_v72.sql": {
+      "sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b",
+      "bytes": 6902
+    },
+    "readback_transaction_race_v72.diff": {
+      "sha256": "16a77cca4cbc410229e79a808b6ff893249f23842993972a7d4b89b46a29faeb",
+      "bytes": 1053
+    }
+  },
+  "limits": [
+    "Existing READBACK_FAILURE markers remain excluded and unchanged.",
+    "Already affected pages require separately authorized exact reconciliation; this forward does not clear failures.",
+    "The unchanged verifier remains the independent integrity authority.",
+    "Fresh source/metadata/owner/lease reconciliation is required before any root-selected dispatch."
+  ],
+  "production_calls": 0
+}

@@ -1,0 +1,279 @@
+{
+  "schema": "astra.defer-recurrence-recovery-assignment/1",
+  "request_id": "v76-defer-recurrence-qualified-recovery-assigned",
+  "scope": "Existing backfill_defer incident recurrence, not a new controller or duplicate queue entry",
+  "original_queue_key": "RUNTIME_RPC:backfill_defer:render:04eab3f5-4046-4eb2-bd9f-a91135d75a0d",
+  "original_failure_at": "2026-10-30T17:12:06.50638489Z",
+  "recurrence": {
+    "render_log_id": "3a3f4e6e-d623-4b72-abea-f240d00ae223",
+    "at": "2026-10-30T19:58:06.268153291Z",
+    "operation": "backfill_defer",
+    "reason": "HTTP_ERROR",
+    "native": {
+      "result": [
+        {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "process_id": "30212",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T19:58:03.162000"
+        },
+        {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "process_id": "30954",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T19:58:06.250000"
+        },
+        {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "process_id": "30915",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T19:58:07.763000"
+        }
+      ]
+    },
+    "nearest_native_gap_ms": 18.153291,
+    "exact_request_task_holder_correlation": false,
+    "original_request_outcome": "UNKNOWN_NOT_REPLAYED"
+  },
+  "verified_acquisition": {
+    "observed_at": "2026-10-30 20:00:39.420628+00",
+    "progress": {
+      "page_rows": 7966,
+      "readbacks": 7966,
+      "mismatches": 0,
+      "source_bytes": 717619037,
+      "missing_readbacks": 0,
+      "latest_page_commit": "2026-10-30T19:57:59.028118+00:00",
+      "physical_records_or_pointers": 939857,
+      "matching_readbacks_after_install": 107,
+      "first_commit_after_install_readback": "2026-10-30T19:54:36.637463+00:00",
+      "pages_committed_after_install_readback": 107
+    },
+    "bounded_page_population_complete": true,
+    "postinstall_page_samples": [
+      {
+        "kind": "massive_dividends",
+        "family": "N02",
+        "page_no": 0,
+        "task_id": "backfill-plan-095e8e6804cee584a6d4c7377c3f63810ea0bd37dffb408b83c446bbb4555f2f",
+        "provider": "Massive",
+        "fetched_at": "2026-10-30T19:57:58.968+00:00",
+        "body_sha256": "c00bdfd83a21f83f4d95fbbb0d74baa659279320542e7aaed3557ececcf9cbe4",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:59.11943+00:00",
+        "committed_at": "2026-10-30T19:57:59.028118+00:00",
+        "has_readback": true,
+        "record_count": 0,
+        "source_bytes": 76,
+        "actual_records": 0,
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "readback_sha256": "c00bdfd83a21f83f4d95fbbb0d74baa659279320542e7aaed3557ececcf9cbe4",
+        "readback_matches": true
+      },
+      {
+        "kind": "massive_news",
+        "family": "N01",
+        "page_no": 0,
+        "task_id": "backfill-plan-5b1a357812109a56600ab3832c75b4b8831796ac71e9e60b5f44cb7220f78057",
+        "provider": "Massive",
+        "fetched_at": "2026-10-30T19:57:56.748+00:00",
+        "body_sha256": "1e578cf29f4773c87723200b0bb3f8d0a23d382ca606d1d4b689298d51e837cd",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:56.9666+00:00",
+        "committed_at": "2026-10-30T19:57:56.858942+00:00",
+        "has_readback": true,
+        "record_count": 13,
+        "source_bytes": 21664,
+        "actual_records": 13,
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "readback_sha256": "1e578cf29f4773c87723200b0bb3f8d0a23d382ca606d1d4b689298d51e837cd",
+        "readback_matches": true
+      },
+      {
+        "kind": "derive_daily",
+        "family": "D05",
+        "page_no": 0,
+        "task_id": "backfill-plan-06568e6acd7fa38b04dc48b651d0d041eef95a65510d279ad280b41f1d6b71db",
+        "provider": "DERIVED",
+        "fetched_at": "2026-10-30T19:57:55.506401+00:00",
+        "body_sha256": "ca53a8ad1a672cac23c3d66c40c501bd54b2fc54d35ff54be751adf800f5bfe7",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:55.687386+00:00",
+        "committed_at": "2026-10-30T19:57:55.588082+00:00",
+        "has_readback": true,
+        "record_count": 21,
+        "source_bytes": 34530,
+        "actual_records": 21,
+        "adapter_version": "fixed3000-derived-v2.1",
+        "readback_sha256": "ca53a8ad1a672cac23c3d66c40c501bd54b2fc54d35ff54be751adf800f5bfe7",
+        "readback_matches": true
+      },
+      {
+        "kind": "derive_daily",
+        "family": "D04",
+        "page_no": 0,
+        "task_id": "backfill-plan-2d304edbae9b16672e6a054ea8b7de14851d772d6b1b28a6f0f2886234deb9a3",
+        "provider": "DERIVED",
+        "fetched_at": "2026-10-30T19:57:52.905495+00:00",
+        "body_sha256": "2311594d59db301fb59d10f17f82305919844bd9c72c54e84c9ccbf502152f06",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:53.120744+00:00",
+        "committed_at": "2026-10-30T19:57:53.023671+00:00",
+        "has_readback": true,
+        "record_count": 22,
+        "source_bytes": 40490,
+        "actual_records": 22,
+        "adapter_version": "fixed3000-derived-v2.1",
+        "readback_sha256": "2311594d59db301fb59d10f17f82305919844bd9c72c54e84c9ccbf502152f06",
+        "readback_matches": true
+      },
+      {
+        "kind": "derive_daily",
+        "family": "D03",
+        "page_no": 0,
+        "task_id": "backfill-plan-8e0273254406a76f6f69a3a7b1012f1d469041c7d2598a7673c6a7c8ee3f5c65",
+        "provider": "DERIVED",
+        "fetched_at": "2026-10-30T19:57:52.203139+00:00",
+        "body_sha256": "5484f0ca61974d4f864ea0995f18d3648153e2fb9be6ee297f179a3b4f2009a7",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:52.418392+00:00",
+        "committed_at": "2026-10-30T19:57:52.293507+00:00",
+        "has_readback": true,
+        "record_count": 22,
+        "source_bytes": 42788,
+        "actual_records": 22,
+        "adapter_version": "fixed3000-derived-v2.1",
+        "readback_sha256": "5484f0ca61974d4f864ea0995f18d3648153e2fb9be6ee297f179a3b4f2009a7",
+        "readback_matches": true
+      },
+      {
+        "kind": "alpaca_stock_bars",
+        "family": "D02",
+        "page_no": 0,
+        "task_id": "backfill-plan-f2f925a13c62923d4b170fe0cc46c46851125f81fa1beadd2fbb042e8b7fcfbb",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T19:57:51.223278+00:00",
+        "body_sha256": "1d636f83de430688f17a49fd1bbeb1ddffeec57614dc726f2422f8fde1a28797",
+        "http_status": 200,
+        "verified_at": "2026-10-30T19:57:51.586336+00:00",
+        "committed_at": "2026-10-30T19:57:51.372487+00:00",
+        "has_readback": true,
+        "record_count": 290,
+        "source_bytes": 30914,
+        "actual_records": 290,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "1d636f83de430688f17a49fd1bbeb1ddffeec57614dc726f2422f8fde1a28797",
+        "readback_matches": true
+      }
+    ],
+    "postinstall_by_provider_adapter": [
+      {
+        "provider": "Alpaca",
+        "page_rows": 24,
+        "latest_commit": "2026-10-30T19:57:51.372487+00:00",
+        "adapter_version": "fixed3000-provider-v2.2",
+        "first_fetched_at": "2026-10-30T19:54:54.246025+00:00",
+        "matching_readbacks": 24,
+        "records_or_pointers": 5140
+      },
+      {
+        "provider": "DERIVED",
+        "page_rows": 8,
+        "latest_commit": "2026-10-30T19:57:50.319308+00:00",
+        "adapter_version": "fixed3000-compact-intraday-pointer-v2.1",
+        "first_fetched_at": "2026-10-30T19:55:01.193475+00:00",
+        "matching_readbacks": 8,
+        "records_or_pointers": 8
+      },
+      {
+        "provider": "DERIVED",
+        "page_rows": 25,
+        "latest_commit": "2026-10-30T19:57:55.588082+00:00",
+        "adapter_version": "fixed3000-derived-v2.1",
+        "first_fetched_at": "2026-10-30T19:54:36.462106+00:00",
+        "matching_readbacks": 25,
+        "records_or_pointers": 521
+      },
+      {
+        "provider": "Massive",
+        "page_rows": 42,
+        "latest_commit": "2026-10-30T19:57:59.028118+00:00",
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "first_fetched_at": "2026-10-30T19:54:38.251+00:00",
+        "matching_readbacks": 42,
+        "records_or_pointers": 2521
+      },
+      {
+        "provider": "REUSE",
+        "page_rows": 8,
+        "latest_commit": "2026-10-30T19:57:49.528814+00:00",
+        "adapter_version": "fixed3000-retained-pointer-v2.1",
+        "first_fetched_at": "2026-10-30T19:54:58.170399+00:00",
+        "matching_readbacks": 8,
+        "records_or_pointers": 8
+      }
+    ],
+    "owner_install_readback": {
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T20:30:00Z",
+      "repair_state": "INSTALLED_AND_ACQUIRING_MONITORING",
+      "audit73_count": 1,
+      "audit74_count": 1,
+      "held_checkpoint_state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+      "installation_audit70_count": 1
+    }
+  },
+  "postinstall_pages": 107,
+  "postinstall_actual_provider_pages": 66,
+  "postinstall_derived_pages": 33,
+  "postinstall_reuse_pages": 8,
+  "physical_progress_not_reset": true,
+  "claim_repair_replay_authorized": false,
+  "selected_recovery_preparation": {
+    "state": "LOCAL_QUALIFICATION_IN_PROGRESS_NOT_APPLIED",
+    "candidate_scope": "Only backfill_defer added to existing exact closed-envelope complete nativeHTTP500/55P03 request retry set; all existing serialization/auth/deadline/backoff/provider-enclosing-unit rules unchanged.",
+    "current_private_source": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+    "required_proof": "Actual isolated PostgreSQL early/late native55P03 rollback of defer task/limit/pacing/provider-dependency/exception effects; committed-lost-ACK single-send fatal; unchanged provider fetchcount; source/owner/fence/scope guards; independent review and exact-head CI before activation.",
+    "author": "/root/maintenance_diagnostic_review",
+    "independent_reviewer": "/root/relay_v3_review",
+    "remote_writer": "/root",
+    "no_other_retry_operations": true,
+    "no_historical_request_replay": true,
+    "no_security_source_cost_change": true
+  },
+  "existing_successor": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "last_run": {
+      "id": "36f8df8a-5648-8327-83ac-d406a12ba00d",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-10-30T20:00:00Z",
+      "started_at": "2026-10-30T19:58:29.830290Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "enabled": true,
+    "prompt_matches_current": true,
+    "active_successor_must_respect_live_root_lease": true
+  },
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY"
+}

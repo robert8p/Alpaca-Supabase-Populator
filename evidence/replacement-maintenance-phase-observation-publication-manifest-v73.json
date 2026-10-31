@@ -1,0 +1,646 @@
+{
+  "schema": "astra.maintenance-phase-observation.publication-manifest/1",
+  "state": "PREPARED_LOCAL_NOT_PUBLISHED_NOT_ACTIVATED",
+  "created_at": "2026-10-30T15:31:51.597654+00:00",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "base_tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+  "repository": "robert8p/Alpaca-Supabase-Populator",
+  "remote_mutations_by_producer": 0,
+  "scope": "Temporarily observe at most four global-maintenance phase samples using existing permissions; exact6c880 restoration accompanies it.",
+  "observation_deadline_utc": "2026-10-30T15:45:00Z",
+  "deadline_is_not_extended_by_publication_or_receipt": true,
+  "activation_status": "NOT_ACTIVATED_PENDING_ROOT_RECONCILIATION_AND_EXACT_CI",
+  "database_incident_reconciliation_requirement": "Database returned57P03 around15:24; require fresh successful ownership, source, permissions and exact-head reconciliation before any activation.",
+  "required_before_activation": [
+    "Root reconciles existing controller, successor, same owner/fence/cohort/lease and every uncertain write.",
+    "All exact-head required CI gates must pass; complete17-case observation suite and installer suite must execute with zero dedicated-gate skips.",
+    "Fresh database source/metadata/ACL/index guards must pass before fixed15:45 deadline.",
+    "Root alone applies reviewed forward once and reads back exact candidate; uncertain outcomes are reconciled before retry.",
+    "Observe at most four committed samples; exact restore may run after deadline under same unexpired owner lease."
+  ],
+  "no_runtime_worker_auth_grant_credential_provider_schedule_changes": true,
+  "all_existing1f1f_blobs_retained": true,
+  "active_additions": [
+    "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql",
+    "sql/astra_backfill_maintenance_phase_observation_v73.sql",
+    "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py",
+    "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py"
+  ],
+  "active_tests": {
+    "test_backfill_maintenance_phase_observation_v73": 17,
+    "test_backfill_maintenance_phase_installation_v73": 9
+  },
+  "dependency_count": 77,
+  "required_new_dependencies": [
+    "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py",
+    "review/recovery-v73/baseline_maintain_installed_v73.sql",
+    "review/recovery-v73/candidate_maintain_phase_observation_v73.sql",
+    "review/recovery-v73/installation/build_phase_observation_installation_v73.py",
+    "review/recovery-v73/installation/forward_maintenance_phase_observation_v73.sql",
+    "review/recovery-v73/installation/installation_manifest_v73.json",
+    "review/recovery-v73/installation/restore_maintenance_phase_observation_v73.sql",
+    "review/recovery-v73/maintenance_phase_observation_derivation_v73.json",
+    "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql",
+    "sql/astra_backfill_maintenance_phase_observation_v73.sql",
+    "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py",
+    "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py"
+  ],
+  "failed_qualification_attempt_retained": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_1_v73.json",
+  "reviewed_artifact_pins": {
+    "sql/astra_backfill_maintenance_phase_observation_v73.sql": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+    "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+    "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+    "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py": "c6b57aa7aca1b5f84037cf54eb10c54bce88e70c4c21f76636155ac493c09cbc",
+    "review/recovery-v73/candidate_maintain_phase_observation_v73.sql": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+    "evidence/replacement-maintenance-phase-observation-qualification-v73.json": "5f9bb2fa0a7da30912a8f4a40fd9f3ffa12bc9dbf272510a42d1282640c26f8c",
+    "review/recovery-v73/maintenance_phase_active_qualification_v73.json": "4085afa8b744a9b7b42ca58ee42aedb22295c96cc58fab243405b762e2e6ac0d",
+    "review/recovery-v73/maintenance_phase_observation_independent_test_result_v73.json": "8ca2ef6cc28562290feab7688db217b4905116fb39241f17177b60f0a08016e7",
+    "review/recovery-v73/qualify_maintenance_phase_observation_independently_v73.py": "3f77f25a638cac22cfd169bf06a4af630ca591e0bcb89b2a47f55af11cb8b95c",
+    "review/recovery-v73/installation/qualification_final_v73.json": "e28f992f9ddb184de4f7e58cfa84d07470a08fa853b69a338b0e1ae9b6092ce9",
+    "review/recovery-v73/installation/installation_manifest_v73.json": "217ccec4d7ef81f5977537785b0326bb60da8c3d5cf00850858c67e58c360b07",
+    "review/recovery-v73/installation/build_phase_observation_installation_v73.py": "e5f4928c2725218515db6f6c06884f817a7c2e8e978cd1ee2b1815bb25a545fe",
+    "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py": "1803d4e43e92eca8b3b2b6becb1700b62186121ed4f9117d25564b680642000d",
+    "review/recovery-v73/maintenance_phase_observation_derivation_v73.json": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+    "review/recovery-v73/maintenance_phase_observation_proposal_v73.md": "03b54366a1838f392cd88437e599c53fa018eceb240a03c153099494c568a34b",
+    "review/recovery-v73/live_phase_observation_permission_inventory_v73.json": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+    "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json": "9dcc94d943185a6661dc9070d09b7a268c719c6b18a2781e0fe502652f28878e",
+    "evidence/replacement-maintenance-phase-observation-independent-review-v73.json": "95600d447b131c0b67e7179201b956437a4d43c4b38129c69dfa1cac9c05e29c",
+    "review/recovery-v73/build_phase_observation_publication_v73.py": "621ed2d99f7f16fc40d2388d927a0dc2cab09768aebb57efa35035ae80c87e71"
+  },
+  "referenced_existing_and_new_artifacts": [
+    {
+      "path": "evidence/replacement-checkpoint-ci-v72.json",
+      "bytes": 5698,
+      "sha256": "da0214549b132f25bcf46228a35dfffaefb94f611e895d7bbb095c7115092bd8",
+      "git_blob_sha1": "8e23d58a57d890444b8df43834931009fe79df31",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v72.json",
+      "bytes": 792,
+      "sha256": "c2e750a29fb642614dd46aae8680edc4e5e763606363098f7f6bfb1c06b05bb0",
+      "git_blob_sha1": "4bae2d718b96331baba9667c2beed2dcefc256c9",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-independent-review-v73.json",
+      "bytes": 10885,
+      "sha256": "95600d447b131c0b67e7179201b956437a4d43c4b38129c69dfa1cac9c05e29c",
+      "git_blob_sha1": "c1d4492a8a6f7ae6d3dae1c9898146af725e4b68",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-qualification-v73.json",
+      "bytes": 6432,
+      "sha256": "5f9bb2fa0a7da30912a8f4a40fd9f3ffa12bc9dbf272510a42d1282640c26f8c",
+      "git_blob_sha1": "e6b978becd0e5c82e847bb17d9e9a15daab371fa",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json",
+      "bytes": 1292,
+      "sha256": "9dcc94d943185a6661dc9070d09b7a268c719c6b18a2781e0fe502652f28878e",
+      "git_blob_sha1": "c9e8b646a42c358b779c0650c268ff573a022297",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v72.json",
+      "bytes": 4280,
+      "sha256": "fba4043733f7ccd6e74f027d01143c508400f66bda6bed1ff2cf2f567fc70a8d",
+      "git_blob_sha1": "c61b6211d3e784d29f4420b575c326624dc15275",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py",
+      "bytes": 4979,
+      "sha256": "1803d4e43e92eca8b3b2b6becb1700b62186121ed4f9117d25564b680642000d",
+      "git_blob_sha1": "356a4758c55b601da078a0a57a473fbe6270d8d2",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/baseline_maintain_installed_v73.sql",
+      "bytes": 2849,
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "git_blob_sha1": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/build_maintenance_phase_observation_v73.py",
+      "bytes": 9213,
+      "sha256": "1999eb7231c4a06347ada52b3fd2ff1cd2bf04294d0ffae1291e3f5dd5ad0b63",
+      "git_blob_sha1": "1dfc22dc8cda440780fcd5743159eb2899c2cba6",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/build_phase_observation_publication_v73.py",
+      "bytes": 9578,
+      "sha256": "621ed2d99f7f16fc40d2388d927a0dc2cab09768aebb57efa35035ae80c87e71",
+      "git_blob_sha1": "a2f76f1fe8d363186a160ca8b0ec7c2f61498bcc",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_initial_v73.sql",
+      "bytes": 10441,
+      "sha256": "0e220fb47e81e26bbe644909f8801ba65817d995cab3a4d6d64e3045f16052c3",
+      "git_blob_sha1": "499fe0c9cec0bd7ac8950a27d93ea38445a785ee",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_v73.sql",
+      "bytes": 11311,
+      "sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "git_blob_sha1": "33597009236865984e86411ac6492e4a4c68f553",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/database_availability_incident_v73.json",
+      "bytes": 13385,
+      "sha256": "ae841447196bbaae8afa1f5d4f8d857fb3266a0e88d6d17906253d5c26370036",
+      "git_blob_sha1": "13a3b28645a2765ca3e81a30cfc058306b18979a",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/database_availability_recovery_readback_v73.json",
+      "bytes": 3967,
+      "sha256": "458081ed6c9af711e906136124ee531789442a31a177c90ac0447c8645215b0f",
+      "git_blob_sha1": "e2a1bf7bd781f6d5162d723b0164c309655e856f",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/independent_progress_during_phase_preparation_v73.json",
+      "bytes": 4586,
+      "sha256": "f21a18df7867f3e2dc86818e98df96f217f24049fbb0960902cc0642e548e408",
+      "git_blob_sha1": "4aeb232735fd8b934d5999502fa702587ddfaf5d",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_observation_installation_v73.py",
+      "bytes": 21170,
+      "sha256": "e5f4928c2725218515db6f6c06884f817a7c2e8e978cd1ee2b1815bb25a545fe",
+      "git_blob_sha1": "8b67a1914db49cb98e08805bc0ad4cde8005f6e5",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_preflight_readback_v73.py",
+      "bytes": 8403,
+      "sha256": "6fc0ee649aecb58b2e5b71f7f5432820c592ab6bac44d105b3137b830587edef",
+      "git_blob_sha1": "10cb2c9fd45c5c03cd071fba2a8a6259bab0d732",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/forward_maintenance_phase_observation_v73.sql",
+      "bytes": 46180,
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/installation_manifest_v73.json",
+      "bytes": 11320,
+      "sha256": "217ccec4d7ef81f5977537785b0326bb60da8c3d5cf00850858c67e58c360b07",
+      "git_blob_sha1": "a885092a9d0bd449dbb5b673c349140b805138f6",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/maintenance_phase_preflight_readback_readonly_v73.sql",
+      "bytes": 23899,
+      "sha256": "81fe51a5e9788b3858469b48e95d2c4ce3aa8a9ef86faf36fed7a52ac6e92b94",
+      "git_blob_sha1": "2c4f3e84379b13b0ec88502366cdc3c1de4df487",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_derivation_v73.json",
+      "bytes": 2711,
+      "sha256": "d20d050d283c090734721e0c97cb89efebc5fb307e5f59a162e6d062b4cba1b4",
+      "git_blob_sha1": "df63d923a80b03b47b4aaa39b017be02b9084514",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_qualification_v73.json",
+      "bytes": 795,
+      "sha256": "d8cf9ed0e32ca01c0d8f9f59c37d9afbb9d12c40db17861fd7a7268d264608d3",
+      "git_blob_sha1": "71a3f9f09052277196c43967f2c30b555cc50226",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_attempt_1_v73.json",
+      "bytes": 1909,
+      "sha256": "2a67b34ad9993846794fcc2110c9b72a8a418ba6951a93380b06fc9d6041c956",
+      "git_blob_sha1": "4aabe25cbf4ce4fdec7dbed4a0cc5d0e2cc201ab",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_final_v73.json",
+      "bytes": 2159,
+      "sha256": "e28f992f9ddb184de4f7e58cfa84d07470a08fa853b69a338b0e1ae9b6092ce9",
+      "git_blob_sha1": "4e55c86ce773f8f7b459696f9cf8986d7d254fa2",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualify_phase_preflight_readback_v73.py",
+      "bytes": 5520,
+      "sha256": "0a91caf4d9ff5e8da9317f6b702fe6808557a46627ca0e7106b12bd672276340",
+      "git_blob_sha1": "d0fc8fa6a5c12e917236442bea369058ce7b6907",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/installation/restore_maintenance_phase_observation_v73.sql",
+      "bytes": 37584,
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_observation_permission_inventory_v73.json",
+      "bytes": 5414,
+      "sha256": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+      "git_blob_sha1": "f56e1336872c4c915ecab3329a4235441406cf25",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_active_qualification_v73.json",
+      "bytes": 50757,
+      "sha256": "4085afa8b744a9b7b42ca58ee42aedb22295c96cc58fab243405b762e2e6ac0d",
+      "git_blob_sha1": "f55816f3910dd03f480fa4508fa3f70bb47da583",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_derivation_v73.json",
+      "bytes": 1709,
+      "sha256": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+      "git_blob_sha1": "97b7167431202a2d6dc50357fb81bc9c1bd089f1",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_independent_test_result_v73.json",
+      "bytes": 5671,
+      "sha256": "8ca2ef6cc28562290feab7688db217b4905116fb39241f17177b60f0a08016e7",
+      "git_blob_sha1": "3b2040915ddeb80011f48b0ae535d7962f64e6a9",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_proposal_v73.md",
+      "bytes": 12271,
+      "sha256": "03b54366a1838f392cd88437e599c53fa018eceb240a03c153099494c568a34b",
+      "git_blob_sha1": "a6f1243dc5bbf20303ace21ef59f7da20a9da80e",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_1_v73.json",
+      "bytes": 5113,
+      "sha256": "13741fbafe0108e4036bfb5580b23381bd7837148270d46bee4bab69f60f750e",
+      "git_blob_sha1": "811889a459dfc5d4a7791c7aa0a36eb3fc033ef4",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_2_v73.json",
+      "bytes": 4148,
+      "sha256": "89230fad075f2cbd797dbd6d56bf0840641aa05cb85361c7e64272dcda002e83",
+      "git_blob_sha1": "3a84c3daabb8a517455f556f1b7f347b16b77c06",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_3_v73.json",
+      "bytes": 4392,
+      "sha256": "4fb896ddf7b3cf4b7ccb9517c7e36cc83eb72cef7d3ac31710b283cd11fc6adb",
+      "git_blob_sha1": "09d6b6ccfb8e63abdf43bd10bd20f295a372366f",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_4_v73.json",
+      "bytes": 4478,
+      "sha256": "2399441824d697b4636b78d15a759c694f38083a1c1f9daff35b5c2d35ef54b3",
+      "git_blob_sha1": "3242a2e55970719e761e6b751714f7749e3041c7",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_v73.diff",
+      "bytes": 10556,
+      "sha256": "16bef4b7422be704778810982fadd408159a956cea60a2fc3add95acaa892c61",
+      "git_blob_sha1": "907760096a85aa2222a180c7d8cf122d5d40f05e",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/phase_publication_review_pins_v73.json",
+      "bytes": 3360,
+      "sha256": "d7c04d8791c9a05855b1a7809f66b34fd9217add1ce62103b40faf9554f36be3",
+      "git_blob_sha1": "4e722c04e0f5edef80217b21921c031f9db0479b",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/postrestart_independent_acquisition_v73.json",
+      "bytes": 1950,
+      "sha256": "a1319a243d655d36629702e0e40b76230c6f58c4c2a68edb49763766930a6267",
+      "git_blob_sha1": "907b7b3a2844ad7212bf5a8561b6a18d4ae1ab84",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_independently_v73.py",
+      "bytes": 3961,
+      "sha256": "3f77f25a638cac22cfd169bf06a4af630ca591e0bcb89b2a47f55af11cb8b95c",
+      "git_blob_sha1": "7dc65ae6c8fa0d65280f5489917c229fe1f7ced0",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_v73.py",
+      "bytes": 1887,
+      "sha256": "016e51d9b26362d3ff53ec0c5aa64cf37216bb387a4a3b2bbb8f0118fbb7f2f4",
+      "git_blob_sha1": "41d971928b365b4a375c65c7a36ca798dedccfe6",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql",
+      "bytes": 37584,
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_v73.sql",
+      "bytes": 46180,
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py",
+      "bytes": 18204,
+      "sha256": "c6b57aa7aca1b5f84037cf54eb10c54bce88e70c4c21f76636155ac493c09cbc",
+      "git_blob_sha1": "4e2c77873cf360e0d32176c28303309c9fbb8db5",
+      "base_state": "ABSENT"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py",
+      "bytes": 25944,
+      "sha256": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+      "git_blob_sha1": "84e4dfbdee91fe19911fcb8f999648e784ad3a96",
+      "base_state": "ABSENT"
+    }
+  ],
+  "payload_files": [
+    {
+      "path": "evidence/replacement-checkpoint-ci-v72.json",
+      "bytes": 5698,
+      "sha256": "da0214549b132f25bcf46228a35dfffaefb94f611e895d7bbb095c7115092bd8",
+      "git_blob_sha1": "8e23d58a57d890444b8df43834931009fe79df31"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v72.json",
+      "bytes": 792,
+      "sha256": "c2e750a29fb642614dd46aae8680edc4e5e763606363098f7f6bfb1c06b05bb0",
+      "git_blob_sha1": "4bae2d718b96331baba9667c2beed2dcefc256c9"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-independent-review-v73.json",
+      "bytes": 10885,
+      "sha256": "95600d447b131c0b67e7179201b956437a4d43c4b38129c69dfa1cac9c05e29c",
+      "git_blob_sha1": "c1d4492a8a6f7ae6d3dae1c9898146af725e4b68"
+    },
+    {
+      "path": "evidence/replacement-maintenance-phase-observation-qualification-v73.json",
+      "bytes": 6432,
+      "sha256": "5f9bb2fa0a7da30912a8f4a40fd9f3ffa12bc9dbf272510a42d1282640c26f8c",
+      "git_blob_sha1": "e6b978becd0e5c82e847bb17d9e9a15daab371fa"
+    },
+    {
+      "path": "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json",
+      "bytes": 1292,
+      "sha256": "9dcc94d943185a6661dc9070d09b7a268c719c6b18a2781e0fe502652f28878e",
+      "git_blob_sha1": "c9e8b646a42c358b779c0650c268ff573a022297"
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v72.json",
+      "bytes": 4280,
+      "sha256": "fba4043733f7ccd6e74f027d01143c508400f66bda6bed1ff2cf2f567fc70a8d",
+      "git_blob_sha1": "c61b6211d3e784d29f4420b575c326624dc15275"
+    },
+    {
+      "path": "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py",
+      "bytes": 4979,
+      "sha256": "1803d4e43e92eca8b3b2b6becb1700b62186121ed4f9117d25564b680642000d",
+      "git_blob_sha1": "356a4758c55b601da078a0a57a473fbe6270d8d2"
+    },
+    {
+      "path": "review/recovery-v73/baseline_maintain_installed_v73.sql",
+      "bytes": 2849,
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "git_blob_sha1": "bf7a063f36689e6f5cf56b819b2b505cafdc627e"
+    },
+    {
+      "path": "review/recovery-v73/build_maintenance_phase_observation_v73.py",
+      "bytes": 9213,
+      "sha256": "1999eb7231c4a06347ada52b3fd2ff1cd2bf04294d0ffae1291e3f5dd5ad0b63",
+      "git_blob_sha1": "1dfc22dc8cda440780fcd5743159eb2899c2cba6"
+    },
+    {
+      "path": "review/recovery-v73/build_phase_observation_publication_v73.py",
+      "bytes": 9578,
+      "sha256": "621ed2d99f7f16fc40d2388d927a0dc2cab09768aebb57efa35035ae80c87e71",
+      "git_blob_sha1": "a2f76f1fe8d363186a160ca8b0ec7c2f61498bcc"
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_initial_v73.sql",
+      "bytes": 10441,
+      "sha256": "0e220fb47e81e26bbe644909f8801ba65817d995cab3a4d6d64e3045f16052c3",
+      "git_blob_sha1": "499fe0c9cec0bd7ac8950a27d93ea38445a785ee"
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_v73.sql",
+      "bytes": 11311,
+      "sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "git_blob_sha1": "33597009236865984e86411ac6492e4a4c68f553"
+    },
+    {
+      "path": "review/recovery-v73/database_availability_incident_v73.json",
+      "bytes": 13385,
+      "sha256": "ae841447196bbaae8afa1f5d4f8d857fb3266a0e88d6d17906253d5c26370036",
+      "git_blob_sha1": "13a3b28645a2765ca3e81a30cfc058306b18979a"
+    },
+    {
+      "path": "review/recovery-v73/database_availability_recovery_readback_v73.json",
+      "bytes": 3967,
+      "sha256": "458081ed6c9af711e906136124ee531789442a31a177c90ac0447c8645215b0f",
+      "git_blob_sha1": "e2a1bf7bd781f6d5162d723b0164c309655e856f"
+    },
+    {
+      "path": "review/recovery-v73/independent_progress_during_phase_preparation_v73.json",
+      "bytes": 4586,
+      "sha256": "f21a18df7867f3e2dc86818e98df96f217f24049fbb0960902cc0642e548e408",
+      "git_blob_sha1": "4aeb232735fd8b934d5999502fa702587ddfaf5d"
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_observation_installation_v73.py",
+      "bytes": 21170,
+      "sha256": "e5f4928c2725218515db6f6c06884f817a7c2e8e978cd1ee2b1815bb25a545fe",
+      "git_blob_sha1": "8b67a1914db49cb98e08805bc0ad4cde8005f6e5"
+    },
+    {
+      "path": "review/recovery-v73/installation/build_phase_preflight_readback_v73.py",
+      "bytes": 8403,
+      "sha256": "6fc0ee649aecb58b2e5b71f7f5432820c592ab6bac44d105b3137b830587edef",
+      "git_blob_sha1": "10cb2c9fd45c5c03cd071fba2a8a6259bab0d732"
+    },
+    {
+      "path": "review/recovery-v73/installation/forward_maintenance_phase_observation_v73.sql",
+      "bytes": 46180,
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484"
+    },
+    {
+      "path": "review/recovery-v73/installation/installation_manifest_v73.json",
+      "bytes": 11320,
+      "sha256": "217ccec4d7ef81f5977537785b0326bb60da8c3d5cf00850858c67e58c360b07",
+      "git_blob_sha1": "a885092a9d0bd449dbb5b673c349140b805138f6"
+    },
+    {
+      "path": "review/recovery-v73/installation/maintenance_phase_preflight_readback_readonly_v73.sql",
+      "bytes": 23899,
+      "sha256": "81fe51a5e9788b3858469b48e95d2c4ce3aa8a9ef86faf36fed7a52ac6e92b94",
+      "git_blob_sha1": "2c4f3e84379b13b0ec88502366cdc3c1de4df487"
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_derivation_v73.json",
+      "bytes": 2711,
+      "sha256": "d20d050d283c090734721e0c97cb89efebc5fb307e5f59a162e6d062b4cba1b4",
+      "git_blob_sha1": "df63d923a80b03b47b4aaa39b017be02b9084514"
+    },
+    {
+      "path": "review/recovery-v73/installation/preflight_readback_qualification_v73.json",
+      "bytes": 795,
+      "sha256": "d8cf9ed0e32ca01c0d8f9f59c37d9afbb9d12c40db17861fd7a7268d264608d3",
+      "git_blob_sha1": "71a3f9f09052277196c43967f2c30b555cc50226"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_attempt_1_v73.json",
+      "bytes": 1909,
+      "sha256": "2a67b34ad9993846794fcc2110c9b72a8a418ba6951a93380b06fc9d6041c956",
+      "git_blob_sha1": "4aabe25cbf4ce4fdec7dbed4a0cc5d0e2cc201ab"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualification_final_v73.json",
+      "bytes": 2159,
+      "sha256": "e28f992f9ddb184de4f7e58cfa84d07470a08fa853b69a338b0e1ae9b6092ce9",
+      "git_blob_sha1": "4e55c86ce773f8f7b459696f9cf8986d7d254fa2"
+    },
+    {
+      "path": "review/recovery-v73/installation/qualify_phase_preflight_readback_v73.py",
+      "bytes": 5520,
+      "sha256": "0a91caf4d9ff5e8da9317f6b702fe6808557a46627ca0e7106b12bd672276340",
+      "git_blob_sha1": "d0fc8fa6a5c12e917236442bea369058ce7b6907"
+    },
+    {
+      "path": "review/recovery-v73/installation/restore_maintenance_phase_observation_v73.sql",
+      "bytes": 37584,
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3"
+    },
+    {
+      "path": "review/recovery-v73/live_phase_observation_permission_inventory_v73.json",
+      "bytes": 5414,
+      "sha256": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+      "git_blob_sha1": "f56e1336872c4c915ecab3329a4235441406cf25"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_active_qualification_v73.json",
+      "bytes": 50757,
+      "sha256": "4085afa8b744a9b7b42ca58ee42aedb22295c96cc58fab243405b762e2e6ac0d",
+      "git_blob_sha1": "f55816f3910dd03f480fa4508fa3f70bb47da583"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_derivation_v73.json",
+      "bytes": 1709,
+      "sha256": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+      "git_blob_sha1": "97b7167431202a2d6dc50357fb81bc9c1bd089f1"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_independent_test_result_v73.json",
+      "bytes": 5671,
+      "sha256": "8ca2ef6cc28562290feab7688db217b4905116fb39241f17177b60f0a08016e7",
+      "git_blob_sha1": "3b2040915ddeb80011f48b0ae535d7962f64e6a9"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_proposal_v73.md",
+      "bytes": 12271,
+      "sha256": "03b54366a1838f392cd88437e599c53fa018eceb240a03c153099494c568a34b",
+      "git_blob_sha1": "a6f1243dc5bbf20303ace21ef59f7da20a9da80e"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_1_v73.json",
+      "bytes": 5113,
+      "sha256": "13741fbafe0108e4036bfb5580b23381bd7837148270d46bee4bab69f60f750e",
+      "git_blob_sha1": "811889a459dfc5d4a7791c7aa0a36eb3fc033ef4"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_2_v73.json",
+      "bytes": 4148,
+      "sha256": "89230fad075f2cbd797dbd6d56bf0840641aa05cb85361c7e64272dcda002e83",
+      "git_blob_sha1": "3a84c3daabb8a517455f556f1b7f347b16b77c06"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_3_v73.json",
+      "bytes": 4392,
+      "sha256": "4fb896ddf7b3cf4b7ccb9517c7e36cc83eb72cef7d3ac31710b283cd11fc6adb",
+      "git_blob_sha1": "09d6b6ccfb8e63abdf43bd10bd20f295a372366f"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_4_v73.json",
+      "bytes": 4478,
+      "sha256": "2399441824d697b4636b78d15a759c694f38083a1c1f9daff35b5c2d35ef54b3",
+      "git_blob_sha1": "3242a2e55970719e761e6b751714f7749e3041c7"
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_v73.diff",
+      "bytes": 10556,
+      "sha256": "16bef4b7422be704778810982fadd408159a956cea60a2fc3add95acaa892c61",
+      "git_blob_sha1": "907760096a85aa2222a180c7d8cf122d5d40f05e"
+    },
+    {
+      "path": "review/recovery-v73/phase_publication_review_pins_v73.json",
+      "bytes": 3360,
+      "sha256": "d7c04d8791c9a05855b1a7809f66b34fd9217add1ce62103b40faf9554f36be3",
+      "git_blob_sha1": "4e722c04e0f5edef80217b21921c031f9db0479b"
+    },
+    {
+      "path": "review/recovery-v73/postrestart_independent_acquisition_v73.json",
+      "bytes": 1950,
+      "sha256": "a1319a243d655d36629702e0e40b76230c6f58c4c2a68edb49763766930a6267",
+      "git_blob_sha1": "907b7b3a2844ad7212bf5a8561b6a18d4ae1ab84"
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_independently_v73.py",
+      "bytes": 3961,
+      "sha256": "3f77f25a638cac22cfd169bf06a4af630ca591e0bcb89b2a47f55af11cb8b95c",
+      "git_blob_sha1": "7dc65ae6c8fa0d65280f5489917c229fe1f7ced0"
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_v73.py",
+      "bytes": 1887,
+      "sha256": "016e51d9b26362d3ff53ec0c5aa64cf37216bb387a4a3b2bbb8f0118fbb7f2f4",
+      "git_blob_sha1": "41d971928b365b4a375c65c7a36ca798dedccfe6"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql",
+      "bytes": 37584,
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "git_blob_sha1": "c0d2d2f04ed1415df5a07731049c6430468bf1d3"
+    },
+    {
+      "path": "sql/astra_backfill_maintenance_phase_observation_v73.sql",
+      "bytes": 46180,
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "git_blob_sha1": "e7cbec3fe603d3f26f21e0deccecf051f6af1484"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py",
+      "bytes": 18204,
+      "sha256": "c6b57aa7aca1b5f84037cf54eb10c54bce88e70c4c21f76636155ac493c09cbc",
+      "git_blob_sha1": "4e2c77873cf360e0d32176c28303309c9fbb8db5"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py",
+      "bytes": 25944,
+      "sha256": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+      "git_blob_sha1": "84e4dfbdee91fe19911fcb8f999648e784ad3a96"
+    }
+  ]
+}

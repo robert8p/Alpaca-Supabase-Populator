@@ -1,0 +1,112 @@
+{
+  "schema": "astra.claim-capability.publication-readiness/1",
+  "created_at": "2026-10-30T12:46:28.366365+00:00",
+  "state": "EXACT_BASE_STAGED_QUALIFIED_READY_FOR_ROOT_PUBLICATION",
+  "base_commit": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "base_tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+  "base_tree_source": "Root-retained nontruncated GitHub recursive tree,713 entries; Git object IDs verified against the root source receipt.",
+  "active_source_scope": [
+    "sql/astra_backfill_claim_capability_filter_v2.sql",
+    "tests/ingestion/test_backfill_claim_capability_filter_v2.py"
+  ],
+  "reviewed_sql_and_test_unchanged": true,
+  "python_runtime_or_worker_changes": false,
+  "security_or_frozen_relay_payload_changes": false,
+  "dependency_audit": {
+    "method": "Observed project file reads and imports across all9 active tests, plus AST inventory of read_text/read_bytes calls in every imported project module.",
+    "audited_dependencies": 59,
+    "all_existing_dependencies_match_exact_base_git_blob_sha1": true,
+    "historical_fixture_dependencies_missing_from_base": [],
+    "new_active_dependencies": [
+      "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "tests/ingestion/test_backfill_claim_capability_filter_v2.py"
+    ],
+    "audit_only_new_helper": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+    "initial_local_drift_paths": [
+      "astra_ingestion/__init__.py",
+      "astra_ingestion/config.py",
+      "astra_ingestion/models.py",
+      "astra_ingestion/reconcile.py",
+      "astra_ingestion/source.py",
+      "astra_ingestion/store.py",
+      "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sql/astra_ingestion_rpc_v1.sql",
+      "tests/ingestion/test_rpc_postgres.py"
+    ],
+    "initial_local_drift_resolution": "Verified exact3ee4 bytes were found in retained resumed-release/ASTRA_ingestion_candidate and interim-review/candidate copies, matched against the GitHub tree, and staged without changing the reviewed workspace or remote repository.",
+    "drifting_files_to_publish": [],
+    "staged_publication_new_paths": [
+      "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "tests/ingestion/test_backfill_claim_capability_filter_v2.py"
+    ],
+    "staged_different_existing_paths": []
+  },
+  "staged_qualification": {
+    "tests": 9,
+    "passed": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 32.915803900003084,
+    "executed_from": "/tmp/replacement-claim-capability-staged-v71",
+    "postgres": "Existing disposable loopback PostgreSQL fixture only",
+    "scope": "All tests in the final reviewed active test file, including both-plan-mode22,121-unsupported/73-reuse-gap benchmark,88semantic cases, guards, rollback, source/auth preservation and real page/lost-ack behavior."
+  },
+  "prior_evidence_preserved": {
+    "producer_qualification_immutable": true,
+    "independent_review_immutable": true,
+    "initial_harness_failures_retained": true,
+    "new_staged_check_is_supplemental": true
+  },
+  "evidence_refs": [
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "bytes": 5513,
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "bytes": 20490,
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-qualification-v71.json",
+      "bytes": 15686,
+      "sha256": "4c05ecd655308790394f429bf5b357a867409dcd2c72d5c55f3cc538ff40b50b"
+    },
+    {
+      "path": "evidence/replacement-claim-capability-filter-independent-review-v71.json",
+      "bytes": 16508,
+      "sha256": "7f94069b27e617a7731856ec2cf08ab3ff52314a9cc0720744e9b2556e92084f"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_staged_source_v71.json",
+      "bytes": 16802,
+      "sha256": "de84d4da3380741730e9bd8c07572dc536a25dc6c6ff5bb27f38c41f148028ee"
+    },
+    {
+      "path": "review/recovery-v71/claim_capability_staged_publication_dependencies_v71.json",
+      "bytes": 33701,
+      "sha256": "9717ee04ddd54385acc1c85bcf8f554d1a0aec8eb8f57b6374cee3b824bf21e5"
+    },
+    {
+      "path": "evidence/replacement-3ee4-release-gates-v71.json",
+      "bytes": 15276,
+      "sha256": "4fc4fa5dd694ccaa27fc9c94871d8d299500be750ac01ea5199ee4632808f9da"
+    },
+    {
+      "path": "evidence/replacement-approved-relay-worker-deployment-v71.json",
+      "bytes": 2405,
+      "sha256": "0ff4f1e72eb806afeca5c10f77db14ef3fe2a6bb0f442b12215b9fd011f88c0f"
+    }
+  ],
+  "remote_mutations_by_preparer": false,
+  "production_database_calls_by_preparer": false,
+  "remaining_root_steps": [
+    "Reconcile publication head and publish the explicit packet onto the existing branch.",
+    "Observe CI for the resulting exact source revision; parent3ee4 CI is evidence for the base, not a result for the new child commit.",
+    "Reconcile same controller ownership/lease, scheduled successor, exact inner/outer pins and uncertain writes before applying once.",
+    "Read back the expected inner28ae5f1a\u2026 and unchanged outera9a72d49\u2026; verify actual committed-page progress separately."
+  ]
+}

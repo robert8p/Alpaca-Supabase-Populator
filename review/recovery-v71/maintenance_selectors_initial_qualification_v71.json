@@ -1,0 +1,13 @@
+{
+  "schema": "astra.maintenance-selector-qualification/1",
+  "passed": false,
+  "tests": 3,
+  "errors": 3,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 1.2881186079976032,
+  "production_calls": 0,
+  "sql_sha256": "462cd183dc28fd0c963b7bd014fb6a63164937cc624b9e023c26c3a8e74d3cf1",
+  "test_sha256": "f6fa58f727697385f1bb7b4bf2cf81aed29de1c4b75deb3894a3dcfeaefe6733",
+  "fixture_adaptation": "Only schema/run identifiers and live source hashes are mapped to corresponding local fixture definitions."
+}

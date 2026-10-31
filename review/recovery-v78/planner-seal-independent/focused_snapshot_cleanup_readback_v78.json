@@ -1,0 +1,9 @@
+{
+  "fixture_schema": "astra_rpc_test_43b89252dcda",
+  "passed": true,
+  "production_calls": 0,
+  "remaining_namespaces": [],
+  "remaining_public_endpoints": [],
+  "remaining_roles": [],
+  "schema": "astra.local-fixture-cleanup-readback/1"
+}

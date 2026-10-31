@@ -1,0 +1,20 @@
+{
+  "version": "replacement-managed-relay-postexpiry-edge-readback-v2",
+  "observed_before_utc": "2026-10-30T10:22:10Z",
+  "timestamp_policy": "Exact connector receipt time not captured; current clock was read after completion.",
+  "edge": {
+    "id": "36fca180-ab3c-4702-b296-ac206420ac66",
+    "slug": "population-top3000-news-v1",
+    "version": 1,
+    "status": "ACTIVE",
+    "verify_jwt": false,
+    "created_at": 1792760128938,
+    "updated_at": 1792760128938,
+    "ezbr_sha256": "04def722c50e2fc173d3bc59fc5462953c9338c71467aeb936385725c1e8996c",
+    "entrypoint_characters": 15606
+  },
+  "reviewed_existing_bundle_sha256": "04def722c50e2fc173d3bc59fc5462953c9338c71467aeb936385725c1e8996c",
+  "unchanged": true,
+  "no_relay_deployment": true,
+  "no_secret_values_requested_or_recorded": true
+}

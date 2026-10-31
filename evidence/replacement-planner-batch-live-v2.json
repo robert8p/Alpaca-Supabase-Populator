@@ -1,0 +1,98 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "repair": {
+    "migration": "astra_backfill_planner_batch_v2",
+    "sql_sha256": "afa7480ff4d926948c41908c9c9ae885dba06e00763ea7a26331917132ea74e6",
+    "applied_approximately": "2026-10-30T09:08:49Z",
+    "attempts": 1,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "scope": "Only MEMBERS loop bound: one complete fixed member per call. Existing BREADTH bound, task scopes, cursor and automatic continuation preserved."
+  },
+  "installed_readback": [
+    {
+      "observed_at": "2026-10-30 09:10:26.607805+00",
+      "planner_marker": 6519,
+      "single_member_bound": 6754,
+      "breadth_bound_preserved": 17380,
+      "next_member": "1590",
+      "pages_committed": 2025,
+      "records_committed": 241495,
+      "requests_reserved": 990,
+      "last_progress_at": "2026-10-30 09:10:26.427564+00"
+    }
+  ],
+  "subsequent_progress": [
+    {
+      "observed_at": "2026-10-30 09:14:20.165656+00",
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:20:00Z",
+      "next_member": "1609",
+      "planning_complete": "false",
+      "pages_committed": 2122,
+      "records_committed": 254129,
+      "requests_reserved": 1034,
+      "last_progress_at": "2026-10-30 09:14:16.529978+00",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      },
+      "latest_workers": [
+        {
+          "worker_id": "6dde714d-1a30-4674-b52a-8c57f95c3f2c",
+          "observed_at": "2026-10-30T09:14:14.758593+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        },
+        {
+          "worker_id": "57b1aafe-fb13-49ea-9faf-0bd807563df1",
+          "observed_at": "2026-10-30T08:58:04.255931+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    }
+  ],
+  "ownership_renewal": [
+    {
+      "id": 7,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 09:14:42.83708+00"
+    }
+  ],
+  "lease_until": "2026-10-30T09:50:00Z",
+  "automation": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "updated_at": "2026-10-30T09:15:12.078373+00:00",
+    "enabled": true,
+    "schedule_unchanged": true,
+    "new_controller_created": false
+  },
+  "uncertainty_reconciled": "One acknowledged successful apply, correct installed marker/bounds independently read back; no replay.",
+  "limitations": [
+    "Observed progress is time-bounded, not proof that all later workloads fit the existing deadline.",
+    "Shared-refresh qualification failure remains under repair; no web release before exact-head gates.",
+    "Full fixed-cohort plan and all 16 family deliveries remain incomplete.",
+    "Storage/work counts can overlap and are not unique market observations."
+  ],
+  "security": {
+    "relay_held": true,
+    "credentials_exported": false,
+    "worker_changed": false,
+    "new_permissions": false
+  }
+}

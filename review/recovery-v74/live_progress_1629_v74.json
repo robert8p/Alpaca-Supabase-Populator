@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-30 16:29:10.907728+00",
+  "status": "ACTIVE",
+  "fence": 1,
+  "owner": "root-replacement-20261030T042603Z",
+  "lease_until": "2026-10-30T16:45:00Z",
+  "pages_committed": 5756,
+  "records_committed": 694030,
+  "requests_reserved": 3047,
+  "source_bytes": 560705492,
+  "planner_next_member": "2383",
+  "planning_complete": "false",
+  "latest_page_commit": "2026-10-30 16:23:54.248148+00",
+  "readbacks": 5756,
+  "since_final_repair_readback": {
+    "pages": 448,
+    "records": 51753,
+    "readbacks": 448,
+    "first_commit": "2026-10-30T14:45:20.376251+00:00",
+    "latest_commit": "2026-10-30T16:23:54.248148+00:00",
+    "distinct_tasks": 448,
+    "matching_hashes_and_counts": 448
+  },
+  "subsequent_readback_failures": null
+}

@@ -1,0 +1,69 @@
+--- review/massive-relay-v2/candidates/sql/astra_backfill_massive_relay_v2.sql
++++ review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql
+@@ -1,4 +1,4 @@
+--- ASTRA_RELAY_REVIEW_SQL_BEGIN_V2
++-- ASTRA_RELAY_REVIEW_SQL_BEGIN_V3
+ -- Stateless managed-key adapter authorization in the existing worker RPC.
+ -- No provider credentials, controller, scheduler, legacy pipeline mutation or service-role client.
+ -- LOCAL REVIEW CANDIDATE: explicit action-time confirmation is required before applying.
+@@ -10,8 +10,8 @@
+ DO $preflight$
+ DECLARE approval jsonb; confirmed timestamptz;
+  supplied text:=current_query(); reviewed text; remaining text; transport_suffix text;
+- start_marker text:='-- ASTRA_RELAY_REVIEW_SQL_'||'BEGIN_V2'||chr(10);
+- end_marker text:='-- ASTRA_RELAY_REVIEW_SQL_'||'END_V2'||chr(10);
++ start_marker text:='-- ASTRA_RELAY_REVIEW_SQL_'||'BEGIN_V3'||chr(10);
++ end_marker text:='-- ASTRA_RELAY_REVIEW_SQL_'||'END_V3'||chr(10);
+  transport_prefix text:=E'begin;\n\n-- apply sql from post body\n';
+  wrapped boolean; end_at integer; tag_match text[]; tag text; before_account text;
+  account_tail text; account_identifier text; expected_suffix text; candidate_sha256 text;
+@@ -48,7 +48,7 @@
+   (version, name, statements, created_by, idempotency_key, rollback)
+ values (
+   to_char(current_timestamp, 'YYYYMMDDHH24MISS'),
+-  $relay_wrapper_head$||tag||'astra_backfill_massive_relay_v2'||tag||E',\n  array['||tag||reviewed||tag||E'],\n  '||tag;
++  $relay_wrapper_head$||tag||'astra_backfill_massive_relay_v3'||tag||E',\n  array['||tag||reviewed||tag||E'],\n  '||tag;
+   IF left(transport_suffix,length(before_account))<>before_account THEN
+    RAISE EXCEPTION 'Managed relay history wrapper or duplicated reviewed body differs'; END IF;
+   account_tail:=substr(transport_suffix,length(before_account)+1);
+@@ -70,7 +70,11 @@
+ 
+ commit;
+ $relay_wrapper_tail$;
+-  IF transport_suffix<>expected_suffix THEN
++  -- v3 accepts two exact transport byte strings: the reviewed wrapper with
++  -- its final LF, or the same wrapper ending at the commit semicolon.
++  -- No trimming, normalization, ignored comments or additional SQL is allowed.
++  IF transport_suffix<>expected_suffix
++   AND transport_suffix<>left(expected_suffix,length(expected_suffix)-1) THEN
+    RAISE EXCEPTION 'Managed relay migration-history suffix has unreviewed SQL'; END IF;
+  END IF;
+  candidate_sha256:=encode(sha256(convert_to(reviewed,'UTF8')),'hex');
+@@ -83,8 +87,8 @@
+  WHERE id='fixed3000-20250901-20260731-v1-20261030' AND status='ACTIVE' FOR UPDATE;
+  confirmed:=astra_ingestion_v1.backfill_stamp_v2(approval->>'approved_at');
+  IF approval->>'state' IS DISTINCT FROM 'APPROVED_AT_ACTION_TIME'
+-  OR approval->>'review_id' IS DISTINCT FROM 'managed-massive-relay-v2-review-20261030'
+-  OR approval->>'scope_sha256' IS DISTINCT FROM '7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe'
++  OR approval->>'review_id' IS DISTINCT FROM 'managed-massive-relay-v3-review-20261030'
++  OR approval->>'scope_sha256' IS DISTINCT FROM 'a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5'
+   OR approval->>'confirmation_source' IS DISTINCT FROM 'EXPLICIT_USER_ACTION_TIME_CONFIRMATION'
+   OR length(COALESCE(approval->>'confirmation_ref','')) NOT BETWEEN 1 AND 512
+   OR approval->'candidate_applied' IS DISTINCT FROM 'false'::jsonb
+@@ -140,8 +144,8 @@
+   RAISE EXCEPTION USING ERRCODE='AI001',MESSAGE='Managed relay requires the current active fixed replacement run';
+  END IF;
+  IF r.metadata#>>'{massive_relay_security_confirmation,state}' IS DISTINCT FROM 'APPROVED_AT_ACTION_TIME'
+-  OR r.metadata#>>'{massive_relay_security_confirmation,review_id}' IS DISTINCT FROM 'managed-massive-relay-v2-review-20261030'
+-  OR r.metadata#>>'{massive_relay_security_confirmation,scope_sha256}' IS DISTINCT FROM '7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe'
++  OR r.metadata#>>'{massive_relay_security_confirmation,review_id}' IS DISTINCT FROM 'managed-massive-relay-v3-review-20261030'
++  OR r.metadata#>>'{massive_relay_security_confirmation,scope_sha256}' IS DISTINCT FROM 'a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5'
+   OR r.metadata#>>'{massive_relay_security_confirmation,confirmation_source}' IS DISTINCT FROM 'EXPLICIT_USER_ACTION_TIME_CONFIRMATION' THEN
+   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Managed relay security confirmation is absent or revoked';
+  END IF;
+@@ -306,4 +310,4 @@
+   'applied_migration_sha256',metadata#>>'{massive_relay_security_confirmation,approved_migration_sha256}'))
+  WHERE id='fixed3000-20250901-20260731-v1-20261030';
+ COMMIT;
+--- ASTRA_RELAY_REVIEW_SQL_END_V2
++-- ASTRA_RELAY_REVIEW_SQL_END_V3

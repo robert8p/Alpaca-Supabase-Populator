@@ -1,0 +1,583 @@
+{
+  "policies": [
+    {
+      "name": "ingestion_monitor_read",
+      "check": null,
+      "roles": "{15990376}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.source_limits",
+      "permissive": true
+    },
+    {
+      "name": "ingestion_rpc_owner",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.source_limits",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_workers_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_workers_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_workers_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_runtime_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_audit_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_audit_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_plan_units_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_plan_units_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_delivery_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "permissive": true
+    },
+    {
+      "name": "breadth_material_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "permissive": true
+    },
+    {
+      "name": "breadth_material_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "permissive": true
+    },
+    {
+      "name": "breadth_material_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "breadth_material_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_minute_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_minute_sessions_v2",
+      "permissive": true
+    },
+    {
+      "name": "backfill_minute_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_minute_projection_v2",
+      "permissive": true
+    },
+    {
+      "name": "family_turn_insert",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": null,
+      "command": "a",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "permissive": true
+    },
+    {
+      "name": "family_turn_read",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "permissive": true
+    },
+    {
+      "name": "family_turn_update",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "w",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_source_members_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "permissive": true
+    },
+    {
+      "name": "identity_internal_v2",
+      "check": "true",
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "*",
+      "relation": "astra_ingestion_v1.backfill_identity_refresh_v2",
+      "permissive": true
+    },
+    {
+      "name": "nonminute_coverage_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "s02_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_s02_projection_v2",
+      "permissive": true
+    },
+    {
+      "name": "s02_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_versions_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_version_links_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_records_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_links_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_counts_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_fields_v2",
+      "permissive": true
+    },
+    {
+      "name": "shared_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_shared_dates_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_work_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_enumeration_v2",
+      "permissive": true
+    },
+    {
+      "name": "contract_read_v2",
+      "check": null,
+      "roles": "{15985999}",
+      "using": "true",
+      "command": "r",
+      "relation": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "permissive": true
+    }
+  ],
+  "observed_at": "2026-10-30T16:37:54.786543+00:00",
+  "scope_relation_count": 44,
+  "function_dependencies": []
+}

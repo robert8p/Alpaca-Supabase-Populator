@@ -1,0 +1,123 @@
+{
+  "schema": "astra.maintenance-combined.live-installation/1",
+  "commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "ci_receipt": "evidence/replacement-maintenance-combined-release-gates-v72.json",
+  "ci_sha256": "9ac9811ea29dbbc2b3c93e4d45e51d9bb5d8a46910e556a356ef894c723aeb71",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "attempts_per_forward": 1,
+  "uncertain_results": 0,
+  "installation_order": [
+    "breadth",
+    "minute",
+    "readback_transaction"
+  ],
+  "stages": [
+    {
+      "name": "breadth",
+      "readback_observed_at": "2026-10-30 14:40:13.52347+00",
+      "migration_history": [
+        {
+          "name": "astra_backfill_breadth_pending_hash_index_v2",
+          "version": "20261030144006",
+          "body_bytes": 13522,
+          "body_sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+          "statement_count": 1
+        }
+      ],
+      "index_count": 16,
+      "maintain_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859"
+    },
+    {
+      "name": "minute",
+      "readback_observed_at": "2026-10-30 14:40:42.16406+00",
+      "migration_history": [
+        {
+          "name": "astra_backfill_breadth_pending_hash_index_v2",
+          "version": "20261030144006",
+          "body_bytes": 13522,
+          "body_sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+          "statement_count": 1
+        },
+        {
+          "name": "astra_backfill_minute_pending_hash_index_v2",
+          "version": "20261030144035",
+          "body_bytes": 13725,
+          "body_sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203",
+          "statement_count": 1
+        }
+      ],
+      "index_count": 17,
+      "maintain_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859"
+    },
+    {
+      "name": "readback_transaction",
+      "readback_observed_at": "2026-10-30 14:40:58.490017+00",
+      "migration_history": [
+        {
+          "name": "astra_backfill_breadth_pending_hash_index_v2",
+          "version": "20261030144006",
+          "body_bytes": 13522,
+          "body_sha256": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+          "statement_count": 1
+        },
+        {
+          "name": "astra_backfill_minute_pending_hash_index_v2",
+          "version": "20261030144035",
+          "body_bytes": 13725,
+          "body_sha256": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203",
+          "statement_count": 1
+        },
+        {
+          "name": "astra_backfill_readback_transaction_race_v2",
+          "version": "20261030144057",
+          "body_bytes": 6902,
+          "body_sha256": "f729d5be47cb9d09d8f6db1423fcab1364592b376878bfeb782218d078a1195b",
+          "statement_count": 1
+        }
+      ],
+      "index_count": 17,
+      "maintain_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+    }
+  ],
+  "final_indexes": [
+    {
+      "acl": null,
+      "oid": "16638529",
+      "live": true,
+      "name": "backfill_tasks_breadth_pending_id_v2",
+      "bytes": 20987904,
+      "owner": "16388",
+      "ready": true,
+      "valid": true,
+      "method": "hash",
+      "definition": "CREATE INDEX backfill_tasks_breadth_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = 'D03'::text) AND (lower(provider) = 'derived'::text))"
+    },
+    {
+      "acl": null,
+      "oid": "16638569",
+      "live": true,
+      "name": "backfill_tasks_minute_pending_id_v2",
+      "bytes": 20987904,
+      "owner": "16388",
+      "ready": true,
+      "valid": true,
+      "method": "hash",
+      "definition": "CREATE INDEX backfill_tasks_minute_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = ANY (ARRAY['P01'::text, 'P02'::text])) AND (kind = ANY (ARRAY['retained_reuse'::text, 'alpaca_stock_bars'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+    }
+  ],
+  "verification": {
+    "all_15_retained_indexes_preserved": true,
+    "table_owner_acl_rls_preserved": true,
+    "all_function_metadata_including_maintain_oid_preserved": true,
+    "only_selected_maintain_source_changed": true,
+    "authentication_private_dispatch_verifier_monitor_unchanged": true,
+    "all_three_exact_sql_bodies_in_history": true,
+    "scope_cohort_counts_or_fence_reset": false,
+    "no_worker_deployment": true,
+    "no_new_security_access_credentials_plan_schedule_or_timeout_policy": true
+  },
+  "postinstall_plan_receipt": "review/recovery-v72/live_postinstall_selector_profile_v72.json",
+  "sustained_recovery": "NOT_YET_ESTABLISHED"
+}

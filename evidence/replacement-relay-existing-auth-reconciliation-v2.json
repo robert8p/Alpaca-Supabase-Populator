@@ -1,0 +1,68 @@
+{
+  "roles": [
+    {
+      "role": "anon",
+      "can_login": false,
+      "superuser": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "astra_ingestion_rpc_owner_v1",
+      "can_login": false,
+      "superuser": false,
+      "bypass_rls": false
+    }
+  ],
+  "functions": [
+    {
+      "name": "rpc_dispatch",
+      "owner": "astra_ingestion_rpc_owner_v1",
+      "schema": "astra_ingestion_v1",
+      "arguments": "p_operation text, p_payload jsonb",
+      "security_definer": true,
+      "definition_sha256": "7d53e8b32bb7be0dd873efe9319ccd98638185e03cd05a857989451f18ed1eb0"
+    },
+    {
+      "name": "astra_ingestion_rpc_v1",
+      "owner": "postgres",
+      "schema": "public",
+      "arguments": "operation text, payload jsonb",
+      "security_definer": false,
+      "definition_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+    },
+    {
+      "name": "backfill_owned_v2",
+      "owner": "postgres",
+      "schema": "astra_ingestion_v1",
+      "arguments": "p_claim jsonb",
+      "security_definer": false,
+      "definition_sha256": "66968de9e4b6ed74deca00f6aaf63b3c44a3a6546f01fd8a7007d8fd7b2603f2"
+    },
+    {
+      "name": "backfill_request_valid_v2",
+      "owner": "postgres",
+      "schema": "astra_ingestion_v1",
+      "arguments": "t astra_ingestion_v1.backfill_tasks_v2, q jsonb",
+      "security_definer": false,
+      "definition_sha256": "137a9a944fe128a18476818abf3cb0971eda4e3316d087369169a6cbced5c955"
+    }
+  ],
+  "observed_at": "2026-10-30T07:26:31.167794+00:00",
+  "relay_function": null,
+  "gateway_execute": true,
+  "relay_installed": false,
+  "auth_guard_excerpt": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.rpc_dispatch(p_operation text, p_payload jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '10s'\n SET lock_timeout TO '3s'\nAS $function$\nDECLARE\n v_headers jsonb; v_claims jsonb; v_token text; v_actor text; v_credential text; v_now double precision;\n v_result jsonb; v_spec jsonb; v_hash text; v_id text; v_key text; v_action text; v_claim jsonb; v_owned jsonb;\n v_job astra_ingestion_v1.jobs%ROWTYPE; v_part astra_ingestion_v1.partitions%ROWTYPE;\n v_start timestamptz; v_end timestamptz; v_cursor timestamptz; v_until timestamptz; v_symbol text;\n v_worker text; v_lease integer; v_phase text; v_status text; v_verification text; v_next double precision;\n v_raw text; v_parsed jsonb; v_record jsonb; v_payload_text text; v_previous text; v_count integer; v_bytes integer; v_page_token text;\n v_failures integer; v_delay double precision; v_proposed double precision; v_retry boolean; v_reason text; v_errcode text; v_errmessage text;\nBEGIN\n  -- A machine endpoint: an anonymous gateway context is necessary, but never\n  -- sufficient. Independent scoped capability authentication happens here, so\n  -- calling this private function directly cannot bypass the check.\n  v_headers:=NULLIF(pg_catalog.current_setting('request.headers',true),'')::jsonb;\n  v_claims:=NULLIF(pg_catalog.current_setting('request.jwt.claims',true),'')::jsonb;\n  v_token:=v_headers->>'x-astra-ingestion-token';\n  IF pg_catalog.current_setting('role',true) IS DISTINCT FROM 'anon'\n     OR v_claims->>'role' IS DISTINCT FROM 'anon'\n     OR (v_claims->>'sub') IS NOT NULL\n     OR NULLIF(pg_catalog.current_setting('request.jwt.claim.sub',true),'') IS NOT NULL\n     OR pg_catalog.current_setting('request.method',true) IS DISTINCT FROM 'POST'\n     OR pg_catalog.jsonb_typeof(v_headers->'x-astra-ingestion-token') IS DISTINCT FROM 'string'\n     OR v_token !~ '^[0-9a-f]{64}$' THEN\n    RAISE EXCEPTION USING ERRCODE='PT401',MESSAGE='Ingestion capability authentication required';\n  END IF;\n  v_credential:=pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(v_token,'UTF8')),'hex');\n  SELECT actor INTO v_actor FROM astra_ingestion_v1.runtime_credentials\n    WHERE token_sha256=v_credential AND revoked_at IS NULL AND expires_at>pg_catalog.clock_timestamp();\n  IF v_actor IS NULL THEN RAISE EXCEPTION USING ERRCODE='PT401',MESSAGE='Ingestion capability authentication required'; END IF;\n  IF p_operation IS NULL OR NOT (p_operation='health' OR (v_actor='api' AND p_operation IN ('list_jobs','get_job','submit_job','control_job','backfill_status','backfill_delivery_status'))\n     OR (v_actor='worker' AND p_operation IN ('claim_next','reserve_request','commit_page','verification_material','finish_verification','fail_claim','backfill_status','backfill_claim','backfill_reserve','backfill_commit','backfill_defer','backfill_verify','backfill_material','backfill_work','backfill_breadth_material','backfill_breadth_project','backfill_delivery_status','backfill_finalize','backfill_recover','backfill_maintain','backfill_plan_snapshot','backfill_seal_plan','backfill_plan_next','backfill_reuse_read','backfill_feature_reuse_commit','backfill_feature_reuse_verify','backfill_reuse_verify','backfill_reuse_commit'))) THEN\n    RAISE EXCEPTION USING ERRCODE='PT403',MESSAGE='Operation is outside this capability';\n  END IF;\n  IF pg_catalog.jsonb_typeof(p_payload) IS DISTINCT FROM 'object' OR pg_catalog.octet_length(p_payload::text)>8388608 THEN\n    RAISE EXCEPTION USING ERRCODE='PT400',MESSAGE='A bounded operation object is required';\n  END IF;\n  -- Authentication precedes the global lock. Never accept SQL, identifiers,\n  -- function names, destinations or schema choices from the caller.\n  PERFORM pg_catalog.pg_advisory_xact_lock(706314020261028);\n  IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.runtime_credentials WHERE token_sha256=v_credential AND actor=v_actor AND revoked_at IS NULL AND expires_at>pg_catalog.clock_timestamp()) THEN\n    RAISE EXCEPTION USING ERRCODE='PT401',MESSAGE='Ingestion capability authentication required';\n  END IF;\n  -- All mutating operations are in this exception subtransaction. An expected\n  -- error rolls back its effects before the safe error envelope is returned.\n  BEGIN\n    v_now:=EXTRACT(EPOCH FROM pg_catalog.clock_timestamp());\n\n    -- replacement_scope_admission_gate_v2: authenticated, serialized, immutable old scope.\n    IF p_operation='submit_job' THEN\n      RETURN pg_catalog.jsonb_build_object('ok',false,'error',pg_catalog.jsonb_build_object(\n        'code','conflict','message','SUPERSEDED_BY_SCOPE_CHANGE: replacement fixed-cohort run owns new admission'));\n    ELSIF p_operation='claim_next' THEN\n      RETURN pg_catalog.jsonb_build_object('ok',true,'result',NULL);\n    END IF;\n\n    -- backfill_runtime_dispatch_v2: follows capability authentication and shared transaction lock.\n\n\n    -- backfill_full_plan_hook_v2: bounded static admission, same authenticated worker.\n    IF p_operation='backfill_plan_next' THEN\n      RETURN jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_plan_next_v2(p_payload));\n    END IF;\n    -- backfill_delivery_dispatch_hook_v2: same capability guard and transaction lock.\n    IF p_operation IN ('backfill_status','backfill_verify','backfill_delivery_status','backfill_finalize','backfill_recover','backfill_maintain','backfill_plan_snapshot','backfill_seal_plan','backfill_plan_next') THEN\n      RETURN jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_delivery_dispatch_v2(p_operation,p_payload));\n    END IF;\n    IF p_operation LIKE 'backfill_%' THEN\n      RETURN pg_catalog.jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_dispatch_v2(p_operation,p_payload));\n    END IF;\n    CASE p_operation\n    WHEN 'health' THEN\n      IF NOT astra_ingestion_v1.rpc_keys(p_payload,ARRAY[]::text[]) THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Unexpected health parameters'; END IF;\n      IF (SELECT version FROM astra_ingestion_v1.schema_info WHERE id=1) IS DISTINCT FROM 1 THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Schema migration required'; END IF;\n      v_result:=pg_catalog.jsonb_build_object('ready',true,'schema_version',1,'rpc_version',1);\n    WHEN 'list_jobs' THEN\n      IF NOT astra_ingestion_v1.rpc_keys(p_payload,ARRAY['limit']) OR pg_catalog.jsonb_typeof(p_payload->'limit')<>'number' OR (p_payload->>'limit')!~'^[0-9]{1,3}$' THEN RAISE EXCEPTION USING ERRCODE='AI005",
+  "active_actor_counts": [
+    {
+      "actor": "api",
+      "first_expiry": "2027-01-26T23:17:21.993988+00:00",
+      "active_credentials": 1
+    },
+    {
+      "actor": "worker",
+      "first_expiry": "2027-01-26T23:17:21.993988+00:00",
+      "active_credentials": 1
+    }
+  ],
+  "worker_dispatch_has_relay": false
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "astra.managed-relay.qualification/3",
+  "recorded_at": "2026-10-30T11:46:09.667549+00:00",
+  "state": "LOCALLY_QUALIFIED_REVIEW_ONLY_NOT_APPROVED_OR_INSTALLED",
+  "review_id": "managed-massive-relay-v3-review-20261030",
+  "scope_sha256": "a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5",
+  "candidate_sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013",
+  "old_approval_retained": {
+    "approved_at": "2026-10-30T09:53:00Z",
+    "expired_at": "2026-10-30T10:08:00Z",
+    "redated": false,
+    "candidate_applied": false
+  },
+  "tests": {
+    "actual_postgresql_tests": 17,
+    "actual_postgresql_passed": 17,
+    "actual_postgresql_skipped": 0,
+    "actual_postgresql_seconds": 5.258,
+    "approval_rejection_variants": 23,
+    "transport_body_rejection_variants": 25,
+    "positive_exact_preflights": [
+      "EXACT_RAW_REVIEWED_FILE",
+      "EXACT_WRAPPER_FINAL_LF",
+      "EXACT_WRAPPER_NO_FINAL_LF"
+    ],
+    "actual_full_install_variant": "EXACT_WRAPPER_NO_FINAL_LF",
+    "history_duplicate_body_byte_equal": true,
+    "single_install_audit": true,
+    "single_use_approval_consumed": true,
+    "outer_rpc_metadata_unchanged": true,
+    "auth_extension_exact_v2_diff": true,
+    "worker_api_token_revocation_role_acl_tests": true,
+    "fixed_scope_member_anchor_dates_six_endpoint_tests": true,
+    "claim_owner_run_generation_page_fence_reservation_lease_deadline_tests": true,
+    "concurrent_replay_single_dispatch_immutable_audit_tests": true,
+    "source_counts_commit_hash_readback_adaptive_recovery_tests": true,
+    "runtime_old_review_scope_or_hold_rejected": true,
+    "readonly_probe_all_three_formats_abort_before_history": true,
+    "readonly_probe_preserves_metadata_history_and_auth_definition": true,
+    "source_tests": 4,
+    "source_tests_passed": 4,
+    "source_tests_seconds": 0.003,
+    "python_syntax_units": 2,
+    "python_syntax_success": true,
+    "source_diff_only_declared_version_and_exact_suffix_change": true,
+    "probe_parser_equality_except_named_probe_boundaries": true,
+    "frozen_v2_manifest_files_checked": 19,
+    "frozen_v2_exact": true
+  },
+  "environment": {
+    "postgres_target": "Existing disposable loopback astra_ingestion_qualification",
+    "production_credentials_used": false,
+    "initial_attempt": "Default sandbox could not open loopback connection; zero tests ran. Auto-review-approved socket escalation then completed17tests with no failures.",
+    "fixture_isolation": "Unique generated test schemas/roles, validated identifiers and cleanup; no production database permitted"
+  },
+  "production_actions_by_preparer": {
+    "connector_calls": 0,
+    "sql_mutations": 0,
+    "deployments": 0,
+    "provider_requests": 0,
+    "credential_reads_exports_or_creation": 0
+  },
+  "limitations": [
+    "Local qualification is not production installation or action-time approval.",
+    "Root must separately retain current target/ownership/hold and successful existing-connector read-only transport receipts.",
+    "Independent review is a separate artifact, not self-approval.",
+    "Managed-key presence, provider entitlement, live Edge startup and data coverage remain bounded post-approval validations.",
+    "The original v2 approval has expired and cannot authorize any v3 security change."
+  ],
+  "files": {
+    "evidence/replacement-managed-relay-review-scope-v3.json": {
+      "bytes": 6375,
+      "sha256": "3ccf33d43e7341179accf5201c2133bd6d0bb0a4d0118dd5bc4e436a32f634ec"
+    },
+    "evidence/replacement-managed-relay-security-review-v3.md": {
+      "bytes": 11179,
+      "sha256": "104ed36a9bf2d125179951584ac38abac7efd3a618f1971ecb584b8e282b60fe"
+    },
+    "review/massive-relay-v3/README.md": {
+      "bytes": 2872,
+      "sha256": "7240521147c6151d99d74edbfe861849af21a2e95b78eb6b93a93d7b7f62f25b"
+    },
+    "review/massive-relay-v3/apply-migration-wrapper-final-lf.txt": {
+      "bytes": 775,
+      "sha256": "7571b009a9624948ecdccce7797d66b0e8cb7b9a737831d4f71e864b0f8f5cb4"
+    },
+    "review/massive-relay-v3/apply-migration-wrapper-no-final-lf.txt": {
+      "bytes": 774,
+      "sha256": "0dea7a99908099268f5d716520f16b26b90f3996dc3441bc2c1e252cb547191c"
+    },
+    "review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql": {
+      "bytes": 21825,
+      "sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013"
+    },
+    "review/massive-relay-v3/independent_transport_review_v3.py": {
+      "bytes": 5074,
+      "sha256": "70dc8944b25c85e3d13d8955035781ff878e7e5113c135a5c60f669e618eb509"
+    },
+    "review/massive-relay-v3/installation_action_packet_v3.json": {
+      "bytes": 26182,
+      "sha256": "3553228a1998d51fac23ab2402e0fe7593c48925d6a881425dd7d6038748768a"
+    },
+    "review/massive-relay-v3/installer-security-v2-to-v3.diff": {
+      "bytes": 4701,
+      "sha256": "6d66fb10015f3670f7dbd16510544fe747f6ce8c7337bb8e7589e950e054b89a"
+    },
+    "review/massive-relay-v3/tests/test_managed_relay_connector_v3.py": {
+      "bytes": 18767,
+      "sha256": "6d6f79a8b84041ba6fc787d118fdcc41d8f697bdbfdeb376582b8b3f7c8ba96c"
+    },
+    "review/massive-relay-v3/tests/test_managed_relay_v3_source.py": {
+      "bytes": 4955,
+      "sha256": "135ee07394ca69eb61a0c72e326dcc34f595abbfa03f2eff397b214972be2bac"
+    },
+    "review/massive-relay-v3/transport_readonly_probe_action_v3.json": {
+      "bytes": 5552,
+      "sha256": "d2e7a8bf44586cd3802658748eef8466ee695258f4d21b0ae295716db69a3852"
+    },
+    "review/massive-relay-v3/transport_readonly_probe_v3.sql": {
+      "bytes": 4954,
+      "sha256": "d5fb3052dab18dd2b7975f9bd0d773f35902de43b805b91cb97ee8f309c9b12f"
+    }
+  }
+}

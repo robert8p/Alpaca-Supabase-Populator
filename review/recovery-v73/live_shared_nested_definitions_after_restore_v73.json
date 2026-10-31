@@ -1,0 +1,378 @@
+[
+  {
+    "observed_at": "2026-10-30 15:45:58.374083+00",
+    "functions": [
+      {
+        "name": "backfill_page_rows_v2",
+        "metadata": {
+          "oid": "16041365",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_page_rows_v2",
+          "prorows": 1000,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": true,
+          "prosecdef": false,
+          "prorettype": "2249",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": [
+            "i",
+            "i",
+            "t",
+            "t",
+            "t",
+            "t",
+            "t",
+            "t",
+            "t"
+          ],
+          "proargnames": [
+            "p_task_id",
+            "p_page_no",
+            "record_ordinal",
+            "symbol",
+            "market_date",
+            "session",
+            "target_window",
+            "record_group",
+            "source_row"
+          ],
+          "proargtypes": [
+            "25",
+            "23"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "s",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": [
+            "25",
+            "23",
+            "20",
+            "25",
+            "1082",
+            "25",
+            "16",
+            "25",
+            "3802"
+          ],
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_page_rows_v2(text,integer)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_page_rows_v2(p_task_id text, p_page_no integer)\n RETURNS TABLE(record_ordinal bigint, symbol text, market_date date, session text, target_window boolean, record_group text, source_row jsonb)\n LANGUAGE plpgsql\n STABLE\n SET search_path TO ''\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2; p astra_ingestion_v1.backfill_pages_v2;\n b jsonb; v_row jsonb; v_rows jsonb; v_array jsonb; v_symbol text; v_group text;\n v_stamp timestamptz; v_local timestamp; v_calendar jsonb; v_day jsonb; v_ordinal bigint:=0;\nBEGIN\n SELECT * INTO t FROM astra_ingestion_v1.backfill_tasks_v2 WHERE id=p_task_id;\n SELECT * INTO p FROM astra_ingestion_v1.backfill_pages_v2 WHERE task_id=p_task_id AND page_no=p_page_no;\n IF NOT FOUND THEN RETURN; END IF;\n b:=p.raw_body::jsonb;\n IF t.kind IN ('alpaca_stock_bars','alpaca_option_bars') THEN\n  SELECT COALESCE(jsonb_object_agg(e->>'date',e),'{}') INTO v_calendar FROM jsonb_array_elements(COALESCE(t.scope->'calendar','[]')) e;\n  FOR v_symbol,v_array IN SELECT key,value FROM jsonb_each(COALESCE(NULLIF(b->'bars','null'::jsonb),'{}')) ORDER BY key LOOP\n   FOR v_row IN SELECT value FROM jsonb_array_elements(v_array) LOOP\n    v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=v_symbol;source_row:=v_row;record_group:='bars';\n    v_stamp:=astra_ingestion_v1.backfill_stamp_v2(v_row->>'t');v_local:=v_stamp AT TIME ZONE 'America/New_York';market_date:=v_local::date;\n    target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n    IF t.kind='alpaca_option_bars' OR t.scope->>'timeframe'='1Day' THEN session:='DAILY';\n    ELSE\n     v_day:=v_calendar->market_date::text;\n     session:=CASE WHEN v_stamp IS NULL THEN 'INVALID_TIMESTAMP'\n      WHEN v_day IS NULL THEN 'CALENDAR_UNRESOLVED'\n      WHEN v_local::time>='04:00'::time AND v_local::time<(v_day->>'open')::time THEN 'PRE'\n      WHEN v_local::time>=(v_day->>'open')::time AND v_local::time<(v_day->>'close')::time THEN 'RTH'\n      WHEN v_local::time>=(v_day->>'close')::time AND v_local::time<'20:00'::time THEN 'POST'\n      ELSE 'OUTSIDE_SUPPORTED_SESSION' END;\n    END IF;\n    RETURN NEXT;\n   END LOOP;\n  END LOOP;\n  RETURN;\n ELSIF t.kind='alpaca_actions' THEN\n  FOR v_group,v_array IN SELECT key,value FROM jsonb_each(COALESCE(NULLIF(b->'corporate_actions','null'::jsonb),'{}')) ORDER BY key LOOP\n   FOR v_row IN SELECT value FROM jsonb_array_elements(v_array) LOOP\n    v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=COALESCE(v_row->>'symbol',v_row->>'initiating_symbol');record_group:=v_group;source_row:=v_row;\n    market_date:=astra_ingestion_v1.backfill_date_v2(v_row->>'process_date');session:=NULL;target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n    RETURN NEXT;\n   END LOOP;\n  END LOOP;\n  RETURN;\n ELSIF t.kind='alpaca_reference' THEN v_rows:=jsonb_build_array(b);\n ELSIF t.kind='alpaca_news' THEN v_rows:=COALESCE(NULLIF(b->'news','null'::jsonb),'[]');\n ELSIF t.kind='alpaca_option_contracts' THEN v_rows:=COALESCE(NULLIF(b->'option_contracts','null'::jsonb),'[]');\n ELSIF t.provider='Massive' THEN v_rows:=CASE WHEN jsonb_typeof(b->'results')='object' THEN jsonb_build_array(b->'results') ELSE COALESCE(NULLIF(b->'results','null'::jsonb),'[]') END;\n ELSE v_rows:=COALESCE(b->'rows',b->'records','[]'); END IF;\n FOR v_row IN SELECT value FROM jsonb_array_elements(v_rows) LOOP\n  v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=COALESCE(v_row->>'symbol',v_row->>'ticker',CASE WHEN jsonb_array_length(COALESCE(t.scope->'symbols','[]'))=1 THEN t.scope#>>'{symbols,0}' END);\n  source_row:=v_row;record_group:=t.kind;session:=NULL;\n  market_date:=astra_ingestion_v1.backfill_date_v2(COALESCE(v_row->>'market_date',v_row->>'date',v_row->>'settlement_date',v_row->>'ex_dividend_date',v_row->>'execution_date',v_row->>'created_at',v_row->>'published_utc'));\n  target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n  RETURN NEXT;\n END LOOP;\nEND $function$\n",
+        "source_sha256": "e0d0a4bceb9f107c00f770546ef0a200ccb9dd7ca48df01c9c821569ac3b897c"
+      },
+      {
+        "name": "backfill_shared_apply_delta_v2",
+        "metadata": {
+          "oid": "16050112",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_shared_apply_delta_v2",
+          "prorows": 0,
+          "pronargs": 3,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "2278",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_run",
+            "p_old",
+            "p_new"
+          ],
+          "proargtypes": [
+            "25",
+            "3802",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_apply_delta_v2(text,jsonb,jsonb)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_apply_delta_v2(p_run text, p_old jsonb, p_new jsonb)\n RETURNS void\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n WITH delta AS(SELECT -1 sign,x.* FROM jsonb_to_recordset(p_old->'counts') x(family text,record_type text,kind text,period text,records bigint,occurrences bigint,versions bigint,conflicts bigint,fallback_keys bigint,boundary_crossing bigint,boundary_support bigint,links bigint,cohort_links bigint)\n  UNION ALL SELECT 1,x.* FROM jsonb_to_recordset(p_new->'counts') x(family text,record_type text,kind text,period text,records bigint,occurrences bigint,versions bigint,conflicts bigint,fallback_keys bigint,boundary_crossing bigint,boundary_support bigint,links bigint,cohort_links bigint))\n INSERT INTO astra_ingestion_v1.backfill_shared_counts_v2\n SELECT p_run,family,record_type,kind,period,sum(sign*records),sum(sign*occurrences),sum(sign*versions),sum(sign*conflicts),sum(sign*fallback_keys),sum(sign*boundary_crossing),sum(sign*boundary_support),sum(sign*links),sum(sign*cohort_links)\n FROM delta GROUP BY family,record_type,kind,period\n ON CONFLICT(run_id,family,record_type,kind,period) DO UPDATE SET records=backfill_shared_counts_v2.records+EXCLUDED.records,\n  occurrences=backfill_shared_counts_v2.occurrences+EXCLUDED.occurrences,versions=backfill_shared_counts_v2.versions+EXCLUDED.versions,\n  conflicts=backfill_shared_counts_v2.conflicts+EXCLUDED.conflicts,fallback_keys=backfill_shared_counts_v2.fallback_keys+EXCLUDED.fallback_keys,\n  boundary_crossing=backfill_shared_counts_v2.boundary_crossing+EXCLUDED.boundary_crossing,boundary_support=backfill_shared_counts_v2.boundary_support+EXCLUDED.boundary_support,\n  links=backfill_shared_counts_v2.links+EXCLUDED.links,cohort_links=backfill_shared_counts_v2.cohort_links+EXCLUDED.cohort_links;\n WITH delta AS(SELECT -1 sign,x.* FROM jsonb_to_recordset(p_old->'fields') x(family text,record_type text,kind text,period text,field text,datatype text,nonnull boolean,reason text,records bigint)\n  UNION ALL SELECT 1,x.* FROM jsonb_to_recordset(p_new->'fields') x(family text,record_type text,kind text,period text,field text,datatype text,nonnull boolean,reason text,records bigint))\n INSERT INTO astra_ingestion_v1.backfill_shared_fields_v2\n SELECT p_run,family,record_type,kind,period,field,datatype,nonnull,reason,sum(sign*records) FROM delta GROUP BY family,record_type,kind,period,field,datatype,nonnull,reason\n ON CONFLICT(run_id,family,record_type,kind,period,field,datatype,nonnull,reason) DO UPDATE SET records=backfill_shared_fields_v2.records+EXCLUDED.records;\n WITH delta AS(SELECT -1 sign,x.* FROM jsonb_to_recordset(p_old->'dates') x(family text,record_type text,date_axis text,period text,records bigint)\n  UNION ALL SELECT 1,x.* FROM jsonb_to_recordset(p_new->'dates') x(family text,record_type text,date_axis text,period text,records bigint))\n INSERT INTO astra_ingestion_v1.backfill_shared_dates_v2\n SELECT p_run,family,record_type,date_axis,period,sum(sign*records) FROM delta GROUP BY family,record_type,date_axis,period\n ON CONFLICT(run_id,family,record_type,date_axis,period) DO UPDATE SET records=backfill_shared_dates_v2.records+EXCLUDED.records;\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_counts_v2 WHERE run_id=p_run AND LEAST(records,occurrences,versions,conflicts,fallback_keys,boundary_crossing,boundary_support,links,cohort_links)<0)\n  OR EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_fields_v2 WHERE run_id=p_run AND records<0)\n  OR EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_dates_v2 WHERE run_id=p_run AND records<0) THEN RAISE EXCEPTION 'Shared logical counters became negative';END IF;\nEND $function$\n",
+        "source_sha256": "a221c414728aa7c83fbbe21d529689f814ea803f67c374adf3a9758f4a2b2142"
+      },
+      {
+        "name": "backfill_shared_maintain_v2",
+        "metadata": {
+          "oid": "16050110",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_shared_maintain_v2",
+          "prorows": 0,
+          "pronargs": 1,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\"",
+            "statement_timeout=15s"
+          ],
+          "proretset": false,
+          "prosecdef": true,
+          "prorettype": "23",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_limit"
+          ],
+          "proargtypes": [
+            "23"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 4 0 0 0 0 0 0 0 ]})",
+          "pronargdefaults": 1
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_maintain_v2(integer)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_maintain_v2(p_limit integer DEFAULT 4)\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '15s'\nAS $function$\nDECLARE c astra_ingestion_v1.backfill_shared_cursor_v2;x record;n integer:=0;\nBEGIN\n SELECT * INTO STRICT c FROM astra_ingestion_v1.backfill_shared_cursor_v2 WHERE singleton FOR UPDATE;\n FOR x IN SELECT verified_at,task_id,page_no FROM astra_ingestion_v1.backfill_readbacks_v2\n  WHERE (verified_at,task_id,page_no)>(c.verified_at,c.task_id,c.page_no) ORDER BY verified_at,task_id,page_no LIMIT GREATEST(1,LEAST(p_limit,8)) LOOP\n  PERFORM astra_ingestion_v1.backfill_shared_project_v2(x.task_id,x.page_no);\n  UPDATE astra_ingestion_v1.backfill_shared_cursor_v2 SET verified_at=x.verified_at,task_id=x.task_id,page_no=x.page_no WHERE singleton;n:=n+1;\n END LOOP;RETURN n;\nEND $function$\n",
+        "source_sha256": "5da488f3e44e2521b64f58230b2bc6db3c34800ae4ac259166f4dc223c8ad2be"
+      },
+      {
+        "name": "backfill_shared_meta_v2",
+        "metadata": {
+          "oid": "16050103",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_shared_meta_v2",
+          "prorows": 0,
+          "pronargs": 5,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_provider",
+            "p_kind",
+            "p_group",
+            "p_symbol",
+            "p_row"
+          ],
+          "proargtypes": [
+            "25",
+            "25",
+            "25",
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "i",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_meta_v2(text,text,text,text,jsonb)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_meta_v2(p_provider text, p_kind text, p_group text, p_symbol text, p_row jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\nDECLARE typ text;grp text;pid text;basis text;key_value jsonb;row_hash text;d date;stamp timestamptz;axes jsonb;spec jsonb;fields jsonb;\n links jsonb:='[]';families text[];item jsonb;token text;role text;v jsonb;dt text;primary_date_field text;\nBEGIN\n typ:=CASE WHEN p_kind IN('massive_news','alpaca_news') THEN 'ARTICLE' WHEN p_kind='alpaca_option_contracts' THEN 'CONTRACT_REFERENCE'\n  WHEN p_kind='alpaca_option_bars' THEN 'OPTION_DAILY_BAR' ELSE 'ACTION' END;\n grp:=CASE WHEN p_kind='massive_dividends' THEN 'DIVIDEND' WHEN p_kind='massive_splits' THEN 'SPLIT' ELSE p_group END;\n families:=CASE WHEN typ='ARTICLE' THEN ARRAY['N01'] WHEN typ IN('CONTRACT_REFERENCE','OPTION_DAILY_BAR') THEN ARRAY['CTX02']\n  WHEN p_kind='massive_splits' THEN ARRAY['N03'] WHEN p_kind='alpaca_actions' AND p_group IN('forward_splits','reverse_splits','unit_splits') THEN ARRAY['N02','N03'] ELSE ARRAY['N02'] END;\n row_hash:=encode(sha256(convert_to(p_row::text,'UTF8')),'hex');\n pid:=CASE WHEN jsonb_typeof(p_row->'id') IN('string','number') AND length(p_row->>'id') BETWEEN 1 AND 512 THEN p_row->>'id' END;\n basis:='PROVIDER_RECORD_ID';key_value:=jsonb_build_array(typ,CASE WHEN typ='ACTION' THEN grp ELSE '' END,pid);\n IF typ='OPTION_DAILY_BAR' THEN\n  stamp:=astra_ingestion_v1.backfill_stamp_v2(p_row->>'t');d:=(stamp AT TIME ZONE 'America/New_York')::date;\n  IF p_symbol ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' AND d IS NOT NULL THEN basis:='PROVIDER_CONTRACT_SYMBOL_SESSION_OPRA';key_value:=jsonb_build_array(typ,p_symbol,d,'opra','1Day');\n  ELSE basis:='EXACT_CONTENT_FALLBACK_SEMANTIC_IDENTITY_UNKNOWN';key_value:=jsonb_build_array(typ,p_symbol,'opra','1Day',row_hash);END IF;\n ELSIF typ='CONTRACT_REFERENCE' AND p_row->>'symbol' ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' THEN\n  basis:='PROVIDER_CONTRACT_SYMBOL';key_value:=jsonb_build_array(typ,p_row->>'symbol');\n ELSIF pid IS NULL THEN\n  basis:='EXACT_CONTENT_FALLBACK_SEMANTIC_IDENTITY_UNKNOWN';key_value:=jsonb_build_array(typ,grp,row_hash);\n END IF;\n axes:='{}';\n IF typ='ARTICLE' THEN\n  primary_date_field:=CASE WHEN p_kind='massive_news' THEN 'published_utc' ELSE 'created_at' END;\n  stamp:=astra_ingestion_v1.backfill_stamp_v2(p_row->>primary_date_field);d:=(stamp AT TIME ZONE 'America/New_York')::date;\n  axes:=jsonb_build_object('publication_date_new_york',d);\n  v:=CASE WHEN p_kind='massive_news' THEN p_row->'tickers' ELSE p_row->'symbols' END;\n  FOR item IN SELECT value FROM jsonb_array_elements(CASE WHEN jsonb_typeof(v)='array' THEN v ELSE '[]' END) LOOP\n   token:=item#>>'{}';IF jsonb_typeof(item)='string' AND token ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' THEN links:=links||jsonb_build_array(jsonb_build_object('symbol',upper(token),'role','ARTICLE_SECURITY'));END IF;\n  END LOOP;\n ELSIF typ='ACTION' THEN\n  SELECT COALESCE(jsonb_object_agg(key,astra_ingestion_v1.backfill_date_v2(value#>>'{}')),'{}') INTO axes FROM jsonb_each(p_row)\n   WHERE key IN('announcement_date','declaration_date','ex_date','ex_dividend_date','record_date','pay_date','payable_date','payment_date','execution_date','effective_date','process_date');\n  primary_date_field:=CASE WHEN p_kind='massive_dividends' THEN 'ex_dividend_date' WHEN p_kind='massive_splits' THEN 'execution_date'\n   WHEN p_row ? 'effective_date' THEN 'effective_date' WHEN p_row ? 'ex_date' THEN 'ex_date' ELSE 'process_date' END;\n  d:=astra_ingestion_v1.backfill_date_v2(p_row->>primary_date_field);\n  FOR token,role IN SELECT p_row->>'ticker','SECURITY' UNION ALL SELECT p_row->>'symbol','SECURITY'\n   UNION ALL SELECT p_row->>'initiating_symbol','INITIATING_SECURITY' UNION ALL SELECT p_row->>'target_symbol','TARGET_SECURITY' LOOP\n   IF token ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' THEN links:=links||jsonb_build_array(jsonb_build_object('symbol',upper(token),'role',role));END IF;\n  END LOOP;\n ELSIF typ='CONTRACT_REFERENCE' THEN\n  primary_date_field:='expiration_date';d:=astra_ingestion_v1.backfill_date_v2(p_row->>'expiration_date');axes:=jsonb_build_object('expiration_date',d);\n  token:=p_row->>'underlying_symbol';IF token ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' THEN links:=jsonb_build_array(jsonb_build_object('symbol',upper(token),'role','CONTRACT_UNDERLYING'));END IF;\n ELSE primary_date_field:='t';axes:=jsonb_build_object('market_session_new_york',d);END IF;\n spec:=astra_ingestion_v1.backfill_nonminute_field_spec_v2(families[1],p_kind);\n IF p_kind='massive_news' THEN spec:=spec||'{\"updated_utc\":\"timestamp\"}'::jsonb;END IF;\n IF p_kind='alpaca_actions' AND families @> ARRAY['N03'] THEN spec:=spec||'{\"ex_date\":\"date\",\"old_rate\":\"positive\",\"new_rate\":\"positive\"}'::jsonb;END IF;\n -- Preserve hashes for every supplied field so unmodelled conflicts are not\n -- silently selected. Unknown field semantics are not called usable.\n SELECT COALESCE(jsonb_object_agg(f.key,jsonb_build_object('datatype',COALESCE(spec->>f.key,'undeclared'),\n  'nonnull',p_row->f.key IS NOT NULL AND p_row->f.key<>'null'::jsonb,\n  'value_sha256',CASE WHEN p_row ? f.key THEN encode(sha256(convert_to((p_row->f.key)::text,'UTF8')),'hex') ELSE 'ABSENT' END,\n  'reason',astra_ingestion_v1.backfill_nonminute_field_reason_v2(p_row->f.key,COALESCE(spec->>f.key,'undeclared'),NULL))),'{}') INTO fields\n FROM(SELECT jsonb_object_keys(spec||p_row) key) f;\n RETURN jsonb_build_object('record_key',p_provider||':'||typ||':'||encode(sha256(convert_to(key_value::text,'UTF8')),'hex'),'row_sha256',row_hash,\n  'provider',p_provider,'record_type',typ,'kind',p_kind,'record_group',grp,'provider_record_id',pid,'identity_basis',basis,\n  'symbol',CASE WHEN typ='ARTICLE' THEN NULL WHEN typ='OPTION_DAILY_BAR' THEN p_symbol ELSE COALESCE(p_row->>'ticker',p_row->>'symbol',p_row->>'initiating_symbol') END,\n  'market_date',d,'date_axes',axes,'primary_date_field',primary_date_field,\n  'version_timestamp',astra_ingestion_v1.backfill_stamp_v2(COALESCE(p_row->>'updated_utc',p_row->>'updated_at')),\n  'field_states',fields,'delivery_families',to_jsonb(families),'links',links);\nEND $function$\n",
+        "source_sha256": "b7b0b8f8d3787b9370643dbe810938f6fbca75d3cfe50a0e007d3ae6970d3932"
+      },
+      {
+        "name": "backfill_shared_project_v2",
+        "metadata": {
+          "oid": "16050107",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_shared_project_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\"",
+            "statement_timeout=12s"
+          ],
+          "proretset": false,
+          "prosecdef": true,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_task",
+            "p_page"
+          ],
+          "proargtypes": [
+            "25",
+            "23"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_project_v2(text,integer)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_project_v2(p_task text, p_page integer)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '12s'\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2;p astra_ingestion_v1.backfill_pages_v2;keys jsonb;old_summary jsonb;families text[];\nBEGIN\n SELECT * INTO STRICT t FROM astra_ingestion_v1.backfill_tasks_v2 WHERE id=p_task;\n IF t.kind NOT IN('alpaca_news','massive_news','alpaca_actions','massive_dividends','massive_splits','alpaca_option_contracts','alpaca_option_bars') THEN RETURN jsonb_build_object('state','SEPARATE_FAMILY');END IF;\n PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(t.run_id,706314020261099));\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_shared_pages_v2 WHERE task_id=p_task AND page_no=p_page) THEN RETURN jsonb_build_object('state','ALREADY_PROJECTED');END IF;\n SELECT pg.* INTO STRICT p FROM astra_ingestion_v1.backfill_pages_v2 pg JOIN astra_ingestion_v1.backfill_readbacks_v2 b USING(task_id,page_no)\n  WHERE pg.task_id=p_task AND pg.page_no=p_page AND pg.body_sha256=b.body_sha256 AND b.body_sha256=b.readback_sha256 AND pg.record_count=b.actual_records;\n WITH rows AS MATERIALIZED(SELECT x.record_ordinal,astra_ingestion_v1.backfill_shared_meta_v2(t.provider,t.kind,x.record_group,x.symbol,x.source_row) m\n  FROM astra_ingestion_v1.backfill_page_rows_v2(p_task,p_page) x),\n versions AS(INSERT INTO astra_ingestion_v1.backfill_shared_versions_v2\n  SELECT DISTINCT ON(m->>'record_key',m->>'row_sha256') t.run_id,m->>'record_key',m->>'row_sha256',m->>'provider',m->>'record_type',m->>'kind',m->>'record_group',\n   m->>'provider_record_id',m->>'identity_basis',m->>'symbol',(m->>'market_date')::date,m->'date_axes',m->>'primary_date_field',\n   (m->>'version_timestamp')::timestamptz,m->'field_states',ARRAY(SELECT jsonb_array_elements_text(m->'delivery_families')),t.id,p_page,record_ordinal\n  FROM rows ORDER BY m->>'record_key',m->>'row_sha256',record_ordinal ON CONFLICT DO NOTHING RETURNING record_key),\n occurrences AS(INSERT INTO astra_ingestion_v1.backfill_shared_occurrences_v2\n  SELECT t.run_id,m->>'record_key',m->>'row_sha256',t.id,p_page,record_ordinal FROM rows ON CONFLICT DO NOTHING RETURNING record_key),\n links AS(INSERT INTO astra_ingestion_v1.backfill_shared_version_links_v2\n  SELECT DISTINCT t.run_id,m->>'record_key',m->>'row_sha256',l->>'symbol',l->>'role' FROM rows CROSS JOIN LATERAL jsonb_array_elements(m->'links') l\n  ON CONFLICT DO NOTHING RETURNING record_key)\n SELECT COALESCE(jsonb_agg(DISTINCT m->>'record_key'),'[]') INTO keys FROM rows;\n old_summary:=astra_ingestion_v1.backfill_shared_summary_v2(t.run_id,keys);\n PERFORM astra_ingestion_v1.backfill_shared_refresh_v2(t.run_id,keys);\n PERFORM astra_ingestion_v1.backfill_shared_apply_delta_v2(t.run_id,old_summary,astra_ingestion_v1.backfill_shared_summary_v2(t.run_id,keys));\n families:=CASE WHEN t.kind='alpaca_actions' THEN ARRAY['N02','N03'] ELSE ARRAY[t.family] END;\n INSERT INTO astra_ingestion_v1.backfill_shared_pages_v2(task_id,page_no,run_id,delivery_families,source_records) VALUES(t.id,p_page,t.run_id,families,p.record_count);\n RETURN jsonb_build_object('state','SHARED_RECORDS_PROJECTED','record_keys_touched',jsonb_array_length(keys),'source_occurrences',p.record_count);\nEND $function$\n",
+        "source_sha256": "78ceb1e794e9725ae8d0365ec92081c769853fa1c8345ab96c4adaf6e786fb9d"
+      },
+      {
+        "name": "backfill_shared_refresh_v2",
+        "metadata": {
+          "oid": "16050105",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_shared_refresh_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "2278",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_run",
+            "p_keys"
+          ],
+          "proargtypes": [
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_refresh_v2(p_run text, p_keys jsonb)\n RETURNS void\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n -- backfill_shared_refresh_bounded_keys_v2: bind each immutable archive lookup\n -- to one supplied key before joining compact intermediates. OFFSET0 keeps the\n -- parameterized key restriction from being flattened into a run-wide join.\n WITH keys AS MATERIALIZED(SELECT value record_key FROM jsonb_array_elements_text(p_keys)),\n versions AS MATERIALIZED(SELECT v.* FROM keys k CROSS JOIN LATERAL(\n  SELECT v.* FROM astra_ingestion_v1.backfill_shared_versions_v2 v\n  WHERE v.run_id=p_run AND v.record_key=k.record_key OFFSET 0) v),\n stats AS MATERIALIZED(SELECT record_key,count(*) versions,bool_and(version_timestamp IS NOT NULL) ordered,max(version_timestamp) latest FROM versions GROUP BY record_key),\n candidates AS MATERIALIZED(SELECT v.*,s.versions,s.ordered FROM versions v JOIN stats s USING(record_key) WHERE NOT s.ordered OR v.version_timestamp=s.latest),\n candidate_counts AS MATERIALIZED(SELECT record_key,count(*) n FROM candidates GROUP BY record_key),\n chosen AS MATERIALIZED(SELECT DISTINCT ON(record_key) * FROM candidates ORDER BY record_key,row_sha256,task_id,page_no,record_ordinal),\n votes AS MATERIALIZED(SELECT c.record_key,f.key field,count(*) n,count(DISTINCT f.value->>'value_sha256') values,\n  bool_or((f.value->>'nonnull')::boolean) nonnull,min(f.value->>'datatype') datatype\n  FROM candidates c CROSS JOIN LATERAL jsonb_each(c.field_states) f GROUP BY c.record_key,f.key),\n fields AS MATERIALIZED(SELECT c.record_key,jsonb_object_agg(v.field,COALESCE(c.field_states->v.field,jsonb_build_object('datatype',v.datatype,'nonnull',v.nonnull))||\n  CASE WHEN v.n<n.n OR v.values>1 THEN jsonb_build_object('nonnull',v.nonnull,'reason','CONFLICTING_PROVIDER_RECORD_VERSIONS') ELSE '{}'::jsonb END) states,\n  COALESCE(jsonb_agg(v.field ORDER BY v.field) FILTER(WHERE v.n<n.n OR v.values>1),'[]') conflicts\n  FROM chosen c JOIN votes v USING(record_key) JOIN candidate_counts n USING(record_key) GROUP BY c.record_key),\n clean AS MATERIALIZED(SELECT c.*,n.n candidates,f.states,f.conflicts,\n  (SELECT COALESCE(jsonb_object_agg(d.key,CASE WHEN f.conflicts ? CASE d.key WHEN 'publication_date_new_york' THEN c.primary_date_field WHEN 'market_session_new_york' THEN 't' ELSE d.key END THEN 'null'::jsonb ELSE d.value END),'{}') FROM jsonb_each(c.date_axes) d) clean_axes\n  FROM chosen c JOIN fields f USING(record_key) JOIN candidate_counts n USING(record_key)),\n dated AS MATERIALIZED(SELECT c.*,a.first_date,a.last_date,COALESCE(a.in_target,false) in_target\n  FROM clean c LEFT JOIN LATERAL(SELECT min((value#>>'{}')::date) first_date,max((value#>>'{}')::date) last_date,\n   bool_or((value#>>'{}')::date BETWEEN '2025-09-01'::date AND '2026-07-31'::date) in_target FROM jsonb_each(c.clean_axes) WHERE value<>'null'::jsonb) a ON true),\n occurrences AS MATERIALIZED(SELECT k.record_key,count(*) n FROM keys k CROSS JOIN LATERAL(\n  SELECT 1 FROM astra_ingestion_v1.backfill_shared_occurrences_v2 o\n  WHERE o.run_id=p_run AND o.record_key=k.record_key OFFSET 0) o GROUP BY k.record_key)\n INSERT INTO astra_ingestion_v1.backfill_shared_records_v2\n SELECT p_run,c.record_key,c.row_sha256,c.provider,c.record_type,c.kind,c.record_group,c.provider_record_id,c.identity_basis,\n  CASE WHEN c.record_type='ACTION' AND c.conflicts ?| ARRAY['ticker','symbol','initiating_symbol'] THEN NULL ELSE c.symbol END,\n  CASE WHEN c.conflicts ? c.primary_date_field THEN NULL ELSE c.market_date END,c.clean_axes,c.primary_date_field,\n  CASE WHEN c.in_target THEN 'TARGET' WHEN c.last_date<'2025-09-01'::date THEN 'SUPPORT' WHEN c.first_date>'2026-07-31'::date THEN 'AFTER_TARGET'\n   WHEN c.first_date IS NOT NULL THEN 'BOUNDARY_SUPPORT' ELSE 'UNKNOWN_DATE' END,\n  COALESCE(c.first_date<'2025-09-01'::date AND c.last_date>='2025-09-01'::date OR c.first_date<='2026-07-31'::date AND c.last_date>'2026-07-31'::date,false),\n  COALESCE(NOT c.in_target AND c.first_date<'2025-09-01'::date AND c.last_date>'2026-07-31'::date,false),\n  c.versions,c.candidates,c.ordered,o.n,c.conflicts,c.states,c.delivery_families,c.task_id,c.page_no,c.record_ordinal\n FROM dated c JOIN occurrences o USING(record_key)\n ON CONFLICT(run_id,record_key) DO UPDATE SET row_sha256=EXCLUDED.row_sha256,kind=EXCLUDED.kind,record_group=EXCLUDED.record_group,\n  provider_record_id=EXCLUDED.provider_record_id,identity_basis=EXCLUDED.identity_basis,symbol=EXCLUDED.symbol,market_date=EXCLUDED.market_date,\n  date_axes=EXCLUDED.date_axes,primary_date_field=EXCLUDED.primary_date_field,period=EXCLUDED.period,boundary_crossing=EXCLUDED.boundary_crossing,boundary_support=EXCLUDED.boundary_support,\n  source_versions=EXCLUDED.source_versions,current_candidate_versions=EXCLUDED.current_candidate_versions,ordered_versions=EXCLUDED.ordered_versions,\n  source_occurrences=EXCLUDED.source_occurrences,conflict_fields=EXCLUDED.conflict_fields,field_states=EXCLUDED.field_states,delivery_families=EXCLUDED.delivery_families,\n  task_id=EXCLUDED.task_id,page_no=EXCLUDED.page_no,record_ordinal=EXCLUDED.record_ordinal;\n\n DELETE FROM astra_ingestion_v1.backfill_shared_links_v2 l USING jsonb_array_elements_text(p_keys) k WHERE l.run_id=p_run AND l.record_key=k.value;\n WITH keys AS MATERIALIZED(SELECT DISTINCT value record_key FROM jsonb_array_elements_text(p_keys)),\n scoped_versions AS MATERIALIZED(SELECT v.* FROM keys k CROSS JOIN LATERAL(\n  SELECT v.record_key,v.row_sha256,v.version_timestamp FROM astra_ingestion_v1.backfill_shared_versions_v2 v\n  WHERE v.run_id=p_run AND v.record_key=k.record_key OFFSET 0) v),\n scoped_records AS MATERIALIZED(SELECT r.* FROM keys k CROSS JOIN LATERAL(\n  SELECT r.record_key,r.ordered_versions,r.current_candidate_versions FROM astra_ingestion_v1.backfill_shared_records_v2 r\n  WHERE r.run_id=p_run AND r.record_key=k.record_key OFFSET 0) r),\n scoped_links AS MATERIALIZED(SELECT l.* FROM keys k CROSS JOIN LATERAL(\n  SELECT l.record_key,l.row_sha256,l.security_symbol,l.link_role FROM astra_ingestion_v1.backfill_shared_version_links_v2 l\n  WHERE l.run_id=p_run AND l.record_key=k.record_key OFFSET 0) l),\n vstat AS MATERIALIZED(SELECT record_key,max(version_timestamp) latest FROM scoped_versions GROUP BY record_key),\n links AS MATERIALIZED(SELECT l.record_key,l.security_symbol,l.link_role,count(*) observed_versions,\n  count(*) FILTER(WHERE NOT r.ordered_versions OR v.version_timestamp=s.latest) current_versions\n  FROM scoped_links l JOIN scoped_records r USING(record_key)\n  JOIN scoped_versions v ON v.record_key=l.record_key AND v.row_sha256=l.row_sha256\n  JOIN vstat s ON s.record_key=l.record_key\n  GROUP BY l.record_key,l.security_symbol,l.link_role)\n INSERT INTO astra_ingestion_v1.backfill_shared_links_v2\n SELECT p_run,l.record_key,l.security_symbol,l.link_role,l.observed_versions,l.current_versions,\n  CASE WHEN l.current_versions=r.current_candidate_versions THEN 'PRESENT_IN_ALL_CURRENT_PROVIDER_VERSIONS'\n   WHEN l.current_versions=0 THEN 'RETAINED_OLDER_PROVIDER_VERSION_LINK' ELSE 'CONFLICTING_PROVIDER_RECORD_LINK_VERSIONS' END,\n  COALESCE(m.members,'[]'),CASE WHEN m.n=1 THEN 'UNRESOLVED_FROZEN_ANCHOR_CANDIDATE' WHEN m.n>1 THEN 'AMBIGUOUS_FROZEN_ANCHOR_CANDIDATES' ELSE 'OUTSIDE_FROZEN_ANCHOR_SET' END\n FROM links l JOIN scoped_records r ON r.record_key=l.record_key\n LEFT JOIN LATERAL(SELECT count(*) n,jsonb_agg(member_id ORDER BY member_id) members FROM astra_ingestion_v1.backfill_members_v2 m WHERE m.run_id=p_run AND m.anchor_ticker=l.security_symbol) m ON true;\nEND $function$\n",
+        "source_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4"
+      },
+      {
+        "name": "backfill_shared_summary_v2",
+        "metadata": {
+          "oid": "16050111",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "14",
+          "proname": "backfill_shared_summary_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_run",
+            "p_keys"
+          ],
+          "proargtypes": [
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "s",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_shared_summary_v2(text,jsonb)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_shared_summary_v2(p_run text, p_keys jsonb)\n RETURNS jsonb\n LANGUAGE sql\n STABLE\n SET search_path TO ''\nAS $function$\n WITH touched AS MATERIALIZED(SELECT r.*,f.family,COALESCE(l.links,0) links,COALESCE(l.cohort_links,0) cohort_links\n  FROM astra_ingestion_v1.backfill_shared_records_v2 r JOIN jsonb_array_elements_text(p_keys) k ON r.record_key=k.value\n  CROSS JOIN LATERAL unnest(r.delivery_families) f(family)\n  LEFT JOIN LATERAL(SELECT count(*) links,count(*) FILTER(WHERE jsonb_array_length(candidate_member_ids)>0) cohort_links\n   FROM astra_ingestion_v1.backfill_shared_links_v2 l WHERE l.run_id=r.run_id AND l.record_key=r.record_key AND l.link_role='ARTICLE_SECURITY') l ON true\n  WHERE r.run_id=p_run),\n counts AS(SELECT family,record_type,kind,period,count(*) records,sum(source_occurrences) occurrences,sum(source_versions) versions,\n  count(*) FILTER(WHERE jsonb_array_length(conflict_fields)>0) conflicts,count(*) FILTER(WHERE identity_basis LIKE 'EXACT_CONTENT_FALLBACK%') fallback_keys,\n  count(*) FILTER(WHERE boundary_crossing) boundary_crossing,count(*) FILTER(WHERE boundary_support) boundary_support,sum(links) links,sum(cohort_links) cohort_links\n  FROM touched GROUP BY family,record_type,kind,period),\n fields AS(SELECT family,record_type,kind,period,f.key field,f.value->>'datatype' datatype,(f.value->>'nonnull')::boolean nonnull,\n  COALESCE(f.value->>'reason','') reason,count(*) records FROM touched CROSS JOIN LATERAL jsonb_each(field_states) f\n  GROUP BY family,record_type,kind,period,f.key,f.value->>'datatype',(f.value->>'nonnull')::boolean,COALESCE(f.value->>'reason','')),\n dates AS(SELECT family,record_type,f.key date_axis,CASE WHEN f.value='null'::jsonb THEN 'UNKNOWN_DATE'\n  WHEN (f.value#>>'{}')::date<'2025-09-01'::date THEN 'SUPPORT' WHEN (f.value#>>'{}')::date>'2026-07-31'::date THEN 'AFTER_TARGET' ELSE 'TARGET' END period,count(*) records\n  FROM touched CROSS JOIN LATERAL jsonb_each(date_axes) f GROUP BY family,record_type,f.key,4)\n SELECT jsonb_build_object('counts',(SELECT COALESCE(jsonb_agg(to_jsonb(c)),'[]') FROM counts c),\n  'fields',(SELECT COALESCE(jsonb_agg(to_jsonb(f)),'[]') FROM fields f),'dates',(SELECT COALESCE(jsonb_agg(to_jsonb(d)),'[]') FROM dates d))\n$function$\n",
+        "source_sha256": "e6459ef0b9dbe71bcd0ede375e904154b3d4278c6af27f033fc0c942ee9e0a78"
+      }
+    ]
+  }
+]

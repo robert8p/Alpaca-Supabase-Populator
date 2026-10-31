@@ -1,0 +1,139 @@
+{
+  "algorithm": {
+    "atomic_cursor_and_snapshots": true,
+    "final_page_returns_false_before_accounting": true,
+    "global_plan_unit_suppression": true,
+    "max_ids_per_page": 500,
+    "ordinary_planner_branch": "SEAL",
+    "original_count_hash_completeness_coverage_map_checks_unchanged": true,
+    "same_snapshot_helper": true,
+    "source_acquisition_counters_and_timestamps_unchanged": true
+  },
+  "base_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "base_tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "bounded_production_read": {
+    "actual_page_rows": 500,
+    "business_helpers": 0,
+    "observed_at": "2026-10-31T00:31:28.267947+00:00",
+    "page_execution_ms": 20.497,
+    "planning_ms": 0.165,
+    "receipt": {
+      "bytes": 16785,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+      "sha256": "e89903828b5928768d9475dcc5df3a3088c3c60149389c3149738574cbb39664"
+    },
+    "scope_limit": "One finite first-page query only. Upper lookup, per-ID existence/scope loop, actual snapshot writes, later pages and final sealing are not timed. No acquisition-resumed claim.",
+    "selector_executions": 1
+  },
+  "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+  "changed_existing_functions": 1,
+  "exact_execution_files": [
+    {
+      "bytes": 49424,
+      "path": "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1"
+    },
+    {
+      "bytes": 41730,
+      "path": "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002"
+    },
+    {
+      "bytes": 24780,
+      "path": "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+      "sha256": "d48f9c891d6525747b6a8b88f95bb692f47001f9c77f2c6a6fa6878f10b7eae1"
+    },
+    {
+      "bytes": 80536,
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+      "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e"
+    }
+  ],
+  "expected_dedicated_suite_count_if_no_other_changes": 746,
+  "held_v75_boundary_unchanged": true,
+  "held_v79_9e8_installed": false,
+  "new_functions": 0,
+  "new_test_inventory": [
+    {
+      "class": "BoundedSealSourceTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealSourceTests.test_exact_one_branch_inverse_and_original_final_checks",
+      "method": "test_exact_one_branch_inverse_and_original_final_checks",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_01_global_pages_exclusions_foreign_suppression_and_deleted_upper",
+      "method": "test_01_global_pages_exclusions_foreign_suppression_and_deleted_upper",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_02_enabled_insert_trigger_handles_behind_and_beyond_range",
+      "method": "test_02_enabled_insert_trigger_handles_behind_and_beyond_range",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_03_missed_inserts_behind_or_beyond_cannot_bypass_final_sealer",
+      "method": "test_03_missed_inserts_behind_or_beyond_cannot_bypass_final_sealer",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_04_real_snapshot_and_cursor_faults_rollback_then_lost_ack_resumes",
+      "method": "test_04_real_snapshot_and_cursor_faults_rollback_then_lost_ack_resumes",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_05_malformed_or_stale_progress_fails_without_reset",
+      "method": "test_05_malformed_or_stale_progress_fails_without_reset",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    },
+    {
+      "class": "BoundedSealPostgreSQLTests",
+      "id": "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_06_final_page_survives_accounting_failure_and_worker_can_claim",
+      "method": "test_06_final_page_survives_accounting_failure_and_worker_can_claim",
+      "module": "test_backfill_bounded_seal_scan_v81"
+    }
+  ],
+  "preserved_functions": 16,
+  "protected_primary_keys": 2,
+  "protected_triggers": 5,
+  "provider_calls": 0,
+  "qualification": {
+    "actual_postgresql_cases": 6,
+    "cleanup_schema_absent": true,
+    "dependency_mismatches": 0,
+    "elapsed_seconds": 15.543,
+    "errors": 0,
+    "exact_preexisting_dependency_files": 77,
+    "failures": 0,
+    "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "receipt": {
+      "bytes": 38275,
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+      "sha256": "b0aceae8eed7191e4b4d2ce3dff39b78f5e774ee943bcbdbc36c7d2690ca01b6"
+    },
+    "retained_first_attempt": "Fixture global run-ID substitution changed the planner default literal and was caught by post-source guard; corrected to guard-row-only substitution. No candidate source change.",
+    "skips": 0,
+    "source_binding_cases": 1,
+    "tests": 7
+  },
+  "remaining_gates": [
+    "independent final test/evidence review",
+    "exact published commit/tree push and PR jobs in both unchanged workflows",
+    "root current ownership/source/catalog and uncertain-write reconciliation",
+    "root guarded SQL application plus independent exact readback",
+    "ordinary worker bounded-step and fresh acquired-page/readback proof"
+  ],
+  "schema": "astra.bounded-seal-scan-qualification/1",
+  "security_diff": {
+    "changed_timeouts_retries_indexes_worker": false,
+    "new_operational_run_metadata": "A versioned cursor, finite upper bound, examined/snapshot counts and timestamps are stored in existing run metadata. Existing authorized status serialization can show these values; immediate planner returns expose counts/state, not cursor IDs.",
+    "new_roles_grants_auth_routes": false,
+    "owner_fence_and_stop_controls": "Existing gates retained; finite same-owner installation required. Worker progress is not tied to an implementation lease."
+  },
+  "status": "LOCAL_AND_FINITE_FIRST_PAGE_GATES_PASSED_RELEASE_AND_ACTIVATION_PENDING",
+  "subordinate_production_writes": 0
+}

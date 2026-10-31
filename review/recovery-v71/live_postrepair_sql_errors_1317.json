@@ -1,0 +1,26 @@
+{
+  "result": [
+    {
+      "plpgsql_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "severity": "ERROR",
+      "sql_context": [
+        "SQL function \"astra_ingestion_rpc_v1\" statement 1"
+      ],
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:16:03.335000"
+    },
+    {
+      "plpgsql_context": [
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+      ],
+      "severity": "ERROR",
+      "sql_context": [
+        "SQL function \"astra_ingestion_rpc_v1\" statement 1"
+      ],
+      "sql_state": "55P03",
+      "timestamp": "2026-10-30T13:14:44.497000"
+    }
+  ]
+}

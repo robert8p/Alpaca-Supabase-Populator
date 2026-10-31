@@ -1,0 +1,197 @@
+{
+  "schema": "astra.managed-relay.activation-independent-review/1",
+  "recorded_at": "2026-10-30T12:20:55.036452+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "state": "REVIEWED_NO_BLOCKING_FINDINGS",
+  "scope": "Local exact approved worker promotion, two active test fixture phase adaptations, and compatibility with separately reviewed diagnostic patch. No production mutation by reviewer.",
+  "root_reported_activation_context_not_independently_retrieved_by_reviewer": {
+    "review_id": "managed-massive-relay-v3-review-20261030",
+    "actual_approval_time": "2026-10-30T12:14:00Z",
+    "confirmation_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+    "SQL_installed_at": "2026-10-30T12:17:26Z",
+    "existing_Edge_function_version": 2
+  },
+  "reviewed_file_pins": {
+    "astra_ingestion/backfill_worker_v2.py": {
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    "review/massive-relay-v3/activation/baseline_backfill_worker_v2.py": {
+      "bytes": 22179,
+      "sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e"
+    },
+    "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py": {
+      "bytes": 4973,
+      "sha256": "415ee966f7821c8c0381fdc0787712c225283d9242a5179e216a14a28e66ae44"
+    },
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py": {
+      "bytes": 29004,
+      "sha256": "586592caa77f7d29bc4758a92c4805ff28c8d13a979a72f50b7125ed141be0a7"
+    },
+    "astra_ingestion/rpc_store.py": {
+      "bytes": 17590,
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea"
+    },
+    "astra_ingestion/worker.py": {
+      "bytes": 7696,
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    "tests/ingestion/test_rpc_failure_observability_v71.py": {
+      "bytes": 13856,
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9"
+    }
+  },
+  "approved_promotion_proof": {
+    "archived_baseline_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "active_worker_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "active_equals_frozen_approved_proposal_byte_for_byte": true,
+    "frozen_patch_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "active_integration_test_reconstructs_exact_patch": true,
+    "no_extra_worker_change": true
+  },
+  "phase_adaptation_review": {
+    "active_integration_test": "Reads immutable90d baseline archive, retains original base/proposed/patch hash checks, adds exact active==approvedb682 assertion, executes active constructor, and checks the same pins in the unchanged approvedv3installer. Original behavioral tests remain.",
+    "active_PostgreSQL_test": "Exactly one fixture input path changes: synthetic approved_worker_base_sha256 reads the immutable90d archive rather than the now-promoted activeb682 file. No SQL, approval guard, expected hash, assertion, dispatch rule or gate changes.",
+    "active_v2_manifest_paths_changed": [
+      "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "tests/ingestion/test_backfill_massive_relay_postgres_v2.py"
+    ],
+    "preserved_v2_original_payloads": 19,
+    "unchanged_active_v2_payloads": 17,
+    "phase_changed_active_v2_tests_with_exact_frozen_copies": 2,
+    "retained_original_path_mapping": [
+      {
+        "original_path": "sql/astra_backfill_massive_relay_v2.sql",
+        "retained_exact_path": "sql/astra_backfill_massive_relay_v2.sql",
+        "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d"
+      },
+      {
+        "original_path": "supabase/functions/population-top3000-news-v1/index.ts",
+        "retained_exact_path": "supabase/functions/population-top3000-news-v1/index.ts",
+        "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97"
+      },
+      {
+        "original_path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+        "retained_exact_path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+        "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83"
+      },
+      {
+        "original_path": "astra_ingestion/backfill_massive_relay_v2.py",
+        "retained_exact_path": "astra_ingestion/backfill_massive_relay_v2.py",
+        "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841"
+      },
+      {
+        "original_path": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+        "retained_exact_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+        "sha256": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0"
+      },
+      {
+        "original_path": "tests/ingestion/test_backfill_massive_relay_v2.py",
+        "retained_exact_path": "tests/ingestion/test_backfill_massive_relay_v2.py",
+        "sha256": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52"
+      },
+      {
+        "original_path": "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+        "retained_exact_path": "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+        "sha256": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce"
+      },
+      {
+        "original_path": "tests/ingestion/managed_massive_relay_v2.test.mjs",
+        "retained_exact_path": "tests/ingestion/managed_massive_relay_v2.test.mjs",
+        "sha256": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84"
+      },
+      {
+        "original_path": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+        "retained_exact_path": "review/massive-relay-v2/candidates/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+        "sha256": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177"
+      },
+      {
+        "original_path": "review/massive-relay-v2/worker-integration.patch",
+        "retained_exact_path": "review/massive-relay-v2/worker-integration.patch",
+        "sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e"
+      },
+      {
+        "original_path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+        "retained_exact_path": "review/massive-relay-v2/backfill_worker_v2.py.proposed",
+        "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+      },
+      {
+        "original_path": "review/massive-relay-v2/worker-integration-review.json",
+        "retained_exact_path": "review/massive-relay-v2/worker-integration-review.json",
+        "sha256": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1"
+      },
+      {
+        "original_path": "evidence/replacement-managed-relay-review-scope-v2.json",
+        "retained_exact_path": "evidence/replacement-managed-relay-review-scope-v2.json",
+        "sha256": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4"
+      },
+      {
+        "original_path": "evidence/replacement-managed-relay-qualification-v2.json",
+        "retained_exact_path": "evidence/replacement-managed-relay-qualification-v2.json",
+        "sha256": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13"
+      },
+      {
+        "original_path": "evidence/replacement-managed-relay-security-review-v2.md",
+        "retained_exact_path": "evidence/replacement-managed-relay-security-review-v2.md",
+        "sha256": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0"
+      },
+      {
+        "original_path": "evidence/replacement-managed-relay-rpc-auth.diff",
+        "retained_exact_path": "evidence/replacement-managed-relay-rpc-auth.diff",
+        "sha256": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846"
+      },
+      {
+        "original_path": "evidence/replacement-managed-relay-edge-handler.diff",
+        "retained_exact_path": "evidence/replacement-managed-relay-edge-handler.diff",
+        "sha256": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22"
+      },
+      {
+        "original_path": "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+        "retained_exact_path": "evidence/replacement-relay-existing-auth-reconciliation-v2.json",
+        "sha256": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83"
+      },
+      {
+        "original_path": "evidence/replacement-apply-migration-wrapper-template.txt",
+        "retained_exact_path": "evidence/replacement-apply-migration-wrapper-template.txt",
+        "sha256": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7"
+      }
+    ],
+    "all15_v3_review_payloads_unchanged": true,
+    "historical_review_tests": "Frozen preactivation review tests/receipts remain historical and are not silently rewritten for activephase. Current CI uses adapted tests/ingestion fixtures; reproduction of the frozen preactivation suite requires its original input snapshot."
+  },
+  "combined_diagnostic_compatibility": {
+    "rpc_store_pin_unchanged": true,
+    "worker_CLI_pin_unchanged": true,
+    "diagnostic_tests_pin_unchanged": true,
+    "RpcStore_constructor_call_interface_and_security_helpers_unchanged": true,
+    "uncertain_write_fatal_no_retry_behavior_preserved": true,
+    "bounded_static_log_labels_only": true
+  },
+  "independent_test_execution": {
+    "command": "PYTHONPATH=.:tests/ingestion python3 -m unittest test_rpc_failure_observability_v71 test_backfill_massive_relay_v2 test_backfill_massive_relay_integration_review_v2 -v",
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 0.038,
+    "composition": {
+      "observability": 12,
+      "relay_adapter": 14,
+      "active_integration": 3
+    },
+    "production_calls": 0,
+    "provider_requests": 0
+  },
+  "production_actions_by_reviewer": {
+    "SQL_calls": 0,
+    "deployments": 0,
+    "GitHub_mutations": 0,
+    "credential_reads_or_exports": 0
+  },
+  "limits": [
+    "Root owns actual approval,SQL/Edge state,publication,CI and worker deployment readbacks.",
+    "Localpromotion and passingtests do not prove deployedworkerreadiness,providerentitlement or acquiredcoverage.",
+    "The diagnostic patch identifies futureRPCoperation/reason only; it does not prove the currentfailurecause or itsrepair.",
+    "No additional owner approval is requested by this review for the exact already-approved integration and test-only phase adaptations."
+  ],
+  "blocking_findings": []
+}

@@ -1,0 +1,149 @@
+{
+  "schema": "astra.readback-transaction-race-qualification/1",
+  "production_calls": 0,
+  "activation_selected": false,
+  "source": {
+    "one_predicate_only": true,
+    "exact_reverse_to_retained_baseline": true,
+    "recheck_guard_unchanged": true,
+    "no_telemetry_or_other_repair": true
+  },
+  "local_postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "old_race": {
+    "worker_pid": 83136,
+    "monitor_pid": 83138,
+    "monitor_started": "2026-10-30 14:18:16.959657+00:00",
+    "isolation": "read committed",
+    "page": {
+      "committed_at": "2026-10-30 14:18:16.967171+00:00",
+      "body_sha256": "62af41771bce125e752d1d9e4144c14bb07d3fa1bc0601146df6ca6520ab404d",
+      "record_count": 100
+    },
+    "actual_advisory_wait_observed": true,
+    "first_call_result": {
+      "runs": [
+        {
+          "result": {
+            "state": "PLANNING_INCOMPLETE"
+          },
+          "run_id": "run-3c2d1e6cab9f43b8953ed932b5452d40"
+        }
+      ],
+      "state": "OBSERVED",
+      "verified_pages": 0,
+      "readback_errors": 1
+    },
+    "first_call_failures": [
+      {
+        "id": 1,
+        "evidence": {
+          "reason": "Independent readback requires a subsequent transaction",
+          "page_no": 0,
+          "sqlstate": "AI005"
+        },
+        "recorded_at": "2026-10-30 14:18:16.979726+00:00"
+      }
+    ],
+    "first_call_readbacks": 0,
+    "later_original_call_still_excluded": true
+  },
+  "candidate_race": {
+    "worker_pid": 83150,
+    "monitor_pid": 83152,
+    "monitor_started": "2026-10-30 14:18:17.125571+00:00",
+    "isolation": "read committed",
+    "page": {
+      "committed_at": "2026-10-30 14:18:17.133032+00:00",
+      "body_sha256": "5d1f41c6e7e033f666848f56d8d6956663f6fffbc9223cc65e87ab142c6896cc",
+      "record_count": 100
+    },
+    "actual_advisory_wait_observed": true,
+    "first_call_result": {
+      "runs": [
+        {
+          "result": {
+            "state": "PLANNING_INCOMPLETE"
+          },
+          "run_id": "run-ff66d2a1041b4a64afe8e643079f36cd"
+        }
+      ],
+      "state": "OBSERVED",
+      "verified_pages": 0,
+      "readback_errors": 0
+    },
+    "first_call_failures": [],
+    "first_call_readbacks": 0,
+    "later_call_result": {
+      "runs": [
+        {
+          "result": {
+            "state": "PLANNING_INCOMPLETE"
+          },
+          "run_id": "run-ff66d2a1041b4a64afe8e643079f36cd"
+        }
+      ],
+      "state": "OBSERVED",
+      "verified_pages": 1,
+      "readback_errors": 0
+    },
+    "later_independent_readback": {
+      "body_sha256": "5d1f41c6e7e033f666848f56d8d6956663f6fffbc9223cc65e87ab142c6896cc",
+      "readback_sha256": "5d1f41c6e7e033f666848f56d8d6956663f6fffbc9223cc65e87ab142c6896cc",
+      "expected_records": 100,
+      "actual_records": 100
+    }
+  },
+  "timestamp_boundary": {
+    "equality_and_plus_one_microsecond_deferred": true,
+    "real_unchanged_guard_rejects_both_in_old_transaction": true,
+    "later_transaction_verifies_both": true
+  },
+  "bounds_and_existing_failures": {
+    "limits": [
+      0,
+      999,
+      2,
+      2
+    ],
+    "verified_pages": [
+      1,
+      8,
+      1,
+      0
+    ],
+    "existing_failure_and_exclusion_unchanged": true
+  },
+  "forward_preservation": {
+    "exact_candidate_installed_locally": true,
+    "all_function_metadata_unchanged": true,
+    "all_other_functions_unchanged": true,
+    "application_rows_and_run_owner_metadata_unchanged": true,
+    "gateway_and_outsider_execute_still_denied": true
+  },
+  "gate_bounds": {
+    "elapsed_seconds": 2.005652217005263,
+    "unchanged_busy_result": {
+      "state": "BUSY",
+      "reason": "BOUNDED_WORKER_LOCK_WAIT_EXHAUSTED"
+    }
+  },
+  "passed": false,
+  "tests": 8,
+  "errors": 1,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 5.0096132309990935,
+  "baseline_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+  "candidate_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+  "unchanged_recheck_sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+  "forward_sha256": "d1ba93fe5d8c6d6254c2e9936ccabfe0f13c05b20483bfdc7ebf5ed29bd4883b",
+  "test_sha256": "b4edfac0bfddea84653012cab48a8fa2ffe5da8622de74125d9f40648b861974",
+  "fixture_adaptation": "Isolated schema/run identifiers, exact local catalog metadata and source hashes; real retained recheck guard/body unchanged except schema namespace.",
+  "synthetic_page_note": "Two actual database connections commit synthetic100-record Massive N01 pages after the monitor transaction begins and queues on the real advisory gate. No provider request or production row is used.",
+  "fixture_dependency_root": "/tmp/replacement-claim-capability-staged-v71",
+  "production_activation": false,
+  "errors_detail": [
+    "Traceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v72/readback-transaction-race/qualify_readback_transaction_race_v72.py\", line 294, in test_forward_guards_and_atomic_postwrite_rollback\n    conn.execute(f'''INSERT INTO {self.f.schema}.backfill_runs_v2\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.UniqueViolation: duplicate key value violates unique constraint \"backfill_one_active_run_v2\"\nDETAIL:  Key ((true))=(t) already exists.\n"
+  ],
+  "failures_detail": []
+}

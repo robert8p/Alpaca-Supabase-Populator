@@ -1,0 +1,100 @@
+[
+  {
+    "observed_at": "2026-10-30 13:07:47.738418+00",
+    "proname": "rpc_dispatch",
+    "oid": 15986028,
+    "definition_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "metadata": {
+      "oid": "15986028",
+      "proacl": [
+        "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+        "anon=X/astra_ingestion_rpc_owner_v1"
+      ],
+      "probin": null,
+      "procost": 100,
+      "prokind": "f",
+      "prolang": "13619",
+      "proname": "rpc_dispatch",
+      "prorows": 0,
+      "pronargs": 2,
+      "proowner": "15985999",
+      "proconfig": [
+        "search_path=\"\"",
+        "statement_timeout=10s",
+        "lock_timeout=3s"
+      ],
+      "proretset": false,
+      "prosecdef": true,
+      "prorettype": "3802",
+      "prosqlbody": null,
+      "prosupport": "-",
+      "proargmodes": null,
+      "proargnames": [
+        "p_operation",
+        "p_payload"
+      ],
+      "proargtypes": [
+        "25",
+        "3802"
+      ],
+      "proisstrict": false,
+      "proparallel": "u",
+      "protrftypes": null,
+      "provariadic": "0",
+      "provolatile": "v",
+      "proleakproof": false,
+      "pronamespace": "15984556",
+      "proallargtypes": null,
+      "proargdefaults": null,
+      "pronargdefaults": 0
+    }
+  },
+  {
+    "observed_at": "2026-10-30 13:07:47.739064+00",
+    "proname": "backfill_dispatch_v2",
+    "oid": 16040232,
+    "definition_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+    "metadata": {
+      "oid": "16040232",
+      "proacl": [
+        "postgres=X/postgres",
+        "astra_ingestion_rpc_owner_v1=X/postgres"
+      ],
+      "probin": null,
+      "procost": 100,
+      "prokind": "f",
+      "prolang": "13619",
+      "proname": "backfill_dispatch_v2",
+      "prorows": 0,
+      "pronargs": 2,
+      "proowner": "16388",
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "proretset": false,
+      "prosecdef": false,
+      "prorettype": "3802",
+      "prosqlbody": null,
+      "prosupport": "-",
+      "proargmodes": null,
+      "proargnames": [
+        "p_operation",
+        "p_payload"
+      ],
+      "proargtypes": [
+        "25",
+        "3802"
+      ],
+      "proisstrict": false,
+      "proparallel": "u",
+      "protrftypes": null,
+      "provariadic": "0",
+      "provolatile": "v",
+      "proleakproof": false,
+      "pronamespace": "15984556",
+      "proallargtypes": null,
+      "proargdefaults": null,
+      "pronargdefaults": 0
+    }
+  }
+]

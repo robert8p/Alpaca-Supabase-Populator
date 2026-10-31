@@ -1,0 +1,83 @@
+{
+  "schema": "astra.reporting-policy-independent-readback/1",
+  "readback": {
+    "observed_at": "2026-10-30 16:29:07.011551+00",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:45:00Z",
+    "status": "ACTIVE",
+    "fence": 1,
+    "reporting_policy": {
+      "mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+      "policy_file": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+      "policy_sha256": "040a79b2eb663998782862eedb22490724b4e222a6a129eaf45b218ead14d70d",
+      "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+      "task_updated_at": "2026-10-30T16:27:39.839131Z",
+      "authority_source": "Current user relaying Rob communication-only instruction",
+      "prompt_exact_readback": true,
+      "source_instruction_at": "2026-10-30T16:22:00Z",
+      "source_time_precision": "minute",
+      "global_settings_changed": false,
+      "prompt_only_suppression": true,
+      "owner_actions_destination": "Exact reviewable payload for dot to relay; required action-time approval remains mandatory",
+      "routine_results_destination": "Existing durable checkpoints, database evidence and repository evidence for dot to read",
+      "same_implementation_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+      "platform_push_email_muting_verified": false,
+      "routine_proactive_user_messages_permitted": false,
+      "per_task_delivery_mute_supported_by_exposed_tools": false,
+      "cadence_enabled_state_executor_and_scope_unchanged": true
+    },
+    "successor_checkpoint": {
+      "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+      "updated_at": "2026-10-30T16:27:39.839131Z",
+      "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+      "exact_readback": true,
+      "reporting_override": true,
+      "schedule_unchanged": true
+    },
+    "eqr_assignment_state": "EXECUTABLE_EXISTING_TASK_ASSIGNED",
+    "contention_repair": {
+      "state": "SOURCE_PINNED_SHARED_DIAGNOSIS_AND_LOCAL_CONFIRMED_ABORT_RETRY_QUALIFICATION",
+      "worker_deployment": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "diagnostic_restored": true,
+      "active_runtime_change_selected": false
+    },
+    "reporting_audits": [
+      {
+        "id": 47,
+        "action": "IMPLEMENTATION_REPORTING_POLICY_UPDATED",
+        "evidence": {
+          "request_id": "v74-reporting-only-rob-20261030T1622Z",
+          "same_controller": true,
+          "reporting_policy": {
+            "mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+            "policy_file": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+            "policy_sha256": "040a79b2eb663998782862eedb22490724b4e222a6a129eaf45b218ead14d70d",
+            "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+            "task_updated_at": "2026-10-30T16:27:39.839131Z",
+            "authority_source": "Current user relaying Rob communication-only instruction",
+            "prompt_exact_readback": true,
+            "source_instruction_at": "2026-10-30T16:22:00Z",
+            "source_time_precision": "minute",
+            "global_settings_changed": false,
+            "prompt_only_suppression": true,
+            "owner_actions_destination": "Exact reviewable payload for dot to relay; required action-time approval remains mandatory",
+            "routine_results_destination": "Existing durable checkpoints, database evidence and repository evidence for dot to read",
+            "same_implementation_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+            "platform_push_email_muting_verified": false,
+            "routine_proactive_user_messages_permitted": false,
+            "per_task_delivery_mute_supported_by_exposed_tools": false,
+            "cadence_enabled_state_executor_and_scope_unchanged": true
+          },
+          "eqr_recovery_preserved": true,
+          "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+          "contention_repair_preserved": true,
+          "acquisition_counts_unchanged_by_this_write": true,
+          "original_mission_exactly_once_at_prompt_eof": true
+        },
+        "recorded_at": "2026-10-30T16:28:42.568035+00:00"
+      }
+    ]
+  },
+  "reporting_only": true,
+  "platform_push_email_muting_verified": false
+}

@@ -1,0 +1,38 @@
+{
+  "type": "security",
+  "observed_utc": "2026-10-30T19:16:30Z",
+  "scoped_advisories": [
+    {
+      "name": "rls_enabled_no_policy",
+      "title": "RLS Enabled No Policy",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+      "findings": [
+        {
+          "detail": "Table \\`astra_ingestion_v1.bulk_scope_capture_v1\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "bulk_scope_capture_v1",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.690Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.bulk_scope_evidence_v1\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "bulk_scope_evidence_v1",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.690Z"
+        }
+      ]
+    }
+  ],
+  "raw_is_error": false
+}

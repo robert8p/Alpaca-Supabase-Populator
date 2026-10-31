@@ -1,0 +1,360 @@
+{
+  "type": "performance",
+  "observed_utc": "2026-10-30T19:16:30Z",
+  "scoped_advisories": [
+    {
+      "name": "unindexed_foreign_keys",
+      "title": "Unindexed foreign keys",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "PERFORMANCE"
+      ],
+      "description": "Identifies foreign key constraints without a covering index, which can impact database performance.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
+      "findings": [
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_breadth_inputs_v2\\` has a foreign key \\`backfill_breadth_inputs_v2_task_id_page_no_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_breadth_inputs_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_breadth_inputs_v2_task_id_page_no_fkey",
+            "fkey_columns": [
+              6,
+              7
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_contract_parent_links_v2\\` has a foreign key \\`backfill_contract_parent_links_v2_task_at_admission_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_contract_parent_links_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_contract_parent_links_v2_task_at_admission_fkey",
+            "fkey_columns": [
+              8
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_contract_work_v2\\` has a foreign key \\`backfill_contract_work_v2_canonical_task_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_contract_work_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_contract_work_v2_canonical_task_id_fkey",
+            "fkey_columns": [
+              9
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_identity_calculation_receipts_v2\\` has a foreign key \\`backfill_identity_calculation_receipts_v2_task_id_page_no_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_identity_calculation_receipts_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_identity_calculation_receipts_v2_task_id_page_no_fkey",
+            "fkey_columns": [
+              1,
+              5
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_identity_source_members_v2\\` has a foreign key \\`backfill_identity_source_members_v2_task_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_identity_source_members_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_identity_source_members_v2_task_id_fkey",
+            "fkey_columns": [
+              3
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_identity_sources_v2\\` has a foreign key \\`backfill_identity_sources_v2_task_id_page_no_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_identity_sources_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_identity_sources_v2_task_id_page_no_fkey",
+            "fkey_columns": [
+              5,
+              6
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_s02_occurrences_v2\\` has a foreign key \\`backfill_s02_occurrences_v2_run_id_member_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_s02_occurrences_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_s02_occurrences_v2_run_id_member_id_fkey",
+            "fkey_columns": [
+              1,
+              6
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_shared_occurrences_v2\\` has a foreign key \\`backfill_shared_occurrences_v_run_id_record_key_row_sha256_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_shared_occurrences_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_shared_occurrences_v_run_id_record_key_row_sha256_fkey",
+            "fkey_columns": [
+              1,
+              2,
+              3
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_shared_records_v2\\` has a foreign key \\`backfill_shared_records_v2_run_id_record_key_row_sha256_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_shared_records_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_shared_records_v2_run_id_record_key_row_sha256_fkey",
+            "fkey_columns": [
+              1,
+              2,
+              3
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.backfill_shared_versions_v2\\` has a foreign key \\`backfill_shared_versions_v2_task_id_page_no_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "backfill_shared_versions_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "backfill_shared_versions_v2_task_id_page_no_fkey",
+            "fkey_columns": [
+              17,
+              18
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.independent_verifications\\` has a foreign key \\`independent_verifications_job_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "independent_verifications",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "independent_verifications_job_id_fkey",
+            "fkey_columns": [
+              3
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Table \\`astra_ingestion_v1.rejections\\` has a foreign key \\`rejections_partition_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+          "metadata": {
+            "name": "rejections",
+            "type": "table",
+            "schema": "astra_ingestion_v1",
+            "fkey_name": "rejections_partition_id_fkey",
+            "fkey_columns": [
+              2
+            ]
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        }
+      ]
+    },
+    {
+      "name": "unused_index",
+      "title": "Unused Index",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "PERFORMANCE"
+      ],
+      "description": "Detects if an index has never been used and may be a candidate for removal.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index",
+      "findings": [
+        {
+          "detail": "Index \\`ingestion_event_job\\` on table \\`astra_ingestion_v1.events\\` has not been used",
+          "metadata": {
+            "name": "events",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_tasks_family_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_plan_units_run_v2\\` on table \\`astra_ingestion_v1.backfill_plan_units_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_plan_units_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_breadth_inputs_day_v2\\` on table \\`astra_ingestion_v1.backfill_breadth_inputs_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_breadth_inputs_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_daily_month_units_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_minute_sessions_identity_v2\\` on table \\`astra_ingestion_v1.backfill_minute_sessions_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_minute_sessions_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_identity_evidence_member_day_v2\\` on table \\`astra_ingestion_v1.backfill_identity_evidence_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_identity_evidence_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_identity_refresh_tasks_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_nonminute_pages_run_v2\\` on table \\`astra_ingestion_v1.backfill_nonminute_pages_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_nonminute_pages_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_s02_business_v2\\` on table \\`astra_ingestion_v1.backfill_s02_occurrences_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_s02_occurrences_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_shared_record_page_v2\\` on table \\`astra_ingestion_v1.backfill_shared_records_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_shared_records_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_shared_contract_symbol_v2\\` on table \\`astra_ingestion_v1.backfill_shared_records_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_shared_records_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_shared_action_tasks_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_contract_child_link_task_v2\\` on table \\`astra_ingestion_v1.backfill_contract_child_links_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_contract_child_links_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_contract_parent_work_index_v2\\` on table \\`astra_ingestion_v1.backfill_contract_parent_links_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_contract_parent_links_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_contract_old_child_cursor_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_tasks_minute_alias_status_v2\\` on table \\`astra_ingestion_v1.backfill_tasks_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_tasks_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        },
+        {
+          "detail": "Index \\`backfill_relay_run_v2\\` on table \\`astra_ingestion_v1.backfill_relay_dispatches_v2\\` has not been used",
+          "metadata": {
+            "name": "backfill_relay_dispatches_v2",
+            "type": "table",
+            "schema": "astra_ingestion_v1"
+          },
+          "observed_at": "2026-10-30T19:16:30.573Z"
+        }
+      ]
+    }
+  ],
+  "raw_is_error": false
+}

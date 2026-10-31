@@ -1,0 +1,120 @@
+{
+  "schema": "astra.eq.r.existing_task_assignment.independent_review.v1",
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T16:22:53.482921+00:00",
+  "passed": true,
+  "review_type": "INDEPENDENT_LOCAL_STATIC_REVIEW_OF_EXACT_SQL_AND_RETAINED_SAFE_READBACKS",
+  "reviewed_artifact": {
+    "path": "review/recovery-v74/eqr-ref01/assign_existing_eqr_reference_recovery_v74.sql",
+    "sha256": "1e860df5a7b71352bdc847542157be3707953143f6858a55dbf49b44d2bf9f04",
+    "bytes": 11996
+  },
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "retained_evidence_pins": {
+    "review/recovery-v74/eqr-ref01/root_assignment_and_worker_reconciliation_v74.json": {
+      "sha256": "8e0d7f2c78dba89d37cdbab043fbfd1be75a8f2f43c44d64dbafbe207d6faabf",
+      "bytes": 2122
+    },
+    "review/recovery-v74/eqr-ref01/root_existing_massive_reference_tasks_v74.json": {
+      "sha256": "b0cb87ea4863f610fe6ac4331ea11143f55e53e1f3617202f9f1c4ed120e5075",
+      "bytes": 13714
+    },
+    "review/recovery-v74/eqr-ref01/root_original_failure_reconciliation_v74.json": {
+      "sha256": "26fcec7bc9c01240aae54ff35122f8189b6761d59b0704e1cc2cd73d42cb1958",
+      "bytes": 2936
+    },
+    "review/recovery-v74/eqr-ref01/root_endpoint_receipt_projection_v74.json": {
+      "sha256": "38a6cf1169fbc9d5c8422eb56c158beb9aa0b43cd844d7afb16f24226d725116",
+      "bytes": 708
+    },
+    "review/recovery-v74/eqr-ref01/root_queue_source_guards_v74.json": {
+      "sha256": "07f7ab4a5655f3eeb05d6f540c3435d50c46c397a7e7b65a12ef3c449d000935",
+      "bytes": 17859
+    }
+  },
+  "source_definition_integrity": [
+    {
+      "signature": "astra_ingestion_v1.backfill_relay_v2(text,jsonb)",
+      "source_sha256": "2d3cd0e58e17d814e6af3e98fd771862137b6db7d3211b508d7df8a2fda74cba",
+      "definition_hash_verified": true
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633",
+      "definition_hash_verified": true
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "definition_hash_verified": true
+    }
+  ],
+  "original": {
+    "task_id": "backfill-plan-d54009e35cd9cd283f26e6c455425be613d24af035420b982f964c3ba97bfa54",
+    "exception_id": 2282,
+    "state": "OPERATIONAL_ERROR",
+    "code": "SOURCE_HTTP_ERROR",
+    "attempts": 1,
+    "page_attempts": 1,
+    "requests_reserved": 1,
+    "records_committed": 0,
+    "pages": 0,
+    "readbacks": 0,
+    "task_next_retry_at": "2026-10-30T13:22:20.909726+00:00",
+    "exception_next_retry_at": null,
+    "recorded_at": "2026-10-30T13:21:50.913209+00:00",
+    "member_id": "CIK:0000906107",
+    "selection_order": 446
+  },
+  "equivalent_assignment_reconciliation": {
+    "observed_at": "2026-10-30 16:14:08.735743+00",
+    "retained_relevant_metadata_keys": null,
+    "retained_recovery_audits": null,
+    "finding": "No equivalent recovery assignment is shown by the retained root search. This is a timestamped observation, not a claim about future state. Atomic SQL checks the same queue key, request ID and original exception references again."
+  },
+  "existing_route": {
+    "reconciled_task_count": 12,
+    "observed_at": "2026-10-30 16:13:25.060239+00",
+    "selected_task_id": "backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e",
+    "provider": "Massive",
+    "kind": "massive_reference",
+    "endpoint_path": "/v3/reference/tickers/EQR",
+    "date": "2026-07-31",
+    "scope_sha256": "b00128012f223a24d0d6fe72529351960287183a5eda7d505529e6a89e65ea5f",
+    "previous_priority": 40,
+    "proposed_priority": 9,
+    "new_task": false,
+    "new_credential": false,
+    "new_security_grant": false,
+    "provider_request_performed_by_review": false
+  },
+  "checked_guards": [
+    "One transaction with 8-second statement and 3-second lock bounds, existing advisory try-gate, fixed run row lock, and both task row locks.",
+    "Exact active owner, unexpired lease, fence, cohort, current checkpoint and installed v3 relay approval metadata.",
+    "Exact outer dispatcher, private dispatcher, relay, task guard and immutable task-definition function source hashes.",
+    "Exact fixed member ID, order, ticker and anchor hash; no substitution or identity reclassification.",
+    "Original task state/accounting/scope and exception time/code/evidence/message hashes must match; no original pages or readbacks.",
+    "Existing target must remain untouched, pending, unowned, due, dependency-free, within its exact dated scope, with no retained pages or exceptions.",
+    "Existing Massive dependency and recent worker capability/source are required.",
+    "Only target priority changes; every other target field and immutable task-definition hash is asserted unchanged.",
+    "Run counters and all nonqueue metadata are asserted unchanged; the original task and exception are compared as full JSON rows after the queue update.",
+    "One namespaced queue entry and one immutable REMEDIATION_RECOVERY_ASSIGNED audit link the original failure to the existing task."
+  ],
+  "security_and_cost_assessment": "This assigns already admitted work to the current authenticated worker/installed relay. It adds no endpoint, token configuration, trust relationship, subscription, quota, grant, controller or provider bypass. Normal claim, counted reservation, pacing, generation/fence/lease, page-attempt cap, response commit and independent readback remain required.",
+  "execution_bounds": {
+    "attempt_deadline_seconds": 300,
+    "database_claim_lease_seconds_minimum": 30,
+    "database_claim_lease_seconds_maximum": 300,
+    "maximum_page_attempts": 8,
+    "source": "Existing exact private dispatcher, not new limits or an assumed worker constructor default."
+  },
+  "limitations": [
+    "Static review and retained-readback reconciliation only; reviewer made no production or provider call and did not execute the assignment or a local fixture.",
+    "The original task has a next_retry_at timestamp, while its exception has null next_retry_at. The evidence shows no retry execution or executable recovery assignment at the retained observation; do not claim no retry timestamp exists.",
+    "Priority changes scheduling order only; they do not guarantee immediate claim or bypass family fairness and the current contention blocker.",
+    "The original paper-Alpaca 404 is a current-universe lookup, not historical provider absence. A successful dated Massive reference supports that date only and cannot alone establish an Alpaca UUID, full-period identity or certified mission completion.",
+    "A busy gate, changed task/owner/source or an uncertain write outcome must be reconciled before any retry."
+  ],
+  "recommendation": "Root may apply these exact guarded bytes once within the existing mission, then independently read back the unique request/audit, queue link, target priority and definition, and unchanged original task/exception/counters. Report queued recovery separately from acquisition or identity verification.",
+  "production_write_authority": "Root remains the sole production writer/controller; this receipt is a review recommendation, not a new user approval or a recorded application."
+}

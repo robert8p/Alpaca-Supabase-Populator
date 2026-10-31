@@ -1,0 +1,241 @@
+{
+  "schema": "astra.reporting-and-eqr-checkpoint-manifest/1",
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "base_tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+  "runtime_code_changed": false,
+  "scope": "Reporting-only task/controller instructions and retained EQR acquisition/identity evidence; no executor schedule or runtime mutation by publication",
+  "entries": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "bytes": 57090,
+      "sha256": "0755a6e4ea9fab90efd1b59c3f118187039454aa31ee5c92bcfc021a18e2ba05",
+      "git_blob_sha": "004f532bc0141a9139c42ad510e1d4be17d1c200",
+      "prior_git_blob_sha": "ed00c5f322dd887c7c26602cec16310e840bdc9e",
+      "disposition": "replace"
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "bytes": 71337,
+      "sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+      "git_blob_sha": "8f290dcc856a13bfc26a2282d17b833f4ec62fa8",
+      "prior_git_blob_sha": "a9cf7dce3b1df597b58df8abe04106b84247b223",
+      "disposition": "replace"
+    },
+    {
+      "path": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+      "bytes": 2130,
+      "sha256": "040a79b2eb663998782862eedb22490724b4e222a6a129eaf45b218ead14d70d",
+      "git_blob_sha": "3dc3ed238056deea66dec2bd5130881d1f4af17e",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v73.json",
+      "bytes": 9997,
+      "sha256": "4d528cb32cbb26363ff0e673d3de1a51791d9f3da0435050cf6dfc162af0d2b1",
+      "git_blob_sha": "ea1eb45a1344b60ea3ab54b2c10b674f13e73e45",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v73.json",
+      "bytes": 4763,
+      "sha256": "b242f9dec259dc2b238002021eeffda3ceadc92766c48740b009500a5868805b",
+      "git_blob_sha": "0d8b5e0e7c3aa2571e41a1dcf2c3d655da77b4e1",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-checkpoint-release-gates-v73.json",
+      "bytes": 1752,
+      "sha256": "04019f824e561a06ed34d22ceeef9bed2ff35efe6a11be14014d1f9253f4a875",
+      "git_blob_sha": "aecfca2cbc8f1007b10b5e254d661573593c6748",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-owner-remediation-and-contention-lease-v74.json",
+      "bytes": 1956,
+      "sha256": "2aaccbe558977a2f1a86149e4ecbb469380f84807319e6a2f5ed7536a823785e",
+      "git_blob_sha": "2954f028c456b395dd1e5d7d5c05e2c7d452ab5d",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-owner-reporting-and-qualified-repair-lease-v74.json",
+      "bytes": 2146,
+      "sha256": "2942cf0ad823408d85558241545f771443b29ced7d3f9d26b6bd825158e73870",
+      "git_blob_sha": "515ea57789c7db3590ea51f2c2d4f90a1674204c",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-reporting-only-task-update-20261030T1622Z.json",
+      "bytes": 2056,
+      "sha256": "ead0837d09da0b84f0002de5222c27fd5c65dd7245898a85ee1869bf336de52d",
+      "git_blob_sha": "4897660c26db82a2de636e650b4ab16068a436cc",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-controller-reporting-policy-readback-v74.json",
+      "bytes": 4309,
+      "sha256": "e30fce437681d82eeb443526d09a06eea9f729686e46c0a3cc2fe026da6fb46f",
+      "git_blob_sha": "7eb6a2378fc2bae502e1b31555453c71a1f64cae",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-remediation-assignment-v74.json",
+      "bytes": 8962,
+      "sha256": "51fbd65f25bdda909b43042198c3775554e456274568394a3879a06d4ec913f4",
+      "git_blob_sha": "c44f5662554ed4c851aaf6d65c08e5bba3e7ab5a",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-acquisition-readback-v74.json",
+      "bytes": 5646,
+      "sha256": "16150bf283cf417c0d9cbc22aaf27b8ac36f5632ce96bb6b1c177ac2eac09e3c",
+      "git_blob_sha": "705d720152054d201e7ef39841a56b60eddb6241",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-progress-readback-v74.json",
+      "bytes": 9273,
+      "sha256": "75b5394d9dce3b3e8ad36fb883ba2f6f42525e41abd0dfa86d655ad12c8e956f",
+      "git_blob_sha": "38ca086e21911c849ab374d7c3b1e6874daee93b",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-identity-followthrough-v74.json",
+      "bytes": 4035,
+      "sha256": "89accffbd4b442a6ad896c7a34ca23c051e0b56e0cf5fea56b5dda2ba39592a5",
+      "git_blob_sha": "bf524a4fc9c519cb6c6daf55fa4eebf722320049",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/existing_successor_completed_1600_v74.json",
+      "bytes": 4656,
+      "sha256": "049fe2bf6c102a564b3217beff529ad2e1a41a977751097fe0c63a5439b680e9",
+      "git_blob_sha": "8cd3d0be5b3bdd7e4611aa59fcdb5caee9f8f44c",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/live_progress_1607_v74.json",
+      "bytes": 1728,
+      "sha256": "65239240f7a6ae8f846dbd549b57026e9150712e7a5fc12f47b0acf490fbc9c2",
+      "git_blob_sha": "7aec6aa30f55104cfc996e76fd36ba9275708030",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/live_progress_1629_v74.json",
+      "bytes": 757,
+      "sha256": "ee92e34be75e8030cc11eddc565b0ac04f4459d4d294d21f94dd264df9a86e33",
+      "git_blob_sha": "84dd993700585d5554b567fac42af44216ed3db4",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/assign_existing_eqr_reference_recovery_v74.sql",
+      "bytes": 11996,
+      "sha256": "1e860df5a7b71352bdc847542157be3707953143f6858a55dbf49b44d2bf9f04",
+      "git_blob_sha": "4a7a4ff33a8ccbd403f15e19f0874336d64bb56f",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/identity_followthrough_source_extract_v74.json",
+      "bytes": 15465,
+      "sha256": "ce92118699869b70d1643de848294aba45fab273207230d2c6b977f1dfa15edb",
+      "git_blob_sha": "ece17317a39c01e0859edee6307794fdd4d83e2a",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/independent_existing_task_assignment_review_v74.json",
+      "bytes": 7362,
+      "sha256": "75d34ee1e892f89c15b2c5f570e49cd89d3b8c2550d947067e825baf92de857a",
+      "git_blob_sha": "fdcf6c1d61d5b2a17c7d3d784560b8481352f705",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/independent_identity_followthrough_review_v74.json",
+      "bytes": 7278,
+      "sha256": "d48d3c9de4b8cae9bd7d8180261dc7e2ce8488ab9cbc5242f47a77d4125456cd",
+      "git_blob_sha": "3c2cfd62e49d5699c95a16fdadeb9109c0e54eea",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/normal_worker_successor_readback_v74.json",
+      "bytes": 7987,
+      "sha256": "4cdcf61b8d8779c116075d04f1065a9c45db8d681d9309ad2d7e87c8d2a24129",
+      "git_blob_sha": "c7cbfb79676dbd86b9622e74611f84a78b7a7676",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/record_verified_alternative_acquisition_v74.sql",
+      "bytes": 7544,
+      "sha256": "454a86718e0d8d8ceeda19416797025a415ccb990d1b8f5a660e8a309562a821",
+      "git_blob_sha": "34b9e4289e26336ba32c1c69decf9976597b2b80",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_assignment_and_worker_reconciliation_v74.json",
+      "bytes": 2122,
+      "sha256": "8e0d7f2c78dba89d37cdbab043fbfd1be75a8f2f43c44d64dbafbe207d6faabf",
+      "git_blob_sha": "bbdd0f58779229415737570b3a99dd75d8dbf706",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_endpoint_receipt_projection_v74.json",
+      "bytes": 708,
+      "sha256": "38a6cf1169fbc9d5c8422eb56c158beb9aa0b43cd844d7afb16f24226d725116",
+      "git_blob_sha": "8b09323de5bb5a7a390846a14b4b7bb303c5686a",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_existing_massive_reference_tasks_v74.json",
+      "bytes": 13714,
+      "sha256": "b0cb87ea4863f610fe6ac4331ea11143f55e53e1f3617202f9f1c4ed120e5075",
+      "git_blob_sha": "8c4c094fa5f39b20eee4ab3b2eaf78984e7db912",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_original_failure_reconciliation_v74.json",
+      "bytes": 2936,
+      "sha256": "26fcec7bc9c01240aae54ff35122f8189b6761d59b0704e1cc2cd73d42cb1958",
+      "git_blob_sha": "a6f2ac0acab8787f470ae57018ecc09ba81aa23f",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_queue_source_guards_v74.json",
+      "bytes": 17859,
+      "sha256": "07f7ab4a5655f3eeb05d6f540c3435d50c46c397a7e7b65a12ef3c449d000935",
+      "git_blob_sha": "6e5b03dc36adaeba7334890b93f13df8e8af02ba",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-final-independent-review-v74.json",
+      "bytes": 6581,
+      "sha256": "9598747b1078e64322270e3df360203aa30f9a8364b3051bb502668b51a0b4d4",
+      "git_blob_sha": "06a2bfeaaccf162a62579ff21fdf3e83c8129c79",
+      "prior_git_blob_sha": null,
+      "disposition": "add"
+    }
+  ]
+}

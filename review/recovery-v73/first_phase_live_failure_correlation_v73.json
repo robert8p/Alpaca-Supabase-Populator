@@ -1,0 +1,118 @@
+{
+  "schema": "replacement-first-phase-live-failure-correlation-v73",
+  "sample_audit_id": 41,
+  "cron_job": 602,
+  "cron_runid": 4068765,
+  "holder_pid": 4599,
+  "log_window": {
+    "start": "2026-10-30T15:42:00Z",
+    "end": "2026-10-30T15:42:15Z"
+  },
+  "safe_database_logs": {
+    "result": [
+      {
+        "lock_holder": "Process holding the lock: 4599",
+        "process_id": "3929",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T15:42:01.054000"
+      },
+      {
+        "lock_holder": "Process holding the lock: 4599",
+        "process_id": "3928",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T15:42:02.551000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "3929",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T15:42:03.054000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "3928",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T15:42:04.551000"
+      },
+      {
+        "lock_holder": "Process holding the lock: 4599",
+        "process_id": "3929",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T15:42:07.359000"
+      },
+      {
+        "lock_holder": "Process holding the lock: 4599",
+        "process_id": "3928",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T15:42:07.637000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "3929",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T15:42:09.359000"
+      },
+      {
+        "lock_holder": "",
+        "process_id": "3928",
+        "safe_context": [
+          "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 39 at PERFORM"
+        ],
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T15:42:09.637000"
+      }
+    ]
+  },
+  "safe_worker_logs": {
+    "hasMore": false,
+    "logs": [
+      {
+        "id": "37229eca-7fcc-49cc-826a-daa6a9f5fe2d",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-z294x"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_reserve\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+        "timestamp": "2026-10-30T15:42:03.07360425Z"
+      }
+    ],
+    "nextEndTime": "2026-10-30T15:42:15Z",
+    "nextStartTime": "2026-10-30T15:42:03.073604251Z"
+  },
+  "interpretation": "Worker backfill_reserve failed at15:42:03.07360425Z, matching PID3929 outer rpc_dispatch line39 SQL55P03 at15:42:03.054Z. The wait log names holder4599, exactly the measured cron602 backend. Other waiters/errors must not all be counted as worker failures. The failed reservation transaction is distinct from the successful maintenance observation."
+}

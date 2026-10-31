@@ -1,0 +1,33 @@
+[
+  {
+    "observed_at": "2026-10-30 14:14:56.917303+00",
+    "task_id": "backfill-plan-28241a0a18d98d6b64c6a8e4a14027c1fe08a945048b089a02522b9cb52f42e2",
+    "page_no": 0,
+    "body_sha256": "255ec70d01487893dfeeaaccf5dc9638adc325ad71c0fc13986fa7187b600a9b",
+    "readback_sha256": "255ec70d01487893dfeeaaccf5dc9638adc325ad71c0fc13986fa7187b600a9b",
+    "expected_records": 100,
+    "actual_records": 100,
+    "verified_at": "2026-10-30 14:14:56.525507+00",
+    "reconciliation": [
+      {
+        "id": 31,
+        "action": "READBACK_FAILURE_RECONCILED",
+        "evidence": {
+          "reason": "SUBSEQUENT_TRANSACTION_CONDITION_NOW_SATISFIED",
+          "page_no": 0,
+          "request_id": "v72-exact-readback-transaction-reconciliation",
+          "body_sha256": "255ec70d01487893dfeeaaccf5dc9638adc325ad71c0fc13986fa7187b600a9b",
+          "actual_records": 100,
+          "same_controller": true,
+          "created_readback": true,
+          "expected_records": 100,
+          "verifier_unchanged": true,
+          "original_failure_id": 30,
+          "scope_or_counters_reset": false,
+          "original_failure_retained": true
+        },
+        "recorded_at": "2026-10-30T14:14:56.91516+00:00"
+      }
+    ]
+  }
+]

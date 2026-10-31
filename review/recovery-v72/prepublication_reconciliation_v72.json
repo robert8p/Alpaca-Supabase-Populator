@@ -1,0 +1,56 @@
+{
+  "progress": [
+    {
+      "observed_at": "2026-10-30 14:27:55.369433+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T15:00:00Z",
+      "checkpoint": {
+        "commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+        "version": "v71",
+        "recorded_at": "2026-10-30T13:50:38.435134+00:00",
+        "manifest_sha256": "bc580801e44aeb8a6374474a0eda265b0ef73fe3eeb46c737e7eca5d94f1b81b",
+        "published_and_ref_verified": true
+      },
+      "current_step": "v71 published and same hourly successor updated. Approved v3 installed12:17:26 within the12:29 window; existing Edgev2 and worker3ee4 LIVE,67relay pages/4812records dispatch/readback verified. Claim filter25427 installed once13:13; private28ae and authenticateda9 preserved. Exact cron602 PID correlations explain13:16/13:26 worker55P03 gate waits. Both bounded maintenance selector/candidate probes completed once;13:48 immutable1000-contract pure-read probe completed after admission had advanced (87.24ms parse,185.689ms anti-key,46.65ms link read; current state, not historical cron timing). Current executable step: inspect existing task indexes, qualify the smallest demonstrated eligible-task selection cost repair, independently review and deploy only within existing auth/gate/fences/timeouts/schedule. Preserve all counters and installed work; same controller lease14:30UTC.",
+      "pages_committed": 5275,
+      "records_committed": 637473,
+      "requests_reserved": 2749,
+      "source_bytes": 523411198,
+      "latest_page_commit": "2026-10-30 14:27:53.118549+00",
+      "readbacks": 5275,
+      "member_count": 3000,
+      "planner_next_member": "2277",
+      "planning_complete": "false",
+      "pins": {
+        "astra_ingestion_v1.monitor_tick_v1()": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057",
+        "astra_ingestion_v1.rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+        "astra_ingestion_v1.backfill_maintain_v2(integer)": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+        "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+        "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37"
+      },
+      "breadth_index": null,
+      "minute_index": null
+    }
+  ],
+  "successor": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "updated_at": "2026-10-30T14:02:53.486264+00:00",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+    "last_run": {
+      "id": "ccd1bda0-c23c-8333-84d7-b64ceff4af05",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-10-30T14:00:00Z",
+      "started_at": "2026-10-30T13:56:59.481278Z",
+      "completed_at": "2026-10-30T14:02:28.782216Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      }
+    }
+  },
+  "repository_head": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "publication_or_installation_performed": false
+}

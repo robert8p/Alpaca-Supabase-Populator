@@ -1,0 +1,347 @@
+{
+  "version": "replacement-claim-normal-generic-live-plan-v70",
+  "observed_at_upper_bound": "2026-10-30T11:09:48Z",
+  "source_probe_sha256": "3722f125e7040215fc04b79206b242aeb5a2be9afa3b5005b468f085b64571dc",
+  "plain_explain_only": true,
+  "read_only": true,
+  "claims_executed": 0,
+  "locks_executed": false,
+  "uses_historical_parameters_from": "2026-10-30T11:00:49.547058Z",
+  "interpretation": "Estimated plan only; actual failing family, execution duration and worker cached-plan selection are not established. Plan retains the family-turn index and LockRows; newly installed summary index is not chosen for this generic claim plan.",
+  "plan": [
+    {
+      "QUERY PLAN": [
+        {
+          "Plan": {
+            "Node Type": "Limit",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 90.95,
+            "Total Cost": 556.04,
+            "Plan Rows": 1,
+            "Plan Width": 1393,
+            "Plans": [
+              {
+                "Node Type": "Aggregate",
+                "Strategy": "Plain",
+                "Partial Mode": "Simple",
+                "Parent Relationship": "InitPlan",
+                "Subplan Name": "InitPlan 2",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 89.98,
+                "Total Cost": 89.99,
+                "Plan Rows": 1,
+                "Plan Width": 8,
+                "Plans": [
+                  {
+                    "Node Type": "Index Only Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "backfill_identity_member_symbol_v2",
+                    "Relation Name": "backfill_members_v2",
+                    "Alias": "m",
+                    "Startup Cost": 0.28,
+                    "Total Cost": 82.48,
+                    "Plan Rows": 3000,
+                    "Plan Width": 0,
+                    "Index Cond": "(run_id = $1)"
+                  }
+                ]
+              },
+              {
+                "Node Type": "LockRows",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 0.96,
+                "Total Cost": 75810.79,
+                "Plan Rows": 163,
+                "Plan Width": 1393,
+                "Plans": [
+                  {
+                    "Node Type": "Result",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 0.96,
+                    "Total Cost": 75809.16,
+                    "Plan Rows": 163,
+                    "Plan Width": 1393,
+                    "One-Time Filter": "((InitPlan 2).col1 = 3000)",
+                    "Plans": [
+                      {
+                        "Node Type": "Nested Loop",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Join Type": "Anti",
+                        "Startup Cost": 0.96,
+                        "Total Cost": 75809.16,
+                        "Plan Rows": 163,
+                        "Plan Width": 1393,
+                        "Inner Unique": false,
+                        "Join Filter": "(d.provider = q.provider)",
+                        "Plans": [
+                          {
+                            "Node Type": "Nested Loop",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Join Type": "Semi",
+                            "Startup Cost": 0.81,
+                            "Total Cost": 75804.34,
+                            "Plan Rows": 163,
+                            "Plan Width": 1387,
+                            "Inner Unique": false,
+                            "Join Filter": "(\"ANY_subquery\".jsonb_array_elements_text = q.kind)",
+                            "Plans": [
+                              {
+                                "Node Type": "Nested Loop",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Join Type": "Inner",
+                                "Startup Cost": 0.81,
+                                "Total Cost": 75558.07,
+                                "Plan Rows": 163,
+                                "Plan Width": 1331,
+                                "Inner Unique": true,
+                                "Join Filter": "(rr.fence = q.run_fence)",
+                                "Plans": [
+                                  {
+                                    "Node Type": "Nested Loop",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Join Type": "Anti",
+                                    "Startup Cost": 0.69,
+                                    "Total Cost": 75553.28,
+                                    "Plan Rows": 163,
+                                    "Plan Width": 1325,
+                                    "Inner Unique": false,
+                                    "Join Filter": "((gap.scope ->> 'reuse_parent'::text) = ANY (q.dependencies))",
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Index Scan",
+                                        "Parent Relationship": "Outer",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Scan Direction": "Forward",
+                                        "Index Name": "backfill_tasks_family_turn_v2",
+                                        "Relation Name": "backfill_tasks_v2",
+                                        "Alias": "q",
+                                        "Startup Cost": 0.55,
+                                        "Total Cost": 71277.12,
+                                        "Plan Rows": 8320,
+                                        "Plan Width": 1319,
+                                        "Index Cond": "((run_id = $1) AND (family = $2) AND (next_retry_at <= $4))",
+                                        "Filter": "((page_attempts < 8) AND (status = ANY ('{PENDING,RUNNING,RETRY_WAIT}'::text[])) AND ((status = ANY ('{PENDING,RETRY_WAIT}'::text[])) OR ((status = 'RUNNING'::text) AND (lease_until <= $4))) AND ((kind <> 'derive_breadth'::text) OR astra_ingestion_v1.backfill_breadth_ready_v2(id)) AND (NOT EXISTS(SubPlan 1)))",
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Nested Loop",
+                                            "Parent Relationship": "SubPlan",
+                                            "Subplan Name": "SubPlan 1",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Join Type": "Left",
+                                            "Startup Cost": 0.55,
+                                            "Total Cost": 27.96,
+                                            "Plan Rows": 10,
+                                            "Plan Width": 0,
+                                            "Inner Unique": true,
+                                            "Filter": "((d_1.id IS NULL) OR (d_1.run_id <> q.run_id) OR (d_1.status <> ALL ('{INGESTED,NO_DATA_RETURNED,NOT_APPLICABLE,PROVIDER_LIMITATION,IDENTITY_OR_QUALITY_UNRESOLVED}'::text[])))",
+                                            "Plans": [
+                                              {
+                                                "Node Type": "Function Scan",
+                                                "Parent Relationship": "Outer",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Function Name": "unnest",
+                                                "Alias": "dep",
+                                                "Startup Cost": 0,
+                                                "Total Cost": 0.1,
+                                                "Plan Rows": 10,
+                                                "Plan Width": 32
+                                              },
+                                              {
+                                                "Node Type": "Index Scan",
+                                                "Parent Relationship": "Inner",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "backfill_tasks_v2_pkey",
+                                                "Relation Name": "backfill_tasks_v2",
+                                                "Alias": "d_1",
+                                                "Startup Cost": 0.55,
+                                                "Total Cost": 2.77,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 127,
+                                                "Index Cond": "(id = dep.dep)"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "Node Type": "Materialize",
+                                        "Parent Relationship": "Inner",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Startup Cost": 0.14,
+                                        "Total Cost": 41.51,
+                                        "Plan Rows": 65,
+                                        "Plan Width": 816,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Index Scan",
+                                            "Parent Relationship": "Outer",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Scan Direction": "Forward",
+                                            "Index Name": "backfill_reuse_children_v2",
+                                            "Relation Name": "backfill_tasks_v2",
+                                            "Alias": "gap",
+                                            "Startup Cost": 0.14,
+                                            "Total Cost": 41.18,
+                                            "Plan Rows": 65,
+                                            "Plan Width": 816,
+                                            "Index Cond": "(run_id = $1)",
+                                            "Filter": "((scope ? 'reuse_parent'::text) AND (status <> ALL ('{INGESTED,NO_DATA_RETURNED,NOT_APPLICABLE,PROVIDER_LIMITATION,IDENTITY_OR_QUALITY_UNRESOLVED}'::text[])))"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "Node Type": "Materialize",
+                                    "Parent Relationship": "Inner",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Startup Cost": 0.12,
+                                    "Total Cost": 2.35,
+                                    "Plan Rows": 1,
+                                    "Plan Width": 54,
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Index Scan",
+                                        "Parent Relationship": "Outer",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Scan Direction": "Forward",
+                                        "Index Name": "backfill_one_active_run_v2",
+                                        "Relation Name": "backfill_runs_v2",
+                                        "Alias": "rr",
+                                        "Startup Cost": 0.12,
+                                        "Total Cost": 2.35,
+                                        "Plan Rows": 1,
+                                        "Plan Width": 54,
+                                        "Filter": "((id = $1) AND (status = 'ACTIVE'::text))"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "Node Type": "Materialize",
+                                "Parent Relationship": "Inner",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Startup Cost": 0,
+                                "Total Cost": 2.02,
+                                "Plan Rows": 100,
+                                "Plan Width": 88,
+                                "Plans": [
+                                  {
+                                    "Node Type": "Subquery Scan",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Alias": "ANY_subquery",
+                                    "Startup Cost": 0,
+                                    "Total Cost": 1.52,
+                                    "Plan Rows": 100,
+                                    "Plan Width": 88,
+                                    "Plans": [
+                                      {
+                                        "Node Type": "ProjectSet",
+                                        "Parent Relationship": "Subquery",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Startup Cost": 0,
+                                        "Total Cost": 0.52,
+                                        "Plan Rows": 100,
+                                        "Plan Width": 32,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Result",
+                                            "Parent Relationship": "Outer",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Startup Cost": 0,
+                                            "Total Cost": 0.01,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 0
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "Node Type": "Materialize",
+                            "Parent Relationship": "Inner",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 0.15,
+                            "Total Cost": 2.37,
+                            "Plan Rows": 1,
+                            "Plan Width": 70,
+                            "Plans": [
+                              {
+                                "Node Type": "Index Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Scan Direction": "Forward",
+                                "Index Name": "backfill_provider_dependencies_v2_pkey",
+                                "Relation Name": "backfill_provider_dependencies_v2",
+                                "Alias": "d",
+                                "Startup Cost": 0.15,
+                                "Total Cost": 2.37,
+                                "Plan Rows": 1,
+                                "Plan Width": 70,
+                                "Index Cond": "(run_id = $1)",
+                                "Filter": "(state = 'BLOCKED_EXTERNAL'::text)"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "Settings": {
+            "jit": "off",
+            "effective_cache_size": "1536MB",
+            "effective_io_concurrency": "200",
+            "max_parallel_workers": "2",
+            "max_parallel_workers_per_gather": "1",
+            "random_page_cost": "1.1",
+            "work_mem": "5MB",
+            "search_path": "\"\\$user\", public, extensions",
+            "plan_cache_mode": "force_generic_plan"
+          }
+        }
+      ]
+    }
+  ]
+}

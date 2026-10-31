@@ -1,0 +1,101 @@
+--- installed54c planner
++++ v81 candidate planner
+@@ -206,8 +206,96 @@
+   END LOOP;
+   IF v_breadth=230 THEN v_phase:='SEAL'; END IF;
+  ELSIF v_phase='SEAL' THEN
+-  v_snapshot:=astra_ingestion_v1.backfill_plan_snapshot_v2(r.id,500);
+-  IF v_snapshot->'more'='true'::jsonb THEN RETURN jsonb_build_object('state','SNAPSHOTTING_EXISTING_TASKS','plan_complete',false,'snapshot',v_snapshot); END IF;
++  -- v81: bounded global-ID examination; only a later call may run final sealing.
++  DECLARE
++   scan_key constant text:='planner_seal_snapshot_scan_v81';
++   scan_basis constant text:='1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb';
++   scan_progress jsonb; scan_upper text; scan_lower text; scan_ids text[]; scan_id text;
++   scan_task record; scan_examined bigint:=0; scan_added bigint:=0; scan_batches bigint:=0;
++   scan_page_count integer; scan_page_added integer:=0; scan_complete boolean:=false;
++   scan_started timestamptz; scan_updated timestamptz;
++  BEGIN
++   IF v_expected IS NULL OR v_expected<0 THEN
++    RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Bounded SEAL scan requires the retained nonnegative expected count'; END IF;
++   IF NOT r.metadata ? scan_key THEN
++    SELECT task.id INTO scan_upper FROM astra_ingestion_v1.backfill_tasks_v2 task ORDER BY task.id DESC LIMIT 1;
++    scan_started:=clock_timestamp();
++    scan_progress:=jsonb_build_object('version','bounded-seal-snapshot-scan-v81','run_id',r.id,'run_fence',r.fence,
++     'cohort_sha256',r.cohort_sha256,'cohort_manifest_sha256',r.cohort_manifest_sha256,
++     'expected_static_count',v_expected,'basis_sha256',scan_basis,'upper_id',scan_upper,'last_examined_id',NULL,
++     'batches',0,'examined_ids',0,'snapshots_added',0,'complete',false,'started_at',scan_started,'last_scan_at',scan_started);
++   ELSE
++    scan_progress:=r.metadata->scan_key;
++    IF jsonb_typeof(scan_progress) IS DISTINCT FROM 'object' THEN
++     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Malformed bounded SEAL scan progress; reconcile without resetting'; END IF;
++    IF NOT scan_progress ?& ARRAY['version','run_id','run_fence','cohort_sha256','cohort_manifest_sha256',
++     'expected_static_count','basis_sha256','upper_id','last_examined_id','batches','examined_ids','snapshots_added','complete','started_at','last_scan_at']
++     OR (SELECT count(*) FROM jsonb_object_keys(scan_progress))<>15
++     OR scan_progress->>'version' IS DISTINCT FROM 'bounded-seal-snapshot-scan-v81'
++     OR scan_progress->'run_id' IS DISTINCT FROM to_jsonb(r.id)
++     OR scan_progress->'run_fence' IS DISTINCT FROM to_jsonb(r.fence)
++     OR scan_progress->'cohort_sha256' IS DISTINCT FROM to_jsonb(r.cohort_sha256)
++     OR scan_progress->'cohort_manifest_sha256' IS DISTINCT FROM to_jsonb(r.cohort_manifest_sha256)
++     OR scan_progress->'expected_static_count' IS DISTINCT FROM to_jsonb(v_expected)
++     OR scan_progress->>'basis_sha256' IS DISTINCT FROM scan_basis
++     OR jsonb_typeof(scan_progress->'upper_id') NOT IN ('string','null')
++     OR jsonb_typeof(scan_progress->'last_examined_id') NOT IN ('string','null')
++     OR jsonb_typeof(scan_progress->'complete') IS DISTINCT FROM 'boolean'
++     OR jsonb_typeof(scan_progress->'batches') IS DISTINCT FROM 'number'
++     OR jsonb_typeof(scan_progress->'examined_ids') IS DISTINCT FROM 'number'
++     OR jsonb_typeof(scan_progress->'snapshots_added') IS DISTINCT FROM 'number'
++     OR scan_progress->>'batches' !~ '^(0|[1-9][0-9]*)$'
++     OR scan_progress->>'examined_ids' !~ '^(0|[1-9][0-9]*)$'
++     OR scan_progress->>'snapshots_added' !~ '^(0|[1-9][0-9]*)$'
++     OR jsonb_typeof(scan_progress->'started_at') IS DISTINCT FROM 'string'
++     OR jsonb_typeof(scan_progress->'last_scan_at') IS DISTINCT FROM 'string' THEN
++     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Stale or malformed bounded SEAL scan identity and counters; reconcile without resetting'; END IF;
++    scan_upper:=scan_progress->>'upper_id';scan_lower:=scan_progress->>'last_examined_id';
++    scan_batches:=(scan_progress->>'batches')::bigint;scan_examined:=(scan_progress->>'examined_ids')::bigint;
++    scan_added:=(scan_progress->>'snapshots_added')::bigint;scan_complete:=(scan_progress->>'complete')::boolean;
++    scan_started:=(scan_progress->>'started_at')::timestamptz;scan_updated:=(scan_progress->>'last_scan_at')::timestamptz;
++    IF scan_batches<1 OR scan_added>scan_examined OR scan_examined::numeric>scan_batches::numeric*500
++     OR scan_examined::numeric<(scan_batches::numeric-1)*500
++     OR (scan_examined=0) IS DISTINCT FROM (scan_lower IS NULL)
++     OR (scan_upper IS NULL AND (scan_lower IS NOT NULL OR NOT scan_complete))
++     OR (scan_lower IS NOT NULL AND scan_lower>scan_upper)
++     OR (NOT scan_complete AND (scan_examined::numeric<>scan_batches::numeric*500 OR scan_lower>=scan_upper))
++     OR (scan_complete AND scan_examined::numeric=scan_batches::numeric*500 AND scan_lower IS DISTINCT FROM scan_upper)
++     OR NOT isfinite(scan_started) OR NOT isfinite(scan_updated) OR scan_updated<scan_started OR scan_updated>clock_timestamp() THEN
++     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Inconsistent bounded SEAL scan range or accounting; reconcile without resetting'; END IF;
++   END IF;
++   IF NOT scan_complete THEN
++    IF scan_upper IS NULL THEN scan_ids:='{}'::text[];
++    ELSIF scan_lower IS NULL THEN
++     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM
++      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id<=scan_upper ORDER BY task.id LIMIT 500) page;
++    ELSE
++     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM
++      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id>scan_lower AND task.id<=scan_upper ORDER BY task.id LIMIT 500) page;
++    END IF;
++    scan_page_count:=cardinality(scan_ids);
++    FOREACH scan_id IN ARRAY scan_ids LOOP
++     -- Preserve global task-ID suppression before reading any eligibility scope.
++     IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 unit WHERE unit.task_id=scan_id) THEN CONTINUE; END IF;
++     SELECT task.run_id,task.kind,task.scope INTO scan_task FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id=scan_id;
++     IF NOT FOUND THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Task disappeared within a bounded SEAL scan page'; END IF;
++     IF scan_task.run_id=r.id AND NOT ((scan_task.kind='alpaca_option_bars' AND scan_task.scope ? 'enumeration_parent') OR scan_task.scope ? 'reuse_parent' OR scan_task.scope ? 'identity_refresh_of' OR scan_task.kind IN('retained_identity','retained_massive_archive')) THEN
++      IF astra_ingestion_v1.backfill_snapshot_task_v2(scan_id) THEN scan_page_added:=scan_page_added+1;END IF;
++     END IF;
++    END LOOP;
++    IF scan_page_count>0 THEN scan_lower:=scan_ids[scan_page_count];END IF;
++    scan_complete:=scan_page_count<500 OR scan_lower=scan_upper;
++    scan_progress:=scan_progress||jsonb_build_object('last_examined_id',scan_lower,'batches',scan_batches+1,
++     'examined_ids',scan_examined+scan_page_count,'snapshots_added',scan_added+scan_page_added,
++     'complete',scan_complete,'last_scan_at',clock_timestamp());
++    UPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=r.metadata||jsonb_build_object(scan_key,scan_progress) WHERE id=r.id;
++    -- Always return, including the last page: later count/hash/seal failure must
++    -- not roll back this useful batch. Acquisition timestamps/counters stay intact.
++    RETURN jsonb_build_object('state',CASE WHEN scan_complete THEN 'SEAL_SNAPSHOT_SCAN_COMPLETE_CHECKS_PENDING' ELSE 'SEAL_SNAPSHOT_SCAN_ADVANCED' END,
++     'run_id',r.id,'plan_complete',false,'scan_complete',scan_complete,'examined_ids_this_call',scan_page_count,
++     'snapshotted_this_call',scan_page_added,'total_examined_ids',scan_examined+scan_page_count,'total_snapshots_added',scan_added+scan_page_added);
++   END IF;
++  END;
+   SELECT count(*),encode(sha256(convert_to(COALESCE(string_agg(task_id||':'||definition_sha256,E'\n' ORDER BY task_id COLLATE "C"),''),'UTF8')),'hex')
+    INTO v_count,v_hash FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id;
+   IF v_count<>v_expected THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Actual static plan count differs from transactionally admitted expected count'; END IF;

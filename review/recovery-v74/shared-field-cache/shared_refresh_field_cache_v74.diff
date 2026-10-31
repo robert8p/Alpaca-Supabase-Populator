@@ -1,0 +1,17 @@
+--- installed_b18a30
++++ candidate_field_decomposition
+@@ -18,10 +18,12 @@
+  votes AS MATERIALIZED(SELECT c.record_key,f.key field,count(*) n,count(DISTINCT f.value->>'value_sha256') values,
+   bool_or((f.value->>'nonnull')::boolean) nonnull,min(f.value->>'datatype') datatype
+   FROM candidates c CROSS JOIN LATERAL jsonb_each(c.field_states) f GROUP BY c.record_key,f.key),
+- fields AS MATERIALIZED(SELECT c.record_key,jsonb_object_agg(v.field,COALESCE(c.field_states->v.field,jsonb_build_object('datatype',v.datatype,'nonnull',v.nonnull))||
++ chosen_fields AS MATERIALIZED(SELECT c.record_key,f.key field,f.value field_state FROM chosen c CROSS JOIN LATERAL jsonb_each(c.field_states) f),
++ fields AS MATERIALIZED(SELECT c.record_key,jsonb_object_agg(v.field,COALESCE(cf.field_state,jsonb_build_object('datatype',v.datatype,'nonnull',v.nonnull))||
+   CASE WHEN v.n<n.n OR v.values>1 THEN jsonb_build_object('nonnull',v.nonnull,'reason','CONFLICTING_PROVIDER_RECORD_VERSIONS') ELSE '{}'::jsonb END) states,
+   COALESCE(jsonb_agg(v.field ORDER BY v.field) FILTER(WHERE v.n<n.n OR v.values>1),'[]') conflicts
+-  FROM chosen c JOIN votes v USING(record_key) JOIN candidate_counts n USING(record_key) GROUP BY c.record_key),
++  FROM chosen c JOIN votes v USING(record_key) JOIN candidate_counts n USING(record_key)
++  LEFT JOIN chosen_fields cf ON cf.record_key=c.record_key AND cf.field=v.field GROUP BY c.record_key),
+  clean AS MATERIALIZED(SELECT c.*,n.n candidates,f.states,f.conflicts,
+   (SELECT COALESCE(jsonb_object_agg(d.key,CASE WHEN f.conflicts ? CASE d.key WHEN 'publication_date_new_york' THEN c.primary_date_field WHEN 'market_session_new_york' THEN 't' ELSE d.key END THEN 'null'::jsonb ELSE d.value END),'{}') FROM jsonb_each(c.date_axes) d) clean_axes
+   FROM chosen c JOIN fields f USING(record_key) JOIN candidate_counts n USING(record_key)),

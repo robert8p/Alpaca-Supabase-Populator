@@ -1,0 +1,12 @@
+--- baseline_private28ae
++++ candidate_private_lateral_cursor
+@@ -74,8 +74,7 @@
+   -- Missing runtime configuration is one durable provider dependency; it does
+   -- not consume attempts or request reservations for every waiting task.
+   FOR v_dependency IN
+-   SELECT rr.id run_id,pp.provider FROM astra_ingestion_v1.backfill_runs_v2 rr CROSS JOIN (VALUES('Alpaca'),('Massive')) pp(provider)
+-   WHERE rr.status='ACTIVE' AND EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 st WHERE st.run_id=rr.id AND st.provider=pp.provider AND st.status IN ('PENDING','RETRY_WAIT','BLOCKED_EXTERNAL'))
++   SELECT rr.id run_id,pp.provider FROM astra_ingestion_v1.backfill_runs_v2 rr CROSS JOIN (VALUES('Alpaca'),('Massive')) pp(provider) CROSS JOIN LATERAL (SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 st WHERE st.run_id=rr.id AND st.provider=pp.provider AND st.status IN ('PENDING','RETRY_WAIT','BLOCKED_EXTERNAL') LIMIT 1) present WHERE rr.status='ACTIVE'
+   LOOP
+    IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_workers_v2 w WHERE w.observed_at>v_now-interval '10 minutes'
+     AND EXISTS(SELECT 1 FROM jsonb_array_elements_text(w.supported_kinds) k WHERE k LIKE lower(v_dependency.provider)||'_%')) THEN

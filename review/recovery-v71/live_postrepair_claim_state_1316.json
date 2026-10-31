@@ -1,0 +1,24 @@
+[
+  {
+    "observed_at": "2026-10-30 13:16:14.146192+00",
+    "pages_committed": 4311,
+    "records_committed": 523806,
+    "requests_reserved": 2156,
+    "latest_page_commit": "2026-10-30 13:15:51.363413+00",
+    "pages_since_repair": 35,
+    "readbacks": 4311,
+    "family_turn": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "changed_at": "2026-10-30T13:15:49.12473+00:00",
+      "claim_turns": 4222,
+      "last_family": "CTX02",
+      "next_family_index": 16,
+      "last_claimed_task_id": "backfill-plan-93f90b69765a05fb8c578e16ea297c0bca34ba5b210b11693e7434576e369130"
+    },
+    "latest_worker": {
+      "worker_id": "b88244d5-5226-4345-b256-ce20d6f10ee7",
+      "observed_at": "2026-10-30T13:15:49.12473+00:00",
+      "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d"
+    }
+  }
+]

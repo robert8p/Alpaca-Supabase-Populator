@@ -1,0 +1,109 @@
+[
+  {
+    "evidence": {
+      "functions": [
+        {
+          "oid": "16061391",
+          "sha256": "96fd9d7485ac6312a8b6facfafd4c8438d145ad69af2db0cdbfd2e49f3291e6b",
+          "proname": "backfill_contract_child_trigger_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_contract_child_trigger_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$ BEGIN IF NEW.kind='alpaca_option_bars' THEN PERFORM astra_ingestion_v1.backfill_contract_register_child_v2(NEW.id);END IF;RETURN NEW;END $function$\n"
+        },
+        {
+          "oid": "16061393",
+          "sha256": "e79997417569efc1295fbf8dbbb3b90e8b0c82ded972e213fc1b1e69dffc3c0c",
+          "proname": "backfill_contract_enqueue_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_contract_enqueue_v2(p_task text, p_page integer)\n RETURNS void\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nBEGIN\n INSERT INTO astra_ingestion_v1.backfill_contract_enumeration_v2(task_id,page_no,run_id)\n SELECT t.id,p_page,t.run_id FROM astra_ingestion_v1.backfill_tasks_v2 t JOIN astra_ingestion_v1.backfill_pages_v2 p ON p.task_id=t.id AND p.page_no=p_page\n WHERE t.id=p_task AND t.kind='alpaca_option_contracts' ON CONFLICT DO NOTHING;\nEND $function$\n"
+        },
+        {
+          "oid": "16061388",
+          "sha256": "d5349e3ec4e084dcd53a0ace556e81afe1f8f76b94c6f358cf8e493238a89f90",
+          "proname": "backfill_contract_key_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_contract_key_v2(p_symbol text, p_start timestamp with time zone, p_end timestamp with time zone, p_feed text, p_timeframe text)\n RETURNS text\n LANGUAGE sql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\n SELECT encode(sha256(convert_to(jsonb_build_array('Alpaca',p_symbol,extract(epoch FROM p_start),extract(epoch FROM p_end),p_feed,p_timeframe)::text,'UTF8')),'hex')\n$function$\n"
+        },
+        {
+          "oid": "16061390",
+          "sha256": "c5756d3872e552716bffb575025942500946e0e0a8a19c29ef29326b8bc78795",
+          "proname": "backfill_contract_register_child_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\"",
+              "statement_timeout=8s"
+            ],
+            "security_definer": true
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_contract_register_child_v2(p_task text)\n RETURNS integer\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '8s'\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2;s text;k text;a timestamptz;b timestamptz;feed text;frame text;\n n integer:=0;v_added integer;v_windows integer:=0;candidate_complete boolean;prior record;\nBEGIN\n SELECT * INTO STRICT t FROM astra_ingestion_v1.backfill_tasks_v2 WHERE id=p_task;\n IF t.kind<>'alpaca_option_bars' OR t.provider<>'Alpaca' THEN RETURN 0;END IF;\n PERFORM pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(t.run_id,706314020261099));\n INSERT INTO astra_ingestion_v1.backfill_contract_state_v2(run_id) VALUES(t.run_id) ON CONFLICT DO NOTHING;\n candidate_complete:=astra_ingestion_v1.backfill_contract_prove_child_v2(t.id);\n IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_contract_registered_children_v2 WHERE task_id=t.id) THEN\n  IF candidate_complete THEN\n   UPDATE astra_ingestion_v1.backfill_contract_work_v2 w SET canonical_task_id=t.id\n    FROM astra_ingestion_v1.backfill_contract_child_links_v2 l\n    WHERE l.task_id=t.id AND w.run_id=l.run_id AND w.work_key=l.work_key AND w.canonical_task_id<>t.id\n     AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_contract_child_proofs_v2 p WHERE p.task_id=w.canonical_task_id AND p.query_complete);\n  END IF;\n  RETURN 0;\n END IF;\n a:=astra_ingestion_v1.backfill_stamp_v2(t.scope->>'start');b:=astra_ingestion_v1.backfill_stamp_v2(t.scope->>'end');\n feed:=COALESCE(t.scope->>'feed','opra');frame:=COALESCE(t.scope->>'timeframe','1Day');\n IF a IS NULL OR b IS NULL OR a>=b OR feed<>'opra' OR frame<>'1Day' OR jsonb_typeof(t.scope->'symbols')<>'array' THEN\n  RAISE EXCEPTION USING ERRCODE='AI002',MESSAGE='Existing option child scope cannot be safely registered';END IF;\n FOR s IN SELECT DISTINCT value FROM jsonb_array_elements_text(t.scope->'symbols') WHERE value ~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$' LOOP\n  k:=astra_ingestion_v1.backfill_contract_key_v2(s,a,b,feed,frame);\n  INSERT INTO astra_ingestion_v1.backfill_contract_work_v2 VALUES(t.run_id,k,'Alpaca',s,a,b,feed,frame,t.id) ON CONFLICT DO NOTHING;\n  GET DIAGNOSTICS v_added=ROW_COUNT;v_windows:=v_windows+v_added;\n  IF v_added=0 AND candidate_complete THEN\n   SELECT w.canonical_task_id,COALESCE(p.query_complete,false) complete INTO prior FROM astra_ingestion_v1.backfill_contract_work_v2 w\n    LEFT JOIN astra_ingestion_v1.backfill_contract_child_proofs_v2 p ON p.task_id=w.canonical_task_id WHERE w.run_id=t.run_id AND w.work_key=k;\n   -- A better retained receipt can be referenced without cancelling or changing\n   -- the previous child, including any running lease or incomplete cursor.\n   IF NOT prior.complete THEN UPDATE astra_ingestion_v1.backfill_contract_work_v2 SET canonical_task_id=t.id WHERE run_id=t.run_id AND work_key=k;END IF;\n  END IF;\n  INSERT INTO astra_ingestion_v1.backfill_contract_child_links_v2(run_id,work_key,task_id) VALUES(t.run_id,k,t.id) ON CONFLICT DO NOTHING;\n  GET DIAGNOSTICS v_added=ROW_COUNT;n:=n+v_added;\n END LOOP;\n INSERT INTO astra_ingestion_v1.backfill_contract_registered_children_v2(task_id,run_id,scope_sha256)\n  VALUES(t.id,t.run_id,encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(t.scope),'UTF8')),'hex'));\n UPDATE astra_ingestion_v1.backfill_contract_state_v2 SET registered_windows=registered_windows+v_windows,registered_child_links=registered_child_links+n WHERE run_id=t.run_id;\n RETURN n;\nEND $function$\n"
+        },
+        {
+          "oid": "16041365",
+          "sha256": "e0d0a4bceb9f107c00f770546ef0a200ccb9dd7ca48df01c9c821569ac3b897c",
+          "proname": "backfill_page_rows_v2",
+          "metadata": {
+            "acl": [
+              "postgres=X/postgres",
+              "astra_ingestion_rpc_owner_v1=X/postgres"
+            ],
+            "owner": "16388",
+            "config": [
+              "search_path=\"\""
+            ],
+            "security_definer": false
+          },
+          "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_page_rows_v2(p_task_id text, p_page_no integer)\n RETURNS TABLE(record_ordinal bigint, symbol text, market_date date, session text, target_window boolean, record_group text, source_row jsonb)\n LANGUAGE plpgsql\n STABLE\n SET search_path TO ''\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2; p astra_ingestion_v1.backfill_pages_v2;\n b jsonb; v_row jsonb; v_rows jsonb; v_array jsonb; v_symbol text; v_group text;\n v_stamp timestamptz; v_local timestamp; v_calendar jsonb; v_day jsonb; v_ordinal bigint:=0;\nBEGIN\n SELECT * INTO t FROM astra_ingestion_v1.backfill_tasks_v2 WHERE id=p_task_id;\n SELECT * INTO p FROM astra_ingestion_v1.backfill_pages_v2 WHERE task_id=p_task_id AND page_no=p_page_no;\n IF NOT FOUND THEN RETURN; END IF;\n b:=p.raw_body::jsonb;\n IF t.kind IN ('alpaca_stock_bars','alpaca_option_bars') THEN\n  SELECT COALESCE(jsonb_object_agg(e->>'date',e),'{}') INTO v_calendar FROM jsonb_array_elements(COALESCE(t.scope->'calendar','[]')) e;\n  FOR v_symbol,v_array IN SELECT key,value FROM jsonb_each(COALESCE(NULLIF(b->'bars','null'::jsonb),'{}')) ORDER BY key LOOP\n   FOR v_row IN SELECT value FROM jsonb_array_elements(v_array) LOOP\n    v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=v_symbol;source_row:=v_row;record_group:='bars';\n    v_stamp:=astra_ingestion_v1.backfill_stamp_v2(v_row->>'t');v_local:=v_stamp AT TIME ZONE 'America/New_York';market_date:=v_local::date;\n    target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n    IF t.kind='alpaca_option_bars' OR t.scope->>'timeframe'='1Day' THEN session:='DAILY';\n    ELSE\n     v_day:=v_calendar->market_date::text;\n     session:=CASE WHEN v_stamp IS NULL THEN 'INVALID_TIMESTAMP'\n      WHEN v_day IS NULL THEN 'CALENDAR_UNRESOLVED'\n      WHEN v_local::time>='04:00'::time AND v_local::time<(v_day->>'open')::time THEN 'PRE'\n      WHEN v_local::time>=(v_day->>'open')::time AND v_local::time<(v_day->>'close')::time THEN 'RTH'\n      WHEN v_local::time>=(v_day->>'close')::time AND v_local::time<'20:00'::time THEN 'POST'\n      ELSE 'OUTSIDE_SUPPORTED_SESSION' END;\n    END IF;\n    RETURN NEXT;\n   END LOOP;\n  END LOOP;\n  RETURN;\n ELSIF t.kind='alpaca_actions' THEN\n  FOR v_group,v_array IN SELECT key,value FROM jsonb_each(COALESCE(NULLIF(b->'corporate_actions','null'::jsonb),'{}')) ORDER BY key LOOP\n   FOR v_row IN SELECT value FROM jsonb_array_elements(v_array) LOOP\n    v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=COALESCE(v_row->>'symbol',v_row->>'initiating_symbol');record_group:=v_group;source_row:=v_row;\n    market_date:=astra_ingestion_v1.backfill_date_v2(v_row->>'process_date');session:=NULL;target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n    RETURN NEXT;\n   END LOOP;\n  END LOOP;\n  RETURN;\n ELSIF t.kind='alpaca_reference' THEN v_rows:=jsonb_build_array(b);\n ELSIF t.kind='alpaca_news' THEN v_rows:=COALESCE(NULLIF(b->'news','null'::jsonb),'[]');\n ELSIF t.kind='alpaca_option_contracts' THEN v_rows:=COALESCE(NULLIF(b->'option_contracts','null'::jsonb),'[]');\n ELSIF t.provider='Massive' THEN v_rows:=CASE WHEN jsonb_typeof(b->'results')='object' THEN jsonb_build_array(b->'results') ELSE COALESCE(NULLIF(b->'results','null'::jsonb),'[]') END;\n ELSE v_rows:=COALESCE(b->'rows',b->'records','[]'); END IF;\n FOR v_row IN SELECT value FROM jsonb_array_elements(v_rows) LOOP\n  v_ordinal:=v_ordinal+1;record_ordinal:=v_ordinal;symbol:=COALESCE(v_row->>'symbol',v_row->>'ticker',CASE WHEN jsonb_array_length(COALESCE(t.scope->'symbols','[]'))=1 THEN t.scope#>>'{symbols,0}' END);\n  source_row:=v_row;record_group:=t.kind;session:=NULL;\n  market_date:=astra_ingestion_v1.backfill_date_v2(COALESCE(v_row->>'market_date',v_row->>'date',v_row->>'settlement_date',v_row->>'ex_dividend_date',v_row->>'execution_date',v_row->>'created_at',v_row->>'published_utc'));\n  target_window:=market_date BETWEEN '2025-09-01'::date AND '2026-07-31'::date;\n  RETURN NEXT;\n END LOOP;\nEND $function$\n"
+        }
+      ],
+      "observed_at": "2026-10-30T13:43:15.874347+00:00",
+      "contract_state": {
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "child_id": "backfill-options-5e488986b4180d62499048a1a4605ea9bb6edf0177d98afca49c8eeb8911530a",
+        "seed_complete": true,
+        "child_created_at": "2026-10-30T08:02:11.741651+00:00",
+        "new_children_created": 393,
+        "parent_contract_links": 43190,
+        "unlinked_source_contracts": 0,
+        "enumeration_pages_processed": 55
+      },
+      "s02_seed_cursor": {
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "next_page": 46
+      }
+    }
+  }
+]

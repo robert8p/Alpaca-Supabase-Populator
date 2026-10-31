@@ -1,0 +1,3 @@
+-r requirements-ingestion.txt
+httpx==0.28.1
+psycopg[binary]==3.2.9

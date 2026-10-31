@@ -1,0 +1,43 @@
+{
+  "source_receipts": [
+    "live_backfill_maintain_1332.json",
+    "live_cron_functions_1331.json",
+    "live_maintenance_helpers_1335.json"
+  ],
+  "component_names": [
+    "BREADTH_PENDING",
+    "MINUTE_ACCOUNT_PENDING",
+    "IDENTITY_DISCOVERY_PENDING",
+    "IDENTITY_REFRESH_QUEUE",
+    "NONMINUTE_CURSOR",
+    "S02_CURSOR",
+    "SHARED_CURSOR",
+    "CONTRACT_CURSOR",
+    "CONTRACT_ENUM_PENDING",
+    "MISSING_READBACK"
+  ],
+  "source_pins": {
+    "backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "backfill_maintain_v2(integer)": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+    "monitor_tick_v1()": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057",
+    "backfill_breadth_project_pending_v2(integer)": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+    "backfill_contract_maintain_v2()": "52007f177dca38faf48fab8773936173519dcbfa54af896b5ef6f902ad64c748",
+    "backfill_identity_discover_pending_v2()": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+    "backfill_identity_refresh_pending_v2(integer)": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+    "backfill_minute_account_pending_v2(integer)": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2",
+    "backfill_nonminute_project_pending_v2(integer)": "ceb1889732da767e8815741a792347ccb91c33c53acd38eeff36f9176d063cec",
+    "backfill_recheck_page_v2(text,integer)": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+    "backfill_s02_maintain_v2()": "40827de08ca59d1470a02aceff6ccc249e6b43bb8ef13ff39eddffa673e78939",
+    "backfill_shared_maintain_v2(integer)": "5da488f3e44e2521b64f58230b2bc6db3c34800ae4ac259166f4dc223c8ad2be",
+    "backfill_try_finalize_v2(text)": "f8f9ef6d8d9ada232b132170bde9922397a2b247dbc7e4b391cbca57b67b7063"
+  },
+  "sql_sha256": "462cd183dc28fd0c963b7bd014fb6a63164937cc624b9e023c26c3a8e74d3cf1",
+  "interpretation": "Selector-only timing; not mutation-body duration, cached cron plan, or gate-wait timing.",
+  "rewrites": [
+    "PL/pgSQL INTO and row-lock clause removed",
+    "fixed installed p_limit substituted",
+    "cursor values read from the same singleton via scalar subquery",
+    "oldest active run read via scalar subquery"
+  ]
+}

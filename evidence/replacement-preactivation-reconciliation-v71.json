@@ -1,0 +1,173 @@
+{
+  "schema": "astra.replacement.pre-activation-reconciliation/v71",
+  "state": {
+    "run_observed_at": "2026-10-30 12:28:32.950987+00",
+    "observed_at": "2026-10-30 12:28:32.950987+00",
+    "id": "fixed3000-20250901-20260731-v1-20261030",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T13:00:00Z",
+    "checkpoint": {
+      "commit": "ad4e3ba854cd4a004669ea5da6a97fef436ae1a9",
+      "version": "v70",
+      "recorded_at": "2026-10-30T11:21:57.648068+00:00",
+      "manifest_sha256": "a585da1eed169faef3dcd33a35c9d2a621f49fba273a154762cd610576e5f78a",
+      "published_and_ref_verified": true
+    },
+    "successor": "6ae2a4c96bbc819182133e17e9b7f779",
+    "pages_committed": 4090,
+    "records_committed": 496702,
+    "requests_reserved": 2020,
+    "next_member": "2023",
+    "latest_page_commit": "2026-10-30 12:15:14.935629+00",
+    "latest_worker": [
+      {
+        "worker_id": "006e9c22-437c-4c20-b52b-ba7f7b931fc2",
+        "observed_at": "2026-10-30T12:15:13.798596+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381",
+        "supported_kinds": [
+          "alpaca_reference",
+          "alpaca_stock_bars",
+          "alpaca_news",
+          "alpaca_actions",
+          "alpaca_option_contracts",
+          "alpaca_option_bars",
+          "derive_daily",
+          "derive_intraday",
+          "derive_breadth",
+          "retained_reuse",
+          "retained_identity",
+          "retained_massive_archive"
+        ]
+      }
+    ],
+    "readbacks_observed_at": "2026-10-30 12:29:26.387594+00",
+    "source_bytes": 425180768,
+    "readbacks": 4090,
+    "unread_pages": 0
+  },
+  "relay_installation_receipt": "evidence/replacement-managed-relay-approval-installation-receipt-v3.json",
+  "publication_repair": {
+    "parent": "d321e0e2ca2201d2664c9b885f67e73382629f19",
+    "commit": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+    "tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+    "diagnosis": "evidence/replacement-release-publication-collection-repair-v71.json",
+    "deployed": false
+  },
+  "fresh_claim_diagnostic": {
+    "original_error": {
+      "error": {
+        "name": "HttpException",
+        "message": "Failed to run sql query: ERROR:  57014: canceling statement due to statement timeout\n"
+      }
+    },
+    "candidate_execution_ms": 5604.352,
+    "candidate_planning_ms": 5.697,
+    "original_query": "review/recovery-v71/claim_n01_readonly_custom_v71.sql",
+    "candidate_query": "review/recovery-v71/claim_n01_capability_candidate_readonly_v71.sql",
+    "candidate_result": "review/recovery-v71/live_n01_capability_candidate_result.json",
+    "read_only": true,
+    "repair_applied": false,
+    "sustained_recovery_proven": false
+  },
+  "render_errors": {
+    "hasMore": false,
+    "logs": [
+      {
+        "id": "a3758c7d-57e9-4ae7-9308-0ff748387d4d",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T12:10:03.193452833Z"
+      },
+      {
+        "id": "622eb101-7e2d-4ba4-a9c5-8517d81cadab",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T12:15:25.492325946Z"
+      },
+      {
+        "id": "fe7ecdc5-5e12-4670-9a97-052be0364371",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T12:20:43.8605216Z"
+      },
+      {
+        "id": "acab56d6-c894-4163-9fa0-6001f24e60a1",
+        "labels": [
+          {
+            "name": "resource",
+            "value": "srv-dbh9fko473hc739an8m0"
+          },
+          {
+            "name": "instance",
+            "value": "srv-dbh9fko473hc739an8m0-4rjqg"
+          },
+          {
+            "name": "level",
+            "value": "info"
+          },
+          {
+            "name": "type",
+            "value": "app"
+          }
+        ],
+        "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\"}",
+        "timestamp": "2026-10-30T12:26:06.653400279Z"
+      }
+    ],
+    "nextEndTime": "2026-10-30T12:10:03.193452833Z",
+    "nextStartTime": "2026-10-30T12:10:00Z"
+  }
+}

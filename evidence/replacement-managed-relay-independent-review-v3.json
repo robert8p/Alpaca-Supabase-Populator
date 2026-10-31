@@ -1,0 +1,178 @@
+{
+  "schema": "astra.managed-relay.independent-review/3",
+  "recorded_at": "2026-10-30T11:47:08.732195+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "state": "REVIEWED_NO_BLOCKING_FINDINGS_FOR_PREPARED_PACKAGE",
+  "review_id": "managed-massive-relay-v3-review-20261030",
+  "scope_sha256": "a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5",
+  "candidate_sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013",
+  "candidate_bytes": 21825,
+  "installation_authorized_by_review": false,
+  "production_installed_by_reviewer": false,
+  "expired_v2_approval": {
+    "approved_at": "2026-10-30T09:53:00Z",
+    "expired_at": "2026-10-30T10:08:00Z",
+    "retained_without_redating": true,
+    "cannot_authorize_v3": true
+  },
+  "independent_source_findings": {
+    "all_19_frozen_v2_payloads_exact": true,
+    "entire_v3_installer_reduces_byte_for_byte_to_v2_after_only_declared_substitutions": true,
+    "declared_substitutions": [
+      "V3 installation sentinels",
+      "V3 migration history name",
+      "V3 review ID and canonical scope hash",
+      "Explicit alternative exact wrapper without its final LF"
+    ],
+    "raw_body_hash_and_history_copy_binding_preserved": true,
+    "full_prefix_suffix_name_delimiter_account_grammar_preserved": true,
+    "no_general_whitespace_or_comment_normalization": true,
+    "only_two_wrapper_terminal_encodings": true,
+    "actual_new_approval_15_minute_gate_preserved": true,
+    "post_DDL_runtime_tail_identical_except_new_review_ID_scope_and_closing_sentinel": true,
+    "gateway_auth_token_expiry_revocation_post_lock_check_api_allowlist_unchanged": true,
+    "same_two_worker_operations_and_private_RLS_grants": true,
+    "same_run_cohort_member_anchor_date_reservation_generation_owner_fence_lease_cursor_and_request_integrity_checks": true,
+    "same_immutable_dispatch_idempotency_and_original_body_readback_rules": true,
+    "edge_adapter_worker_and_integration_artifacts_unchanged": true,
+    "installation_action_packet_query_equals_exact_candidate_bytes": true,
+    "approval_timestamp_and_reference_remain_unpopulated_placeholders": true,
+    "full_token_recipient_permissions_and_deployment_risk_explicit_in_owner_request": true
+  },
+  "independently_executed_checks": {
+    "source_diff_frozen_artifacts_templates_and_probe_parser_tests": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.002
+    },
+    "additional_actual_postgresql_readonly_matrix": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.025,
+      "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+      "target": "Fixed existing disposable loopback127.0.0.1:55432/astra_ingestion_qualification; host and hostaddr both explicit",
+      "accepted_then_intentionally_aborted_P0001": [
+        "exact_no_final_lf",
+        "exact_final_lf"
+      ],
+      "validator_denied_P0001": [
+        "extra_form_feed",
+        "extra_lf_space",
+        "extra_comment_without_lf",
+        "altered_history_column",
+        "nonnull_idempotency_key",
+        "nonnull_rollback",
+        "modified_history_conflict_update",
+        "nineteen_letter_delimiter",
+        "twenty_one_letter_delimiter",
+        "account_quote"
+      ],
+      "SQL_parser_denied_42601": [
+        "extra_unicode_line_separator",
+        "nonletter_delimiter",
+        "body_delimiter_collision"
+      ],
+      "all_requests_rolled_back": true,
+      "production_calls": 0,
+      "ddl_writes": 0,
+      "approval_writes": 0,
+      "provider_requests": 0,
+      "runner": "review/massive-relay-v3/independent_transport_review_v3.py"
+    }
+  },
+  "producer_qualification_reviewed_not_relabelled_as_independent_execution": {
+    "receipt_path": "evidence/replacement-managed-relay-qualification-v3.json",
+    "receipt_sha256": "2d54e9b2f2a8ee847d7b2cc213f7399a2dd3fc4475800df8b49416568dea0277",
+    "actual_postgresql_tests": 17,
+    "seconds": 5.258,
+    "approval_rejections": 23,
+    "transport_body_rejections": 25,
+    "inherited_auth_scope_fence_integrity_and_immutable_audit_tests_reviewed": true,
+    "actual_no_final_LF_installer_history_equality_and_single_use_test_reviewed": true
+  },
+  "existing_connector_probe": {
+    "path": "review/massive-relay-v3/transport_readonly_probe_v3.sql",
+    "sha256": "d5fb3052dab18dd2b7975f9bd0d773f35902de43b805b91cb97ee8f309c9b12f",
+    "bytes": 4954,
+    "same_parser_bytes_except_named_probe_boundaries_and_migration_name": true,
+    "transaction_read_only_explicit": true,
+    "always_aborts_before_connector_history": true,
+    "only_safe_bounded_metadata_returned": true,
+    "production_route_proof": "Root-owned separate live connector receipt required; not inferred from local tests or this code review."
+  },
+  "action_time_prerequisites": [
+    "Root verifies actual existing connector accepted-probe receipt and no history, relay object or approval write.",
+    "Root reconciles existing controller/successor ownership, current target run/fence, relay absence, auth and Edge/worker baseline hashes, all uncertain writes.",
+    "Exact final reviewed package and action packet are durably published and presented for specific fresh owner approval.",
+    "Actual new approval timestamp/reference and exact v3 pins are recorded without redating or overwriting the expired v2 evidence.",
+    "Install once within15minutes of actual new approval; reconcile authoritative readback before deployment or retry."
+  ],
+  "limitations": [
+    "This review is preparation and qualification, not owner approval or production installation.",
+    "The reviewer made no production connector call and cannot independently attest current live ownership or route state.",
+    "Live managed-key presence, provider entitlement, Edge startup and source coverage are post-approval validations, not proven here.",
+    "The same existing Edge recipient obtains the worker token; compromise or misuse can authorize its existing allowed operations. This persistent trust expansion remains expressly gated.",
+    "Any material source/pin/auth/scope or transport drift requires reconciliation and appropriate fresh review; no silent validation weakening is permitted."
+  ],
+  "blocking_findings": [],
+  "files_reviewed": {
+    "evidence/replacement-managed-relay-review-scope-v3.json": {
+      "bytes": 6375,
+      "sha256": "3ccf33d43e7341179accf5201c2133bd6d0bb0a4d0118dd5bc4e436a32f634ec"
+    },
+    "evidence/replacement-managed-relay-security-review-v3.md": {
+      "bytes": 11179,
+      "sha256": "104ed36a9bf2d125179951584ac38abac7efd3a618f1971ecb584b8e282b60fe"
+    },
+    "review/massive-relay-v3/README.md": {
+      "bytes": 2872,
+      "sha256": "7240521147c6151d99d74edbfe861849af21a2e95b78eb6b93a93d7b7f62f25b"
+    },
+    "review/massive-relay-v3/apply-migration-wrapper-final-lf.txt": {
+      "bytes": 775,
+      "sha256": "7571b009a9624948ecdccce7797d66b0e8cb7b9a737831d4f71e864b0f8f5cb4"
+    },
+    "review/massive-relay-v3/apply-migration-wrapper-no-final-lf.txt": {
+      "bytes": 774,
+      "sha256": "0dea7a99908099268f5d716520f16b26b90f3996dc3441bc2c1e252cb547191c"
+    },
+    "review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql": {
+      "bytes": 21825,
+      "sha256": "fe0f948824771dfa673548402e5d80a076d71f0211cf24091bb11e7ef0b6b013"
+    },
+    "review/massive-relay-v3/independent_transport_review_v3.py": {
+      "bytes": 5074,
+      "sha256": "70dc8944b25c85e3d13d8955035781ff878e7e5113c135a5c60f669e618eb509"
+    },
+    "review/massive-relay-v3/installation_action_packet_v3.json": {
+      "bytes": 26182,
+      "sha256": "3553228a1998d51fac23ab2402e0fe7593c48925d6a881425dd7d6038748768a"
+    },
+    "review/massive-relay-v3/installer-security-v2-to-v3.diff": {
+      "bytes": 4701,
+      "sha256": "6d66fb10015f3670f7dbd16510544fe747f6ce8c7337bb8e7589e950e054b89a"
+    },
+    "review/massive-relay-v3/tests/test_managed_relay_connector_v3.py": {
+      "bytes": 18767,
+      "sha256": "6d6f79a8b84041ba6fc787d118fdcc41d8f697bdbfdeb376582b8b3f7c8ba96c"
+    },
+    "review/massive-relay-v3/tests/test_managed_relay_v3_source.py": {
+      "bytes": 4955,
+      "sha256": "135ee07394ca69eb61a0c72e326dcc34f595abbfa03f2eff397b214972be2bac"
+    },
+    "review/massive-relay-v3/transport_readonly_probe_action_v3.json": {
+      "bytes": 5552,
+      "sha256": "d2e7a8bf44586cd3802658748eef8466ee695258f4d21b0ae295716db69a3852"
+    },
+    "review/massive-relay-v3/transport_readonly_probe_v3.sql": {
+      "bytes": 4954,
+      "sha256": "d5fb3052dab18dd2b7975f9bd0d773f35902de43b805b91cb97ee8f309c9b12f"
+    },
+    "evidence/replacement-managed-relay-qualification-v3.json": {
+      "bytes": 5663,
+      "sha256": "2d54e9b2f2a8ee847d7b2cc213f7399a2dd3fc4475800df8b49416568dea0277"
+    }
+  }
+}

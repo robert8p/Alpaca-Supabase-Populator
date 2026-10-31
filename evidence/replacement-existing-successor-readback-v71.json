@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-10-30T13:29:00Z",
+  "observation_precision": "minute; metadata read from stored controller tool response",
+  "id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "is_enabled": true,
+  "updated_at": "2026-10-30T13:11:14.399552+00:00",
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "default_timezone": "Europe/London",
+  "last_run_time": "2026-10-30T13:10:51.557657+00:00",
+  "next_run_time": null,
+  "run_details": {
+    "last_run": {
+      "id": "6c2e1bc0-2800-8328-b027-da97f8799910",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-10-30T13:00:00Z",
+      "started_at": "2026-10-30T13:04:55.441853Z",
+      "completed_at": "2026-10-30T13:10:48.548108Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      }
+    },
+    "latest_result": {
+      "run_id": "6c2e1bc0-2800-8328-b027-da97f8799910",
+      "created_at": "2026-10-30T13:10:47.994566Z",
+      "scheduled_for": "2026-10-30T13:00:00Z",
+      "completed_at": "2026-10-30T13:10:48.548108Z",
+      "content_text": "**ASTRA has reached a major milestone: the approved Massive v3 relay is now verified to be acquiring and committing real data.** The remaining reliability defect is still unresolved.\n\n<grid columns={2} gap={3}>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Committed pages</text>\n    <title size=\"xl\" tabularNums>4,276</title>\n    <text color=\"success\" size=\"xs\">+186 since the earlier checkpoint</text>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Records / retained pointers</text>\n    <title size=\"xl\" tabularNums>518,993</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Massive relay pages verified</text>\n    <title size=\"xl\" color=\"success\" tabularNums>67/67</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Massive readback mismatches</text>\n    <title size=\"xl\" color=\"success\" tabularNums>0</title>\n  </grid-item>\n</grid>\n\n<caption>Independent production database checks, 30 October 2026, 13:06–13:08 London.</caption>\n\nThe worker deployment <Link url=\"https://github.com/robert8p/Alpaca-Supabase-Populator/commit/3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d\">`3ee4db2a`</Link> reached LIVE at 12:36:45. I verified the exact relay dispatch, committed page and matching independent readback for all 67 Massive transactions:\n\n| Family | Verified Massive pages |\n|---|---:|\n| N01 — News | 15 |\n| N02 — Dividends | 13 |\n| N03 — Splits | 14 |\n| S01 — Short-sale volume | 12 |\n| S02 — Short interest | 13 |\n| **Total** | **67** |\n\nTogether these represent 4,812 physical provider records. Massive reference acquisition is advertised by the new worker but has not yet been independently demonstrated.\n\n**Reliability remains the priority.** Fresh logs show ten `RpcPersistenceError` events after deployment. The latest at 13:03:44 matches PostgreSQL error `57014`, again in the normal task-claim selection at `backfill_dispatch_v2` line 123. No further committed page was confirmed by 13:08, so sustained recovery is not established.\n\nThe fixed 3,000-member cohort remains unchanged. Planning has reached member position 2,067, but is not sealed, and all 16-family workflows remain incomplete.\n\nI verified that the original implementation owner renewed its lease until **14:00 London**. I preserved that ownership, made no competing writes and did not reinstall the approved relay. The existing worker and scheduled controller remain enabled.\n\n**Status: RUNNING WITH VERIFIED MASSIVE ACQUISITION; RELIABILITY REPAIR OUTSTANDING.** The next required implementation step is a qualified correction to the recurring claim-selection timeout, followed by sustained automatic-successor and readback verification.",
+      "content_truncated": false,
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      },
+      "requires_user_action": false,
+      "is_failure_message": false
+    },
+    "delivery_status": "unknown"
+  }
+}

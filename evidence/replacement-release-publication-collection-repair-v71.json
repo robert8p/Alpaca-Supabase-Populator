@@ -1,0 +1,153 @@
+{
+  "schema": "astra.release.collection-and-publication-repair/1",
+  "recorded_at": "2026-10-30T12:27:54.567507+00:00",
+  "observer_and_local_preparer": "/root/relay_v3_review",
+  "failed_source_head": "d321e0e2ca2201d2664c9b885f67e73382629f19",
+  "state": "EXACT_FAILURE_DIAGNOSED_LOCAL_REPAIR_PREPARED_CHILD_HEAD_CI_PENDING",
+  "first_attempt_failures": [
+    {
+      "event": "pull_request",
+      "run_id": 41054801585,
+      "job_id": 124059516999,
+      "run_attempt": 1,
+      "head_sha": "d321e0e2ca2201d2664c9b885f67e73382629f19",
+      "conclusion": "failure",
+      "collection_errors": 3,
+      "pytest_seconds": 1.31,
+      "exit_code": 2
+    },
+    {
+      "event": "push",
+      "run_id": 41054795103,
+      "job_id": 124059497094,
+      "run_attempt": 1,
+      "head_sha": "d321e0e2ca2201d2664c9b885f67e73382629f19",
+      "conclusion": "failure",
+      "collection_errors": 3,
+      "pytest_seconds": 1.87,
+      "exit_code": 2
+    }
+  ],
+  "exact_errors": [
+    {
+      "test": "review/massive-relay-v3/tests/test_managed_relay_connector_v3.py",
+      "line": 12,
+      "missing_import": "test_backfill_massive_relay_postgres_v2",
+      "exception": "ModuleNotFoundError",
+      "cause": "Root pytest recursively collected frozen pre-installation tests outside their documented explicit qualification environment."
+    },
+    {
+      "test": "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py",
+      "line": 12,
+      "missing_import": "astra_ingestion.backfill_massive_relay_v2",
+      "exception": "ModuleNotFoundError",
+      "cause": "Approved runtime adapter was omitted from active repository publication; present only in frozen candidates."
+    },
+    {
+      "test": "tests/ingestion/test_backfill_massive_relay_postgres_v2.py",
+      "line": 14,
+      "missing_import": "test_backfill_massive_relay_v2",
+      "exception": "ModuleNotFoundError",
+      "cause": "Approved active adapter test fixture was omitted from repository publication; present only in frozen candidates."
+    }
+  ],
+  "independent_remote_readback": {
+    "GitHub_recursive_tree_entries": 702,
+    "truncated": false,
+    "all_seven_required_paths_absent_in_failed_head": true,
+    "existing_v2_boundary": "review/massive-relay-v2/conftest.py already has collect_ignore=[candidates/tests]",
+    "global_pytest_scope_not_changed": true,
+    "reads_only": true
+  },
+  "repair": {
+    "exact_missing_active_payloads_to_publish": [
+      {
+        "path": "sql/astra_backfill_massive_relay_v2.sql",
+        "bytes": 21525,
+        "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d"
+      },
+      {
+        "path": "supabase/functions/population-top3000-news-v1/index.ts",
+        "bytes": 15812,
+        "sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97"
+      },
+      {
+        "path": "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs",
+        "bytes": 12575,
+        "sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83"
+      },
+      {
+        "path": "astra_ingestion/backfill_massive_relay_v2.py",
+        "bytes": 14520,
+        "sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_v2.py",
+        "bytes": 14370,
+        "sha256": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52"
+      },
+      {
+        "path": "tests/ingestion/test_backfill_massive_relay_edge_v2.py",
+        "bytes": 534,
+        "sha256": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce"
+      },
+      {
+        "path": "tests/ingestion/managed_massive_relay_v2.test.mjs",
+        "bytes": 15309,
+        "sha256": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84"
+      }
+    ],
+    "all_seven_local_active_files_byte_identical_to_frozen_candidates": true,
+    "historical_v2_SQL_role": "Required only as the existing active PostgreSQL test fixture artifact; publishing is not permission to apply or replay it. Production v3 SQL already has its separately recorded installation.",
+    "narrow_collection_boundary": {
+      "path": "review/massive-relay-v3/conftest.py",
+      "collect_ignore": [
+        "tests"
+      ],
+      "resolved_target": "review/massive-relay-v3/tests",
+      "module_only_docstring_and_literal_assignment": true,
+      "active_tests_excluded": 0,
+      "workflow_or_global_configuration_changed": false
+    },
+    "phase_aware_active_checks": {
+      "path": "tests/ingestion/test_managed_relay_release_bindings_v3.py",
+      "checks": [
+        "All15 frozenv3reviewpayloads and canonical scope identity remain exact",
+        "All19 originalv2payloads retained via17activepaths plus explicit2frozen-test phase mappings",
+        "Current runtime inputs match reviewedpins; archived90d baseline preserved and activeworker equalsapprovedb682 proposal"
+      ]
+    },
+    "new_local_file_pins": {
+      "review/massive-relay-v3/conftest.py": {
+        "bytes": 494,
+        "sha256": "a6d39dc53f3263e72fcbe57dffbd43b12420f79b0ad0b58852a7a4d6d80edbbf"
+      },
+      "tests/ingestion/test_managed_relay_release_bindings_v3.py": {
+        "bytes": 3024,
+        "sha256": "4f35a7ddc3c364c471b4cc2acfae5b8a70cee19d32acda2c11a4681ce0f744b9"
+      }
+    },
+    "frozen_security_or_review_payloads_modified": false,
+    "runtime_logic_changed_by_this_repair": false
+  },
+  "local_validation": {
+    "phase_aware_active_unittest_cases": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 0.002,
+    "command": "PYTHONPATH=.:tests/ingestion python3 -m unittest test_managed_relay_release_bindings_v3 -v",
+    "pytest_available": false,
+    "pytest_collection_or_fullsuite_executed_locally": false,
+    "new_package_installs": 0
+  },
+  "gate_handling": {
+    "original_failures_retained": true,
+    "same_failed_head_retried": false,
+    "child_head_full_release_and_ingestion_CI_required": true,
+    "no_skipped_or_unexecuted_test_reported_as_pass": true,
+    "prior_frozen_review_qualification_is_historical_not_active_release_result": true
+  },
+  "remote_mutations_by_preparer": 0,
+  "next_action": "Root publishes the seven exact approved active payloads plus narrow boundary, activephase binding test and thisreceipt in a new childcommit, verifies presence/pins, and requires actual childhead release+ingestion gates before runtime deployment."
+}

@@ -1,0 +1,42 @@
+{
+  "run": {
+    "id": "fixed3000-20250901-20260731-v1-20261030",
+    "pages": 134,
+    "status": "ACTIVE",
+    "records": 15258,
+    "requests": 84,
+    "planner_next": 29,
+    "source_bytes": 2187141,
+    "last_progress_at": "2026-10-30T06:38:05.902412+00:00",
+    "planning_complete": false
+  },
+  "readbacks": {
+    "pages": 133,
+    "records": 14968,
+    "hash_matches": 133,
+    "target_records": 779966,
+    "retained_usable": 768136,
+    "support_records": 3060,
+    "retained_qualified": 768136,
+    "retained_referenced": 768136
+  },
+  "page_count": 134,
+  "observed_at": "2026-10-30T06:38:08.135771+00:00",
+  "dependencies": [
+    {
+      "code": "RUNTIME_CAPABILITY_UNAVAILABLE",
+      "state": "BLOCKED_EXTERNAL",
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "evidence": {
+        "reason": "No recently registered worker advertises this provider capability",
+        "observed_at": "2026-10-30T06:29:59.33885+00:00"
+      },
+      "provider": "Massive",
+      "dependency": "MASSIVE_WORKER_CREDENTIAL",
+      "observed_at": "2026-10-30T06:29:59.343348+00:00",
+      "resolved_at": null,
+      "blocked_worker": null,
+      "blocked_revision": null
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "astra.maintenance-candidate-metadata-qualification/1",
+  "passed": false,
+  "tests": 3,
+  "errors": 0,
+  "failures": 1,
+  "skipped": 0,
+  "elapsed_seconds": 1.2255720239991206,
+  "production_calls": 0,
+  "sql_sha256": "7da5d7398bef9927e829e461abf1cd7664f356686e827da1dd63a5131b1900f5",
+  "test_sha256": "df697aac044796a8eb1d2ec4e13478e0fe0789c6c7cafc18427b2ffd3e64bcb8",
+  "fixture_adaptation": "Same local schema/run/source-pin adaptation as maintenance selector qualification; monitor definition guarded but never invoked."
+}

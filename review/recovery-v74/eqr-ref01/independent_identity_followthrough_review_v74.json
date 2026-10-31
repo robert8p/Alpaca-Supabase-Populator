@@ -1,0 +1,122 @@
+{
+  "schema": "astra.eqr-identity-followthrough-independent-review/1",
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T16:38:24.864904+00:00",
+  "passed": true,
+  "scope": "LOCAL_SOURCE_AND_RETAINED_RECEIPT_INTERPRETATION; NO_LIVE_IDENTITY_READ_OR_MUTATION_BY_REVIEWER",
+  "acquisition_receipt": {
+    "path": "evidence/replacement-eqr-ref01-acquisition-readback-v74.json",
+    "sha256": "16150bf283cf417c0d9cbc22aaf27b8ac36f5632ce96bb6b1c177ac2eac09e3c"
+  },
+  "source_extract": {
+    "path": "review/recovery-v74/eqr-ref01/identity_followthrough_source_extract_v74.json",
+    "sha256": "ce92118699869b70d1643de848294aba45fab273207230d2c6b977f1dfa15edb"
+  },
+  "other_source_pins": {
+    "review/recovery-v73/baseline_maintain_installed_v73.sql": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "sql/astra_backfill_identity_v2.sql": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+    "astra_ingestion/backfill_worker_v2.py": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+  },
+  "verified_acquisition": {
+    "task_id": "backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e",
+    "market_date": "2026-07-31",
+    "body_sha256": "f11931dd96941da93c70c2022e484a8ed84bbe48ed20c3aa84ffdd135e86b359",
+    "records": 1,
+    "pages": 1,
+    "readbacks": 1,
+    "requests_reserved": 1,
+    "attempts": 1,
+    "anchor_date": "2026-08-03",
+    "new_provider_request_by_reviewer": false
+  },
+  "automatic_path": [
+    "AFTER INSERT readback trigger backfill_identity_readback_v2 is enabled in the retained fresh source catalog. For massive_reference it inserts a verified CURRENT_PAGE identity source keyed page:<task>:<page_no>, then projects the native results object at task.scope.asof.",
+    "Projection requires matching normalized CIK/member, both valid 12-character FIGIs equal to frozen anchor, security type equal to anchor, nonempty exchange, market=stocks and locale=us. It retains missing or conflicting identifiers as unresolved. eligible is true only when identifiers match and active is JSON true.",
+    "Only newly inserted immutable evidence marks affected member/cohort identity roots invalid and upserts the member refresh row with a 30-second readiness delay, preserving its earliest/latest date range.",
+    "Both ordinary claim prelude (private dispatcher28ae) and restored maintenance6c880 already call identity_refresh_pending_v2(2). This is an existing automatic successor; no manual helper invocation is necessary.",
+    "Refresh waits while linked retained_identity tasks are pending/running/retry-wait. It examines at most two eligible completed derive_daily roots per invocation, preserving original rows and checking whether a calculation receipt already covers the new material hash.",
+    "Missing calculation coverage produces deterministic backfill-identity-refresh-<sha256(root_task_id:identity_material_sha256)> tasks with original dependencies/scope plus the explicit refresh metadata, same run fence, and unchanged normal worker execution. ON CONFLICT reuses an already existing assignment.",
+    "The published intraday output path overlays current dated identity rather than duplicating its minute grid. New daily/breadth readbacks can propagate the established cohort refresh path.",
+    "Identity material uses an exact member/requested-date join. A July31 reference supplies no automatic evidence for another day or an unproved historical interval."
+  ],
+  "smallest_next_step": {
+    "operation": "SAFE_PERSISTED_IDENTITY_READBACK_THEN_EXISTING_AUTOMATIC_CONSUMER",
+    "no_new_task_or_source_request_required": true,
+    "point_keys": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "member_id": "CIK:0000906107",
+      "market_date": "2026-07-31",
+      "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0"
+    },
+    "safe_fields": {
+      "backfill_identity_sources_v2": [
+        "source_ref",
+        "source_kind",
+        "task_id",
+        "page_no",
+        "market_date",
+        "source_sha256",
+        "native_records",
+        "verified",
+        "invalidated",
+        "verified_at",
+        "invalidation_reason"
+      ],
+      "backfill_identity_evidence_v2": [
+        "evidence_id",
+        "member_id",
+        "market_date",
+        "source_ref",
+        "state",
+        "reason",
+        "eligible",
+        "native_row_sha256",
+        "source_sha256",
+        "recorded_at"
+      ],
+      "backfill_identity_current_v2": [
+        "state",
+        "reason",
+        "eligible",
+        "evidence_records",
+        "evidence_sha256",
+        "retrospective_only",
+        "strict_historical_availability_certified"
+      ],
+      "backfill_identity_refresh_v2": [
+        "earliest_date",
+        "latest_date",
+        "after_task_id",
+        "ready_after"
+      ],
+      "linked_existing_tasks_and_calculation_receipts": [
+        "task_id",
+        "root_task_id",
+        "kind",
+        "status",
+        "identity_material_sha256",
+        "body_sha256",
+        "page_no"
+      ]
+    },
+    "interpretation": "A missing refresh row may already be consumed or may have had no completed eligible root. Reconcile existing deterministic children/material receipts and current-view holds before treating that absence as failure. Do not repeat the acquired page or replay projection helpers."
+  },
+  "current_view_limit": "The published current-view definition aggregates all member/day evidence and can keep the date held for conflicting, unverified or invalidated sources. Source inspection is not a live readback of that view; parent must use its actual persisted state. The retained acquisition projection includes active=true but does not itself export market/locale.",
+  "draft_progress_recorder_review": {
+    "path": "review/recovery-v74/eqr-ref01/record_verified_alternative_acquisition_v74.sql",
+    "sha256": "454a86718e0d8d8ceeda19416797025a415ccb990d1b8f5a660e8a309562a821",
+    "bytes": 7544,
+    "decision": "NO_BLOCKING_STATIC_SAFETY_ISSUE_FOR_THIS_METADATA_ONLY_PAYLOAD",
+    "checks": "Existing try-gate; current fixed owner/lease/fence/cohort/reporting/assignment; unique request; original full task hash; acquired status/count; exact body rehash, dated request, valid relay timing, readback count/hash, frozen anchor comparison; only existing queue state/progress/next-step and one immutable audit change; original/target/exception rows, other metadata and run counters compared unchanged.",
+    "scope_limit": "If next-step text or identity evidence is sharpened after the parent readback, bind the changed exact bytes; do not treat this hash as a review of an unseen revision."
+  },
+  "prohibited_inferences": [
+    "No provider-absence conclusion from the original paper-Alpaca404.",
+    "No current Alpaca asset UUID or current Alpaca availability conclusion from Massive.",
+    "No full-period identity, full mission completion, point-in-time historical availability or derived-data completeness from this one dated row.",
+    "No claim that all other sources agree before current-view readback."
+  ],
+  "production_calls_by_reviewer": 0,
+  "provider_calls_by_reviewer": 0,
+  "production_writes_by_reviewer": 0
+}

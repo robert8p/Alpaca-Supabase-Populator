@@ -1,0 +1,59 @@
+{
+  "schema": "astra.maintenance-phase-preflight-independent-review/1",
+  "passed": true,
+  "reviewer": "/root/relay_v3_review",
+  "reviewed_at": "2026-10-30T15:32:05.763174+00:00",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "base_tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+  "reviewed_artifact_pins": {
+    "review/recovery-v73/installation/maintenance_phase_preflight_readback_readonly_v73.sql": "81fe51a5e9788b3858469b48e95d2c4ce3aa8a9ef86faf36fed7a52ac6e92b94",
+    "review/recovery-v73/installation/preflight_readback_qualification_v73.json": "d8cf9ed0e32ca01c0d8f9f59c37d9afbb9d12c40db17861fd7a7268d264608d3"
+  },
+  "scope": "Separate read-only snapshot preflight/readback; no change to frozen active package review95600d44.",
+  "checks": [
+    "Enforced read-only and repeatable-read with statement8s/lock3s assertions",
+    "SELECT-only catalog and fixed-scope checks; no helper/provider/DDL/DML invocation or explicit gate/row locks",
+    "Only exact baseline6c880 or reviewed candidate12e05 with complete maintenance metadata and13 unchanged function source pins",
+    "Exact audit permissions/catalog, hash pair, existing owner/unexpired lease/fence/cohort/member3000; NULL owner or lease fails closed",
+    "Safe fixed output fields and catalog fingerprints; no raw function body, credentials, request/payload or provider data",
+    "Result limited to12000bytes, delivered through deliberate namedP0001 and transaction rollback",
+    "Install readiness requires ACTIVE and unchanged15:45deadline; restore readiness permits any existing owned status under the same exact scope"
+  ],
+  "producer_qualification": {
+    "schema": "astra.maintenance-phase-readonly-qualification/1",
+    "production_calls": 0,
+    "sql_sha256": "81fe51a5e9788b3858469b48e95d2c4ce3aa8a9ef86faf36fed7a52ac6e92b94",
+    "cases": [
+      {
+        "case": "baseline_readonly",
+        "install_ready": true,
+        "rows_and_catalog_unchanged": true
+      },
+      {
+        "case": "candidate_readonly",
+        "restore_ready": true,
+        "other_schema_fingerprint_equal": true
+      },
+      {
+        "case": "four_transaction_bounds_rejected",
+        "count": 4,
+        "rows_and_catalog_unchanged": true
+      },
+      {
+        "case": "null_owner_rejected",
+        "rows_and_catalog_unchanged": true
+      }
+    ],
+    "passed": true,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "case_count": 4,
+    "elapsed_seconds": 1.838,
+    "maximum_safe_result_bytes": 3206
+  },
+  "interpretation": "Readiness is a snapshot observation, not an installation authority or a future-state guarantee. The reviewed atomic wrapper must independently recheck. No runtime/cron latency, acquisition progress or coverage claim follows from this probe.",
+  "production_calls_by_reviewer": 0,
+  "remote_mutations_by_reviewer": 0,
+  "frozen_active_payloads_modified": false
+}

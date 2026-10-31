@@ -1,0 +1,66 @@
+{
+  "d01_commit": {
+    "commit_transaction_seconds": 0.7175883469972177,
+    "external_requests_reserved": 0,
+    "limitation_groups_retained": 30,
+    "records": 390,
+    "sessions": 1,
+    "task_status": "IDENTITY_OR_QUALITY_UNRESOLVED"
+  },
+  "d01_partition": [
+    {
+      "calculation_and_encoding_seconds": 0.14864284899886115,
+      "companies": 1,
+      "output_rows": 390,
+      "raw_bytes": 1085438,
+      "rpc_request_bytes": 2248181,
+      "sessions": 1
+    },
+    {
+      "calculation_and_encoding_seconds": 2.9035891960011213,
+      "companies": 1,
+      "output_rows": 7800,
+      "raw_bytes": 21598058,
+      "rpc_request_bytes": 44721981,
+      "sessions": 20
+    }
+  ],
+  "d01_recommended_unit": {
+    "companies": 1,
+    "reason": "Full minute grid plus explicit NULL reasons is duplicated in retained raw receipt and normalized commit payload; monthly units exceed both persistence bounds.",
+    "target_sessions": 1
+  },
+  "limits": {
+    "commit_qualification_target_seconds": 10,
+    "commit_raw_bytes": 4194304,
+    "provider_body_bytes": 3145728,
+    "rpc_request_bytes": 8388608,
+    "rpc_transport_timeout_seconds": 15
+  },
+  "measured_at": "2026-10-30T05:35:48.187348+00:00",
+  "provider_page": {
+    "calendar_sessions": 26,
+    "commit_transaction_seconds": 2.560921683001652,
+    "counters_after_idempotent_reconciliation": {
+      "pages_committed": 1,
+      "records_committed": 10000,
+      "requests_reserved": 1
+    },
+    "generation_and_parse_seconds": 0.19645548699918436,
+    "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "raw_bytes": 1124108,
+    "readback_transaction_seconds": 0.02532488700308022,
+    "records": 10000,
+    "rpc_request_bytes": 5109114,
+    "symbol_count": 1,
+    "synthetic": true
+  },
+  "scope": "Disposable local PostgreSQL and synthetic provider-shaped observations; no remote provider requests or production writes.",
+  "source_sha256": {
+    "astra_ingestion/backfill_features_v2.py": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f",
+    "astra_ingestion/backfill_provider_v2.py": "64020b0f05c2b4c9f4f9e4d1d734a4a528b1449bdf53cf1001fd5932b223c4b9",
+    "astra_ingestion/backfill_worker_v2.py": "4999337e5f98a1d9032d21499b85eeb745b36203b8a03ba6f237f470b40bdacf",
+    "sql/astra_backfill_runtime_v2.sql": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a",
+    "tests/ingestion/test_backfill_worker_v2.py": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+  }
+}

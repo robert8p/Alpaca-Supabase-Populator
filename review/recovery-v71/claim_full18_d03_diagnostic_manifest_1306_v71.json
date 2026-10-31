@@ -1,0 +1,87 @@
+{
+  "schema": "astra.current-capability-readonly-diagnostics/1",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "source_sha256": "136871b8ca305ae69c661541d9c2684e71b1d5e6fe84a6ec9b8b594b1da56d02",
+  "auth_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+  "observed_at": "2026-10-30 13:06:42.509058+00",
+  "family": "D03",
+  "failed_family_proven": false,
+  "claim_turns": 4187,
+  "next_family_index": 7,
+  "supported_kinds": [
+    "alpaca_reference",
+    "alpaca_stock_bars",
+    "alpaca_news",
+    "alpaca_actions",
+    "alpaca_option_contracts",
+    "alpaca_option_bars",
+    "massive_reference",
+    "massive_news",
+    "massive_dividends",
+    "massive_splits",
+    "massive_short_volume",
+    "massive_short_interest",
+    "derive_daily",
+    "derive_intraday",
+    "derive_breadth",
+    "retained_reuse",
+    "retained_identity",
+    "retained_massive_archive"
+  ],
+  "supported_kind_count": 18,
+  "files": [
+    {
+      "path": "review/recovery-v71/claim_full18_d03_current_custom_1306_v71.sql",
+      "sha256": "e1889c2e2259d12bc63a8eb52a68dee1321ea2d9cf34035dcf1ee319f36e5e4c",
+      "bytes": 5213,
+      "mode": "custom",
+      "variant": "current"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_candidate_custom_1306_v71.sql",
+      "sha256": "a5cdb63ca146439192477bfe2ecf5dd9678bf6ae0ea0fe1c4a2d4d4da195bbb9",
+      "bytes": 5317,
+      "mode": "custom",
+      "variant": "candidate"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_current_generic_1306_v71.sql",
+      "sha256": "884846217fa054d88cfc9fdfbe2d37ae2577e1695cb10f80f6bdd3fd0592d300",
+      "bytes": 5217,
+      "mode": "generic",
+      "variant": "current"
+    },
+    {
+      "path": "review/recovery-v71/claim_full18_d03_candidate_generic_1306_v71.sql",
+      "sha256": "05ac92bf2bff3963a65253820c7ebbde8c2568df1c160665693c2ff9d9a009d6",
+      "bytes": 5321,
+      "mode": "generic",
+      "variant": "candidate"
+    }
+  ],
+  "statement_bound_seconds": 8,
+  "lock_bound_seconds": 3,
+  "data_writes": false,
+  "provider_requests": 0,
+  "rpc_invocations": 0,
+  "read_only_repeatable_snapshot": true,
+  "original_candidate_only_removals": [
+    "INTO t",
+    "FOR UPDATE OF q"
+  ],
+  "candidate_only_additional_change": {
+    "old": "q.kind IN (SELECT jsonb_array_elements_text($3))",
+    "new": "q.kind = ANY(ARRAY(SELECT jsonb_array_elements_text($3)))"
+  },
+  "source_derivation_verified": true,
+  "actual_postgres_probe_execution_by_preparer": false,
+  "execution_policy": "Root executes one current D03 variant once; execute the corresponding reviewed-predicate variant only to resolve the current capability-filter hypothesis. Other plan mode is prepared, not an instruction to sweep all four.",
+  "limitations": [
+    "The observed next family is a starting point; a failed normal-claim loop can advance into later families.",
+    "The as-of time is the current state observation, not the unavailable exact start time of a failed request.",
+    "No FOR UPDATE, authenticated wrapper, global prelude or cumulative multi-family claim time is measured.",
+    "Fast standalone candidates do not exclude transient I/O or row-lock waits in the real claim.",
+    "Any source, owner, rotation or worker-observation drift rejects rather than silently reusing stale parameters."
+  ],
+  "next_if_both_fast": "Inspect only the next evidence-supported family or a bounded allowlisted wait/lock snapshot; no speculative repair."
+}

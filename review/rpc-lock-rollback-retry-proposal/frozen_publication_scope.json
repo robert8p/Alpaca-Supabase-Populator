@@ -1,0 +1,246 @@
+{
+  "active_additions": [
+    "tests/ingestion/test_rpc_lock_abort_retry.py",
+    "tests/ingestion/test_rpc_lock_abort_retry_postgres.py"
+  ],
+  "base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "files": [
+    {
+      "bytes": 23229,
+      "git_blob": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    },
+    {
+      "bytes": 4135,
+      "git_blob": "59809d07345a502e75541f1c5fe49612e1bdda31",
+      "path": "evidence/replacement-confirmed-lock-abort-retry-local-v74.json",
+      "sha256": "5f53dd9166ecff00d570b583076b9014bce44260abf629b71c6774e8dbb88270"
+    },
+    {
+      "bytes": 131630,
+      "git_blob": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f"
+    },
+    {
+      "bytes": 103870,
+      "git_blob": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61"
+    },
+    {
+      "bytes": 798,
+      "git_blob": "71b6589a637344968d9ab12ad96d9c5c61a2f637",
+      "path": "review/recovery-v74/retry_gateway_setting_catalog_v74.json",
+      "sha256": "c045e794740f6f4fb1ee8940535234764be4bb8573dee8e7f4cabe606a565aaf"
+    },
+    {
+      "bytes": 8752,
+      "git_blob": "2c3c44f9a51bf3cff0c420590345f77d24a26568",
+      "path": "review/recovery-v74/retry_read_relation_boundary_v74.json",
+      "sha256": "7441273fb43374e10299c4c6a08c567f73d4fd868662e776050764e1287e9f63"
+    },
+    {
+      "bytes": 59048,
+      "git_blob": "d23d4b0e24032d26f63895120ad8ad278b5e946a",
+      "path": "review/recovery-v74/retry_table_boundary_catalog_v74.json",
+      "sha256": "c032007b09778154929b546a4ffc5f2ee482c0fc72fcc4188cda478022b26607"
+    },
+    {
+      "bytes": 9968,
+      "git_blob": "93fe8370dc911ec30e25058bdfe7762786d7b13d",
+      "path": "review/recovery-v74/retry_view_and_rls_boundary_v74.json",
+      "sha256": "0178799c42c5166d0bc4c05a01b3dd7651f6d571282a789dc1779a3fcbcc3955"
+    },
+    {
+      "bytes": 9641,
+      "git_blob": "d869b6f1291e96b14abb3e397e72615000ea85f5",
+      "path": "review/recovery-v74/retry_write_index_boundary_v74.json",
+      "sha256": "8aeaa95617c8f335a0e62ed98bce7ceabbfc2132ad9a8c5653e4b352053aec34"
+    },
+    {
+      "bytes": 15351,
+      "git_blob": "b2d34ad75e712471d6be3268f47fd3383f2cb5b1",
+      "path": "review/recovery-v74/retry_write_policy_boundary_v74.json",
+      "sha256": "c4b1924c6e5f606ec940ce2bdd3a76c11eedbb98f9c2ac35118414049bfac61d"
+    },
+    {
+      "bytes": 17366,
+      "git_blob": "a6bb8dfbc7a85f5b6fe3a01fdbcc6e1dc23748c9",
+      "path": "review/rpc-lock-rollback-retry-proposal/IMPLEMENTATION_REVIEW.md",
+      "sha256": "c00ca485c5fac826e1d75312a17db38a2325d668f6e46b31591801fc19a1e52f"
+    },
+    {
+      "bytes": 16899,
+      "git_blob": "b639de8d4aac032a8869d3a521efc660e2be88f5",
+      "path": "review/rpc-lock-rollback-retry-proposal/PROPOSAL.md",
+      "sha256": "2028616ad7e95e1a65d88a2acf4258f1f894817078d32e47a880cc3345d8a452"
+    },
+    {
+      "bytes": 4018,
+      "git_blob": "a078ddf86542a9a894f8c5e5e72c5531a9aa05eb",
+      "path": "review/rpc-lock-rollback-retry-proposal/audit_retry_dependencies.py",
+      "sha256": "f8fe078537b522a19c517a62e970e80c3774f3e606b33c707d4605b889a7d7aa"
+    },
+    {
+      "bytes": 22439,
+      "git_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "path": "review/rpc-lock-rollback-retry-proposal/baseline/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "bytes": 468,
+      "git_blob": "3e711c4f9f47a200af9d81b88c1a4ede4607dd02",
+      "path": "review/rpc-lock-rollback-retry-proposal/baseline/manifest.json",
+      "sha256": "b347e59e809b9ce717782b17181b7273efe4e5b1e8a42af1d1a1024efc12fb9d"
+    },
+    {
+      "bytes": 17590,
+      "git_blob": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "path": "review/rpc-lock-rollback-retry-proposal/baseline/rpc_store.py",
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea"
+    },
+    {
+      "bytes": 7696,
+      "git_blob": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "path": "review/rpc-lock-rollback-retry-proposal/baseline/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "bytes": 17129,
+      "git_blob": "376aefb8990e1d47298a04a7c7b88280458593a6",
+      "path": "review/rpc-lock-rollback-retry-proposal/build_retry_source_closure.py",
+      "sha256": "e4521da84eb0c827b7493e1702fd22b4bd3e5a86b158188972e2d9511021031a"
+    },
+    {
+      "bytes": 28442,
+      "git_blob": "d4bf077907620bc9eee578af3540e58e9d1b1827",
+      "path": "review/rpc-lock-rollback-retry-proposal/closure_missing_definition_request.json",
+      "sha256": "824ff8c60ce5059ba70a3e3e4538a4ba7968ef98257afe5f8f58ecdd9c113be0"
+    },
+    {
+      "bytes": 27036,
+      "git_blob": "d0a64691c490d6de37307fda65de241dedbbfcae",
+      "path": "review/rpc-lock-rollback-retry-proposal/dependency_audit.json",
+      "sha256": "d870e0dfcdade51057147b2b28863834f8a6c0146d5a98d00fe450bd4e61b589"
+    },
+    {
+      "bytes": 8989,
+      "git_blob": "9d6f401cde83963e57ca36cbb1e8e7f3c0da90b3",
+      "path": "review/rpc-lock-rollback-retry-proposal/independent_unit_qualification_v74.json",
+      "sha256": "68a1c580fa73df79c9d21827e29ff6e576d8400f5b3481786ab616562a3e19f5"
+    },
+    {
+      "bytes": 9769,
+      "git_blob": "650b737c5ee7dddc7a95491cb6fe0bbb7260ab1b",
+      "path": "review/rpc-lock-rollback-retry-proposal/local_release_manifest.json",
+      "sha256": "2a930b25acbc4f71e7e5fcf9ef56193086ec68f13489078ac3bc43f11427800a"
+    },
+    {
+      "bytes": 376,
+      "git_blob": "98b0fba53437637446dcc7453d198d3a83ab9bca",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_1_unit.json",
+      "sha256": "02b6da1374c79833087ad5750c415501d0e9e9f99912dedb5c82b2e34c2490aa"
+    },
+    {
+      "bytes": 9154,
+      "git_blob": "0fc5003c803aa3e100ad21089e6537fa86635c2d",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_3.json",
+      "sha256": "4fd9a066c6f48a70895c0b4237ee2de09760809a028c3902d4dd5873927943d7"
+    },
+    {
+      "bytes": 9154,
+      "git_blob": "0fc5003c803aa3e100ad21089e6537fa86635c2d",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_4.json",
+      "sha256": "4fd9a066c6f48a70895c0b4237ee2de09760809a028c3902d4dd5873927943d7"
+    },
+    {
+      "bytes": 14694,
+      "git_blob": "cfd0eb56dbf5804ba6d002d856a918938b57864c",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_5.json",
+      "sha256": "350654fb9f02e081cf378d0e347ad17937d0219809ae7f0ea6b1dfe1eb48be4a"
+    },
+    {
+      "bytes": 30956,
+      "git_blob": "ee55cd3dcc11e41ab01c79f61b2370cb18bab7cc",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_6.json",
+      "sha256": "eb8ddfa9ee8b99bd2cad57482f7a9d2d702f08676eb50df266e3a02fdd468d71"
+    },
+    {
+      "bytes": 463731,
+      "git_blob": "b1e3313caa83355a793224ed1c12d49745733aeb",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_7.json",
+      "sha256": "f3d1f358150762e7c6e29e8fb8179ec942c51083dbda3de2361c245094c0c60f"
+    },
+    {
+      "bytes": 446719,
+      "git_blob": "41468ffdfc06bca5886b081f79783982ee5298b6",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_attempt_8.json",
+      "sha256": "924f00de93186b00c09a6919bfd9d9fff6ef24eed741a7371367c267be865faf"
+    },
+    {
+      "bytes": 447083,
+      "git_blob": "bde2db68186dab95f1049296f703c7f87bf3ce6d",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_final.json",
+      "sha256": "e7f3a6cb15ec888634bfbae3ef5cb59869b8c7962041b989fc1707ad06682e2e"
+    },
+    {
+      "bytes": 3529,
+      "git_blob": "596d37ca33f91dcf53c988f5c952da11f42961ed",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualification_history.json",
+      "sha256": "38ca78f2344db8289f68720db4ca29170fc519d238c758bba1cb5fc07f504acf"
+    },
+    {
+      "bytes": 3166,
+      "git_blob": "e816415e6406a634227848334cd341f30b19ff7b",
+      "path": "review/rpc-lock-rollback-retry-proposal/qualify_rpc_lock_abort_retry.py",
+      "sha256": "14f37bb06eca74f1087772d782c0a2f5e9041c421413ad7b14d48fd6b59b1543"
+    },
+    {
+      "bytes": 270454,
+      "git_blob": "30096b2aeb4cba66648f31e92d65bdfbbaa041f6",
+      "path": "review/rpc-lock-rollback-retry-proposal/retained_exact_function_sources.json",
+      "sha256": "4779ea8392fccda290e714d515b019eaef30fced356c697d089756966cc9f985"
+    },
+    {
+      "bytes": 313688,
+      "git_blob": "4a6c8e6b74eba3abb740ed9929beb00ddc325656",
+      "path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88"
+    },
+    {
+      "bytes": 86925,
+      "git_blob": "ad27b0d9d024fc0b6f482d53ef33c3e58bef6f16",
+      "path": "review/rpc-lock-rollback-retry-proposal/retry_source_closure.json",
+      "sha256": "cde0cd8a860cfeafcb44c59e2b091628fd867ba87dcd8b7a3572ca633299c4c8"
+    },
+    {
+      "bytes": 13279,
+      "git_blob": "c282763dbe2952041de7b18c7f17c4e47b94ad86",
+      "path": "review/rpc-lock-rollback-retry-proposal/runtime.patch",
+      "sha256": "c7a3c055387410ba8895a312dfe1e6dccbb0035b0f3fad19c394b5d673b98d19"
+    },
+    {
+      "bytes": 17858,
+      "git_blob": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468"
+    },
+    {
+      "bytes": 23452,
+      "git_blob": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+    }
+  ],
+  "frozen": true,
+  "independent_final_review": "SEPARATE_PENDING_RECEIPT_MUST_BE_ADDED_EXPLICITLY",
+  "no_writes_in_flight": true,
+  "publication_target_base_commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+  "runtime_replacements": [
+    "astra_ingestion/rpc_store.py"
+  ],
+  "schema": "astra.confirmed-lock-abort-explicit-file-scope/1",
+  "scope_manifest_itself": "review/rpc-lock-rollback-retry-proposal/frozen_publication_scope.json"
+}

@@ -1,0 +1,23 @@
+--- qualified-stage3-existing-rpc-dispatch.sql
++++ local-review-candidate-rpc-dispatch.sql
+@@ -35,7 +35,7 @@
+     WHERE token_sha256=v_credential AND revoked_at IS NULL AND expires_at>pg_catalog.clock_timestamp();
+   IF v_actor IS NULL THEN RAISE EXCEPTION USING ERRCODE='PT401',MESSAGE='Ingestion capability authentication required'; END IF;
+   IF p_operation IS NULL OR NOT (p_operation='health' OR (v_actor='api' AND p_operation IN ('list_jobs','get_job','submit_job','control_job','backfill_status','backfill_delivery_status'))
+-     OR (v_actor='worker' AND p_operation IN ('claim_next','reserve_request','commit_page','verification_material','finish_verification','fail_claim','backfill_status','backfill_claim','backfill_reserve','backfill_commit','backfill_defer','backfill_verify','backfill_material','backfill_work','backfill_massive_archive_read','backfill_massive_archive_commit','backfill_massive_archive_verify','backfill_identity_material','backfill_identity_source_read','backfill_identity_source_commit','backfill_identity_refresh','backfill_breadth_material','backfill_breadth_project','backfill_delivery_status','backfill_finalize','backfill_recover','backfill_maintain','backfill_plan_snapshot','backfill_seal_plan','backfill_plan_next','backfill_reuse_read','backfill_feature_reuse_commit','backfill_feature_reuse_verify','backfill_reuse_verify','backfill_reuse_commit'))) THEN
++     OR (v_actor='worker' AND p_operation IN ('claim_next','reserve_request','commit_page','verification_material','finish_verification','fail_claim','backfill_status','backfill_claim','backfill_reserve','backfill_commit','backfill_defer','backfill_verify','backfill_material','backfill_work','backfill_relay_probe','backfill_relay_dispatch','backfill_massive_archive_read','backfill_massive_archive_commit','backfill_massive_archive_verify','backfill_identity_material','backfill_identity_source_read','backfill_identity_source_commit','backfill_identity_refresh','backfill_breadth_material','backfill_breadth_project','backfill_delivery_status','backfill_finalize','backfill_recover','backfill_maintain','backfill_plan_snapshot','backfill_seal_plan','backfill_plan_next','backfill_reuse_read','backfill_feature_reuse_commit','backfill_feature_reuse_verify','backfill_reuse_verify','backfill_reuse_commit'))) THEN
+     RAISE EXCEPTION USING ERRCODE='PT403',MESSAGE='Operation is outside this capability';
+   END IF;
+   IF pg_catalog.jsonb_typeof(p_payload) IS DISTINCT FROM 'object' OR pg_catalog.octet_length(p_payload::text)>8388608 THEN
+@@ -70,6 +70,11 @@
+     -- backfill_delivery_dispatch_hook_v2: same capability guard and transaction lock.
+     IF p_operation IN ('backfill_status','backfill_verify','backfill_delivery_status','backfill_finalize','backfill_recover','backfill_maintain','backfill_plan_snapshot','backfill_seal_plan','backfill_plan_next') THEN
+       RETURN jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_delivery_dispatch_v2(p_operation,p_payload));
++    END IF;
++
++    -- backfill_managed_relay_hook_v2: after worker-only capability checks and existing global lock.
++    IF p_operation IN ('backfill_relay_probe','backfill_relay_dispatch') THEN
++      RETURN jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_relay_v2(p_operation,p_payload));
+     END IF;
+     IF p_operation LIKE 'backfill_%' THEN
+       RETURN pg_catalog.jsonb_build_object('ok',true,'result',astra_ingestion_v1.backfill_dispatch_v2(p_operation,p_payload));

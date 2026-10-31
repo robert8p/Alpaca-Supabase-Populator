@@ -1,0 +1,90 @@
+{
+  "qualification_kind": "LOCAL_ACTUAL_WORKER_POSTGRESQL_AND_COMPLETE_INGESTION_SUITE",
+  "created_at": "2026-10-30T06:34:05.891546+00:00",
+  "controller": "root-replacement-20261030T042603Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "database_scope": "Disposable PostgreSQL on loopback port 55432 only; no remote calls or writes by this agent.",
+  "suite_results": [
+    {
+      "suite": "Integrated cache PostgreSQL tests",
+      "command": "ASTRA_INGESTION_POSTGRES_TEST_URL=<local qualification database> python -m unittest discover -s tests/ingestion -p test_backfill_feature_reuse_v2.py -q",
+      "tests_run": 9,
+      "tests_passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 3.649
+    },
+    {
+      "suite": "Complete ingestion suite with PostgreSQL",
+      "command": "ASTRA_INGESTION_POSTGRES_TEST_URL=<local qualification database> python -m unittest discover -s tests/ingestion -p test_*.py -q",
+      "tests_run": 449,
+      "tests_passed": 449,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 44.303
+    },
+    {
+      "suite": "Complete ingestion suite without PostgreSQL URL",
+      "command": "env -u ASTRA_INGESTION_POSTGRES_TEST_URL python -m unittest discover -s tests/ingestion -p test_*.py -q",
+      "tests_run": 449,
+      "tests_passed": 264,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 185,
+      "duration_seconds": 3.556
+    }
+  ],
+  "cache_fixture_forward_stack": [
+    "astra_backfill_runtime_v2.sql",
+    "astra_backfill_retained_reuse_v2.sql",
+    "astra_backfill_reuse_commit_v2.sql",
+    "astra_backfill_reuse_verify_v2.sql",
+    "astra_backfill_delivery_v2.sql",
+    "astra_backfill_delivery_performance_v2.sql",
+    "astra_backfill_source_dedup_v2.sql",
+    "astra_backfill_breadth_material_v2.sql",
+    "astra_backfill_provider_pacing_v2.sql",
+    "astra_backfill_feature_reuse_v2.sql"
+  ],
+  "actual_worker_assertions": [
+    "Authenticated BackfillWorker claims the pending D01 task and calls backfill_feature_reuse_commit only when prefer_retained_formula_cache is enabled.",
+    "The successful path calls backfill_claim, backfill_feature_reuse_commit, and backfill_verify in that order without a duplicate cache-verification RPC.",
+    "Successful reuse persists one immutable pointer and independently verifies 390 logical feature rows using verification.retained_feature_verification.passed.",
+    "Request counters are unchanged and no external provider fetch or reservation occurs.",
+    "A restarted worker finds no replayable task and returns idle.",
+    "A cache miss automatically obtains retained source material and calculates 390 scheduled D01 rows from two observed source bars.",
+    "Unobserved scheduled rows remain NULL with SOURCE_BAR_NOT_RETURNED reasons.",
+    "Fallback calculation keeps fixed3000-derived-v2.1; reuse preserves compact_intraday_float64_v1.",
+    "D01 family accounting and delivery work with source-dedup receipt view and breadth/pacing forward migrations installed."
+  ],
+  "files": [
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61",
+      "bytes": 30170
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14",
+      "bytes": 19668
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "3db4484ff273c97880541e360a7cf753bdfcea3929dd4fac7d45b4e2b79146d3",
+      "bytes": 16740
+    },
+    {
+      "path": "evidence/retained-feature-independent-crosscheck-v2.json",
+      "sha256": "0e86469bb61bd0d248186d4572cd7de32281a3e86d1b10ead8457f57bb257098",
+      "bytes": 27897
+    }
+  ],
+  "limits": [
+    "Local qualification does not assert production deployment or global coverage.",
+    "SQL is unchanged from the parent-applied final migration hash 28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61.",
+    "Database-free test result was obtained with loopback network permitted for existing local HTTP tests. An earlier restricted-network attempt was interrupted and is not counted as a completed result.",
+    "No global historical-identity certification is inferred from bounded retained-cache reuse."
+  ]
+}

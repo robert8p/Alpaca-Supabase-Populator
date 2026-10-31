@@ -1,0 +1,39 @@
+{
+  "schema": "astra.bounded-first-id-page-observation/1",
+  "state": "PREPARED_NOT_SELECTED_OR_EXECUTED",
+  "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+  "candidate_archive_sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e",
+  "baseline_source_guard": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+  "source_query": "SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id<=scan_upper ORDER BY task.id LIMIT 500) page;",
+  "source_query_sha256": "0260e072bc7f18373f03af406701ce9d495e92cf7c9ee293909c94a947e5c0c4",
+  "bound_query": "SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id<=$1 ORDER BY task.id LIMIT 500) page",
+  "bound_query_sha256": "dafff4be9a4c54c9895038a01c459fda809f221fed11835ccf99dfda3e2cfe7d",
+  "derivation": "Remove only INTO scan_ids and bind existing scan_upper to typed text parameter$1; preserve all other query bytes. Upper lookup is the exact existing candidate PK DESC LIMIT1 statement with its local variable renamed.",
+  "sql": {
+    "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+    "sha256": "b0ed819f8e1f7aa44ab6bee40136459adc2b2d7b8646fea3a90df95b7795f798",
+    "bytes": 26129
+  },
+  "bounds": {
+    "upper_id_lookup_rows": 1,
+    "first_page_limit": 500,
+    "selector_executions": 1,
+    "explain_count": 1,
+    "business_helper_calls": 0,
+    "business_writes": 0,
+    "statement_seconds": 8,
+    "lock_seconds": 3,
+    "output_nodes": 64,
+    "safe_output_bytes": 30000
+  },
+  "guard_counts": {
+    "functions": 17,
+    "primary_keys": 2,
+    "triggers": 5
+  },
+  "raw_ids_exported": false,
+  "automatic_retry_budget": 0,
+  "measurement_limits": "Measures the first finite ID-page access path only. Does not measure per-ID loops, snapshots, later accounting/sealer or prove source acquisition resumed.",
+  "prior_v79_measurement_budget_reused": false,
+  "production_calls": 0
+}

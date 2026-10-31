@@ -1,0 +1,103 @@
+{
+  "actions": {
+    "local_static_hash_assertions": true,
+    "production_mutations": 0,
+    "production_queries": 0,
+    "provider_calls": 0,
+    "runtime_changes": 0,
+    "test_runs": 0
+  },
+  "effect_scope": {
+    "credential_dependency": "Upsert the existing provider dependency using the observed worker capability revision, only for the exact matching provider credential dependency.",
+    "generic": "Append immutable failure evidence and change task disposition with its bounded next_retry_at. Attempts, generation, page cursor and existing reservation accounting are not reset.",
+    "new_write_relations_vs_retained_44": [],
+    "no_page_or_readback_acquisition_write": true,
+    "no_provider_or_relay_call": true,
+    "oversized_source": "Validate actual reservation, incomplete bounded source receipt and request; optionally reduce page_limit tenfold under existing finite policy; preserve opaque Massive cursor restrictions and attempt budget.",
+    "rate_limit": "Monotonically extend existing source_limits.next_request_at when the existing recognized rate-limit predicate matches.",
+    "sequence_caveat": "An aborted exception append may consume identity sequence values; sequence gaps do not represent committed evidence or justify a counter reset.",
+    "task_update_triggers": "Existing immutable-scope and page-limit guards apply; task INSERT-only child/static-plan triggers do not execute.",
+    "transactional_write_relations": [
+      "astra_ingestion_v1.backfill_tasks_v2",
+      "astra_ingestion_v1.source_limits",
+      "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "astra_ingestion_v1.backfill_exceptions_v2"
+    ]
+  },
+  "explicit_status_semantics": {
+    "destinations": [
+      "RETRY_WAIT",
+      "BLOCKED_EXTERNAL",
+      "OPERATIONAL_ERROR"
+    ],
+    "lease_until": null,
+    "not_idempotent": "There is no committed-defer acknowledgement branch. Once a disposition commits, the same claim normally fails the owned-task RUNNING check. Unknown committed/lost ACK remains fatal and cannot be converted to retry authority.",
+    "owner": null,
+    "successful_defer_moves_task_away_from_RUNNING": true
+  },
+  "inputs": [
+    {
+      "bytes": 45184,
+      "path": "review/recovery-v76/defer-source-effect-diagnosis/defer_source_effect_analysis_v76.json",
+      "sha256": "2399a1a105ad9bbf46c45ead40519811cd434f34416cfd7fdb9a2c3adb6b5984"
+    },
+    {
+      "bytes": 4717,
+      "path": "review/recovery-v76/defer-source-effect-diagnosis/fresh_adaptation_and_dispatch_readback_v76.json",
+      "sha256": "dd8a2a79e705046fd68c8d8d469d4ab161828c127df79e65939867df8ea02b23"
+    },
+    {
+      "bytes": 7451,
+      "path": "evidence/replacement-claim-cursor-live-installation-v76.json",
+      "sha256": "53d1bde98e9fc7f16dba65877870f8b0819478a2e2d748efcde7b5f8eb5a676e"
+    },
+    {
+      "bytes": 23229,
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    },
+    {
+      "bytes": 22439,
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    }
+  ],
+  "not_a_final_release_approval": true,
+  "qualification_requirements": [
+    "Exact one-operation candidate diff against1deb, preserving all classifier/serialization/backoff/deadline/security bytes and excluding held identity/material/feature operations.",
+    "Actual early-gate native55P03 and late-effect native55P03 rollback; include real pacing, dependency and adaptive limit effects across appropriate cases.",
+    "Committed disposition plus lost HTTP ACK must commit once and remain single-send fatal; no idempotence claim.",
+    "Wrong actor/revoked capability/stale owner-generation-fence/live lease/stop/invalid evidence remain fail-closed after an aborted attempt.",
+    "Exact original provider problem and zero-or-one pre-disposition provider fetch stay unchanged; never refetch the provider during RPC resend.",
+    "Preserve page/attempt/deadline/reservation/cursor budgets and all fixed-member/identity/source rules.",
+    "No assumption that temporal native logs identify historical task/request/holder.",
+    "Fresh action-time source/catalog/authority checks, independent frozen review and root-selected exact-head CI precede production adoption."
+  ],
+  "retry_boundary": {
+    "exact_same_serialized_request_required": true,
+    "historical_HTTP_ERROR_remains_unknown": true,
+    "managed_gateway_contract_assumption": "Effective external gateway configuration is not proven by retained connector catalog. Preserve the prior explicit managed-gateway contract assumption and exact trusted native-error classifier; do not promote it to an observed fact.",
+    "no_body_text_heuristics": true,
+    "no_deadline_timeout_grant_credential_or_source_change": true,
+    "only_newly_classified_native_rollback_may_be_resent": true,
+    "provider_fetch_not_replayed": true
+  },
+  "reviewer": "/root/relay_v3_review",
+  "schema": "astra.defer-retry-independent-source-review/1",
+  "selected_change": "Only add backfill_defer to the existing strict nativeHTTP500/55P03 retry policy; no other operation or runtime/security behavior is admitted by this preliminary review.",
+  "source_reconciliation": {
+    "adaptation": {
+      "metadata_sha256": "7295d0d91e40c12c8b9e94c71e9f28432711725b25b41133abc0654523a320b9",
+      "observed_at": "2026-10-30 19:09:56.169629+00",
+      "oid": "16043406",
+      "signature": "astra_ingestion_v1.backfill_adapt_page_v2(astra_ingestion_v1.backfill_tasks_v2,jsonb)",
+      "source_sha256": "10a17158429447e5734259e87b6ca45dbeb648b5234d98cbddeb35cd164c06b8"
+    },
+    "defer_branch_occurs_byte_exact_in_installed_private": true,
+    "defer_branch_sha256": "0d7b4e0066cf53d7e22abfb73d134a81995d21c5b78b16d7a691ecb7fbb7b653",
+    "historical_pending_adaptation_label": "Superseded as a retained-source gap by the separate19:09 exact definition readback. Action-time live pins remain a rollout requirement.",
+    "installed_private": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+    "installed_shared": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4"
+  },
+  "state": "PRELIMINARY_SOURCE_SCOPE_PASS_CANDIDATE_AND_TRANSACTIONAL_QUALIFICATION_PENDING"
+}

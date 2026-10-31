@@ -1,0 +1,277 @@
+{
+  "schema": "astra.maintenance-phase-observation-installation/1",
+  "status": "LOCAL_PREPARATION_ONLY_PENDING_REVIEW_QUALIFICATION_PUBLICATION_EXACT_HEAD_CI",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "baseline_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+  "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+  "exact_candidate_reverse_to_baseline": true,
+  "observation_deadline_utc": "2026-10-30 15:45:00+00",
+  "restore_allowed_after_observation_deadline": true,
+  "restore_requires_same_unexpired_owner_lease": true,
+  "installation_status_policy": "ACTIVE_ONLY",
+  "restore_status_policy": "ANY_EXISTING_STATUS_WITH_ALL_OTHER_EXACT_GUARDS; NO_STATUS_OR_DATA_CHANGE",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+  "member_count": 3000,
+  "statement_timeout": "8s",
+  "lock_timeout": "3s",
+  "installation_isolation": "read committed",
+  "lock_order": [
+    "existing_global_advisory_gate",
+    "fixed_run_FOR_SHARE"
+  ],
+  "unchanged_function_pins": {
+    "astra_ingestion_v1.backfill_breadth_project_pending_v2(integer)": "65c981bd15a70f01d35eefc06a3807c7e6cfa1120a4b149ba3829951a63cc0d0",
+    "astra_ingestion_v1.backfill_contract_maintain_v2()": "52007f177dca38faf48fab8773936173519dcbfa54af896b5ef6f902ad64c748",
+    "astra_ingestion_v1.backfill_identity_discover_pending_v2()": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+    "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+    "astra_ingestion_v1.backfill_minute_account_pending_v2(integer)": "49cc9131c989de8f2da0926a2d1312bee7262f2e7f63c7a800219257af1632f2",
+    "astra_ingestion_v1.backfill_nonminute_project_pending_v2(integer)": "ceb1889732da767e8815741a792347ccb91c33c53acd38eeff36f9176d063cec",
+    "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+    "astra_ingestion_v1.backfill_s02_maintain_v2()": "40827de08ca59d1470a02aceff6ccc249e6b43bb8ef13ff39eddffa673e78939",
+    "astra_ingestion_v1.backfill_shared_maintain_v2(integer)": "5da488f3e44e2521b64f58230b2bc6db3c34800ae4ac259166f4dc223c8ad2be",
+    "astra_ingestion_v1.backfill_try_finalize_v2(text)": "f8f9ef6d8d9ada232b132170bde9922397a2b247dbc7e4b391cbca57b67b7063",
+    "astra_ingestion_v1.monitor_tick_v1()": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057",
+    "astra_ingestion_v1.rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+    "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+  },
+  "expected_maintain_metadata": {
+    "oid": "16041463",
+    "proacl": [
+      "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+      "astra_ingestion_monitor_owner_v1=X/astra_ingestion_rpc_owner_v1"
+    ],
+    "probin": null,
+    "procost": 100,
+    "prokind": "f",
+    "prolang": "13619",
+    "proname": "backfill_maintain_v2",
+    "prorows": 0,
+    "pronargs": 1,
+    "proowner": "15985999",
+    "proconfig": [
+      "search_path=\"\"",
+      "statement_timeout=8s",
+      "lock_timeout=2s"
+    ],
+    "proretset": false,
+    "prosecdef": true,
+    "prorettype": "3802",
+    "prosqlbody": null,
+    "prosupport": "-",
+    "proargmodes": null,
+    "proargnames": [
+      "p_limit"
+    ],
+    "proargtypes": [
+      "23"
+    ],
+    "proisstrict": false,
+    "proparallel": "u",
+    "protrftypes": null,
+    "provariadic": "0",
+    "provolatile": "v",
+    "proleakproof": false,
+    "pronamespace": "15984556",
+    "proallargtypes": null,
+    "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+    "pronargdefaults": 1
+  },
+  "expected_audit_permissions_catalog": {
+    "audit_table": {
+      "acl": [
+        "postgres=arwdDxtm/postgres",
+        "astra_ingestion_rpc_owner_v1=ar/postgres"
+      ],
+      "oid": "16041301",
+      "rls": true,
+      "owner": "16388",
+      "force_rls": false
+    },
+    "audit_sequence": {
+      "acl": [
+        "postgres=rwU/postgres",
+        "astra_ingestion_rpc_owner_v1=U/postgres"
+      ],
+      "oid": "16041300",
+      "name": "astra_ingestion_v1.backfill_audit_v2_id_seq",
+      "owner": "16388"
+    },
+    "existing_maintain_owner_privileges": {
+      "run_select": true,
+      "run_update": true,
+      "audit_delete": false,
+      "audit_insert": true,
+      "audit_select": true,
+      "audit_update": false,
+      "sequence_usage": true,
+      "sequence_update": false
+    },
+    "constraints": [
+      {
+        "name": "backfill_audit_v2_pkey",
+        "type": "p",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "backfill_audit_v2_run_id_fkey",
+        "type": "f",
+        "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)"
+      }
+    ],
+    "triggers": [
+      {
+        "name": "RI_ConstraintTrigger_c_16041312",
+        "enabled": "O",
+        "function": "\"RI_FKey_check_ins\"()",
+        "internal": true,
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_16041312\" AFTER INSERT ON astra_ingestion_v1.backfill_audit_v2 FROM astra_ingestion_v1.backfill_runs_v2 NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_ins\"()"
+      },
+      {
+        "name": "RI_ConstraintTrigger_c_16041313",
+        "enabled": "O",
+        "function": "\"RI_FKey_check_upd\"()",
+        "internal": true,
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_c_16041313\" AFTER UPDATE ON astra_ingestion_v1.backfill_audit_v2 FROM astra_ingestion_v1.backfill_runs_v2 NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_check_upd\"()"
+      },
+      {
+        "name": "backfill_audit_immutable_v2",
+        "enabled": "O",
+        "function": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "internal": false,
+        "definition": "CREATE TRIGGER backfill_audit_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_audit_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()"
+      }
+    ],
+    "policies": [
+      {
+        "oid": "16041480",
+        "polcmd": "a",
+        "polname": "backfill_delivery_insert",
+        "polqual": null,
+        "polrelid": "16041301",
+        "polroles": [
+          "15985999"
+        ],
+        "polwithcheck": "{CONST :consttype 16 :consttypmod -1 :constcollid 0 :constlen 1 :constbyval true :constisnull false :location -1 :constvalue 1 [ 1 0 0 0 0 0 0 0 ]}",
+        "polpermissive": true
+      },
+      {
+        "oid": "16041475",
+        "polcmd": "r",
+        "polname": "backfill_delivery_read",
+        "polqual": "{CONST :consttype 16 :consttypmod -1 :constcollid 0 :constlen 1 :constbyval true :constisnull false :location -1 :constvalue 1 [ 1 0 0 0 0 0 0 0 ]}",
+        "polrelid": "16041301",
+        "polroles": [
+          "15985999"
+        ],
+        "polwithcheck": null,
+        "polpermissive": true
+      }
+    ],
+    "standard_roles": {
+      "anon": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      },
+      "service_role": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      },
+      "authenticated": {
+        "audit_insert": false,
+        "audit_select": false,
+        "monitor_execute": false,
+        "maintain_execute": false
+      }
+    }
+  },
+  "expected_hash_indexes": [
+    {
+      "acl": null,
+      "oid": "16638529",
+      "live": true,
+      "name": "backfill_tasks_breadth_pending_id_v2",
+      "owner": "16388",
+      "ready": true,
+      "valid": true,
+      "method": "hash",
+      "definition": "CREATE INDEX backfill_tasks_breadth_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = 'D03'::text) AND (lower(provider) = 'derived'::text))"
+    },
+    {
+      "acl": null,
+      "oid": "16638569",
+      "live": true,
+      "name": "backfill_tasks_minute_pending_id_v2",
+      "owner": "16388",
+      "ready": true,
+      "valid": true,
+      "method": "hash",
+      "definition": "CREATE INDEX backfill_tasks_minute_pending_id_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING hash (id) WHERE ((family = ANY (ARRAY['P01'::text, 'P02'::text])) AND (kind = ANY (ARRAY['retained_reuse'::text, 'alpaca_stock_bars'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+    }
+  ],
+  "preserved": [
+    "maintenance OID and complete pg_proc metadata",
+    "all other schema functions",
+    "all schema index catalogs and definitions",
+    "schema/table/sequence owners ACLs RLS",
+    "constraints triggers policies and maintenance-owner role membership",
+    "all application rows and audit records; no helper invoked"
+  ],
+  "inputs": {
+    "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql": {
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "bytes": 2849
+    },
+    "review/recovery-v73/live_phase_observation_permission_inventory_v73.json": {
+      "sha256": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+      "bytes": 5414
+    },
+    "review/recovery-v71/live_maintenance_helpers_1335.json": {
+      "sha256": "7fc3eedd758a9736da9535bd0e6e86a8ee9b768247755195ff36a31c4e3ebae5",
+      "bytes": 30538
+    },
+    "review/recovery-v72/readback_transaction_race_installation_readback_v72.json": {
+      "sha256": "d1c1febbea884bda3a0d3f809b49ec6b64c10b2533c93ce41927259b27269d81",
+      "bytes": 18164
+    },
+    "evidence/replacement-maintenance-combined-live-installation-v72.json": {
+      "sha256": "6dc5e92d119cd3148949390e419c01a07557d0f2d4cf74584eaab1169dea31da",
+      "bytes": 4733
+    },
+    "review/recovery-v73/candidate_maintain_phase_observation_v73.sql": {
+      "sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "bytes": 11311
+    }
+  },
+  "artifacts": {
+    "forward_maintenance_phase_observation_v73.sql": {
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "bytes": 46180
+    },
+    "restore_maintenance_phase_observation_v73.sql": {
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "bytes": 37584
+    }
+  },
+  "active_paths": {
+    "sql/astra_backfill_maintenance_phase_observation_v73.sql": {
+      "sha256": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+      "bytes": 46180,
+      "written_by_this_build": true
+    },
+    "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql": {
+      "sha256": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+      "bytes": 37584,
+      "written_by_this_build": true
+    }
+  },
+  "production_calls": 0,
+  "activation_selected": false,
+  "qualification": "PENDING"
+}

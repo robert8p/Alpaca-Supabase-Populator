@@ -1,0 +1,94 @@
+{
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "reconciliation": [
+    {
+      "observed_at": "2026-10-30 08:51:05.307457+00",
+      "status": "ACTIVE",
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T08:50:00Z",
+      "pages_committed": 1854,
+      "records_committed": 222851,
+      "last_progress_at": "2026-10-30 08:49:37.878645+00",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      }
+    }
+  ],
+  "ownership_renewal": [
+    {
+      "id": 6,
+      "action": "IMPLEMENTATION_LEASE_RECONCILED_AND_RENEWED",
+      "recorded_at": "2026-10-30 08:51:14.374664+00"
+    }
+  ],
+  "lease_until": "2026-10-30T09:20:00Z",
+  "migration": {
+    "name": "astra_backfill_claim_performance_v2",
+    "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39",
+    "applied_approximately": "2026-10-30T08:51:25Z",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "attempts": 1
+  },
+  "readback": [
+    {
+      "observed_at": "2026-10-30 08:52:00.38313+00",
+      "claim_markers": 2,
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "pages_committed": 1854,
+      "records_committed": 222851,
+      "last_progress_at": "2026-10-30 08:49:37.878645+00",
+      "lease_until": "2026-10-30T09:20:00Z",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      }
+    }
+  ],
+  "post_apply_worker_observation": [
+    {
+      "observed_at": "2026-10-30 08:54:05.707097+00",
+      "status": "ACTIVE",
+      "pages_committed": 1854,
+      "records_committed": 222851,
+      "requests_reserved": 911,
+      "last_progress_at": "2026-10-30 08:49:37.878645+00",
+      "latest_workers": [
+        {
+          "worker_id": "453fcdb5-cad2-4331-b558-ca1b52087b9c",
+          "observed_at": "2026-10-30T08:44:11.73864+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        },
+        {
+          "worker_id": "84ded304-2c49-4134-8297-afb191226f30",
+          "observed_at": "2026-10-30T08:25:30.055429+00:00",
+          "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+        }
+      ]
+    }
+  ],
+  "worker_recovery": "NOT_YET_CONFIRMED_AT_08:54; wait for actual provider acquisition/receipt/readback and current heartbeat, not merely ACTIVE status",
+  "no_auth_expansion": true,
+  "no_worker_source_change": true,
+  "no_relay_activation": true,
+  "existing_ten_sections_and_fixed_cohort_preserved": true
+}

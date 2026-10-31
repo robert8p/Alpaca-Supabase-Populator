@@ -1,0 +1,19 @@
+--- deployed-v1-index.ts
++++ local-review-candidate-index.ts
+@@ -2,6 +2,8 @@
+ // Initial admission: N01 news metadata only; one page before live review, hard cap 100 pages. One provider request per fenced pipeline attempt.
+ // No provider retries, arbitrary endpoints, new subscriptions, historical receipt invention or public logs.
+ import postgres from "npm:postgres@3.4.5";
++import { createReplacementRelay } from "./replacement-relay-v2.mjs";
++const replacementRelay = createReplacementRelay();
+ const PROJECT_URL="https://oxzabweahkoimtevbbny.supabase.co";
+ const PROVIDER_ORIGIN="https://api.massive.com";
+ const PATH="/v2/reference/news";
+@@ -104,6 +106,7 @@
+  return "PARSER";
+ }
+ Deno.serve(async(req:Request)=>{
++ if(req.headers.has("x-astra-replacement-relay"))return await replacementRelay(req);
+  const started=Date.now(),deadline=started+MAX_RUNTIME_MS;
+  let db:ReturnType<typeof postgres>|null=null,phase="VALIDATE",claimed:Claimed|null=null;
+  let attemptId="",token="",status:number|null=null,receivedBytes=0,wireHash:string|null=null,fetchStarted=false;

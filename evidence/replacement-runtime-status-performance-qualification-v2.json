@@ -1,0 +1,595 @@
+{
+  "tests": 5,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 66.10034590199939,
+  "hashes_before": {
+    "sql/astra_backfill_massive_relay_v2.sql": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "supabase/functions/population-top3000-news-v1/index.ts": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+    "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+    "astra_ingestion/backfill_massive_relay_v2.py": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+    "tests/ingestion/test_backfill_massive_relay_v2.py": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+    "tests/ingestion/test_backfill_massive_relay_edge_v2.py": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+    "tests/ingestion/managed_massive_relay_v2.test.mjs": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+    "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+    "review/massive-relay-v2/worker-integration.patch": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "review/massive-relay-v2/backfill_worker_v2.py.proposed": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "review/massive-relay-v2/worker-integration-review.json": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1",
+    "evidence/replacement-managed-relay-review-scope-v2.json": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4",
+    "evidence/replacement-managed-relay-qualification-v2.json": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13",
+    "evidence/replacement-managed-relay-security-review-v2.md": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0",
+    "evidence/replacement-managed-relay-rpc-auth.diff": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846",
+    "evidence/replacement-managed-relay-edge-handler.diff": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22",
+    "evidence/replacement-relay-existing-auth-reconciliation-v2.json": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83",
+    "evidence/replacement-apply-migration-wrapper-template.txt": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7",
+    "astra_ingestion/backfill_worker_v2.py": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "sql/astra_backfill_runtime_status_performance_v2.sql": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+    "sql/astra_backfill_runtime_summary_index_v2.sql": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+    "tests/ingestion/test_backfill_runtime_status_performance_v2.py": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+  },
+  "hashes_after": {
+    "sql/astra_backfill_massive_relay_v2.sql": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "supabase/functions/population-top3000-news-v1/index.ts": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+    "supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+    "astra_ingestion/backfill_massive_relay_v2.py": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+    "tests/ingestion/test_backfill_massive_relay_postgres_v2.py": "f5f37279f0d469ffa734394850249caa2309669a777aeb448e4380036d3b92b0",
+    "tests/ingestion/test_backfill_massive_relay_v2.py": "f3a886cfe74cbaa344dbd7d339743d6ddf9370edb2953357776116cf17d91a52",
+    "tests/ingestion/test_backfill_massive_relay_edge_v2.py": "2de49cf62054c835fad6b65ee6ea2b8200ca7df4284511407a385a8edbfb96ce",
+    "tests/ingestion/managed_massive_relay_v2.test.mjs": "11ccff9db83b1fc0fb29ef83504eff89795b90d5bfb1d3e06f6cdee54668ff84",
+    "tests/ingestion/test_backfill_massive_relay_integration_review_v2.py": "45d381019f932dad94ed06429159377a66e7999dd61fcbc78c4d5f7e32b5e177",
+    "review/massive-relay-v2/worker-integration.patch": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "review/massive-relay-v2/backfill_worker_v2.py.proposed": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "review/massive-relay-v2/worker-integration-review.json": "2659f58013f1565022c853f89de328808589151807979654a275e75cbfea13e1",
+    "evidence/replacement-managed-relay-review-scope-v2.json": "20e1a7ae97979822d1d17d909efa31a2a47809ad9ae83c488c4ba897051160c4",
+    "evidence/replacement-managed-relay-qualification-v2.json": "d1b850a6709acd15534bf89ec80d10fa7c861b98c414412db1e5712e499e7d13",
+    "evidence/replacement-managed-relay-security-review-v2.md": "9e2d2f810953c6f775bbb13b429ea9b5619e0cbb51f6b0db22c3af4f3e0d4cf0",
+    "evidence/replacement-managed-relay-rpc-auth.diff": "bbe202b8a93bee791c2b00a4abb851ffd9249ec9726917c807c6d59859495846",
+    "evidence/replacement-managed-relay-edge-handler.diff": "50e004917b637f6235b46901e59e40fa0faf204b9d872c47028ad9b6d1e19b22",
+    "evidence/replacement-relay-existing-auth-reconciliation-v2.json": "63b9194a5c988c882b0487c03d4459d3c41cc5b6ff5ebe32f3760ed59bb24b83",
+    "evidence/replacement-apply-migration-wrapper-template.txt": "91edecf0c3e8eb654902f10c25364a5686274926458ea057bba05e7c2791e1a7",
+    "astra_ingestion/backfill_worker_v2.py": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "sql/astra_backfill_runtime_status_performance_v2.sql": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+    "sql/astra_backfill_runtime_summary_index_v2.sql": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+    "tests/ingestion/test_backfill_runtime_status_performance_v2.py": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+  },
+  "all_files_unchanged": true,
+  "performance": {
+    "freshness_contract": {
+      "strict_cutoff": "greater-than; equality is stale",
+      "future_worker_still_fresh": true,
+      "report_asof": "existing advertised observed_at/v_now",
+      "boundary_delta_demonstrated": true,
+      "claim_admission_unchanged": true
+    },
+    "index_failure_bounds": {
+      "lock_seconds": 3.0095434480026597,
+      "postbuild_timeout_seconds": 8.014501696001389,
+      "no_index_after_each_failed_transaction": true
+    },
+    "scale": 120000,
+    "older_visible_tasks": 24000,
+    "recent_unvacuumed_tasks": 96000,
+    "expired_workers": 120,
+    "distinct_pending_kinds": 3,
+    "index_bytes": 983040,
+    "timings": {
+      "baseline_state": "COMPLETED",
+      "baseline_seconds": 2.5640362370031653,
+      "rewrite_only_seconds": 0.2529066499992041,
+      "index_build_seconds": 0.4049650999950245,
+      "rewrite_plus_index_low_visibility_seconds": 0.2459763670049142,
+      "combined_authenticated_rpc_low_visibility_seconds": 0.29914645200187806
+    },
+    "rewrite_only_plan": {
+      "planning_ms": 0.621,
+      "execution_ms": 251.282,
+      "root_shared_hit_blocks": 9928,
+      "root_shared_read_blocks": 35822,
+      "relevant_nodes": [
+        {
+          "Node Type": "Seq Scan",
+          "Subplan Name": "CTE fresh_workers",
+          "Relation Name": "backfill_workers_v2",
+          "Alias": "backfill_workers_v2",
+          "Filter": "(observed_at > ('2026-10-30 10:37:52.861407+00'::timestamp with time zone - '00:10:00'::interval))",
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.039,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 4,
+          "Rows Removed by Filter": 129
+        },
+        {
+          "Node Type": "Aggregate",
+          "Subplan Name": "CTE task_groups",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 119.247,
+          "Shared Hit Blocks": 4340,
+          "Shared Read Blocks": 15763
+        },
+        {
+          "Node Type": "Bitmap Heap Scan",
+          "Relation Name": "backfill_tasks_v2",
+          "Alias": "backfill_tasks_v2",
+          "Actual Rows": 120000,
+          "Actual Loops": 1,
+          "Actual Total Time": 74.506,
+          "Shared Hit Blocks": 4340,
+          "Shared Read Blocks": 15763
+        },
+        {
+          "Node Type": "Unique",
+          "Subplan Name": "CTE pending_kinds",
+          "Actual Rows": 3,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.014,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "task_groups",
+          "CTE Name": "task_groups",
+          "Filter": "(status = ANY ('{PENDING,RETRY_WAIT}'::text[]))",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.003,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0,
+          "Rows Removed by Filter": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "z",
+          "CTE Name": "task_groups",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 119.259,
+          "Shared Hit Blocks": 4340,
+          "Shared Read Blocks": 15763
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "k",
+          "CTE Name": "pending_kinds",
+          "Actual Rows": 3,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.014,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "w",
+          "CTE Name": "fresh_workers",
+          "Actual Rows": 1,
+          "Actual Loops": 3,
+          "Actual Total Time": 0.013,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 4
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Relation Name": "backfill_tasks_v2",
+          "Alias": "st",
+          "Index Name": "backfill_tasks_runnable_v2",
+          "Index Cond": "((run_id = r.id) AND (status = 'RETRY_WAIT'::text))",
+          "Actual Rows": 120,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.263,
+          "Heap Fetches": 96,
+          "Shared Hit Blocks": 97,
+          "Shared Read Blocks": 7
+        }
+      ]
+    },
+    "low_visibility_index_plan": {
+      "planning_ms": 0.769,
+      "execution_ms": 241.935,
+      "root_shared_hit_blocks": 9037,
+      "root_shared_read_blocks": 36717,
+      "relevant_nodes": [
+        {
+          "Node Type": "Seq Scan",
+          "Subplan Name": "CTE fresh_workers",
+          "Relation Name": "backfill_workers_v2",
+          "Alias": "backfill_workers_v2",
+          "Filter": "(observed_at > ('2026-10-30 10:37:52.861407+00'::timestamp with time zone - '00:10:00'::interval))",
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.028,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 4,
+          "Rows Removed by Filter": 129
+        },
+        {
+          "Node Type": "Aggregate",
+          "Subplan Name": "CTE task_groups",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 115.896,
+          "Shared Hit Blocks": 3453,
+          "Shared Read Blocks": 16650
+        },
+        {
+          "Node Type": "Bitmap Heap Scan",
+          "Relation Name": "backfill_tasks_v2",
+          "Alias": "backfill_tasks_v2",
+          "Actual Rows": 120000,
+          "Actual Loops": 1,
+          "Actual Total Time": 72.873,
+          "Shared Hit Blocks": 3453,
+          "Shared Read Blocks": 16650
+        },
+        {
+          "Node Type": "Unique",
+          "Subplan Name": "CTE pending_kinds",
+          "Actual Rows": 3,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.013,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "task_groups",
+          "CTE Name": "task_groups",
+          "Filter": "(status = ANY ('{PENDING,RETRY_WAIT}'::text[]))",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.003,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0,
+          "Rows Removed by Filter": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "z",
+          "CTE Name": "task_groups",
+          "Actual Rows": 6,
+          "Actual Loops": 1,
+          "Actual Total Time": 115.908,
+          "Shared Hit Blocks": 3453,
+          "Shared Read Blocks": 16650
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "k",
+          "CTE Name": "pending_kinds",
+          "Actual Rows": 3,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.013,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "CTE Scan",
+          "Alias": "w",
+          "CTE Name": "fresh_workers",
+          "Actual Rows": 1,
+          "Actual Loops": 3,
+          "Actual Total Time": 0.01,
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 4
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Relation Name": "backfill_tasks_v2",
+          "Alias": "st",
+          "Index Name": "backfill_tasks_runnable_v2",
+          "Index Cond": "((run_id = r.id) AND (status = 'RETRY_WAIT'::text))",
+          "Actual Rows": 120,
+          "Actual Loops": 1,
+          "Actual Total Time": 0.134,
+          "Heap Fetches": 96,
+          "Shared Hit Blocks": 97,
+          "Shared Read Blocks": 7
+        }
+      ]
+    },
+    "prepared_plans": {
+      "force_generic_plan": {
+        "planning_ms": 2.409,
+        "execution_ms": 71.657,
+        "root_shared_hit_blocks": 4065,
+        "root_shared_read_blocks": 319,
+        "relevant_nodes": [
+          {
+            "Node Type": "Seq Scan",
+            "Subplan Name": "CTE fresh_workers",
+            "Relation Name": "backfill_workers_v2",
+            "Alias": "backfill_workers_v2",
+            "Filter": "(observed_at > ($2 - '00:10:00'::interval))",
+            "Actual Rows": 1,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.04,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 4,
+            "Rows Removed by Filter": 129
+          },
+          {
+            "Node Type": "Aggregate",
+            "Subplan Name": "CTE task_groups",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 25.12,
+            "Shared Hit Blocks": 6,
+            "Shared Read Blocks": 113
+          },
+          {
+            "Node Type": "Index Only Scan",
+            "Relation Name": "backfill_tasks_v2",
+            "Alias": "backfill_tasks_v2",
+            "Index Name": "backfill_tasks_runtime_summary_v2",
+            "Index Cond": "(run_id = r.id)",
+            "Actual Rows": 120000,
+            "Actual Loops": 1,
+            "Actual Total Time": 9.31,
+            "Heap Fetches": 4,
+            "Shared Hit Blocks": 6,
+            "Shared Read Blocks": 113
+          },
+          {
+            "Node Type": "Unique",
+            "Subplan Name": "CTE pending_kinds",
+            "Actual Rows": 3,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.017,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "task_groups",
+            "CTE Name": "task_groups",
+            "Filter": "(status = ANY ('{PENDING,RETRY_WAIT}'::text[]))",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.004,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0,
+            "Rows Removed by Filter": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "z",
+            "CTE Name": "task_groups",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 25.139,
+            "Shared Hit Blocks": 6,
+            "Shared Read Blocks": 113
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "k",
+            "CTE Name": "pending_kinds",
+            "Actual Rows": 3,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.018,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "w",
+            "CTE Name": "fresh_workers",
+            "Actual Rows": 1,
+            "Actual Loops": 3,
+            "Actual Total Time": 0.014,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 4
+          },
+          {
+            "Node Type": "Index Only Scan",
+            "Relation Name": "backfill_tasks_v2",
+            "Alias": "st",
+            "Index Name": "backfill_tasks_runnable_v2",
+            "Index Cond": "((run_id = r.id) AND (status = 'RETRY_WAIT'::text))",
+            "Actual Rows": 120,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.05,
+            "Heap Fetches": 0,
+            "Shared Hit Blocks": 2,
+            "Shared Read Blocks": 6
+          }
+        ]
+      },
+      "force_custom_plan": {
+        "planning_ms": 0.718,
+        "execution_ms": 60.27,
+        "root_shared_hit_blocks": 833,
+        "root_shared_read_blocks": 0,
+        "relevant_nodes": [
+          {
+            "Node Type": "Seq Scan",
+            "Subplan Name": "CTE fresh_workers",
+            "Relation Name": "backfill_workers_v2",
+            "Alias": "backfill_workers_v2",
+            "Filter": "(observed_at > ('2026-10-30 10:37:52.861407+00'::timestamp with time zone - '00:10:00'::interval))",
+            "Actual Rows": 1,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.025,
+            "Shared Hit Blocks": 4,
+            "Shared Read Blocks": 0,
+            "Rows Removed by Filter": 129
+          },
+          {
+            "Node Type": "Aggregate",
+            "Subplan Name": "CTE task_groups",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 23.923,
+            "Shared Hit Blocks": 119,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "Index Only Scan",
+            "Relation Name": "backfill_tasks_v2",
+            "Alias": "backfill_tasks_v2",
+            "Index Name": "backfill_tasks_runtime_summary_v2",
+            "Index Cond": "(run_id = r.id)",
+            "Actual Rows": 120000,
+            "Actual Loops": 1,
+            "Actual Total Time": 9.181,
+            "Heap Fetches": 4,
+            "Shared Hit Blocks": 119,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "Unique",
+            "Subplan Name": "CTE pending_kinds",
+            "Actual Rows": 3,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.011,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "task_groups",
+            "CTE Name": "task_groups",
+            "Filter": "(status = ANY ('{PENDING,RETRY_WAIT}'::text[]))",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.003,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0,
+            "Rows Removed by Filter": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "z",
+            "CTE Name": "task_groups",
+            "Actual Rows": 6,
+            "Actual Loops": 1,
+            "Actual Total Time": 23.936,
+            "Shared Hit Blocks": 119,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "k",
+            "CTE Name": "pending_kinds",
+            "Actual Rows": 3,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.012,
+            "Shared Hit Blocks": 0,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Alias": "w",
+            "CTE Name": "fresh_workers",
+            "Actual Rows": 1,
+            "Actual Loops": 3,
+            "Actual Total Time": 0.009,
+            "Shared Hit Blocks": 4,
+            "Shared Read Blocks": 0
+          },
+          {
+            "Node Type": "Index Only Scan",
+            "Relation Name": "backfill_tasks_v2",
+            "Alias": "st",
+            "Index Name": "backfill_tasks_runnable_v2",
+            "Index Cond": "((run_id = r.id) AND (status = 'RETRY_WAIT'::text))",
+            "Actual Rows": 120,
+            "Actual Loops": 1,
+            "Actual Total Time": 0.113,
+            "Heap Fetches": 0,
+            "Shared Hit Blocks": 8,
+            "Shared Read Blocks": 0
+          }
+        ]
+      }
+    },
+    "task_array_order": "Unspecified by both old and new SQL; comparisons normalize the four group keys",
+    "complete_ordinary_values_equal": true
+  },
+  "state": "QUALIFIED_LOCAL_ONLY_NOT_APPLIED",
+  "files": {
+    "sql/astra_backfill_runtime_status_performance_v2.sql": {
+      "bytes": 3720,
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7"
+    },
+    "sql/astra_backfill_runtime_summary_index_v2.sql": {
+      "bytes": 2423,
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7"
+    },
+    "tests/ingestion/test_backfill_runtime_status_performance_v2.py": {
+      "bytes": 22521,
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+    }
+  },
+  "causal_evidence": {
+    "evidence/replacement-runtime-status-estimated-plan-v2.json": {
+      "sha256": "c66797d857ba3aef8d4df397f755ef65c8a2150a55383275b771ae203eb48692"
+    },
+    "evidence/replacement-runtime-status-explain-probe-v2.sql": {
+      "sha256": "1ba3d8c5bf5ba329ac73fb8c33662eed8b78058c0e5ea3b2615f875567721e8b"
+    },
+    "evidence/replacement-task-index-inventory-v69.json": {
+      "sha256": "da22c807c84f8f06ba36754149beb879fe22cc3e4755dabc55688c2323f3bd0e"
+    }
+  },
+  "actual_production_evidence_summary": {
+    "source": "controlling root read-only receipts; no live calls by this agent",
+    "inner_status_timed_out_at_8_seconds": true,
+    "estimated_task_rows": 637936,
+    "estimated_pending_retry_rows": 317426,
+    "estimated_task_group_cost": 111543,
+    "estimated_unsupported_subplan_cost": 2333166,
+    "estimates_are_not_execution_timings": true,
+    "advisory_holder_operation_unattributed": true
+  },
+  "semantic_contract": {
+    "freshness_asof": "Use the existing dispatch v_now, already returned as report observed_at, for report-only worker freshness.",
+    "boundary_delta": "A worker fresh at observed_at but expiring before the query finishes remains fresh in this report. The previous per-task clock_timestamp evaluation could mark its kind unsupported later in the same report. This is an explicit semantic change, not strict equivalence at a crossing.",
+    "predicate": "worker.observed_at > v_now - interval 10 minutes; equality is stale and future timestamps remain fresh.",
+    "membership": "Preserve supported_kinds ? kind without JSON array expansion; object, scalar, array and numeric cases are tested.",
+    "pending_scope": "Every physical PENDING or RETRY_WAIT task contributes, including future retries and retained/derived tasks; no canonicalization or cancellation is introduced.",
+    "unchanged": "All task group keys/counts/sums, numeric sum type, NULL max/min, empty arrays, member counts, identity projection, provider dependencies, run ordering and DESC LIMIT20 remain intact.",
+    "ordering": "Task-array order was never specified by SQL; equivalence normalizes its four group keys. No new array-order contract is claimed.",
+    "claim_admission": "Entire function body outside the status branch is byte-identical, including live-clock claim/admission checks."
+  },
+  "bounded_implementation": {
+    "rewrite": "One8s DO including existing advisory lock and exact baseline status-branch hash guard; no helper or grant.",
+    "index": "Independent optional non-unique seven-key B-tree; requires exact rewritten branch hash and column schema; rejects any existing same-name object.",
+    "timeouts": "Both use statement_timeout8s and lock_timeout3s; ordinary transactional index creation, never concurrent.",
+    "locks": "Normal index build takes a table SHARE lock; ordinary table reads remain compatible. Task writers and RPCs sharing the advisory lock may wait until commit/rollback.",
+    "rollback": "Actual blocked DDL and completed-index/pre-COMMIT timeout tests both left no index; replay, conflict and source/type drift rejected."
+  },
+  "limitations": {
+    "low_visibility": "At80% unvacuumed rows, the planner retained a heap-based Bitmap Heap Scan of the task table despite the new covering index. The rewrite still completed the combined authenticated RPC in about0.299s locally.",
+    "visible_case": "After local-only VACUUM of unchanged fixture values, generic/custom combined plans used the new covering index once over120000tasks with4heap fetches, completing in71.657/60.270ms.",
+    "production": "Warm/local120000-row timing and0.405s index build do not guarantee production disk/commit latency or the live637936-row response. No new production acceptance is claimed.",
+    "concurrency": "A single fast RPC does not prove absence of contention from other concurrent calls. No global lock policy or retry behavior is changed.",
+    "baseline": "The local baseline completed in2.564s; the independent production inner-status probe timed out at8s. These environments differ."
+  },
+  "verification": {
+    "actual_pg_tests": 5,
+    "actual_pg_failures": 0,
+    "no_dsn_tests": 5,
+    "no_dsn_skipped": 5,
+    "python_compile": "passed",
+    "real_api_role_combined_rpc": true,
+    "real_claim_reserve_source_commit_then_status": true,
+    "full_ordinary_output_values_equal": true,
+    "exact_cutoff_and_plus_minus_microsecond_tested": true,
+    "documented_boundary_delta_demonstrated_without_sleep": true,
+    "function_oid_owner_acl_config_preserved": true,
+    "outer_rpc_definition_unchanged": true,
+    "worker_90d_exact_hash_preserved": true,
+    "all_19_frozen_relay_manifest_hashes_match": true,
+    "independent_review": "replacement_overlap_finish accepted exact SQL3dbb59fb... and index2a29fcc7...; fixture concerns corrected before final five-case pass."
+  },
+  "application_order": [
+    "Existing v69 report/count/minute-alias forwards remain installed.",
+    "Root may apply the status rewrite once, reconciling any uncertain result before retry.",
+    "The separately qualified covering index may follow only after rewrite source guard succeeds; retain8s/3s bounds.",
+    "Acceptance requires actual combined authenticated backfill_status timing and independent worker progress, not delivery-only timing. v69 publication remains independent."
+  ]
+}

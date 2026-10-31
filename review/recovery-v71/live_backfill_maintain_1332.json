@@ -1,0 +1,51 @@
+[
+  {
+    "observed_at": "2026-10-30 13:31:25.810431+00",
+    "proname": "backfill_maintain_v2",
+    "oid": 16041463,
+    "sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+    "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_maintain_v2(p_limit integer DEFAULT 2)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET statement_timeout TO '8s'\n SET lock_timeout TO '2s'\nAS $function$\nDECLARE p record; r record; v_readbacks integer:=0; v_errors integer:=0; v_final jsonb:='[]'; v_result jsonb;\nBEGIN\n -- backfill_bounded_maintenance_wait_v2: existing two-second lock timeout.\n BEGIN\n  PERFORM pg_advisory_xact_lock(706314020261028);\n EXCEPTION WHEN lock_not_available THEN\n  RETURN jsonb_build_object('state','BUSY','reason','BOUNDED_WORKER_LOCK_WAIT_EXHAUSTED');\n END;\n PERFORM astra_ingestion_v1.backfill_breadth_project_pending_v2(2);\n PERFORM astra_ingestion_v1.backfill_minute_account_pending_v2(2);\n PERFORM astra_ingestion_v1.backfill_identity_discover_pending_v2();\n PERFORM astra_ingestion_v1.backfill_identity_refresh_pending_v2(2);\n PERFORM astra_ingestion_v1.backfill_nonminute_project_pending_v2(2);\n PERFORM astra_ingestion_v1.backfill_s02_maintain_v2();\n PERFORM astra_ingestion_v1.backfill_shared_maintain_v2(4);\n PERFORM astra_ingestion_v1.backfill_contract_maintain_v2();\n FOR p IN SELECT pg.task_id,pg.page_no,pg.run_id FROM astra_ingestion_v1.backfill_pages_v2 pg\n  JOIN astra_ingestion_v1.backfill_runs_v2 rr ON rr.id=pg.run_id\n  WHERE rr.status IN ('ACTIVE','PARTIAL_OPERATIONAL_FAILURE','BLOCKED_EXTERNAL') AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_readbacks_v2 v WHERE v.task_id=pg.task_id AND v.page_no=pg.page_no)\n   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_audit_v2 a WHERE a.task_id=pg.task_id AND a.action='READBACK_FAILURE' AND a.evidence->>'page_no'=pg.page_no::text)\n  ORDER BY pg.committed_at,pg.task_id,pg.page_no LIMIT GREATEST(1,LEAST(p_limit,8))\n LOOP\n  BEGIN\n   PERFORM astra_ingestion_v1.backfill_recheck_page_v2(p.task_id,p.page_no);v_readbacks:=v_readbacks+1;\n  EXCEPTION WHEN OTHERS THEN\n   v_errors:=v_errors+1;\n   IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_audit_v2 a WHERE a.task_id=p.task_id AND a.action='READBACK_FAILURE' AND a.evidence->>'page_no'=p.page_no::text) THEN\n    INSERT INTO astra_ingestion_v1.backfill_audit_v2(run_id,task_id,action,evidence) VALUES(p.run_id,p.task_id,'READBACK_FAILURE',jsonb_build_object('page_no',p.page_no,'sqlstate',SQLSTATE,'reason',left(SQLERRM,500)));\n   END IF;\n  END;\n END LOOP;\n FOR r IN SELECT id FROM astra_ingestion_v1.backfill_runs_v2 WHERE status IN ('ACTIVE','PARTIAL_OPERATIONAL_FAILURE','BLOCKED_EXTERNAL') LOOP\n  v_result:=astra_ingestion_v1.backfill_try_finalize_v2(r.id);v_final:=v_final||jsonb_build_array(jsonb_build_object('run_id',r.id,'result',v_result));\n END LOOP;\n RETURN jsonb_build_object('state','OBSERVED','verified_pages',v_readbacks,'readback_errors',v_errors,'runs',v_final);\nEND $function$\n",
+    "metadata": {
+      "oid": "16041463",
+      "proacl": [
+        "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+        "astra_ingestion_monitor_owner_v1=X/astra_ingestion_rpc_owner_v1"
+      ],
+      "probin": null,
+      "procost": 100,
+      "prokind": "f",
+      "prolang": "13619",
+      "proname": "backfill_maintain_v2",
+      "prorows": 0,
+      "pronargs": 1,
+      "proowner": "15985999",
+      "proconfig": [
+        "search_path=\"\"",
+        "statement_timeout=8s",
+        "lock_timeout=2s"
+      ],
+      "proretset": false,
+      "prosecdef": true,
+      "prorettype": "3802",
+      "prosqlbody": null,
+      "prosupport": "-",
+      "proargmodes": null,
+      "proargnames": [
+        "p_limit"
+      ],
+      "proargtypes": [
+        "23"
+      ],
+      "proisstrict": false,
+      "proparallel": "u",
+      "protrftypes": null,
+      "provariadic": "0",
+      "provolatile": "v",
+      "proleakproof": false,
+      "pronamespace": "15984556",
+      "proallargtypes": null,
+      "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+      "pronargdefaults": 1
+    }
+  }
+]

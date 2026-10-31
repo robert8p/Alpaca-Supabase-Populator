@@ -1,0 +1,53 @@
+{
+  "schema": "astra.managed-relay.live-transport-proof/3",
+  "state": "READ_ONLY_ROUTE_VERIFIED_RELAY_NOT_INSTALLED",
+  "project": "oxzabweahkoimtevbbny",
+  "tool": "mcp__codex_apps__supabase_market_data_cloud_apply_migration",
+  "probe_name": "astra_backfill_massive_relay_v3_transport_probe",
+  "probe": {
+    "read_only": true,
+    "probe_bytes": 4954,
+    "probe_sha256": "d5fb3052dab18dd2b7975f9bd0d773f35902de43b805b91cb97ee8f309c9b12f",
+    "wrapper_variant": "EXACT_WRAPPER_NO_FINAL_LF",
+    "approval_modified": false,
+    "migration_applied": false,
+    "provider_requests": 0,
+    "final_body_byte_ascii": 10,
+    "history_copy_verified": true
+  },
+  "expected_error": "P0001 ASTRA_RELAY_V3_TRANSPORT_PROBE_ACCEPTED",
+  "before": [
+    {
+      "observed_at": "2026-10-30 11:53:08.763792+00",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T12:30:00Z",
+      "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+      "original_approved_at": "2026-10-30T09:53:00Z",
+      "approval_object_sha256": "ec0231bafc396db89d25eec7756b5ca99920938ef39834cb9fbe04440ff02225",
+      "relay_ledger": null,
+      "relay_helper": null,
+      "v3_history_rows": 0
+    }
+  ],
+  "after": [
+    {
+      "observed_at": "2026-10-30 11:53:46.654529+00",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T12:30:00Z",
+      "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+      "original_approved_at": "2026-10-30T09:53:00Z",
+      "approval_object_sha256": "ec0231bafc396db89d25eec7756b5ca99920938ef39834cb9fbe04440ff02225",
+      "relay_ledger": null,
+      "relay_helper": null,
+      "v3_history_rows": 0,
+      "auth_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96"
+    }
+  ],
+  "old_approval_unchanged": true,
+  "new_approval_recorded": false,
+  "production_security_mutation": false,
+  "native_connection_required": false,
+  "provider_requests": 0,
+  "limitations": "Transport grammar only. Production relay not installed; fresh specific v3 approval, current prerequisite reconciliation and bounded installation/deployment verification still required."
+}
+

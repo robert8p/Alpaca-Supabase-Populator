@@ -1,0 +1,315 @@
+{
+  "schema": "astra.residual-fault-queue-proposal/1",
+  "prepared_by": "/root/residual_faults_v78",
+  "controller_writes_performed": false,
+  "runtime_changes_performed": false,
+  "scope": "Existing fixed3000 replacement mission; exact current worker08bea and unchanged dbe8/autha9 sources as reconciled by root; no replay of installedv76/v77 repairs.",
+  "render_window": {
+    "start": "2026-10-30T21:15:00Z",
+    "end": "2026-10-30T22:06:00Z",
+    "dispatches": 1,
+    "filter": "RpcPersistenceError",
+    "has_more": false,
+    "events": 5,
+    "evidence_path": "review/recovery-v78/residual-faults/render_rpc_errors_2115_2206_v78.json",
+    "evidence_sha256": "b91fe362ff72e37062206593a54960dd4f781ece881da09b8041a9aa14bf11b7"
+  },
+  "observations": [
+    {
+      "operation": "backfill_verify",
+      "render_log_id": "a8a5904c-718c-4487-8d55-adf1c9a395e7",
+      "render_timestamp": "2026-10-30T21:16:10.345769942Z",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "queue_action": "ADD_EXACT_INCIDENT_KEY",
+      "queue_key": "RUNTIME_RPC:backfill_verify:render:a8a5904c-718c-4487-8d55-adf1c9a395e7",
+      "recurrence_key": "RUNTIME_RPC:backfill_verify:render:a8a5904c-718c-4487-8d55-adf1c9a395e7",
+      "native_window": {
+        "start": "2026-10-30T21:15:58Z",
+        "end": "2026-10-30T21:16:12Z",
+        "dispatches": 1,
+        "maximum_rows": 25,
+        "rows_returned": 12,
+        "row_bound_hit": false,
+        "error_rows": 6,
+        "sqlstates": [
+          "55P03"
+        ],
+        "all_error_contexts_match_auth_gate": true,
+        "closest_before_render": {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "lock_holder_detail": [],
+          "process_id": "38519",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T21:16:10.328000",
+          "wait_queue_detail": []
+        },
+        "closest_gap_ms": 17.769942,
+        "holder_pids": [
+          41372
+        ],
+        "holder_to_waiter_edges_observed": true,
+        "cron_identity_verified": false,
+        "evidence_path": "review/recovery-v78/residual-faults/verify_native_v78.json",
+        "evidence_sha256": "7666b2a6ce19e4411410ec622ac477808b86f38c0d9360b8af692f5881b345fb"
+      },
+      "request_task_claim_binding": "UNKNOWN",
+      "historical_http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+      "next_executable_step": "Preserve committed page receipts and existing retry counters. If the exact failed task/page tuple becomes available, read that immutable page and its independent readback directly; do not re-fetch provider data or assume a present-day gap belongs to this historical event. Use ordinary fenced recovery while the shared gate cause is repaired."
+    },
+    {
+      "operation": "backfill_plan_next",
+      "render_log_id": "bc52984f-5823-422f-b317-813e2d6a92e3",
+      "render_timestamp": "2026-10-30T21:46:10.476307775Z",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "queue_action": "ADD_EXACT_INCIDENT_KEY",
+      "queue_key": "RUNTIME_RPC:backfill_plan_next:render:bc52984f-5823-422f-b317-813e2d6a92e3",
+      "recurrence_key": "RUNTIME_RPC:backfill_plan_next:render:bc52984f-5823-422f-b317-813e2d6a92e3",
+      "native_window": {
+        "start": "2026-10-30T21:45:58Z",
+        "end": "2026-10-30T21:46:12Z",
+        "dispatches": 1,
+        "maximum_rows": 25,
+        "rows_returned": 12,
+        "row_bound_hit": false,
+        "error_rows": 6,
+        "sqlstates": [
+          "55P03"
+        ],
+        "all_error_contexts_match_auth_gate": true,
+        "closest_before_render": {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "lock_holder_detail": [],
+          "process_id": "42714",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T21:46:10.459000",
+          "wait_queue_detail": []
+        },
+        "closest_gap_ms": 17.307775,
+        "holder_pids": [
+          45486
+        ],
+        "holder_to_waiter_edges_observed": true,
+        "cron_identity_verified": false,
+        "evidence_path": "review/recovery-v78/residual-faults/plan_next_native_v78.json",
+        "evidence_sha256": "d03b58aa81ef54c3716330e6647701f74f5d7a846a6af2d5b93a5da243427387"
+      },
+      "request_task_claim_binding": "UNKNOWN",
+      "historical_http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+      "next_executable_step": "Link this event to the existing planner SEAL/accounting work under root. Read current bounded planner cursors, expected/actual static accounting and unchanged source semantics; this native failure occurred at the outer gate, not inside SEAL. Continue the ordinary bounded planner route after safe authority/counter reconciliation, without resetting attempts or increasing the retry budget."
+    },
+    {
+      "operation": "backfill_identity_material",
+      "render_log_id": "c72374d0-53da-472a-94f0-047a6efea329",
+      "render_timestamp": "2026-10-30T21:48:03.191411368Z",
+      "render_failure_reason": "HTTP_ERROR",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "queue_action": "ADD_EXACT_INCIDENT_KEY",
+      "queue_key": "RUNTIME_RPC:backfill_identity_material:render:c72374d0-53da-472a-94f0-047a6efea329",
+      "recurrence_key": "RUNTIME_RPC:backfill_identity_material:render:c72374d0-53da-472a-94f0-047a6efea329",
+      "native_window": {
+        "start": "2026-10-30T21:47:58Z",
+        "end": "2026-10-30T21:48:05Z",
+        "dispatches": 1,
+        "maximum_rows": 25,
+        "rows_returned": 3,
+        "row_bound_hit": false,
+        "error_rows": 1,
+        "sqlstates": [
+          "55P03"
+        ],
+        "all_error_contexts_match_auth_gate": true,
+        "closest_before_render": {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "lock_holder_detail": [],
+          "process_id": "41870",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T21:48:03.172000",
+          "wait_queue_detail": []
+        },
+        "closest_gap_ms": 19.411368,
+        "holder_pids": [
+          45636
+        ],
+        "holder_to_waiter_edges_observed": true,
+        "cron_identity_verified": false,
+        "evidence_path": "review/recovery-v78/residual-faults/identity_material_native_v78.json",
+        "evidence_sha256": "dfa72bbcc10855eff1f99f76c97f8be2adddc65eba802ac7106d0e08282bfedb"
+      },
+      "request_task_claim_binding": "UNKNOWN",
+      "historical_http_outcome": "UNKNOWN_NOT_REPLAYED",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+      "next_executable_step": "Retain and link the17:04 historical identity failure and qualified v75 candidate archive43ef. Its old private28ae binding is stale against dbe8 and its runtime must not overwrite the current defer7614 change. No replay of this HTTP-ambiguous request; preserve the held v75 no-retry publication boundary. Any later narrow candidate requires explicit current-source rebinding, effect/rollback/lost-ACK qualification and independent review, exact-head CI and live ownership."
+    },
+    {
+      "operation": "backfill_commit",
+      "render_log_id": "851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+      "render_timestamp": "2026-10-30T21:50:10.532244945Z",
+      "render_failure_reason": "LOCK_ABORT_RETRY_EXHAUSTED",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "queue_action": "ADD_EXACT_INCIDENT_KEY",
+      "queue_key": "RUNTIME_RPC:backfill_commit:render:851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+      "recurrence_key": "RUNTIME_RPC:backfill_commit:render:851d204d-f153-46f6-9b28-8e2fc53fa0b7",
+      "native_window": {
+        "start": "2026-10-30T21:49:58Z",
+        "end": "2026-10-30T21:50:12Z",
+        "dispatches": 1,
+        "maximum_rows": 25,
+        "rows_returned": 12,
+        "row_bound_hit": false,
+        "error_rows": 6,
+        "sqlstates": [
+          "55P03"
+        ],
+        "all_error_contexts_match_auth_gate": true,
+        "closest_before_render": {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "lock_holder_detail": [],
+          "process_id": "42714",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T21:50:10.515000",
+          "wait_queue_detail": []
+        },
+        "closest_gap_ms": 17.244945,
+        "holder_pids": [
+          45761
+        ],
+        "holder_to_waiter_edges_observed": true,
+        "cron_identity_verified": false,
+        "evidence_path": "review/recovery-v78/residual-faults/commit_native_v78.json",
+        "evidence_sha256": "7fa88148dfb59c4b9faf90550bf20405576efc8c8b1772af72a18279445f6c37"
+      },
+      "request_task_claim_binding": "UNKNOWN",
+      "historical_http_outcome": "STRICT_COMPLETE_NATIVE_ABORT_POLICY_EXHAUSTION_REPORTED_NO_EXACT_TASK_BINDING",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+      "next_executable_step": "Preserve the original provider fetch/reservation and exact page/attempt/generation counters. LOCK_ABORT_RETRY_EXHAUSTED reports the deployed strict confirmed-abort classifier exhausted its finite policy; it does not expose the exact task or send count. Reconcile an available original task/page tuple by immutable page/readback key before any manual replay or provider re-fetch. Diagnose gate-holder duration rather than expand retries."
+    },
+    {
+      "operation": "backfill_material",
+      "render_log_id": "9f0ee4c6-1265-4c91-a0cc-1953946440de",
+      "render_timestamp": "2026-10-30T22:04:03.133977929Z",
+      "render_failure_reason": "HTTP_ERROR",
+      "render_instance": "srv-dbh9fko473hc739an8m0-mhpjz",
+      "queue_action": "LINK_ONE_RECURRENCE",
+      "queue_key": "RUNTIME_RPC:backfill_material:render:b0789bcf-2995-4c2d-a0d3-93956f6e58ea",
+      "recurrence_key": "RUNTIME_RPC:backfill_material:render:9f0ee4c6-1265-4c91-a0cc-1953946440de",
+      "native_window": {
+        "start": "2026-10-30T22:03:58Z",
+        "end": "2026-10-30T22:04:05Z",
+        "dispatches": 1,
+        "maximum_rows": 25,
+        "rows_returned": 4,
+        "row_bound_hit": false,
+        "error_rows": 2,
+        "sqlstates": [
+          "55P03"
+        ],
+        "all_error_contexts_match_auth_gate": true,
+        "closest_before_render": {
+          "context_function_names": [
+            "function astra_ingestion_v1.rpc_dispatch"
+          ],
+          "context_lines": [
+            "line 39 at PERFORM"
+          ],
+          "lock_holder_detail": [],
+          "process_id": "46132",
+          "severity": "ERROR",
+          "sqlstate": "55P03",
+          "timestamp": "2026-10-30T22:04:03.116000",
+          "wait_queue_detail": []
+        },
+        "closest_gap_ms": 17.977929,
+        "holder_pids": [
+          47948
+        ],
+        "holder_to_waiter_edges_observed": true,
+        "cron_identity_verified": false,
+        "evidence_path": "review/recovery-v78/residual-faults/material_native_v78.json",
+        "evidence_sha256": "d61b845ad732a40fbbf551917149a23e3dc273fb23c01d8ca710f1ded660d330"
+      },
+      "request_task_claim_binding": "UNKNOWN",
+      "historical_http_outcome": "UNKNOWN_NOT_REPLAYED",
+      "retry_allowlist_changed": false,
+      "counter_reset": false,
+      "state": "DIAGNOSED_SHARED_GATE_CONTENTION_SCOPED_RECOVERY_PENDING",
+      "next_executable_step": "Append one recurrence to the existing material incident key and retain the19:44 original. Reuse the retained v76 source/effect diagnosis: material can extend the owned task lease within its attempt deadline and has no immutable per-call acknowledgement receipt. The HTTP_ERROR remains ambiguous without exact request/claim binding. No raw replay or allowlist addition; exact-claim reconciliation and separate meaningful qualification are required for a future narrow proposal."
+    }
+  ],
+  "established_cause": "The five retained time windows contain actual shared outer-gate lock waits and native55P03 aborts at authenticated rpc_dispatch line39. Historical holders are identified per window. The deployed finite strict-abort retry policy is exhausted for verify/planner/commit; the two excluded material operations emit ambiguous HTTP_ERROR. This is repairable contention evidence, not evidence of no-runnable-task/provider absence.",
+  "causal_limits": [
+    "Temporal proximity does not bind the Render operation to a particular database request, task, claim or exact send count.",
+    "The holder PID is observed in native lock-wait detail; its exact cron/job identity remains unverified because the sole bounded mapping read did not return a result.",
+    "No internal monitor phase duration, complete gate-hold duration, sustainable throughput or mission completion is established.",
+    "Original HTTP-ambiguous effects remain unreplayed; native confirmed-abort classification does not license resetting provider, task or total retry counters."
+  ],
+  "cron_correlation": {
+    "schema": "astra.readonly-cron-correlation-interruption/1",
+    "dispatches": 1,
+    "read_only": true,
+    "repeatable_read": true,
+    "statement_timeout": "8s",
+    "lock_timeout": "3s",
+    "recent_rows_limit": 2048,
+    "match_rows_limit": 6,
+    "target_holders": [
+      41372,
+      45486,
+      45636,
+      45761,
+      47948
+    ],
+    "target_job": 602,
+    "result": "TOOL_ABORTED_BY_USER_AFTER314_3_SECONDS_NO_TERMINAL_DATABASE_RESULT",
+    "remote_execution_or_completion": "UNKNOWN",
+    "receipt_received": false,
+    "retried": false,
+    "query_attempt_did_not_authorize_any_mutation": true,
+    "expected_result_limit": "Current command equality and historical PID/time correlation only; no full phase duration or application request binding."
+  },
+  "next_shared_recovery": "Persist these exact incidents/recurrences through the existing root owner and queue. Continue the parallel bounded planner SEAL/accounting diagnosis. Reuse the known20:04 monitor-holder proof and prepared monitor/contract source analysis; do not silently attribute these new holders to cron602. Resolve the pending read-only cron mapping outcome or retain that explicit diagnostic limitation before selecting another mapping observation. Do not repeat the completed five log windows, expand retries, restart the worker, rerun installed migrations or relax authentication/ownership/source/cost controls.",
+  "held_identity_and_v75_publication_preserved": true,
+  "sources_or_subscriptions_added": false,
+  "credentials_or_secrets_returned": false,
+  "live_reads": {
+    "render_calls": 1,
+    "native_log_windows": 5,
+    "readonly_cron_mapping_calls": 1,
+    "readonly_cron_mapping_terminal_results": 0
+  }
+}

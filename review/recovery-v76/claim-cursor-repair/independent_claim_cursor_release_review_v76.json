@@ -1,0 +1,181 @@
+{
+  "active_source_edits_by_reviewer": 0,
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "base_tree": "3599d2822a30b658666ab219e8eeca728f3917df",
+  "decision": "PASS for a separate additive claim-cursor repair publication under existing controls. Guarded production installation remains conditional on required exact-published-head CI and fresh authority/source reconciliation. No production installation or worker deployment is performed or implied by this review.",
+  "limitations": [
+    "Local PostgreSQL 16.15 qualification does not substitute for the required new exact-head CI or current production source/authority checks.",
+    "The synthetic prepared query has no parameters. Custom/generic modes are planner observations, not distinct parameter-sensitive SPI cache qualification. Status may be a node filter; LIMIT bounds emitted witnesses, not every examined index entry.",
+    "The root retained production comparison used separate cache/snapshot states. Its 921.891 ms baseline versus 0.325 ms candidate is not a guaranteed ratio, production full-claim duration or proof that this cursor alone caused the 57014.",
+    "The 19:00 cancellation location, preceding-helper no-work snapshot at 19:21 and stale worker registration are distinct observations. They do not prove absence of earlier helper/gate cost or new verified acquisition.",
+    "Ordinary bounded DDL may wait on the existing gate/run locks and abort under unchanged limits. Unknown connector outcomes must be reconciled from exact source/history before any retry.",
+    "No production helper/provider call, installation, restart, release or recovery-success claim is made by this receipt."
+  ],
+  "next_safe_action": "Root may publish only the separately reviewed additive repair packet, verify every expected blob and all required exact-head CI, then reconcile current owner/source/index/metadata and apply the guarded SQL once. Keep the existing worker running and verify actual subsequent claims and independently read-back pages. Do not equate installation or heartbeat with recovery.",
+  "passed": true,
+  "production_mutations_by_reviewer": 0,
+  "publication_hold_preservation": {
+    "admission": "Fresh current-head/owner reconciliation, normal existing GitHub connector controls and same-branch CAS; preserve all unrelated base blobs. Respect any new host refusal without route switching or automatic replay.",
+    "continuity": "After independent publication, later held-checkpoint integration must preserve this repair and use a fresh reviewed head. Never replace a newer branch tree with stale e56. If dbe8 is installed, any later 75-pin identity activation must explicitly version/reconcile its old 28ae private-dispatch pin; no silent relaxation.",
+    "exclude": [
+      "Frozen 68-entry v75 checkpoint packet 8806ef636f5be4220562b0ee52d64426f620461d8ad99adef5f9edd1f9724da3",
+      "Held 16-entry identity-material active preview",
+      "Canonical checkpoint/prompt replacements",
+      "Existing Python runtime or workflow edits",
+      "Render deployment or restart"
+    ],
+    "held_expected_tree": "e56dc140deeb00eb2a0aae4e7d572519d773ccd0",
+    "held_state": "Original invocation terminal outcome remains unknown; the one recovery invocation returned an actual host user-rejected result, with its automatic recovery budget exhausted. This independent repair does not resolve or bypass that hold.",
+    "independent_repair_only": true
+  },
+  "qualification": {
+    "dependency_reconciliation": {
+      "actual_files": 81,
+      "additive_files": 7,
+      "dynamic_builder_included": true,
+      "exact_e694_files": 74,
+      "independently_rehashed_all_stage_bytes_and_base_blob_bindings": true,
+      "unexpected_existing_differences": 0
+    },
+    "failed_attempt_interpretation": "Bootstrap stopped before database setup because the audit runner omitted an import. Attempt 1 had two assertion failures: status was an index-node filter and a source-order test matched a comment. Attempt 2 retained only the overly strict status Index Cond assertion. Corrections change the harness and honest planner claim; the runtime candidate remains dbe8. None of those attempts is called green.",
+    "independent": {
+      "bytes": 2037,
+      "path": "review/recovery-v76/claim-cursor-repair/independent_source_qualification_v76.json",
+      "sha256": "b4c72562eaff602afdd2835e56bda2a15895ee74016caafda2eca48081e8a518"
+    },
+    "independent_counts": {
+      "errors": 0,
+      "failures": 0,
+      "postgresql_calls": 0,
+      "skips": 0,
+      "socket_connections": 0,
+      "source_admission_tests": 2
+    },
+    "meaningful_cases": [
+      "Byte-exact inverse and reproducible wrappers; dedicated-workflow missing-DSN hard failure versus general-discovery explicit skip.",
+      "Actual SQL null/empty/duplicate/status/provider/run result equivalence.",
+      "Unforced index-method selection under two planner modes: two correlated run/provider probes, at most one emitted witness per probe, unchanged status predicate retained.",
+      "Actual authenticated baseline/candidate claim comparison: provider blocking and resolution, REF01/N01/REF03 turn order, identical generation and attempt increments, no reservations, denied API actor and stale fence refusal.",
+      "Forward/restore exact source and full metadata/OID/ACL preservation with nine domain-table snapshots unchanged.",
+      "Nineteen guard-expression or injected-drift rejections, including real pre-snapshot auth/index drift and post-replacement source/catalog/lease/run mutations.",
+      "Strict replay refusal, PAUSED and PARTIAL_OPERATIONAL_FAILURE cleanup, wrong-owner cleanup refusal.",
+      "A real late native 55P03 rolls back worker registration, provider dependencies, fairness and attempts; a subsequent claim has generation/attempt/page_attempts 1."
+    ],
+    "producer": {
+      "bytes": 48784,
+      "path": "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json",
+      "sha256": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03"
+    },
+    "producer_counts": {
+      "errors": 0,
+      "failures": 0,
+      "postgresql": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+      "seconds": 7.729960569995455,
+      "skips": 0,
+      "tests": 9
+    },
+    "retained_failed_attempts": [
+      {
+        "bytes": 292,
+        "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt0_bootstrap_v76.json",
+        "sha256": "2a752c74c9b88668488999c34343d420d793a587ed7bf57b4baa544ee3e8cf46"
+      },
+      {
+        "bytes": 34331,
+        "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt1_v76.json",
+        "sha256": "88da6a7efbbfc8963a670bbf9ccdfd6ee05b59da38ca6440f5b06086c772095b"
+      },
+      {
+        "bytes": 33884,
+        "path": "review/recovery-v76/claim-cursor-repair/qualification_attempt2_v76.json",
+        "sha256": "64711fd3b0a55d7ec70cfb24b6c3f482ef78aa28254e90017e89c0cafcf2fb93"
+      }
+    ]
+  },
+  "remote_calls_by_reviewer": 0,
+  "reviewed_artifact_pins": {
+    "review/recovery-v76/claim-cursor-repair/build_claim_cursor_repair_v76.py": "6db373d94af83a49585cf5e6e1f6e7367f54b5f32f2ba6c89f318976c21f56d4",
+    "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+    "review/recovery-v76/claim-cursor-repair/claim_cursor_derivation_v76.json": "3368eb7281959316af697bce47b1a14623f4e0ac10f5da9a944ca47d4246b37c",
+    "review/recovery-v76/claim-cursor-repair/claim_cursor_guard_pins_v76.json": "e11f0f3dbecc5bb67ff47caad46312cd210973fc6acf27449b54dcbf01b8e90d",
+    "review/recovery-v76/claim-cursor-repair/independent_source_qualification_v76.json": "b4c72562eaff602afdd2835e56bda2a15895ee74016caafda2eca48081e8a518",
+    "review/recovery-v76/claim-cursor-repair/qualification_final_v76.json": "42fdbefe2d1bb69efc98b4f21fbf93f7507fd3bb5f4df722e4b9646d0d8eca03",
+    "review/recovery-v76/claim-cursor-repair/qualify_claim_cursor_v76.py": "ac0c10c6bb4e529eb2a0eebbdf31e24bb3c37ddfb7a2a8690c6f8d48159ded79",
+    "sql/astra_backfill_claim_provider_cursor_restore_v76.sql": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+    "sql/astra_backfill_claim_provider_cursor_v76.sql": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+    "tests/ingestion/test_backfill_claim_provider_cursor_v76.py": "78a213fe894583c37f55f6b53955195b989cb7cfa808eafb375753f14720d464"
+  },
+  "reviewed_at": "2026-10-30T19:30:44.829186+00:00",
+  "reviewer": "/root/relay_v3_review",
+  "runtime_scope": {
+    "baseline_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+    "candidate_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+    "changed_blocks": 1,
+    "exact_inverse_verified": true,
+    "no_new": [
+      "Credentials",
+      "Grants, roles or trust relationships",
+      "Provider calls or endpoints",
+      "Tables, indexes or storage configuration",
+      "Timeout or schedule changes",
+      "Python retry policies or worker changes"
+    ],
+    "oid": 16040232,
+    "retained_full_metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+    "semantics": [
+      "The same active-run and fixed Alpaca/Massive outer rows are projected with the same run/provider/status predicates. A correlated SELECT 1 LIMIT 1 emits one witness exactly when EXISTS is true.",
+      "Duplicate qualifying tasks cannot multiply the two projected columns; empty sets, null nonmatches and excluded statuses/providers retain the same result semantics.",
+      "The original query has no ordering guarantee. The unchanged loop uses a fixed v_now and run/provider-keyed writes; provider iterations do not depend on a newly promised order.",
+      "Every other function byte remains unchanged: authentication routing, initial identity-helper order, global gate, capability admission, leases, attempts, provider dependency updates, family fairness, claim selection and all other RPC branches."
+    ],
+    "target": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)"
+  },
+  "schema": "astra.claim-provider-cursor-independent-release-review/1",
+  "wrapper_review": {
+    "atomicity": "Only CREATE OR REPLACE of the exact private dispatcher is executed. Final function bytes, metadata, other catalog and entire fixed run row are asserted. Strict replay rejects an unexpected preimage. Source drift, catalog drift and boundary expiry abort the transaction; no data or counters are deliberately changed.",
+    "authority": "Same named implementation owner, finite unexpired lease, fence 1, fixed cohort and manifest, and exactly 3,000 members before and after replacement. Forward requires ACTIVE; exact cleanup permits any existing status without changing it.",
+    "independent_finding_resolved": "The original draft checked this index only before the catalog snapshot. A final exact check now rejects pre-snapshot index drift; the actual PostgreSQL injected-drift case passed.",
+    "index_guard": "Existing exact valid/ready/live btree provider index is required both before the catalog snapshot and after replacement. No new index is created.",
+    "lock_order": [
+      "Existing global advisory transaction gate 706314020261028",
+      "Fixed run row FOR SHARE"
+    ],
+    "protected_sources": [
+      {
+        "sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+        "signature": "public.astra_ingestion_rpc_v1(text,jsonb)"
+      },
+      {
+        "sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+        "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)"
+      },
+      {
+        "sha256": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+        "signature": "astra_ingestion_v1.backfill_identity_discover_pending_v2()"
+      },
+      {
+        "sha256": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+        "signature": "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)"
+      },
+      {
+        "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+        "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)"
+      },
+      {
+        "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d",
+        "oid": "16041463",
+        "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+        "signature": "astra_ingestion_v1.backfill_maintain_v2(integer)"
+      },
+      {
+        "metadata_sha256": "437fe86234dcef0e89c0a5137707b3dc5da780c5a10dbd376f25e6c70e39a595",
+        "oid": "16041451",
+        "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+        "signature": "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)"
+      }
+    ],
+    "restoration": "Exact dbe8 to 28ae restore uses the same authority and integrity guards, preserves PAUSED/terminal status and cannot reactivate or reset work.",
+    "source_guards": "Exact target baseline/candidate and full pg_proc metadata including OID, owner, ACL and configuration. Seven other pinned sources/full metadata are rechecked before and after; the complete other-schema catalog snapshot must remain equal.",
+    "transaction": "READ COMMITTED writable transaction; explicit 8-second statement and 3-second lock bounds"
+  }
+}

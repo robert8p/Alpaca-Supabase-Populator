@@ -1,0 +1,28 @@
+{
+  "schema": "astra.current-contract-context-transport-verification/1",
+  "request_id": "v78-one-current-contract-input-context-read",
+  "transport": "EXPECTED_READ_ONLY_P0001_OBSERVATION",
+  "exact_prefix": true,
+  "valid_expected_json": true,
+  "observed_at": "2026-10-30T22:56:46.256301+00:00",
+  "query_sha256": "d7fe9d4a94524f45b68a9844390b8d291f160edf5cf7e3485c5973019529111e",
+  "dispatches": 1,
+  "automatic_retry_budget": 0,
+  "raw_result_sha256": "5e8afc337d0e6ef4ddeca33de7ec19f0c7e8a876bd09bac01de760398afeb3b9",
+  "evidence_path": "review/recovery-v78/gate-duration/context_read_evidence_v78.json",
+  "evidence_sha256": "69e6a8c4929af56da1918ec67519bb1d3186442bdaf8e7e7b7931fc4200ec59c",
+  "seed_complete": true,
+  "readback_cursor": {
+    "page_no": 0,
+    "task_id": "backfill-plan-d955607b0da2953d844758c843a7b3085ee3f44d502ab9778b99778ed029f0d3",
+    "verified_at": "2026-10-30T21:24:09.415858+00:00"
+  },
+  "next_rows": 32,
+  "pending_sample_records": [
+    548,
+    1000
+  ],
+  "production_mutations": 0,
+  "source_acquisition_claimed_by_diagnostic": false,
+  "phase_cost_measured": false
+}

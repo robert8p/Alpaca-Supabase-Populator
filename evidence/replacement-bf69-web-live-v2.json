@@ -1,0 +1,27 @@
+{
+  "version": "replacement-bf69-web-live-v2",
+  "service_id": "srv-dbh85vl9fdbs7387rucg",
+  "url": "https://astra-ingestion-web-v1.onrender.com",
+  "observed_live_at": "2026-10-30T09:52:44Z",
+  "deploy": {
+    "commit": {
+      "createdAt": "2026-10-30T09:19:03Z",
+      "id": "bf69ef2980e0b8977f79a05d46e8d58dcc9b48db",
+      "message": "fix: bound member planning and shared record refresh work\n\nPreserve fixed-cohort task definitions, source versions, links and receipts while bounding planner transactions and keyed refresh queries. Include exact PostgreSQL qualification and live readbacks. Keep Massive relay held for specific action-time confirmation."
+    },
+    "createdAt": "2026-10-30T09:51:03.329242Z",
+    "finishedAt": "2026-10-30T09:51:57.224633Z",
+    "id": "dep-dbi6h1rbc2fs73a8fk00",
+    "startedAt": "2026-10-30T09:51:03.287147Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T09:52:28.245656Z"
+  },
+  "selected_before_branch_advanced": true,
+  "selection_evidence": "evidence/replacement-bf69-web-deploy-selection-v2.json",
+  "release_gates": "evidence/replacement-bf69-release-gates-v2.json",
+  "auto_deploy": "OFF",
+  "worker_deployment_changed": false,
+  "relay_integrated": false,
+  "verification_limits": "Render reports the selected exact qualified commit LIVE. Fresh authenticated browser end-to-end UI interaction is not claimed. Combined backfill_status remains under diagnosis; delivery-only1657.548ms is not a full-lock-duration proof."
+}

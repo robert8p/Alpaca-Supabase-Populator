@@ -1,0 +1,180 @@
+{
+  "version": "fixed3000-d63-release-gates-v2",
+  "repo": "robert8p/Alpaca-Supabase-Populator",
+  "head_sha": "d63a7142dd2f6395b230b4907199d925951176cc",
+  "observed_at": "2026-10-30T11:00:22Z",
+  "qualification": "ALL_FOUR_EXACT_HEAD_WORKFLOWS_AND_JOBS_PASSED",
+  "gates": [
+    {
+      "workflow": "release-gate",
+      "event": "pull_request",
+      "run_id": 41043866061,
+      "job_id": 124023000226,
+      "head_sha": "d63a7142dd2f6395b230b4907199d925951176cc",
+      "run_attempt": 1,
+      "run_number": 1421,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T10:51:56Z",
+      "run_started_at": "2026-10-30T10:51:56Z",
+      "updated_at": "2026-10-30T10:52:24Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41043866061",
+      "case_counts": {
+        "passed": 675,
+        "skipped": 291,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 6.83
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T10:52:22.2445363Z 675 passed, 291 skipped, 1 warning in 6.83s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "run_id": 41043866038,
+      "job_id": 124023000210,
+      "head_sha": "d63a7142dd2f6395b230b4907199d925951176cc",
+      "run_attempt": 1,
+      "run_number": 374,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T10:51:56Z",
+      "run_started_at": "2026-10-30T10:51:56Z",
+      "updated_at": "2026-10-30T10:56:43Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41043866038",
+      "case_counts": {
+        "tests": 576,
+        "passed": 576,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 254.318
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T10:56:39.0024540Z Ran 576 tests in 254.318s",
+        "2026-10-30T10:56:39.0024907Z OK"
+      ]
+    },
+    {
+      "workflow": "release-gate",
+      "event": "push",
+      "run_id": 41043857410,
+      "job_id": 124022972531,
+      "head_sha": "d63a7142dd2f6395b230b4907199d925951176cc",
+      "run_attempt": 1,
+      "run_number": 1420,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T10:51:52Z",
+      "run_started_at": "2026-10-30T10:51:52Z",
+      "updated_at": "2026-10-30T10:52:23Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41043857410",
+      "case_counts": {
+        "passed": 675,
+        "skipped": 291,
+        "failed": 0,
+        "warnings": 1,
+        "seconds": 8.83
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T10:52:20.7291452Z 675 passed, 291 skipped, 1 warning in 8.83s"
+      ]
+    },
+    {
+      "workflow": "ASTRA ingestion qualification",
+      "event": "push",
+      "run_id": 41043857381,
+      "job_id": 124022972819,
+      "head_sha": "d63a7142dd2f6395b230b4907199d925951176cc",
+      "run_attempt": 1,
+      "run_number": 373,
+      "run_status": "completed",
+      "run_conclusion": "success",
+      "job_status": "completed",
+      "job_conclusion": "success",
+      "created_at": "2026-10-30T10:51:52Z",
+      "run_started_at": "2026-10-30T10:51:52Z",
+      "updated_at": "2026-10-30T10:56:31Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41043857381",
+      "case_counts": {
+        "tests": 576,
+        "passed": 576,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 247.439
+      },
+      "bounded_log_evidence": [
+        "2026-10-30T10:56:25.4623936Z Ran 576 tests in 247.439s",
+        "2026-10-30T10:56:25.4624268Z OK"
+      ]
+    }
+  ],
+  "ingestion_application_syntax": "PASSED_IN_BOTH_JOBS",
+  "active_regression_limits": {
+    "news_rpc_seconds_strictly_below": 12,
+    "maximum_options_page_seconds_strictly_below": 15,
+    "local_combined_runtime_status_rpc_seconds_strictly_below": 3
+  },
+  "production_acceptance": {
+    "state": "SEPARATE_AND_NOT_ESTABLISHED_BY_CI",
+    "controller_reported_combined_internal_query": {
+      "observed_at": "2026-10-30T10:54:07Z",
+      "milliseconds": 6848.01,
+      "includes_outer_rpc_auth": false,
+      "includes_outer_rpc_advisory_lock": false
+    },
+    "controller_reported_request_log_query": {
+      "startTime": "2026-10-30T10:52:02Z",
+      "endTime": "2026-10-30T10:56:59Z",
+      "method": "GET",
+      "path": "/api/backfill/status",
+      "statusCode": "200",
+      "entries": 0,
+      "hasMore": false,
+      "interpretation": "No matching entries returned by that filtered query; not proof of no traffic, success, authentication or latency"
+    },
+    "covering_index_attempts": {
+      "controller_reports_two_8_second_create_index_timeouts": true,
+      "first_authoritative_readback": "ABSENT; outer auth unchanged",
+      "second_readback": "CONFIRMED_ABSENT by controller at 2026-10-30T10:56:58.810698Z; outer auth0616 unchanged; relay ledger/helper NULL; state HELD with original09:53 approval",
+      "controller_evidence": "evidence/replacement-runtime-status-live-v70.json"
+    },
+    "controller_reported_independent_claim_timeout": {
+      "observed_at": "2026-10-30T10:53:28Z",
+      "sqlstate": "57014",
+      "location": "Normal claim SELECT, line123",
+      "preceded_index_attempts": true,
+      "controller_evidence": "evidence/replacement-claim-timeout-reconciliation-v70.json",
+      "interpretation": "This reconciled claim timeout predates index maintenance and is not attributed to that maintenance"
+    },
+    "controller_reported_progress": {
+      "observed_at": "2026-10-30T11:00:49Z",
+      "pages_committed": 3909,
+      "records_committed": 473019,
+      "next_member": 1976,
+      "worker_last_fresh_at": "2026-10-30T10:59:57Z",
+      "manual_redeploy": false,
+      "source": "Existing controller observation; observer made no production call"
+    },
+    "later_20_second_maintenance_variant": "Independent local preparation/qualification; these completed exact-head workflows do not establish its production readiness or success",
+    "frozen_relay": "Held separately; no activation inferred",
+    "deployment_state": "No deployment selected, changed or independently inspected by this observer"
+  },
+  "observer_actions": {
+    "github_reads_only": true,
+    "workflow_reruns_requested": 0,
+    "remote_mutations": 0,
+    "additional_tests_run": 0,
+    "supabase_calls": 0,
+    "render_calls": 0,
+    "postgresql_calls": 0,
+    "credential_access": 0
+  }
+}

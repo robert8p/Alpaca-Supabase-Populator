@@ -1,0 +1,52 @@
+{
+  "schema": "astra.maintenance-repair-publication/1",
+  "base_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "commit": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+  "tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+  "branch": "feat/astra-ingestion-service",
+  "manifest": {
+    "path": "evidence/replacement-maintenance-combined-publication-manifest-v72.json",
+    "bytes": 41796,
+    "sha256": "7e0c1bee91271dd58cdce629d19b4f297c35821e3706813a01682bdb6b040312",
+    "git_blob_sha1": "3ac852bef7fe2b24dcbfe15181852f45e1b9d358"
+  },
+  "verification": {
+    "tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+    "added": 66,
+    "all_new_blobs_exact": true,
+    "all_existing_blobs_preserved": true,
+    "truncated": false
+  },
+  "ref_update": {
+    "success": true
+  },
+  "independent_ref_readback": {
+    "ref": "refs/heads/feat/astra-ingestion-service",
+    "node_id": "REF_kwDOTt9e7NoAJ3JlZnMvaGVhZHMvZmVhdC9hc3RyYS1pbmdlc3Rpb24tc2VydmljZQ",
+    "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/refs/heads/feat/astra-ingestion-service",
+    "object": {
+      "sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "type": "commit",
+      "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/commits/d06c13f30a0bed8da6366f124101b59d21a450fa"
+    }
+  },
+  "scope": "Two additive partial hash indexes, one readback eligibility predicate and tests/evidence; existing runtime files preserved.",
+  "production_installation_separate": true,
+  "current_step_audit": [
+    {
+      "id": 33,
+      "action": "IMPLEMENTATION_PROGRESS_RECONCILED",
+      "recorded_at": "2026-10-30 14:28:23.732106+00",
+      "evidence": {
+        "owner": "root-replacement-20261030T042603Z",
+        "next_step": "publish reviewed index and transaction-race SQL then pass exact-head CI before installation",
+        "readbacks": 5275,
+        "request_id": "v72-qualified-repair-progress-20261030T1427Z",
+        "counters_reset": false,
+        "pages_committed": 5275,
+        "same_controller": true,
+        "actual_progress_observed_at": "2026-10-30T14:27:55.369433Z"
+      }
+    }
+  ]
+}

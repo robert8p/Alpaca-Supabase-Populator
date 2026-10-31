@@ -1,0 +1,16 @@
+[
+  {
+    "id": 36,
+    "action": "IMPLEMENTATION_LEASE_RENEWED",
+    "recorded_at": "2026-10-30 14:49:44.168668+00",
+    "evidence": {
+      "owner": "root-replacement-20261030T042603Z",
+      "reason": "Retain installed repairs and acquiredpages; complete bounded residual maintenance cause diagnosis after exact14:46holder evidence",
+      "request_id": "v72-residual-recovery-lease-20261030T1449Z",
+      "lease_until": "2026-10-30T15:45:00Z",
+      "same_controller": true,
+      "approval_unchanged": true,
+      "previous_lease_until": "2026-10-30T15:00:00Z"
+    }
+  }
+]

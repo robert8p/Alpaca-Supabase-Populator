@@ -1,0 +1,1231 @@
+{
+  "schema": "astra.combined-reliability-dependency-rebase/1",
+  "passed": true,
+  "qualified_base_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "qualified_base_tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+  "publication_base_commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+  "publication_base_tree": "71db22123ba2db26d1135916cb91081b03bab2cb",
+  "original_qualification": {
+    "path": "review/recovery-v74/combined-release/combined_active_dependency_qualification_v74.json",
+    "bytes": 501864,
+    "sha256": "6517788ab3f5e888969e59fab5e395e77032bf301d46396cde86c0f089cc6162",
+    "git_blob_sha1": "ee6ff2e5d3bf14867cf97ec43789e7940e90589a"
+  },
+  "original_review_receipts": [
+    {
+      "path": "review/recovery-v74/shared-field-cache/independent_shared_field_release_review_v74.json",
+      "bytes": 9613,
+      "sha256": "cf32e11d70f409d7e9b175cff8390fd0aecda3cd93b7f37377026363cbc9a88a",
+      "git_blob_sha1": "6f9e09af16b6cc0dc7449cd3467e0ad138d7ca49"
+    },
+    {
+      "path": "review/rpc-lock-rollback-retry-proposal/independent_final_release_review_v74.json",
+      "bytes": 12843,
+      "sha256": "693c5ffde93dea40ac06414e8f11bc824afef780563a034db0d8574528fd655a",
+      "git_blob_sha1": "0e4990b4e6505c9005aa17fb8960799997628dd7"
+    }
+  ],
+  "documentation_and_evidence_base_changes": [
+    {
+      "path": "docs/INGESTION_COMPLETION_STATE.md",
+      "before": {
+        "path": "docs/INGESTION_COMPLETION_STATE.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ed00c5f322dd887c7c26602cec16310e840bdc9e",
+        "size": 46385,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/ed00c5f322dd887c7c26602cec16310e840bdc9e"
+      },
+      "after": {
+        "path": "docs/INGESTION_COMPLETION_STATE.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "004f532bc0141a9139c42ad510e1d4be17d1c200",
+        "size": 57090,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/004f532bc0141a9139c42ad510e1d4be17d1c200"
+      }
+    },
+    {
+      "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+      "before": {
+        "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a9cf7dce3b1df597b58df8abe04106b84247b223",
+        "size": 69206,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/a9cf7dce3b1df597b58df8abe04106b84247b223"
+      },
+      "after": {
+        "path": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8f290dcc856a13bfc26a2282d17b833f4ec62fa8",
+        "size": 71337,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/8f290dcc856a13bfc26a2282d17b833f4ec62fa8"
+      }
+    },
+    {
+      "path": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+      "before": null,
+      "after": {
+        "path": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3dc3ed238056deea66dec2bd5130881d1f4af17e",
+        "size": 2130,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/3dc3ed238056deea66dec2bd5130881d1f4af17e"
+      }
+    },
+    {
+      "path": "evidence/replacement-checkpoint-manifest-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-checkpoint-manifest-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "51c72729bda30c8ef125b5769e9fbe37eac6e930",
+        "size": 9970,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/51c72729bda30c8ef125b5769e9fbe37eac6e930"
+      }
+    },
+    {
+      "path": "evidence/replacement-checkpoint-release-gates-v73.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-checkpoint-release-gates-v73.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "aecfca2cbc8f1007b10b5e254d661573593c6748",
+        "size": 1752,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/aecfca2cbc8f1007b10b5e254d661573593c6748"
+      }
+    },
+    {
+      "path": "evidence/replacement-controller-reporting-policy-readback-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-controller-reporting-policy-readback-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7eb6a2378fc2bae502e1b31555453c71a1f64cae",
+        "size": 4309,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/7eb6a2378fc2bae502e1b31555453c71a1f64cae"
+      }
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-acquisition-readback-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-eqr-ref01-acquisition-readback-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "705d720152054d201e7ef39841a56b60eddb6241",
+        "size": 5646,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/705d720152054d201e7ef39841a56b60eddb6241"
+      }
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-final-independent-review-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-eqr-ref01-final-independent-review-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "06a2bfeaaccf162a62579ff21fdf3e83c8129c79",
+        "size": 6581,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/06a2bfeaaccf162a62579ff21fdf3e83c8129c79"
+      }
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-identity-followthrough-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-eqr-ref01-identity-followthrough-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "bf524a4fc9c519cb6c6daf55fa4eebf722320049",
+        "size": 4035,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/bf524a4fc9c519cb6c6daf55fa4eebf722320049"
+      }
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-progress-readback-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-eqr-ref01-progress-readback-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "38ca086e21911c849ab374d7c3b1e6874daee93b",
+        "size": 9273,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/38ca086e21911c849ab374d7c3b1e6874daee93b"
+      }
+    },
+    {
+      "path": "evidence/replacement-eqr-ref01-remediation-assignment-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-eqr-ref01-remediation-assignment-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c44f5662554ed4c851aaf6d65c08e5bba3e7ab5a",
+        "size": 8962,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/c44f5662554ed4c851aaf6d65c08e5bba3e7ab5a"
+      }
+    },
+    {
+      "path": "evidence/replacement-existing-successor-update-v73.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-existing-successor-update-v73.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0d8b5e0e7c3aa2571e41a1dcf2c3d655da77b4e1",
+        "size": 4763,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/0d8b5e0e7c3aa2571e41a1dcf2c3d655da77b4e1"
+      }
+    },
+    {
+      "path": "evidence/replacement-owner-remediation-and-contention-lease-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-owner-remediation-and-contention-lease-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "2954f028c456b395dd1e5d7d5c05e2c7d452ab5d",
+        "size": 1956,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/2954f028c456b395dd1e5d7d5c05e2c7d452ab5d"
+      }
+    },
+    {
+      "path": "evidence/replacement-owner-reporting-and-qualified-repair-lease-v74.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-owner-reporting-and-qualified-repair-lease-v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "515ea57789c7db3590ea51f2c2d4f90a1674204c",
+        "size": 2146,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/515ea57789c7db3590ea51f2c2d4f90a1674204c"
+      }
+    },
+    {
+      "path": "evidence/replacement-published-checkpoint-v73.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-published-checkpoint-v73.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ea1eb45a1344b60ea3ab54b2c10b674f13e73e45",
+        "size": 9997,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/ea1eb45a1344b60ea3ab54b2c10b674f13e73e45"
+      }
+    },
+    {
+      "path": "evidence/replacement-reporting-only-task-update-20261030T1622Z.json",
+      "before": null,
+      "after": {
+        "path": "evidence/replacement-reporting-only-task-update-20261030T1622Z.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4897660c26db82a2de636e650b4ab16068a436cc",
+        "size": 2056,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/4897660c26db82a2de636e650b4ab16068a436cc"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/assign_existing_eqr_reference_recovery_v74.sql",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/assign_existing_eqr_reference_recovery_v74.sql",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4a7a4ff33a8ccbd403f15e19f0874336d64bb56f",
+        "size": 11996,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/4a7a4ff33a8ccbd403f15e19f0874336d64bb56f"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/identity_followthrough_source_extract_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/identity_followthrough_source_extract_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ece17317a39c01e0859edee6307794fdd4d83e2a",
+        "size": 15465,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/ece17317a39c01e0859edee6307794fdd4d83e2a"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/independent_existing_task_assignment_review_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/independent_existing_task_assignment_review_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "fdcf6c1d61d5b2a17c7d3d784560b8481352f705",
+        "size": 7362,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/fdcf6c1d61d5b2a17c7d3d784560b8481352f705"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/independent_identity_followthrough_review_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/independent_identity_followthrough_review_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3c2cfd62e49d5699c95a16fdadeb9109c0e54eea",
+        "size": 7278,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/3c2cfd62e49d5699c95a16fdadeb9109c0e54eea"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/normal_worker_successor_readback_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/normal_worker_successor_readback_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c7cbfb79676dbd86b9622e74611f84a78b7a7676",
+        "size": 7987,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/c7cbfb79676dbd86b9622e74611f84a78b7a7676"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/record_verified_alternative_acquisition_v74.sql",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/record_verified_alternative_acquisition_v74.sql",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "34b9e4289e26336ba32c1c69decf9976597b2b80",
+        "size": 7544,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/34b9e4289e26336ba32c1c69decf9976597b2b80"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_assignment_and_worker_reconciliation_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/root_assignment_and_worker_reconciliation_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "bbdd0f58779229415737570b3a99dd75d8dbf706",
+        "size": 2122,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/bbdd0f58779229415737570b3a99dd75d8dbf706"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_endpoint_receipt_projection_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/root_endpoint_receipt_projection_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8b09323de5bb5a7a390846a14b4b7bb303c5686a",
+        "size": 708,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/8b09323de5bb5a7a390846a14b4b7bb303c5686a"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_existing_massive_reference_tasks_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/root_existing_massive_reference_tasks_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8c4c094fa5f39b20eee4ab3b2eaf78984e7db912",
+        "size": 13714,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/8c4c094fa5f39b20eee4ab3b2eaf78984e7db912"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_original_failure_reconciliation_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/root_original_failure_reconciliation_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a6f2ac0acab8787f470ae57018ecc09ba81aa23f",
+        "size": 2936,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/a6f2ac0acab8787f470ae57018ecc09ba81aa23f"
+      }
+    },
+    {
+      "path": "review/recovery-v74/eqr-ref01/root_queue_source_guards_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/eqr-ref01/root_queue_source_guards_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "6e5b03dc36adaeba7334890b93f13df8e8af02ba",
+        "size": 17859,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/6e5b03dc36adaeba7334890b93f13df8e8af02ba"
+      }
+    },
+    {
+      "path": "review/recovery-v74/existing_successor_completed_1600_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/existing_successor_completed_1600_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8cd3d0be5b3bdd7e4611aa59fcdb5caee9f8f44c",
+        "size": 4656,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/8cd3d0be5b3bdd7e4611aa59fcdb5caee9f8f44c"
+      }
+    },
+    {
+      "path": "review/recovery-v74/live_progress_1607_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/live_progress_1607_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7aec6aa30f55104cfc996e76fd36ba9275708030",
+        "size": 1728,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/7aec6aa30f55104cfc996e76fd36ba9275708030"
+      }
+    },
+    {
+      "path": "review/recovery-v74/live_progress_1629_v74.json",
+      "before": null,
+      "after": {
+        "path": "review/recovery-v74/live_progress_1629_v74.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "84dd993700585d5554b567fac42af44216ed3db4",
+        "size": 757,
+        "url": "https://api.github.com/repos/robert8p/Alpaca-Supabase-Populator/git/blobs/84dd993700585d5554b567fac42af44216ed3db4"
+      }
+    }
+  ],
+  "existing_runtime_sql_test_workflow_blobs_unchanged": true,
+  "dependency_count": 82,
+  "dependencies": [
+    {
+      "path": "astra_ingestion/__init__.py",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197",
+      "git_blob_sha1": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "bytes": 101,
+      "base_git_blob_sha1": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f",
+      "git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "bytes": 33254,
+      "base_git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+      "git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "bytes": 18462,
+      "base_git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1",
+      "git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "bytes": 27423,
+      "base_git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "bytes": 22439,
+      "base_git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/config.py",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953",
+      "git_blob_sha1": "64db9fad536ee86930d784e4b197fb7582738273",
+      "bytes": 3236,
+      "base_git_blob_sha1": "64db9fad536ee86930d784e4b197fb7582738273",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "64db9fad536ee86930d784e4b197fb7582738273",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/models.py",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2",
+      "git_blob_sha1": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "bytes": 5672,
+      "base_git_blob_sha1": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/reconcile.py",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba",
+      "git_blob_sha1": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "bytes": 2081,
+      "base_git_blob_sha1": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403",
+      "git_blob_sha1": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "bytes": 23229,
+      "base_git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "state": "REVIEWED_RUNTIME_REPLACEMENT",
+      "publication_base_git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/source.py",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f",
+      "git_blob_sha1": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "bytes": 9869,
+      "base_git_blob_sha1": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/store.py",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef",
+      "git_blob_sha1": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "bytes": 31621,
+      "base_git_blob_sha1": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "bytes": 7696,
+      "base_git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "evidence/replacement-calendar-v1.json",
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3",
+      "git_blob_sha1": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "bytes": 54881,
+      "base_git_blob_sha1": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "evidence/replacement-cohort-v1.json",
+      "sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d",
+      "git_blob_sha1": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "bytes": 946415,
+      "base_git_blob_sha1": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7",
+      "git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502",
+      "bytes": 23087,
+      "base_git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v71/live_cron_functions_1331.json",
+      "sha256": "fd58830bfdfa5002bcc986da052223da4c87e140c0dd262e17db0dd333b59472",
+      "git_blob_sha1": "d85eba119466102a6f9f4a6759c217ad312309e9",
+      "bytes": 10882,
+      "base_git_blob_sha1": "d85eba119466102a6f9f4a6759c217ad312309e9",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "d85eba119466102a6f9f4a6759c217ad312309e9",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f",
+      "git_blob_sha1": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "bytes": 131630,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61",
+      "git_blob_sha1": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "bytes": 103870,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/baseline_shared_refresh_v74.sql",
+      "sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+      "git_blob_sha1": "fc86827d69847a704de635cd1cc2f5e686496fc9",
+      "bytes": 7577,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql",
+      "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "git_blob_sha1": "5c55ef70fe70040a7188da1fcf23db052f70f234",
+      "bytes": 7795,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_cache_derivation_v74.json",
+      "sha256": "8339577009a426252567393fa2c4c5506ee9db4a40a5dffe5bbef123490fc358",
+      "git_blob_sha1": "d614a8b2b4d0d58a545e89a445e951c2b4ddd4b4",
+      "bytes": 2490,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "review/recovery-v74/shared-field-cache/shared_field_migration_manifest_v74.json",
+      "sha256": "712e1168b5c366a297b4faa87664db31770a64ed85b4ca944cdcb214a7e3ac88",
+      "git_blob_sha1": "daf553410c064d1e3fc1be40f0604fdba6053589",
+      "bytes": 18619,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_adaptive_pages_v2.sql",
+      "sha256": "78aaf940c059cb6cb4b4977c50220984ebf0bbd0805935b8e00dd05159c887cb",
+      "git_blob_sha1": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "bytes": 9439,
+      "base_git_blob_sha1": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7",
+      "git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "bytes": 16461,
+      "base_git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a",
+      "git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "bytes": 1812,
+      "base_git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "bytes": 5513,
+      "base_git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39",
+      "git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472",
+      "bytes": 1599,
+      "base_git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+      "git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "bytes": 28911,
+      "base_git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a",
+      "git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "bytes": 6498,
+      "base_git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043",
+      "git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "bytes": 57461,
+      "base_git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2",
+      "git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be",
+      "bytes": 6758,
+      "base_git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad",
+      "git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "bytes": 10029,
+      "base_git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61",
+      "git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "bytes": 30170,
+      "base_git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+      "git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "bytes": 53160,
+      "base_git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f",
+      "git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "bytes": 2416,
+      "base_git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+      "git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "bytes": 29707,
+      "base_git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c",
+      "git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "bytes": 2920,
+      "base_git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_planner_batch_v2.sql",
+      "sha256": "afa7480ff4d926948c41908c9c9ae885dba06e00763ea7a26331917132ea74e6",
+      "git_blob_sha1": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "bytes": 1680,
+      "base_git_blob_sha1": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_planner_v2.sql",
+      "sha256": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6",
+      "git_blob_sha1": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "bytes": 24085,
+      "base_git_blob_sha1": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501",
+      "git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "bytes": 2865,
+      "base_git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041",
+      "git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "bytes": 3880,
+      "base_git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2",
+      "git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "bytes": 17401,
+      "base_git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+      "git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "bytes": 35599,
+      "base_git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535",
+      "git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "bytes": 9398,
+      "base_git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5",
+      "git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "bytes": 19399,
+      "base_git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+      "git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "bytes": 3720,
+      "base_git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+      "git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "bytes": 2423,
+      "base_git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a",
+      "git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "bytes": 49245,
+      "base_git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_shared_field_cache_restore_v74.sql",
+      "sha256": "4fa9d60877b25355445f0d3b8b630d87630f1e2bb00a5896a1bb83fcd4fef376",
+      "git_blob_sha1": "fc0ebfa67b497d63e4535659ffa60264baea22ef",
+      "bytes": 27929,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_shared_field_cache_v74.sql",
+      "sha256": "b11210b980ad7afb4f821b184d2682d1d3123406da6cf47ece4bb9855803777b",
+      "git_blob_sha1": "c55453cfd0b24d0d0002daf549e92928ab993793",
+      "bytes": 28187,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+      "git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "bytes": 46872,
+      "base_git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424",
+      "git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "bytes": 8435,
+      "base_git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5",
+      "git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "bytes": 21403,
+      "base_git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e",
+      "git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "bytes": 8886,
+      "base_git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631",
+      "git_blob_sha1": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "bytes": 3161,
+      "base_git_blob_sha1": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a",
+      "git_blob_sha1": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "bytes": 54227,
+      "base_git_blob_sha1": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae",
+      "git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "bytes": 2266,
+      "base_git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "bytes": 20490,
+      "base_git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d",
+      "git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada",
+      "bytes": 11247,
+      "base_git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_delivery_v2.py",
+      "sha256": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3",
+      "git_blob_sha1": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "bytes": 11832,
+      "base_git_blob_sha1": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424",
+      "git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "bytes": 16964,
+      "base_git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14",
+      "git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b",
+      "bytes": 19668,
+      "base_git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce",
+      "git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "bytes": 44378,
+      "base_git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae",
+      "git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "bytes": 15566,
+      "base_git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_planner_v2.py",
+      "sha256": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5",
+      "git_blob_sha1": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "bytes": 12405,
+      "base_git_blob_sha1": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210",
+      "git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "bytes": 10844,
+      "base_git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4",
+      "git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "bytes": 13753,
+      "base_git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f",
+      "git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "bytes": 8631,
+      "base_git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961",
+      "git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "bytes": 22521,
+      "base_git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048",
+      "git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "bytes": 15706,
+      "base_git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_field_cache_installation_v74.py",
+      "sha256": "f4856947f23dae88df8e5d1ce7de72363a1034fa6ea1c9052a8f8c5100caaef0",
+      "git_blob_sha1": "bc273c70521ae7c1e87790e4218bcbbc7550ebdb",
+      "bytes": 10278,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_field_cache_v74.py",
+      "sha256": "6ed056ec347cfe6f43706a5e06f2f7ab013e179a70711f4bb3ab20e0cd65dac8",
+      "git_blob_sha1": "799cb8b068dad50ed452b572ec21e754a40548d7",
+      "bytes": 14907,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_records_v2.py",
+      "sha256": "582e71f64d17a8a57c055c69fd4f8f136916f959eb9bb2b47d953550a3ac6a86",
+      "git_blob_sha1": "74b85f7d54a9b2a452bb2bb62a7bc98be1113099",
+      "bytes": 23921,
+      "base_git_blob_sha1": "74b85f7d54a9b2a452bb2bb62a7bc98be1113099",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "74b85f7d54a9b2a452bb2bb62a7bc98be1113099",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_shared_refresh_performance_v2.py",
+      "sha256": "db15b1c5aabd4f0b0b2a82941531c877c7392dff0ff00fe86c5b3d15c8a6492f",
+      "git_blob_sha1": "2c3dbf55c3d729dad84b15177afc1ecf79e2f544",
+      "bytes": 11351,
+      "base_git_blob_sha1": "2c3dbf55c3d729dad84b15177afc1ecf79e2f544",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "2c3dbf55c3d729dad84b15177afc1ecf79e2f544",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6",
+      "git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "bytes": 12447,
+      "base_git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf",
+      "git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "bytes": 9063,
+      "base_git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32",
+      "git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "bytes": 21360,
+      "base_git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_rpc_failure_observability_v71.py",
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9",
+      "git_blob_sha1": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+      "bytes": 13856,
+      "base_git_blob_sha1": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "b4d5917064eb1516f98e22ec66ea5f8e536c318a",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468",
+      "git_blob_sha1": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "bytes": 17858,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570",
+      "git_blob_sha1": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "bytes": 23452,
+      "base_git_blob_sha1": null,
+      "state": "ADDITIVE",
+      "publication_base_git_blob_sha1": null,
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96",
+      "git_blob_sha1": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "bytes": 57671,
+      "base_git_blob_sha1": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "unchanged_or_exact_addition_on_publication_base": true
+    },
+    {
+      "path": "tests/ingestion/test_rpc_store.py",
+      "sha256": "d908d96e5203b92f2d9f7aaa068fa31153dd0f11db0ccd9bfe564f411dd61080",
+      "git_blob_sha1": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "bytes": 8676,
+      "base_git_blob_sha1": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "state": "EXACT_EXISTING_BLOB",
+      "publication_base_git_blob_sha1": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "unchanged_or_exact_addition_on_publication_base": true
+    }
+  ],
+  "no_old_receipt_rewritten_or_redated": true,
+  "additional_test_run_claimed": false,
+  "no_production_call_or_publication_performed": true
+}

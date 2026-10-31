@@ -1,0 +1,300 @@
+{
+  "candidate_function_sha256": {
+    "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+    "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1"
+  },
+  "errors": 3,
+  "evidence": {
+    "cases": {
+      "existing_dynamic_exclusions": {
+        "business_and_plan_state_unchanged": true,
+        "old": {
+          "more": false,
+          "snapshotted": 0
+        },
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "identity_refresh_of": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "ordinary_plan_static_false": {
+        "business_rows_unchanged": true,
+        "no_manifest_or_completion_written": true,
+        "seal_refused_missing_static_sqlstate": "AI005",
+        "snapshotted": {
+          "more": false,
+          "snapshotted": 1
+        }
+      }
+    },
+    "database": {
+      "address": "127.0.0.1",
+      "db": "astra_ingestion_qualification",
+      "version": "PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit"
+    },
+    "fixture_schema": "astra_rpc_test_6c2d1035228e",
+    "layers": {
+      "http": "NOT_USED",
+      "postgresql": "ACTUAL_DISPOSABLE_LOCAL",
+      "production": "NOT_USED",
+      "provider_data": "SYNTHETIC_STATE_FIXTURES"
+    },
+    "normalized_fixture_baseline_sources": {
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)": "67c4b74348ad271d59bc21a901cbfee650ecc91c3a86713b2e29f308094f1ad2",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": "6b1b74c618a0f555fd023f7e9980e94c11d1beb556d89815e7e16f6018c5d296",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2"
+    }
+  },
+  "external_provider_calls": 0,
+  "failures": 0,
+  "full_planner_integration_tested": false,
+  "independent_candidate_delta_sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0",
+  "migration_authority_tested": false,
+  "opened_or_imported_dependencies": [
+    {
+      "bytes": 101,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/__init__.py",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197"
+    },
+    {
+      "bytes": 33254,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/backfill_features_v2.py",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "bytes": 18462,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/backfill_identity_v2.py",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "bytes": 27423,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/backfill_provider_v2.py",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "bytes": 22439,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "bytes": 3236,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/config.py",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953"
+    },
+    {
+      "bytes": 5672,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/models.py",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2"
+    },
+    {
+      "bytes": 2081,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/reconcile.py",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba"
+    },
+    {
+      "bytes": 23247,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/rpc_store.py",
+      "sha256": "7614f7bf1094afbb552e657683726b7549c0b84d45cd3756ced79617042d3e11"
+    },
+    {
+      "bytes": 9869,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/source.py",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f"
+    },
+    {
+      "bytes": 31621,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/store.py",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef"
+    },
+    {
+      "bytes": 7696,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/astra_ingestion/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "bytes": 54881,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/evidence/replacement-calendar-v1.json",
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3"
+    },
+    {
+      "bytes": 23087,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/evidence/retained-feature-reuse-functions.json",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "bytes": 16461,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_breadth_material_v2.sql",
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7"
+    },
+    {
+      "bytes": 1812,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_canonical_performance_v2.sql",
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+    },
+    {
+      "bytes": 6498,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_delivery_performance_v2.sql",
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a"
+    },
+    {
+      "bytes": 57461,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_delivery_v2.sql",
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    {
+      "bytes": 6758,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_family_fairness_v2.sql",
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+    },
+    {
+      "bytes": 30170,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+    },
+    {
+      "bytes": 53160,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_identity_v2.sql",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "bytes": 29707,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_nonminute_coverage_v2.sql",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "bytes": 2865,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_provider_pacing_v2.sql",
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+    },
+    {
+      "bytes": 17401,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_retained_reuse_v2.sql",
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2"
+    },
+    {
+      "bytes": 35599,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_retained_s02_v2.sql",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "bytes": 9398,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_reuse_commit_v2.sql",
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535"
+    },
+    {
+      "bytes": 19399,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_reuse_verify_v2.sql",
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5"
+    },
+    {
+      "bytes": 49245,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_runtime_v2.sql",
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "bytes": 21403,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_backfill_source_dedup_v2.sql",
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+    },
+    {
+      "bytes": 3161,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631"
+    },
+    {
+      "bytes": 54227,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_ingestion_rpc_v1.sql",
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a"
+    },
+    {
+      "bytes": 2266,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/sql/astra_ingestion_supersede_gate_v2.sql",
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae"
+    },
+    {
+      "bytes": 19668,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "bytes": 44378,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_identity_v2.py",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "bytes": 10844,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "bytes": 13753,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_retained_s02_v2.py",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "bytes": 8631,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "bytes": 15706,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_runtime_v2.py",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "bytes": 9063,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "bytes": 21360,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_backfill_worker_v2.py",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "bytes": 57671,
+      "path": "/tmp/replacement-defer-retry-fixture-v77/tests/ingestion/test_rpc_postgres.py",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96"
+    },
+    {
+      "bytes": 7769,
+      "path": "/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+      "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0"
+    },
+    {
+      "bytes": 16876,
+      "path": "/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+      "sha256": "bd13d655ce484b1efc79b69214aede076ef6a1ceceecf1a6e49b694185d15caf"
+    },
+    {
+      "bytes": 10145,
+      "path": "/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+      "sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7"
+    }
+  ],
+  "passed": false,
+  "production_calls": 0,
+  "production_scale_performance_tested": false,
+  "schema": "astra.independent-planner-snapshot-postgres-qualification/1",
+  "schema_cleanup_requested_by_fixture": true,
+  "seconds": 1.757,
+  "skips": 0,
+  "source_capture_sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7",
+  "stderr": "",
+  "stdout": "",
+  "test_log": "test_identity_refresh (__main__.main.<locals>.FocusedSnapshotTests.test_identity_refresh) ... ok\ntest_retained_identity (__main__.main.<locals>.FocusedSnapshotTests.test_retained_identity) ... ERROR\ntest_retained_massive_archive (__main__.main.<locals>.FocusedSnapshotTests.test_retained_massive_archive) ... ERROR\ntest_more_than_500_dynamic_rows_cannot_starve_501_real_static_tasks (__main__.main.<locals>.FocusedSnapshotTests.test_more_than_500_dynamic_rows_cannot_starve_501_real_static_tasks) ... ERROR\ntest_plan_static_false_remains_required_by_snapshot_and_seal (__main__.main.<locals>.FocusedSnapshotTests.test_plan_static_false_remains_required_by_snapshot_and_seal) ... ok\ntest_preexisting_option_and_reuse_exclusions_stay_excluded (__main__.main.<locals>.FocusedSnapshotTests.test_preexisting_option_and_reuse_exclusions_stay_excluded) ... ok\n\n======================================================================\nERROR: test_retained_identity (__main__.main.<locals>.FocusedSnapshotTests.test_retained_identity)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 157, in test_retained_identity\n    self.dynamic_case(\"retained_identity\", \"retained_identity\", provider=\"REUSE\")\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 140, in dynamic_case\n    self.insert_rows([(\"a-dynamic\", kind, family, provider, self.scope(**scope_extra))])\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 106, in insert_rows\n    conn.execute(f\"\"\"INSERT INTO {self.f.schema}.backfill_tasks_v2\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.RaiseException: Invalid shared fixed-cohort identity source\nCONTEXT:  PL/pgSQL function astra_rpc_test_6c2d1035228e.backfill_task_guard_v2() line 18 at RAISE\n\n======================================================================\nERROR: test_retained_massive_archive (__main__.main.<locals>.FocusedSnapshotTests.test_retained_massive_archive)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 160, in test_retained_massive_archive\n    self.dynamic_case(\"retained_massive_archive\", \"retained_massive_archive\", family=\"S02\", provider=\"REUSE\")\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 140, in dynamic_case\n    self.insert_rows([(\"a-dynamic\", kind, family, provider, self.scope(**scope_extra))])\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 106, in insert_rows\n    conn.execute(f\"\"\"INSERT INTO {self.f.schema}.backfill_tasks_v2\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.RaiseException: Invalid retained S02 overlay\nCONTEXT:  PL/pgSQL function astra_rpc_test_6c2d1035228e.backfill_task_guard_v2() line 19 at RAISE\n\n======================================================================\nERROR: test_more_than_500_dynamic_rows_cannot_starve_501_real_static_tasks (__main__.main.<locals>.FocusedSnapshotTests.test_more_than_500_dynamic_rows_cannot_starve_501_real_static_tasks)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 163, in test_more_than_500_dynamic_rows_cannot_starve_501_real_static_tasks\n    self.insert_rows([(f\"a-dynamic-{i:04d}\", \"retained_identity\", \"REF01\", \"REUSE\", self.scope()) for i in range(501)])\n  File \"/workspace/scratch/a1eb25e9f187/replacement-run/review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py\", line 106, in insert_rows\n    conn.execute(f\"\"\"INSERT INTO {self.f.schema}.backfill_tasks_v2\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/psycopg/connection.py\", line 257, in execute\n    raise ex.with_traceback(None)\npsycopg.errors.RaiseException: Invalid shared fixed-cohort identity source\nCONTEXT:  PL/pgSQL function astra_rpc_test_6c2d1035228e.backfill_task_guard_v2() line 18 at RAISE\n\n----------------------------------------------------------------------\nRan 6 tests in 1.729s\n\nFAILED (errors=3)\n",
+  "tests": 6
+}

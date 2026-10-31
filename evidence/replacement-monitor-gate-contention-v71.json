@@ -1,0 +1,79 @@
+{
+  "schema": "astra.replacement.monitor-gate-contention/v71",
+  "diagnosis_recorded_at": "2026-10-30T13:40:00Z",
+  "diagnosis_time_precision": "minute",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "worker_source": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "claim_repair_source": "b434f4575f5d6656b176b006857a655e4bf703c9",
+  "claim_repair_installed_at": "2026-10-30T13:13:00Z",
+  "authenticated_dispatcher_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+  "private_dispatcher_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+  "monitor_sha256": "875c017ecf73df15163d15d3f9129b4507235dc893ccb4233d0a435154389057",
+  "maintain_sha256": "cd10046d9c9aa15e8bc66724d1258d95151364ffeee9070d761c4f7d930b5859",
+  "global_gate": "706314020261028",
+  "worker_lock_timeout_seconds": 3,
+  "matched_failures": [
+    {
+      "worker_error_at": "2026-10-30T13:16:03.351604680Z",
+      "operation": "backfill_claim",
+      "sql_error_at": "2026-10-30T13:16:03.335000Z",
+      "sqlstate": "55P03",
+      "context": "rpc_dispatch(text,jsonb) line 39 at PERFORM",
+      "waiter_pid": 1242184,
+      "lock_wait_log_at": "2026-10-30T13:16:01.335000Z",
+      "holder_pid": 1242938,
+      "cron_job": 602,
+      "cron_run": 4068588,
+      "cron_start": "2026-10-30T13:16:00.034976Z",
+      "cron_end": "2026-10-30T13:16:03.949088Z",
+      "cron_elapsed_seconds": 3.914112
+    },
+    {
+      "worker_error_at": "2026-10-30T13:26:03.242604477Z",
+      "operation": "backfill_claim",
+      "sql_error_at": "2026-10-30T13:26:03.224000Z",
+      "sqlstate": "55P03",
+      "context": "rpc_dispatch(text,jsonb) line 39 at PERFORM",
+      "waiter_pid": 1243169,
+      "lock_wait_log_at": "2026-10-30T13:26:01.224000Z",
+      "holder_pid": 1244016,
+      "cron_job": 602,
+      "cron_run": 4068598,
+      "cron_start": "2026-10-30T13:26:00.045168Z",
+      "cron_end": "2026-10-30T13:26:04.085217Z",
+      "cron_elapsed_seconds": 4.040049
+    }
+  ],
+  "conclusion": "The existing job602 monitor transaction held the authenticated ingestion advisory gate during two worker lock timeouts. The precise expensive maintenance component is not yet established.",
+  "limitations": [
+    "Cron total elapsed time includes any initial wait to acquire the gate, maintenance work and the monitor remainder; it is not a measured helper duration.",
+    "Other 35-byte health request failures are not worker ingestion failures.",
+    "The off-failure13:18 snapshot was empty and is inconclusive.",
+    "Prepared passive lock sampler was qualified locally but not executed in production because retained lock and cron PID evidence already identifies the blocker."
+  ],
+  "next_executable_step": "Execute the independently reviewed bounded read-only maintenance selector profile once, then isolate only the evidence-supported per-page or seed cost before proposing a performance repair.",
+  "controls_preserved": [
+    "authentication",
+    "post-lock credential recheck",
+    "global gate",
+    "scope and fences",
+    "integrity and immutable receipts",
+    "existing lock/statement budgets",
+    "monitoring schedule and duties",
+    "existing grants/credentials/source/cost/ownership"
+  ],
+  "evidence": [
+    "review/recovery-v71/live_postrepair_sql_errors_1317.json",
+    "review/recovery-v71/live_lock_wait_holder_logs_1322.json",
+    "review/recovery-v71/live_monitor_second_holder_proof_1326.json",
+    "review/recovery-v71/live_ingestion_cron_registry_1330.json",
+    "review/recovery-v71/live_ingestion_cron_run_pid_proof_1331.json",
+    "review/recovery-v71/live_cron_functions_1331.json",
+    "review/recovery-v71/live_backfill_maintain_1332.json",
+    "review/recovery-v71/live_maintenance_helpers_1335.json",
+    "review/recovery-v71/live_legacy_monitor_workload_1337.json"
+  ],
+  "no_maintenance_repair_applied": true,
+  "full_mission_complete": false,
+  "sustained_recovery_proven": false
+}

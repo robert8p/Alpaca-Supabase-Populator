@@ -1,0 +1,47 @@
+{
+  "schema": "astra.same-owner-lease-readback/1",
+  "readback": {
+    "observed_at": "2026-10-30 16:39:10.44393+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T17:15:00Z",
+    "pending_repair": {
+      "state": "SOURCE_PINNED_SHARED_DIAGNOSIS_AND_LOCAL_CONFIRMED_ABORT_RETRY_QUALIFICATION",
+      "worker_deployment": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "diagnostic_restored": true,
+      "active_runtime_change_selected": false
+    },
+    "reporting_mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+    "eqr_state": "ALTERNATIVE_REFERENCE_ACQUIRED_VERIFIED",
+    "lease_audits": [
+      {
+        "id": 49,
+        "action": "IMPLEMENTATION_LEASE_RENEWED",
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "task_id": null,
+        "evidence": {
+          "owner": "root-replacement-20261030T042603Z",
+          "reason": "Publish verified reporting and EQR recovery evidence, complete exact reviewed candidate gates, and continue existing contention repairs under the same controller. Task cadence and reporting policy unchanged.",
+          "request_id": "v74-reporting-and-qualified-repair-lease-20261030T1638Z",
+          "lease_until": "2026-10-30T17:15:00Z",
+          "same_controller": true,
+          "approval_unchanged": true,
+          "previous_lease_until": "2026-10-30T16:45:00Z",
+          "existing_successor_run": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+          "successor_completed_at": "2026-10-30T16:04:23.189315Z",
+          "existing_successor_task": "6ae2a4c96bbc819182133e17e9b7f779",
+          "expired_diagnostic_not_extended": true
+        },
+        "generation": null,
+        "recorded_at": "2026-10-30T16:38:52.239559+00:00",
+        "source_revision": "a3bc0520e624054b278e46682b04cebb33e9b677"
+      }
+    ]
+  },
+  "approval_window_extended": false,
+  "expired_diagnostic_extended": false,
+  "task_cadence_changed": false
+}

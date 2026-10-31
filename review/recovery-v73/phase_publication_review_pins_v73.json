@@ -1,0 +1,35 @@
+{
+  "schema": "astra.maintenance-phase-observation.publication-review-inputs/1",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "base_tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+  "independent_review_paths": [
+    "evidence/replacement-maintenance-phase-observation-independent-review-v73.json"
+  ],
+  "reviewed_artifact_pins": {
+    "sql/astra_backfill_maintenance_phase_observation_v73.sql": "b7bf8d2223cf7f50f9d8e5653c836c8a30517f030f8592f99a9f48dcc478c34d",
+    "sql/astra_backfill_maintenance_phase_observation_restore_v73.sql": "9a11851bcaf11a8c530575a5b1c0a83d4b9f66b650a18f47484c2c8ade8fe020",
+    "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+    "tests/ingestion/test_backfill_maintenance_phase_installation_v73.py": "c6b57aa7aca1b5f84037cf54eb10c54bce88e70c4c21f76636155ac493c09cbc",
+    "review/recovery-v73/candidate_maintain_phase_observation_v73.sql": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+    "evidence/replacement-maintenance-phase-observation-qualification-v73.json": "5f9bb2fa0a7da30912a8f4a40fd9f3ffa12bc9dbf272510a42d1282640c26f8c",
+    "review/recovery-v73/maintenance_phase_active_qualification_v73.json": "4085afa8b744a9b7b42ca58ee42aedb22295c96cc58fab243405b762e2e6ac0d",
+    "review/recovery-v73/maintenance_phase_observation_independent_test_result_v73.json": "8ca2ef6cc28562290feab7688db217b4905116fb39241f17177b60f0a08016e7",
+    "review/recovery-v73/qualify_maintenance_phase_observation_independently_v73.py": "3f77f25a638cac22cfd169bf06a4af630ca591e0bcb89b2a47f55af11cb8b95c",
+    "review/recovery-v73/installation/qualification_final_v73.json": "e28f992f9ddb184de4f7e58cfa84d07470a08fa853b69a338b0e1ae9b6092ce9",
+    "review/recovery-v73/installation/installation_manifest_v73.json": "217ccec4d7ef81f5977537785b0326bb60da8c3d5cf00850858c67e58c360b07",
+    "review/recovery-v73/installation/build_phase_observation_installation_v73.py": "e5f4928c2725218515db6f6c06884f817a7c2e8e978cd1ee2b1815bb25a545fe",
+    "review/recovery-v73/audit_maintenance_phase_dependencies_v73.py": "1803d4e43e92eca8b3b2b6becb1700b62186121ed4f9117d25564b680642000d",
+    "review/recovery-v73/maintenance_phase_observation_derivation_v73.json": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+    "review/recovery-v73/maintenance_phase_observation_proposal_v73.md": "03b54366a1838f392cd88437e599c53fa018eceb240a03c153099494c568a34b",
+    "review/recovery-v73/live_phase_observation_permission_inventory_v73.json": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+    "evidence/replacement-owner-phase-observation-cleanup-lease-v73.json": "9dcc94d943185a6661dc9070d09b7a268c719c6b18a2781e0fe502652f28878e",
+    "evidence/replacement-maintenance-phase-observation-independent-review-v73.json": "95600d447b131c0b67e7179201b956437a4d43c4b38129c69dfa1cac9c05e29c",
+    "review/recovery-v73/build_phase_observation_publication_v73.py": "621ed2d99f7f16fc40d2388d927a0dc2cab09768aebb57efa35035ae80c87e71"
+  },
+  "expected_active_tests": {
+    "test_backfill_maintenance_phase_observation_v73": 17,
+    "test_backfill_maintenance_phase_installation_v73": 9
+  },
+  "production_observation_deadline_utc": "2026-10-30T15:45:00Z",
+  "no_new_approval_or_deadline_extension": true
+}

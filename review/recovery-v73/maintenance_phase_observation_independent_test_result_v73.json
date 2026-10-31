@@ -1,0 +1,158 @@
+{
+  "schema": "astra.maintenance-phase-observation-independent-test-result/1",
+  "reviewer": "/root/relay_v3_review",
+  "recorded_at": "2026-10-30T15:22:21.661392+00:00",
+  "passed": true,
+  "tests": 17,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 7.068906779997633,
+  "production_calls": 0,
+  "remote_mutations": 0,
+  "target": "established disposable loopback PostgreSQL fixture",
+  "qualification_root": "/tmp/replacement-maintenance-index-staged-v72",
+  "workflow_context": "ASTRA ingestion qualification",
+  "input_pins": {
+    "review/recovery-v73/baseline_maintain_installed_v73.sql": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+    "review/recovery-v73/candidate_maintain_phase_observation_v73.sql": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+    "review/recovery-v73/maintenance_phase_observation_derivation_v73.json": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+    "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe"
+  },
+  "runner_sha256": "3f77f25a638cac22cfd169bf06a4af630ca591e0bcb89b2a47f55af11cb8b95c",
+  "fixture_evidence": {
+    "schema": "astra.maintenance-phase-observation-qualification/1",
+    "production_calls": 0,
+    "activation_selected": false,
+    "fixture_adaptations": [
+      "unique disposable schema/run identifiers",
+      "future deadline2100 for positive tests; explicit past/during-call boundary cases",
+      "synthetic helper faults only in named fault-injection cases"
+    ],
+    "local_postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "actual_permissions_and_event": {
+      "privileges": {
+        "rolsuper": false,
+        "rolbypassrls": false,
+        "rolcanlogin": false,
+        "audit_owned_elsewhere": true,
+        "audit_rls": true,
+        "audit_select": true,
+        "audit_insert": true,
+        "audit_update": false,
+        "audit_delete": false,
+        "sequence_usage": true,
+        "sequence_update": false
+      },
+      "event": {
+        "probe_id": "maintenance-global-phase-observation-v73-20261030T1545Z",
+        "total_ms": 9.01,
+        "phases_ms": {
+          "s02_ms": 1.138,
+          "minute_ms": 0.622,
+          "shared_ms": 0.38,
+          "breadth_ms": 2.004,
+          "contract_ms": 1.109,
+          "finalize_ms": 0.615,
+          "readback_ms": 0.394,
+          "nonminute_ms": 0.468,
+          "gate_admission_ms": 0.061,
+          "identity_refresh_ms": 0.717,
+          "identity_discover_ms": 0.343
+        },
+        "backend_pid": 90504,
+        "timing_scope": "GLOBAL_MAINTENANCE_BEFORE_TELEMETRY",
+        "telemetry_admission_ms": 1.159
+      },
+      "source_snapshot_unchanged": true,
+      "ref03_evidence_increment_only": 1
+    },
+    "audit_nowait": {
+      "seconds": 0.019241993002651725,
+      "ordinary_result_preserved": true
+    },
+    "late_expiry": {
+      "deadline": true,
+      "owner_lease": true,
+      "original_result_preserved": true
+    },
+    "admission_scope_and_time": [
+      "expired deadline",
+      "wrong owner",
+      "expired lease",
+      "absent run",
+      "wrong cohort",
+      "advanced fence"
+    ],
+    "expiry_inside_insert": {
+      "deadline_and_lease_both_rechecked_after_insert": true,
+      "only_diagnostic_subtransaction_rolled_back": true,
+      "real_readback_retained": true,
+      "two_nontransactional_identity_gaps_prove_both_insert_attempts_reached": true,
+      "later_outer_commit_duration_not_claimed_bounded": true
+    },
+    "identity_and_sequence": {
+      "audit_id_generated_always": true,
+      "without_usage_direct_nextval_sqlstate": "42501",
+      "identity_insert_still_permitted": true,
+      "production_existing_usage_grant_unchanged": true,
+      "initial_fixture_assumption_rejected": "USAGE revocation was incorrectly expected to block automatic identity generation"
+    },
+    "observer_risk_demonstrated": {
+      "kind": "ADDITIONAL_AUDIT_WORK_CAN_EXHAUST_CALLER_DEADLINE",
+      "fixture_caller_budget": "150ms",
+      "runtime_function_config": "unchanged8s/2s",
+      "seconds": 0.1597918089973973,
+      "cancellation_not_suppressed": true,
+      "interpretation": "Risk disclosure; not a promise of zero observer effect."
+    },
+    "ordinary_telemetry_error": {
+      "main_real_readback_committed": true,
+      "no_error_or_payload_export": true
+    },
+    "original_helper_errors": [
+      "22023",
+      "57014",
+      "P0004"
+    ],
+    "concurrent_cap_commit": {
+      "holder_started": "2026-10-30 15:22:20.075199+00:00",
+      "waiter_pid": 90662,
+      "waiter_started": "2026-10-30 15:22:20.077858+00:00",
+      "actual_gate_wait": true,
+      "first_holder_rolled_back": false,
+      "committed_events": 4
+    },
+    "restore": {
+      "exact6c880_schema_adjusted": true,
+      "immutable_events_retained": true
+    },
+    "concurrent_cap_rollback": {
+      "holder_started": "2026-10-30 15:22:20.466702+00:00",
+      "waiter_pid": 90686,
+      "waiter_started": "2026-10-30 15:22:20.469421+00:00",
+      "actual_gate_wait": true,
+      "first_holder_rolled_back": true,
+      "committed_events": 4
+    },
+    "same_transaction_cap": {
+      "calls": 8,
+      "committed_events": 4
+    },
+    "stronger_isolation": [
+      "REPEATABLE READ real readback without telemetry",
+      "SERIALIZABLE real readback without telemetry"
+    ],
+    "telemetry_fatal_errors": [
+      "57014",
+      "P0004"
+    ],
+    "ordinary_permission_denials": [
+      "audit_insert",
+      "insert_rls"
+    ],
+    "exact_source_preservation": true
+  },
+  "errors_detail": [],
+  "failures_detail": []
+}

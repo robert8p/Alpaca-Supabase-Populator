@@ -1,0 +1,51 @@
+{
+  "schema": "astra.same-controller-expired-lease-recovery/1",
+  "payload": {
+    "request_id": "v78-same-controller-expired-lease-recovery-20261030T2218Z",
+    "owner": "root-replacement-20261030T042603Z",
+    "fence": 1,
+    "previous_lease_until": "2026-10-30T21:45:00Z",
+    "lease_until": "2026-10-30T23:00:00Z",
+    "same_controller": true,
+    "reason": "Resume the existing controller after user's confirmed22:06 stop of only the unresponsive chat turn. Reconcile completedv76/v77 and continue plannerSEAL/accounting and bounded residual faults without replay.",
+    "latest_authority": "Current user's explicit resume instruction after confirming previous turn no longer responding; worker not stopped.",
+    "latest_successor_task": "6ae2a4c96bbc819182133e17e9b7f779",
+    "latest_successor_run": "ffeb5ee5-3a80-8329-898a-0ae0480a19d4",
+    "latest_successor_completed_at": "2026-10-30T22:07:57.702926Z",
+    "latest_successor_result": "READ_ONLY_NO_OWNERSHIP_OR_DEPLOYMENT_WRITES",
+    "latest_audit_before_recovery": 94,
+    "verified_head": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+    "live_deployment": "dep-dbigesegekts73f8mh50",
+    "live_at": "2026-10-30T21:09:43.452059Z",
+    "completed_v77_deploy_dispatches": 1,
+    "sql_private_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+    "completed_repairs_replayed": false,
+    "other_active_successor_displaced": false,
+    "uncertain_operation_reconciliation": {
+      "old_v75_original_create_tree": "UNKNOWN_HELD_NO_RETRY",
+      "last_interrupted_action_time_script": "READ_ONLY_SOURCE_SERVICE_DEPLOYS_HEAD_CHECKS_NO_DEPLOY_TRIGGER_IN_SCRIPT; no saved terminal receipt",
+      "later_prepared_owner_read": "REJECTED_BEFORE_EXECUTION_CATALOG_CHANGED; terminal result retained",
+      "completed_v77_successor_writes": "AUDITS86_94_AND_LIVE_DEPLOYMENT_INDEPENDENTLY_MATCH",
+      "user_transient_2106_2150_message_delivery": "UNVERIFIED_NOT_TREATED_AS_COMPLETED_WORK"
+    },
+    "approval_window_extended": false,
+    "expired_diagnostics_extended": false,
+    "task_cadence_changed": false,
+    "new_controller": false,
+    "worker_stopped_or_restarted": false,
+    "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY"
+  },
+  "query": "BEGIN;SET LOCAL statement_timeout='8s';SET LOCAL lock_timeout='3s';DO $r$ DECLARE b astra_ingestion_v1.backfill_runs_v2%ROWTYPE;a astra_ingestion_v1.backfill_runs_v2%ROWTYPE;p jsonb:='{\"request_id\":\"v78-same-controller-expired-lease-recovery-20261030T2218Z\",\"owner\":\"root-replacement-20261030T042603Z\",\"fence\":1,\"previous_lease_until\":\"2026-10-30T21:45:00Z\",\"lease_until\":\"2026-10-30T23:00:00Z\",\"same_controller\":true,\"reason\":\"Resume the existing controller after user''s confirmed22:06 stop of only the unresponsive chat turn. Reconcile completedv76/v77 and continue plannerSEAL/accounting and bounded residual faults without replay.\",\"latest_authority\":\"Current user''s explicit resume instruction after confirming previous turn no longer responding; worker not stopped.\",\"latest_successor_task\":\"6ae2a4c96bbc819182133e17e9b7f779\",\"latest_successor_run\":\"ffeb5ee5-3a80-8329-898a-0ae0480a19d4\",\"latest_successor_completed_at\":\"2026-10-30T22:07:57.702926Z\",\"latest_successor_result\":\"READ_ONLY_NO_OWNERSHIP_OR_DEPLOYMENT_WRITES\",\"latest_audit_before_recovery\":94,\"verified_head\":\"08bea176e39174f8c39f62caebae79d5cb50cdcf\",\"live_deployment\":\"dep-dbigesegekts73f8mh50\",\"live_at\":\"2026-10-30T21:09:43.452059Z\",\"completed_v77_deploy_dispatches\":1,\"sql_private_sha256\":\"dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf\",\"completed_repairs_replayed\":false,\"other_active_successor_displaced\":false,\"uncertain_operation_reconciliation\":{\"old_v75_original_create_tree\":\"UNKNOWN_HELD_NO_RETRY\",\"last_interrupted_action_time_script\":\"READ_ONLY_SOURCE_SERVICE_DEPLOYS_HEAD_CHECKS_NO_DEPLOY_TRIGGER_IN_SCRIPT; no saved terminal receipt\",\"later_prepared_owner_read\":\"REJECTED_BEFORE_EXECUTION_CATALOG_CHANGED; terminal result retained\",\"completed_v77_successor_writes\":\"AUDITS86_94_AND_LIVE_DEPLOYMENT_INDEPENDENTLY_MATCH\",\"user_transient_2106_2150_message_delivery\":\"UNVERIFIED_NOT_TREATED_AS_COMPLETED_WORK\"},\"approval_window_extended\":false,\"expired_diagnostics_extended\":false,\"task_cadence_changed\":false,\"new_controller\":false,\"worker_stopped_or_restarted\":false,\"reporting_policy\":\"DOT_CONSOLIDATED_CHECKPOINTS_ONLY\"}'::jsonb;\nBEGIN SELECT * INTO STRICT b FROM astra_ingestion_v1.backfill_runs_v2 WHERE id='fixed3000-20250901-20260731-v1-20261030' FOR UPDATE;\nIF b.status<>'ACTIVE' OR b.fence<>1 OR b.metadata->>'implementation_owner' IS DISTINCT FROM p->>'owner' OR b.metadata->>'implementation_lease_until' IS DISTINCT FROM p->>'previous_lease_until' OR NOT isfinite((b.metadata->>'implementation_lease_until')::timestamptz) OR (b.metadata->>'implementation_lease_until')::timestamptz>clock_timestamp() OR NOT isfinite((p->>'lease_until')::timestamptz) OR (p->>'lease_until')::timestamptz<=clock_timestamp()+interval '1 minute' OR b.cohort_sha256<>'2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec' OR b.cohort_manifest_sha256<>'4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f' OR b.metadata#>>'{implementation_defer_retry_publication,state}' IS DISTINCT FROM 'WORKER_LIVE_AUTOMATIC_ACQUISITION_READBACK_VERIFIED' OR (SELECT max(id) FROM astra_ingestion_v1.backfill_audit_v2 WHERE run_id=b.id)<>94 THEN RAISE EXCEPTION 'Same-owner expired recovery authority or newer work changed; reconcile';END IF;\nIF b.metadata#>>'{implementation_pending_publication,state}' IS DISTINCT FROM 'RECOVERY_HOST_REJECTED_NO_RETRY_HOLD' OR encode(sha256(convert_to(pg_get_functiondef('astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)'::regprocedure),'UTF8')),'hex')<>p->>'sql_private_sha256' THEN RAISE EXCEPTION 'Held publication or installed source changed';END IF;\nUPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=jsonb_set(metadata,'{implementation_lease_until}',p->'lease_until') WHERE id=b.id RETURNING * INTO STRICT a;\nIF (to_jsonb(a)-'metadata') IS DISTINCT FROM (to_jsonb(b)-'metadata') OR (a.metadata-'implementation_lease_until') IS DISTINCT FROM (b.metadata-'implementation_lease_until') THEN RAISE EXCEPTION 'Unexpected ownership recovery mutation';END IF;\nINSERT INTO astra_ingestion_v1.backfill_audit_v2(run_id,action,source_revision,evidence) VALUES(b.id,'IMPLEMENTATION_LEASE_RENEWED',p->>'verified_head',p);\nEND $r$;SELECT id,action,recorded_at FROM astra_ingestion_v1.backfill_audit_v2 WHERE run_id='fixed3000-20250901-20260731-v1-20261030' AND evidence->>'request_id'='v78-same-controller-expired-lease-recovery-20261030T2218Z';COMMIT;",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to run sql query: ERROR:  55P03: canceling statement due to lock timeout\\nCONTEXT:  while locking tuple (4,8) in relation \\\"backfill_runs_v2\\\"\\nSQL statement \\\"SELECT *               FROM astra_ingestion_v1.backfill_runs_v2 WHERE id='fixed3000-20250901-20260731-v1-20261030' FOR UPDATE\\\"\\nPL/pgSQL function inline_code_block line 2 at SQL statement\\n\"}}"
+      }
+    ],
+    "structuredContent": {
+      "error_code": "INVALID_ARGUMENT"
+    },
+    "isError": true
+  }
+}

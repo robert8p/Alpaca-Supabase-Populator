@@ -1,0 +1,27 @@
+{
+  "source_drift_rejected": true,
+  "read_only_required": true,
+  "probe": {
+    "passed": true,
+    "selectors": 10,
+    "elapsed_seconds": 0.010098817001562566,
+    "real_committed_unread_page_selected": true,
+    "application_tables_unchanged": true,
+    "settings_restored_after_rollback": true,
+    "no_advisory_lock": true,
+    "no_returned_page_body_or_request_id": true,
+    "result_bytes": 45368
+  },
+  "schema": "astra.maintenance-selector-qualification/1",
+  "passed": true,
+  "tests": 3,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "elapsed_seconds": 1.3474836239984143,
+  "production_calls": 0,
+  "sql_sha256": "462cd183dc28fd0c963b7bd014fb6a63164937cc624b9e023c26c3a8e74d3cf1",
+  "test_sha256": "e3ffeebea91e923ccb834489f93cb17a21958c170a7356b2ba79c11e56697370",
+  "fixture_adaptation": "Only schema/run identifiers and live source hashes are mapped to corresponding local fixture definitions.",
+  "initial_fixture_correction": "Initial run had three setup errors because the existing focused fixture omits monitor_tick_v1. The retained monitor definition is now created in the disposable schema for its source guard only, never invoked; initial receipt is preserved."
+}

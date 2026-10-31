@@ -1,0 +1,142 @@
+{
+  "schema": "astra.maintenance-phase-observation.producer-qualification/1",
+  "status": "LOCAL_RUNTIME_QUALIFIED_INSTALLER_AND_INDEPENDENT_RELEASE_GATES_SEPARATE",
+  "base_commit": "1f1f423e4dd1db87eff92e8687b2d9c49ba63c01",
+  "base_tree": "45c5b7d6410f4fba1d154d50debdb3b574c9e86d",
+  "production_calls": 0,
+  "activation_selected": false,
+  "exact_reverse_to_installed6c880": true,
+  "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+  "tests": 17,
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "passed": true,
+  "final_runtime_test_receipt": {
+    "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_4_v73.json",
+    "sha256": "2399441824d697b4636b78d15a759c694f38083a1c1f9daff35b5c2d35ef54b3",
+    "bytes": 4478
+  },
+  "final_active_test": {
+    "path": "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py",
+    "sha256": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+    "bytes": 25944
+  },
+  "initial_failure": {
+    "attempt": 1,
+    "tests": 15,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "disposition": "FALSE_TEST_ASSUMPTION_CORRECTED",
+    "reason": "GENERATED ALWAYS identity allocation does not fail merely because direct sequence USAGE is removed; actual direct nextval42501 and automatic identity insertion are now tested separately. No production grant or runtime code change was used to satisfy that permission test."
+  },
+  "qualified_facts": {
+    "actual_nonsuperuser_nobypassrls_owner": true,
+    "audit_owned_by_other_role_rls_enabled": true,
+    "audit_select_insert_only": true,
+    "sequence_usage_without_update": true,
+    "no_new_production_permissions": true,
+    "rc_prestarted_waiter_commit_and_rollback_cap": true,
+    "same_transaction_cap": true,
+    "stronger_isolation_keeps_real_readback": true,
+    "late_deadline_and_lease_append_rollback_preserves_main_readback": true,
+    "identity_gaps_prove_delayed_inserts_were_attempted": true,
+    "ordinary_diagnostic_errors_do_not_rollback_main_work": true,
+    "query_canceled_and_assert_failure_propagate": true,
+    "original_helper_errors_propagate": true,
+    "exact_metadata_auth_source_snapshot_preservation": true,
+    "ref03_evidence_increases_without_acquisition_counts": true
+  },
+  "observer_risk": {
+    "kind": "ADDITIONAL_AUDIT_WORK_CAN_EXHAUST_CALLER_DEADLINE",
+    "fixture_caller_budget": "150ms",
+    "runtime_function_config": "unchanged8s/2s",
+    "seconds": 0.15811124900210416,
+    "cancellation_not_suppressed": true,
+    "interpretation": "Risk disclosure; not a promise of zero observer effect."
+  },
+  "limitations": [
+    "At most four committed samples, not four attempts; failed attempts may repeat before the fixed deadline.",
+    "Append eligibility and post-INSERT expiry checks do not guarantee the time of the caller outer COMMIT.",
+    "Total_ms ends before audit construction/append; monitor remainder and commit are not measured.",
+    "No sample is not proof of fast or successful maintenance; capped, expired, stronger-isolation, failed or rolled-back calls omit samples.",
+    "Wall-clock durations are approximate and can be affected by time adjustment.",
+    "Qualification used PostgreSQL16.15; production17.6 and future exact-head CI are separate checks.",
+    "The forward and restore require separate guard qualification and independent review before root can select activation."
+  ],
+  "production_observation_deadline_utc": "2026-10-30T15:45:00Z",
+  "never_re_date_or_extend": true,
+  "artifacts": [
+    {
+      "path": "review/recovery-v73/baseline_maintain_installed_v73.sql",
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "bytes": 2849
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_v73.sql",
+      "sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+      "bytes": 11311
+    },
+    {
+      "path": "review/recovery-v73/candidate_maintain_phase_observation_initial_v73.sql",
+      "sha256": "0e220fb47e81e26bbe644909f8801ba65817d995cab3a4d6d64e3045f16052c3",
+      "bytes": 10441
+    },
+    {
+      "path": "review/recovery-v73/build_maintenance_phase_observation_v73.py",
+      "sha256": "1999eb7231c4a06347ada52b3fd2ff1cd2bf04294d0ffae1291e3f5dd5ad0b63",
+      "bytes": 9213
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_derivation_v73.json",
+      "sha256": "09d0d67217b0dcb2c129608cf72db5432f7142072c3699932c7bb88ab740a0f1",
+      "bytes": 1709
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_v73.diff",
+      "sha256": "16bef4b7422be704778810982fadd408159a956cea60a2fc3add95acaa892c61",
+      "bytes": 10556
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_proposal_v73.md",
+      "sha256": "03b54366a1838f392cd88437e599c53fa018eceb240a03c153099494c568a34b",
+      "bytes": 12271
+    },
+    {
+      "path": "review/recovery-v73/live_phase_observation_permission_inventory_v73.json",
+      "sha256": "9ca7790d89989a1bf63e470c562840f9d1185a0f0542bb44be77444b48a9ae40",
+      "bytes": 5414
+    },
+    {
+      "path": "review/recovery-v73/qualify_maintenance_phase_observation_v73.py",
+      "sha256": "016e51d9b26362d3ff53ec0c5aa64cf37216bb387a4a3b2bbb8f0118fbb7f2f4",
+      "bytes": 1887
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_1_v73.json",
+      "sha256": "13741fbafe0108e4036bfb5580b23381bd7837148270d46bee4bab69f60f750e",
+      "bytes": 5113
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_2_v73.json",
+      "sha256": "89230fad075f2cbd797dbd6d56bf0840641aa05cb85361c7e64272dcda002e83",
+      "bytes": 4148
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_3_v73.json",
+      "sha256": "4fb896ddf7b3cf4b7ccb9517c7e36cc83eb72cef7d3ac31710b283cd11fc6adb",
+      "bytes": 4392
+    },
+    {
+      "path": "review/recovery-v73/maintenance_phase_observation_qualification_attempt_4_v73.json",
+      "sha256": "2399441824d697b4636b78d15a759c694f38083a1c1f9daff35b5c2d35ef54b3",
+      "bytes": 4478
+    },
+    {
+      "path": "tests/ingestion/test_backfill_maintenance_phase_observation_v73.py",
+      "sha256": "1744faa5fedb092991c2229dffc31de8c45a6e19c3ad614bf4d1c654f6df89fe",
+      "bytes": 25944
+    }
+  ]
+}

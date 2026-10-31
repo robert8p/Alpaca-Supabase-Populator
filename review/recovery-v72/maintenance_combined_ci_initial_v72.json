@@ -1,0 +1,178 @@
+{
+  "schema": "astra.maintenance-combined.ci-initial-read/1",
+  "commit": {
+    "sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+    "tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+    "parents": [
+      "536bb850cf5c5653b4865e63db3f20f50a6769a1"
+    ]
+  },
+  "merge": {
+    "sha": "ecd55be1ad8de7929d1e420fb3476b27b6fa236f",
+    "tree": "3dc2c6d5541d1e911ab12192cea3d10de7eddfef",
+    "parents": [
+      "455e45646aa71605cb3e541d2c714603d89f4079",
+      "d06c13f30a0bed8da6366f124101b59d21a450fa"
+    ],
+    "same_published_tree": true
+  },
+  "runs": [
+    {
+      "id": 41072428344,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T14:32:21Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428344"
+    },
+    {
+      "id": 41072428347,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T14:32:21Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072428347"
+    },
+    {
+      "id": 41072418435,
+      "name": "ASTRA ingestion qualification",
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T14:32:17Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418435"
+    },
+    {
+      "id": 41072418656,
+      "name": "release-gate",
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "d06c13f30a0bed8da6366f124101b59d21a450fa",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T14:32:17Z",
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41072418656"
+    }
+  ],
+  "release_logs": [
+    {
+      "job_id": 124119689828,
+      "log_characters": 36526,
+      "summary_lines": [
+        "2026-10-30T14:32:51.9353820Z 710 passed, 333 skipped, 1 warning in 7.06s"
+      ],
+      "checkout_lines": [
+        "2026-10-30T14:32:27.5113741Z HEAD is now at ecd55be Merge d06c13f30a0bed8da6366f124101b59d21a450fa into 455e45646aa71605cb3e541d2c714603d89f4079",
+        "2026-10-30T14:32:27.5188122Z ecd55be1ad8de7929d1e420fb3476b27b6fa236f"
+      ],
+      "warning_lines": [
+        "2026-10-30T14:32:27.6597316Z (node:2078) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.",
+        "2026-10-30T14:32:36.3501385Z (node:2078) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "2026-10-30T14:32:51.9350401Z =============================== warnings summary ===============================",
+        "2026-10-30T14:32:51.9351807Z   /opt/hostedtoolcache/Python/3.12.7/x64/lib/python3.12/site-packages/starlette/testclient.py:51: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.",
+        "2026-10-30T14:32:52.1765721Z (node:2458) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead."
+      ]
+    },
+    {
+      "job_id": 124119656952,
+      "log_characters": 35625,
+      "summary_lines": [
+        "2026-10-30T14:32:59.7471852Z 710 passed, 333 skipped, 1 warning in 10.97s"
+      ],
+      "checkout_lines": [
+        "2026-10-30T14:32:27.2820783Z d06c13f30a0bed8da6366f124101b59d21a450fa"
+      ],
+      "warning_lines": [
+        "2026-10-30T14:32:27.4442165Z (node:2088) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.",
+        "2026-10-30T14:32:36.8066824Z (node:2088) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "2026-10-30T14:32:59.7468269Z =============================== warnings summary ===============================",
+        "2026-10-30T14:32:59.7469583Z   /opt/hostedtoolcache/Python/3.12.7/x64/lib/python3.12/site-packages/starlette/testclient.py:51: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.",
+        "2026-10-30T14:33:00.1570110Z (node:2458) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead."
+      ]
+    }
+  ],
+  "expected_new_tests": {
+    "test_backfill_maintenance_task_indexes_v2": [
+      {
+        "name": "test_real_forward_preserves_sources_metadata_access_and_data",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data"
+      },
+      {
+        "name": "test_exact_replay_does_not_build_or_replace_any_index",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index"
+      },
+      {
+        "name": "test_minute_before_breadth_is_rejected",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected"
+      },
+      {
+        "name": "test_source_index_owner_and_lease_drift_fail_closed",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed"
+      },
+      {
+        "name": "test_same_name_wrong_method_or_predicate_is_never_accepted",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted"
+      },
+      {
+        "name": "test_incomplete_fixed_cohort_rejects_without_deleting_members",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members"
+      },
+      {
+        "name": "test_failure_after_build_and_late_source_drift_roll_back_atomically",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically"
+      },
+      {
+        "name": "test_existing_global_lock_budget_fails_without_any_build",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build"
+      },
+      {
+        "name": "test_authenticated_real_page_successor_and_lost_ack_after_indexes",
+        "qualified": "test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes"
+      }
+    ],
+    "test_backfill_readback_transaction_race_v2": [
+      {
+        "name": "test_exact_single_predicate_and_unchanged_verifier",
+        "qualified": "test_backfill_readback_transaction_race_v2.SourceTests.test_exact_single_predicate_and_unchanged_verifier"
+      },
+      {
+        "name": "test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_old_selector_reproduces_real_guard_failure_and_permanent_exclusion"
+      },
+      {
+        "name": "test_candidate_defers_race_without_failure_then_next_transaction_verifies",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_candidate_defers_race_without_failure_then_next_transaction_verifies"
+      },
+      {
+        "name": "test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_equality_and_newer_timestamps_are_deferred_under_unchanged_guard"
+      },
+      {
+        "name": "test_page_bounds_and_existing_failure_exclusion_remain",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_page_bounds_and_existing_failure_exclusion_remain"
+      },
+      {
+        "name": "test_forward_preserves_every_other_function_metadata_and_application_rows",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_preserves_every_other_function_metadata_and_application_rows"
+      },
+      {
+        "name": "test_forward_guards_and_atomic_postwrite_rollback",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_forward_guards_and_atomic_postwrite_rollback"
+      },
+      {
+        "name": "test_existing_two_second_gate_wait_and_busy_return_remain",
+        "qualified": "test_backfill_readback_transaction_race_v2.PostgreSQLTests.test_existing_two_second_gate_wait_and_busy_return_remain"
+      }
+    ]
+  },
+  "state": "TWO_RELEASE_JOBS_PASSED_DEDICATED_JOBS_RUNNING",
+  "github_mutations": 0
+}

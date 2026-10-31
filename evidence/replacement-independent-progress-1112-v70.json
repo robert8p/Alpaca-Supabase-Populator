@@ -1,0 +1,41 @@
+{
+  "version": "replacement-independent-progress-1112-v70",
+  "observed": {
+    "observed_at": "2026-10-30 11:12:47.37159+00",
+    "pages_committed": 3943,
+    "records_committed": 476704,
+    "requests_reserved": 1945,
+    "source_bytes": 410287589,
+    "last_progress_at": "2026-10-30 11:12:45.881062+00",
+    "next_member": "1984",
+    "readbacks": 3943,
+    "unread_pages": 0,
+    "latest_worker": [
+      {
+        "worker_id": "b1ae8fda-aa18-4d34-be11-1fdc97c3f649",
+        "observed_at": "2026-10-30T11:12:44.989694+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      }
+    ]
+  },
+  "post_maintenance_progress_verified": true,
+  "index_success_observed_at": "2026-10-30T11:06:19Z",
+  "last_progress_is_after_maintenance": true,
+  "delta_from_premaintenance_report": {
+    "pages_committed": 27,
+    "records_or_retained_pointers": 3588,
+    "requests_reserved": 15
+  },
+  "same_existing_worker_service": true,
+  "worker_source_revision_unchanged": true,
+  "new_controller_created": false,
+  "sustained_reliability_claimed": false,
+  "prior_claim_timeout": "Known10:53:28 normal-candidate57014. No new claim rewrite; retain evidence and investigate only if fresh errors or substantive progress stall recur.",
+  "postmaintenance_log_lookup": {
+    "result": "Connector Internal Server Error",
+    "window_start": "2026-10-30T11:06:19Z",
+    "window_end": "2026-10-30T11:12:29Z",
+    "interpretation": "Fresh SQL error absence is unverified; do not treat failed log retrieval as clean logs."
+  },
+  "counts_are": "Overlapping source/derived records and retained pointers, not unique market observations or complete coverage."
+}

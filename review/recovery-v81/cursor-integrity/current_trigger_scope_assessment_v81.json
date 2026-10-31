@@ -1,0 +1,143 @@
+{
+  "candidate_admission": false,
+  "five_triggers": [
+    {
+      "definition": "CREATE TRIGGER backfill_plan_units_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_units_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5",
+      "function_oid": "16040226",
+      "relation_oid": "16041315",
+      "table_name": "astra_ingestion_v1.backfill_plan_units_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 58,
+      "trigger_name": "backfill_plan_units_immutable_v2",
+      "trigger_oid": "16041361"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_run_immutable_v2 BEFORE UPDATE ON astra_ingestion_v1.backfill_runs_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c",
+      "function_oid": "16040222",
+      "relation_oid": "16040070",
+      "table_name": "astra_ingestion_v1.backfill_runs_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 19,
+      "trigger_name": "backfill_run_immutable_v2",
+      "trigger_oid": "16040223"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_static_plan_snapshot_v2 AFTER INSERT ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9",
+      "function_oid": "16041467",
+      "relation_oid": "16040120",
+      "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 5,
+      "trigger_name": "backfill_static_plan_snapshot_v2",
+      "trigger_oid": "16041468"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_task_scope_v2 BEFORE INSERT OR UPDATE ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1",
+      "function_oid": "16040224",
+      "relation_oid": "16040120",
+      "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 23,
+      "trigger_name": "backfill_task_scope_v2",
+      "trigger_oid": "16040225"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_plan_manifest_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_manifests_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "full_trigger_metadata_sha256": "82707ad7bbf31a1fe5f6296ef81c2fe3867d277be90b06077ba08252748b1aa6",
+      "function_oid": "16040226",
+      "relation_oid": "16041342",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 58,
+      "trigger_name": "backfill_plan_manifest_immutable_v2",
+      "trigger_oid": "16041362"
+    }
+  ],
+  "function_definitions_sha256_verified_locally": [
+    {
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278",
+      "oid": "16040226",
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8"
+    },
+    {
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f",
+      "oid": "16040222",
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c"
+    },
+    {
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3",
+      "oid": "16041467",
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e"
+    },
+    {
+      "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+      "oid": "16040224",
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+    }
+  ],
+  "guarantees_and_limits": [
+    "Origin-enabled task-scope trigger rejects any UPDATE change to id/run_id/family/provider/kind/scope/dependencies. There is no scope-change exception in the current function.",
+    "The active-run/current-fence insertion check is only on INSERT; it is not repeated by the task trigger for UPDATE. Normal RPC ownership and current-run checks remain necessary.",
+    "The task trigger does not itself prohibit DELETE or TRUNCATE, freeze every mutable field, or make run metadata immutable. Do not infer these stronger guarantees.",
+    "Ordinary INSERT in an origin session executes the existing snapshot helper in the inserting transaction; an exception rolls back the insertion and helper effects. A false helper return is legitimate for dynamic exclusions or any existing global unit.",
+    "The snapshot trigger does not guarantee every task has a plan unit: dynamic tasks are excluded and historical trigger state is not established by this current receipt.",
+    "Plan-unit and manifest statement triggers reject UPDATE/DELETE/TRUNCATE. They do not restrict INSERT to the target task run or independently prove task/unit run equality.",
+    "The observed replication role is the diagnostic session. O-enabled triggers are not an ALWAYS trigger; this receipt does not establish historical operation or every separate future session setting.",
+    "The current run guard preserves fixed scope, monotonically increasing listed counters/fence and terminal stop. It permits metadata updates, so the new cursor must enforce its own shape/binding and advancement invariants.",
+    "Preserve unchanged final missing-snapshot, count/hash, coverage and representative-map checks for all unproved or later-inserted cases."
+  ],
+  "insert_exemption_limits": [
+    "An absent or empty member_ids array is permitted for these cases.",
+    "When member_ids is present it must still be an array of at most 3000 fixed-run member IDs. JSON null is not an absent value.",
+    "The existing retained_identity and retained_massive_archive specific checks remain exact."
+  ],
+  "insert_member_array_exemptions": [
+    "CTX06 family",
+    "REF03 family",
+    "retained_identity kind"
+  ],
+  "new_external_calls": 0,
+  "new_fixture_calls": 0,
+  "next_step": "Inspect the producer-frozen v81 cursor implementation against these scoped premises and root preinstallation 17-function/2-key/5-trigger guards.",
+  "observed_manifest_and_authority_at": "2026-10-31 00:19:22.372899+00",
+  "observed_session_replication_role": "origin",
+  "observed_trigger_functions_at": "2026-10-31 00:17:24.073897+00",
+  "owner_readback": {
+    "fence": 1,
+    "latest_audit": 125,
+    "lease_until": "2026-10-31T01:00:00Z",
+    "owner": "root-replacement-20261030T042603Z",
+    "renewal_receipts": 1,
+    "status": "ACTIVE"
+  },
+  "performance_claim": false,
+  "schema": "astra.bounded-seal-scan-current-trigger-assessment/1",
+  "source_receipts": [
+    {
+      "path": "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+      "sha256": "5272f3e5c5c0e1be1fd962a69b01317610db75ac38c8cfb36198afa47f04fadb"
+    },
+    {
+      "path": "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+      "sha256": "a61343966391dfc43e6194d89e6d33d895fddbf3603c9d6f4259040f7c5c99d2"
+    }
+  ],
+  "status": "CURRENT_RETAINED_CATALOG_SUBSTANTIATES_SCOPED_PREMISES",
+  "task_update_scope_exceptions": []
+}

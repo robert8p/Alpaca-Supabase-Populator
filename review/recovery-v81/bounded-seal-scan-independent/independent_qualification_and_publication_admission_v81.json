@@ -1,0 +1,231 @@
+{
+  "schema": "astra.bounded-seal-scan-independent-publication-admission/1",
+  "reviewer": "/root/plugin_handoff_v78",
+  "status": "PASS_FOR_EXACT_ADDITIVE_PUBLICATION_ONLY",
+  "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+  "base_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "base_tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "inputs": {
+    "producer_pass": {
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+      "sha256": "b0aceae8eed7191e4b4d2ce3dff39b78f5e774ee943bcbdbc36c7d2690ca01b6",
+      "bytes": 38275
+    },
+    "producer_failed_attempt": {
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt01_v81.json",
+      "sha256": "382239de9907888b466709c5db36eea1602ef74075164771951076cb626ec7cc",
+      "bytes": 44565
+    },
+    "performance_raw": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_actual_result_v81.json",
+      "sha256": "1e39068aa8c099235123e815fdd59d5e82fe8d041710bd0297322fe905e5fb53",
+      "bytes": 18147
+    },
+    "performance_evidence": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+      "sha256": "e89903828b5928768d9475dcc5df3a3088c3c60149389c3149738574cbb39664",
+      "bytes": 16785
+    },
+    "performance_sql": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+      "sha256": "b0ed819f8e1f7aa44ab6bee40136459adc2b2d7b8646fea3a90df95b7795f798",
+      "bytes": 26129
+    },
+    "performance_proposal": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+      "sha256": "0c1732d93c9611c2386c1db19d91edf0ca3cb4b4dce18f0194b66743e87b6b9c",
+      "bytes": 2179
+    },
+    "archive": {
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+      "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e",
+      "bytes": 80536
+    },
+    "test": {
+      "path": "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+      "sha256": "d48f9c891d6525747b6a8b88f95bb692f47001f9c77f2c6a6fa6878f10b7eae1",
+      "bytes": 24780
+    },
+    "forward": {
+      "path": "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1",
+      "bytes": 49424
+    },
+    "inverse": {
+      "path": "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002",
+      "bytes": 41730
+    },
+    "static_review": {
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_security_response_static_review_v81.json",
+      "sha256": "8137d31ea9311293837ad8bf75602020976001bb4941a4e98c05ec46705b5cbf",
+      "bytes": 6157
+    },
+    "cursor_review": {
+      "path": "review/recovery-v81/cursor-integrity/independent_candidate_cursor_atomicity_review_v81.json",
+      "sha256": "a77d7af0e7d3871908ae193f4935fe715fcec8293052eaa0c1baf1e532241f35",
+      "bytes": 4697
+    },
+    "read_safety": {
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_first_id_page_read_safety_review_v81.json",
+      "sha256": "2988a6b3899646e82b7956a3be802c127782a40ebd56d5fe66604568f4dd7423",
+      "bytes": 3748
+    }
+  },
+  "functional_qualification": {
+    "actual_PostgreSQL_cases": 6,
+    "source_only_cases": 1,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "total_qualification_seconds": 15.543,
+    "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "all17_normalized_real_dependencies_exact": true,
+    "retained_real_snapshot_count_hash_coverage_map_and_sealer_functions": true,
+    "cases": {
+      "atomicity_and_lost_ack": {
+        "committed_cursor_reused_without_double_count": true,
+        "late_snapshot_and_cursor_faults_rolled_back": true
+      },
+      "final_page_and_worker": {
+        "actual_worker_claim_path_after_false_response": true,
+        "disabled_trigger_installation_rejected": true,
+        "final_snapshot_survives_later_count_hash_failure": true,
+        "inverse_preserves_scan_and_snapshots": true
+      },
+      "global_pages": {
+        "acquisition_fields_preserved": true,
+        "false_null_keys_excluded": true,
+        "foreign_unit_globally_suppressed": true,
+        "page_examined": [
+          500,
+          87
+        ],
+        "short_page_below_deleted_upper_finishes": true,
+        "successful_snapshot_returns": 26
+      },
+      "malformed_progress": {
+        "no_silent_reset_or_business_mutation": true,
+        "paused_run_stops_before_scan": true,
+        "rejected": [
+          "non_object",
+          "version",
+          "cohort",
+          "fence",
+          "source_premise",
+          "expected_count",
+          "missing_key",
+          "unknown_key",
+          "null_counter",
+          "negative_counter",
+          "fractional_counter",
+          "null_lower_after_work",
+          "lower_above_upper",
+          "impossible_completed_history",
+          "full_terminal_below_upper",
+          "infinite_timestamp"
+        ]
+      },
+      "missed_insert_final_check": {
+        "completed_scan_retained_without_manifest": true,
+        "separately_rejected": [
+          "behind",
+          "beyond"
+        ]
+      },
+      "new_inserted_ids": {
+        "behind_and_beyond_snapshotted_atomically": true,
+        "inverse_preserves_committed_manifest": true,
+        "real_final_sealer_passed": true
+      }
+    },
+    "cleanup": "Producer post-run schema-absence readback is true. Reviewer inspected the saved receipt and did not query PostgreSQL again.",
+    "limits": [
+      "Synthetic workflows, not provider acquisition or production completion.",
+      "Cases share a disposable global task fixture, with earlier admitted foreign-run rows exercising subsequent global scans; no claim of isolated fresh-database testing per method.",
+      "New expected counters in synthetic seeds are fixture setup only; production expected979516 is preserved by the frozen migration and runtime progress binding."
+    ]
+  },
+  "failed_attempt_retained": {
+    "attempt": 1,
+    "errors": 6,
+    "root_cause": "Fixture-wide run-ID substitution changed the function default run literal and was rejected by the post-replacement source/OID/fullmetadata guard.",
+    "fix": "Only the installation WHERE id literal is substituted for the disposable run. The exact candidate and forward/inverse bytes did not change.",
+    "scope": "The preserved old/new test diff contains only this narrow fixture binding correction; no validation was relaxed."
+  },
+  "dependency_proof": {
+    "actually_executed_files_verified": 81,
+    "published_f5_base_blobs_exact": 77,
+    "new_execution_files_exact": 4,
+    "new_files": [
+      "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+      "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json"
+    ],
+    "unselected_partial_workspace_variants_or_missing_files": [
+      "astra_ingestion/__init__.py",
+      "astra_ingestion/config.py",
+      "astra_ingestion/models.py",
+      "astra_ingestion/reconcile.py",
+      "astra_ingestion/rpc_store.py",
+      "astra_ingestion/source.py",
+      "astra_ingestion/store.py",
+      "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sql/astra_ingestion_rpc_v1.sql",
+      "tests/ingestion/test_rpc_defer_lock_abort_retry_v77.py",
+      "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "tests/ingestion/test_rpc_postgres.py",
+      "tests/ingestion/test_rpc_store.py"
+    ],
+    "rule": "Preserve all base leaves and publish only selected additions; do not import older local dependency variants."
+  },
+  "finite_page_observation": {
+    "observed_at": "2026-10-31T00:31:28.267947+00:00",
+    "raw_intentional_P0001_matches_evidence_exactly": true,
+    "safe_json_bytes": 14146,
+    "all17_sources_2PKs_5triggers_exact": true,
+    "owner_fence_lease_exact": true,
+    "plan": "Aggregate1 -> Limit500 -> task primary-key IndexOnlyScan500; one loop per node",
+    "page_execution_ms": 20.497,
+    "page_planning_ms": 0.165,
+    "heap_fetches": 318,
+    "shared_read_blocks": 31,
+    "temp_read_and_write_blocks": 0,
+    "upper_lookup_count": 1,
+    "page_selector_execution_count": 1,
+    "business_helper_calls": 0,
+    "bounds": "Read-only repeatable-read,8s statement,3s lock; no explicit application/advisory lock or task-ID export.",
+    "limits": [
+      "Measures first finite ID-page selector only. Upper lookup,500 per-ID checks, snapshots, later pages, final count/hash/coverage/sealer and real worker shared-gate behavior are not timed.",
+      "Top result_rows1 is the aggregate result row. Actual page cardinality is500 from Limit and scan nodes.",
+      "Parent/child block counters are inclusive and must not be summed. IndexOnlyScan performed318 heap fetches.",
+      "No measured speedup versus the cancelled v79 whole scan is claimed; this is a different bounded algorithm."
+    ]
+  },
+  "security_and_integrity_conclusion": "The exact candidate changes one existing planner SEAL branch, preserves all existing auth/source/cost/fence/stop/settings/grants and real final validators, and returns boolean false after every scan-page commit. New opaque cursor bounds are operational run metadata visible through existing authorized status serialization; diagnostic publication uses counts/state and hashes, not raw bounds.",
+  "publication_admission": {
+    "admissible": true,
+    "scope": "Exact frozen v81 execution files and selected additive evidence only, preserving f5 base leaves and held v75 packet isolation.",
+    "installation_or_deployment_authorized_by_this_review": false,
+    "remaining_controls": [
+      "Root reconciles current branch/deploy/ownership/successor/stop and any uncertain operation before writes.",
+      "Publish exact packet, pass existing exact-commit CI, then recheck complete17/2/5 premises and migration history.",
+      "Use supported same-owner guarded migration and exact source/fullmetadata/history readback; no blind replay.",
+      "Observe ordinary worker scan cursor and independent fresh committed source-page/readback evidence before reporting acquisition recovery.",
+      "Keep final SEAL accounting/coverage performance and any fresh faults separate; no counter reset, helper skip, new timeout/retry or index/security change."
+    ]
+  },
+  "not_established": {
+    "mission_complete": false,
+    "plan_sealed": false,
+    "acquisition_resumed": false,
+    "full_runtime_loop_performance": false
+  },
+  "review_actions": {
+    "new_tests": 0,
+    "production_or_external_calls": 0,
+    "production_writes": 0,
+    "frozen_candidate_edits": 0
+  }
+}

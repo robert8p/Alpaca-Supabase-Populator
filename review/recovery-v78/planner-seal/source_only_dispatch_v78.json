@@ -1,0 +1,12 @@
+{
+  "state": "READ_ONLY_SOURCE_QUERY_DISPATCHING",
+  "query": "BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY; SET LOCAL statement_timeout='8s'; SET LOCAL lock_timeout='3s'; SELECT clock_timestamp() observed_at,p.oid::text oid,p.oid::regprocedure::text signature,pg_get_functiondef(p.oid) definition,encode(sha256(convert_to(pg_get_functiondef(p.oid),'UTF8')),'hex') source_sha256,encode(sha256(convert_to((to_jsonb(p)-'prosrc')::text,'UTF8')),'hex') metadata_sha256 FROM pg_proc p WHERE p.oid IN(to_regprocedure('astra_ingestion_v1.backfill_snapshot_task_v2(text)'),to_regprocedure('astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)'),to_regprocedure('astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)')) ORDER BY p.oid; COMMIT;",
+  "previous_combined_read": {
+    "state": "HOST_ABORTED_AFTER_385_6_SECONDS_NO_RESULT",
+    "definition_read_and_bounded_unit_count": true,
+    "business_helpers_invoked": false,
+    "production_writes": false,
+    "server_read_termination_verified": false
+  },
+  "new_read_has_aggregate": false
+}

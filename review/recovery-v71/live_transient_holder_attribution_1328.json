@@ -1,0 +1,22 @@
+{
+  "result": [
+    {
+      "application_class": "OTHER_REDACTED",
+      "database_role": "postgres",
+      "process_id": "1243675",
+      "query_class": "OTHER_REDACTED",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:22:01.047000"
+    },
+    {
+      "application_class": "OTHER_REDACTED",
+      "database_role": "postgres",
+      "process_id": "1243675",
+      "query_class": "OTHER_REDACTED",
+      "severity": "LOG",
+      "sql_state": "00000",
+      "timestamp": "2026-10-30T13:22:01.463000"
+    }
+  ]
+}

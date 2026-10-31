@@ -1,0 +1,47 @@
+[
+  {
+    "observed_at": "2026-10-30 13:10:25.22716+00",
+    "family": "N01",
+    "pages": 15,
+    "target_records": 1500,
+    "support_records": 0,
+    "unknown_date_records": 0,
+    "actual_records": 1500
+  },
+  {
+    "observed_at": "2026-10-30 13:10:25.227183+00",
+    "family": "N02",
+    "pages": 13,
+    "target_records": 35,
+    "support_records": 489,
+    "unknown_date_records": 0,
+    "actual_records": 536
+  },
+  {
+    "observed_at": "2026-10-30 13:10:25.227188+00",
+    "family": "N03",
+    "pages": 14,
+    "target_records": 0,
+    "support_records": 27,
+    "unknown_date_records": 0,
+    "actual_records": 27
+  },
+  {
+    "observed_at": "2026-10-30 13:10:25.227193+00",
+    "family": "S01",
+    "pages": 12,
+    "target_records": 2487,
+    "support_records": 0,
+    "unknown_date_records": 0,
+    "actual_records": 2487
+  },
+  {
+    "observed_at": "2026-10-30 13:10:25.227197+00",
+    "family": "S02",
+    "pages": 13,
+    "target_records": 262,
+    "support_records": 0,
+    "unknown_date_records": 0,
+    "actual_records": 262
+  }
+]

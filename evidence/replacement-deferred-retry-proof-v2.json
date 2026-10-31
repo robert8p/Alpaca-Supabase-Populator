@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "proof_type": "REAL_WORKER_CONTROLLED_APPLICATION_PACING_DEFER_AND_RESUME",
+  "provider_failure_simulated": false,
+  "controlled_write": {
+    "id": 1,
+    "recorded_at": "2026-10-30 06:43:26.347085+00",
+    "evidence": {
+      "owner": "root-replacement-20261030T042603Z",
+      "reason": "Bounded controlled application pacing to verify durable not-before scheduling in the real worker",
+      "proof_id": "controlled-source-pacing-20261030-v1",
+      "provider": "Alpaca",
+      "next_not_before": "2026-10-30T06:43:56.3463+00:00",
+      "previous_not_before": "2026-10-30T06:43:24.354206+00:00",
+      "provider_failure_simulated": false
+    }
+  },
+  "before": {
+    "deferred": [
+      {
+        "id": "backfill-plan-0b49b1aada4a8fcde4f43c7f919e5796d42b48592cee8af4a142f0b616a6be29",
+        "kind": "alpaca_stock_bars",
+        "family": "D02",
+        "status": "RETRY_WAIT",
+        "symbol": "GS",
+        "page_no": 0,
+        "attempts": 1,
+        "generation": 1,
+        "next_retry_at": "2026-10-30T06:43:56.3463+00:00",
+        "page_attempts": 0,
+        "requests_reserved": 0
+      },
+      {
+        "id": "backfill-plan-2d790c781e913e36e43a265854833ea5e8a9cb37870e884083e265d05f8312db",
+        "kind": "alpaca_news",
+        "family": "N01",
+        "status": "RETRY_WAIT",
+        "symbol": "NVDA",
+        "page_no": 0,
+        "attempts": 1,
+        "generation": 1,
+        "next_retry_at": "2026-10-30T06:43:56.3463+00:00",
+        "page_attempts": 0,
+        "requests_reserved": 0
+      },
+      {
+        "id": "backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a",
+        "kind": "alpaca_option_contracts",
+        "family": "CTX02",
+        "status": "RETRY_WAIT",
+        "symbol": "AAPL",
+        "page_no": 0,
+        "attempts": 1,
+        "generation": 1,
+        "next_retry_at": "2026-10-30T06:43:56.3463+00:00",
+        "page_attempts": 0,
+        "requests_reserved": 0
+      },
+      {
+        "id": "backfill-plan-57dfa3682986998c0d4c253f3da82b317b70279fe8a9a4a5b17a97c81cd7a2c8",
+        "kind": "alpaca_actions",
+        "family": "N02",
+        "status": "RETRY_WAIT",
+        "symbol": "MSFT",
+        "page_no": 0,
+        "attempts": 1,
+        "generation": 1,
+        "next_retry_at": "2026-10-30T06:43:56.3463+00:00",
+        "page_attempts": 0,
+        "requests_reserved": 0
+      },
+      {
+        "id": "backfill-plan-9b1ef0ff02a4f999be23bc04b6b10605f81410e8fac54f16a35fd0c8af6aebcb",
+        "kind": "alpaca_reference",
+        "family": "REF01",
+        "status": "RETRY_WAIT",
+        "symbol": "PLTR",
+        "page_no": 0,
+        "attempts": 1,
+        "generation": 1,
+        "next_retry_at": "2026-10-30T06:43:56.3463+00:00",
+        "page_attempts": 0,
+        "requests_reserved": 0
+      }
+    ],
+    "family_turn": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "changed_at": "2026-10-30T06:43:45.852395+00:00",
+      "claim_turns": 33,
+      "last_family": "D02",
+      "next_family_index": 7,
+      "last_claimed_task_id": "backfill-plan-0b49b1aada4a8fcde4f43c7f919e5796d42b48592cee8af4a142f0b616a6be29"
+    },
+    "observed_at": "2026-10-30T06:43:47.565561+00:00",
+    "source_limit": "2026-10-30T06:43:56.3463+00:00",
+    "recent_errors": null
+  },
+  "after": {
+    "observed_at": "2026-10-30T06:54:18.961257+00:00",
+    "tasks": [
+      {
+        "id": "backfill-plan-0b49b1aada4a8fcde4f43c7f919e5796d42b48592cee8af4a142f0b616a6be29",
+        "kind": "alpaca_stock_bars",
+        "family": "D02",
+        "status": "INGESTED",
+        "page_no": 1,
+        "generation": 2,
+        "committed_at": "2026-10-30T06:51:28.844786+00:00",
+        "record_count": 290,
+        "requests_reserved": 1,
+        "independently_verified": true
+      },
+      {
+        "id": "backfill-plan-2d790c781e913e36e43a265854833ea5e8a9cb37870e884083e265d05f8312db",
+        "kind": "alpaca_news",
+        "family": "N01",
+        "status": "PENDING",
+        "page_no": 1,
+        "generation": 2,
+        "committed_at": "2026-10-30T06:52:09.022605+00:00",
+        "record_count": 50,
+        "requests_reserved": 1,
+        "independently_verified": true
+      },
+      {
+        "id": "backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a",
+        "kind": "alpaca_option_contracts",
+        "family": "CTX02",
+        "status": "RETRY_WAIT",
+        "page_no": 0,
+        "generation": 3,
+        "committed_at": null,
+        "record_count": null,
+        "requests_reserved": 0,
+        "independently_verified": false
+      },
+      {
+        "id": "backfill-plan-57dfa3682986998c0d4c253f3da82b317b70279fe8a9a4a5b17a97c81cd7a2c8",
+        "kind": "alpaca_actions",
+        "family": "N02",
+        "status": "INGESTED",
+        "page_no": 1,
+        "generation": 2,
+        "committed_at": "2026-10-30T06:51:20.354319+00:00",
+        "record_count": 6,
+        "requests_reserved": 1,
+        "independently_verified": true
+      },
+      {
+        "id": "backfill-plan-9b1ef0ff02a4f999be23bc04b6b10605f81410e8fac54f16a35fd0c8af6aebcb",
+        "kind": "alpaca_reference",
+        "family": "REF01",
+        "status": "INGESTED",
+        "page_no": 1,
+        "generation": 2,
+        "committed_at": "2026-10-30T06:51:23.255011+00:00",
+        "record_count": 1,
+        "requests_reserved": 1,
+        "independently_verified": true
+      }
+    ]
+  },
+  "result": "PASS_FOR_FOUR_OBSERVED_TASKS",
+  "passed_task_ids": [
+    "backfill-plan-0b49b1aada4a8fcde4f43c7f919e5796d42b48592cee8af4a142f0b616a6be29",
+    "backfill-plan-2d790c781e913e36e43a265854833ea5e8a9cb37870e884083e265d05f8312db",
+    "backfill-plan-57dfa3682986998c0d4c253f3da82b317b70279fe8a9a4a5b17a97c81cd7a2c8",
+    "backfill-plan-9b1ef0ff02a4f999be23bc04b6b10605f81410e8fac54f16a35fd0c8af6aebcb"
+  ],
+  "limitations": [
+    "The deferral was an application-controlled 30-second pacing deadline, not an observed provider 429.",
+    "The CTX02 options task was still retrying at readback and is not counted as a passed retry proof.",
+    "The first observation exposed starvation by older PENDING tasks; the same queue was repaired with per-family due-recovery priority before these resumptions."
+  ]
+}

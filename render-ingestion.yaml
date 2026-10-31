@@ -1,0 +1,58 @@
+# Candidate configuration. Requires qualified commit, scoped credentials,
+# restricted RPC verification, financial admission and live canary.
+# It creates two NEW services; it does not resume or change the legacy loader.
+services:
+  - type: web
+    name: astra-ingestion-web-v1
+    runtime: python
+    region: frankfurt
+    plan: 0.5c-512mb
+    repo: https://github.com/robert8p/Alpaca-Supabase-Populator
+    branch: feat/astra-ingestion-service
+    autoDeployTrigger: 'off'
+    buildCommand: python -m pip install -r requirements-ingestion.txt
+    startCommand: python -m astra_ingestion.serve
+    healthCheckPath: /healthz
+    maxShutdownDelaySeconds: 60
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.15
+      - key: ASTRA_INGESTION_PROJECT_REF
+        value: oxzabweahkoimtevbbny
+      - key: ASTRA_INGESTION_API_URL
+        value: https://oxzabweahkoimtevbbny.supabase.co
+      - key: ASTRA_INGESTION_PUBLISHABLE_KEY
+        sync: false
+      - key: ASTRA_INGESTION_RPC_TOKEN
+        sync: false
+      - key: ASTRA_INGESTION_USERNAME
+        value: rob
+      - key: ASTRA_INGESTION_PASSWORD
+        sync: false
+  - type: worker
+    name: astra-ingestion-worker-v1
+    runtime: python
+    region: frankfurt
+    plan: 0.5c-512mb
+    repo: https://github.com/robert8p/Alpaca-Supabase-Populator
+    branch: feat/astra-ingestion-service
+    autoDeployTrigger: 'off'
+    buildCommand: python -m pip install -r requirements-ingestion.txt
+    startCommand: python -m astra_ingestion.worker
+    maxShutdownDelaySeconds: 60
+    numInstances: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.15
+      - key: ASTRA_INGESTION_PROJECT_REF
+        value: oxzabweahkoimtevbbny
+      - key: ASTRA_INGESTION_API_URL
+        value: https://oxzabweahkoimtevbbny.supabase.co
+      - key: ASTRA_INGESTION_PUBLISHABLE_KEY
+        sync: false
+      - key: ASTRA_INGESTION_RPC_TOKEN
+        sync: false
+      - key: APCA_API_KEY_ID
+        sync: false
+      - key: APCA_API_SECRET_KEY
+        sync: false

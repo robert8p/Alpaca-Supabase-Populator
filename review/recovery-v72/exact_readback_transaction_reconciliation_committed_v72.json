@@ -1,0 +1,15 @@
+[
+  {
+    "observed_at": "2026-10-30 14:16:14.826418+00",
+    "task_id": "backfill-plan-28241a0a18d98d6b64c6a8e4a14027c1fe08a945048b089a02522b9cb52f42e2",
+    "page_no": 0,
+    "expected_records": 100,
+    "actual_records": 100,
+    "hashes_match": true,
+    "verified_at": "2026-10-30 14:14:56.525507+00",
+    "original_failure_rows": 1,
+    "reconciled_rows": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T14:30:00Z"
+  }
+]

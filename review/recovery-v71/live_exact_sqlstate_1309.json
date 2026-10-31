@@ -1,0 +1,31 @@
+{
+  "result": [
+    {
+      "error_severity": "ERROR",
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 123 at SQL statement",
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 73 at RETURN"
+      ],
+      "sql_state": "57014",
+      "timestamp": "2026-10-30T13:03:44.403000"
+    },
+    {
+      "error_severity": "ERROR",
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 123 at SQL statement",
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 73 at RETURN"
+      ],
+      "sql_state": "57014",
+      "timestamp": "2026-10-30T12:49:03.730000"
+    },
+    {
+      "error_severity": "ERROR",
+      "function_context": [
+        "PL/pgSQL function astra_ingestion_v1.backfill_dispatch_v2(text,jsonb) line 123 at SQL statement",
+        "PL/pgSQL function astra_ingestion_v1.rpc_dispatch(text,jsonb) line 73 at RETURN"
+      ],
+      "sql_state": "57014",
+      "timestamp": "2026-10-30T12:44:27.838000"
+    }
+  ]
+}

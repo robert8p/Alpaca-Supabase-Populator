@@ -1,0 +1,118 @@
+{
+  "qualification": "LOCAL_QUALIFIED_FORWARD_IDENTITY_EXTENSION_FROZEN",
+  "qualified_at": "2026-10-30T07:23:49.437637+00:00",
+  "controller_owner": "root-replacement-20261030T042603Z",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+  "material_version": "fixed3000-retrospective-identity-v2.2",
+  "hashes": {
+    "astra_ingestion/backfill_identity_v2.py": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+    "sql/astra_backfill_identity_v2.sql": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+    "tests/ingestion/test_backfill_identity_v2.py": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce",
+    "astra_ingestion/backfill_worker_v2.py": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "sql/astra_backfill_nonminute_coverage_v2.sql": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+    "sql/astra_backfill_retained_s02_v2.sql": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+    "evidence/replacement-identity-helper-real-source-proof-v2.json": "9713d8de0893ca74816e7044ca960911f69e09078a7e3271d092996cc8496850",
+    "evidence/replacement-identity-original-byte-profile-v2.json": "46d48a40f534b370989f1cc54b9acd72bc85972f6be83fa3f83a8922c0ed0230"
+  },
+  "tests": {
+    "identity_focused": {
+      "discovered": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 8.406,
+      "uses_actual_local_postgresql": true,
+      "includes_enabled_actual_worker": true
+    },
+    "dependent_coverage_and_retained_s02": {
+      "discovered": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.224,
+      "uses_actual_local_postgresql": true
+    },
+    "identity_without_explicit_test_dsn": {
+      "discovered": 18,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 12,
+      "seconds": 0.01
+    },
+    "actual_worker_path": [
+      "Two native raw/split provider responses committed and independently read back through real worker and PostgreSQL RPCs.",
+      "Initial D03 adjusted return remains NULL before evidence; immutable receipt retained.",
+      "Existing worker discovers and independently verifies two original retained gzip identity sources with no provider reservation/refetch.",
+      "Ordinary claim admits one deterministic original-root successor after durable refresh becomes due.",
+      "Worker reparses exact stored Alpaca request and injects explicit asof metadata; dated old-symbol CIK and both FIGIs match the accepted 2026-08-03 anchor.",
+      "Successor adjusted_ret_1d equals 0.01; independently verified receipt and compact breadth projection preserve current input attribution.",
+      "Original provider bodies and original derived receipt are byte-unchanged; two external source reservations only."
+    ],
+    "additional_safety_cases": [
+      "Missing, disabled, wrong-date, wrong-symbol, malformed hash and wrong-origin asof proofs cannot qualify a historical alias.",
+      "Unqualified raw/split variant holds adjusted identity while raw auxiliary prices remain usable.",
+      "Dated contradictory symbols or FIGIs invalidate current identity instead of choosing first evidence.",
+      "Changed original compressed bytes invalidate the mapping.",
+      "Wrong original body cannot commit; expired generations fail fencing.",
+      "128-source discovery limit preserves durable cursor and next normal claim continues through remaining sources.",
+      "Private source access is unavailable to API and outsider roles.",
+      "No identity-triggered D01 numerical copy; current delivery overlay preserves original formula and receipt.",
+      "Completed derived revisions retain original root IDs and output-validity contract."
+    ]
+  },
+  "official_provider_semantics": {
+    "url": "https://docs.alpaca.markets/us/reference/stockbars",
+    "verified_by": "Existing root controller via official documentation; supplied to this local review on 2026-10-30.",
+    "paraphrase": "An explicit asof identifies the underlying entity for the requested symbol on that date. Historical bars can include a previous symbol while remaining labeled with the requested symbol. Qualification therefore additionally requires an accepted exact asof anchor and matching dated CIK and both FIGIs. Missing or disabled asof cannot support this alias-continuity path."
+  },
+  "runtime_status_fields": {
+    "identity_discovery_pending_count": "Members whose bounded source discovery cursor is incomplete.",
+    "identity_refresh_pending_count": "Dirty member/date-range queue entries; not a count of records or tasks.",
+    "identity_refresh_next_retry_at": "Earliest persisted dirty-range ready_after timestamp.",
+    "identity_recalculation_pending_tasks": "Existing queue successors in PENDING, RUNNING or RETRY_WAIT.",
+    "identity_sources_verified": "Compact retained/current original source proofs verified and not invalidated.",
+    "identity_sources_invalidated": "Compact original sources invalidated by independent recheck.",
+    "identity_source_last_verified_at": "Latest successful compact source-proof verification timestamp."
+  },
+  "apply_order": [
+    "Existing qualified stage2 runtime including canonical performance and family fairness.",
+    "sql/astra_backfill_identity_v2.sql",
+    "sql/astra_backfill_nonminute_coverage_v2.sql",
+    "sql/astra_backfill_retained_s02_v2.sql",
+    "Existing worker release with identity_enabled and retained_massive_enabled."
+  ],
+  "integration": {
+    "source_kind": "retained_identity",
+    "source_rpc_flow": [
+      "backfill_identity_source_read",
+      "prepare_retained_identity_commit(claim, source)",
+      "backfill_identity_source_commit",
+      "backfill_verify; require verification.retained_identity_verification.passed"
+    ],
+    "calculation_flow": [
+      "After verified receipt reparse, attach provider_symbol_mapping only from actual stored Alpaca stock-bar request.",
+      "Call backfill_identity_material with owned claim for derive_daily, derive_breadth and noncached derive_intraday.",
+      "apply_identity_material(rows, material, claim); pass returned rows and representative_security into existing derive_family.",
+      "For derive_daily and noncached derive_intraday, attach_identity_output(output_rows, overlay).",
+      "Include identity_material_sha256, identity_lineage and limitations in immutable derived receipt."
+    ],
+    "validity_view_contract": [
+      "task_id",
+      "identity_material_current",
+      "identity_invalidated",
+      "invalidation_reason"
+    ],
+    "refresh_roots": "scope.identity_refresh_of always points to original root task; no completed task is reopened.",
+    "controller": "No new controller, ownership or scheduler. Existing worker claim and maintenance progress durable discovery and refresh."
+  },
+  "remaining_limits": [
+    "Retrospective linkage only; strict historical availability is not certified.",
+    "No interpolation across missing reference dates, including currently absent retained June-August support evidence.",
+    "Alias mismatch without a verified matching explicit asof receipt remains unresolved and may require later acquisition.",
+    "Retained D01 caches without explicit original asof metadata remain unresolved for alias mismatch while their numerical receipt is preserved.",
+    "Original source gzip remains in original retained source storage; the full source blob is not part of this deliverable.",
+    "No remote mutation or production deployment was performed by this local child."
+  ],
+  "remote_calls_by_this_agent": 0
+}

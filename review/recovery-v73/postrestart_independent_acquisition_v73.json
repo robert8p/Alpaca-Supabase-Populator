@@ -1,0 +1,53 @@
+{
+  "schema": "replacement-post-restart-acquisition-v73",
+  "progress": {
+    "observed_at": "2026-10-30 15:28:49.786556+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:15:00Z",
+    "pages_committed": 5569,
+    "records_committed": 672662,
+    "requests_reserved": 2932,
+    "source_bytes": 545998251,
+    "planner_next_member": "2341",
+    "planning_complete": "false",
+    "latest_page_commit": "2026-10-30 15:27:59.686217+00",
+    "readbacks": 5569,
+    "since_final_repair_readback": {
+      "pages": 261,
+      "records": 30385,
+      "readbacks": 261,
+      "first_commit": "2026-10-30T14:45:20.376251+00:00",
+      "latest_commit": "2026-10-30T15:27:59.686217+00:00",
+      "distinct_tasks": 261,
+      "matching_hashes_and_counts": 261
+    },
+    "subsequent_readback_failures": null
+  },
+  "retained_deployment": {
+    "commit": {
+      "createdAt": "2026-10-30T12:28:49Z",
+      "id": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "message": "Complete approved relay publication and preserve historical review test boundary"
+    },
+    "createdAt": "2026-10-30T12:36:05.653083Z",
+    "finishedAt": "2026-10-30T12:36:45.668499Z",
+    "id": "dep-dbi8ud942hec73cpm7qg",
+    "startedAt": "2026-10-30T12:36:05.651198Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T12:36:45.668728Z"
+  },
+  "comparison": {
+    "prior_observed_at": "2026-10-30T15:25:05.917909Z",
+    "prior_pages": 5554,
+    "prior_readbacks": 5554,
+    "prior_records": 671180,
+    "new_committed_pages": 15,
+    "new_independent_readbacks": 15,
+    "new_physical_records": 1482
+  },
+  "evidence_limit": "Readbacks and real page timestamps establish resumed acquisition after the observed database restart. This does not establish the restart cause or sustained reliability. No manual restart, redeploy or counter reset was performed.",
+  "same_controller": true
+}

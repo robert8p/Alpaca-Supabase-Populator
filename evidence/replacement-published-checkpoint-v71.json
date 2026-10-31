@@ -1,0 +1,32 @@
+[
+  {
+    "id": 29,
+    "action": "IMPLEMENTATION_CHECKPOINT_PUBLISHED",
+    "recorded_at": "2026-10-30 13:50:38.44072+00",
+    "evidence": {
+      "owner": "root-replacement-20261030T042603Z",
+      "version": "v71",
+      "request_id": "checkpoint-v71-536bb850",
+      "approval_ref": "Sentinel_17a454f266748191bfca91e4c57d99b0",
+      "manifest_sha256": "bc580801e44aeb8a6374474a0eda265b0ef73fe3eeb46c737e7eca5d94f1b81b",
+      "pages_committed": 4791,
+      "same_automation": "6ae2a4c96bbc819182133e17e9b7f779",
+      "same_controller": true,
+      "approval_unchanged": true,
+      "previous_checkpoint": {
+        "commit": "ad4e3ba854cd4a004669ea5da6a97fef436ae1a9",
+        "version": "v70",
+        "recorded_at": "2026-10-30T11:21:57.648068+00:00",
+        "manifest_sha256": "a585da1eed169faef3dcd33a35c9d2a621f49fba273a154762cd610576e5f78a",
+        "published_and_ref_verified": true
+      },
+      "progress_observed_at": "2026-10-30T13:45:41.352806Z",
+      "independent_readbacks": 4791,
+      "v3_actual_approval_at": "2026-10-30T12:14:00Z",
+      "approved_runtime_source": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "sustained_recovery_proven": false,
+      "maintenance_repair_applied": false,
+      "v3_installed_within_window": true
+    }
+  }
+]

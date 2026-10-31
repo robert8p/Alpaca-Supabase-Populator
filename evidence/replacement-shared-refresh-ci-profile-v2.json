@@ -1,0 +1,106 @@
+{
+  "source": "GitHub Actions completed job diagnostics",
+  "run_id": 41029742338,
+  "job_id": 123976284949,
+  "head_sha": "7f39cc2a8fe0a10387c9fdb9c9e6b076eb346cb7",
+  "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41029742338/job/123976284949",
+  "failure_lines": [
+    "2026-10-30T09:00:36.5691755Z FAIL: test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl (test_backfill_shared_records_v2.SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl)",
+    "2026-10-30T09:00:36.5700659Z AssertionError: 151.71791369199997 not less than 12 : {'database': {'server_version': '17.11 (Debian 17.11-1.pgdg13+2)', 'jit': 'on', 'jit_above_cost': '100000', 'plan_cache_mode': 'auto'}, 'operation_seconds': {'parse_seconds': 0.0028889879999951518, 'pacing_fixture_seconds': 0.0052704330000210575, 'reserve_seconds': 0.011426741999997603, 'commit_seconds': 0.1227355810000006, 'verify_seconds': 151.574905758}, 'function_milliseconds': [{'function': 'rpc_dispatch', 'calls': 3, 'total_time': 151682.437, 'self_time': 8.326}, {'function': 'backfill_delivery_dispatch_v2', 'calls': 1, 'total_time': 151565.809, 'self_time': 0.501}, {'function': 'backfill_recheck_page_v2', 'calls': 1, 'total_time': 151562.429, 'self_time': 2.916}, {'function': 'backfill_shared_readback_trigger_v2', 'calls': 1, 'total_time': 151483.454, 'self_time': 0.042}, {'function': 'backfill_shared_project_v2', 'calls': 1, 'total_time': 151483.412, 'self_time': 62.268}, {'function': 'backfill_shared_refresh_v2', 'calls': 1, 'total_time': 151335.481, 'self_time': 151335.481}, {'function': 'backfill_dispatch_v2', 'calls': 3, 'total_time': 110.595, 'self_time': 18.148}, {'function': 'backfill_nonminute_readback_trigger_v2', 'calls': 1, 'total_time': 68.206, 'self_time': 0.045}, {'function': 'backfill_nonminute_project_page_v2', 'calls': 1, 'total_time': 68.161, 'self_time': 33.69}, {'function': 'backfill_shared_meta_v2', 'calls': 1000, 'total_time': 63.175, 'self_time': 46.747}, {'function': 'rpc_canonical', 'calls': 18001, 'total_time': 59.095, 'self_time': 38.619}, {'function': 'rpc_json_unique', 'calls': 10003, 'total_time': 29.976, 'self_time': 29.976}]}",
+    "2026-10-30T09:00:36.5705453Z Ran 556 tests in 252.026s",
+    "2026-10-30T09:00:36.5705666Z FAILED (failures=1)"
+  ],
+  "diagnostic": {
+    "database": {
+      "server_version": "17.11 (Debian 17.11-1.pgdg13+2)",
+      "jit": "on",
+      "jit_above_cost": "100000",
+      "plan_cache_mode": "auto"
+    },
+    "operation_seconds": {
+      "parse_seconds": 0.0028889879999951518,
+      "pacing_fixture_seconds": 0.0052704330000210575,
+      "reserve_seconds": 0.011426741999997603,
+      "commit_seconds": 0.1227355810000006,
+      "verify_seconds": 151.574905758
+    },
+    "function_milliseconds": [
+      {
+        "function": "rpc_dispatch",
+        "calls": 3,
+        "total_time": 151682.437,
+        "self_time": 8.326
+      },
+      {
+        "function": "backfill_delivery_dispatch_v2",
+        "calls": 1,
+        "total_time": 151565.809,
+        "self_time": 0.501
+      },
+      {
+        "function": "backfill_recheck_page_v2",
+        "calls": 1,
+        "total_time": 151562.429,
+        "self_time": 2.916
+      },
+      {
+        "function": "backfill_shared_readback_trigger_v2",
+        "calls": 1,
+        "total_time": 151483.454,
+        "self_time": 0.042
+      },
+      {
+        "function": "backfill_shared_project_v2",
+        "calls": 1,
+        "total_time": 151483.412,
+        "self_time": 62.268
+      },
+      {
+        "function": "backfill_shared_refresh_v2",
+        "calls": 1,
+        "total_time": 151335.481,
+        "self_time": 151335.481
+      },
+      {
+        "function": "backfill_dispatch_v2",
+        "calls": 3,
+        "total_time": 110.595,
+        "self_time": 18.148
+      },
+      {
+        "function": "backfill_nonminute_readback_trigger_v2",
+        "calls": 1,
+        "total_time": 68.206,
+        "self_time": 0.045
+      },
+      {
+        "function": "backfill_nonminute_project_page_v2",
+        "calls": 1,
+        "total_time": 68.161,
+        "self_time": 33.69
+      },
+      {
+        "function": "backfill_shared_meta_v2",
+        "calls": 1000,
+        "total_time": 63.175,
+        "self_time": 46.747
+      },
+      {
+        "function": "rpc_canonical",
+        "calls": 18001,
+        "total_time": 59.095,
+        "self_time": 38.619
+      },
+      {
+        "function": "rpc_json_unique",
+        "calls": 10003,
+        "total_time": 29.976,
+        "self_time": 29.976
+      }
+    ]
+  },
+  "news_rpc_seconds": 151.71791369199997,
+  "tests": 556,
+  "suite_seconds": 252.026,
+  "failures": 1
+}

@@ -1,0 +1,115 @@
+{
+  "schema": "astra.replacement-controller-checkpoint/1",
+  "checkpoint_version": 81,
+  "state": "BOUNDED_SEAL_SCAN_QUALIFIED_FOR_ADDITIVE_PUBLICATION_NOT_INSTALLED",
+  "as_of": "2026-10-31 00:36:37.627073+00",
+  "mission_complete": false,
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "lease_until": "2026-10-31T01:00:00Z",
+  "latest_durable_audit": 128,
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "scope": {
+    "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+    "cohort_manifest_sha256": "4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f",
+    "ordered_members_sha256": "a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e",
+    "fixed_members": 3000,
+    "cohort_policy": "RETROSPECTIVE_FIXED_COHORT",
+    "target_start": "2025-09-01",
+    "target_end": "2026-07-31",
+    "families": 16,
+    "permitted_sources": [
+      "Existing Alpaca Algo Trader Plus",
+      "Existing Massive Stocks Starter"
+    ],
+    "no_reranking_or_substitutions": true
+  },
+  "progress": {
+    "pages_as_of_preflight": 13326,
+    "physical_records_or_retained_pointers": 1497013,
+    "source_bytes": 1055906724,
+    "latest_actual_source_commit": "2026-10-30T23:25:43.686927Z",
+    "last_full_page_comparison_at": "2026-10-31T00:02:00.61853Z",
+    "matching_readbacks": 13326,
+    "missing": 0,
+    "mismatches": 0,
+    "post_v77_pages": 3723,
+    "post_v77_matching_readbacks": 3723,
+    "post_v77_actual_provider_pages": 2288,
+    "new_pages_after_v78_postread": 0,
+    "acquisition_resumed": false,
+    "counts_are_physical_overlapping_accounting_not_coverage": true
+  },
+  "retained_repairs": {
+    "v76_claim": "Already installed once; not replayed.",
+    "v77_defer": "Existing08bea deployment dep-dbigesegekts73f8mh50; not redeployed or restarted by this controller.",
+    "v78": "Publishedf5cd20b/tree9855741; required exact CI passed and migration astra_backfill_seal_dynamic_exclusions_v78 version20261030232543 installed once, all13 after-source/OID/metadata pins independently verified.",
+    "v79": "Source9e8efdf1 not installed. Its only real whole-selector read failed8s with explicit57014/audit122. Later estimate/audit124 retained; both read budgets0. Thirteen scoped local cases passed but did not override failed production performance.",
+    "v80": "Defer design paused before implementation/test/external call; no active defer receipt."
+  },
+  "current_v81": {
+    "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+    "forward_sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1",
+    "inverse_sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002",
+    "archive_sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e",
+    "change": "One existing planner SEAL block; at most500 global IDs per call with atomic real snapshots/cursor, explicit false completion, separate final-page commit and original final accounting/sealer.",
+    "local_cases": 7,
+    "actual_postgresql_cases": 6,
+    "source_binding_cases": 1,
+    "failures_errors_skips": 0,
+    "independent_review_sha256": "b3a7ca93ce178dbb5da7f34d7c543fa38224478191c60b88131549f88d483d4b",
+    "first_page_observation": {
+      "at": "2026-10-31T00:31:28.267947Z",
+      "actual_ids": 500,
+      "page_execution_ms": 20.497,
+      "planning_ms": 0.165,
+      "source_function_pins": 17,
+      "primary_key_pins": 2,
+      "trigger_pins": 5,
+      "remaining_read_budget": 0,
+      "not_measured": [
+        "Upper-ID lookup",
+        "Per-ID loops and snapshot writes",
+        "Later pages",
+        "Final count/hash/sealing",
+        "Acquisition recovery"
+      ]
+    },
+    "published_ci": "Not yet run for this upcoming exact publication; required before installation.",
+    "installation_dispatches": 0,
+    "worker_deployment_needed": false
+  },
+  "held_v75": {
+    "state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "original1738_result": "UNKNOWN",
+    "admitted_identical_recovery_result": "User rejected MCP tool call",
+    "remaining_object_retry_budget": 0,
+    "remaining_readback_budget": 0,
+    "no_old_tree_recheck_commit_ref_or_deploy": true
+  },
+  "existing_successor": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "unchanged_hourly_schedule": true,
+    "prompt_sha256": "9bb7bd973d44796fb6c2080f0cbd9de51623f32fe546c9cdd8d0064f244ddb48",
+    "latest_run": "2b6dd184-cb30-8329-83a0-0fcc18c26e0f",
+    "scheduled_for": "2026-10-31T00:00:00Z",
+    "completed_at": "2026-10-31T00:08:08.917235Z",
+    "result": "Read-only reconciliation; respected original live owner. Its parent handoff returnedNOT_FOUND; result retained in task history and root audit125. No new controller/task/settings change."
+  },
+  "reporting": {
+    "policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+    "routine_outputs": "Persist checkpoints/evidence for dot; no proactive external messages.",
+    "platform_push_email_mute": "Unsupported by available per-task delivery controls; prompt suppression is not platform muting.",
+    "owner_action_payloads": "Preserve for dot relay; no bypass."
+  },
+  "deferred_plugin_handoff": {
+    "issue": "https://github.com/robert8p/Alpaca-Supabase-Populator/issues/94",
+    "state": "DEFERRED_BEHIND_BACKFILL_RELIABILITY",
+    "original_queue_audit": 96,
+    "no_credentials_grants_or_new_controller_authorized": true
+  },
+  "message_delivery": "21:06 and21:50 user messages remain delivery-unverified; no completed work inferred.",
+  "security_diff": "No new credentials, grants, roles, routes or trust relationships. New opaque global cursor bounds are operational run metadata visible through existing authorized status access. Auth, source scope, retries, timeouts, expected counts and final integrity checks are preserved.",
+  "next_executable_step": "Publish the exact additive packet overf5cd after current-owner/branch/deploy/source reconciliation. Verify tree, commit and expected-head ref outcome without blind retries; require exact-commit CI with all7 new cases. Then reserve one guarded SQL migration, reconcile actual sources/history, and require ordinary-worker bounded cursor advancement plus new source-page commits and matching readbacks. Continue all qualified ingestion/recovery under the same owner; never call scan completion plan completion."
+}

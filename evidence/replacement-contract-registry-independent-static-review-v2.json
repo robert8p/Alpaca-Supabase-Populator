@@ -1,0 +1,97 @@
+{
+  "review": "Independent bounded static review of existing option-contract registry candidate",
+  "reviewed_at": "2026-10-30T07:59:22.155531+00:00",
+  "reviewer": "replacement_launch_tests",
+  "decision": "ACCEPT_WITHIN_REVIEWED_SCOPE",
+  "blocking_findings": [],
+  "method": "Read-only source and existing seven-test qualification review; no PostgreSQL execution, provider request, production query or code mutation.",
+  "artifacts": [
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "bytes": 28911,
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_contract_registry_v2.py",
+      "bytes": 13078,
+      "sha256": "4ac7d1e09a08bf805e6ba87f016ac702438ec6c456d5e442999f7c1bfe0941fa"
+    },
+    {
+      "path": "evidence/replacement-contract-registry-qualification-v2.json",
+      "bytes": 5169,
+      "sha256": "54b6af33400c9dd4c31ba8b3a8e48d10be809975b1210107d281ca29e6703bf3"
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "bytes": 46872,
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "bytes": 49245,
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "bytes": 57461,
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    }
+  ],
+  "checks": [
+    {
+      "scope": "Immutable retained work",
+      "finding": "Registry changes canonical references and adds lineage, but does not rewrite any existing child scope, task status, cursor, lease, generation or accounting. Existing duplicates remain executable, including PENDING and RUNNING children. Existing runtime task-immutability trigger remains active.",
+      "evidence_functions": [
+        "backfill_contract_register_child_v2",
+        "backfill_contract_prove_child_v2",
+        "backfill_task_guard_v2"
+      ]
+    },
+    {
+      "scope": "Exact request-window deduplication",
+      "finding": "Per-run advisory lock serializes seeding and admission. Registry keys include run/provider/contract symbol/start and end instants/feed/timeframe; canonical completed evidence is preferred without cancelling incomplete work. A different retained window does not suppress the fixed mission-window successor. New child insertion runs the registration trigger within the same transaction.",
+      "evidence_functions": [
+        "backfill_contract_key_v2",
+        "backfill_contract_register_child_v2",
+        "backfill_contract_seed_v2",
+        "backfill_contract_admit_page_v2"
+      ]
+    },
+    {
+      "scope": "Many-parent and member lineage",
+      "finding": "Each verified source occurrence links its original parent task/page/ordinal and underlying symbol to canonical work. Parent/member scope and canonical child/member scope are exposed separately; repeated parents do not mutate the first child scope. Counts are explicitly nonadditive and do not imply historical identity certification.",
+      "evidence_relations": [
+        "backfill_contract_parent_links_v2",
+        "backfill_contract_parent_work_v2"
+      ]
+    },
+    {
+      "scope": "Fixed mission and source evidence",
+      "finding": "Admission requires an active run with matching fence, completed retained-child reconciliation and independent source-page readback. New children use the existing fixed target window, CTX02, Alpaca, opra/1Day defaults and the inherited frozen-member insert guard. Invalid provider symbol/underlying rows remain retained and counted as unlinked instead of being silently asserted covered. No provider endpoint or external credential path is added."
+    },
+    {
+      "scope": "Private access",
+      "finding": "Tables use RLS and revoke PUBLIC/inherited nonowner ACLs. Views use security_invoker. Helpers use an empty search_path, revoke PUBLIC/nonowner execution and grant only the existing internal RPC owner. Existing gateway/token whitelist is not expanded. New helpers are not directly executable by the gateway under the recorded test."
+    },
+    {
+      "scope": "Bounded activation and completion",
+      "finding": "Migration takes the existing advisory lock plus a finite SHARE ROW EXCLUSIVE task lock to drain old insertions, with 3-second lock and 30-second statement limits. Catch-up seeds eight retained children per maintenance pass (explicit maximum16), scans32 readback metadata rows and admits one queued retained enumeration page. Each newly inserted readback may independently admit its own one source page through its trigger. Batches contain at most100 contract symbols. Finalization waits for verified enumeration pages not yet processed, and status retains unknown denominator/completeness."
+    }
+  ],
+  "qualification_read_not_rerun": {
+    "passed": 7,
+    "failed": 0,
+    "suite_seconds": 4.285,
+    "full_page_rows": 1000,
+    "children": 10,
+    "source": "evidence/replacement-contract-registry-qualification-v2.json"
+  },
+  "retained_limitations": [
+    "Pre-existing overlapping child tasks remain executable and may still repeat provider requests; the candidate only prevents new duplicate exact windows.",
+    "Canonical query completion certifies exhausted verified request pages, not market-wide completeness, per-contract record counts or historical identity.",
+    "The inherited family-report performance repair remains a separate root/cache-agent task; this static review does not establish its live query latency.",
+    "The review covers the current single-controller mission and exact candidate hashes; installation and production reconciliation remain the root responsibility."
+  ],
+  "relay_action": null,
+  "code_changes": []
+}

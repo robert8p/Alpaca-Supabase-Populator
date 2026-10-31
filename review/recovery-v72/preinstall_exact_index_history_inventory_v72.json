@@ -1,0 +1,173 @@
+[
+  {
+    "observed_at": "2026-10-30 14:33:51.434173+00",
+    "repair_history": null,
+    "task_indexes": [
+      {
+        "acl": null,
+        "oid": "16061384",
+        "live": true,
+        "name": "backfill_contract_enum_task_v2",
+        "bytes": 851968,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_contract_enum_task_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, id) WHERE (kind = 'alpaca_option_contracts'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16061383",
+        "live": true,
+        "name": "backfill_contract_old_child_cursor_v2",
+        "bytes": 352256,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_contract_old_child_cursor_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, created_at, id) WHERE (kind = 'alpaca_option_bars'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16041706",
+        "live": true,
+        "name": "backfill_daily_month_units_v2",
+        "bytes": 3383296,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_daily_month_units_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'source_month'::text)), ((scope #>> '{member_ids,0}'::text[])), status) WHERE (family = 'D03'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16047681",
+        "live": true,
+        "name": "backfill_identity_derived_member_v2",
+        "bytes": 131825664,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_identity_derived_member_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope #>> '{member_ids,0}'::text[])), id) WHERE ((kind = ANY (ARRAY['derive_daily'::text, 'derive_intraday'::text])) AND (NOT (scope ? 'identity_refresh_of'::text)))"
+      },
+      {
+        "acl": null,
+        "oid": "16047696",
+        "live": true,
+        "name": "backfill_identity_refresh_tasks_v2",
+        "bytes": 8192,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_identity_refresh_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status) WHERE (scope ? 'identity_refresh_of'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16041024",
+        "live": true,
+        "name": "backfill_reuse_children_v2",
+        "bytes": 32768,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_reuse_children_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'reuse_parent'::text))) WHERE (scope ? 'reuse_parent'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16050045",
+        "live": true,
+        "name": "backfill_shared_action_tasks_v2",
+        "bytes": 491520,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_shared_action_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, id) WHERE (kind = 'alpaca_actions'::text)"
+      },
+      {
+        "acl": null,
+        "oid": "16043346",
+        "live": true,
+        "name": "backfill_tasks_family_turn_v2",
+        "bytes": 240648192,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_family_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text]))"
+      },
+      {
+        "acl": null,
+        "oid": "16040159",
+        "live": true,
+        "name": "backfill_tasks_family_v2",
+        "bytes": 6897664,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_family_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, status)"
+      },
+      {
+        "acl": null,
+        "oid": "16272445",
+        "live": true,
+        "name": "backfill_tasks_minute_alias_status_v2",
+        "bytes": 2547712,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_minute_alias_status_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, next_retry_at) WHERE ((family = 'P01'::text) AND (kind = ANY (ARRAY['alpaca_stock_bars'::text, 'retained_reuse'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+      },
+      {
+        "acl": null,
+        "oid": "16040160",
+        "live": true,
+        "name": "backfill_tasks_provider_v2",
+        "bytes": 7110656,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_provider_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, provider, status, kind)"
+      },
+      {
+        "acl": null,
+        "oid": "16043695",
+        "live": true,
+        "name": "backfill_tasks_recovery_turn_v2",
+        "bytes": 16384,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_recovery_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['RETRY_WAIT'::text, 'RUNNING'::text]))"
+      },
+      {
+        "acl": null,
+        "oid": "16040158",
+        "live": true,
+        "name": "backfill_tasks_runnable_v2",
+        "bytes": 244432896,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_runnable_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, priority, next_retry_at, id)"
+      },
+      {
+        "acl": null,
+        "oid": "16422385",
+        "live": true,
+        "name": "backfill_tasks_runtime_summary_v2",
+        "bytes": 7274496,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE INDEX backfill_tasks_runtime_summary_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, kind, provider, status, records_committed, last_progress_at)"
+      },
+      {
+        "acl": null,
+        "oid": "16040151",
+        "live": true,
+        "name": "backfill_tasks_v2_pkey",
+        "bytes": 103923712,
+        "owner": "16388",
+        "ready": true,
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX backfill_tasks_v2_pkey ON astra_ingestion_v1.backfill_tasks_v2 USING btree (id)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "schema": "astra.rpc-failure-observability.qualification/1",
+  "recorded_at": "2026-10-30T12:17:01Z",
+  "state": "PREPARED_AND_LOCALLY_QUALIFIED_NOT_DEPLOYED_BY_THIS_AGENT",
+  "purpose": "Identify the exact failed RPC operation and controlled local failure category while preserving fatal handling of uncertain writes. This is diagnostic preparation, not proof of the underlying failure cause or a SQL repair.",
+  "files": {
+    "astra_ingestion/rpc_store.py": {
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+      "bytes": 17590
+    },
+    "astra_ingestion/worker.py": {
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "bytes": 7696
+    },
+    "tests/ingestion/test_rpc_failure_observability_v71.py": {
+      "sha256": "d9195702962f73fb9e5dcf462252c01f94e851588fd23855c7be7f89239a20f9",
+      "bytes": 13856
+    },
+    "review/recovery-v71/rpc-failure-observability-v71.diff": {
+      "sha256": "8360e04d464c5e73f598f5aa129c5d988aca57bb129a1c81d47d0f531b88b538",
+      "bytes": 12288
+    }
+  },
+  "before": {
+    "astra_ingestion/rpc_store.py": {
+      "sha256": "b5bb036dde91e3a4c46cef021a4b2e7fef6c5c74012c79dc2f856d3c190b9de7",
+      "bytes": 13918
+    },
+    "astra_ingestion/worker.py": {
+      "sha256": "00d9f7a16fc161a6e7b40938319e4bbe9a8c24c97ea29171b375a2e9241ca0b6",
+      "bytes": 6732
+    }
+  },
+  "tests": {
+    "command": "PYTHONPATH=tests/ingestion python3 -m unittest test_rpc_failure_observability_v71 test_rpc_store test_backfill_worker_v2 test_backfill_worker_reuse_v2 test_worker_store -v",
+    "discovered": 57,
+    "passed": 53,
+    "skipped": 4,
+    "failures": 0,
+    "elapsed_seconds": 3.583,
+    "new_diagnostic_tests": 12,
+    "skips": "Four existing disposable-PostgreSQL integration cases were not run in this Python-focused invocation; no SQL change is included.",
+    "syntax_compilation": {
+      "units": 3,
+      "passed": true
+    }
+  },
+  "test_coverage": [
+    "Actual existing CLI loop returns1 after one failing call and emits one bounded JSON record",
+    "One opener invocation, unchanged15second timeout and request bytes/headers/origin",
+    "No provider fetch, defer or retry after uncertain replacement reservation",
+    "Same exception instance,args,class hierarchy and existing controlled message text preserved",
+    "HTTP error bodies never read; remote URL/header/message/body and nested cause/context values never logged",
+    "Unknown/oversized/control-character/str-subclass/list/dict/object operation or reason maps to fixed fallback without formatting",
+    "Mutated exception attributes are revalidated before logging",
+    "All emitted type labels are fixed; synthetic64hex and oversized custom class names cannot leak",
+    "Per-exception labels remain distinct under concurrent calls",
+    "Existing authentication failures,handled database dispositions,deadline/redirect/format/size/decode/envelope failure behavior retained"
+  ],
+  "diagnostic_record_bound_bytes": 256,
+  "new_fields": [
+    "rpc_operation",
+    "rpc_failure_reason"
+  ],
+  "operation_enum_is_authorization": false,
+  "all_existing_authentication_scope_fences_and_integrity_logic_unchanged": true,
+  "new_provider_calls": 0,
+  "new_credentials": false,
+  "new_trust_or_grants": false,
+  "automatic_retries_added": false,
+  "timeout_changes": false,
+  "protected_artifacts": {
+    "backfill_worker_v2_before_separate_relay_integration_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "backfill_worker_v2_edited_by_this_agent": false,
+    "frozen_v2_or_v3_payloads_edited_by_this_agent": false,
+    "independent_reviewer_verified_v2_payload_count": 19,
+    "independent_reviewer_verified_v3_payload_count": 15,
+    "timing_note": "These qualification tests and independent source comparisons precede root-controlled approved v3 promotion. Root later reported a separate12:14UTC v3 approval/deadline12:29; this diagnostic agent does not install or modify that package."
+  },
+  "independent_review": "evidence/replacement-rpc-failure-observability-independent-review-v71.json",
+  "remaining": "Root must reconcile current source/ownership and any separate approved relay integration, publish selected files, pass required gates and deploy only the existing worker if this diagnostic change remains needed. Older source-hash-guarded SQL diagnostics must be reconciled after any installed source change."
+}

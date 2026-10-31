@@ -1,0 +1,449 @@
+{
+  "schema": "astra.planner-seal-additive-publication-manifest/1",
+  "base_commit": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+  "base_tree": "564347923f62753c8303c7448455310528ff6b72",
+  "existing_blobs_preserved": 1125,
+  "existing_replacements": [],
+  "selected_files_excluding_manifest": [
+    {
+      "path": "evidence/replacement-context-and-residual-recurrence-audit-v78.json",
+      "bytes": 946,
+      "sha256": "ff47cad5035e76ea922695d63e6f82a3964dc3b72a256f7935b58cf86aeef322",
+      "git_blob_sha1": "606b3eeb71c280507eabf984f48e4d72331c89f3",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-controller-resume-checkpoint-v78.json",
+      "bytes": 27568,
+      "sha256": "5961ed04c62dd431531e9f301c843fec6f841afce11d3f777ff03e5b8b17a427",
+      "git_blob_sha1": "abbcf698faa1e323433e4b65625406a9b8aeeab9",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-defer-native-lock-retry-release-gates-v77.json",
+      "bytes": 10972,
+      "sha256": "70322b426383fc83ed8a4e232bdd0e68ac549c75c990edc0ff930e77722b646a",
+      "git_blob_sha1": "767666c04e713e3d9a396e14e4551601ebb827fb",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-existing-controller-resume-lease-attempt2-v78.json",
+      "bytes": 8807,
+      "sha256": "23578b573b47e7cad549106de9a230a9b3240448fcbdbc8d0e63691c34c56ef0",
+      "git_blob_sha1": "ada4de3051119c27a1e3e46973929e6c5ddd8b05",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-existing-controller-resume-lease-v78.json",
+      "bytes": 7368,
+      "sha256": "c5eba71f8d66d8fc3df2761d2c3951b1c69161c5f40954dd98856951e9d4f106",
+      "git_blob_sha1": "60b3d2d795e6166789a34da08cd7889d7df0b840",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-planner-seal-same-owner-lease-v78.json",
+      "bytes": 5140,
+      "sha256": "2037c46fb8b83bf277c8e31a85152bb0563dc85c0d62cdf4d2c48c38f120d02d",
+      "git_blob_sha1": "bf0acf9062d89e8352058bcfa5bfbec4b132f3e1",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-residual-fault-queue-audit-v78.json",
+      "bytes": 18433,
+      "sha256": "9ce375c5d782c78c3e4a1a4d9f3cd8e21d3c267c0616e62b87ac3a912bfe814c",
+      "git_blob_sha1": "56212146ebac26bc5549a364b937f16bf4a08c50",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-resume-queue-and-plugin-handoff-v78.json",
+      "bytes": 11626,
+      "sha256": "fa65eea3a39480d4713208217a70bd0adfd5e6933952fd05be0746da20f442d5",
+      "git_blob_sha1": "f7248ecb71bd77c4e66535c674e97b3ffdd14dd9",
+      "mode": "100644"
+    },
+    {
+      "path": "evidence/replacement-successor-and-live-planner-diagnosis-v78.json",
+      "bytes": 928,
+      "sha256": "7dde149bee2cfae038a7e84ed813bd33df2d105eb3caf40579d2104da24b8115",
+      "git_blob_sha1": "95f78f8f0e431a65bb397123aaf3641352877690",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/acquisition_baseline_before_seal_release_v78.json",
+      "bytes": 9157,
+      "sha256": "dbe091b741d52bc7bbd671ee13736fa60fe7b4cddfe09d83bb6812419d483f49",
+      "git_blob_sha1": "a66c63c7e0e1ce9d52ba9bc0f9790ff4006f5d38",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/build_seal_publication_v78.py",
+      "bytes": 6839,
+      "sha256": "e4e8549a0e2262d55b2a7c3442c320d703cc7ed17e7b4cc823efa58506207988",
+      "git_blob_sha1": "30bea93c2981b44ab46c791fd0407b48e9294003",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/compact_prompt_independent_readback_proof_v78.json",
+      "bytes": 1146,
+      "sha256": "b58ef742b76e60179103ec16d6f0d11323ec8f2a0447f1c4ec37778cefc07251",
+      "git_blob_sha1": "e136c2d546904cdc493f164fe3a955027b32b65e",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/gate-duration/context_read_evidence_v78.json",
+      "bytes": 26493,
+      "sha256": "69e6a8c4929af56da1918ec67519bb1d3186442bdaf8e7e7b7931fc4200ec59c",
+      "git_blob_sha1": "be5a14fc2cdd2b91e0aec318fee66b73f9264871",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/gate-duration/context_read_transport_proof_v78.json",
+      "bytes": 1111,
+      "sha256": "f74832a7eed2a3a49536300876e6ea047c7373e0b0597f3d67521ddc1e9e2780",
+      "git_blob_sha1": "425d199eb590bd7955ec3b8fa3d25c1667ec6bbc",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/gate-duration/current_contract_input_context_readonly_v78.sql",
+      "bytes": 13417,
+      "sha256": "d7fe9d4a94524f45b68a9844390b8d291f160edf5cf7e3485c5973019529111e",
+      "git_blob_sha1": "5049acea8f9d72bf0fb0163466facc1e35eabcfd",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_cleanup_readback_v78.json",
+      "bytes": 242,
+      "sha256": "8108b74ced89891686b184246d9ebe359b57696472540e309b8d82542b69b4a3",
+      "git_blob_sha1": "12c79f4517fb51765b21110e4aa6a431db2eeeef",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt01_v78.json",
+      "bytes": 11369,
+      "sha256": "b62f7443bed9e110a9570dc765434e679a9f6f8b20ea56e8e9050157ff2a6ee3",
+      "git_blob_sha1": "482a0346161815d46b44b3408f401581af6c0934",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt02_v78.json",
+      "bytes": 17780,
+      "sha256": "8c489cce169ef0f62353dd9308913f853de59a2932e0d08c571087d845d7f66a",
+      "git_blob_sha1": "20bc58aaa7f587fa242a229b101e4948a36a040f",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+      "bytes": 14617,
+      "sha256": "eba04a321121c362f82cc142de875190867ab88dd758d1d8e369bfc1f5f04c4d",
+      "git_blob_sha1": "8d8fb81a6650123905b8dbdf3613179c1a5f89fc",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_candidate_review_v78.json",
+      "bytes": 10959,
+      "sha256": "07ce0ef86c18651b6978ae867ef57bfa2abd224b03835bd0086bef768846314c",
+      "git_blob_sha1": "a87db44041250663a18c2e4f6a00acd893c46e99",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_contract_context_static_review_v78.json",
+      "bytes": 3595,
+      "sha256": "87bbae72e5b7df551ddb82ca2d7d0c103adfe46e4ee805070699e826eb06249a",
+      "git_blob_sha1": "90f09eb1420b03ed2a6a93791c25b352f34850b0",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+      "bytes": 7769,
+      "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0",
+      "git_blob_sha1": "072c91434d97720cc172c1fed5cc22492fdfc2e5",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.patch",
+      "bytes": 2459,
+      "sha256": "fa32d6880a29628fa5e8841047a4b4a83d8f87f724bfeefb06f6f5ba3fea5e83",
+      "git_blob_sha1": "1138c4e8b0a0a37a675f2c2b35d82c33fba177ce",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_final_review_v78.json",
+      "bytes": 18147,
+      "sha256": "05f50f2ca881eedcc7af1b8f158dc4fe43e7bdf1cc821dcdd1e607637c0e370c",
+      "git_blob_sha1": "daa7a29ee15bb77140d73726b85408b5a8535b7b",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/independent_preliminary_review_v78.json",
+      "bytes": 6514,
+      "sha256": "0ab8bbc49154075ec6151112a372574447ceaa5d7f46ea94dc39117afc00b02b",
+      "git_blob_sha1": "b50d7cd1db53b18821044adc2d408f369fe7dd39",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+      "bytes": 17102,
+      "sha256": "4451e1214ebe59e67713eafeb95de32a82bbac6595505f2006f285005e721a6e",
+      "git_blob_sha1": "6d61ef8d07a35d4ac6f3f3bb5006a5f77b16d479",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/retained_integrity_helper_definitions_v78.json",
+      "bytes": 10465,
+      "sha256": "3be55d9380f286750d7c528ce56ef5fcf32ce98f0236ba0816e1c41a766d0174",
+      "git_blob_sha1": "a2bd6e90a59f12b8608833efa0664b0a19da0795",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+      "bytes": 10145,
+      "sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7",
+      "git_blob_sha1": "7f1bec38ade1e524bbcab892d0684b06c1fddac5",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_evidence_v78.json",
+      "bytes": 9729,
+      "sha256": "2faae604a9ddb3397a033e6c6ac9d0790867881537dbd927ce316747f2362f83",
+      "git_blob_sha1": "b0c101f9a1084bc61ab97e8e6563dcf3e8e1c789",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_readback_v78.json",
+      "bytes": 10461,
+      "sha256": "4f39a0379f336507df37745f5b4c79a73f7fe8afc68609bc9ccf809a80a6eafb",
+      "git_blob_sha1": "65e835599372532b2c32701026b32d29209c3ceb",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_readonly_v78.sql",
+      "bytes": 5846,
+      "sha256": "e3710b70c4b4208f98c39a6a744b93818f57ecdce1a5e55cac43b731f8ed727c",
+      "git_blob_sha1": "56a8466a176bef08b2542d7ab165bc2207ad4904",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/build_candidate_v78.py",
+      "bytes": 9039,
+      "sha256": "b89c3bce94e3b61106d8401f8db6d25d250fa30078dc200b056e9b21d4764f30",
+      "git_blob_sha1": "cbcd1791b74820cb6d770c5cdc23aa59ad0bd5cc",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/candidate_archive_v78.json",
+      "bytes": 24285,
+      "sha256": "cb1b9ac22017e21e712c6e7ba5e995b0b5805a5fcaaf946403706ad2db598850",
+      "git_blob_sha1": "75152f61fdd97abcb55cf4cddcf34a9b8ea42ee4",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/candidate_predicate_diff_v78.patch",
+      "bytes": 2597,
+      "sha256": "8b17d6c31918168cb561156bb13746bb2679124446b990c76cd96661b63e8500",
+      "git_blob_sha1": "ce1254acb551ca2a6eb18ee15572c16e70d45c78",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/explicit_publication_manifest_v78.json",
+      "bytes": 12864,
+      "sha256": "979f9754a0d2219f29aa61b457b312918bb1683c2d9c003c6f61540d5dee31b5",
+      "git_blob_sha1": "60bff3404134f01f4c88548bd03919ead151cee9",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/integrity_helper_hash_readback_v78.json",
+      "bytes": 2922,
+      "sha256": "102d986b56c905f540e05a4c6255b5f64ce1316262b9562b79e03bd800a175fa",
+      "git_blob_sha1": "03f84d9f44f417361febfad5479cd07312c33aef",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "bytes": 13312,
+      "sha256": "8e1548b13d085ee43d755ab9400378d11002322d1b60ce1fd90e2b2fb3f51936",
+      "git_blob_sha1": "da733f5dc3e2465249f56e249850be2f1b228f43",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "bytes": 13938,
+      "sha256": "f1bf394169bc32f079d94db5dc2cfe1fbac08db5d930b5335714bde30de62bd2",
+      "git_blob_sha1": "b4406ea0e8ce2af0cec08a37386400f2e258994a",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/build_candidate_v78.py",
+      "bytes": 8392,
+      "sha256": "d13d6eb8d98259c7e3a5fc08b06b343ded67885cd183146106b6883f901efa34",
+      "git_blob_sha1": "38bda6af5e1d86487c05de49c83c241243c7bdcb",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/candidate_archive_v78.json",
+      "bytes": 22824,
+      "sha256": "0f8ee6721bdfb1eb5053d48968687b109572ff79dac8ae53217c56ec65cf4547",
+      "git_blob_sha1": "471e770325f1423eee707a103541bf24091d1dee",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt01_v78.json",
+      "bytes": 30637,
+      "sha256": "5a05766778f40d394bd033ee3fb65ef8cae723af1c48feed8686af08eb4d50ed",
+      "git_blob_sha1": "691bfcb7f4146a967653a1fa2ae39e03294f30f6",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt02_v78.json",
+      "bytes": 37678,
+      "sha256": "ece8ba58339c7d09e07a638ef5198917781709a06ffb84210090d4a0dc4f5abd",
+      "git_blob_sha1": "64ba1605c4dd44d0b825a60e2352eb3a5d10382d",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt03_v78.json",
+      "bytes": 38178,
+      "sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e",
+      "git_blob_sha1": "0e144b5300a4a534d8d654f9e54575cebeac196f",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/qualification_and_execution_v78.md",
+      "bytes": 6018,
+      "sha256": "6888e39160a6b17028ab47f8e696953dafdd4ec4cf700994ea3a7cda40ca4618",
+      "git_blob_sha1": "8cdf1026cf1702a0bd69569945e52e4b674e5c36",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/qualify_producer_v78.py",
+      "bytes": 3942,
+      "sha256": "caa0f4677263d1c462896fd36be8885945c9cdd7a0da84c300679076f8768cea",
+      "git_blob_sha1": "18c5717881b69d54df180e5014632704bf1b21e7",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/source_only_dispatch_v78.json",
+      "bytes": 1068,
+      "sha256": "9806fd9297e5b8ad3b65862e0923af5a571db95c352bcf669d19a3f53e677856",
+      "git_blob_sha1": "a5cee171885910a214562b1d721f2460138979d2",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+      "bytes": 2406,
+      "sha256": "f1e6c7f27d61c5cdb7eab906c7cd3d78dfe8d9d2274db6646f92193b603be141",
+      "git_blob_sha1": "a4d43a391874ea802f08e2980b8004cd06fa64ca",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/plugin-handoff/deferred_issue94_queue_payload_v78.json",
+      "bytes": 7588,
+      "sha256": "3c2b48f00b87d0b4120c377dd9ab7ef62ff477968b23f9b2ea1ba856bbcb3a29",
+      "git_blob_sha1": "855c2257b43bfa724a1b537f4d69483a8e6f4fe5",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/plugin-handoff/issue94_source_readback_v78.json",
+      "bytes": 4486,
+      "sha256": "b7ab78c105fd2c2dbfd22502c5fb90b46b02a11c9fa513c8a50c89454ecf7d9b",
+      "git_blob_sha1": "8f44d15fb3e079c7de4ce7e74c13915aacba3722",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/qualification_release_lease_readback_v78.json",
+      "bytes": 1955,
+      "sha256": "b4eff47f0352603f310184934f7a893bc967a63b0ff9bbf03415a7a265425ecf",
+      "git_blob_sha1": "6421b88568654cfe10002b050e7bff991348964b",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/residual-faults/holder_cron_correlation_unresolved_v78.json",
+      "bytes": 728,
+      "sha256": "478ace182ed829b486555ebafaa2749fdda07827b36c7dc780143c513d96b949",
+      "git_blob_sha1": "589e9616ce6c06c4a21c743ec60217988ca69fde",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/residual-faults/residual_fault_queue_proposal_v78.json",
+      "bytes": 15772,
+      "sha256": "5e4f2c558bfdd33eb62265f5b24772f37d0b48f2d28c3ca470cdfead20a871b0",
+      "git_blob_sha1": "34d29a6ba6620cff8b4e33c1a1c88a3fde683ca8",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/residual-faults/residual_fault_recurrence_queue_proposal_2252_v78.json",
+      "bytes": 11745,
+      "sha256": "48ab0be179093bb08649bf0c6d862987b3193830467abee5b65b089bb2015646",
+      "git_blob_sha1": "f5644336495f62cf3196452c84773ca6409e910a",
+      "mode": "100644"
+    },
+    {
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "bytes": 15444,
+      "sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3",
+      "git_blob_sha1": "2d5a54cdcf781c3190fa3d8d4cf746e2589cf072",
+      "mode": "100644"
+    },
+    {
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "bytes": 16070,
+      "sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef",
+      "git_blob_sha1": "5a1da5d0567629c6f1a73af65cad705587fd3a21",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_seal_dynamic_exclusions_v78.py",
+      "bytes": 19352,
+      "sha256": "cbdf349d2e246162b27d37253e4c37846b2f3fbf31ea6f170ad424db6b179817",
+      "git_blob_sha1": "1db3c8a519060c8454bb00281fcf0c5e104956f0",
+      "mode": "100644"
+    },
+    {
+      "path": "review/recovery-v78/root_publication_selection_v78.json",
+      "bytes": 13092,
+      "sha256": "25352f81f486773194013085d3091641ab3d8a01e39d572b1aeb3d7ce9ec91fe",
+      "git_blob_sha1": "abc230384d2e1a4898dbcf068fd482063655512c",
+      "mode": "100644"
+    }
+  ],
+  "selection": "review/recovery-v78/root_publication_selection_v78.json",
+  "selection_sha256": "25352f81f486773194013085d3091641ab3d8a01e39d572b1aeb3d7ce9ec91fe",
+  "scope": "Align exactly three static-plan predicates in two existing SQL helpers with the installed explicit dynamic exclusions. Preserve all plan count, hash, calendar, coverage, representative-map, ownership and security checks.",
+  "security_diff": {
+    "authentication_changes": false,
+    "broad_plan_static_exclusion": false,
+    "counter_or_manifest_mutation": false,
+    "new_grants": false,
+    "new_routes": false,
+    "owner_or_acl_changes": false,
+    "source_cost_scope_changes": false
+  },
+  "local_qualification": {
+    "total_producer_tests": 10,
+    "actual_postgres_tests": 9,
+    "source_binding_tests": 1,
+    "independent_postgres_tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "producer_receipt_sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e",
+    "independent_review_sha256": "05f50f2ca881eedcc7af1b8f158dc4fe43e7bdf1cc821dcdd1e607637c0e370c",
+    "protected_function_pins": 13
+  },
+  "independent_review": {
+    "path": "review/recovery-v78/planner-seal-independent/independent_final_review_v78.json",
+    "sha256": "05f50f2ca881eedcc7af1b8f158dc4fe43e7bdf1cc821dcdd1e607637c0e370c",
+    "engineering_review_passed": true
+  },
+  "held_v75": {
+    "state": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "packet_sha256": "8806ef636f5be4220562b0ee52d64426f620461d8ad99adef5f9edd1f9724da3",
+    "expected_tree": "e56dc140deeb00eb2a0aae4e7d572519d773ccd0",
+    "overlapping_selected_paths": [],
+    "remaining_object_retry_budget": 0,
+    "remaining_readback_budget": 0
+  },
+  "activation_gate": "Exact published-commit CI with explicit new-test collection; current owner, finite lease, stop/fence, fixed cohort and source/OID/full metadata readback; reserve one guarded migration and reconcile uncertain outcomes before retry; independently verify installed sources and ordinary-worker planner/acquisition results.",
+  "worker_deployment": "Existing08bea deployment remains unchanged. This SQL-only release does not trigger, restart or redeploy the worker.",
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "mission_complete": false
+}

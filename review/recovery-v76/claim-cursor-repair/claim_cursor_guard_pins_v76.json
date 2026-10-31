@@ -1,0 +1,289 @@
+{
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "baseline_sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44",
+  "candidate_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+  "pins": [
+    {
+      "metadata": {
+        "oid": "15986030",
+        "proacl": [
+          "postgres=X/postgres",
+          "anon=X/postgres"
+        ],
+        "proallargtypes": null,
+        "proargdefaults": "({CONST :consttype 3802 :consttypmod -1 :constcollid 0 :constlen -1 :constbyval false :constisnull false :location -1 :constvalue 8 [ 32 0 0 0 0 0 0 32 ]})",
+        "proargmodes": null,
+        "proargnames": [
+          "operation",
+          "payload"
+        ],
+        "proargtypes": [
+          "25",
+          "3802"
+        ],
+        "probin": null,
+        "proconfig": [
+          "search_path=\"\"",
+          "statement_timeout=10s",
+          "lock_timeout=3s"
+        ],
+        "procost": 100,
+        "proisstrict": false,
+        "prokind": "f",
+        "prolang": "14",
+        "proleakproof": false,
+        "proname": "astra_ingestion_rpc_v1",
+        "pronamespace": "2200",
+        "pronargdefaults": 1,
+        "pronargs": 2,
+        "proowner": "16388",
+        "proparallel": "u",
+        "proretset": false,
+        "prorettype": "3802",
+        "prorows": 0,
+        "prosecdef": false,
+        "prosqlbody": null,
+        "prosupport": "-",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v"
+      },
+      "sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+      "signature": "public.astra_ingestion_rpc_v1(text,jsonb)"
+    },
+    {
+      "metadata": {
+        "oid": "15986028",
+        "proacl": [
+          "astra_ingestion_rpc_owner_v1=X/astra_ingestion_rpc_owner_v1",
+          "anon=X/astra_ingestion_rpc_owner_v1"
+        ],
+        "proallargtypes": null,
+        "proargdefaults": null,
+        "proargmodes": null,
+        "proargnames": [
+          "p_operation",
+          "p_payload"
+        ],
+        "proargtypes": [
+          "25",
+          "3802"
+        ],
+        "probin": null,
+        "proconfig": [
+          "search_path=\"\"",
+          "statement_timeout=10s",
+          "lock_timeout=3s"
+        ],
+        "procost": 100,
+        "proisstrict": false,
+        "prokind": "f",
+        "prolang": "13619",
+        "proleakproof": false,
+        "proname": "rpc_dispatch",
+        "pronamespace": "15984556",
+        "pronargdefaults": 0,
+        "pronargs": 2,
+        "proowner": "15985999",
+        "proparallel": "u",
+        "proretset": false,
+        "prorettype": "3802",
+        "prorows": 0,
+        "prosecdef": true,
+        "prosqlbody": null,
+        "prosupport": "-",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v"
+      },
+      "sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)"
+    },
+    {
+      "metadata": {
+        "oid": "16047703",
+        "proacl": [
+          "postgres=X/postgres",
+          "astra_ingestion_rpc_owner_v1=X/postgres"
+        ],
+        "proallargtypes": null,
+        "proargdefaults": null,
+        "proargmodes": null,
+        "proargnames": null,
+        "proargtypes": [],
+        "probin": null,
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "procost": 100,
+        "proisstrict": false,
+        "prokind": "f",
+        "prolang": "13619",
+        "proleakproof": false,
+        "proname": "backfill_identity_discover_pending_v2",
+        "pronamespace": "15984556",
+        "pronargdefaults": 0,
+        "pronargs": 0,
+        "proowner": "16388",
+        "proparallel": "u",
+        "proretset": false,
+        "prorettype": "23",
+        "prorows": 0,
+        "prosecdef": false,
+        "prosqlbody": null,
+        "prosupport": "-",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v"
+      },
+      "sha256": "faf5e83a8f7baf717cfd9054948ed62a8fbda7aa432a1f671d895fe77db37618",
+      "signature": "astra_ingestion_v1.backfill_identity_discover_pending_v2()"
+    },
+    {
+      "metadata": {
+        "oid": "16047730",
+        "proacl": [
+          "postgres=X/postgres",
+          "astra_ingestion_rpc_owner_v1=X/postgres"
+        ],
+        "proallargtypes": null,
+        "proargdefaults": "({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location -1 :constvalue 4 [ 2 0 0 0 0 0 0 0 ]})",
+        "proargmodes": null,
+        "proargnames": [
+          "p_limit"
+        ],
+        "proargtypes": [
+          "23"
+        ],
+        "probin": null,
+        "proconfig": [
+          "search_path=\"\"",
+          "statement_timeout=8s"
+        ],
+        "procost": 100,
+        "proisstrict": false,
+        "prokind": "f",
+        "prolang": "13619",
+        "proleakproof": false,
+        "proname": "backfill_identity_refresh_pending_v2",
+        "pronamespace": "15984556",
+        "pronargdefaults": 1,
+        "pronargs": 1,
+        "proowner": "16388",
+        "proparallel": "u",
+        "proretset": false,
+        "prorettype": "23",
+        "prorows": 0,
+        "prosecdef": false,
+        "prosqlbody": null,
+        "prosupport": "-",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v"
+      },
+      "sha256": "87ebac87ea08bea09b98f01ae123ed698e8252bcd6ff6abeb1cec3abf6ba5e25",
+      "signature": "astra_ingestion_v1.backfill_identity_refresh_pending_v2(integer)"
+    },
+    {
+      "metadata": {
+        "oid": "16050105",
+        "proacl": [
+          "postgres=X/postgres",
+          "astra_ingestion_rpc_owner_v1=X/postgres"
+        ],
+        "proallargtypes": null,
+        "proargdefaults": null,
+        "proargmodes": null,
+        "proargnames": [
+          "p_run",
+          "p_keys"
+        ],
+        "proargtypes": [
+          "25",
+          "3802"
+        ],
+        "probin": null,
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "procost": 100,
+        "proisstrict": false,
+        "prokind": "f",
+        "prolang": "13619",
+        "proleakproof": false,
+        "proname": "backfill_shared_refresh_v2",
+        "pronamespace": "15984556",
+        "pronargdefaults": 0,
+        "pronargs": 2,
+        "proowner": "16388",
+        "proparallel": "u",
+        "proretset": false,
+        "prorettype": "2278",
+        "prorows": 0,
+        "prosecdef": false,
+        "prosqlbody": null,
+        "prosupport": "-",
+        "protrftypes": null,
+        "provariadic": "0",
+        "provolatile": "v"
+      },
+      "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)"
+    },
+    {
+      "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d",
+      "oid": "16041463",
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "signature": "astra_ingestion_v1.backfill_maintain_v2(integer)"
+    },
+    {
+      "metadata_sha256": "437fe86234dcef0e89c0a5137707b3dc5da780c5a10dbd376f25e6c70e39a595",
+      "oid": "16041451",
+      "sha256": "0ccd4018d16e3ed3932176d2886fe78c2c1b442d70473d71e137d86e7b6dfb37",
+      "signature": "astra_ingestion_v1.backfill_recheck_page_v2(text,integer)"
+    }
+  ],
+  "target": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+  "target_metadata": {
+    "oid": "16040232",
+    "proacl": [
+      "postgres=X/postgres",
+      "astra_ingestion_rpc_owner_v1=X/postgres"
+    ],
+    "proallargtypes": null,
+    "proargdefaults": null,
+    "proargmodes": null,
+    "proargnames": [
+      "p_operation",
+      "p_payload"
+    ],
+    "proargtypes": [
+      "25",
+      "3802"
+    ],
+    "probin": null,
+    "proconfig": [
+      "search_path=\"\""
+    ],
+    "procost": 100,
+    "proisstrict": false,
+    "prokind": "f",
+    "prolang": "13619",
+    "proleakproof": false,
+    "proname": "backfill_dispatch_v2",
+    "pronamespace": "15984556",
+    "pronargdefaults": 0,
+    "pronargs": 2,
+    "proowner": "16388",
+    "proparallel": "u",
+    "proretset": false,
+    "prorettype": "3802",
+    "prorows": 0,
+    "prosecdef": false,
+    "prosqlbody": null,
+    "prosupport": "-",
+    "protrftypes": null,
+    "provariadic": "0",
+    "provolatile": "v"
+  }
+}

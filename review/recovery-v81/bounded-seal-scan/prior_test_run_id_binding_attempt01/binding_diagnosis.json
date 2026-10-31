@@ -1,0 +1,7 @@
+{
+  "cause": "Global fixture run-ID substitution changed the planner default literal inside its body without changing expected after-source hash",
+  "candidate_contains_default_run_literal_once": true,
+  "failed_test_sha256": "9228b336897b6f1143fd77f3c4a2234b815d3f3751720da416413892ef8c9b6d",
+  "production_candidate_modified": false,
+  "replacement_is_now_guard_row_only": true
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "astra.bounded-first-id-page-independent-read-review/1",
+  "reviewer": "/root/plugin_handoff_v78",
+  "status": "PASS_FOR_ONE_SEPARATELY_ROOT_SELECTED_READ_ONLY_OBSERVATION",
+  "inputs": {
+    "sql": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+      "sha256": "b0ed819f8e1f7aa44ab6bee40136459adc2b2d7b8646fea3a90df95b7795f798",
+      "bytes": 26129
+    },
+    "proposal": {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+      "sha256": "0c1732d93c9611c2386c1db19d91edf0ca3cb4b4dce18f0194b66743e87b6b9c"
+    },
+    "candidate_archive_sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e",
+    "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d"
+  },
+  "binding": {
+    "source_first_page_sha256": "0260e072bc7f18373f03af406701ce9d495e92cf7c9ee293909c94a947e5c0c4",
+    "bound_first_page_sha256": "dafff4be9a4c54c9895038a01c459fda809f221fed11835ccf99dfda3e2cfe7d",
+    "only_changes": "Remove INTO scan_ids and bind existing upper bound to text parameter $1; no other selector bytes change.",
+    "upper_lookup": "Exact global task-PK DESC LIMIT1 statement with only local variable renamed.",
+    "all17_current_function_oid_source_metadata_pins_exact": true,
+    "current_planner_is_unmodified_54c": true,
+    "two_immediate_global_PK_pins_exact": true,
+    "five_current_trigger_pins_and_origin_exact": true
+  },
+  "bounds": {
+    "read_only_repeatable_read": true,
+    "statement_seconds": 8,
+    "lock_seconds": 3,
+    "upper_id_lookup_max_rows": 1,
+    "first_page_limit": 500,
+    "selector_executions": 1,
+    "explain_count": 1,
+    "business_helper_calls": 0,
+    "business_writes": 0,
+    "explicit_application_or_advisory_locks": 0,
+    "raw_plan_max_bytes": 32768,
+    "safe_plan_nodes_max": 64,
+    "safe_json_max_bytes": 30000,
+    "raw_task_ID_or_bound_export": false,
+    "automatic_retry_budget": 0
+  },
+  "admission_and_transport": [
+    "Existing root owner/fence/finite lease/frozen cohort/member list/reporting/sole-active-run guards precede page reading. Missing or changed function/PK/trigger state fails closed.",
+    "Unsealed SEAL/cursors/expected979516/absent manifest and absent v81 runtime cursor are required for measurement.",
+    "Consistent stored sealed receipt skips page execution and is reported only as receipt consistency without independent count/hash validation.",
+    "Intentional P0001 prefix ASTRA_BOUNDED_SEAL_PAGE_PERF_V81 transports bounded sanitized evidence and aborts the read-only transaction; ordinary relation locks may occur.",
+    "Missing/truncated/nonterminal/unexpected output remains unresolved; no automatic replay. Root must journal this distinct one-read selection before dispatch."
+  ],
+  "interpretation_limits": [
+    "Measures actual first finite ID-page access only: no later cursor pages, per-ID existence/scope loops, real snapshot writes, final count/hash/sealer performance or acquisition recovery.",
+    "Top aggregate result_rows counts the array-aggregate result row, not IDs examined. Use actual bounded child nodes for page rows.",
+    "Upper-ID lookup is outside EXPLAIN timing; the full diagnostic has an8s bound, while execution_ms pertains only to the EXPLAINed page query.",
+    "Constant-bound connector-role planning does not recreate a worker cached plan or give a measured comparison with cancelled v79 whole-population work.",
+    "Success does not install anything, satisfy full performance qualification, or authorize retries/access changes."
+  ],
+  "review_actions": {
+    "external_calls": 0,
+    "production_writes": 0,
+    "new_tests": 0,
+    "frozen_file_edits": 0
+  }
+}

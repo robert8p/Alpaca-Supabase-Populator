@@ -1,0 +1,33 @@
+{
+  "review_id": "managed-massive-relay-v2-review-20261030",
+  "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+  "user_boundary": "Specific action-time confirmation is required for any new or expanded persistent relay access, credential configuration or security-sensitive change. Reusing the managed key is insufficient authority.",
+  "readback": [
+    {
+      "observed_at": "2026-10-30 09:16:12.731402+00",
+      "authenticated_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "relay_ledger": null,
+      "relay_helper": null,
+      "relay_probe_position": 0,
+      "relay_dispatch_position": 0,
+      "shared_refresh_source_sha256": "690916efcbf8cbed40163ebcfed9345e7c7a487c89f7c8d1ef1d9937cbb1742f",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T09:50:00Z",
+      "relay_hold": {
+        "scope": "Proposed Massive relay only",
+        "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+        "authority": "Latest controlling user instruction",
+        "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+        "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+        "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change"
+      }
+    }
+  ],
+  "relay_applied": false,
+  "edge_deployed": false,
+  "worker_integrated": false,
+  "live_relay_probe_sent": false,
+  "credential_value_read": false,
+  "secret_exported": false,
+  "independent_ingestion": "CONTINUES_WITH_EXISTING_WORKER_PERMISSIONS"
+}

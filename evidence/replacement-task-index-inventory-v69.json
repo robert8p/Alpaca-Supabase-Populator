@@ -1,0 +1,67 @@
+[
+  {
+    "observed_at": "2026-10-30 09:37:38.047757+00",
+    "indexname": "backfill_contract_enum_task_v2",
+    "indexdef": "CREATE INDEX backfill_contract_enum_task_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, id) WHERE (kind = 'alpaca_option_contracts'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047765+00",
+    "indexname": "backfill_contract_old_child_cursor_v2",
+    "indexdef": "CREATE INDEX backfill_contract_old_child_cursor_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, created_at, id) WHERE (kind = 'alpaca_option_bars'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047766+00",
+    "indexname": "backfill_daily_month_units_v2",
+    "indexdef": "CREATE INDEX backfill_daily_month_units_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'source_month'::text)), ((scope #>> '{member_ids,0}'::text[])), status) WHERE (family = 'D03'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047768+00",
+    "indexname": "backfill_identity_derived_member_v2",
+    "indexdef": "CREATE INDEX backfill_identity_derived_member_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope #>> '{member_ids,0}'::text[])), id) WHERE ((kind = ANY (ARRAY['derive_daily'::text, 'derive_intraday'::text])) AND (NOT (scope ? 'identity_refresh_of'::text)))"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047769+00",
+    "indexname": "backfill_identity_refresh_tasks_v2",
+    "indexdef": "CREATE INDEX backfill_identity_refresh_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status) WHERE (scope ? 'identity_refresh_of'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.04777+00",
+    "indexname": "backfill_reuse_children_v2",
+    "indexdef": "CREATE INDEX backfill_reuse_children_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'reuse_parent'::text))) WHERE (scope ? 'reuse_parent'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047771+00",
+    "indexname": "backfill_shared_action_tasks_v2",
+    "indexdef": "CREATE INDEX backfill_shared_action_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, id) WHERE (kind = 'alpaca_actions'::text)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047773+00",
+    "indexname": "backfill_tasks_family_turn_v2",
+    "indexdef": "CREATE INDEX backfill_tasks_family_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text]))"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047774+00",
+    "indexname": "backfill_tasks_family_v2",
+    "indexdef": "CREATE INDEX backfill_tasks_family_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, status)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047788+00",
+    "indexname": "backfill_tasks_provider_v2",
+    "indexdef": "CREATE INDEX backfill_tasks_provider_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, provider, status, kind)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.04779+00",
+    "indexname": "backfill_tasks_recovery_turn_v2",
+    "indexdef": "CREATE INDEX backfill_tasks_recovery_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['RETRY_WAIT'::text, 'RUNNING'::text]))"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047791+00",
+    "indexname": "backfill_tasks_runnable_v2",
+    "indexdef": "CREATE INDEX backfill_tasks_runnable_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, priority, next_retry_at, id)"
+  },
+  {
+    "observed_at": "2026-10-30 09:37:38.047792+00",
+    "indexname": "backfill_tasks_v2_pkey",
+    "indexdef": "CREATE UNIQUE INDEX backfill_tasks_v2_pkey ON astra_ingestion_v1.backfill_tasks_v2 USING btree (id)"
+  }
+]

@@ -1,0 +1,930 @@
+{
+  "objid": 2353466532,
+  "schema": "astra.gate-lock-readonly-capture/1",
+  "classid": 164451,
+  "samples": [
+    {
+      "sample": 1,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:47.574959+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 2,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:47.878593+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 3,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:48.180292+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 4,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:48.481667+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 5,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:48.783487+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 6,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:49.085064+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 7,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:49.386499+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 8,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:49.687548+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 9,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:49.988522+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 10,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        },
+        {
+          "pid": 78066,
+          "mode": "ExclusiveLock",
+          "granted": false,
+          "blockers": [
+            78064
+          ],
+          "waitstart": "2026-10-30T13:29:47.569357+00:00"
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:50.289597+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        },
+        {
+          "pid": 78066,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "advisory",
+          "xact_start": "2026-10-30T13:29:47.569041+00:00",
+          "query_shape": "DIRECT_ADVISORY_STATEMENT",
+          "query_start": "2026-10-30T13:29:47.569353+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.569353+00:00",
+          "backend_start": "2026-10-30T13:29:47.567603+00:00",
+          "wait_event_type": "Lock",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 11,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:50.590535+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 12,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:50.891434+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 13,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:51.192341+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 14,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:51.493229+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 15,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:51.794301+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 16,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:52.095252+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 17,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:52.396202+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 18,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:52.697116+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 19,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:52.998042+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    },
+    {
+      "sample": 20,
+      "gate_locks": [
+        {
+          "pid": 78064,
+          "mode": "ExclusiveLock",
+          "granted": true,
+          "blockers": [],
+          "waitstart": null
+        }
+      ],
+      "sampled_at": "2026-10-30T13:29:53.29928+00:00",
+      "related_activity": [
+        {
+          "pid": 78064,
+          "state": "active",
+          "query_id": null,
+          "wait_event": "PgSleep",
+          "xact_start": "2026-10-30T13:29:47.56497+00:00",
+          "query_shape": "OTHER_OR_REDACTED",
+          "query_start": "2026-10-30T13:29:47.565952+00:00",
+          "backend_type": "client backend",
+          "state_change": "2026-10-30T13:29:47.565953+00:00",
+          "backend_start": "2026-10-30T13:29:47.563141+00:00",
+          "wait_event_type": "Timeout",
+          "session_is_postgres": true,
+          "application_is_postgrest": false,
+          "session_is_authenticator": false
+        }
+      ],
+      "gate_limit_reached": false,
+      "activity_limit_reached": false
+    }
+  ],
+  "gate_key": 706314020261028,
+  "objsubid": 1,
+  "started_at": "2026-10-30T13:29:47.573166+00:00",
+  "finished_at": "2026-10-30T13:29:53.300202+00:00",
+  "sample_count": 20,
+  "output_limited": false,
+  "maximum_samples": 20,
+  "capture_complete": true,
+  "interval_seconds": 0.3,
+  "raw_query_returned": false,
+  "transaction_isolation": "repeatable read",
+  "transaction_read_only": "on",
+  "raw_headers_or_payload_returned": false
+}

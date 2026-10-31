@@ -1,0 +1,161 @@
+{
+  "version": "replacement-managed-relay-expired-approval-receipt-v2",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "status": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+  "original_user_approval": {
+    "state": "APPROVED_AT_ACTION_TIME",
+    "review_id": "managed-massive-relay-v2-review-20261030",
+    "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+    "confirmation_source": "EXPLICIT_USER_ACTION_TIME_CONFIRMATION",
+    "confirmation_ref": "Sentinel_2bd8b52631f081918ab63db69e720cb5",
+    "approved_at": "2026-10-30T09:53:00Z",
+    "approval_time_precision": "Minute reported by the current controlling user; conservatively represented at minute start.",
+    "confirmation_origin": "Referenced approval transcript explicitly adopted by the current controlling user instruction; no independent retrieval of another conversation is claimed.",
+    "review_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/blob/3ffd337e9c65b5ea33f96ab6436c0701684f435a/evidence/replacement-managed-relay-security-review-v2.md",
+    "candidate_applied": false,
+    "approved_migration_sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "approved_rpc_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "approved_edge_index_sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+    "approved_edge_module_sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+    "approved_python_adapter_sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+    "approved_worker_base_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "approved_worker_integration_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "approved_worker_source_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "scope_reconciliation": "All20 frozen review files match; canonical scope7e253852..., live existing Edgeversion1/bundle04def722..., workerbase90d048..., outerRPC0616b84... unchanged. Relay table/helper absent before approval.",
+    "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+    "source_cost_security_restrictions": "Preserve exact fixed3000/run/dates/providers/plans; six approved GET routes only; no new subscription, credential configuration, secret export, controller or service.",
+    "previous_state": "AWAITING_ACTION_TIME_CONFIRMATION"
+  },
+  "installation_deadline": "2026-10-30T10:08:00Z",
+  "approval_recorded_at": "2026-10-30T09:59:13.879655+00:00",
+  "approval_audit": [
+    {
+      "id": 12,
+      "action": "MASSIVE_RELAY_ACTION_TIME_APPROVAL_RECORDED",
+      "recorded_at": "2026-10-30 09:59:13.8906+00"
+    },
+    {
+      "id": 13,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 09:59:13.891195+00"
+    }
+  ],
+  "installation_attempt": {
+    "attempts": 1,
+    "attempted_at": "2026-10-30T09:59:47.861000Z",
+    "transport": "supabase_market_data_cloud_apply_migration",
+    "migration_name": "astra_backfill_massive_relay_v2",
+    "sql_sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "outcome": "PRE_DDL_PREFLIGHT_REJECTION",
+    "sqlstate": "P0001",
+    "message": "Managed relay migration-history suffix has unreviewed SQL",
+    "line": "inline_code_block line65 at RAISE"
+  },
+  "first_authoritative_readback": {
+    "observed_at": "2026-10-30 10:01:20.682094+00",
+    "relay_ledger": null,
+    "relay_helper": null,
+    "authenticated_dispatch_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "candidate_applied": false,
+    "approved_at": "2026-10-30T09:53:00Z"
+  },
+  "read_only_transport_proof": {
+    "migration_wrappers": {
+      "both_existing_connectors_tested": true,
+      "method": "Intentional exception containing only current_query suffix metadata before any DDL or migration-history write",
+      "actual_final_character_ascii": 59,
+      "actual_terminal_lf": false,
+      "expected_final_character_ascii": 10,
+      "probe_is_install_attempt": false
+    },
+    "raw_sql_connectors": {
+      "both_tested": true,
+      "observed_suffix": "Appended source/user/date audit comments; account identifiers omitted",
+      "raw_relay_install_attempted": false
+    },
+    "read_only_probe_outcomes": "Intentional P0001 exceptions, no relay DDL or grants"
+  },
+  "expired_hold_audit": [
+    {
+      "id": 14,
+      "action": "MASSIVE_RELAY_HELD_TRANSPORT_AND_APPROVAL_EXPIRY",
+      "recorded_at": "2026-10-30 10:11:10.683584+00"
+    }
+  ],
+  "latest_user_alignment_and_lease_audit": [
+    {
+      "id": 15,
+      "action": "MASSIVE_RELAY_UNCHANGED_PACKAGE_HOLD_RECONCILED",
+      "recorded_at": "2026-10-30 10:16:48.427547+00"
+    },
+    {
+      "id": 16,
+      "action": "IMPLEMENTATION_LEASE_RENEWED",
+      "recorded_at": "2026-10-30 10:16:48.427913+00"
+    }
+  ],
+  "latest_authoritative_readback": {
+    "observed_at": "2026-10-30 10:17:32.595037+00",
+    "relay_ledger": null,
+    "relay_helper": null,
+    "relay_confirmation": {
+      "scope": "Proposed Massive relay only",
+      "state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH",
+      "held_at": "2026-10-30T10:11:10.67432+00:00",
+      "authority": "Latest controlling user instruction",
+      "review_id": "managed-massive-relay-v2-review-20261030",
+      "review_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/blob/3ffd337e9c65b5ea33f96ab6436c0701684f435a/evidence/replacement-managed-relay-security-review-v2.md",
+      "approved_at": "2026-10-30T09:53:00Z",
+      "next_action": "Keep the exact reviewed package unchanged. Complete read-only diagnosis and feasible preparation for an existing supported byte-preserving transport. Request fresh action-time renewal only after the unchanged package is ready to execute; renewal alone does not resolve transport incompatibility.",
+      "recorded_at": "2026-10-30T07:23:16.318325+00:00",
+      "failure_code": "REVIEWED_WRAPPER_TERMINAL_NEWLINE_MISMATCH",
+      "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+      "failure_detail": "Pinned SQL expects a final LF after migration wrapper commit; current connector ends with semicolon ASCII59 and no LF. Raw SQL connectors append unreviewed audit comments.",
+      "previous_state": "AWAITING_ACTION_TIME_CONFIRMATION",
+      "approval_redated": false,
+      "confirmation_ref": "Sentinel_2bd8b52631f081918ab63db69e720cb5",
+      "candidate_applied": false,
+      "confirmation_origin": "Referenced approval transcript explicitly adopted by the current controlling user instruction; no independent retrieval of another conversation is claimed.",
+      "confirmation_source": "EXPLICIT_USER_ACTION_TIME_CONFIRMATION",
+      "approval_recorded_at": "2026-10-30T09:59:13.879655+00:00",
+      "scope_reconciliation": "All20 frozen review files match; canonical scope7e253852..., live existing Edgeversion1/bundle04def722..., workerbase90d048..., outerRPC0616b84... unchanged. Relay table/helper absent before approval.",
+      "independent_ingestion": "CONTINUE_WITH_EXISTING_PERMISSIONS",
+      "installation_deadline": "2026-10-30T10:08:00Z",
+      "approval_time_precision": "Minute reported by the current controlling user; conservatively represented at minute start.",
+      "latest_user_instruction": "Preserve original 09:53 approval, its 10:08 expiry, no-installation evidence and hold. No re-dating, extension, validator edit, new package, secret export or new trust relationship. Continue independent ingestion.",
+      "approved_migration_sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+      "next_action_reconciled_at": "2026-10-30T10:16:48.42137+00:00",
+      "approved_edge_index_sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+      "approved_edge_module_sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+      "approved_worker_base_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+      "approved_rpc_dispatch_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+      "approved_worker_source_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "approved_python_adapter_sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841",
+      "prohibited_before_confirmation": "New or expanded persistent access, credential configuration, or security-sensitive relay change",
+      "source_cost_security_restrictions": "Preserve exact fixed3000/run/dates/providers/plans; six approved GET routes only; no new subscription, credential configuration, secret export, controller or service.",
+      "approved_worker_integration_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e"
+    },
+    "authenticated_dispatch_definition_observed_at": "2026-10-30 10:19:02.486772+00",
+    "authenticated_dispatch_definition_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96"
+  },
+  "preserved_boundaries": {
+    "approval_redated": false,
+    "approval_extended": false,
+    "package_changed": false,
+    "validator_changed": false,
+    "relay_installed": false,
+    "edge_deployed": false,
+    "worker_integrated": false,
+    "secrets_read_or_exported": false,
+    "new_credentials_or_trust_relationships": false,
+    "independent_ingestion": "CONTINUES_WITH_EXISTING_PERMISSIONS"
+  },
+  "readiness": {
+    "ready_to_execute": false,
+    "exact_blocker": "No currently available authorized transport has demonstrated preservation of the exact reviewed raw SQL or exact reviewed migration wrapper.",
+    "next_action": "Finish native read-only probe/runbook preparation. Prove an existing authorized byte-preserving production transport before requesting fresh action-time renewal for the unchanged package.",
+    "renewal_alone_resolves_transport": false
+  },
+  "evidence_policy": "Original approval and expired hold are retained. Current user explicitly adopted the transcript; no independent retrieval of another conversation is claimed. Credential values and account identifiers are omitted."
+}

@@ -1,0 +1,416 @@
+{
+  "blocking_findings": [],
+  "candidate_evolution": {
+    "additional_dependency_current_equality_observed_at": "2026-10-30T22:51:53.986682Z",
+    "nine_pin_bytes_retained_at": "review/recovery-v78/planner-seal/prior_nine_pin_candidate/",
+    "nine_pin_review_sha256": "07ce0ef86c18651b6978ae867ef57bfa2abd224b03835bd0086bef768846314c",
+    "thirteen_pin_revision": "Only adds four unchanged, freshly source/OID/full-metadata-matched coverage/hash/date dependencies and changes pin cardinality9 to13; original nine pins and executable helper bodies unchanged."
+  },
+  "diagnosis": {
+    "causal_conclusion": "Old enumeration/more/completeness predicates require absent snapshots for dynamic tasks that the exact installed snapshot_task intentionally rejects. Presence of any such row keeps the old more predicate true. The same mismatch also blocks direct seal completeness.",
+    "guard_passed": true,
+    "limitations": [
+      "Samples are not population counts, first-batch order, timing measurements, or proof of whole-plan completeness.",
+      "No identity_refresh_of row was returned in this bounded production sample. Inclusion in the repair is exact alignment with the already installed exclusion, independently tested locally.",
+      "Actual acquired-page progress and full data-family completion are separate from sealing planned units."
+    ],
+    "positive_classes": [
+      {
+        "candidate_limit_reached": true,
+        "candidates_seen": 9,
+        "class": "retained_identity",
+        "old_predicate_missing_snapshot_examples": 9
+      },
+      {
+        "candidate_limit_reached": true,
+        "candidates_seen": 9,
+        "class": "retained_massive_archive",
+        "old_predicate_missing_snapshot_examples": 9
+      }
+    ],
+    "production_affected_rows_observed_at": "2026-10-30T22:35:48.355802+00:00",
+    "returned_positive_rows": 16,
+    "run": {
+      "expected_static_count": 979516,
+      "fence": 1,
+      "id": "fixed3000-20250901-20260731-v1-20261030",
+      "lease_until": "2026-10-30T23:00:00Z",
+      "owner": "root-replacement-20261030T042603Z",
+      "phase": "SEAL",
+      "planning_complete": false,
+      "preexisting_static_count": 0,
+      "status": "ACTIVE"
+    },
+    "source_pin_equality_observed_at": "2026-10-30T22:27:39Z"
+  },
+  "engineering_review_passed": true,
+  "external_writes_by_reviewer": 0,
+  "independent_actual_postgres": {
+    "cases": {
+      "dynamic_starvation_and_500_cap": {
+        "business_rows_unchanged": true,
+        "ignored_dynamic_rows": 501,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "only_real_static_coverage_added": true,
+        "repaired_calls": [
+          {
+            "more": true,
+            "snapshotted": 500
+          },
+          {
+            "more": false,
+            "snapshotted": 1
+          },
+          {
+            "more": false,
+            "snapshotted": 0
+          }
+        ],
+        "retained_preexisting_plan_unit": true,
+        "unsnapshotted_real_static_rows": 501
+      },
+      "existing_dynamic_exclusions": {
+        "business_and_plan_state_unchanged": true,
+        "old": {
+          "more": false,
+          "snapshotted": 0
+        },
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "identity_refresh_of": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "ordinary_plan_static_false": {
+        "business_rows_unchanged": true,
+        "no_manifest_or_completion_written": true,
+        "seal_refused_missing_static_sqlstate": "AI005",
+        "snapshotted": {
+          "more": false,
+          "snapshotted": 1
+        }
+      },
+      "retained_identity": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      },
+      "retained_massive_archive": {
+        "business_rows_and_nonzero_task_counters_unchanged": true,
+        "helper_metadata_unchanged": true,
+        "old": {
+          "more": true,
+          "snapshotted": 0
+        },
+        "preexisting_plan_units_and_coverage_unchanged": true,
+        "repaired": {
+          "more": false,
+          "snapshotted": 0
+        }
+      }
+    },
+    "cleanup_readback_passed": true,
+    "passed": true,
+    "seconds": 2.729,
+    "source_equality_asserted": true,
+    "tests": 6
+  },
+  "inputs": [
+    {
+      "bytes": 16070,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_v78.sql",
+      "sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef"
+    },
+    {
+      "bytes": 15444,
+      "path": "sql/astra_backfill_seal_dynamic_exclusions_restore_v78.sql",
+      "sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3"
+    },
+    {
+      "bytes": 19352,
+      "path": "tests/ingestion/test_backfill_seal_dynamic_exclusions_v78.py",
+      "sha256": "cbdf349d2e246162b27d37253e4c37846b2f3fbf31ea6f170ad424db6b179817"
+    },
+    {
+      "bytes": 24285,
+      "path": "review/recovery-v78/planner-seal/candidate_archive_v78.json",
+      "sha256": "cb1b9ac22017e21e712c6e7ba5e995b0b5805a5fcaaf946403706ad2db598850"
+    },
+    {
+      "bytes": 3942,
+      "path": "review/recovery-v78/planner-seal/qualify_producer_v78.py",
+      "sha256": "caa0f4677263d1c462896fd36be8885945c9cdd7a0da84c300679076f8768cea"
+    },
+    {
+      "bytes": 30637,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt01_v78.json",
+      "sha256": "5a05766778f40d394bd033ee3fb65ef8cae723af1c48feed8686af08eb4d50ed"
+    },
+    {
+      "bytes": 37678,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt02_v78.json",
+      "sha256": "ece8ba58339c7d09e07a638ef5198917781709a06ffb84210090d4a0dc4f5abd"
+    },
+    {
+      "bytes": 38178,
+      "path": "review/recovery-v78/planner-seal/producer_qualification_attempt03_v78.json",
+      "sha256": "f233021921770df14ca6585c2a5aa9d4116a46a1de7023829b59c1a0cde6e60e"
+    },
+    {
+      "bytes": 2406,
+      "path": "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+      "sha256": "f1e6c7f27d61c5cdb7eab906c7cd3d78dfe8d9d2274db6646f92193b603be141"
+    },
+    {
+      "bytes": 2922,
+      "path": "review/recovery-v78/planner-seal/integrity_helper_hash_readback_v78.json",
+      "sha256": "102d986b56c905f540e05a4c6255b5f64ce1316262b9562b79e03bd800a175fa"
+    },
+    {
+      "bytes": 9729,
+      "path": "review/recovery-v78/planner-seal/affected_row_classification_evidence_v78.json",
+      "sha256": "2faae604a9ddb3397a033e6c6ac9d0790867881537dbd927ce316747f2362f83"
+    },
+    {
+      "bytes": 10959,
+      "path": "review/recovery-v78/planner-seal-independent/independent_candidate_review_v78.json",
+      "sha256": "07ce0ef86c18651b6978ae867ef57bfa2abd224b03835bd0086bef768846314c"
+    },
+    {
+      "bytes": 7769,
+      "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+      "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0"
+    },
+    {
+      "bytes": 10465,
+      "path": "review/recovery-v78/planner-seal-independent/retained_integrity_helper_definitions_v78.json",
+      "sha256": "3be55d9380f286750d7c528ce56ef5fcf32ce98f0236ba0816e1c41a766d0174"
+    },
+    {
+      "bytes": 17102,
+      "path": "review/recovery-v78/planner-seal-independent/qualify_snapshot_predicates_independent_v78.py",
+      "sha256": "4451e1214ebe59e67713eafeb95de32a82bbac6595505f2006f285005e721a6e"
+    },
+    {
+      "bytes": 11369,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt01_v78.json",
+      "sha256": "b62f7443bed9e110a9570dc765434e679a9f6f8b20ea56e8e9050157ff2a6ee3"
+    },
+    {
+      "bytes": 17780,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt02_v78.json",
+      "sha256": "8c489cce169ef0f62353dd9308913f853de59a2932e0d08c571087d845d7f66a"
+    },
+    {
+      "bytes": 14617,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_postgres_attempt03_v78.json",
+      "sha256": "eba04a321121c362f82cc142de875190867ab88dd758d1d8e369bfc1f5f04c4d"
+    },
+    {
+      "bytes": 242,
+      "path": "review/recovery-v78/planner-seal-independent/focused_snapshot_cleanup_readback_v78.json",
+      "sha256": "8108b74ced89891686b184246d9ebe359b57696472540e309b8d82542b69b4a3"
+    }
+  ],
+  "limitations": [
+    "Synthetic14-unit full workflow proves planner/seal state transitions using the actual frozen3000 members and real integrity helpers; it does not acquire provider data or certify complete dataset coverage.",
+    "Production sample confirms offending dynamic rows but not total dynamic counts, first-batch order, source-page progress or runtime phase costs.",
+    "Production-scale scanning/hash aggregation near979516 expected static tasks is not performance-qualified by these small fixtures; retain bounded execution and diagnose separately if needed.",
+    "A real late static task may reveal an expected-count mismatch after this logical blocker clears. Preserve expected count and reconcile task provenance; do not force equality.",
+    "Worker execution, deployed v76/v77 repairs, fixed membership/source/cost/security restrictions, dot-only reporting and held v75 remain unchanged."
+  ],
+  "package": {
+    "all_oids_metadata_privileges_unchanged": true,
+    "candidate_archive_sha256": "cb1b9ac22017e21e712c6e7ba5e995b0b5805a5fcaaf946403706ad2db598850",
+    "candidate_bodies_sha256": [
+      "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1"
+    ],
+    "forward_sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef",
+    "inverse_sha256": "45905d9e4f175a57af0fec8840c912f5896f6c7f09b56591b1486268346289c3",
+    "new_grants_roles_operations_credentials_subscriptions_data_sources": 0,
+    "only_two_function_sources_change": true,
+    "predicate_replacements": 3,
+    "protected_function_pins": 13,
+    "target_functions": [
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)"
+    ],
+    "worker_runtime_or_deployment_changes": 0
+  },
+  "preserved_semantics": [
+    "No plan_static filter; ordinary staticfalse remains required.",
+    "No changes to snapshot_task eligibility, expected count, plan hash, exact calendars, workflow coverage or representative-map validation.",
+    "All eleven unchanged protected function sources, including private dispatcher dbe8, are retained.",
+    "Normal runtime helper execution gains no implementation-lease gate."
+  ],
+  "producer_qualification_independently_reviewed": {
+    "actual_postgres_tests": 9,
+    "all_published_dependency_blobs_match": true,
+    "all_thirteen_normalized_sources_exact": true,
+    "cases": {
+      "count_hash": {
+        "count_rejected": true,
+        "hash_rejected": true,
+        "no_business_mutation": true,
+        "planner_expected_count_rejected": true
+      },
+      "forward_inverse": {
+        "forward_and_inverse_replay_refused": true,
+        "oids_full_metadata_business_rows_unchanged": true,
+        "two_sources_only": true
+      },
+      "full_seal": {
+        "dynamic_rows_and_existing_plan_unchanged": true,
+        "inverse_preserves_committed_manifest": true,
+        "one_manifest": true,
+        "real_coverage_checker_and_representative_map": true,
+        "repeat_no_effect": true,
+        "synthetic_static_workflows": 14
+      },
+      "initial_snapshot": {
+        "after": {
+          "breadth_sessions": 0,
+          "expected_static_task_count": 319,
+          "inserted_tasks": 319,
+          "members_admitted_this_call": 1,
+          "next_selection_order": 2,
+          "phase": "MEMBERS",
+          "plan_complete": false,
+          "planned_members": 1,
+          "run_id": "planner-test-25cbf5da74b04e009cf73ae14a290722",
+          "state": "PLAN_ADVANCED"
+        },
+        "before": {
+          "plan_complete": false,
+          "snapshot": {
+            "more": true,
+            "snapshotted": 0
+          },
+          "state": "SNAPSHOTTING_EXISTING_TASKS"
+        },
+        "ordinary_planner_invoked": true
+      },
+      "installation_authority": {
+        "no_mutation": true,
+        "rejected_variants": [
+          "owner",
+          "null_lease",
+          "infinite_lease",
+          "expired_lease",
+          "wrong_phase",
+          "already_sealed",
+          "cursor",
+          "missing_reporting",
+          "fence"
+        ]
+      },
+      "invalid_representative_map": {
+        "no_mutation": true,
+        "real_map_validation_rejected": true
+      },
+      "missing_coverage": {
+        "business_rows_unchanged": true,
+        "missing_evidence_nonempty": true,
+        "old": {
+          "plan_complete": false,
+          "snapshot": {
+            "more": true,
+            "snapshotted": 0
+          },
+          "state": "SNAPSHOTTING_EXISTING_TASKS"
+        },
+        "repaired_state": "INCOMPLETE_MEMBER_DATE_WORKFLOWS"
+      },
+      "partial_missing_and_metadata_drift": {
+        "metadata_drift_rejected": true,
+        "originals_restored": true,
+        "partial_missing_signature_rejected": true
+      },
+      "postguard_rollback": {
+        "all_thirteen_definitions_metadata_and_rows_rolled_back": true,
+        "forced_postcondition_failure": true,
+        "real_ddl_reached": true
+      }
+    },
+    "cleanup_schema_absent": true,
+    "database_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "new_candidate_files_match_tested_bytes": true,
+    "passed": true,
+    "published_08bea_dependency_files": 75,
+    "reviewed_test_implementation": "Actual fixture functions and canonical frozen3000 cohort/calendar; only fixture schema/roles/OIDs/run identifiers and local metadata fingerprints adapted. No replacement stubs for coverage, map checks, snapshot or seal. The postguard failure is injected only into a test copy of the expected after-pin, reaches real DDL, and confirms full transactional rollback.",
+    "seconds": 13.084,
+    "source_binding_tests": 1,
+    "tests": 10
+  },
+  "production_applied_by_reviewer": false,
+  "production_calls_by_reviewer": 0,
+  "publication_and_application_conditions": [
+    "Root retains sole production/controller authority and reconciles legitimate current owner, successor/stops and any uncertain operation before writes.",
+    "Publish/review the exact forward/inverse/test/evidence bytes separately from held v75; do not retry that held operation.",
+    "Immediately before applying, compare current run/owner/fence/finite lease and all13 pins; apply only if the guarded unchanged package is supported by the existing connector.",
+    "Reconcile a lost SQL acknowledgement by exact source/OID/metadata readback before any retry; mixed or unknown state is not a replay authorization.",
+    "Use the existing ordinary planner to reach unchanged static-count/hash/calendar/coverage/map gates; do not rewrite expected count or mark completion manually.",
+    "Read back legitimate planner outcome/manifest/accounting and fresh acquisition evidence before claiming runtime recovery or mission completion."
+  ],
+  "recommendation": "No remaining engineering blocker for this exact narrow SQL package. Root can proceed through existing publication and ownership gates without a new user action; this review itself performs no production write.",
+  "restore_controls": [
+    "Requires exact candidate bodies and same current finite owner/scope/metadata guards.",
+    "Restores exact retained two helper definitions; cannot replay after restoration.",
+    "Does not require unsealed metadata so a committed seal is preserved.",
+    "Writes no task/run/manifest/accounting rows; full run equality check remains."
+  ],
+  "retained_failed_attempts": [
+    {
+      "attempt": 1,
+      "cause": "Additional local loopback admission compared inet::text including CIDR suffix. Corrected to host(inet_server_addr()); exact route unchanged.",
+      "tests": 0
+    },
+    {
+      "attempt": 2,
+      "cause": "Synthetic retained-identity/S02 rows omitted already required shared-cohort/preserve-acquisition markers. Existing guards refused admission. Added valid exact synthetic scopes; no guard weakened.",
+      "errors": 3,
+      "tests": 6
+    },
+    {
+      "attempt": 1,
+      "cause": "Disposable subclass omitted existing full_query helper alias; setup failed, one source test passed, zero PostgreSQL integration cases executed. Corrected fixture composition only; original receipt and cleanup retained.",
+      "track": "producer"
+    }
+  ],
+  "reviewed_installation_boundaries": [
+    "Exact existing run, owner and fence1; ACTIVE; finite lease with over one minute remaining.",
+    "Exact frozen cohort/manifest/window, actual3000 member count and ordered member-id SHA, dot-only reporting.",
+    "Forward requires SEAL, planning_complete=false, member cursor3001 and breadth cursor230.",
+    "No ownership renewal, new controller, task insertion, source request, grant, credential, role, operation, timeout expansion or retry change.",
+    "Existing transaction advisory gate and bounded8s statement/3s lock settings.",
+    "Post-install thirteen exact pins and unchanged complete run row.",
+    "Every expected function comparison is COALESCE(...,false); count is exactly13 and null/missing partial joins reject."
+  ],
+  "reviewer": "/root/plugin_handoff_v78",
+  "schema": "astra.independent-planner-seal-final-review/1",
+  "status": "PASS_FOR_EXACT_GUARDED_SQL_PACKAGE_SUBJECT_TO_ROOT_CURRENT_AUTHORITY_AND_PUBLICATION"
+}

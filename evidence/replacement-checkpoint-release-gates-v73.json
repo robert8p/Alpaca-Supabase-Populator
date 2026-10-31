@@ -1,0 +1,54 @@
+{
+  "schema": "astra.checkpoint-release-gates/1",
+  "commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+  "actual_runs": [
+    {
+      "id": 41085482074,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "run_attempt": 1,
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41085482074"
+    },
+    {
+      "id": 41085482067,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "run_attempt": 1,
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41085482067"
+    },
+    {
+      "id": 41085471233,
+      "name": "release-gate",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a3bc0520e624054b278e46682b04cebb33e9b677",
+      "run_attempt": 1,
+      "url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/41085471233"
+    }
+  ],
+  "ingestion": {
+    "run_id": 41085482067,
+    "job_id": 124165400154,
+    "tests": 679,
+    "skipped": 0,
+    "seconds": 376.873,
+    "result": "OK",
+    "postgresql": "17.11",
+    "summary_lines": [
+      "2026-10-30T16:04:18.9415082Z Ran 679 tests in 376.873s",
+      "2026-10-30T16:04:18.9415469Z OK"
+    ]
+  },
+  "limitations": [
+    "Exactly three actual workflow runs were returned; no ingestion push run is claimed.",
+    "This checkpoint changes evidence and canonical documentation only; it does not deploy a runtime repair."
+  ]
+}

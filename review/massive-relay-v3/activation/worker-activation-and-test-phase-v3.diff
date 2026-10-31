@@ -1,0 +1,83 @@
+--- a/astra_ingestion/backfill_worker_v2.py
++++ b/astra_ingestion/backfill_worker_v2.py
+@@ -331,6 +331,10 @@
+     provider = BackfillProvider(settings.api_key, settings.secret_key,
+                                 os.environ.get("MASSIVE_API_KEY", os.environ.get("POLYGON_API_KEY", "")),
+                                 paper=os.environ.get("APCA_API_BASE_URL", "https://paper-api.alpaca.markets") != "https://api.alpaca.markets")
++    if settings.api_url:
++        from .backfill_massive_relay_v2 import MassiveRelay, ProviderWithManagedMassive
++        provider = ProviderWithManagedMassive(provider, MassiveRelay(
++            settings.api_url, settings.publishable_key, settings.rpc_token))
+     return BackfillWorker(store, provider, lease_seconds=settings.lease_seconds,
+                           source_revision=os.environ.get("RENDER_GIT_COMMIT", "local-unversioned"),
+                           planning_enabled=True, plan_member_limit=5,
+--- frozen/tests/ingestion/test_backfill_massive_relay_integration_review_v2.py
++++ tests/ingestion/test_backfill_massive_relay_integration_review_v2.py
+@@ -1,4 +1,4 @@
+-"""Qualify the root-owned proposed patch without editing the production worker."""
++"""Qualify the authorized active worker against the immutable reviewed patch/base."""
+ from hashlib import sha256
+ import difflib
+ import json
+@@ -16,6 +16,7 @@
+ 
+ ROOT=Path(__file__).resolve().parents[2]
+ REVIEW=ROOT/'review/massive-relay-v2'
++BASELINE=ROOT/'review/massive-relay-v3/activation/baseline_backfill_worker_v2.py'
+ 
+ 
+ class RelayIntegrationReviewTests(unittest.TestCase):
+@@ -23,25 +24,27 @@
+     def setUpClass(cls):
+         cls.module=types.ModuleType('astra_ingestion._managed_relay_integration_review')
+         cls.module.__package__='astra_ingestion'
+-        source=(REVIEW/'backfill_worker_v2.py.proposed').read_text()
+-        exec(compile(source,'review-only-worker-proposal','exec'),cls.module.__dict__)
++        source=(ROOT/'astra_ingestion/backfill_worker_v2.py').read_text()
++        exec(compile(source,'authorized-active-worker','exec'),cls.module.__dict__)
+ 
+-    def test_exact_patch_proposed_file_and_unchanged_worker_match_review_hashes(self):
++    def test_exact_patch_frozen_base_and_active_worker_match_review_hashes(self):
+         metadata=json.loads((REVIEW/'worker-integration-review.json').read_text())
+-        base=(ROOT/'astra_ingestion/backfill_worker_v2.py').read_bytes()
++        base=BASELINE.read_bytes()
++        active=(ROOT/'astra_ingestion/backfill_worker_v2.py').read_bytes()
+         proposed=(REVIEW/'backfill_worker_v2.py.proposed').read_bytes()
+         diff=(REVIEW/'worker-integration.patch').read_bytes()
+         self.assertEqual(sha256(base).hexdigest(),metadata['base_worker_sha256'])
+         self.assertEqual(sha256(proposed).hexdigest(),metadata['proposed_worker_sha256'])
++        self.assertEqual(active,proposed)
+         self.assertEqual(sha256(diff).hexdigest(),metadata['patch_sha256'])
+         actual=''.join(difflib.unified_diff(base.decode().splitlines(True),proposed.decode().splitlines(True),
+             fromfile='a/astra_ingestion/backfill_worker_v2.py',tofile='b/astra_ingestion/backfill_worker_v2.py'))
+         self.assertEqual(actual,diff.decode())
+-        sql=(ROOT/'sql/astra_backfill_massive_relay_v2.sql').read_text()
++        sql=(ROOT/'review/massive-relay-v3/candidates/sql/astra_backfill_massive_relay_v3.sql').read_text()
+         for value in (metadata['base_worker_sha256'],metadata['proposed_worker_sha256'],metadata['patch_sha256']):
+             self.assertIn(value,sql)
+ 
+-    def test_proposed_constructor_uses_actual_auth_readiness_without_starting_queue_or_provider_fetch(self):
++    def test_active_constructor_uses_actual_auth_readiness_without_starting_queue_or_provider_fetch(self):
+         settings=Settings(api_url=PROJECT_URL,publishable_key=relay_fixture.PUBLIC,rpc_token=relay_fixture.TOKEN,
+             api_key='fixture-alpaca',secret_key='fixture-alpaca-secret')
+         for response,ready in [({'ready':True},True),({'ready':False},False),(URLError('unavailable'),False)]:
+@@ -58,7 +61,7 @@
+                 self.assertEqual(worker.plan_member_limit,5);self.assertEqual(len(opener.calls),1)
+                 self.assertEqual(json.loads(opener.calls[0][0].data),{'action':'probe'})
+ 
+-    def test_proposed_local_database_and_direct_massive_paths_do_not_send_relay_probe(self):
++    def test_active_local_database_and_direct_massive_paths_do_not_send_relay_probe(self):
+         with patch.dict(os.environ,{},clear=True),patch('astra_ingestion.backfill_massive_relay_v2.MassiveRelay') as constructor:
+             worker=self.module.from_settings(object(),Settings(api_key='fixture',secret_key='fixture'))
+             constructor.assert_not_called()
+--- frozen/tests/ingestion/test_backfill_massive_relay_postgres_v2.py
++++ tests/ingestion/test_backfill_massive_relay_postgres_v2.py
+@@ -62,7 +62,7 @@
+             approved_edge_index_sha256=sha256((ROOT/'supabase/functions/population-top3000-news-v1/index.ts').read_bytes()).hexdigest(),
+             approved_edge_module_sha256=sha256((ROOT/'supabase/functions/population-top3000-news-v1/replacement-relay-v2.mjs').read_bytes()).hexdigest(),
+             approved_python_adapter_sha256=sha256((ROOT/'astra_ingestion/backfill_massive_relay_v2.py').read_bytes()).hexdigest(),
+-            approved_worker_base_sha256=sha256((ROOT/'astra_ingestion/backfill_worker_v2.py').read_bytes()).hexdigest(),
++            approved_worker_base_sha256=sha256((ROOT/'review/massive-relay-v3/activation/baseline_backfill_worker_v2.py').read_bytes()).hexdigest(),
+             approved_worker_integration_sha256=sha256((ROOT/'review/massive-relay-v2/worker-integration.patch').read_bytes()).hexdigest(),
+             approved_worker_source_sha256=sha256((ROOT/'review/massive-relay-v2/backfill_worker_v2.py.proposed').read_bytes()).hexdigest())
+         invalid=[{},*[{**cls.synthetic_approved,**change} for change in (

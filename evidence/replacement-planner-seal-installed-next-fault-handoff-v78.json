@@ -1,0 +1,438 @@
+{
+  "schema": "astra.planner-seal-installed-next-fault-handoff/1",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "latest_audit_at_preparation": 116,
+  "latest_audit_recorded_at": "2026-10-30T23:34:46.332973Z",
+  "lease_until": "2026-10-30T23:55:00Z",
+  "branch_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "parent_and_unchanged_worker": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+  "v78_installed": true,
+  "installation_dispatches": 1,
+  "migration_history": [
+    {
+      "observed": [
+        {
+          "version": "20261030232543",
+          "expected_bytes": 16070,
+          "migration_name": "astra_backfill_seal_dynamic_exclusions_v78",
+          "expected_sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef",
+          "statement_count": 1,
+          "array_dimensions": 1,
+          "array_lower_bound": 1,
+          "single_statement_bytes": 16070,
+          "single_statement_sha256": "40adfd143cd203f738770f6f4f243e57c6c0af564f73eec70555b20fe62fbbef"
+        }
+      ],
+      "direction": "FORWARD",
+      "latest_version": "20261030232543",
+      "migration_name": "astra_backfill_seal_dynamic_exclusions_v78",
+      "rows_seen_up_to_two": 1,
+      "unique_exact_history": true
+    },
+    {
+      "observed": [],
+      "direction": "INVERSE",
+      "latest_version": null,
+      "migration_name": "astra_backfill_seal_dynamic_exclusions_restore_v78",
+      "rows_seen_up_to_two": 0,
+      "unique_exact_history": false
+    }
+  ],
+  "all13_after_pins_verified": true,
+  "ci": {
+    "receipt_sha256": "97da22d792934b60587b76dde5b9907056490d1ba2c9f123e35048c943a13689",
+    "actual_runs": 4,
+    "dedicated_tests_each": 739,
+    "dedicated_failures_errors_skips_each": 0,
+    "all10newcases_each_once": true,
+    "postgres_version": "17.11",
+    "general_release_passed_each": 738,
+    "general_release_skipped_each": 391,
+    "general_skips_do_not_satisfy_dedicated_gate": true
+  },
+  "progress": {
+    "observed_at": "2026-10-30 23:29:47.484203+00",
+    "progress": {
+      "pages": 13326,
+      "missing": 0,
+      "readbacks": 13326,
+      "mismatches": 0,
+      "source_bytes": 1055906724,
+      "latest_commit": "2026-10-30T23:25:43.686927+00:00",
+      "post_v77_pages": 3723,
+      "post_v77_matches": 3723,
+      "post_install_pages": 0,
+      "records_or_pointers": 1497013,
+      "post_install_matches": 0,
+      "post_v77_provider_pages": 2288,
+      "post_install_provider_pages": 0
+    },
+    "bounded_complete": true,
+    "source_samples": [
+      {
+        "kind": "alpaca_stock_bars",
+        "family": "D02",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-c533dd6e77a622f958f78b811f1438442ed5ee26ead7d8bb12804648a37c575b",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T23:25:43.315655+00:00",
+        "generation": 1,
+        "body_sha256": "950a266d8acb26270b3333c4cf3a5db4bb1ec3810429a1691c094ab65da32abe",
+        "http_status": 200,
+        "verified_at": "2026-10-30T23:25:43.792791+00:00",
+        "committed_at": "2026-10-30T23:25:43.686927+00:00",
+        "has_readback": true,
+        "record_count": 290,
+        "source_bytes": 30619,
+        "actual_records": 290,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "950a266d8acb26270b3333c4cf3a5db4bb1ec3810429a1691c094ab65da32abe",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "alpaca_reference",
+        "family": "REF01",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-5d0f03a414fd2f46d362b3cb2523a7625ea31db7189d9f99767e0a661e7cf31f",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T23:25:39.686619+00:00",
+        "generation": 1,
+        "body_sha256": "f4e1fe06fc30593b6f64dca9c41e29def003b08b651f50afb97e9f2000f732cf",
+        "http_status": 200,
+        "verified_at": "2026-10-30T23:25:39.792024+00:00",
+        "committed_at": "2026-10-30T23:25:39.730599+00:00",
+        "has_readback": true,
+        "record_count": 1,
+        "source_bytes": 469,
+        "actual_records": 1,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "f4e1fe06fc30593b6f64dca9c41e29def003b08b651f50afb97e9f2000f732cf",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "alpaca_option_contracts",
+        "family": "CTX02",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-c0539b81a9aa5ad0430cf1e8c5255c0672f14ef9fdfb38720640e50e7794ff0b",
+        "provider": "Alpaca",
+        "fetched_at": "2026-10-30T23:25:36.646898+00:00",
+        "generation": 1,
+        "body_sha256": "310f561a7730575695625bddeb1c2e9d9f8c701dd6940ef55a64ee8b5d2c9e9f",
+        "http_status": 200,
+        "verified_at": "2026-10-30T23:25:37.237439+00:00",
+        "committed_at": "2026-10-30T23:25:36.942333+00:00",
+        "has_readback": true,
+        "record_count": 256,
+        "source_bytes": 179256,
+        "actual_records": 256,
+        "adapter_version": "fixed3000-provider-v2.2",
+        "readback_sha256": "310f561a7730575695625bddeb1c2e9d9f8c701dd6940ef55a64ee8b5d2c9e9f",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      },
+      {
+        "kind": "massive_short_interest",
+        "family": "S02",
+        "matches": true,
+        "page_no": 0,
+        "task_id": "backfill-plan-fe149be79d52812083a0fcc436347a16ade1ad4ee78528dd2bd9fb14519a8ad7",
+        "provider": "Massive",
+        "fetched_at": "2026-10-30T23:25:35.244+00:00",
+        "generation": 1,
+        "body_sha256": "3f68abd334d302d157532af599f014bd42b52bf6f9c45e3e5aeb3a47514d0029",
+        "http_status": 200,
+        "verified_at": "2026-10-30T23:25:35.392902+00:00",
+        "committed_at": "2026-10-30T23:25:35.318083+00:00",
+        "has_readback": true,
+        "record_count": 22,
+        "source_bytes": 2733,
+        "actual_records": 22,
+        "adapter_version": "fixed3000-managed-massive-relay-v2.1",
+        "readback_sha256": "3f68abd334d302d157532af599f014bd42b52bf6f9c45e3e5aeb3a47514d0029",
+        "same_task_generation": true,
+        "current_task_source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf"
+      }
+    ],
+    "ownership_planning": {
+      "fence": 1,
+      "owner": "root-replacement-20261030T042603Z",
+      "status": "ACTIVE",
+      "lease_until": "2026-10-30T23:55:00Z",
+      "sealed_hash": null,
+      "planner_phase": "SEAL",
+      "breadth_cursor": 230,
+      "latest_audit_id": 114,
+      "selection_cursor": 3001,
+      "planning_complete": false,
+      "recovery_audit_count": 1,
+      "expected_static_count": 979516,
+      "sealed_expected_count": null
+    },
+    "plan_manifests": null,
+    "seal_audits": null,
+    "previously_pending_page": {
+      "matches": true,
+      "page_no": 0,
+      "task_id": "backfill-plan-0c8407aaff6728b56f2e4aba799b346ef774ee08bbccde41c8bbae4fa42f227a",
+      "provider": "Alpaca",
+      "fetched_at": "2026-10-30T23:17:59.46352+00:00",
+      "generation": 1,
+      "body_sha256": "917990651d1a58a789da171bb6eb65b63dd0e9e5881574c66149b6700de170f7",
+      "http_status": 200,
+      "verified_at": "2026-10-30T23:20:32.072125+00:00",
+      "committed_at": "2026-10-30T23:18:00.348095+00:00",
+      "has_readback": true,
+      "record_count": 1000,
+      "source_bytes": 714817,
+      "actual_records": 1000,
+      "adapter_version": "fixed3000-provider-v2.2",
+      "readback_sha256": "917990651d1a58a789da171bb6eb65b63dd0e9e5881574c66149b6700de170f7"
+    },
+    "workers": [
+      {
+        "worker_id": "e60161aa-4dbd-4770-8b44-ebd0ff59df46",
+        "observed_at": "2026-10-30T23:25:42.847244+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      },
+      {
+        "worker_id": "e753f3ee-1f4f-47d7-8e6c-d85d4d4fd163",
+        "observed_at": "2026-10-30T23:17:58.164188+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      },
+      {
+        "worker_id": "427c3aa7-9009-4f94-9e14-c76cf4322ec1",
+        "observed_at": "2026-10-30T23:11:59.904841+00:00",
+        "source_revision": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+        "capability_revision": "75043c234b82025ef9a3bacee4072bc2850994537797313cd103eb4ce108eee1"
+      }
+    ]
+  },
+  "native_next_failure": {
+    "request_id": "v78-postinstall-planner-native-cancellation-reconciled",
+    "state": "READ_COMPLETED_57014_AT_SNAPSHOT_SELECTOR",
+    "query_sha256": "f88b706ffd90c25582e285d501abe750436e4d248e23a53771b37d21f6293e86",
+    "dispatches": 1,
+    "automatic_retry_or_followup_budget": 0,
+    "native_rows": [
+      {
+        "context_function_names": [
+          "function astra_ingestion_v1.rpc_dispatch"
+        ],
+        "context_lines": [
+          "line 39 at PERFORM"
+        ],
+        "elapsed_wait_detail": [],
+        "lock_acquired_log": 0,
+        "lock_holder_detail": [
+          "Process holding the lock: 57637"
+        ],
+        "lock_wait_log": 0,
+        "process_id": "57638",
+        "severity": "LOG",
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T23:25:45.542000",
+        "wait_queue_detail": [
+          "Wait queue: 57638"
+        ]
+      },
+      {
+        "context_function_names": [
+          "function astra_ingestion_v1.rpc_dispatch"
+        ],
+        "context_lines": [
+          "line 39 at PERFORM"
+        ],
+        "elapsed_wait_detail": [],
+        "lock_acquired_log": 0,
+        "lock_holder_detail": [],
+        "lock_wait_log": 0,
+        "process_id": "57638",
+        "severity": "ERROR",
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T23:25:47.542000",
+        "wait_queue_detail": []
+      },
+      {
+        "context_function_names": [
+          "function astra_ingestion_v1.rpc_dispatch"
+        ],
+        "context_lines": [
+          "line 39 at PERFORM"
+        ],
+        "elapsed_wait_detail": [],
+        "lock_acquired_log": 0,
+        "lock_holder_detail": [
+          "Process holding the lock: 57637"
+        ],
+        "lock_wait_log": 0,
+        "process_id": "57636",
+        "severity": "LOG",
+        "sqlstate": "00000",
+        "timestamp": "2026-10-30T23:25:50.527000",
+        "wait_queue_detail": [
+          "Wait queue: 57636"
+        ]
+      },
+      {
+        "context_function_names": [
+          "function astra_ingestion_v1.rpc_dispatch"
+        ],
+        "context_lines": [
+          "line 39 at PERFORM"
+        ],
+        "elapsed_wait_detail": [],
+        "lock_acquired_log": 0,
+        "lock_holder_detail": [],
+        "lock_wait_log": 0,
+        "process_id": "57636",
+        "severity": "ERROR",
+        "sqlstate": "55P03",
+        "timestamp": "2026-10-30T23:25:52.527000",
+        "wait_queue_detail": []
+      },
+      {
+        "context_function_names": [
+          "function astra_ingestion_v1.backfill_plan_snapshot_v2",
+          "function astra_ingestion_v1.backfill_plan_next_v2",
+          "function astra_ingestion_v1.rpc_dispatch"
+        ],
+        "context_lines": [
+          "line 4 at FOR",
+          "line 201 at assignment",
+          "line 61 at RETURN"
+        ],
+        "elapsed_wait_detail": [],
+        "lock_acquired_log": 0,
+        "lock_holder_detail": [],
+        "lock_wait_log": 0,
+        "process_id": "57637",
+        "severity": "ERROR",
+        "sqlstate": "57014",
+        "timestamp": "2026-10-30T23:25:54.088000",
+        "wait_queue_detail": []
+      }
+    ],
+    "native_error": {
+      "context_function_names": [
+        "function astra_ingestion_v1.backfill_plan_snapshot_v2",
+        "function astra_ingestion_v1.backfill_plan_next_v2",
+        "function astra_ingestion_v1.rpc_dispatch"
+      ],
+      "context_lines": [
+        "line 4 at FOR",
+        "line 201 at assignment",
+        "line 61 at RETURN"
+      ],
+      "elapsed_wait_detail": [],
+      "lock_acquired_log": 0,
+      "lock_holder_detail": [],
+      "lock_wait_log": 0,
+      "process_id": "57637",
+      "severity": "ERROR",
+      "sqlstate": "57014",
+      "timestamp": "2026-10-30T23:25:54.088000",
+      "wait_queue_detail": []
+    },
+    "render_temporal_correlation": {
+      "id": "4b199312-21a8-413c-a362-28253209e19b",
+      "at": "2026-10-30T23:25:54.104788571Z",
+      "native_lead_milliseconds": 16.788571,
+      "exact_application_request_binding": "UNKNOWN"
+    },
+    "source_map": {
+      "snapshot": {
+        "sha256": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+        "line": 4,
+        "statement": "Initial missing-static-snapshot FOR selector"
+      },
+      "planner": {
+        "sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+        "line": 201,
+        "statement": "Snapshot call, before later count/hash at203"
+      },
+      "auth": {
+        "sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+        "dispatch_line": 61,
+        "gate_line": 39
+      }
+    },
+    "independent_source_map_sha256": "3f73e93536f639ea3cf2232cf6f7136972a2db25e7eed8fb18174257a3aca708",
+    "native_shared_gate_edges": {
+      "holder_pid": 57637,
+      "waiter_pids": [
+        57638,
+        57636
+      ],
+      "wait_observations": [
+        "2026-10-30T23:25:45.542Z",
+        "2026-10-30T23:25:50.527Z"
+      ],
+      "waiters_later_55P03": true,
+      "holder_is_the_native_canceled_planner_backend": true,
+      "holder_is_cron602": "NOT_CLAIMED",
+      "uninterrupted_hold_duration": "NOT_ESTABLISHED"
+    },
+    "limits": [
+      "57014 and context establish cancellation at snapshot selector; safeprojection did notreturn nativecancel message, so exactstatement_timeout trigger is notproved.",
+      "Context doesnotallocate totalelapsedtime amongselector/priorphases orprove selectedplan; no queryplan or runtime rowcost is yetmeasured.",
+      "No expectedcount/hash mismatch, providerabsence, completedSEAL or freshacquisition is inferred."
+    ],
+    "raw_result_sha256": "b5e73680d73ae5a9072de40b8a0fefbb10b5adba9aab7b62589605f914b34162",
+    "next_executable_step": "Prepare then independentlyreview/selectone v79 bounded read-only catalog/statistics and EXPLAIN WITHOUT ANALYZE of exactinstalledsnapshot selector, withall13postv78source/OID/metadata pins and currentowner. Useactualplan to choose narrow semanticequivalent repair. No businesshelper, oldrepairreplay, forcedcounts/completion, newindex/grant, timeout/retryexpansion or source/cost change."
+  },
+  "v79_next_step": "Same controller prepares independently reviewed source-bound READ ONLY catalog/statistics plus EXPLAIN WITHOUT ANALYZE of exactfirstsnapshotselector. No executingselectorrows/helpers, changes tocounts/integrity, automaticrepairreplay or newcredentials/source/cost/security/retry scope. Actualqueryplan will selectthe narrowfollow-on repair.",
+  "existing_successor": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "cadence": "ExistinghourlyEurope/London unchanged",
+    "prompt_sha256": "9bb7bd973d44796fb6c2080f0cbd9de51623f32fe546c9cdd8d0064f244ddb48",
+    "last_verified_at": "2026-10-30T23:20:31Z",
+    "use_latest_durable_metadata_over_historical_prompt": true,
+    "delivery_muting_not_claimed": true
+  },
+  "issue94": "Durablydeferredbehindbackfillreliability at audit96; no credentials or newcontroller authorized.",
+  "v75_hold": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD; retry/recheckbudgets0; unchanged.",
+  "earlier_repairs": "v76 andv77 retained installed/deployed; never repeated.",
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "mission_complete": false,
+  "receipt_files": {
+    "evidence/replacement-planner-seal-release-gates-v78.json": {
+      "bytes": 9785,
+      "sha256": "97da22d792934b60587b76dde5b9907056490d1ba2c9f123e35048c943a13689"
+    },
+    "evidence/replacement-planner-seal-apply-migration-result-v78.json": {
+      "bytes": 348,
+      "sha256": "567b7d04c12f77d8fa86878d5e5b82e5e51bbe49865b140c1de18b7d855b602c"
+    },
+    "evidence/replacement-planner-seal-installed-audit-v78.json": {
+      "bytes": 805,
+      "sha256": "d61802f65f84ad0f0e70ea54d07a161232720ba5e8d90a2dea4bdce831157224"
+    },
+    "review/recovery-v78/seal-activation-review/independent_activation_postinstall_review_v78.json": {
+      "bytes": 3899,
+      "sha256": "7f1dca6f436d9801f6ecb331aa1ef938d34eb380424cee8035e6196d08d3db06"
+    },
+    "review/recovery-v78/seal-activation-review/ordinary_worker_progress_evidence_v78.json": {
+      "bytes": 6374,
+      "sha256": "92ad76e515b0e8196e56ce152b0ae6fb585fcbe3bccda3020f17abda177cd4a5"
+    },
+    "review/recovery-v78/seal-activation-review/postinstall_planner_native_actual_result_v78.json": {
+      "bytes": 4556,
+      "sha256": "b5e73680d73ae5a9072de40b8a0fefbb10b5adba9aab7b62589605f914b34162"
+    },
+    "review/recovery-v78/planner-seal-independent/independent_postinstall_native_source_map_v78.json": {
+      "bytes": 7602,
+      "sha256": "3f73e93536f639ea3cf2232cf6f7136972a2db25e7eed8fb18174257a3aca708"
+    }
+  }
+}

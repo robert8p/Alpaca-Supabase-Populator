@@ -1,0 +1,53 @@
+{
+  "schema": "replacement-existing-successor-update-v73",
+  "published_commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+  "published_tree": "52d5ed1305aff8246599b689176d8732f2dadb2f",
+  "observation_clock_bounds": {
+    "before": "2026-10-30 16:00:23 UTC",
+    "after": "2026-10-30 16:00:26 UTC"
+  },
+  "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "updated_at": "2026-10-30T16:00:24.984146+00:00",
+  "is_enabled": true,
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+  "prompt_characters": 69104,
+  "independent_exact_prompt_readback": true,
+  "schedule_unchanged": true,
+  "run_details": {
+    "last_run": {
+      "id": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-10-30T16:00:00Z",
+      "started_at": "2026-10-30T15:56:59.587040Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "latest_result": {
+      "run_id": "f42a5e8f-3164-832a-b9ba-11d00afb2ab8",
+      "created_at": "2026-10-30T15:09:14.940488Z",
+      "scheduled_for": "2026-10-30T15:00:00Z",
+      "completed_at": "2026-10-30T15:09:15.771228Z",
+      "content_text": "**ASTRA has made further verified ingestion progress, and the latest investigation confirms that maintenance-lock contention is still interrupting the worker.**\n\n<grid columns={2} gap={3}>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Committed pages</text>\n    <title size=\"xl\" tabularNums>5,409</title>\n    <text color=\"success\" size=\"xs\">+338 since previous review</text>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Records and retained pointers</text>\n    <title size=\"xl\" tabularNums>654,867</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Independent readbacks</text>\n    <title size=\"xl\" tabularNums>5,409/5,409</title>\n  </grid-item>\n  <grid-item>\n    <text color=\"secondary\" size=\"xs\">Planner cursor</text>\n    <title size=\"xl\" tabularNums>2,308 / 3,000</title>\n  </grid-item>\n</grid>\n\n<caption>Live database verification at 15:07 London, 30 October 2026. These are overlapping physical storage counts, not complete dataset coverage.</caption>\n\nI independently confirmed that the three repairs from <Link url=\"https://github.com/robert8p/Alpaca-Supabase-Populator/commit/d06c13f30a0bed8da6366f124101b59d21a450fa\">revision `d06c13f`</Link> are installed: both maintenance task indexes are valid and ready, and the readback function excludes pages committed in its current transaction. The approved authentication function remains unchanged.\n\n**A fresh failure at 15:00 identifies continued lock contention.** Two PostgreSQL `55P03` failures occurred at 15:00:03 and 15:00:05, with both waiters blocked by PID `1253575`. The existing cron 602 monitor ran for 8.48 seconds across this interval. Earlier failures have proven monitor ownership; the exact holder-to-cron PID association for this particular occurrence has not yet been independently established.\n\nThe existing implementation owner retains its verified lease through **15:45 London**. I preserved that ownership, performed no competing production changes and left the worker running. A direct diagnostic handoff was attempted but the notification service rejected it; I have not claimed delivery to the controller.\n\n**Status: RUNNING — 5,409 pages verified, sustained reliability not yet established, full 16-family backfill incomplete.** The remaining engineering priority is bounded measurement and correction of maintenance time spent holding the shared advisory lock. The existing implementation automation remains enabled without a programme deadline.",
+      "content_truncated": false,
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      },
+      "requires_user_action": false,
+      "is_failure_message": false
+    },
+    "delivery_status": "unknown"
+  },
+  "next_run_time": null,
+  "no_new_task_created": true,
+  "original_mission_preserved": true,
+  "ownership_readback": {
+    "observed_at": "2026-10-30 16:00:23.441799+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T16:15:00Z"
+  },
+  "active_run_reconciliation": "The existing16:00 scheduled run started15:56:59.587040 before this prompt update. Same root lease remained valid; no new controller was created. Updating its saved prompt does not prove the running invocation used the new prompt. The first update attempt stopped before any mutation when that active run was detected."
+}

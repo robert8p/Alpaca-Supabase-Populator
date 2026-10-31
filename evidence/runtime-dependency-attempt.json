@@ -1,0 +1,7 @@
+{
+  "stage": "pip",
+  "venv": "/tmp/astra-runtime-qualification-tg8xn4v0",
+  "python": "/tmp/astra-runtime-qualification-tg8xn4v0/bin/python",
+  "returncode": 1,
+  "output": "ERROR: Could not find a version that satisfies the requirement fastapi==0.116.1 (from versions: none)\nERROR: No matching distribution found for fastapi==0.116.1\n"
+}

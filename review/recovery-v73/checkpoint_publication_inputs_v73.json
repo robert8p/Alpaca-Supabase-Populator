@@ -1,0 +1,22 @@
+{
+  "state": "ROOT_FINAL_DRAFT_QA_PASSED",
+  "qa_receipt": {
+    "path": "evidence/replacement-checkpoint-final-independent-qa-v73.json",
+    "sha256": "226e76e5e5c403b217dad8bf2c91f53fe5ace845e27a077e708e923c8bcfd500"
+  },
+  "approved_documents": {
+    "docs/INGESTION_COMPLETION_STATE.md": {
+      "path": "review/recovery-v73/checkpoint-draft/INGESTION_COMPLETION_STATE_v73.draft.md",
+      "sha256": "7fe6b77d03b79bf4d8fbb782d212af9ed827b4ef4fabe4af8a4b4905c00e0a94"
+    },
+    "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md": {
+      "path": "review/recovery-v73/checkpoint-draft/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT_v73.draft.md",
+      "sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb"
+    }
+  },
+  "progress_receipt": {
+    "path": "review/recovery-v73/live_progress_after_phase_restoration_v73.json",
+    "sha256": "cf71d387ff605518252564923dc6020b151d6b9014547396ce2dbc7b8d6cf93a"
+  },
+  "deferred_postpublication_paths": []
+}

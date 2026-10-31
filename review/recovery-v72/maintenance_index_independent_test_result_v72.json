@@ -1,0 +1,49 @@
+{
+  "disposable_loopback_database_only": true,
+  "elapsed_seconds": 5.873668249005277,
+  "errors": 0,
+  "failures": 0,
+  "finished_at_utc": "2026-10-30T14:26:48.514545+00:00",
+  "passed": true,
+  "production_calls": 0,
+  "qualification": {
+    "authenticated_real_page_successor_and_lost_ack": true,
+    "drift_rejections": [
+      "function_source",
+      "existing_index",
+      "extra_index",
+      "owner",
+      "expired_lease",
+      "paused_run",
+      "advanced_fence"
+    ],
+    "exact_replay_same_oids_and_metadata": true,
+    "incomplete_cohort_rejected_without_mutating_members": true,
+    "lock_budget": {
+      "no_index_built": true,
+      "seconds": 3.003544437000528,
+      "sqlstate": "55P03"
+    },
+    "postbuild_failure_rollback_and_final_source_guard": true,
+    "preservation": {
+      "all15_existing_indexes": true,
+      "all_application_snapshot_tables": true,
+      "all_function_sources_and_metadata": true,
+      "no_gateway_or_outsider_table_access": true,
+      "table_owner_acl_rls": true
+    }
+  },
+  "reviewer": "/root/relay_v3_review",
+  "runner_sha256": "047b0d8664b662f96a9c320dd68a1956f532b356c249a7cb9752ecae9eaa0046",
+  "schema": "astra.maintenance-index-independent-execution/1",
+  "skipped": 0,
+  "staged_base_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "started_at_utc": "2026-10-30T14:26:42.640856+00:00",
+  "test_log": "test_authenticated_real_page_successor_and_lost_ack_after_indexes (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_authenticated_real_page_successor_and_lost_ack_after_indexes) ... ok\ntest_exact_replay_does_not_build_or_replace_any_index (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_exact_replay_does_not_build_or_replace_any_index) ... ok\ntest_existing_global_lock_budget_fails_without_any_build (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_existing_global_lock_budget_fails_without_any_build) ... ok\ntest_failure_after_build_and_late_source_drift_roll_back_atomically (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_failure_after_build_and_late_source_drift_roll_back_atomically) ... ok\ntest_incomplete_fixed_cohort_rejects_without_deleting_members (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_incomplete_fixed_cohort_rejects_without_deleting_members) ... ok\ntest_minute_before_breadth_is_rejected (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_minute_before_breadth_is_rejected) ... ok\ntest_real_forward_preserves_sources_metadata_access_and_data (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_real_forward_preserves_sources_metadata_access_and_data) ... ok\ntest_same_name_wrong_method_or_predicate_is_never_accepted (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_same_name_wrong_method_or_predicate_is_never_accepted) ... ok\ntest_source_index_owner_and_lease_drift_fail_closed (test_backfill_maintenance_task_indexes_v2.MaintenanceTaskIndexTests.test_source_index_owner_and_lease_drift_fail_closed) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 5.874s\n\nOK\n",
+  "tests": 9,
+  "verified_input_sha256": {
+    "sql/astra_backfill_breadth_pending_hash_index_v2.sql": "8ff7824557d19d6981e036acc9228d148b460de50c38ec33017b7f628037fad9",
+    "sql/astra_backfill_minute_pending_hash_index_v2.sql": "1355b571ffd60602bee67e525dc687535b31e5c7c69ea3ac058551fc0c591203",
+    "tests/ingestion/test_backfill_maintenance_task_indexes_v2.py": "50108ef354e9d3c36b76e6f3b55f31306067f2c20ee4a749b4c5eded931a2145"
+  }
+}

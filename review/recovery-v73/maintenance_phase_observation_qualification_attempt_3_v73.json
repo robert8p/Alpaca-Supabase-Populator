@@ -1,0 +1,142 @@
+{
+  "schema": "astra.maintenance-phase-observation-qualification/1",
+  "production_calls": 0,
+  "activation_selected": false,
+  "fixture_adaptations": [
+    "unique disposable schema/run identifiers",
+    "future deadline2100 for positive tests; explicit past/during-call boundary cases",
+    "synthetic helper faults only in named fault-injection cases"
+  ],
+  "local_postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "actual_permissions_and_event": {
+    "privileges": {
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcanlogin": false,
+      "audit_owned_elsewhere": true,
+      "audit_rls": true,
+      "audit_select": true,
+      "audit_insert": true,
+      "audit_update": false,
+      "audit_delete": false,
+      "sequence_usage": true,
+      "sequence_update": false
+    },
+    "event": {
+      "probe_id": "maintenance-global-phase-observation-v73-20261030T1545Z",
+      "total_ms": 8.711,
+      "phases_ms": {
+        "s02_ms": 0.86,
+        "minute_ms": 0.716,
+        "shared_ms": 0.26,
+        "breadth_ms": 2.144,
+        "contract_ms": 1.077,
+        "finalize_ms": 0.56,
+        "readback_ms": 0.411,
+        "nonminute_ms": 0.341,
+        "gate_admission_ms": 0.061,
+        "identity_refresh_ms": 0.852,
+        "identity_discover_ms": 0.32
+      },
+      "backend_pid": 89313,
+      "timing_scope": "GLOBAL_MAINTENANCE_BEFORE_TELEMETRY",
+      "telemetry_admission_ms": 1.109
+    },
+    "source_snapshot_unchanged": true,
+    "ref03_evidence_increment_only": 1
+  },
+  "audit_nowait": {
+    "seconds": 0.016858912000316195,
+    "ordinary_result_preserved": true
+  },
+  "late_expiry": {
+    "deadline": true,
+    "owner_lease": true,
+    "original_result_preserved": true
+  },
+  "admission_scope_and_time": [
+    "expired deadline",
+    "wrong owner",
+    "expired lease",
+    "absent run",
+    "wrong cohort",
+    "advanced fence"
+  ],
+  "expiry_inside_insert": {
+    "deadline_and_lease_both_rechecked_after_insert": true,
+    "only_diagnostic_subtransaction_rolled_back": true,
+    "real_readback_retained": true,
+    "later_outer_commit_duration_not_claimed_bounded": true
+  },
+  "identity_and_sequence": {
+    "audit_id_generated_always": true,
+    "without_usage_direct_nextval_sqlstate": "42501",
+    "identity_insert_still_permitted": true,
+    "production_existing_usage_grant_unchanged": true,
+    "initial_fixture_assumption_rejected": "USAGE revocation was incorrectly expected to block automatic identity generation"
+  },
+  "observer_risk_demonstrated": {
+    "kind": "ADDITIONAL_AUDIT_WORK_CAN_EXHAUST_CALLER_DEADLINE",
+    "fixture_caller_budget": "150ms",
+    "runtime_function_config": "unchanged8s/2s",
+    "seconds": 0.15803208999568596,
+    "cancellation_not_suppressed": true,
+    "interpretation": "Risk disclosure; not a promise of zero observer effect."
+  },
+  "ordinary_telemetry_error": {
+    "main_real_readback_committed": true,
+    "no_error_or_payload_export": true
+  },
+  "original_helper_errors": [
+    "22023",
+    "57014",
+    "P0004"
+  ],
+  "concurrent_cap_commit": {
+    "holder_started": "2026-10-30 15:17:06.713534+00:00",
+    "waiter_pid": 89450,
+    "waiter_started": "2026-10-30 15:17:06.716696+00:00",
+    "actual_gate_wait": true,
+    "first_holder_rolled_back": false,
+    "committed_events": 4
+  },
+  "restore": {
+    "exact6c880_schema_adjusted": true,
+    "immutable_events_retained": true
+  },
+  "concurrent_cap_rollback": {
+    "holder_started": "2026-10-30 15:17:07.087505+00:00",
+    "waiter_pid": 89474,
+    "waiter_started": "2026-10-30 15:17:07.089930+00:00",
+    "actual_gate_wait": true,
+    "first_holder_rolled_back": true,
+    "committed_events": 4
+  },
+  "same_transaction_cap": {
+    "calls": 8,
+    "committed_events": 4
+  },
+  "stronger_isolation": [
+    "REPEATABLE READ real readback without telemetry",
+    "SERIALIZABLE real readback without telemetry"
+  ],
+  "telemetry_fatal_errors": [
+    "57014",
+    "P0004"
+  ],
+  "ordinary_permission_denials": [
+    "audit_insert",
+    "insert_rls"
+  ],
+  "exact_source_preservation": true,
+  "tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "elapsed_seconds": 5.405248962000769,
+  "candidate_sha256": "12e05b1fa5a6e59f1f626a33aaec4e30248d0cfc858917be171fd812b41c229d",
+  "test_sha256": "8c7588cd448635e64ef8a422cc92caa46c032cb006a42768666212b26579ed7f",
+  "errors_detail": [],
+  "failures_detail": []
+}

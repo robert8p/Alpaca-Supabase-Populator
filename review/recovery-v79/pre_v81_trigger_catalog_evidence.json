@@ -1,0 +1,151 @@
+{
+  "observed_at": "2026-10-31 00:17:24.073897+00",
+  "authority": {
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "status": "ACTIVE",
+    "held_v75": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+    "v79_state": "CANDIDATE_ESTIMATE_CAPTURED_PERFORMANCE_UNQUALIFIED",
+    "lease_until": "2026-10-31T00:25:00Z",
+    "latest_audit": 124
+  },
+  "catalog_bytes": 8796,
+  "catalog": {
+    "triggers": [
+      {
+        "found": false,
+        "tgtype": null,
+        "tgenabled": null,
+        "definition": null,
+        "table_name": "astra_ingestion_v1.backfill_plan_manifests_v2",
+        "trigger_oid": null,
+        "function_oid": null,
+        "relation_oid": null,
+        "tgisinternal": null,
+        "trigger_name": "backfill_plan_manifests_immutable_v2",
+        "full_trigger_metadata_sha256": null
+      },
+      {
+        "found": true,
+        "tgtype": 58,
+        "tgenabled": "O",
+        "definition": "CREATE TRIGGER backfill_plan_units_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_units_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "table_name": "astra_ingestion_v1.backfill_plan_units_v2",
+        "trigger_oid": "16041361",
+        "function_oid": "16040226",
+        "relation_oid": "16041315",
+        "tgisinternal": false,
+        "trigger_name": "backfill_plan_units_immutable_v2",
+        "full_trigger_metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5"
+      },
+      {
+        "found": true,
+        "tgtype": 19,
+        "tgenabled": "O",
+        "definition": "CREATE TRIGGER backfill_run_immutable_v2 BEFORE UPDATE ON astra_ingestion_v1.backfill_runs_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()",
+        "table_name": "astra_ingestion_v1.backfill_runs_v2",
+        "trigger_oid": "16040223",
+        "function_oid": "16040222",
+        "relation_oid": "16040070",
+        "tgisinternal": false,
+        "trigger_name": "backfill_run_immutable_v2",
+        "full_trigger_metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c"
+      },
+      {
+        "found": true,
+        "tgtype": 5,
+        "tgenabled": "O",
+        "definition": "CREATE TRIGGER backfill_static_plan_snapshot_v2 AFTER INSERT ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()",
+        "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+        "trigger_oid": "16041468",
+        "function_oid": "16041467",
+        "relation_oid": "16040120",
+        "tgisinternal": false,
+        "trigger_name": "backfill_static_plan_snapshot_v2",
+        "full_trigger_metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9"
+      },
+      {
+        "found": true,
+        "tgtype": 23,
+        "tgenabled": "O",
+        "definition": "CREATE TRIGGER backfill_task_scope_v2 BEFORE INSERT OR UPDATE ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()",
+        "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+        "trigger_oid": "16040225",
+        "function_oid": "16040224",
+        "relation_oid": "16040120",
+        "tgisinternal": false,
+        "trigger_name": "backfill_task_scope_v2",
+        "full_trigger_metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1"
+      }
+    ],
+    "functions": [
+      {
+        "oid": "16040226",
+        "found": true,
+        "proacl": [
+          "postgres=X/postgres"
+        ],
+        "owner_oid": "16388",
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "prosecdef": false,
+        "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$ BEGIN RAISE EXCEPTION 'Backfill source evidence and frozen membership are immutable'; END $function$\n",
+        "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+        "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278"
+      },
+      {
+        "oid": "16040222",
+        "found": true,
+        "proacl": [
+          "postgres=X/postgres"
+        ],
+        "owner_oid": "16388",
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "prosecdef": false,
+        "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n IF NEW.id IS DISTINCT FROM OLD.id OR NEW.instruction_sha256 IS DISTINCT FROM OLD.instruction_sha256\n OR NEW.cohort_sha256 IS DISTINCT FROM OLD.cohort_sha256 OR NEW.cohort_manifest_sha256 IS DISTINCT FROM OLD.cohort_manifest_sha256\n OR NEW.cohort_ref IS DISTINCT FROM OLD.cohort_ref OR NEW.scope IS DISTINCT FROM OLD.scope\n OR NEW.target_start IS DISTINCT FROM OLD.target_start OR NEW.target_end IS DISTINCT FROM OLD.target_end\n OR NEW.fence<OLD.fence OR NEW.requests_reserved<OLD.requests_reserved OR NEW.pages_committed<OLD.pages_committed\n OR NEW.records_committed<OLD.records_committed OR NEW.source_bytes<OLD.source_bytes\n OR (OLD.status IN ('SUPERSEDED','COMPLETE','COMPLETE_WITH_DOCUMENTED_GAPS') AND NEW.status IS DISTINCT FROM OLD.status)\n THEN RAISE EXCEPTION 'Replacement run scope, cumulative accounting and terminal stop are immutable'; END IF;\n RETURN NEW;\nEND $function$\n",
+        "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+        "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f"
+      },
+      {
+        "oid": "16041467",
+        "found": true,
+        "proacl": [
+          "postgres=X/postgres",
+          "astra_ingestion_rpc_owner_v1=X/postgres"
+        ],
+        "owner_oid": "16388",
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "prosecdef": false,
+        "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$ BEGIN PERFORM astra_ingestion_v1.backfill_snapshot_task_v2(NEW.id);RETURN NEW;END $function$\n",
+        "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+        "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3"
+      },
+      {
+        "oid": "16040224",
+        "found": true,
+        "proacl": [
+          "postgres=X/postgres"
+        ],
+        "owner_oid": "16388",
+        "proconfig": [
+          "search_path=\"\""
+        ],
+        "prosecdef": false,
+        "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE v_kind text; v_members jsonb; v_member text;\nBEGIN\n IF TG_OP='UPDATE' THEN\n   IF NEW.id IS DISTINCT FROM OLD.id OR NEW.run_id IS DISTINCT FROM OLD.run_id OR NEW.family IS DISTINCT FROM OLD.family\n    OR NEW.provider IS DISTINCT FROM OLD.provider OR NEW.kind IS DISTINCT FROM OLD.kind OR NEW.scope IS DISTINCT FROM OLD.scope\n    OR NEW.dependencies IS DISTINCT FROM OLD.dependencies OR NEW.generation<OLD.generation\n    OR NEW.requests_reserved<OLD.requests_reserved OR NEW.records_committed<OLD.records_committed OR NEW.page_no<OLD.page_no\n    OR NEW.attempts<OLD.attempts OR (OLD.status IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED','SUPERSEDED_BY_SCOPE_CHANGE') AND NEW.status IS DISTINCT FROM OLD.status)\n   THEN RAISE EXCEPTION 'Task scope, cumulative accounting and terminal result are immutable'; END IF;\n   RETURN NEW;\n END IF;\n IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=NEW.run_id AND status='ACTIVE' AND fence=NEW.run_fence) THEN\n   RAISE EXCEPTION 'Task requires current active replacement run'; END IF;\n IF (NEW.kind LIKE 'alpaca_%' AND NEW.provider<>'Alpaca') OR (NEW.kind LIKE 'massive_%' AND NEW.provider<>'Massive')\n OR (NEW.kind LIKE 'derive_%' AND lower(NEW.provider)<>'derived') OR (NEW.kind='retained_reuse' AND lower(NEW.provider)<>'reuse') THEN\n   RAISE EXCEPTION 'Task kind and permitted provider disagree'; END IF;\n IF NEW.kind='retained_identity' AND (lower(NEW.provider)<>'reuse' OR NEW.family<>'REF01' OR NEW.scope->'shared_cohort_reference' IS DISTINCT FROM 'true'::jsonb OR NEW.scope->>'cohort_sha256' IS DISTINCT FROM '2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec') THEN RAISE EXCEPTION 'Invalid shared fixed-cohort identity source'; END IF;\n IF NEW.kind='retained_massive_archive' AND (NEW.family<>'S02' OR lower(NEW.provider)<>'reuse' OR NEW.scope->'preserve_provider_acquisition' IS DISTINCT FROM 'true'::jsonb) THEN RAISE EXCEPTION 'Invalid retained S02 overlay';END IF;\n v_members:=NEW.scope->'member_ids';\n IF NEW.family NOT IN ('CTX06','REF03') AND NEW.kind<>'retained_identity' AND (jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)=0) THEN\n   RAISE EXCEPTION 'Member-scoped work requires frozen member identifiers'; END IF;\n IF v_members IS NOT NULL THEN\n   IF jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)>3000 THEN RAISE EXCEPTION 'Invalid member scope'; END IF;\n   FOR v_member IN SELECT jsonb_array_elements_text(v_members) LOOP\n     IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=NEW.run_id AND member_id=v_member) THEN\n       RAISE EXCEPTION 'Task member is outside the frozen cohort'; END IF;\n   END LOOP;\n END IF;\n RETURN NEW;\nEND $function$\n",
+        "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+        "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6"
+      }
+    ],
+    "session_replication_role": "origin"
+  },
+  "catalog_within_cap": true
+}

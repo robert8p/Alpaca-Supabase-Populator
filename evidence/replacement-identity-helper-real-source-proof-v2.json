@@ -1,0 +1,13 @@
+{
+  "qualification": "ACTUAL_RETAINED_GZIP_BYTES_THROUGH_NEW_BOUNDED_HELPER",
+  "source_id": "4a715531-48f4-4dc9-99d2-8e3522b38c39",
+  "original_bytes": 295286,
+  "compressed_bytes": 38002,
+  "source_sha256": "8325d18763b4315cf33bcf7e1fe84f6c2ee1687eb76e334cb7626348078c4130",
+  "native_records": 1000,
+  "source_ordinal": 30,
+  "native_row_matches_independent_root_proof": true,
+  "helper_sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+  "remote_calls": 0,
+  "raw_body_republished": false
+}

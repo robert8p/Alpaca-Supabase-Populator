@@ -1,0 +1,107 @@
+{
+  "started_at": "2026-10-28T22:24:06.723250+00:00",
+  "completed_at": "2026-10-28T22:24:08.824350+00:00",
+  "project_ref": "oxzabweahkoimtevbbny",
+  "api_origin": "https://oxzabweahkoimtevbbny.supabase.co",
+  "qualification": "live HTTPS authentication and schema boundary; no live ingestion job",
+  "tls_verification": true,
+  "redirects_allowed": false,
+  "service_role_key_used": false,
+  "provider_requests_dispatched": 0,
+  "jobs_submitted": 0,
+  "checks": [
+    {
+      "name": "api_health_via_production_client",
+      "passed": true,
+      "operation": "health",
+      "actor": "api",
+      "validated_ready_schema_1_rpc_1": true
+    },
+    {
+      "name": "worker_health_via_production_client",
+      "passed": true,
+      "operation": "health",
+      "actor": "worker",
+      "validated_ready_schema_1_rpc_1": true
+    },
+    {
+      "name": "api_job_inventory_is_empty",
+      "passed": true,
+      "operation": "list_jobs",
+      "actor": "api",
+      "validated_empty_jobs": true
+    },
+    {
+      "name": "missing_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": "PT401"
+    },
+    {
+      "name": "unknown_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": "PT401"
+    },
+    {
+      "name": "expired_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": "PT401"
+    },
+    {
+      "name": "revoked_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": "PT401"
+    },
+    {
+      "name": "worker_cannot_call_api_operations",
+      "passed": true,
+      "http_status": 403,
+      "expected_status": 403,
+      "safe_error_code": "PT403"
+    },
+    {
+      "name": "api_cannot_claim_worker_jobs",
+      "passed": true,
+      "http_status": 403,
+      "expected_status": 403,
+      "safe_error_code": "PT403"
+    },
+    {
+      "name": "private_schema_not_exposed",
+      "passed": true,
+      "http_status": 406,
+      "expected_status": 406,
+      "safe_error_code": "PGRST106"
+    }
+  ],
+  "all_passed": true,
+  "temporary_credential_cleanup": {
+    "status": "complete",
+    "database_readback": {
+      "jobs": 0,
+      "records": 0,
+      "receipts": 0,
+      "observed_at": "2026-10-28T22:24:27.754808+00:00",
+      "dispatcher_body_sha256": "b293ce9c6216e77bc80713d8c1955b05b82644cf8e21f4871aea0491a51151a4",
+      "qualification_credentials": 4,
+      "owner_has_auth_schema_usage": false,
+      "all_ingestion_credentials_active": 0,
+      "qualification_credentials_active": 0,
+      "qualification_credentials_revoked": 4
+    },
+    "https_readback": {
+      "post_revocation_http_status": 401,
+      "previously_valid_api_token_rejected": true
+    }
+  },
+  "sql_sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a",
+  "auth_context_migration_sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631",
+  "client_sha256": "b79cf713e1fc47aa5382e17d5412ef6ef20f043982a334a42de4cbed155da816"
+}

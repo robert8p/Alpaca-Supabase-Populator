@@ -1,0 +1,29 @@
+{
+  "schema": "astra.replacement.existing-successor-update/v71",
+  "checkpoint_commit": "536bb850cf5c5653b4865e63db3f20f50a6769a1",
+  "checkpoint_manifest_sha256": "bc580801e44aeb8a6374474a0eda265b0ef73fe3eeb46c737e7eca5d94f1b81b",
+  "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "update_returned_at": "2026-10-30T13:50:03.371614Z",
+  "readback_updated_at": "2026-10-30T13:50:24.609008+00:00",
+  "prompt_exactly_matches_published_document": true,
+  "is_enabled": true,
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "default_timezone": "Europe/London",
+  "new_task": false,
+  "new_controller": false,
+  "full_original_mission_preserved": true,
+  "last_run": {
+    "id": "6c2e1bc0-2800-8328-b027-da97f8799910",
+    "recorded_status": "completed",
+    "scheduled_for": "2026-10-30T13:00:00Z",
+    "started_at": "2026-10-30T13:04:55.441853Z",
+    "completed_at": "2026-10-30T13:10:48.548108Z",
+    "chat_ref": {
+      "type": "chatgpt",
+      "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+    }
+  },
+  "delivery_status": "unknown",
+  "next_run_time": null,
+  "source_document": "docs/REPLACEMENT_IMPLEMENTATION_AUTOMATION_PROMPT.md"
+}

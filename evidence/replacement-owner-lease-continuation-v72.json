@@ -1,0 +1,16 @@
+[
+  {
+    "id": 32,
+    "action": "IMPLEMENTATION_LEASE_RENEWED",
+    "recorded_at": "2026-10-30 14:18:50.632679+00",
+    "evidence": {
+      "owner": "root-replacement-20261030T042603Z",
+      "reason": "Finish exact-head release gates, bounded maintenance repair and transaction-race prevention; exact blocked page already reconciled under audit31",
+      "request_id": "v72-owner-continuation-20261030T1418Z",
+      "lease_until": "2026-10-30T15:00:00Z",
+      "same_controller": true,
+      "approval_unchanged": true,
+      "previous_lease_until": "2026-10-30T14:30:00Z"
+    }
+  }
+]

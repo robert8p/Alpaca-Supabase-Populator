@@ -1,0 +1,46 @@
+{
+  "version": "replacement-independent-progress-1025-v69",
+  "live_snapshot": {
+    "observed_at": "2026-10-30 10:25:43.039641+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "pages_committed": 3725,
+    "records_committed": 452794,
+    "requests_reserved": 1836,
+    "source_bytes": 391913504,
+    "last_progress_at": "2026-10-30 10:25:42.511234+00",
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T10:55:00Z",
+    "planning_complete": "false",
+    "planner_metadata_keys": [
+      "planner_phase",
+      "workflow_plan",
+      "planner_version",
+      "planning_complete",
+      "cohort_members_id_sha256",
+      "planner_last_progress_at",
+      "planner_next_breadth_index",
+      "planner_next_selection_order",
+      "planner_expected_static_count",
+      "planner_preexisting_static_count"
+    ],
+    "readbacks": 3725,
+    "unread_pages": 0,
+    "latest_worker": [
+      {
+        "worker_id": "540f919f-4a2f-4b8f-a6ab-3a28da1de8e2",
+        "observed_at": "2026-10-30T10:25:42.613881+00:00",
+        "source_revision": "947b681735138b0b9052df1e5eba5769d7b2c381"
+      }
+    ],
+    "relay_state": "HELD_APPROVAL_EXPIRED_TRANSPORT_MISMATCH"
+  },
+  "delta_from_0953": {
+    "pages_committed": 580,
+    "records_or_retained_pointers": 70757,
+    "requests_reserved": 291
+  },
+  "counts_are": "Overlapping source/derived records and retained pointers; not unique observations or full coverage.",
+  "unresolved": "Combined runtime status exceeded8s;55P03 contention/restarts remain under independent local qualification. Worker progress is verified, sustained reliability is not.",
+  "relay": "Exact unchanged package remains held. Expired09:53 approval preserved, no relay activation or grant."
+}

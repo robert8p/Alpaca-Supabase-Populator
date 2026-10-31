@@ -1,0 +1,76 @@
+{
+  "hasMore": false,
+  "logs": [
+    {
+      "id": "d3ff62ee-ec19-449a-83eb-1e475e5cfec9",
+      "labels": [
+        {
+          "name": "resource",
+          "value": "srv-dbh9fko473hc739an8m0"
+        },
+        {
+          "name": "instance",
+          "value": "srv-dbh9fko473hc739an8m0-z294x"
+        },
+        {
+          "name": "level",
+          "value": "info"
+        },
+        {
+          "name": "type",
+          "value": "app"
+        }
+      ],
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_reserve\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+      "timestamp": "2026-10-30T13:46:03.789391058Z"
+    },
+    {
+      "id": "6029e649-8728-439e-9268-897d36bcc223",
+      "labels": [
+        {
+          "name": "resource",
+          "value": "srv-dbh9fko473hc739an8m0"
+        },
+        {
+          "name": "instance",
+          "value": "srv-dbh9fko473hc739an8m0-z294x"
+        },
+        {
+          "name": "level",
+          "value": "info"
+        },
+        {
+          "name": "type",
+          "value": "app"
+        }
+      ],
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_claim\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+      "timestamp": "2026-10-30T13:48:03.632601537Z"
+    },
+    {
+      "id": "b605b02c-06d1-47f7-9efa-be00be8366e7",
+      "labels": [
+        {
+          "name": "resource",
+          "value": "srv-dbh9fko473hc739an8m0"
+        },
+        {
+          "name": "instance",
+          "value": "srv-dbh9fko473hc739an8m0-z294x"
+        },
+        {
+          "name": "level",
+          "value": "info"
+        },
+        {
+          "name": "type",
+          "value": "app"
+        }
+      ],
+      "message": "{\"state\": \"unresolved_runtime_error\", \"error_type\": \"RpcPersistenceError\", \"rpc_operation\": \"backfill_claim\", \"rpc_failure_reason\": \"HTTP_ERROR\"}",
+      "timestamp": "2026-10-30T13:50:03.355859089Z"
+    }
+  ],
+  "nextEndTime": "2026-10-30T13:51:30Z",
+  "nextStartTime": "2026-10-30T13:50:03.35585909Z"
+}

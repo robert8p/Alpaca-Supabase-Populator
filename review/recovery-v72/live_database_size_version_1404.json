@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-10-30T14:04:18.534005Z",
+  "server_version": "17.6",
+  "database_bytes": 646994263187,
+  "sql": "SELECT clock_timestamp() AS observed_at,current_setting('server_version') AS server_version,pg_database_size(current_database()) AS database_bytes;",
+  "local_qualification_postgres_version": "16.15",
+  "available_capacity_established": false,
+  "provider_or_infrastructure_plan_change": false
+}

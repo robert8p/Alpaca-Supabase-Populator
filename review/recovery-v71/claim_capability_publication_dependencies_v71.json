@@ -1,0 +1,778 @@
+{
+  "schema": "astra.claim-capability.publication-dependency-audit/1",
+  "base_commit": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+  "base_tree": "a7d7ba1a50018eb6c05f716625f48f3562c3d338",
+  "base_tree_truncated": false,
+  "base_tree_entries": 713,
+  "passed": true,
+  "tests": 1,
+  "skipped": 0,
+  "elapsed_seconds": 1.0925976599974092,
+  "imported_project_modules": [
+    "astra_ingestion/__init__.py",
+    "astra_ingestion/backfill_features_v2.py",
+    "astra_ingestion/backfill_identity_v2.py",
+    "astra_ingestion/backfill_provider_v2.py",
+    "astra_ingestion/backfill_worker_v2.py",
+    "astra_ingestion/config.py",
+    "astra_ingestion/models.py",
+    "astra_ingestion/reconcile.py",
+    "astra_ingestion/rpc_store.py",
+    "astra_ingestion/source.py",
+    "astra_ingestion/store.py",
+    "astra_ingestion/worker.py",
+    "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+    "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+    "tests/ingestion/test_backfill_claim_performance_v2.py",
+    "tests/ingestion/test_backfill_family_report_performance_v2.py",
+    "tests/ingestion/test_backfill_feature_reuse_v2.py",
+    "tests/ingestion/test_backfill_identity_v2.py",
+    "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+    "tests/ingestion/test_backfill_retained_reuse_v2.py",
+    "tests/ingestion/test_backfill_retained_s02_v2.py",
+    "tests/ingestion/test_backfill_reuse_commit_v2.py",
+    "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+    "tests/ingestion/test_backfill_runtime_v2.py",
+    "tests/ingestion/test_backfill_status_index_counts_v2.py",
+    "tests/ingestion/test_backfill_worker_reuse_v2.py",
+    "tests/ingestion/test_backfill_worker_v2.py",
+    "tests/ingestion/test_rpc_postgres.py"
+  ],
+  "observed_project_reads": [
+    "astra_ingestion/__init__.py",
+    "astra_ingestion/backfill_features_v2.py",
+    "astra_ingestion/backfill_identity_v2.py",
+    "astra_ingestion/backfill_provider_v2.py",
+    "astra_ingestion/backfill_worker_v2.py",
+    "astra_ingestion/config.py",
+    "astra_ingestion/models.py",
+    "astra_ingestion/reconcile.py",
+    "astra_ingestion/rpc_store.py",
+    "astra_ingestion/source.py",
+    "astra_ingestion/store.py",
+    "astra_ingestion/worker.py",
+    "evidence/retained-feature-reuse-functions.json",
+    "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+    "sql/astra_backfill_breadth_material_v2.sql",
+    "sql/astra_backfill_canonical_performance_v2.sql",
+    "sql/astra_backfill_claim_capability_filter_v2.sql",
+    "sql/astra_backfill_claim_performance_v2.sql",
+    "sql/astra_backfill_contract_registry_v2.sql",
+    "sql/astra_backfill_delivery_performance_v2.sql",
+    "sql/astra_backfill_delivery_v2.sql",
+    "sql/astra_backfill_family_fairness_v2.sql",
+    "sql/astra_backfill_family_report_performance_v2.sql",
+    "sql/astra_backfill_feature_reuse_v2.sql",
+    "sql/astra_backfill_identity_v2.sql",
+    "sql/astra_backfill_minute_alias_index_v2.sql",
+    "sql/astra_backfill_nonminute_coverage_v2.sql",
+    "sql/astra_backfill_pacing_fairness_v2.sql",
+    "sql/astra_backfill_provider_pacing_v2.sql",
+    "sql/astra_backfill_recovery_priority_v2.sql",
+    "sql/astra_backfill_retained_reuse_v2.sql",
+    "sql/astra_backfill_retained_s02_v2.sql",
+    "sql/astra_backfill_reuse_commit_v2.sql",
+    "sql/astra_backfill_reuse_verify_v2.sql",
+    "sql/astra_backfill_runtime_status_performance_v2.sql",
+    "sql/astra_backfill_runtime_summary_index_v2.sql",
+    "sql/astra_backfill_runtime_v2.sql",
+    "sql/astra_backfill_shared_records_v2.sql",
+    "sql/astra_backfill_shared_refresh_performance_v2.sql",
+    "sql/astra_backfill_source_dedup_v2.sql",
+    "sql/astra_backfill_status_index_counts_v2.sql",
+    "sql/astra_ingestion_rpc_auth_context_v1.sql",
+    "sql/astra_ingestion_rpc_v1.sql",
+    "sql/astra_ingestion_supersede_gate_v2.sql",
+    "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+    "tests/ingestion/test_backfill_claim_performance_v2.py",
+    "tests/ingestion/test_backfill_family_report_performance_v2.py",
+    "tests/ingestion/test_backfill_feature_reuse_v2.py",
+    "tests/ingestion/test_backfill_identity_v2.py",
+    "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+    "tests/ingestion/test_backfill_retained_reuse_v2.py",
+    "tests/ingestion/test_backfill_retained_s02_v2.py",
+    "tests/ingestion/test_backfill_reuse_commit_v2.py",
+    "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+    "tests/ingestion/test_backfill_runtime_v2.py",
+    "tests/ingestion/test_backfill_status_index_counts_v2.py",
+    "tests/ingestion/test_backfill_worker_reuse_v2.py",
+    "tests/ingestion/test_backfill_worker_v2.py",
+    "tests/ingestion/test_rpc_postgres.py"
+  ],
+  "static_read_call_sites": [
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "line": 35,
+      "expression": "(ROOT / path).read_bytes()"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "line": 65,
+      "expression": "(ROOT / path).read_text()"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "line": 71,
+      "expression": "Path('/tmp/replacement-3ee4-tree.json').read_text()"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "line": 96,
+      "expression": "output.read_bytes()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "line": 49,
+      "expression": "FORWARD.read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "line": 75,
+      "expression": "FORWARD.read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "line": 36,
+      "expression": "(ROOT / 'sql/astra_backfill_claim_performance_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "line": 29,
+      "expression": "(ROOT / 'sql' / name).read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "line": 52,
+      "expression": "(ROOT / 'sql/astra_backfill_family_report_performance_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "line": 28,
+      "expression": "(ROOT / 'sql' / filename).read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "line": 43,
+      "expression": "(ROOT/'evidence/retained-feature-reuse-functions.json').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "line": 58,
+      "expression": "(ROOT/'sql/astra_backfill_feature_reuse_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "line": 31,
+      "expression": "(ROOT/'sql'/name).read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "line": 138,
+      "expression": "(ROOT / \"evidence/replacement-calendar-v1.json\").read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "line": 211,
+      "expression": "(ROOT / \"sql/astra_backfill_canonical_performance_v2.sql\").read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "line": 212,
+      "expression": "(ROOT / \"sql/astra_backfill_family_fairness_v2.sql\").read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "line": 213,
+      "expression": "(ROOT / \"sql/astra_backfill_identity_v2.sql\").read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "line": 214,
+      "expression": "(ROOT / \"sql/astra_backfill_nonminute_coverage_v2.sql\").read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "line": 31,
+      "expression": "(ROOT/'sql/astra_backfill_nonminute_coverage_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "line": 31,
+      "expression": "(ROOT/'sql/astra_backfill_retained_reuse_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "line": 35,
+      "expression": "(ROOT/'sql/astra_backfill_retained_s02_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "line": 20,
+      "expression": "(ROOT/'sql'/filename).read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "line": 48,
+      "expression": "(ROOT/'sql/astra_backfill_runtime_status_performance_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "line": 49,
+      "expression": "(ROOT/'sql/astra_backfill_runtime_summary_index_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "line": 52,
+      "expression": "(ROOT/'sql/astra_backfill_minute_alias_index_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "line": 25,
+      "expression": "(ROOT / 'sql' / filename).read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "line": 47,
+      "expression": "(ROOT / 'sql/astra_backfill_status_index_counts_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "line": 28,
+      "expression": "(ROOT / 'sql/astra_backfill_shared_refresh_performance_v2.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "line": 400,
+      "expression": "(ROOT / name).read_bytes()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 61,
+      "expression": "(ROOT/'sql/astra_ingestion_rpc_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 85,
+      "expression": "(ROOT/'sql/astra_ingestion_rpc_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 93,
+      "expression": "(ROOT/'sql/astra_ingestion_rpc_auth_context_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 217,
+      "expression": "(ROOT/'sql/astra_ingestion_observer_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 323,
+      "expression": "(ROOT/'sql/astra_ingestion_observer_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 326,
+      "expression": "(ROOT/'sql/astra_ingestion_independent_verifier_v1.sql').read_text()"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "line": 799,
+      "expression": "(ROOT/'sql/astra_ingestion_rpc_v1.sql').read_text()"
+    }
+  ],
+  "files": [
+    {
+      "path": "astra_ingestion/__init__.py",
+      "bytes": 102,
+      "sha256": "43f94056f0c4c9b351c026cc020b1e22f64c8f19ce6af42153560ea064c33749",
+      "git_blob_sha1": "6b70b997a2cb72b8e1219c46bbaa70c3d5ac32a6",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "183dc2821f146cfc3af266958f0e9b8a30553058"
+    },
+    {
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "bytes": 33254,
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f",
+      "git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "9ab102e6a07b380a7ba0b70bcad638edacdd7295"
+    },
+    {
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "bytes": 18462,
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81",
+      "git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "7de21faef778e42ffc07dd954f41a0fe286d3393"
+    },
+    {
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "bytes": 27423,
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1",
+      "git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "921e24dcebf4ae7405ff72c8eedb117b3445936c"
+    },
+    {
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "bytes": 22439,
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+      "git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "e6c75bfbe0ec11198af39229edb49b662f19ed24"
+    },
+    {
+      "path": "astra_ingestion/config.py",
+      "bytes": 3237,
+      "sha256": "431d775f11fc1372073ff3fba68823e6e079f389d45fc15a2c7768b277ebe5c9",
+      "git_blob_sha1": "0c07937b4f9b3e585f0e423743c00171c57cfaaf",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "64db9fad536ee86930d784e4b197fb7582738273"
+    },
+    {
+      "path": "astra_ingestion/models.py",
+      "bytes": 5673,
+      "sha256": "b4e3e97a0102b6d869819cb103ca2dd05c5c06215c3a22827feac3f7036a5aaa",
+      "git_blob_sha1": "c6fec8604a8e379b1b03ada5a048fa6025e365aa",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "aa449ba7556daedb4e6fff3dd1841bc79125f133"
+    },
+    {
+      "path": "astra_ingestion/reconcile.py",
+      "bytes": 2082,
+      "sha256": "2d857d332544717f1bb458ead92b49588db951f1827925267c7712f6943ca3df",
+      "git_blob_sha1": "e17b28128ab1e88a4fc74320f4548650155881c2",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "ded9b468dabd3c514c4cfcd689d22e497401a4bf"
+    },
+    {
+      "path": "astra_ingestion/rpc_store.py",
+      "bytes": 17590,
+      "sha256": "323140a1a26314a23d9c620d2f47cd03a5dca1cd9028290f77af8fee75c2f6ea",
+      "git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "b66962c2a4dec7427e8373a2aa79624ec7217c10"
+    },
+    {
+      "path": "astra_ingestion/source.py",
+      "bytes": 9870,
+      "sha256": "c4d786d377fc25bb93ffe937b5a17b2a9c8dde1546de92f8df4041544fad5f7e",
+      "git_blob_sha1": "f15e86b8f72db87621220ecfb353ca2dc7d44c29",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f"
+    },
+    {
+      "path": "astra_ingestion/store.py",
+      "bytes": 31622,
+      "sha256": "c3fbdf2c964b417c9181eb29ed94958af4dd14ab492b8b5bec2685758172111f",
+      "git_blob_sha1": "8ba27a6e405eedb4f0e52ce33d536418fa136ce8",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7"
+    },
+    {
+      "path": "astra_ingestion/worker.py",
+      "bytes": 7696,
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1",
+      "git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f"
+    },
+    {
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "bytes": 23087,
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7",
+      "git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "92c384a927e5b46185f02b096661935aa9411502"
+    },
+    {
+      "path": "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+      "bytes": 4990,
+      "sha256": "7fdf9dc2d2814e83cc63c7da9c2a128de2b8d94d98c2561bee40704151203b15",
+      "git_blob_sha1": "25d3e6ea7e76ae3eec9f76aabfa020b52b24cf1c",
+      "base_state": "ABSENT",
+      "base_git_blob_sha1": null
+    },
+    {
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "bytes": 16461,
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7",
+      "git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "26e7adbe11a0beaed8f7568e1309275b25663ff2"
+    },
+    {
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "bytes": 1812,
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a",
+      "git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d"
+    },
+    {
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "bytes": 5513,
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c",
+      "git_blob_sha1": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "base_state": "ABSENT",
+      "base_git_blob_sha1": null
+    },
+    {
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "bytes": 1599,
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39",
+      "git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "f84691e94a180ae3546c65b23f946ce493116472"
+    },
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "bytes": 28911,
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+      "git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "bytes": 6498,
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a",
+      "git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "e982e04162b6742d91d13615d59c34153e21ffe4"
+    },
+    {
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "bytes": 57461,
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043",
+      "git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "2015a5b2ddaa583a349bbc83673144655a505677"
+    },
+    {
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "bytes": 6758,
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2",
+      "git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "44dba451e77c207531b3326ba049d420647e51be"
+    },
+    {
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "bytes": 10029,
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad",
+      "git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2"
+    },
+    {
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "bytes": 30170,
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61",
+      "git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "f731cb4b04b0f520a8d373578235637ed47cfa58"
+    },
+    {
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "bytes": 53160,
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+      "git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9"
+    },
+    {
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "bytes": 2416,
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f",
+      "git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "312b30d368193c1cc7e84e38a4828a1889df844b"
+    },
+    {
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "bytes": 29707,
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869",
+      "git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "83110454eeaa70ad45a06b400bd16268861fee62"
+    },
+    {
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "bytes": 2920,
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c",
+      "git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "f858d616bf467c5b7f22f94246b742148f02c5a0"
+    },
+    {
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "bytes": 2865,
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501",
+      "git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9"
+    },
+    {
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "bytes": 3880,
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041",
+      "git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "25724e89d75017f3fcdf63e86de9fd646d046bc9"
+    },
+    {
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "bytes": 17401,
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2",
+      "git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "1c3bb5bdc894cba05566261f7e146ed6ea722747"
+    },
+    {
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "bytes": 35599,
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+      "git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "1c7abe78b2018797af2ea44b2a7db347347d3b1b"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "bytes": 9398,
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535",
+      "git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211"
+    },
+    {
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "bytes": 19399,
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5",
+      "git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "0db99492590967408258803e670b96d8ab5ffd3b"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "bytes": 3720,
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7",
+      "git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "9c602d71b430ec36c3b76b2b5021e3e4591aac80"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "bytes": 2423,
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7",
+      "git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557"
+    },
+    {
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "bytes": 49245,
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a",
+      "git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "feb869a216ad34f776f801e8b91d6273fa93c3e4"
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "bytes": 46872,
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+      "git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "2cb18252d610c358366f31eaaf8ca664fbd328ec"
+    },
+    {
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "bytes": 8435,
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424",
+      "git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "e229a65807ace3aa6a59bf660b58e54eef5c9036"
+    },
+    {
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "bytes": 21403,
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5",
+      "git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "cb06d33f960c39681060acb28cd43fe7d0078413"
+    },
+    {
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "bytes": 8886,
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e",
+      "git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "31618d0fd1953ce1d6d43a728043163aca705f24"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "bytes": 3162,
+      "sha256": "01d806e9b14a23d4069a56efcb884b0842066cef955f2f7deb591342e65b681e",
+      "git_blob_sha1": "94fdf570603848f5635f205fd3ffc6e1e3ddf013",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "c9d72d987e40474df126f52f7e0118c8ba128079"
+    },
+    {
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "bytes": 54228,
+      "sha256": "0f039753c680e2fe700007dd81a4a538b70e72ef9078051ae275028afc805352",
+      "git_blob_sha1": "38bb3b607b9ba662d66685bd24f655c6d1ab9555",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "9cb1d522a8fab6660c1cbebd951dd4df7871da03"
+    },
+    {
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "bytes": 2266,
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae",
+      "git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "4e66518095dce766060a63d3b3742b25c0f38eb2"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "bytes": 20490,
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1",
+      "git_blob_sha1": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "base_state": "ABSENT",
+      "base_git_blob_sha1": null
+    },
+    {
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "bytes": 11247,
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d",
+      "git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "fe24b611ed41052b533173cd3f22802070150ada"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "bytes": 16964,
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424",
+      "git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "4e5a76ae336c441563cf208f8a8f472c551794dc"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "bytes": 19668,
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14",
+      "git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "dd01babeaf666ab90191796bc28d85923479368b"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "bytes": 44378,
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce",
+      "git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "0b9d2668a63a4efa0a32ea01c33a20e35245385e"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "bytes": 15566,
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae",
+      "git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "bytes": 10844,
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210",
+      "git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "bytes": 13753,
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4",
+      "git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "01c791046bd66cd1a35f9485fa2621241fc63818"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "bytes": 8631,
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f",
+      "git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "878c7ea3362c73bdc4d8454ff949c137476af935"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "bytes": 22521,
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961",
+      "git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "bytes": 15706,
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048",
+      "git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "0d311aada9bc4db673d7b9c4bf7e01904c615c84"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "bytes": 12447,
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6",
+      "git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "f8290d38bb69656e253a89d648b0dfd7f3a68712"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "bytes": 9063,
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf",
+      "git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "c305541e75cfb7be34236f9e82bb25f00a1ca800"
+    },
+    {
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "bytes": 21360,
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32",
+      "git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "base_state": "IDENTICAL",
+      "base_git_blob_sha1": "6357af4f2e5bb2363713572e75e35ab2893ce6f5"
+    },
+    {
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "bytes": 57672,
+      "sha256": "c1b4f9721889f9c85375a6b176b54f151aa4a8bd4824946d379f5f684b6e9a10",
+      "git_blob_sha1": "46c45f75171c4dbb1c260bddfc0e9ebd00f2621b",
+      "base_state": "DIFFERENT",
+      "base_git_blob_sha1": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435"
+    }
+  ],
+  "absent_paths": [
+    "review/recovery-v71/audit_capability_publication_dependencies_v71.py",
+    "sql/astra_backfill_claim_capability_filter_v2.sql",
+    "tests/ingestion/test_backfill_claim_capability_filter_v2.py"
+  ],
+  "different_paths": [
+    "astra_ingestion/__init__.py",
+    "astra_ingestion/config.py",
+    "astra_ingestion/models.py",
+    "astra_ingestion/reconcile.py",
+    "astra_ingestion/source.py",
+    "astra_ingestion/store.py",
+    "sql/astra_ingestion_rpc_auth_context_v1.sql",
+    "sql/astra_ingestion_rpc_v1.sql",
+    "tests/ingestion/test_rpc_postgres.py"
+  ],
+  "limits": [
+    "One actual forward/preservation case executed to trace the complete shared setup fixture.",
+    "Static read-site inventory includes sibling tests not selected by this qualification; their extra reads are not automatically required by the active test."
+  ]
+}

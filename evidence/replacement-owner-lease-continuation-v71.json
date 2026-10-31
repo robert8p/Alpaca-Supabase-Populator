@@ -1,0 +1,16 @@
+[
+  {
+    "id": 28,
+    "action": "IMPLEMENTATION_LEASE_RENEWED",
+    "recorded_at": "2026-10-30 13:45:14.971195+00",
+    "evidence": {
+      "owner": "root-replacement-20261030T042603Z",
+      "reason": "Publish verified v71 checkpoint and finish bounded maintenance cost diagnosis/repair for identified cron lock holder",
+      "request_id": "v71-owner-continuation-20261030T1345Z",
+      "lease_until": "2026-10-30T14:30:00Z",
+      "same_controller": true,
+      "approval_unchanged": true,
+      "previous_lease_until": "2026-10-30T14:00:00Z"
+    }
+  }
+]

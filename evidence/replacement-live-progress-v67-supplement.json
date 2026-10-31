@@ -1,0 +1,64 @@
+{
+  "version": "replacement-v67-post-stage3-progress-and-forward-reconciliation",
+  "recorded_at": "2026-10-30T08:04:39.054689+00:00",
+  "evidence_basis": "Root connector observations reported to this local packaging agent; no remote call made by this agent.",
+  "same_controller": true,
+  "owner": "root-replacement-20261030T042603Z",
+  "lease_until": "2026-10-30T08:30:00Z",
+  "lease_audit": 4,
+  "historical_full_measurement": {
+    "path": "evidence/replacement-live-progress-v67.json",
+    "sha256": "fe17071c8d3f1d51e6809afd5de93be4aeab73bec6d1b507d27f6e8dc9a95184",
+    "observed_at": "2026-10-30T07:49:42.249063Z",
+    "preserved_unchanged": true
+  },
+  "later_observations": [
+    {
+      "observed_at": "2026-10-30T07:57:42Z",
+      "observer": "Existing 08:00 hourly automation execution; read-only and ownership-respecting",
+      "pages_committed": 1758,
+      "records_committed": 210856,
+      "independent_readbacks": 1758
+    },
+    {
+      "observed_at": "2026-10-30T08:02:09Z",
+      "observer": "Existing root controller live reconciliation",
+      "pages_committed": 1792,
+      "records_committed": 214624,
+      "last_progress_at": "2026-10-30T08:02:06Z"
+    }
+  ],
+  "applied_forwards": [
+    {
+      "path": "sql/astra_backfill_maintenance_fairness_v2.sql",
+      "sha256": "3823c379001e948f97b9aa0d75f4017077b8ce986b3894ee82d0ea60171990e9",
+      "applied_at_approximate": "2026-10-30T07:46:00Z"
+    },
+    {
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10",
+      "applied_at_approximate": "2026-10-30T07:55:00Z"
+    },
+    {
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2",
+      "applied_at_approximate": "2026-10-30T08:02:25Z",
+      "preconditions_reconciled": [
+        "absent before application",
+        "shared-record dependency installed",
+        "existing controller ownership"
+      ]
+    }
+  ],
+  "relay": {
+    "state": "AWAITING_ACTION_TIME_CONFIRMATION",
+    "table_absent": true,
+    "helper_absent": true,
+    "live_probe_performed": false,
+    "security_hold_unchanged": true
+  },
+  "family_report_performance_forward": "PENDING",
+  "latest_public_status_code": "UNPUBLISHED_AND_UNDEPLOYED",
+  "latest_public_status_release_gate": "Exact-head GitHub checks required before release; not claimed complete here.",
+  "mission_complete": false
+}

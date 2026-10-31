@@ -1,0 +1,21 @@
+{
+  "affected_original_artifact": {
+    "path": "review/recovery-v81/cursor-integrity/independent_cursor_integrity_design_review_v81.md",
+    "sha256": "fd6acf06b54fe06f78910d6fc9143b1e514e674eb18632c1fc0bc686c22102bf"
+  },
+  "candidate_effect": "No candidate correction needed for this point: the candidate already uses an explicit NULL unstarted cursor.",
+  "correction": "The retained runtime DDL declares tasks.id as text PRIMARY KEY CHECK(length(id) BETWEEN 8 AND 200). The primary-key-only observation was insufficient to claim an empty string is admissible. Current key/catalog evidence must be distinguished from this retained full DDL.",
+  "earlier_artifacts_preserved": true,
+  "fixture_calls": 0,
+  "notification": "Root, producer and independent security reviewer informed before producer tests.",
+  "production_calls": 0,
+  "schema": "astra.cursor-review-correction/1",
+  "source": {
+    "declaration": "id text PRIMARY KEY CHECK(length(id) BETWEEN 8 AND 200)",
+    "path": "sql/astra_backfill_runtime_v2.sql",
+    "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+  },
+  "status": "CORRECTION_PRESERVES_PRIOR_EVIDENCE",
+  "supersedes_claim": "An empty-string task ID is schema-legal.",
+  "test_effect": "Do not bypass the real ID check to insert an empty task ID. Test a legal boundary ID and null cursor-state transitions instead."
+}

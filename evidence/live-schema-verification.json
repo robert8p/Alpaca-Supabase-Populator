@@ -1,0 +1,74 @@
+[
+  {
+    "check_name": "anon_schema_usage",
+    "result": "false"
+  },
+  {
+    "check_name": "authenticated_schema_usage",
+    "result": "false"
+  },
+  {
+    "check_name": "database",
+    "result": "postgres"
+  },
+  {
+    "check_name": "jobs",
+    "result": "0"
+  },
+  {
+    "check_name": "non_owner_acl_entries",
+    "result": "0"
+  },
+  {
+    "check_name": "receipts",
+    "result": "0"
+  },
+  {
+    "check_name": "records",
+    "result": "0"
+  },
+  {
+    "check_name": "rls_enabled_tables",
+    "result": "9"
+  },
+  {
+    "check_name": "runtime_policies",
+    "result": "0"
+  },
+  {
+    "check_name": "runtime_roles",
+    "result": "0"
+  },
+  {
+    "check_name": "schema",
+    "result": "astra_ingestion_v1"
+  },
+  {
+    "check_name": "schema_version",
+    "result": "1"
+  },
+  {
+    "check_name": "scope_guards",
+    "result": "2"
+  },
+  {
+    "check_name": "security_definer_functions",
+    "result": "0"
+  },
+  {
+    "check_name": "service_role_schema_usage",
+    "result": "false"
+  },
+  {
+    "check_name": "source_pacing_seed",
+    "result": "alpaca:0"
+  },
+  {
+    "check_name": "tables",
+    "result": "9"
+  },
+  {
+    "check_name": "trigger_functions",
+    "result": "2"
+  }
+]

@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "deployed_revision": "2d67c06ee1a19084a61d7cc1145de16bc68ca0cd",
+  "worker": {
+    "commit": {
+      "createdAt": "2026-10-30T06:58:07Z",
+      "id": "2d67c06ee1a19084a61d7cc1145de16bc68ca0cd",
+      "message": "Run fixed-cohort backfill with retained feature reuse, fair recovery and bounded pages\n\nPublish tested forward migrations, linear canonical JSON encoding, durable deferred-retry proof and replacement status. Preserve accepted membership, immutable source receipts and the existing controller."
+    },
+    "createdAt": "2026-10-30T07:01:04.299785Z",
+    "finishedAt": "2026-10-30T07:02:37.31864Z",
+    "id": "dep-dbi41c2fngtc73c81gg0",
+    "startedAt": "2026-10-30T07:01:04.297271Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T07:02:37.319551Z"
+  },
+  "web": {
+    "commit": {
+      "createdAt": "2026-10-30T06:58:07Z",
+      "id": "2d67c06ee1a19084a61d7cc1145de16bc68ca0cd",
+      "message": "Run fixed-cohort backfill with retained feature reuse, fair recovery and bounded pages\n\nPublish tested forward migrations, linear canonical JSON encoding, durable deferred-retry proof and replacement status. Preserve accepted membership, immutable source receipts and the existing controller."
+    },
+    "createdAt": "2026-10-30T07:01:13.836103Z",
+    "finishedAt": "2026-10-30T07:02:48.988372Z",
+    "id": "dep-dbi41eetlv9c738pvjvg",
+    "startedAt": "2026-10-30T07:01:13.809556Z",
+    "status": "live",
+    "trigger": "api",
+    "updatedAt": "2026-10-30T07:03:17.524586Z"
+  },
+  "run_and_workers": [
+    {
+      "jsonb_build_object": {
+        "run": {
+          "id": "fixed3000-20250901-20260731-v1-20261030",
+          "fence": 1,
+          "status": "ACTIVE",
+          "pages_committed": 694,
+          "last_progress_at": "2026-10-30T07:05:46.2015+00:00",
+          "planning_complete": false,
+          "records_committed": 69006,
+          "requests_reserved": 343,
+          "implementation_owner": "root-replacement-20261030T042603Z",
+          "implementation_lease_until": "2026-10-30T07:15:00Z",
+          "planner_next_selection_order": 223
+        },
+        "options": [
+          {
+            "id": "backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 10,
+            "next_retry_at": "2026-10-30T07:05:43.598641+00:00",
+            "last_progress_at": "2026-10-30T07:05:43.598641+00:00",
+            "requests_reserved": 1
+          },
+          {
+            "id": "backfill-plan-47f32fe23ab30ccea99412efcd66e764bdb3a32e17146ab14433861eabf7b4a1",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 9,
+            "next_retry_at": "2026-10-30T07:05:21.899742+00:00",
+            "last_progress_at": "2026-10-30T07:05:21.899742+00:00",
+            "requests_reserved": 1
+          },
+          {
+            "id": "backfill-plan-65102fb5ffb15c62ee2cfbe9f0e537252e88e9508bd73086d08541b815466d76",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 9,
+            "next_retry_at": "2026-10-30T07:04:58.569664+00:00",
+            "last_progress_at": "2026-10-30T07:04:58.569664+00:00",
+            "requests_reserved": 1
+          },
+          {
+            "id": "backfill-plan-159104516fc91a100b331d840cf4cba99c57960637412535fb4ddc0868366fe1",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 9,
+            "next_retry_at": "2026-10-30T07:04:13.288392+00:00",
+            "last_progress_at": "2026-10-30T07:04:13.288392+00:00",
+            "requests_reserved": 1
+          },
+          {
+            "id": "backfill-plan-e156a7d53a8d9b9c360883ee34e8419d5d43355e4d50bf7415469d47066bdde1",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 7,
+            "next_retry_at": "2026-10-30T07:01:09.122566+00:00",
+            "last_progress_at": "2026-10-30T07:01:09.122566+00:00",
+            "requests_reserved": 1
+          },
+          {
+            "id": "backfill-plan-bb53a3fd3da590b3a34092e8c2aae20d8018431f5fcb96cd9325c979e2945d56",
+            "status": "PENDING",
+            "page_no": 1,
+            "error_code": null,
+            "generation": 6,
+            "next_retry_at": "2026-10-30T07:00:21.237036+00:00",
+            "last_progress_at": "2026-10-30T07:00:21.237036+00:00",
+            "requests_reserved": 1
+          }
+        ],
+        "workers": [
+          {
+            "worker_id": "c9c2b861-b697-4f69-bc02-f24161d45051",
+            "observed_at": "2026-10-30T07:05:45.743682+00:00",
+            "source_revision": "2d67c06ee1a19084a61d7cc1145de16bc68ca0cd",
+            "supported_kinds": [
+              "alpaca_reference",
+              "alpaca_stock_bars",
+              "alpaca_news",
+              "alpaca_actions",
+              "alpaca_option_contracts",
+              "alpaca_option_bars",
+              "derive_daily",
+              "derive_intraday",
+              "derive_breadth",
+              "retained_reuse"
+            ]
+          },
+          {
+            "worker_id": "7ba8b87f-b1df-4785-b5be-8a0371d5c182",
+            "observed_at": "2026-10-30T07:02:36.949131+00:00",
+            "source_revision": "13ae192ef28b26f4f658f9c16a4992f4ed73cb2e",
+            "supported_kinds": [
+              "alpaca_reference",
+              "alpaca_stock_bars",
+              "alpaca_news",
+              "alpaca_actions",
+              "alpaca_option_contracts",
+              "alpaca_option_bars",
+              "derive_daily",
+              "derive_intraday",
+              "derive_breadth",
+              "retained_reuse"
+            ]
+          }
+        ],
+        "observed_at": "2026-10-30T07:05:50.09238+00:00"
+      }
+    }
+  ],
+  "verified_progress": [
+    {
+      "jsonb_build_object": {
+        "readbacks": {
+          "verified_pages": 705,
+          "matching_hashes": 705,
+          "retained_minutes": 1598231,
+          "usable_feature_rows": 3900,
+          "feature_pointer_pages": 10,
+          "qualified_feature_rows": 3900,
+          "referenced_feature_rows": 3900,
+          "qualified_retained_minutes": 1598231,
+          "source_usable_retained_minutes": 1598231
+        },
+        "kind_totals": [
+          {
+            "kind": "derive_daily",
+            "family": "D05",
+            "committed_pages": 59,
+            "physical_records": 1235
+          },
+          {
+            "kind": "derive_daily",
+            "family": "D03",
+            "committed_pages": 59,
+            "physical_records": 1235
+          },
+          {
+            "kind": "derive_intraday",
+            "family": "D01",
+            "committed_pages": 60,
+            "physical_records": 19510
+          },
+          {
+            "kind": "retained_reuse",
+            "family": "P01",
+            "committed_pages": 127,
+            "physical_records": 127
+          },
+          {
+            "kind": "alpaca_reference",
+            "family": "REF01",
+            "committed_pages": 95,
+            "physical_records": 95
+          },
+          {
+            "kind": "alpaca_news",
+            "family": "N01",
+            "committed_pages": 50,
+            "physical_records": 2500
+          },
+          {
+            "kind": "alpaca_stock_bars",
+            "family": "D02",
+            "committed_pages": 132,
+            "physical_records": 37220
+          },
+          {
+            "kind": "derive_daily",
+            "family": "D04",
+            "committed_pages": 59,
+            "physical_records": 1235
+          },
+          {
+            "kind": "alpaca_option_contracts",
+            "family": "CTX02",
+            "committed_pages": 7,
+            "physical_records": 7000
+          },
+          {
+            "kind": "alpaca_actions",
+            "family": "N02",
+            "committed_pages": 57,
+            "physical_records": 262
+          }
+        ],
+        "observed_at": "2026-10-30T07:06:14.673671+00:00",
+        "pacing_hook": true,
+        "queue_errors": null,
+        "deferred_options": {
+          "id": "backfill-plan-44b5d8cb87119b6edef0f9fdfffffd9ac10633c40e6b51cf5c46bb3aab645e6a",
+          "status": "PENDING",
+          "page_no": 1,
+          "verified": true,
+          "generation": 10,
+          "committed_at": "2026-10-30T07:05:44.18383+00:00",
+          "record_count": 1000,
+          "requests_reserved": 1,
+          "next_cursor_present": true
+        }
+      }
+    }
+  ],
+  "existing_controller_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+  "implementation_owner": "root-replacement-20261030T042603Z",
+  "implementation_lease_until": "2026-10-30T08:00:00Z",
+  "non_additive_units": true,
+  "full_mission_complete": false
+}

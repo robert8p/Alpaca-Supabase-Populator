@@ -1,0 +1,18 @@
+[
+  {
+    "observed_at": "2026-10-30 13:45:41.352806+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T14:30:00Z",
+    "pages_committed": 4791,
+    "records_committed": 580742,
+    "requests_reserved": 2453,
+    "source_bytes": 484986459,
+    "next_member": 2173,
+    "planning_complete": false,
+    "latest_page_commit": "2026-10-30 13:45:34.304069+00",
+    "pages_since_claim_repair": 515,
+    "readbacks": 4791
+  }
+]

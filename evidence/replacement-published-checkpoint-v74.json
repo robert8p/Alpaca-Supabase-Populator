@@ -1,0 +1,222 @@
+{
+  "schema": "astra.replacement-published-checkpoint/1",
+  "version": "v74",
+  "publication": {
+    "commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+    "tree": "71db22123ba2db26d1135916cb91081b03bab2cb",
+    "manifest_sha256": "1ffdf2ec583ffb8a1b2ba5bf7c27a7a62eb4d370a10c1d4d8feb2c5b39eac2d2",
+    "canonical_checkpoint_sha256": "0755a6e4ea9fab90efd1b59c3f118187039454aa31ee5c92bcfc021a18e2ba05",
+    "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+    "changed_paths": 30,
+    "additions": 28,
+    "canonical_replacements": 2,
+    "unchanged_base_blobs": 946,
+    "total_tree_blobs": 976,
+    "active_code_changes": false,
+    "all_published_blobs_and_unchanged_base_verified": true
+  },
+  "successor": {
+    "schema": "astra.reporting-only-task-update/1",
+    "authority": {
+      "source": "Current user communication-only update relaying Rob",
+      "source_time": "2026-10-30T16:22:00Z",
+      "time_precision": "minute",
+      "approval_scope": "Reporting instructions only; existing mission and action-time approval controls unchanged"
+    },
+    "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "previous_updated_at": "2026-10-30T16:04:48.542203+00:00",
+    "updated_at": "2026-10-30T16:27:39.839131+00:00",
+    "previous_prompt_sha256": "53772906e5e1943e098245a38ba2d63c5e556a8ff6cbc9e158af2ce5862c59cb",
+    "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+    "prompt_exact_independent_readback": true,
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+    "schedule_unchanged": true,
+    "is_enabled": true,
+    "timezone": "Europe/London",
+    "timezone_unchanged": true,
+    "last_run": {
+      "id": "bc45f857-ec90-8321-b60b-8e79d2a166fd",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-10-30T16:00:00Z",
+      "started_at": "2026-10-30T15:56:59.587040Z",
+      "completed_at": "2026-10-30T16:04:23.189315Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      }
+    },
+    "delivery_status": "unknown",
+    "delivery_control": {
+      "per_task_mute_field_exposed": false,
+      "prompt_only_suppression": true,
+      "platform_push_email_muting_verified": false,
+      "global_chatgpt_android_settings_changed": false
+    },
+    "invariants": {
+      "same_controller": true,
+      "no_new_task": true,
+      "no_executor_pause": true,
+      "worker_and_recovery_execution_unchanged": true,
+      "original_mission_unchanged_and_once_at_eof": true,
+      "source_cost_security_completion_controls_unchanged": true
+    },
+    "owner_action_policy": "Persist exact reviewable owner-action/confirmation payload for dot to relay. Required approval remains a hold until genuine in-scope approval is received; no bypass or re-dating."
+  },
+  "database_independent_readback": {
+    "observed_at": "2026-10-30 16:43:12.056899+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T17:15:00Z",
+    "checkpoint": {
+      "tree": "71db22123ba2db26d1135916cb91081b03bab2cb",
+      "commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+      "version": "v74",
+      "recorded_at": "2026-10-30T16:42:51.414339+00:00",
+      "manifest_sha256": "1ffdf2ec583ffb8a1b2ba5bf7c27a7a62eb4d370a10c1d4d8feb2c5b39eac2d2",
+      "runtime_code_changed": false,
+      "published_and_ref_verified": true,
+      "canonical_checkpoint_sha256": "0755a6e4ea9fab90efd1b59c3f118187039454aa31ee5c92bcfc021a18e2ba05"
+    },
+    "current_step": "Reporting-only policy and exact same-task prompt are verified and published in v74. EQR original failure is retained; existing Massive target-end task acquired one verified page and the existing dated identity view matches July31. Continue normal existing identity consumers and dated tasks; do not replay the acquired page. Complete final source/transaction-boundary independent review of strict55P03 retry, publish the exact shared-field/retry candidate packet, pass required exact-head CI, then reconcile live pins and apply only qualified existing-scope repairs. Keep independent ingestion running, report durable results for dot, and preserve all action-time approval holds.",
+    "pending_repair": {
+      "state": "SOURCE_PINNED_SHARED_DIAGNOSIS_AND_LOCAL_CONFIRMED_ABORT_RETRY_QUALIFICATION",
+      "worker_deployment": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "diagnostic_restored": true,
+      "active_runtime_change_selected": false
+    },
+    "reporting_policy": {
+      "mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+      "policy_file": "docs/REPLACEMENT_REPORTING_POLICY_20261030T1622Z.md",
+      "policy_sha256": "040a79b2eb663998782862eedb22490724b4e222a6a129eaf45b218ead14d70d",
+      "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+      "task_updated_at": "2026-10-30T16:27:39.839131Z",
+      "authority_source": "Current user relaying Rob communication-only instruction",
+      "prompt_exact_readback": true,
+      "source_instruction_at": "2026-10-30T16:22:00Z",
+      "source_time_precision": "minute",
+      "global_settings_changed": false,
+      "prompt_only_suppression": true,
+      "owner_actions_destination": "Exact reviewable payload for dot to relay; required action-time approval remains mandatory",
+      "routine_results_destination": "Existing durable checkpoints, database evidence and repository evidence for dot to read",
+      "same_implementation_task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+      "platform_push_email_muting_verified": false,
+      "routine_proactive_user_messages_permitted": false,
+      "per_task_delivery_mute_supported_by_exposed_tools": false,
+      "cadence_enabled_state_executor_and_scope_unchanged": true
+    },
+    "eqr_dated_identity_readback": {
+      "state": "RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED",
+      "eligible": true,
+      "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+      "evidence_id": 1,
+      "market_date": "2026-07-31",
+      "observed_at": "2026-10-30T16:37:53.525149Z",
+      "evidence_sha256": "3e5d43ca8e194b04216216bb471e634d4b0ac364e4ec35d1b402f607deb0510c",
+      "source_verified": true,
+      "no_helper_replay": true,
+      "retrospective_only": true,
+      "source_invalidated": false,
+      "affected_roots_observed": 0,
+      "pending_member_refresh_observed": false,
+      "strict_historical_availability_certified": false
+    },
+    "audits": [
+      {
+        "id": 50,
+        "action": "IMPLEMENTATION_CHECKPOINT_PUBLISHED",
+        "run_id": "fixed3000-20250901-20260731-v1-20261030",
+        "task_id": null,
+        "evidence": {
+          "tree": "71db22123ba2db26d1135916cb91081b03bab2cb",
+          "commit": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62",
+          "task_id": "6ae2a4c96bbc819182133e17e9b7f779",
+          "version": "v74",
+          "request_id": "v74-checkpoint-reporting-eqr-a3e48a08",
+          "recorded_at": "2026-10-30T16:42:51.414339+00:00",
+          "prompt_sha256": "bb16c6082aa4d3a57cf228aed83b7cde26d3ff848f7ae5ca8b873a83afe19bea",
+          "manifest_sha256": "1ffdf2ec583ffb8a1b2ba5bf7c27a7a62eb4d370a10c1d4d8feb2c5b39eac2d2",
+          "same_controller": true,
+          "task_updated_at": "2026-10-30T16:27:39.839131Z",
+          "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+          "eqr_progress_audit": 48,
+          "schedule_unchanged": true,
+          "runtime_code_changed": false,
+          "original_mission_sha256": "62dd1a15c5c6cf46a42340917701816c6c3b86c49e4b4fb462f8b111bcaadc45",
+          "published_and_ref_verified": true,
+          "canonical_checkpoint_sha256": "0755a6e4ea9fab90efd1b59c3f118187039454aa31ee5c92bcfc021a18e2ba05",
+          "contention_repair_preserved": true,
+          "eqr_dated_identity_readback": {
+            "state": "RETROSPECTIVE_DATED_IDENTIFIERS_MATCHED",
+            "eligible": true,
+            "source_ref": "page:backfill-plan-b02f70882418e225433c701a33576aa43da36817f158e1227366497287c7ba3e:0",
+            "evidence_id": 1,
+            "market_date": "2026-07-31",
+            "observed_at": "2026-10-30T16:37:53.525149Z",
+            "evidence_sha256": "3e5d43ca8e194b04216216bb471e634d4b0ac364e4ec35d1b402f607deb0510c",
+            "source_verified": true,
+            "no_helper_replay": true,
+            "retrospective_only": true,
+            "source_invalidated": false,
+            "affected_roots_observed": 0,
+            "pending_member_refresh_observed": false,
+            "strict_historical_availability_certified": false
+          },
+          "exact_successor_prompt_readback": true,
+          "active_code_selected_or_installed": false,
+          "platform_push_email_muting_verified": false
+        },
+        "generation": null,
+        "recorded_at": "2026-10-30T16:42:51.430134+00:00",
+        "source_revision": "a3e48a080c70c802a2fbb1a1bb5db29b0d7aee62"
+      }
+    ]
+  },
+  "first_metadata_attempt": {
+    "result": "ROLLED_BACK_GUARD_EXPRESSION_22P02",
+    "evidence": "review/recovery-v74/checkpoint_metadata_attempt1_v74.json",
+    "rollback_readback": {
+      "observed_at": "2026-10-30 16:42:45.681713+00",
+      "checkpoint": {
+        "commit": "a3bc0520e624054b278e46682b04cebb33e9b677",
+        "version": "v73",
+        "recorded_at": "2026-10-30T16:01:18.951014+00:00",
+        "manifest_sha256": "9f89bc60beb7b56518af93cab958b6821050900744300570a113f63412663c35",
+        "published_and_ref_verified": true
+      },
+      "reporting_mode": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+      "owner": "root-replacement-20261030T042603Z",
+      "lease_until": "2026-10-30T17:15:00Z",
+      "tentative_dated_readback": null,
+      "checkpoint_audit_count": 0
+    },
+    "correction": "Parenthesize JSON extraction before removing the queue key; unchanged expected-state guard then passed."
+  },
+  "ci_runs_observed": [
+    {
+      "id": 41091983035,
+      "name": "ASTRA ingestion qualification",
+      "event": "pull_request",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1
+    },
+    {
+      "id": 41091983174,
+      "name": "release-gate",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1
+    },
+    {
+      "id": 41091972653,
+      "name": "release-gate",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1
+    }
+  ],
+  "qualification_note": "This publication changes no active code; the ingestion PR job was still running at this receipt. Do not transfer its result to future active-source candidates."
+}

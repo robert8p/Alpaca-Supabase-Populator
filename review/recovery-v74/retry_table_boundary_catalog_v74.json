@@ -1,0 +1,1652 @@
+{
+  "checks": [
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_work_v2",
+      "validated": true,
+      "constraint": "backfill_contract_work_v2_provider_check",
+      "expression": "CHECK (provider = 'Alpaca'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "validated": true,
+      "constraint": "backfill_family_turn_v2_claim_turns_check",
+      "expression": "CHECK (claim_turns >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "validated": true,
+      "constraint": "backfill_family_turn_v2_next_family_index_check",
+      "expression": "CHECK (next_family_index >= 1 AND next_family_index <= 16)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "validated": true,
+      "constraint": "backfill_identity_sources_v2_source_kind_check",
+      "expression": "CHECK (source_kind = ANY (ARRAY['RETAINED'::text, 'CURRENT_PAGE'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_minute_sessions_v2",
+      "validated": true,
+      "constraint": "backfill_minute_sessions_v2_source_type_check",
+      "expression": "CHECK (source_type = ANY (ARRAY['RETAINED'::text, 'ACQUIRED'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "validated": true,
+      "constraint": "backfill_nonminute_pages_v2_check",
+      "expression": "CHECK (physical_records = (target_records + support_records + after_target_records + unknown_date_records))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "validated": true,
+      "constraint": "backfill_nonminute_pages_v2_field_counts_check",
+      "expression": "CHECK (jsonb_typeof(field_counts) = 'array'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "validated": true,
+      "constraint": "backfill_nonminute_pages_v2_observation_role_check",
+      "expression": "CHECK (observation_role = ANY (ARRAY['SOURCE'::text, 'DERIVED'::text, 'POINTER'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "validated": true,
+      "constraint": "backfill_pages_v2_body_sha256_check",
+      "expression": "CHECK (body_sha256 ~ '^[0-9a-f]{64}$'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "validated": true,
+      "constraint": "backfill_pages_v2_page_no_check",
+      "expression": "CHECK (page_no >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "validated": true,
+      "constraint": "backfill_pages_v2_record_count_check",
+      "expression": "CHECK (record_count >= 0 AND record_count <= 100000)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "validated": true,
+      "constraint": "backfill_pages_v2_records_sha256_check",
+      "expression": "CHECK (records_sha256 ~ '^[0-9a-f]{64}$'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "validated": true,
+      "constraint": "backfill_pages_v2_source_bytes_check",
+      "expression": "CHECK (source_bytes >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "validated": true,
+      "constraint": "backfill_plan_manifests_v2_expected_plan_sha256_check",
+      "expression": "CHECK (expected_plan_sha256 ~ '^[0-9a-f]{64}$'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "validated": true,
+      "constraint": "backfill_plan_manifests_v2_expected_task_count_check",
+      "expression": "CHECK (expected_task_count > 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "validated": true,
+      "constraint": "backfill_provider_dependencies_v2_dependency_check",
+      "expression": "CHECK (dependency = ANY (ARRAY['ALPACA_WORKER_CREDENTIAL'::text, 'MASSIVE_WORKER_CREDENTIAL'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "validated": true,
+      "constraint": "backfill_provider_dependencies_v2_provider_check",
+      "expression": "CHECK (provider = ANY (ARRAY['Alpaca'::text, 'Massive'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "validated": true,
+      "constraint": "backfill_provider_dependencies_v2_state_check",
+      "expression": "CHECK (state = ANY (ARRAY['BLOCKED_EXTERNAL'::text, 'AVAILABLE'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "validated": true,
+      "constraint": "backfill_readbacks_v2_check",
+      "expression": "CHECK (body_sha256 = readback_sha256)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "validated": true,
+      "constraint": "backfill_readbacks_v2_check1",
+      "expression": "CHECK (expected_records = actual_records)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_cohort_manifest_sha256_check",
+      "expression": "CHECK (cohort_manifest_sha256 = '4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_cohort_policy_check",
+      "expression": "CHECK (cohort_policy = 'RETROSPECTIVE_FIXED_COHORT'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_cohort_sha256_check",
+      "expression": "CHECK (cohort_sha256 = '2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_fence_check",
+      "expression": "CHECK (fence > 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_id_check",
+      "expression": "CHECK (length(id) >= 8 AND length(id) <= 160)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_instruction_sha256_check",
+      "expression": "CHECK (instruction_sha256 ~ '^[0-9a-f]{64}$'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_pages_committed_check",
+      "expression": "CHECK (pages_committed >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_records_committed_check",
+      "expression": "CHECK (records_committed >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_requests_reserved_check",
+      "expression": "CHECK (requests_reserved >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_scope_check",
+      "expression": "CHECK (jsonb_typeof(scope) = 'object'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_source_bytes_check",
+      "expression": "CHECK (source_bytes >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_status_check",
+      "expression": "CHECK (status = ANY (ARRAY['ACTIVE'::text, 'PAUSED'::text, 'SUPERSEDED'::text, 'COMPLETE'::text, 'COMPLETE_WITH_DOCUMENTED_GAPS'::text, 'PARTIAL_OPERATIONAL_FAILURE'::text, 'BLOCKED_EXTERNAL'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_target_end_check",
+      "expression": "CHECK (target_end = '2026-07-31'::date)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "validated": true,
+      "constraint": "backfill_runs_v2_target_start_check",
+      "expression": "CHECK (target_start = '2025-09-01'::date)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "validated": true,
+      "constraint": "backfill_s02_occurrences_v2_source_origin_check",
+      "expression": "CHECK (source_origin = ANY (ARRAY['RETAINED'::text, 'FRESH'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": false,
+      "constraint": "backfill_page_limit_bounded_v2",
+      "expression": "CHECK (page_limit IS NULL OR page_limit >= 1 AND page_limit <= astra_ingestion_v1.backfill_page_limit_cap_v2(kind)) NOT VALID"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_attempts_check",
+      "expression": "CHECK (attempts >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_check",
+      "expression": "CHECK (status = 'RUNNING'::text AND owner IS NOT NULL AND lease_until IS NOT NULL OR status <> 'RUNNING'::text AND owner IS NULL AND lease_until IS NULL)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_cursor_check",
+      "expression": "CHECK (cursor IS NULL OR (jsonb_typeof(cursor) = ANY (ARRAY['null'::text, 'string'::text])))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_family_check",
+      "expression": "CHECK (family = ANY (ARRAY['REF01'::text, 'REF03'::text, 'P01'::text, 'P02'::text, 'D01'::text, 'D02'::text, 'D03'::text, 'D04'::text, 'D05'::text, 'N01'::text, 'N02'::text, 'N03'::text, 'S01'::text, 'S02'::text, 'CTX02'::text, 'CTX06'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_generation_check",
+      "expression": "CHECK (generation >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_id_check",
+      "expression": "CHECK (length(id) >= 8 AND length(id) <= 200)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": false,
+      "constraint": "backfill_tasks_v2_kind_check",
+      "expression": "CHECK (kind = ANY (ARRAY['alpaca_reference'::text, 'alpaca_stock_bars'::text, 'alpaca_news'::text, 'alpaca_actions'::text, 'alpaca_option_contracts'::text, 'alpaca_option_bars'::text, 'massive_reference'::text, 'massive_news'::text, 'massive_dividends'::text, 'massive_splits'::text, 'massive_short_volume'::text, 'massive_short_interest'::text, 'derive_daily'::text, 'derive_intraday'::text, 'derive_breadth'::text, 'retained_reuse'::text, 'retained_massive_archive'::text, 'retained_identity'::text])) NOT VALID"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_page_attempts_check",
+      "expression": "CHECK (page_attempts >= 0 AND page_attempts <= 8)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_page_no_check",
+      "expression": "CHECK (page_no >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_provider_check",
+      "expression": "CHECK (provider = ANY (ARRAY['Alpaca'::text, 'Massive'::text, 'derived'::text, 'reuse'::text, 'DERIVED'::text, 'REUSE'::text]))"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_records_committed_check",
+      "expression": "CHECK (records_committed >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_requests_reserved_check",
+      "expression": "CHECK (requests_reserved >= 0)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_scope_check",
+      "expression": "CHECK (jsonb_typeof(scope) = 'object'::text)"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "validated": true,
+      "constraint": "backfill_tasks_v2_status_check",
+      "expression": "CHECK (status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text, 'INGESTED'::text, 'NO_DATA_RETURNED'::text, 'NOT_APPLICABLE'::text, 'PROVIDER_LIMITATION'::text, 'IDENTITY_OR_QUALITY_UNRESOLVED'::text, 'OPERATIONAL_ERROR'::text, 'BLOCKED_EXTERNAL'::text, 'SUPERSEDED_BY_SCOPE_CHANGE'::text]))"
+    }
+  ],
+  "defaults": [
+    {
+      "column": "id",
+      "identity": "a",
+      "relation": "astra_ingestion_v1.backfill_audit_v2",
+      "generated": "",
+      "expression": null
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_audit_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "projected_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "proof_basis",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "generated": "",
+      "expression": "'ALL_COMMITTED_PAGES_INDEPENDENTLY_VERIFIED_AND_SOURCE_CURSOR_EXHAUSTED'::text"
+    },
+    {
+      "column": "checked_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "registered_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "child_created_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "'-infinity'::timestamp with time zone"
+    },
+    {
+      "column": "child_id",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "''::text"
+    },
+    {
+      "column": "seed_complete",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "false"
+    },
+    {
+      "column": "registered_windows",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "registered_child_links",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "parent_contract_links",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "new_children_created",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "enumeration_pages_processed",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "unlinked_source_contracts",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "id",
+      "identity": "a",
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "generated": "",
+      "expression": null
+    },
+    {
+      "column": "evidence",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "generated": "",
+      "expression": "'{}'::jsonb"
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "next_family_index",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "generated": "",
+      "expression": "1"
+    },
+    {
+      "column": "claim_turns",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "changed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "observed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "complete",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "generated": "",
+      "expression": "false"
+    },
+    {
+      "column": "after_day",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "generated": "",
+      "expression": "'2025-06-04'::date"
+    },
+    {
+      "column": "after_source_id",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "generated": "",
+      "expression": "''::text"
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "evidence_id",
+      "identity": "a",
+      "relation": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "generated": "",
+      "expression": null
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "after_task_id",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_refresh_v2",
+      "generated": "",
+      "expression": "''::text"
+    },
+    {
+      "column": "ready_after",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_refresh_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "invalidated",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "generated": "",
+      "expression": "false"
+    },
+    {
+      "column": "checked_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "verified",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "generated": "",
+      "expression": "false"
+    },
+    {
+      "column": "invalidated",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "generated": "",
+      "expression": "false"
+    },
+    {
+      "column": "projected_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_minute_projection_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "projected_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "committed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "quality",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "generated": "",
+      "expression": "'[]'::jsonb"
+    },
+    {
+      "column": "headers",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "generated": "",
+      "expression": "'{}'::jsonb"
+    },
+    {
+      "column": "covered_dates",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "generated": "",
+      "expression": "'{}'::datemultirange"
+    },
+    {
+      "column": "sealed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "recorded_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_plan_units_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "observed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "usable_rth_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "usable_pre_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "usable_post_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "reused_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "reused_qualified_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "reused_usable_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "verified_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "verified_by",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "CURRENT_USER"
+    },
+    {
+      "column": "method",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "'INDEPENDENT_TRANSACTION_RAW_HASH_AND_SOURCE_COUNT_V2'::text"
+    },
+    {
+      "column": "reused_feature_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "qualified_feature_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "usable_feature_records",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "cohort_policy",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "'RETROSPECTIVE_FIXED_COHORT'::text"
+    },
+    {
+      "column": "target_start",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "'2025-09-01'::date"
+    },
+    {
+      "column": "target_end",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "'2026-07-31'::date"
+    },
+    {
+      "column": "status",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "'ACTIVE'::text"
+    },
+    {
+      "column": "fence",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "1"
+    },
+    {
+      "column": "metadata",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "'{}'::jsonb"
+    },
+    {
+      "column": "created_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "requests_reserved",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "pages_committed",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "records_committed",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "source_bytes",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_runs_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "verified_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "projected_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "dependencies",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "'{}'::text[]"
+    },
+    {
+      "column": "priority",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "100"
+    },
+    {
+      "column": "status",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "'PENDING'::text"
+    },
+    {
+      "column": "page_no",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "generation",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "run_fence",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "1"
+    },
+    {
+      "column": "next_retry_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "attempts",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "page_attempts",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "requests_reserved",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "records_committed",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "0"
+    },
+    {
+      "column": "created_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    },
+    {
+      "column": "observed_at",
+      "identity": "",
+      "relation": "astra_ingestion_v1.backfill_workers_v2",
+      "generated": "",
+      "expression": "clock_timestamp()"
+    }
+  ],
+  "read_only": "on",
+  "relations": [
+    {
+      "oid": "astra_ingestion_v1.backfill_audit_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_audit_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_enumeration_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_enumeration_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_state_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_state_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_contract_work_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_contract_work_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_exceptions_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_exceptions_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_family_turn_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_family_turn_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_discovery_gaps_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_refresh_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_refresh_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_source_members_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_source_members_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_minute_projection_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_minute_projection_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_minute_sessions_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_minute_sessions_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_pages_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_pages_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_plan_coverage_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_plan_units_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_plan_units_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_readbacks_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_readbacks_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_runs_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_runs_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_s02_projection_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_s02_projection_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_counts_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_counts_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_dates_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_dates_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_fields_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_fields_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_links_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_links_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_records_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_records_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_version_links_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_version_links_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_shared_versions_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_shared_versions_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_tasks_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_tasks_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.backfill_workers_v2",
+      "rls": true,
+      "name": "astra_ingestion_v1.backfill_workers_v2",
+      "relkind": "r",
+      "persistence": "p"
+    },
+    {
+      "oid": "astra_ingestion_v1.source_limits",
+      "rls": true,
+      "name": "astra_ingestion_v1.source_limits",
+      "relkind": "r",
+      "persistence": "p"
+    }
+  ],
+  "observed_at": "2026-10-30T16:33:22.799606+00:00",
+  "foreign_keys": [
+    {
+      "relation": "astra_ingestion_v1.backfill_audit_v2",
+      "constraint": "backfill_audit_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "constraint": "backfill_breadth_inputs_v2_run_id_member_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, member_id) REFERENCES astra_ingestion_v1.backfill_members_v2(run_id, member_id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_members_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_breadth_inputs_v2",
+      "constraint": "backfill_breadth_inputs_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_breadth_projected_pages_v2",
+      "constraint": "backfill_breadth_projected_pages_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "constraint": "backfill_contract_child_links_v2_run_id_work_key_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, work_key) REFERENCES astra_ingestion_v1.backfill_contract_work_v2(run_id, work_key)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_contract_work_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_child_links_v2",
+      "constraint": "backfill_contract_child_links_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_child_proofs_v2",
+      "constraint": "backfill_contract_child_proofs_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_enumeration_v2",
+      "constraint": "backfill_contract_enumeration_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "constraint": "backfill_contract_parent_links_v2_parent_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (parent_task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "constraint": "backfill_contract_parent_links_v2_run_id_work_key_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, work_key) REFERENCES astra_ingestion_v1.backfill_contract_work_v2(run_id, work_key)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_contract_work_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_parent_links_v2",
+      "constraint": "backfill_contract_parent_links_v2_task_at_admission_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_at_admission) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_registered_children_v2",
+      "constraint": "backfill_contract_registered_children_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_state_v2",
+      "constraint": "backfill_contract_state_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_contract_work_v2",
+      "constraint": "backfill_contract_work_v2_canonical_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (canonical_task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_exceptions_v2",
+      "constraint": "backfill_exceptions_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_family_turn_v2",
+      "constraint": "backfill_family_turn_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "constraint": "backfill_identity_calculation_receipts_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_calculation_receipts_v2",
+      "constraint": "backfill_identity_calculation_receipts_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_discovered_members_v2",
+      "constraint": "backfill_identity_discovered_members_v2_run_id_member_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, member_id) REFERENCES astra_ingestion_v1.backfill_members_v2(run_id, member_id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_members_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "constraint": "backfill_identity_evidence_v2_run_id_member_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, member_id) REFERENCES astra_ingestion_v1.backfill_members_v2(run_id, member_id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_members_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_evidence_v2",
+      "constraint": "backfill_identity_evidence_v2_run_id_source_ref_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, source_ref) REFERENCES astra_ingestion_v1.backfill_identity_sources_v2(run_id, source_ref)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_identity_sources_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_roots_v2",
+      "constraint": "backfill_identity_roots_v2_root_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (root_task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_source_members_v2",
+      "constraint": "backfill_identity_source_members_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_identity_sources_v2",
+      "constraint": "backfill_identity_sources_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_minute_projection_v2",
+      "constraint": "backfill_minute_projection_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_minute_sessions_v2",
+      "constraint": "backfill_minute_sessions_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_nonminute_pages_v2",
+      "constraint": "backfill_nonminute_pages_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_pages_v2",
+      "constraint": "backfill_pages_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "constraint": "backfill_plan_manifests_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_plan_units_v2",
+      "constraint": "backfill_plan_units_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_plan_units_v2",
+      "constraint": "backfill_plan_units_v2_task_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id) REFERENCES astra_ingestion_v1.backfill_tasks_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_tasks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_provider_dependencies_v2",
+      "constraint": "backfill_provider_dependencies_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_readbacks_v2",
+      "constraint": "backfill_readbacks_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_pages_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_pages_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "constraint": "backfill_s02_occurrences_v2_run_id_member_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, member_id) REFERENCES astra_ingestion_v1.backfill_members_v2(run_id, member_id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_members_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_s02_occurrences_v2",
+      "constraint": "backfill_s02_occurrences_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_s02_projection_v2",
+      "constraint": "backfill_s02_projection_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_links_v2",
+      "constraint": "backfill_shared_links_v2_run_id_record_key_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, record_key) REFERENCES astra_ingestion_v1.backfill_shared_records_v2(run_id, record_key)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_shared_records_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "constraint": "backfill_shared_occurrences_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_occurrences_v2",
+      "constraint": "backfill_shared_occurrences_v_run_id_record_key_row_sha256_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, record_key, row_sha256) REFERENCES astra_ingestion_v1.backfill_shared_versions_v2(run_id, record_key, row_sha256)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_shared_versions_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_pages_v2",
+      "constraint": "backfill_shared_pages_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_records_v2",
+      "constraint": "backfill_shared_records_v2_run_id_record_key_row_sha256_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, record_key, row_sha256) REFERENCES astra_ingestion_v1.backfill_shared_versions_v2(run_id, record_key, row_sha256)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_shared_versions_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_version_links_v2",
+      "constraint": "backfill_shared_version_links_run_id_record_key_row_sha256_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id, record_key, row_sha256) REFERENCES astra_ingestion_v1.backfill_shared_versions_v2(run_id, record_key, row_sha256)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_shared_versions_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_shared_versions_v2",
+      "constraint": "backfill_shared_versions_v2_task_id_page_no_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (task_id, page_no) REFERENCES astra_ingestion_v1.backfill_readbacks_v2(task_id, page_no)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_readbacks_v2"
+    },
+    {
+      "relation": "astra_ingestion_v1.backfill_tasks_v2",
+      "constraint": "backfill_tasks_v2_run_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (run_id) REFERENCES astra_ingestion_v1.backfill_runs_v2(id)",
+      "delete_action": "a",
+      "update_action": "a",
+      "initially_deferred": false,
+      "referenced_relation": "astra_ingestion_v1.backfill_runs_v2"
+    }
+  ],
+  "rewrite_rules": [],
+  "external_function": {
+    "acl": "{postgres=X/postgres}",
+    "oid": "13118782",
+    "owner": "postgres",
+    "config": [
+      "search_path=pg_catalog"
+    ],
+    "strict": true,
+    "language": "sql",
+    "parallel": "s",
+    "signature": "astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(bytea,bytea,smallint[],smallint[],timestamp with time zone[],double precision[],integer,integer,integer,integer)",
+    "definition": "CREATE OR REPLACE FUNCTION astra_shared_equity_features_20260928_v1.compact_output_hash_remediated_v1(p_source bytea, p_identity bytea, p_minutes smallint[], p_flags smallint[], p_receipts timestamp with time zone[], p_values double precision[], p_retained integer, p_unaligned integer, p_invalid_price integer, p_invalid_volume integer)\n RETURNS bytea\n LANGUAGE sql\n IMMUTABLE PARALLEL SAFE STRICT\n SET search_path TO 'pg_catalog'\nAS $function$\n SELECT sha256(p_source||p_identity||array_send(p_minutes)||array_send(p_flags)||array_send(p_receipts)||array_send(p_values)||int4send(p_retained)||int4send(p_unaligned)||int4send(p_invalid_price)||int4send(p_invalid_volume))\n$function$\n",
+    "volatility": "i",
+    "source_sha256": "3d2af9589f2171964f77ecb2a5739e7417d12775833c0b3c884a61438689dae5",
+    "security_definer": false
+  },
+  "requested_relations": 44
+}

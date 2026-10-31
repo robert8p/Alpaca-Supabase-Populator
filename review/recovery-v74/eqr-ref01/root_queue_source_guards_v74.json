@@ -1,0 +1,139 @@
+[
+  {
+    "observed_at": "2026-10-30 16:15:08.061169+00",
+    "functions": [
+      {
+        "metadata": {
+          "oid": "16458444",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_relay_v2",
+          "prorows": 0,
+          "pronargs": 2,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "3802",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "p_operation",
+            "p_payload"
+          ],
+          "proargtypes": [
+            "25",
+            "3802"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_relay_v2(text,jsonb)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_relay_v2(p_operation text, p_payload jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE t astra_ingestion_v1.backfill_tasks_v2; r astra_ingestion_v1.backfill_runs_v2;\n expected jsonb; params jsonb; request jsonb; dispatch uuid; path text; symbols text; limit_value integer;\n scope_symbols jsonb; member_count integer; expected_family text;\n start_date date; end_date date; start_stamp timestamptz; end_stamp timestamptz;\n inserted integer; ticket astra_ingestion_v1.backfill_relay_dispatches_v2;\nBEGIN\n SELECT * INTO r FROM astra_ingestion_v1.backfill_runs_v2 WHERE id='fixed3000-20250901-20260731-v1-20261030';\n IF NOT FOUND OR r.status<>'ACTIVE'\n  OR r.cohort_sha256<>'2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec'\n  OR r.cohort_manifest_sha256<>'4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f'\n  OR r.target_start<>'2025-09-01' OR r.target_end<>'2026-07-31' THEN\n  RAISE EXCEPTION USING ERRCODE='AI001',MESSAGE='Managed relay requires the current active fixed replacement run';\n END IF;\n IF r.metadata#>>'{massive_relay_security_confirmation,state}' IS DISTINCT FROM 'APPROVED_AT_ACTION_TIME'\n  OR r.metadata#>>'{massive_relay_security_confirmation,review_id}' IS DISTINCT FROM 'managed-massive-relay-v3-review-20261030'\n  OR r.metadata#>>'{massive_relay_security_confirmation,scope_sha256}' IS DISTINCT FROM 'a40f86ad49918644c5443586644b66ca9748ede1a91ffb8a09cdca0b522963d5'\n  OR r.metadata#>>'{massive_relay_security_confirmation,confirmation_source}' IS DISTINCT FROM 'EXPLICIT_USER_ACTION_TIME_CONFIRMATION' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Managed relay security confirmation is absent or revoked';\n END IF;\n IF p_operation='backfill_relay_probe' THEN\n  IF NOT astra_ingestion_v1.rpc_keys(p_payload,ARRAY[]::text[]) THEN\n   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay probe accepts no parameters'; END IF;\n  RETURN jsonb_build_object('state','AUTHORIZED','protocol','astra-massive-relay-v2','run_id',r.id);\n END IF;\n IF p_operation<>'backfill_relay_dispatch' OR octet_length(p_payload::text)>65536\n  OR NOT astra_ingestion_v1.rpc_keys(p_payload,ARRAY['claim','request','dispatch_id'])\n  OR NOT astra_ingestion_v1.rpc_keys(p_payload->'claim',ARRAY['id','run_id','owner','generation','run_fence','page_no'])\n  OR COALESCE(p_payload->>'dispatch_id','') !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Invalid bounded relay dispatch request';\n END IF;\n t:=astra_ingestion_v1.backfill_owned_v2(p_payload->'claim');\n IF t.run_id<>r.id OR t.run_fence<>r.fence OR t.provider<>'Massive'\n  OR t.kind NOT IN('massive_reference','massive_news','massive_dividends','massive_splits','massive_short_volume','massive_short_interest')\n  OR p_payload#>>'{claim,page_no}' IS DISTINCT FROM t.page_no::text\n  OR t.reserved_generation IS DISTINCT FROM t.generation OR t.reserved_page_no IS DISTINCT FROM t.page_no\n  OR t.reserved_at IS NULL OR t.requests_reserved<1\n  OR LEAST(t.lease_until,t.attempt_deadline)<=clock_timestamp()+interval '1 second' THEN\n  RAISE EXCEPTION USING ERRCODE='AI001',MESSAGE='Relay requires a current counted reservation with sufficient live lease';\n END IF;\n -- A current task is necessary but insufficient: independently enforce the\n -- frozen cohort and mission bounds before allowing use of the managed key.\n scope_symbols:=COALESCE(t.scope->'symbols',jsonb_build_array(t.scope->>'symbol'));\n IF jsonb_typeof(scope_symbols) IS DISTINCT FROM 'array'\n  OR jsonb_typeof(t.scope->'member_ids') IS DISTINCT FROM 'array' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay requires explicit frozen member and provider anchor arrays'; END IF;\n member_count:=jsonb_array_length(scope_symbols);\n IF member_count NOT BETWEEN 1 AND 100 OR member_count<>jsonb_array_length(t.scope->'member_ids')\n  OR (t.kind IN('massive_reference','massive_news') AND member_count<>1)\n  OR member_count<>(SELECT count(DISTINCT value) FROM jsonb_array_elements_text(scope_symbols))\n  OR member_count<>(SELECT count(DISTINCT value) FROM jsonb_array_elements_text(t.scope->'member_ids'))\n  OR EXISTS(\n   SELECT 1 FROM jsonb_array_elements_text(scope_symbols) WITH ORDINALITY s(symbol,ord)\n   JOIN jsonb_array_elements_text(t.scope->'member_ids') WITH ORDINALITY mi(member_id,ord) USING(ord)\n   LEFT JOIN astra_ingestion_v1.backfill_members_v2 m ON m.run_id=r.id AND m.member_id=mi.member_id\n   WHERE m.member_id IS NULL OR s.symbol IS DISTINCT FROM m.anchor_ticker\n    OR s.symbol !~ '^[A-Za-z0-9][A-Za-z0-9._/-]{0,63}$') THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay may use only exact frozen member and provider anchor pairs';\n END IF;\n expected_family:=CASE t.kind WHEN 'massive_reference' THEN 'REF01' WHEN 'massive_news' THEN 'N01'\n  WHEN 'massive_dividends' THEN 'N02' WHEN 'massive_splits' THEN 'N03'\n  WHEN 'massive_short_volume' THEN 'S01' WHEN 'massive_short_interest' THEN 'S02' END;\n IF t.family IS DISTINCT FROM expected_family THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay endpoint must match its original mission family'; END IF;\n IF t.kind='massive_reference' THEN\n  start_date:=astra_ingestion_v1.backfill_date_v2(t.scope->>'asof');\n  IF COALESCE(t.scope->>'asof','') !~ '^\\d{4}-\\d{2}-\\d{2}$'\n   OR start_date IS NULL OR start_date<r.target_start OR start_date>r.target_end THEN\n   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Reference relay as-of date must lie within the fixed target'; END IF;\n ELSIF t.kind='massive_news' THEN\n  start_stamp:=astra_ingestion_v1.backfill_stamp_v2(t.scope->>'start');\n  end_stamp:=astra_ingestion_v1.backfill_stamp_v2(t.scope->>'end');\n  IF start_stamp IS NULL OR end_stamp IS NULL OR start_stamp>end_stamp\n   OR start_stamp<'2025-09-01T04:00:00Z'::timestamptz OR end_stamp>='2026-08-01T04:00:00Z'::timestamptz THEN\n   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='News relay publication window must lie within the fixed New York target'; END IF;\n ELSIF t.kind IN('massive_short_volume','massive_short_interest') THEN\n  start_date:=astra_ingestion_v1.backfill_date_v2(t.scope->>'start');\n  end_date:=astra_ingestion_v1.backfill_date_v2(t.scope->>'end');\n  IF COALESCE(t.scope->>'start','') !~ '^\\d{4}-\\d{2}-\\d{2}$' OR COALESCE(t.scope->>'end','') !~ '^\\d{4}-\\d{2}-\\d{2}$'\n   OR start_date IS NULL OR end_date IS NULL OR start_date>end_date OR start_date<r.target_start OR end_date>r.target_end THEN\n   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Short-data relay reporting or settlement dates must lie within the fixed target'; END IF;\n ELSE\n  IF t.scope->>'archive_date_filter' IS DISTINCT FROM 'UNBOUNDED_PROVIDER_EVENT_HISTORY'\n   OR t.scope->'retain_boundary_crossing_events' IS DISTINCT FROM 'true'::jsonb\n   OR t.scope->>'target_start' IS DISTINCT FROM r.target_start::text\n   OR t.scope->>'target_end' IS DISTINCT FROM r.target_end::text THEN\n   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='All-history action relay needs the explicit boundary-crossing mission policy'; END IF;\n END IF;\n SELECT string_agg(value,',' ORDER BY ord) INTO symbols\n  FROM jsonb_array_elements_text(scope_symbols) WITH ORDINALITY s(value,ord);\n IF symbols IS NULL OR length(symbols)>6500 THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay scope lacks bounded provider anchors'; END IF;\n limit_value:=COALESCE(t.page_limit,astra_ingestion_v1.backfill_page_limit_cap_v2(t.kind));\n CASE t.kind\n WHEN 'massive_reference' THEN\n  path:='/v3/reference/tickers/'||replace(split_part(symbols,',',1),'/','%2F');\n  params:=jsonb_build_object('date',t.scope->>'asof');\n WHEN 'massive_news' THEN\n  path:='/v2/reference/news';\n  params:=jsonb_build_object('ticker',symbols,'published_utc.gte',t.scope->>'start','published_utc.lte',t.scope->>'end',\n   'limit',limit_value,'sort','published_utc','order','asc');\n WHEN 'massive_dividends','massive_splits' THEN\n  path:='/stocks/v1/'||CASE WHEN t.kind='massive_dividends' THEN 'dividends' ELSE 'splits' END;\n  params:=jsonb_build_object('ticker.any_of',symbols,'limit',limit_value,'sort','ticker.asc');\n WHEN 'massive_short_volume' THEN\n  path:='/stocks/v1/short-volume';\n  params:=jsonb_build_object('ticker.any_of',symbols,'date.gte',t.scope->>'start','date.lte',t.scope->>'end','limit',limit_value,'sort','ticker.asc');\n WHEN 'massive_short_interest' THEN\n  path:='/stocks/v1/short-interest';\n  params:=jsonb_build_object('ticker.any_of',symbols,'settlement_date.gte',t.scope->>'start','settlement_date.lte',t.scope->>'end','limit',limit_value,'sort','ticker.asc');\n END CASE;\n IF t.cursor IS NOT NULL AND t.cursor<>'null'::jsonb THEN params:=params||jsonb_build_object('cursor',t.cursor#>>'{}'); END IF;\n expected:=jsonb_build_object('provider','Massive','host','api.massive.com','path',path,'method','GET','params',params);\n request:=p_payload->'request';\n IF request IS DISTINCT FROM expected OR NOT astra_ingestion_v1.backfill_request_valid_v2(t,request) THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Relay request differs from the current immutable task and execution page limit';\n END IF;\n dispatch:=(p_payload->>'dispatch_id')::uuid;\n INSERT INTO astra_ingestion_v1.backfill_relay_dispatches_v2\n  (task_id,generation,page_no,run_id,run_fence,claim_owner,reserved_at,dispatch_id,request_sha256,request,not_after)\n VALUES(t.id,t.generation,t.page_no,t.run_id,t.run_fence,t.owner,t.reserved_at,dispatch,\n  encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(request),'UTF8')),'hex'),request,\n  LEAST(t.lease_until,t.attempt_deadline,clock_timestamp()+interval '25 seconds'))\n ON CONFLICT(task_id,generation,page_no) DO NOTHING;\n GET DIAGNOSTICS inserted=ROW_COUNT;\n IF inserted=0 THEN RETURN jsonb_build_object('state','ALREADY_DISPATCHED','provider_requested',false); END IF;\n SELECT * INTO STRICT ticket FROM astra_ingestion_v1.backfill_relay_dispatches_v2 WHERE dispatch_id=dispatch;\n RETURN jsonb_build_object('state','DISPATCH_AUTHORIZED','protocol','astra-massive-relay-v2',\n  'dispatch_id',ticket.dispatch_id,'task_id',t.id,'run_id',t.run_id,'generation',t.generation,'page_no',t.page_no,\n  'request_sha256',ticket.request_sha256,'not_after',ticket.not_after);\nEND $function$\n",
+        "source_sha256": "2d3cd0e58e17d814e6af3e98fd771862137b6db7d3211b508d7df8a2fda74cba"
+      },
+      {
+        "metadata": {
+          "oid": "16041465",
+          "proacl": [
+            "postgres=X/postgres",
+            "astra_ingestion_rpc_owner_v1=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "14",
+          "proname": "backfill_task_definition_sha256_v2",
+          "prorows": 0,
+          "pronargs": 1,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "25",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": [
+            "t"
+          ],
+          "proargtypes": [
+            "16040122"
+          ],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "i",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_task_definition_sha256_v2(t astra_ingestion_v1.backfill_tasks_v2)\n RETURNS text\n LANGUAGE sql\n IMMUTABLE\n SET search_path TO ''\nAS $function$\n SELECT encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(jsonb_build_object('id',t.id,'run_id',t.run_id,'family',t.family,'provider',t.provider,'kind',t.kind,'scope',t.scope,'dependencies',to_jsonb(t.dependencies))),'UTF8')),'hex')\n$function$\n",
+        "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633"
+      },
+      {
+        "metadata": {
+          "oid": "16040224",
+          "proacl": [
+            "postgres=X/postgres"
+          ],
+          "probin": null,
+          "procost": 100,
+          "prokind": "f",
+          "prolang": "13619",
+          "proname": "backfill_task_guard_v2",
+          "prorows": 0,
+          "pronargs": 0,
+          "proowner": "16388",
+          "proconfig": [
+            "search_path=\"\""
+          ],
+          "proretset": false,
+          "prosecdef": false,
+          "prorettype": "2279",
+          "prosqlbody": null,
+          "prosupport": "-",
+          "proargmodes": null,
+          "proargnames": null,
+          "proargtypes": [],
+          "proisstrict": false,
+          "proparallel": "u",
+          "protrftypes": null,
+          "provariadic": "0",
+          "provolatile": "v",
+          "proleakproof": false,
+          "pronamespace": "15984556",
+          "proallargtypes": null,
+          "proargdefaults": null,
+          "pronargdefaults": 0
+        },
+        "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+        "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE v_kind text; v_members jsonb; v_member text;\nBEGIN\n IF TG_OP='UPDATE' THEN\n   IF NEW.id IS DISTINCT FROM OLD.id OR NEW.run_id IS DISTINCT FROM OLD.run_id OR NEW.family IS DISTINCT FROM OLD.family\n    OR NEW.provider IS DISTINCT FROM OLD.provider OR NEW.kind IS DISTINCT FROM OLD.kind OR NEW.scope IS DISTINCT FROM OLD.scope\n    OR NEW.dependencies IS DISTINCT FROM OLD.dependencies OR NEW.generation<OLD.generation\n    OR NEW.requests_reserved<OLD.requests_reserved OR NEW.records_committed<OLD.records_committed OR NEW.page_no<OLD.page_no\n    OR NEW.attempts<OLD.attempts OR (OLD.status IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED','SUPERSEDED_BY_SCOPE_CHANGE') AND NEW.status IS DISTINCT FROM OLD.status)\n   THEN RAISE EXCEPTION 'Task scope, cumulative accounting and terminal result are immutable'; END IF;\n   RETURN NEW;\n END IF;\n IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=NEW.run_id AND status='ACTIVE' AND fence=NEW.run_fence) THEN\n   RAISE EXCEPTION 'Task requires current active replacement run'; END IF;\n IF (NEW.kind LIKE 'alpaca_%' AND NEW.provider<>'Alpaca') OR (NEW.kind LIKE 'massive_%' AND NEW.provider<>'Massive')\n OR (NEW.kind LIKE 'derive_%' AND lower(NEW.provider)<>'derived') OR (NEW.kind='retained_reuse' AND lower(NEW.provider)<>'reuse') THEN\n   RAISE EXCEPTION 'Task kind and permitted provider disagree'; END IF;\n IF NEW.kind='retained_identity' AND (lower(NEW.provider)<>'reuse' OR NEW.family<>'REF01' OR NEW.scope->'shared_cohort_reference' IS DISTINCT FROM 'true'::jsonb OR NEW.scope->>'cohort_sha256' IS DISTINCT FROM '2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec') THEN RAISE EXCEPTION 'Invalid shared fixed-cohort identity source'; END IF;\n IF NEW.kind='retained_massive_archive' AND (NEW.family<>'S02' OR lower(NEW.provider)<>'reuse' OR NEW.scope->'preserve_provider_acquisition' IS DISTINCT FROM 'true'::jsonb) THEN RAISE EXCEPTION 'Invalid retained S02 overlay';END IF;\n v_members:=NEW.scope->'member_ids';\n IF NEW.family NOT IN ('CTX06','REF03') AND NEW.kind<>'retained_identity' AND (jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)=0) THEN\n   RAISE EXCEPTION 'Member-scoped work requires frozen member identifiers'; END IF;\n IF v_members IS NOT NULL THEN\n   IF jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)>3000 THEN RAISE EXCEPTION 'Invalid member scope'; END IF;\n   FOR v_member IN SELECT jsonb_array_elements_text(v_members) LOOP\n     IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=NEW.run_id AND member_id=v_member) THEN\n       RAISE EXCEPTION 'Task member is outside the frozen cohort'; END IF;\n   END LOOP;\n END IF;\n RETURN NEW;\nEND $function$\n",
+        "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+      }
+    ]
+  }
+]

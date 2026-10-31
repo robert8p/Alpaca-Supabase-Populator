@@ -1,0 +1,101 @@
+{
+  "version": "managed-relay-native-readonly-transport-qualification-v2",
+  "production_ready": false,
+  "state": "LOCAL_READ_ONLY_TRANSPORT_QUALIFIED_PRODUCTION_UNCONFIRMED",
+  "qualification_recorded_at": "2026-10-30 10:24:05 UTC",
+  "frozen_relay": {
+    "sha256": "4be1c6d145949f4cda35a1cef7772da93137e3f102f045f1a7507ea66a16652d",
+    "bytes": 21525,
+    "final_byte_ascii": 10,
+    "manifest_files": 19,
+    "all_unchanged": true
+  },
+  "tests": {
+    "guard_cases": 7,
+    "guard_result": "PASSED",
+    "guard_seconds": 0.002,
+    "python_syntax": "PASSED",
+    "local_postgresql_result": "PASSED",
+    "local_postgresql_exit_code": 0
+  },
+  "local_postgresql_receipt": {
+    "approval_recorded": false,
+    "connection_mode": "DISPOSABLE_LOCAL_QUALIFICATION",
+    "migration_executed": false,
+    "observed": {
+      "final_byte_ascii": 10,
+      "probe_id": "astra-native-readonly-exact-transport-v2",
+      "query_sha256": "2a292e5b12394f0c5b4ddc455f7c04291ff61956c5b2565e302e8e9d526b526e",
+      "query_utf8_bytes": 712,
+      "transaction_read_only": "on"
+    },
+    "probe_bytes": 712,
+    "probe_id": "astra-native-readonly-exact-transport-v2",
+    "probe_sha256": "2a292e5b12394f0c5b4ddc455f7c04291ff61956c5b2565e302e8e9d526b526e",
+    "production_ready": false,
+    "psql_returncode": 0,
+    "readiness_note": "This proves only the selected connection's read-only transport. The existing controller must reconcile the production target and hold, then obtain fresh action-time confirmation before any unchanged relay application.",
+    "status": "READ_ONLY_EXACT_BYTE_PROBE_PASSED",
+    "transport_probe_passed": true
+  },
+  "permitted_owner_action": "Run only the fixed read-only probe through a pre-existing owner-authorized libpq service; no credential access/export, profile creation, installation, arbitrary SQL or migration execution",
+  "activation_runner_present": false,
+  "production_calls": 0,
+  "credentials_inspected": 0,
+  "new_security_relationships": 0,
+  "production_approval_recorded": false,
+  "subsequent_gates": [
+    "Existing-controller target, ownership, hold and uncertain-write readback",
+    "All reviewed package hashes and current runtime/auth prerequisites unchanged",
+    "Prepare single-request exact raw application against verified existing transport",
+    "Fresh explicit action-time approval and controller readback within the existing 15-minute guard",
+    "Apply once, then independent reconciliation before retry/deployment"
+  ],
+  "artifacts": [
+    {
+      "path": "review/relay-transport-v2/native_readonly_probe.sql",
+      "bytes": 712,
+      "sha256": "2a292e5b12394f0c5b4ddc455f7c04291ff61956c5b2565e302e8e9d526b526e"
+    },
+    {
+      "path": "review/relay-transport-v2/native_readonly_probe.py",
+      "bytes": 6855,
+      "sha256": "fa4040e05beb96f915f4f6d7a89835b08fefdd4ec26d2ce5821e924fb872d932"
+    },
+    {
+      "path": "review/relay-transport-v2/test_native_readonly_probe.py",
+      "bytes": 4568,
+      "sha256": "2c131f5b19449cce721f9b4de1217f779691bb809e3b4c1fc467c70031800cd5"
+    },
+    {
+      "path": "review/relay-transport-v2/README.md",
+      "bytes": 6733,
+      "sha256": "33bf30bcfb6595ac4fcbf18aba46d71f9c5c40635d298049f760fc555f07d8fc"
+    },
+    {
+      "path": "evidence/replacement-managed-relay-transport-diagnosis-v2.json",
+      "bytes": 9427,
+      "sha256": "ce8e65b955b5f2987a3adb197c3d154ff8311943cc8bc69685469e85e62c95f6"
+    }
+  ],
+  "independent_review": {
+    "agent": "/root/replacement_cache_finish",
+    "mode": "READ_ONLY",
+    "finding": "A fixed host alone can be redirected by an inherited libpq hostaddr default.",
+    "resolution": "Explicit hostaddr=127.0.0.1 added; all routing fields are pinned and covered by a guard test; actual local exact-byte/read-only probe passed again.",
+    "remaining_review_findings": "No byte-trimming, shell, activation, credential-output, automatic-retry or production-readiness flaw identified."
+  },
+  "production_connection_state": "UNCONFIRMED; no attempt to establish or access it",
+  "controller_reported_current_hold": {
+    "hold_audit": 14,
+    "hold_audit_at": "2026-10-30T10:11:10.683584Z",
+    "alignment_audit": 15,
+    "lease_audit": 16,
+    "lease_until": "2026-10-30T10:55:00Z",
+    "latest_relay_absence_at": "2026-10-30T10:17:32Z",
+    "latest_outer_auth_hash_at": "2026-10-30T10:19:02Z",
+    "outer_auth_hash": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+    "both_migration_connectors_aborted_before_ddl_for_missing_final_lf": true,
+    "source": "Existing controller observations; no production checks by probe preparer"
+  }
+}

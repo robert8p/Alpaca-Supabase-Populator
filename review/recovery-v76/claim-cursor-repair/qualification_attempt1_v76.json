@@ -1,0 +1,753 @@
+{
+  "active_artifact_pins": {
+    "sql/astra_backfill_claim_provider_cursor_restore_v76.sql": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893",
+    "sql/astra_backfill_claim_provider_cursor_v76.sql": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094",
+    "tests/ingestion/test_backfill_claim_provider_cursor_v76.py": "5fa02c5ef76818add3b30dbbbe8b72e49e1bb9ef383c0c0e7ba58444ffde264c"
+  },
+  "actual_dependencies": [
+    {
+      "base_git_blob_sha": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "base_status": "EXACT",
+      "bytes": 101,
+      "git_blob_sha": "183dc2821f146cfc3af266958f0e9b8a30553058",
+      "path": "astra_ingestion/__init__.py",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197"
+    },
+    {
+      "base_git_blob_sha": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "base_status": "EXACT",
+      "bytes": 33254,
+      "git_blob_sha": "9ab102e6a07b380a7ba0b70bcad638edacdd7295",
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "base_git_blob_sha": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "base_status": "EXACT",
+      "bytes": 18462,
+      "git_blob_sha": "7de21faef778e42ffc07dd954f41a0fe286d3393",
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "base_git_blob_sha": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "base_status": "EXACT",
+      "bytes": 27423,
+      "git_blob_sha": "921e24dcebf4ae7405ff72c8eedb117b3445936c",
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "base_git_blob_sha": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "base_status": "EXACT",
+      "bytes": 22439,
+      "git_blob_sha": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "base_git_blob_sha": "64db9fad536ee86930d784e4b197fb7582738273",
+      "base_status": "EXACT",
+      "bytes": 3236,
+      "git_blob_sha": "64db9fad536ee86930d784e4b197fb7582738273",
+      "path": "astra_ingestion/config.py",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953"
+    },
+    {
+      "base_git_blob_sha": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "base_status": "EXACT",
+      "bytes": 5672,
+      "git_blob_sha": "aa449ba7556daedb4e6fff3dd1841bc79125f133",
+      "path": "astra_ingestion/models.py",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2"
+    },
+    {
+      "base_git_blob_sha": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "base_status": "EXACT",
+      "bytes": 2081,
+      "git_blob_sha": "ded9b468dabd3c514c4cfcd689d22e497401a4bf",
+      "path": "astra_ingestion/reconcile.py",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba"
+    },
+    {
+      "base_git_blob_sha": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "base_status": "EXACT",
+      "bytes": 23229,
+      "git_blob_sha": "593ca008c1b625cf7a5a4caed87aae545f2eb93c",
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    },
+    {
+      "base_git_blob_sha": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "base_status": "EXACT",
+      "bytes": 9869,
+      "git_blob_sha": "9dbad4e35aeb455d2bd4a7ab7f577e206958f32f",
+      "path": "astra_ingestion/source.py",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f"
+    },
+    {
+      "base_git_blob_sha": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "base_status": "EXACT",
+      "bytes": 31621,
+      "git_blob_sha": "e6ecbbe2f7ae2b31c763bc719eac154d5cad0de7",
+      "path": "astra_ingestion/store.py",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef"
+    },
+    {
+      "base_git_blob_sha": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "base_status": "EXACT",
+      "bytes": 7696,
+      "git_blob_sha": "2c4b10b6f2cf5f39e20ad70179ddc94fc0f3c58f",
+      "path": "astra_ingestion/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "base_git_blob_sha": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "base_status": "EXACT",
+      "bytes": 54881,
+      "git_blob_sha": "d932e5fb4271a02ce17981548de38a5c3c443b6c",
+      "path": "evidence/replacement-calendar-v1.json",
+      "sha256": "c23381862211b8a6c9acaa80baafa70982ca0ca3cbccb9fa42f7b509e31a49a3"
+    },
+    {
+      "base_git_blob_sha": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "base_status": "EXACT",
+      "bytes": 946415,
+      "git_blob_sha": "14e5dc4251a7d8d18424e1e066908b6d72b6efec",
+      "path": "evidence/replacement-cohort-v1.json",
+      "sha256": "5291d84f37084f98447f273b0225642297ac180a5deb8842bf943abbc60d129d"
+    },
+    {
+      "base_git_blob_sha": "92c384a927e5b46185f02b096661935aa9411502",
+      "base_status": "EXACT",
+      "bytes": 23087,
+      "git_blob_sha": "92c384a927e5b46185f02b096661935aa9411502",
+      "path": "evidence/retained-feature-reuse-functions.json",
+      "sha256": "b94cf088ff209fb93de975153e9a43ef27ab2d1893d633dc43ea7f69512911c7"
+    },
+    {
+      "base_git_blob_sha": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "base_status": "EXACT",
+      "bytes": 2849,
+      "git_blob_sha": "bf7a063f36689e6f5cf56b819b2b505cafdc627e",
+      "path": "review/recovery-v72/readback-transaction-race/candidate_maintain_readback_transaction_v72.sql",
+      "sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+    },
+    {
+      "base_git_blob_sha": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "base_status": "EXACT",
+      "bytes": 131630,
+      "git_blob_sha": "01d4b6fee00d0b217347b502b9b5b77f062f0c38",
+      "path": "review/recovery-v74/retry_closure_callees_and_catalog_v74.json",
+      "sha256": "74d74e5384fbb136ecebecee81583b45dec706ec9668da2fc7645ddfc851420f"
+    },
+    {
+      "base_git_blob_sha": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "base_status": "EXACT",
+      "bytes": 103870,
+      "git_blob_sha": "1097ef14d24f08d1f8fc8ae9f708482ac0d28b9e",
+      "path": "review/recovery-v74/retry_closure_root_definitions_v74.json",
+      "sha256": "2703407b0831de5ee13a96406964a44e8dd54b809b56b47cae1f958c2f976e61"
+    },
+    {
+      "base_git_blob_sha": "5c55ef70fe70040a7188da1fcf23db052f70f234",
+      "base_status": "EXACT",
+      "bytes": 7795,
+      "git_blob_sha": "5c55ef70fe70040a7188da1fcf23db052f70f234",
+      "path": "review/recovery-v74/shared-field-cache/candidate_shared_refresh_field_cache_v74.sql",
+      "sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 32456,
+      "git_blob_sha": "6a306ec5f1da65bdea5ddf851b703559d7aa8503",
+      "path": "review/recovery-v76/claim-cursor-repair/baseline_private_dispatch_v76.sql",
+      "sha256": "28ae5f1a0b7662b4463d8709d68c1402265dc20fd5cd11fb408ac12522c5de44"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 11589,
+      "git_blob_sha": "9de601209aadc31dfb9048dad98849fed9764cf8",
+      "path": "review/recovery-v76/claim-cursor-repair/build_claim_cursor_repair_v76.py",
+      "sha256": "6db373d94af83a49585cf5e6e1f6e7367f54b5f32f2ba6c89f318976c21f56d4"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 32478,
+      "git_blob_sha": "8a3a0fbc4395f85749de821264c3ec474eb1dabb",
+      "path": "review/recovery-v76/claim-cursor-repair/candidate_private_claim_cursor_v76.sql",
+      "sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 8408,
+      "git_blob_sha": "fcf4124b8b428ef667d1226d1d57d009040862a9",
+      "path": "review/recovery-v76/claim-cursor-repair/claim_cursor_guard_pins_v76.json",
+      "sha256": "e11f0f3dbecc5bb67ff47caad46312cd210973fc6acf27449b54dcbf01b8e90d"
+    },
+    {
+      "base_git_blob_sha": "4a6c8e6b74eba3abb740ed9929beb00ddc325656",
+      "base_status": "EXACT",
+      "bytes": 313688,
+      "git_blob_sha": "4a6c8e6b74eba3abb740ed9929beb00ddc325656",
+      "path": "review/rpc-lock-rollback-retry-proposal/retry_closure_sources.json",
+      "sha256": "e0c98a675ee0dd27ec18853f8fc74c2ad9cdf14923812a7a5899f678fd46fd88"
+    },
+    {
+      "base_git_blob_sha": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "base_status": "EXACT",
+      "bytes": 9439,
+      "git_blob_sha": "ceaec2297ef7ea1490251b1d664598b22c1166e8",
+      "path": "sql/astra_backfill_adaptive_pages_v2.sql",
+      "sha256": "78aaf940c059cb6cb4b4977c50220984ebf0bbd0805935b8e00dd05159c887cb"
+    },
+    {
+      "base_git_blob_sha": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "base_status": "EXACT",
+      "bytes": 16461,
+      "git_blob_sha": "26e7adbe11a0beaed8f7568e1309275b25663ff2",
+      "path": "sql/astra_backfill_breadth_material_v2.sql",
+      "sha256": "23ff9827157476598373c9e2c14938bfc115de8fdec5d62b093a197af92142b7"
+    },
+    {
+      "base_git_blob_sha": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "base_status": "EXACT",
+      "bytes": 1812,
+      "git_blob_sha": "f9ac5cdf15d65dd2e131e21ac226b530563b4b7d",
+      "path": "sql/astra_backfill_canonical_performance_v2.sql",
+      "sha256": "7ec9103fae738f37473652a86b7364614051e068e1bef4c6f3c9dfa0bcaf1e6a"
+    },
+    {
+      "base_git_blob_sha": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "base_status": "EXACT",
+      "bytes": 5513,
+      "git_blob_sha": "bec5c9858aa1e136dc70468d6c19127bbb8616bd",
+      "path": "sql/astra_backfill_claim_capability_filter_v2.sql",
+      "sha256": "25427b992aebe5c81ae6c4b9e4cb44b560c8201b044476ea1ea937a933fed10c"
+    },
+    {
+      "base_git_blob_sha": "f84691e94a180ae3546c65b23f946ce493116472",
+      "base_status": "EXACT",
+      "bytes": 1599,
+      "git_blob_sha": "f84691e94a180ae3546c65b23f946ce493116472",
+      "path": "sql/astra_backfill_claim_performance_v2.sql",
+      "sha256": "30439e6322359ffb37ae3518e4e67b45cacb5836083126e17b3a2eebb5f28d39"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 49421,
+      "git_blob_sha": "28efbf6e571ea5956b5d3148f433736928598ef5",
+      "path": "sql/astra_backfill_claim_provider_cursor_restore_v76.sql",
+      "sha256": "833f8f8e6d28cdfbd8fc74c3c56d9a88e64114459b8936fe55a7aec3e8086893"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 49483,
+      "git_blob_sha": "53922f7acc8d6edee1924d2842de5d77ae45e5b4",
+      "path": "sql/astra_backfill_claim_provider_cursor_v76.sql",
+      "sha256": "3aaa3395df260b55f52775ed7e670946cce2a9678e35daf27abb4b6ab51b2094"
+    },
+    {
+      "base_git_blob_sha": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "base_status": "EXACT",
+      "bytes": 28911,
+      "git_blob_sha": "bb65c3ff58161c9baeaa87470c98cf35a3e21fd2",
+      "path": "sql/astra_backfill_contract_registry_v2.sql",
+      "sha256": "fde0b731e81497833062967526253af3f2b4d7fcc78a3a1968840a3f2aace9d2"
+    },
+    {
+      "base_git_blob_sha": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "base_status": "EXACT",
+      "bytes": 6498,
+      "git_blob_sha": "e982e04162b6742d91d13615d59c34153e21ffe4",
+      "path": "sql/astra_backfill_delivery_performance_v2.sql",
+      "sha256": "c59232da00b5c5fedb89af8bd552e83580fe85d1be115d88ff61f1231308c25a"
+    },
+    {
+      "base_git_blob_sha": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "base_status": "EXACT",
+      "bytes": 57461,
+      "git_blob_sha": "2015a5b2ddaa583a349bbc83673144655a505677",
+      "path": "sql/astra_backfill_delivery_v2.sql",
+      "sha256": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043"
+    },
+    {
+      "base_git_blob_sha": "44dba451e77c207531b3326ba049d420647e51be",
+      "base_status": "EXACT",
+      "bytes": 6758,
+      "git_blob_sha": "44dba451e77c207531b3326ba049d420647e51be",
+      "path": "sql/astra_backfill_family_fairness_v2.sql",
+      "sha256": "3d4bd90247c7a273b6ab3f7ea9dcb15667f62ad593f30ab39469c05fde1396c2"
+    },
+    {
+      "base_git_blob_sha": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "base_status": "EXACT",
+      "bytes": 10029,
+      "git_blob_sha": "488253553d9c3ee34d7d8e4ca85d0d950aa4e4a2",
+      "path": "sql/astra_backfill_family_report_performance_v2.sql",
+      "sha256": "324246c5b85d0052bb39189dc20eb73121bfe412f951df5f33a538172aab23ad"
+    },
+    {
+      "base_git_blob_sha": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "base_status": "EXACT",
+      "bytes": 30170,
+      "git_blob_sha": "f731cb4b04b0f520a8d373578235637ed47cfa58",
+      "path": "sql/astra_backfill_feature_reuse_v2.sql",
+      "sha256": "28361e30c10eb696f8e7beaf0ac9c788b1700b77a36ffcc8929be7f3f2ecba61"
+    },
+    {
+      "base_git_blob_sha": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "base_status": "EXACT",
+      "bytes": 53160,
+      "git_blob_sha": "17f28e95293eddd47238ecb8e0ba3ff49f61e4b9",
+      "path": "sql/astra_backfill_identity_v2.sql",
+      "sha256": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553"
+    },
+    {
+      "base_git_blob_sha": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "base_status": "EXACT",
+      "bytes": 2416,
+      "git_blob_sha": "312b30d368193c1cc7e84e38a4828a1889df844b",
+      "path": "sql/astra_backfill_minute_alias_index_v2.sql",
+      "sha256": "7cff885cfbe3c613ce05290c7be3c200ee884d25c2b2da26f4729d4d6843a05f"
+    },
+    {
+      "base_git_blob_sha": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "base_status": "EXACT",
+      "bytes": 29707,
+      "git_blob_sha": "83110454eeaa70ad45a06b400bd16268861fee62",
+      "path": "sql/astra_backfill_nonminute_coverage_v2.sql",
+      "sha256": "3ffd78a515acc4f68cae81f5799999f8a9df2e53b3e15845f7147ecbefc1d869"
+    },
+    {
+      "base_git_blob_sha": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "base_status": "EXACT",
+      "bytes": 2920,
+      "git_blob_sha": "f858d616bf467c5b7f22f94246b742148f02c5a0",
+      "path": "sql/astra_backfill_pacing_fairness_v2.sql",
+      "sha256": "edce51c13dc11bb38a28cd6c68b144d0a5d87dcbb2d33b436a15333daf19107c"
+    },
+    {
+      "base_git_blob_sha": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "base_status": "EXACT",
+      "bytes": 1680,
+      "git_blob_sha": "70f6280e50caef2781aa9ccd78c99d2bcdf7a340",
+      "path": "sql/astra_backfill_planner_batch_v2.sql",
+      "sha256": "afa7480ff4d926948c41908c9c9ae885dba06e00763ea7a26331917132ea74e6"
+    },
+    {
+      "base_git_blob_sha": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "base_status": "EXACT",
+      "bytes": 24085,
+      "git_blob_sha": "cfbfb01ee667cb450a7c9ff2ef6b30fdd08080b1",
+      "path": "sql/astra_backfill_planner_v2.sql",
+      "sha256": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6"
+    },
+    {
+      "base_git_blob_sha": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "base_status": "EXACT",
+      "bytes": 2865,
+      "git_blob_sha": "80835d8c5b67249ed9c8c38bfef7bee7aa518ae9",
+      "path": "sql/astra_backfill_provider_pacing_v2.sql",
+      "sha256": "50f1e3fd4dd0b7ac6c891de5d7dfaa850d75297af2c0c1255a03acceeb14d501"
+    },
+    {
+      "base_git_blob_sha": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "base_status": "EXACT",
+      "bytes": 3880,
+      "git_blob_sha": "25724e89d75017f3fcdf63e86de9fd646d046bc9",
+      "path": "sql/astra_backfill_recovery_priority_v2.sql",
+      "sha256": "59dfbae5d4296fe5cce73644cd50482fb6ffe8a3c7681c81d0a9a67c475f5041"
+    },
+    {
+      "base_git_blob_sha": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "base_status": "EXACT",
+      "bytes": 17401,
+      "git_blob_sha": "1c3bb5bdc894cba05566261f7e146ed6ea722747",
+      "path": "sql/astra_backfill_retained_reuse_v2.sql",
+      "sha256": "94175aeadb0ff2f1a64b3557b1a202995206fd9d8ec10ae837cc93ed9f4d2ed2"
+    },
+    {
+      "base_git_blob_sha": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "base_status": "EXACT",
+      "bytes": 35599,
+      "git_blob_sha": "1c7abe78b2018797af2ea44b2a7db347347d3b1b",
+      "path": "sql/astra_backfill_retained_s02_v2.sql",
+      "sha256": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9"
+    },
+    {
+      "base_git_blob_sha": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "base_status": "EXACT",
+      "bytes": 9398,
+      "git_blob_sha": "0bfa14dfa0e7adcd06db0180ea3be571e0c69211",
+      "path": "sql/astra_backfill_reuse_commit_v2.sql",
+      "sha256": "b1ce6515b80addc56f092d78c866aae6451bdc50ce873aebf05d6d4fbd03b535"
+    },
+    {
+      "base_git_blob_sha": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "base_status": "EXACT",
+      "bytes": 19399,
+      "git_blob_sha": "0db99492590967408258803e670b96d8ab5ffd3b",
+      "path": "sql/astra_backfill_reuse_verify_v2.sql",
+      "sha256": "d9abded328448490cfcd705141e273f1d6cbd3eba30b9e2376d52ec9c1d0ffb5"
+    },
+    {
+      "base_git_blob_sha": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "base_status": "EXACT",
+      "bytes": 3720,
+      "git_blob_sha": "9c602d71b430ec36c3b76b2b5021e3e4591aac80",
+      "path": "sql/astra_backfill_runtime_status_performance_v2.sql",
+      "sha256": "3dbb59fb016f3838f6bbbfe5942674b8cba61cb9a02f474bfd37317e6340c9e7"
+    },
+    {
+      "base_git_blob_sha": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "base_status": "EXACT",
+      "bytes": 2423,
+      "git_blob_sha": "d2a4bb4e9d954e9ba15e671cb63bfd0d4bd00557",
+      "path": "sql/astra_backfill_runtime_summary_index_v2.sql",
+      "sha256": "2a29fcc728b205c3bc5a1d817ff130fc7f27ea740116d071f8f040061b400ca7"
+    },
+    {
+      "base_git_blob_sha": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "base_status": "EXACT",
+      "bytes": 49245,
+      "git_blob_sha": "feb869a216ad34f776f801e8b91d6273fa93c3e4",
+      "path": "sql/astra_backfill_runtime_v2.sql",
+      "sha256": "fd86db27dbeab1a4aa8d0c84d994e0a46febd3756eaa1dd48d47bb1c85d6f72a"
+    },
+    {
+      "base_git_blob_sha": "c55453cfd0b24d0d0002daf549e92928ab993793",
+      "base_status": "EXACT",
+      "bytes": 28187,
+      "git_blob_sha": "c55453cfd0b24d0d0002daf549e92928ab993793",
+      "path": "sql/astra_backfill_shared_field_cache_v74.sql",
+      "sha256": "b11210b980ad7afb4f821b184d2682d1d3123406da6cf47ece4bb9855803777b"
+    },
+    {
+      "base_git_blob_sha": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "base_status": "EXACT",
+      "bytes": 46872,
+      "git_blob_sha": "2cb18252d610c358366f31eaaf8ca664fbd328ec",
+      "path": "sql/astra_backfill_shared_records_v2.sql",
+      "sha256": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+    },
+    {
+      "base_git_blob_sha": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "base_status": "EXACT",
+      "bytes": 8435,
+      "git_blob_sha": "e229a65807ace3aa6a59bf660b58e54eef5c9036",
+      "path": "sql/astra_backfill_shared_refresh_performance_v2.sql",
+      "sha256": "c02806e91c721dc64b4dabf5d08d363293354b08f51ca6b793da64cf5223d424"
+    },
+    {
+      "base_git_blob_sha": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "base_status": "EXACT",
+      "bytes": 21403,
+      "git_blob_sha": "cb06d33f960c39681060acb28cd43fe7d0078413",
+      "path": "sql/astra_backfill_source_dedup_v2.sql",
+      "sha256": "f535e4cde061f1123efd09f2a248cb0a4097c97d1a04ae93521f2312a3a4d6a5"
+    },
+    {
+      "base_git_blob_sha": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "base_status": "EXACT",
+      "bytes": 8886,
+      "git_blob_sha": "31618d0fd1953ce1d6d43a728043163aca705f24",
+      "path": "sql/astra_backfill_status_index_counts_v2.sql",
+      "sha256": "035765500060b41cdcd6ac2854513a29c02db8212133604d7fb24fd2f10ae89e"
+    },
+    {
+      "base_git_blob_sha": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "base_status": "EXACT",
+      "bytes": 3161,
+      "git_blob_sha": "c9d72d987e40474df126f52f7e0118c8ba128079",
+      "path": "sql/astra_ingestion_rpc_auth_context_v1.sql",
+      "sha256": "81f4258b8a492dfa3a1186cd92c08da49773bc0e81bb49e05659738107e83631"
+    },
+    {
+      "base_git_blob_sha": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "base_status": "EXACT",
+      "bytes": 54227,
+      "git_blob_sha": "9cb1d522a8fab6660c1cbebd951dd4df7871da03",
+      "path": "sql/astra_ingestion_rpc_v1.sql",
+      "sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a"
+    },
+    {
+      "base_git_blob_sha": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "base_status": "EXACT",
+      "bytes": 2266,
+      "git_blob_sha": "4e66518095dce766060a63d3b3742b25c0f38eb2",
+      "path": "sql/astra_ingestion_supersede_gate_v2.sql",
+      "sha256": "776b20d39f13ab5eac7d071413b5d92ff358337a1284d2a66f2216ce874684ae"
+    },
+    {
+      "base_git_blob_sha": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "base_status": "EXACT",
+      "bytes": 20490,
+      "git_blob_sha": "9a022ac04a253843e9fecdfa2a61171caa6ff4f9",
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+    },
+    {
+      "base_git_blob_sha": "fe24b611ed41052b533173cd3f22802070150ada",
+      "base_status": "EXACT",
+      "bytes": 11247,
+      "git_blob_sha": "fe24b611ed41052b533173cd3f22802070150ada",
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d"
+    },
+    {
+      "base_git_blob_sha": null,
+      "base_status": "ADDITIVE",
+      "bytes": 24669,
+      "git_blob_sha": "06fde3744ae5d5cc1899cccb1c0941d104572a40",
+      "path": "tests/ingestion/test_backfill_claim_provider_cursor_v76.py",
+      "sha256": "5fa02c5ef76818add3b30dbbbe8b72e49e1bb9ef383c0c0e7ba58444ffde264c"
+    },
+    {
+      "base_git_blob_sha": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "base_status": "EXACT",
+      "bytes": 11832,
+      "git_blob_sha": "0999efe9ff7cd87eb9ca7baf406f7e80f925a33d",
+      "path": "tests/ingestion/test_backfill_delivery_v2.py",
+      "sha256": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3"
+    },
+    {
+      "base_git_blob_sha": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "base_status": "EXACT",
+      "bytes": 16964,
+      "git_blob_sha": "4e5a76ae336c441563cf208f8a8f472c551794dc",
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424"
+    },
+    {
+      "base_git_blob_sha": "dd01babeaf666ab90191796bc28d85923479368b",
+      "base_status": "EXACT",
+      "bytes": 19668,
+      "git_blob_sha": "dd01babeaf666ab90191796bc28d85923479368b",
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "base_git_blob_sha": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "base_status": "EXACT",
+      "bytes": 44378,
+      "git_blob_sha": "0b9d2668a63a4efa0a32ea01c33a20e35245385e",
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "base_git_blob_sha": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "base_status": "EXACT",
+      "bytes": 15566,
+      "git_blob_sha": "52aa30d3a88cdbbaae5ba53fea6b39c918d36c6e",
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "base_git_blob_sha": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "base_status": "EXACT",
+      "bytes": 12405,
+      "git_blob_sha": "55b67ff3674a8482148b8d04f952ddc221080d3f",
+      "path": "tests/ingestion/test_backfill_planner_v2.py",
+      "sha256": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5"
+    },
+    {
+      "base_git_blob_sha": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "base_status": "EXACT",
+      "bytes": 10844,
+      "git_blob_sha": "e15a18bbd495672e94ff3d3a88eba7e057cf70c5",
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "base_git_blob_sha": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "base_status": "EXACT",
+      "bytes": 13753,
+      "git_blob_sha": "01c791046bd66cd1a35f9485fa2621241fc63818",
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "base_git_blob_sha": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "base_status": "EXACT",
+      "bytes": 8631,
+      "git_blob_sha": "878c7ea3362c73bdc4d8454ff949c137476af935",
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "base_git_blob_sha": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "base_status": "EXACT",
+      "bytes": 22521,
+      "git_blob_sha": "ca2ce4ac2fdd22525f71e850cecbf6038bba3f23",
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+    },
+    {
+      "base_git_blob_sha": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "base_status": "EXACT",
+      "bytes": 15706,
+      "git_blob_sha": "0d311aada9bc4db673d7b9c4bf7e01904c615c84",
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "base_git_blob_sha": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "base_status": "EXACT",
+      "bytes": 12447,
+      "git_blob_sha": "f8290d38bb69656e253a89d648b0dfd7f3a68712",
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6"
+    },
+    {
+      "base_git_blob_sha": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "base_status": "EXACT",
+      "bytes": 9063,
+      "git_blob_sha": "c305541e75cfb7be34236f9e82bb25f00a1ca800",
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "base_git_blob_sha": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "base_status": "EXACT",
+      "bytes": 21360,
+      "git_blob_sha": "6357af4f2e5bb2363713572e75e35ab2893ce6f5",
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "base_git_blob_sha": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "base_status": "EXACT",
+      "bytes": 17858,
+      "git_blob_sha": "550f3634d6406e87c27cfa901bcdc06d431f81ff",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468"
+    },
+    {
+      "base_git_blob_sha": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "base_status": "EXACT",
+      "bytes": 23452,
+      "git_blob_sha": "709604ecde30825c6c2973ef496be869c2b5682d",
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "ad9ded264e3f18cae54417a8a6cf5765b22a01e04d7af876034735bb38404570"
+    },
+    {
+      "base_git_blob_sha": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "base_status": "EXACT",
+      "bytes": 57671,
+      "git_blob_sha": "2a70fce037a62c1217eb1c53973c8ffa0a5ff435",
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96"
+    },
+    {
+      "base_git_blob_sha": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "base_status": "EXACT",
+      "bytes": 8676,
+      "git_blob_sha": "4c1cad0e912f4af62b95531a6a8683fccf59c16c",
+      "path": "tests/ingestion/test_rpc_store.py",
+      "sha256": "d908d96e5203b92f2d9f7aaa068fa31153dd0f11db0ccd9bfe564f411dd61080"
+    }
+  ],
+  "base_commit": "e694009d75f3fd91c69976befa0e12838e64efec",
+  "base_tree": "3599d2822a30b658666ab219e8eeca728f3917df",
+  "errors": 0,
+  "evidence": {
+    "cases": {
+      "actual_claim_equivalence": [
+        {
+          "attempts": [
+            1,
+            1,
+            1
+          ],
+          "order": [
+            "REF01",
+            "N01",
+            "REF03"
+          ],
+          "provider_resolved": true,
+          "turns": 3,
+          "version": "baseline"
+        },
+        {
+          "attempts": [
+            1,
+            1,
+            1
+          ],
+          "order": [
+            "REF01",
+            "N01",
+            "REF03"
+          ],
+          "provider_resolved": true,
+          "turns": 3,
+          "version": "candidate"
+        }
+      ],
+      "atomic_guard_rejections": [
+        "source_drift",
+        "target_metadata",
+        "wrong_owner",
+        "expired_lease",
+        "infinite_lease",
+        "wrong_fence",
+        "wrong_cohort",
+        "wrong_members",
+        "inactive_install",
+        "wrong_index",
+        "wrong_timeout",
+        "repeatable_read",
+        "read_only",
+        "pre_snapshot_auth_drift",
+        "pre_snapshot_index_drift",
+        "after_auth_drift",
+        "after_catalog_drift",
+        "after_lease_expiry",
+        "after_run_mutation"
+      ],
+      "forward_restore": {
+        "all_sampled_rows_unchanged": true,
+        "catalog_guards": true,
+        "full_metadata_oid_acl": true
+      },
+      "native_late_abort": {
+        "domain_rows_rolled_back": true,
+        "next_claim_generation_attempts": 1,
+        "sequence_gaps_not_claimed_rolled_back": true,
+        "sqlstate": "55P03"
+      },
+      "restore_status_policy": {
+        "replay_rejected": true,
+        "statuses": [
+          "PAUSED",
+          "PARTIAL_OPERATIONAL_FAILURE"
+        ],
+        "wrong_owner_rejected": true
+      },
+      "semantic_matrix": {
+        "cases": 5,
+        "duplicates_nulls_statuses_providers_runs": true
+      }
+    },
+    "http": "NOT_USED",
+    "postgresql": "ACTUAL_DISPOSABLE",
+    "postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "production": "NOT_RUN"
+  },
+  "failures": 2,
+  "finished_at": "2026-10-30T19:26:49.837354+00:00",
+  "log": "test_actual_authenticated_claim_provider_resolution_fairness_attempts_and_fence (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_actual_authenticated_claim_provider_resolution_fairness_attempts_and_fence) ... ok\ntest_custom_and_generic_plans_keep_correlated_existing_index_lookups (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_custom_and_generic_plans_keep_correlated_existing_index_lookups) ... FAIL\ntest_forward_restore_preserve_data_oid_metadata_and_permissions (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_forward_restore_preserve_data_oid_metadata_and_permissions) ... ok\ntest_guard_rejections_and_final_boundary_rollback (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_guard_rejections_and_final_boundary_rollback) ... ok\ntest_native_late_abort_rolls_back_worker_dependencies_fairness_and_attempt (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_native_late_abort_rolls_back_worker_dependencies_fairness_and_attempt) ... ok\ntest_replay_and_paused_terminal_restore_preserve_status (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_replay_and_paused_terminal_restore_preserve_status) ... ok\ntest_semantic_matrix_empty_null_duplicate_status_provider_and_run (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_semantic_matrix_empty_null_duplicate_status_provider_and_run) ... ok\ntest_dsn_admission_both_workflow_contexts (test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_dsn_admission_both_workflow_contexts) ... ok\ntest_exact_inverse_and_reproducible_guarded_sources (test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_exact_inverse_and_reproducible_guarded_sources) ... FAIL\n\n======================================================================\nFAIL: test_custom_and_generic_plans_keep_correlated_existing_index_lookups (test_backfill_claim_provider_cursor_v76.ClaimCursorPostgreSQLTests.test_custom_and_generic_plans_keep_correlated_existing_index_lookups)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/replacement-claim-cursor-fixture-v76/tests/ingestion/test_backfill_claim_provider_cursor_v76.py\", line 217, in test_custom_and_generic_plans_keep_correlated_existing_index_lookups\n    for part in ('run_id','provider','status'): self.assertIn(part,nodes[0]['Index Cond'])\n                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'status' not found in '((run_id = rr.id) AND (provider = \"*VALUES*\".column1))'\n\n======================================================================\nFAIL: test_exact_inverse_and_reproducible_guarded_sources (test_backfill_claim_provider_cursor_v76.ClaimCursorSourceTests.test_exact_inverse_and_reproducible_guarded_sources)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/replacement-claim-cursor-fixture-v76/tests/ingestion/test_backfill_claim_provider_cursor_v76.py\", line 58, in test_exact_inverse_and_reproducible_guarded_sources\n    self.assertLess(shell.index('PERFORM pg_catalog.pg_advisory_xact_lock('), shell.index(\"FOR SHARE;\"))\nAssertionError: 6696 not less than 189\n\n----------------------------------------------------------------------\nRan 9 tests in 7.961s\n\nFAILED (failures=2)\n",
+  "passed": false,
+  "schema": "claim-cursor-qualification-v76",
+  "seconds": 7.961692812998081,
+  "skips": 0,
+  "started_at": "2026-10-30T19:26:41.687622+00:00",
+  "tests_run": 9
+}

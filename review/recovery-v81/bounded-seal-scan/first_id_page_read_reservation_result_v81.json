@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"error\":{\"name\":\"HttpException\",\"message\":\"Failed to run sql query: ERROR:  55P03: canceling statement due to lock timeout\\nCONTEXT:  while locking tuple (4,15) in relation \\\"backfill_runs_v2\\\"\\nSQL statement \\\"SELECT *               FROM astra_ingestion_v1.backfill_runs_v2 WHERE id='fixed3000-20250901-20260731-v1-20261030' FOR UPDATE\\\"\\nPL/pgSQL function inline_code_block line 2 at SQL statement\\n\"}}"
+    }
+  ],
+  "structuredContent": {
+    "error_code": "INVALID_ARGUMENT"
+  },
+  "isError": true
+}

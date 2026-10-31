@@ -1,0 +1,27 @@
+--- astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer) original
++++ astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer) candidate
+@@ -6,11 +6,11 @@
+ DECLARE t record; v_count integer:=0;
+ BEGIN
+  FOR t IN SELECT q.id FROM astra_ingestion_v1.backfill_tasks_v2 q WHERE q.run_id=p_run_id
+-  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent')
++  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent' OR q.scope ? 'identity_refresh_of' OR q.kind IN('retained_identity','retained_massive_archive'))
+   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 p WHERE p.task_id=q.id)
+   ORDER BY q.id LIMIT GREATEST(1,LEAST(p_limit,500))
+  LOOP IF astra_ingestion_v1.backfill_snapshot_task_v2(t.id) THEN v_count:=v_count+1;END IF;END LOOP;
+  RETURN jsonb_build_object('snapshotted',v_count,'more',EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 q WHERE q.run_id=p_run_id
+-  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent')
++  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent' OR q.scope ? 'identity_refresh_of' OR q.kind IN('retained_identity','retained_massive_archive'))
+   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 p WHERE p.task_id=q.id)));
+ END $function$
+--- astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb) original
++++ astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb) candidate
+@@ -21,7 +21,7 @@
+   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Frozen target exchange calendar must contain the retained 230 sessions'; END IF;
+  v_calendar:=datemultirange(daterange(r.target_start,r.target_end+1,'[)'));
+  IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_tasks_v2 q WHERE q.run_id=r.id
+-  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent')
++  AND NOT ((q.kind='alpaca_option_bars' AND q.scope ? 'enumeration_parent') OR q.scope ? 'reuse_parent' OR q.scope ? 'identity_refresh_of' OR q.kind IN('retained_identity','retained_massive_archive'))
+   AND NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 p WHERE p.task_id=q.id)) THEN
+   RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Static task snapshots are incomplete; continue bounded backfill_plan_snapshot'; END IF;
+  SELECT count(*),encode(sha256(convert_to(COALESCE(string_agg(task_id||':'||definition_sha256,E'\n' ORDER BY task_id COLLATE "C"),''),'UTF8')),'hex')

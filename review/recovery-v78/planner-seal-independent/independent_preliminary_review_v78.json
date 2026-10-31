@@ -1,0 +1,80 @@
+{
+  "additional_failure_modes_to_keep_separate": [
+    "A genuinely static task inserted after initial expected-count capture can cause valid count mismatch; reconcile provenance instead of setting expected count equal to actual.",
+    "Snapshot static-task scan and two ordered manifest aggregations may still have scale cost; no runtime estimate is inferred from small fixtures.",
+    "If any actually static snapshot is missing, bounded continuation must retain it; never blanket-exclude plan_static=false.",
+    "Sealed planning proves admitted work coverage, not acquired provider data or completed16-family delivery."
+  ],
+  "candidate_release_admitted": false,
+  "external_writes": 0,
+  "finding": {
+    "consequence": "An intentionally dynamic task without a static plan unit can be repeatedly selected by plan_snapshot; snapshot_task returns false, more remains true, and planner SEAL returns SNAPSHOTTING_EXISTING_TASKS before count/hash/coverage checks. Fixing enumeration alone is insufficient because the separate seal completeness precheck has the same stale classification.",
+    "not_claimed": "No repeated production helper execution, exact current whole-RPC cost, sustained recovery, sealed plan or full mission completion is proved here.",
+    "production_affected_rows": "PENDING_ROOT_SELECTED_CLASSIFICATION_READ",
+    "seal_completeness_exclusions": "(kind='alpaca_option_bars' AND scope ? 'enumeration_parent') OR scope ? 'reuse_parent'",
+    "snapshot_enumeration_and_more_exclusions": "(kind='alpaca_option_bars' AND scope ? 'enumeration_parent') OR scope ? 'reuse_parent'",
+    "snapshot_task_exclusions": "(kind='alpaca_option_bars' AND scope ? 'enumeration_parent') OR scope ? 'reuse_parent' OR scope ? 'identity_refresh_of' OR kind IN('retained_identity','retained_massive_archive')"
+  },
+  "fixture_recommendation": "Compose retained Identity/S02 fixture setup with planner installation; use BackfillPlannerTests.setUp for exact frozen3000members and retained calendar. Use small synthetic complete-workflow tasks to exercise real seal integrity without claiming full production population performance. Keep source-binding adaptations explicit.",
+  "live_source_binding": {
+    "observed_at": "2026-10-30T22:27:39Z",
+    "receipt": "review/recovery-v78/planner-seal/three_function_hash_readback_v78.json",
+    "receipt_sha256": "f1e6c7f27d61c5cdb7eab906c7cd3d78dfe8d9d2274db6646f92193b603be141",
+    "reviewer_independent_production_call": false,
+    "root_read_all_three_oid_source_metadata_pins_match": true
+  },
+  "local_file_hashes": {
+    "sql/astra_backfill_delivery_v2.sql": "c24e28db58ea92507b5c08acdc862afeba0a1a05f7a40958d28266e0de7d5043",
+    "sql/astra_backfill_identity_v2.sql": "47ee25cd2bf72a9c9c9bc92b218ae32b1241ce3d7d7aed0d00a05f579fffc553",
+    "sql/astra_backfill_planner_v2.sql": "b8f69c487e1af9937e08b566932253cbcc1bc65dbe79b64c1842b3d10c3019c6",
+    "sql/astra_backfill_retained_s02_v2.sql": "10cbf5b690f38f688ace5485088445de2ac61963073d3fbf216475c18131e2b9",
+    "tests/ingestion/test_backfill_delivery_v2.py": "c4e95f20980e5b6f5b9d7e4160800aee8aeaa6f529160bac993c1e26007061d3",
+    "tests/ingestion/test_backfill_identity_v2.py": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce",
+    "tests/ingestion/test_backfill_planner_batch_v2.py": "d4b5c09eb82d6c0b69a8d348a909e3d67d1445b4885ecb9767b137df51d5e222",
+    "tests/ingestion/test_backfill_planner_v2.py": "eab7b7262b2bd5275b136ab70d2a3a38e0bb33017e3ae5eef5bf6d15201413c5",
+    "tests/ingestion/test_backfill_retained_s02_v2.py": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+  },
+  "minimal_expected_change": {
+    "exact_inverse_to_original": true,
+    "functions": 2,
+    "new_classification": "Only align to existing snapshot_task explicit exclusions",
+    "path": "review/recovery-v78/planner-seal-independent/independent_expected_predicate_delta_v78.json",
+    "predicate_occurrences": 3,
+    "sha256": "67eed4256843c7f84196c6ecee41cc13212c8e93e8a9409e5d321155725007f0",
+    "unchanged": [
+      "snapshot_task itself",
+      "private dispatcher dbe8",
+      "authentication",
+      "owner/fence/stop behavior",
+      "function OIDs and full metadata",
+      "timeouts and retry bounds",
+      "count/hash comparison",
+      "frozen cohort and calendar",
+      "member-date coverage",
+      "CTX06 representative map proof",
+      "existing task/page/readback/counter records"
+    ]
+  },
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "required_actual_postgresql_cases": [
+    "Reproduce original0snapshotted/moretrue with each of identity_refresh_of,retained_identity,retained_massive_archive; repaired result0/morefalse with those rows preserved.",
+    "More than500lexically earlier ignored dynamic tasks must not starve a genuine missing static snapshot; preserve500admission bound and precise more result.",
+    "Initial preexisting-task snapshot phase can advance past intentionally dynamic rows; expected count starts from actual immutable static units only.",
+    "SEAL reaches unchanged count/hash/coverage gates; it does not merely change planning_complete.",
+    "Ordinary static task with plan_static=false remains included; a missing static snapshot still fails seal completeness.",
+    "Mismatched expected static count or manifest hash is rejected; neither expected counter nor retained unit hash is reset.",
+    "Incomplete member/date coverage and invalid fixed3,000 representative maps remain unsealed.",
+    "Wrong target calendar/cohort/membership and paused or already-sealed plans preserve existing refusal behavior.",
+    "Existing immutable task definitions, dynamic task state/counters/pages, static plan units and coverage remain unchanged except real bounded static snapshot additions and legitimate first seal.",
+    "Changed source/OID/metadata/owner/fence/lease rejects installation; apply-once and guarded restore preserve all unrelated functions and privileges."
+  ],
+  "retained_definitions": {
+    "all_definition_bytes_match_v77_retained_source_hashes": true,
+    "path": "review/recovery-v78/planner-seal-independent/retained_seal_three_function_definitions_v78.json",
+    "sha256": "bbf5e4771bc2f3d541951f3de4b6f4a5dd990bf7eb4cf6b4ca96b2d2e2e6afc7"
+  },
+  "role": "Independent local-only reviewer; no production queries or mutations",
+  "schema": "astra.independent-planner-seal-review/1",
+  "state": "SOURCE_DIAGNOSIS_AND_EXPECTED_DELTA_PREPARED_PENDING_AFFECTED_ROWS_AND_ACTUAL_PG",
+  "tests_executed": false
+}

@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-30T19:27:33Z",
+  "workspace_id": "tea-d562ma4hg0os73aejnfg",
+  "service": {
+    "id": "srv-dbh9fko473hc739an8m0",
+    "type": "background_worker",
+    "name": "astra-ingestion-worker-v1",
+    "autoDeploy": "no",
+    "branch": "feat/astra-ingestion-service",
+    "repo": "https://github.com/robert8p/Alpaca-Supabase-Populator",
+    "suspended": "not_suspended",
+    "updatedAt": "2026-10-30T17:00:38.789853Z",
+    "serviceDetails": {
+      "plan": "0.5c-512mb",
+      "numInstances": 1,
+      "envSpecificDetails": {
+        "startCommand": "python -m astra_ingestion.worker",
+        "buildCommand": "python -m pip install -r requirements-ingestion.txt"
+      }
+    }
+  },
+  "publication_will_not_auto_deploy": true,
+  "no_settings_changed": true,
+  "live_revision_confirmed_at": "2026-10-30T19:07Z",
+  "live_revision": "e694009d75f3fd91c69976befa0e12838e64efec"
+}

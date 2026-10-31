@@ -1,0 +1,47 @@
+[
+  {
+    "observed_at": "2026-10-30 13:06:42.509058+00",
+    "status": "ACTIVE",
+    "fence": 1,
+    "owner": "root-replacement-20261030T042603Z",
+    "lease_until": "2026-10-30T14:00:00Z",
+    "pages_committed": 4276,
+    "records_committed": 518993,
+    "requests_reserved": 2134,
+    "family_turn": {
+      "run_id": "fixed3000-20250901-20260731-v1-20261030",
+      "changed_at": "2026-10-30T13:03:32.794473+00:00",
+      "claim_turns": 4187,
+      "last_family": "D02",
+      "next_family_index": 7,
+      "last_claimed_task_id": "backfill-plan-c6dfa8452841bb6998b059e208b5be721ca85947c6bd5dd0b9391e4efd50c056"
+    },
+    "latest_worker": {
+      "worker_id": "17e73b52-6f6c-43b4-a797-97d37be6f379",
+      "observed_at": "2026-10-30T13:03:32.794473+00:00",
+      "source_revision": "3ee4db2a79c081ffb65ef0d7ec2a04228d69fb1d",
+      "supported_kinds": [
+        "alpaca_reference",
+        "alpaca_stock_bars",
+        "alpaca_news",
+        "alpaca_actions",
+        "alpaca_option_contracts",
+        "alpaca_option_bars",
+        "massive_reference",
+        "massive_news",
+        "massive_dividends",
+        "massive_splits",
+        "massive_short_volume",
+        "massive_short_interest",
+        "derive_daily",
+        "derive_intraday",
+        "derive_breadth",
+        "retained_reuse",
+        "retained_identity",
+        "retained_massive_archive"
+      ]
+    },
+    "latest_page_commit": "2026-10-30 13:03:33.922852+00",
+    "readbacks": 4276
+  }
+]

@@ -1,0 +1,954 @@
+{
+  "feature_contract": [
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.036105+00:00",
+        "feature_name": "provider_interval",
+        "input_columns": [
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Alpaca ts is inclusive interval start; interval end is ts plus 60 seconds.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Corrected WS1 start-label semantics.",
+        "null_coverage_behavior": "Calendar row exists even when source bar is absent.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037072+00:00",
+        "feature_name": "availability_assumed_ts",
+        "input_columns": [
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Interval end plus configurable publication delay; Scenario 10 primary delay is one second.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Archived final-bar proxy, not observed receipt/revision time.",
+        "null_coverage_behavior": "Always present on a scheduled grid row.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY",
+          "SCENARIO10_DISCOVERY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037096+00:00",
+        "feature_name": "ohlcv",
+        "input_columns": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume",
+          "trade_count"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Raw OHLCV and trade count for the scheduled minute.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Observable no earlier than availability_assumed_ts.",
+        "null_coverage_behavior": "No interpolation or carry-forward.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037109+00:00",
+        "feature_name": "dollar_volume",
+        "input_columns": [
+          "close",
+          "vwap",
+          "volume"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Valid close times volume; provider VWAP times volume retained separately.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Current completed bar only.",
+        "null_coverage_behavior": "NULL on missing, nonfinite, nonpositive price or invalid volume.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037121+00:00",
+        "feature_name": "rolling_returns",
+        "input_columns": [
+          "close",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "close_t/close_t-n minus one for n in 1,5,10,20,60,120 on exact scheduled grids.",
+        "lookback_minutes": 120,
+        "uses_future_data": false,
+        "timestamp_semantics": "Current and prior completed bars only.",
+        "null_coverage_behavior": "NULL if any required scheduled close in the exact window is missing or invalid.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037132+00:00",
+        "feature_name": "realized_volatility",
+        "input_columns": [
+          "close",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Sample standard deviation of exact consecutive one-minute log returns over 5,20,60 minutes.",
+        "lookback_minutes": 60,
+        "uses_future_data": false,
+        "timestamp_semantics": "Current and prior completed bars only.",
+        "null_coverage_behavior": "NULL unless every required one-minute return is defined.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037145+00:00",
+        "feature_name": "candle_geometry",
+        "input_columns": [
+          "open",
+          "high",
+          "low",
+          "close"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Range, signed body, upper wick and lower wick divided by open.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Current completed bar only.",
+        "null_coverage_behavior": "NULL for missing, nonfinite, nonpositive or incoherent OHLC.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037157+00:00",
+        "feature_name": "rolling_range_20m",
+        "input_columns": [
+          "high",
+          "low",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Rolling max(high)/min(low) minus one across twenty exact scheduled bars.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed bars through t only.",
+        "null_coverage_behavior": "NULL unless all twenty bars are coherent.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.03717+00:00",
+        "feature_name": "volume_relative_20m",
+        "input_columns": [
+          "volume",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Current volume divided by 20-bar mean and standardized by 20-bar sample deviation.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed bars through t only.",
+        "null_coverage_behavior": "NULL on incomplete window or zero denominator.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037181+00:00",
+        "feature_name": "dollar_volume_mean_20m",
+        "input_columns": [
+          "close",
+          "volume",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Mean valid close times volume across twenty exact scheduled bars.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed bars through t only.",
+        "null_coverage_behavior": "NULL unless all twenty price-volume pairs are valid.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037196+00:00",
+        "feature_name": "sma_close",
+        "input_columns": [
+          "close",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Simple moving averages of valid close over exact 5,20,60-minute windows.",
+        "lookback_minutes": 60,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed bars through t only.",
+        "null_coverage_behavior": "Each window NULL unless complete.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037207+00:00",
+        "feature_name": "session_vwap_proxy",
+        "input_columns": [
+          "vwap",
+          "close",
+          "volume",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Cumulative sum(coalesce(provider_vwap,close)*volume)/sum(volume) from RTH open through t.",
+        "lookback_minutes": null,
+        "uses_future_data": false,
+        "timestamp_semantics": "Never crosses an RTH session boundary.",
+        "null_coverage_behavior": "NULL before positive valid volume; flagged as proxy when close substitutes for missing provider VWAP.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037239+00:00",
+        "feature_name": "trend_primitives",
+        "input_columns": [
+          "close",
+          "vwap",
+          "sma_close_5m",
+          "sma_close_20m"
+        ],
+        "source_relation": "astra_shared_equity_features_20260928_v1.compute_feature_grid",
+        "exact_definition": "Close vs provider VWAP, close vs session VWAP proxy, close vs SMA20 and SMA5 vs SMA20 in bps.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed data only.",
+        "null_coverage_behavior": "Each component independently NULL when unavailable.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037251+00:00",
+        "feature_name": "session_position",
+        "input_columns": [
+          "regular_open",
+          "regular_close"
+        ],
+        "source_relation": "market_governance.us_equity_fixed_session_calendar",
+        "exact_definition": "Zero-based minutes from regular open and minutes remaining after bar end.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Fixed RTH calendar; UTC values preserve New York DST.",
+        "null_coverage_behavior": "Always present on calendar grid.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037263+00:00",
+        "feature_name": "liquidity_quality",
+        "input_columns": [
+          "trade_count",
+          "close",
+          "volume",
+          "ts"
+        ],
+        "source_relation": "public.market_bars_1m_alpaca",
+        "exact_definition": "Trade count, dollar-volume, 20-minute missing count and exact coverage fraction.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Completed bars only.",
+        "null_coverage_behavior": "Missing bars remain explicit; no compressed-time rolling.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037274+00:00",
+        "feature_name": "microstructure_primitives",
+        "input_columns": [
+          "trade_count",
+          "quote_count",
+          "avg_spread_bps",
+          "last_bid_price",
+          "last_ask_price",
+          "last_bid_size",
+          "last_ask_size",
+          "last_trade_price",
+          "buy_volume",
+          "sell_volume"
+        ],
+        "source_relation": "public.equity_microstructure_1m",
+        "exact_definition": "Counts, spread, trade imbalance, quote-size imbalance and last-trade midpoint dislocation.",
+        "lookback_minutes": 0,
+        "uses_future_data": false,
+        "timestamp_semantics": "Identical instrument-minute only; availability flag required.",
+        "null_coverage_behavior": "NULL with microstructure_available=false outside genuine capture coverage.",
+        "applicable_research_populations": [
+          "SELECTIVE_SIP_WINDOWS"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037287+00:00",
+        "feature_name": "quality_flags",
+        "input_columns": [
+          "all_inputs"
+        ],
+        "source_relation": "astra_shared_equity_features_20260928_v1.compute_feature_grid",
+        "exact_definition": "Presence, OHLC/volume validity, exact-clock status, missing count, micro coverage, identity quality, corporate-action status and outcome independence.",
+        "lookback_minutes": 20,
+        "uses_future_data": false,
+        "timestamp_semantics": "Attached to every scheduled minute.",
+        "null_coverage_behavior": "Flags explain nulls; no silent row deletion.",
+        "applicable_research_populations": [
+          "ALL_US_EQUITY"
+        ]
+      }
+    },
+    {
+      "contract": {
+        "version": "v1",
+        "created_at": "2026-09-27T23:49:20.037302+00:00",
+        "feature_name": "scenario10_frozen_factor_inputs",
+        "input_columns": [
+          "candidates[0]",
+          "candidate_codec.features",
+          "excluded",
+          "first_signals",
+          "mask_occurrences"
+        ],
+        "source_relation": "research_s10_ws4_20260925_v2.session_data",
+        "exact_definition": "Exact WS1 masks and bins unpacked from WS4 candidate element zero with all outcome material removed.",
+        "lookback_minutes": 120,
+        "uses_future_data": false,
+        "timestamp_semantics": "Exact corrected WS1 lag1s decision semantics; discovery only.",
+        "null_coverage_behavior": "Unknown remains unknown and excluded decisions remain explicit.",
+        "applicable_research_populations": [
+          "SCENARIO10_DISCOVERY"
+        ]
+      }
+    }
+  ],
+  "feature_views": [
+    {
+      "nspname": "market_factors_20250901_20260731_v1",
+      "relname": "market_internal_causal_v38",
+      "definition": " SELECT universe_definition,\n    session_date,\n    securities AS full_securities,\n    return_observed AS full_return_observed,\n    advancers AS full_advancers,\n    decliners AS full_decliners,\n    unchanged AS full_unchanged,\n    pct_advancing AS full_pct_advancing,\n    advance_decline_ratio AS full_advance_decline_ratio,\n    equal_weight_ret_1d AS full_equal_weight_ret_1d,\n    median_ret_1d AS full_median_ret_1d,\n    dispersion_ret_1d AS full_dispersion_ret_1d,\n    return5_observed AS full_return5_observed,\n    return20_observed AS full_return20_observed,\n    pct_positive_5d AS full_pct_positive_5d,\n    pct_positive_20d AS full_pct_positive_20d,\n    aggregate_dollar_volume AS full_aggregate_dollar_volume,\n    return_observed::double precision / NULLIF(securities, 0)::double precision AS full_return_coverage_ratio,\n    event_time,\n    available_at,\n    source_observed_at,\n    ingested_at,\n    definition_version,\n    quality_flags\n   FROM market_factors_20250901_20260731_v1.market_internal_adjusted_v38;"
+    },
+    {
+      "nspname": "market_factors_20250901_20260731_v1",
+      "relname": "security_daily_features_serving_remediated_v1",
+      "definition": " SELECT f.instrument_key,\n    f.session_date,\n    f.source_code,\n    f.observed_bars,\n    f.expected_bars,\n    f.quality_flags,\n    f.identity_anchor,\n    f.raw_close,\n    f.raw_volume,\n    f.provider_dollar_volume,\n    f.source_observed_at,\n    f.assumed_available_at,\n    f.raw_ret_1d,\n    f.ret_1d,\n    f.ret_5d,\n    f.ret_20d,\n    f.ret_60d,\n    f.realized_log_vol_20d,\n    f.relative_volume_20d,\n    f.volume_z20,\n    f.amihud_mean_20d,\n    f.valid_close_count_61,\n    f.source_age_seconds,\n    f.built_at,\n    'ARCHIVED_FINAL_BAR_PROXY_RETROSPECTIVE_IDENTITY'::text AS historical_usability,\n    false AS original_receipt_replay_certified,\n    'RAW_SIP_PRICE_KNOWN_MAPPED_ACTIONS_ONLY_SPLIT_RETURNS'::text AS price_basis,\n    'market_data_remediation_20261008_v1'::text AS release_id\n   FROM market_factors_20250901_20260731_v1.security_daily_features_remediated_v1 f\n  WHERE NOT (EXISTS ( SELECT 1\n           FROM market_governance.equity_daily_affected_dates_v3 a\n          WHERE a.instrument_key = f.instrument_key AND a.session_date = f.session_date))\nUNION ALL\n SELECT f.instrument_key,\n    f.session_date,\n    f.source_code,\n    f.observed_bars,\n    f.expected_bars,\n    f.quality_flags,\n    f.identity_anchor,\n    f.raw_close,\n    f.raw_volume,\n    f.provider_dollar_volume,\n    f.source_observed_at,\n    f.assumed_available_at,\n    f.raw_ret_1d,\n    f.ret_1d,\n    f.ret_5d,\n    f.ret_20d,\n    f.ret_60d,\n    f.realized_log_vol_20d,\n    f.relative_volume_20d,\n    f.volume_z20,\n    f.amihud_mean_20d,\n    f.valid_close_count_61,\n    f.source_age_seconds,\n    f.built_at,\n    'ARCHIVED_FINAL_BAR_PROXY_RETROSPECTIVE_IDENTITY'::text AS historical_usability,\n    false AS original_receipt_replay_certified,\n    'RAW_UNADJUSTED_VALIDATED_SUPPLEMENTAL_KNOWN_MAPPED_ACTIONS_ONLY_SPLIT_RETURNS'::text AS price_basis,\n    'listed_equity_daily_patch_20261009_v1'::text AS release_id\n   FROM market_factors_20250901_20260731_v1.security_daily_features_equity_patch_v3 f\n     JOIN market_governance.equity_daily_active_v3 j USING (instrument_key, generation_sha256);"
+    }
+  ],
+  "reuse_columns": [
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "month_key",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "trading_date",
+      "data_type": "date"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "instrument_key",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "row_count",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "first_bar",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "last_bar",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "critical_nulls",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "consolidation_audit",
+      "table_name": "alpaca_instrument_daily_coverage",
+      "column_name": "invalid_ohlcv",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "id",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "job_id",
+      "data_type": "uuid"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "task_id",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "level",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "event_type",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "message",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "details",
+      "data_type": "jsonb"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_job_events_v1",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "id",
+      "data_type": "uuid"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "name",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "status",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "config",
+      "data_type": "jsonb"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "symbol_count",
+      "data_type": "integer"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "total_tasks",
+      "data_type": "integer"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "completed_tasks",
+      "data_type": "integer"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "failed_tasks",
+      "data_type": "integer"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "rows_staged",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "rows_loaded",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "api_requests",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "bytes_staged",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "feature_rows",
+      "data_type": "bigint"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "claimed_by",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "heartbeat_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "error",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "market_provenance",
+      "table_name": "alpaca_populator_jobs_v1",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "symbol",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "alpaca_asset_id",
+      "data_type": "uuid"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "name",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "exchange",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "asset_class",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "alpaca_status",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "tradable",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "marginable",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "shortable",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "easy_to_borrow",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "fractionable",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "massive_type",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "a138_current_active",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "a138_current_tradable",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "common_stock_sensitivity",
+      "data_type": "boolean"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "research_asset_group",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "classification_method",
+      "data_type": "text"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "classification_observed_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "classification_run_id",
+      "data_type": "uuid"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "provenance",
+      "data_type": "jsonb"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "canonicalised_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_schema": "reference",
+      "table_name": "alpaca_fixed_window_instruments_v1",
+      "column_name": "instrument_key",
+      "data_type": "integer"
+    }
+  ],
+  "reuse_indexes": [
+    {
+      "schemaname": "consolidation_audit",
+      "tablename": "alpaca_instrument_daily_coverage",
+      "indexname": "alpaca_instrument_daily_coverage_pkey",
+      "indexdef": "CREATE UNIQUE INDEX alpaca_instrument_daily_coverage_pkey ON consolidation_audit.alpaca_instrument_daily_coverage USING btree (trading_date, instrument_key)"
+    },
+    {
+      "schemaname": "market_provenance",
+      "tablename": "alpaca_populator_jobs_v1",
+      "indexname": "alpaca_populator_jobs_v1_created_at_idx",
+      "indexdef": "CREATE INDEX alpaca_populator_jobs_v1_created_at_idx ON market_provenance.alpaca_populator_jobs_v1 USING btree (created_at)"
+    },
+    {
+      "schemaname": "market_provenance",
+      "tablename": "alpaca_populator_jobs_v1",
+      "indexname": "alpaca_populator_jobs_v1_pkey",
+      "indexdef": "CREATE UNIQUE INDEX alpaca_populator_jobs_v1_pkey ON market_provenance.alpaca_populator_jobs_v1 USING btree (id)"
+    },
+    {
+      "schemaname": "market_provenance",
+      "tablename": "alpaca_populator_jobs_v1",
+      "indexname": "alpaca_populator_jobs_v1_status_idx",
+      "indexdef": "CREATE INDEX alpaca_populator_jobs_v1_status_idx ON market_provenance.alpaca_populator_jobs_v1 USING btree (status)"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "alpaca_fixed_window_instruments_v1",
+      "indexname": "alpaca_fixed_window_instruments_v1_asset_id_idx",
+      "indexdef": "CREATE INDEX alpaca_fixed_window_instruments_v1_asset_id_idx ON reference.alpaca_fixed_window_instruments_v1 USING btree (alpaca_asset_id)"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "alpaca_fixed_window_instruments_v1",
+      "indexname": "alpaca_fixed_window_instruments_v1_group_idx",
+      "indexdef": "CREATE INDEX alpaca_fixed_window_instruments_v1_group_idx ON reference.alpaca_fixed_window_instruments_v1 USING btree (research_asset_group, symbol)"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "alpaca_fixed_window_instruments_v1",
+      "indexname": "alpaca_fixed_window_instruments_v1_instrument_key_key",
+      "indexdef": "CREATE UNIQUE INDEX alpaca_fixed_window_instruments_v1_instrument_key_key ON reference.alpaca_fixed_window_instruments_v1 USING btree (instrument_key)"
+    },
+    {
+      "schemaname": "reference",
+      "tablename": "alpaca_fixed_window_instruments_v1",
+      "indexname": "alpaca_fixed_window_instruments_v1_pkey",
+      "indexdef": "CREATE UNIQUE INDEX alpaca_fixed_window_instruments_v1_pkey ON reference.alpaca_fixed_window_instruments_v1 USING btree (symbol)"
+    }
+  ],
+  "reuse_jobs_sample": [
+    {
+      "job": {
+        "id": "0e75a08f-f8f0-4df2-b249-b98e73840872",
+        "name": "E-003C daily maintenance · 2026-08-26",
+        "error": "132 task(s) exhausted their retry limit",
+        "config": {
+          "asof": null,
+          "feed": "sip",
+          "name": "E-003C daily maintenance · 2026-08-26",
+          "session": {
+            "mode": "all",
+            "custom_end": "16:00:00",
+            "custom_start": "09:30:00",
+            "weekdays_only": true
+          },
+          "storage": {
+            "conflict_policy": "skip",
+            "feature_session": "all",
+            "keep_staging_files": false,
+            "generate_daily_features": true
+          },
+          "end_date": "2026-08-26",
+          "universe": {
+            "mode": "all_active",
+            "symbols": [],
+            "exchanges": [
+              "NYSE",
+              "NASDAQ",
+              "AMEX",
+              "ARCA",
+              "BATS",
+              "NYSEARCA"
+            ],
+            "symbol_limit": null,
+            "exclude_regex": "[/]",
+            "include_regex": null,
+            "tradable_only": true,
+            "shortable_only": false,
+            "marginable_only": false,
+            "fractionable_only": false,
+            "easy_to_borrow_only": false,
+            "overnight_tradable_only": false
+          },
+          "adjustment": "raw",
+          "start_date": "2026-08-26",
+          "timeframes": [
+            "1Min"
+          ],
+          "performance": {
+            "page_limit": 10000,
+            "target_rpm": 9000,
+            "concurrency": 12,
+            "max_retries": 7,
+            "date_chunk_days": 1,
+            "symbol_batch_size": 100,
+            "retry_backoff_seconds": 1.5
+          }
+        },
+        "status": "failed",
+        "claimed_by": "srv-d9p2vljncjis73evkocg-75c68f64c6-bdflc-58d35e32",
+        "created_at": "2026-08-27T07:45:27.669843+00:00",
+        "started_at": "2026-08-27T07:45:28.066413+00:00",
+        "updated_at": "2026-08-27T08:03:41.359953+00:00",
+        "rows_loaded": 0,
+        "rows_staged": 12379535,
+        "total_tasks": 132,
+        "api_requests": 1785,
+        "bytes_staged": 190917068,
+        "completed_at": "2026-08-27T08:03:41.359953+00:00",
+        "failed_tasks": 132,
+        "feature_rows": 0,
+        "heartbeat_at": "2026-08-27T08:03:41.294762+00:00",
+        "symbol_count": 13103,
+        "completed_tasks": 0
+      }
+    },
+    {
+      "job": {
+        "id": "49a1da63-7781-48bb-9b91-3098fd02bf33",
+        "name": "E-003C daily maintenance · 2026-08-24",
+        "error": "131 task(s) exhausted their retry limit",
+        "config": {
+          "asof": null,
+          "feed": "sip",
+          "name": "E-003C daily maintenance · 2026-08-24",
+          "session": {
+            "mode": "all",
+            "custom_end": "16:00:00",
+            "custom_start": "09:30:00",
+            "weekdays_only": true
+          },
+          "storage": {
+            "conflict_policy": "skip",
+            "feature_session": "all",
+            "keep_staging_files": false,
+            "generate_daily_features": true
+          },
+          "end_date": "2026-08-24",
+          "universe": {
+            "mode": "all_active",
+            "symbols": [],
+            "exchanges": [
+              "NYSE",
+              "NASDAQ",
+              "AMEX",
+              "ARCA",
+              "BATS",
+              "NYSEARCA"
+            ],
+            "symbol_limit": null,
+            "exclude_regex": "[/]",
+            "include_regex": null,
+            "tradable_only": true,
+            "shortable_only": false,
+            "marginable_only": false,
+            "fractionable_only": false,
+            "easy_to_borrow_only": false,
+            "overnight_tradable_only": false
+          },
+          "adjustment": "raw",
+          "start_date": "2026-08-24",
+          "timeframes": [
+            "1Min"
+          ],
+          "performance": {
+            "page_limit": 10000,
+            "target_rpm": 9000,
+            "concurrency": 12,
+            "max_retries": 7,
+            "date_chunk_days": 1,
+            "symbol_batch_size": 100,
+            "retry_backoff_seconds": 1.5
+          }
+        },
+        "status": "failed",
+        "claimed_by": "srv-d9p2vljncjis73evkocg-75c68f64c6-bdflc-be6cdb32",
+        "created_at": "2026-08-25T03:28:14.452357+00:00",
+        "started_at": "2026-08-25T03:28:17.366884+00:00",
+        "updated_at": "2026-08-25T03:43:44.457897+00:00",
+        "rows_loaded": 0,
+        "rows_staged": 12680241,
+        "total_tasks": 131,
+        "api_requests": 1785,
+        "bytes_staged": 197755275,
+        "completed_at": "2026-08-25T03:43:44.457897+00:00",
+        "failed_tasks": 131,
+        "feature_rows": 0,
+        "heartbeat_at": "2026-08-25T03:43:44.393194+00:00",
+        "symbol_count": 13086,
+        "completed_tasks": 0
+      }
+    }
+  ]
+}

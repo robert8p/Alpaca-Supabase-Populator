@@ -1,0 +1,59 @@
+{
+  "origin": "SYNTHETIC_ONLY_NOT_MARKET_DATA",
+  "source_response_sha256": "2a27e90ddeff57617dd4fc542e8ff70ed4af39e7e3d2b7a94707525a29c44295",
+  "source_calls": 1,
+  "scope": {
+    "symbols": [
+      "AAPL"
+    ],
+    "start": "2025-09-02T13:30:00Z",
+    "end": "2025-09-02T14:00:00Z",
+    "name": "Synthetic local qualification",
+    "timeframe": "5Min",
+    "feed": "sip",
+    "adjustment": "raw",
+    "max_requests": 50,
+    "max_records": 50000,
+    "deadline_seconds": 1800
+  },
+  "scope_hash": "4e16cef0fe8815cc9487a23b516ef466ee5afaeac2d6eefe1cfe1029ca3de1dc",
+  "transitions": [
+    {
+      "stage": "admitted",
+      "status": "queued",
+      "verification": "pending"
+    },
+    {
+      "stage": "committed",
+      "status": "running",
+      "verification": "pending"
+    },
+    {
+      "stage": "fresh_readback",
+      "status": "completed",
+      "verification": "passed"
+    }
+  ],
+  "verification": {
+    "actual_count": 1,
+    "actual_duplicate_count": 0,
+    "actual_duplicate_keys": [],
+    "actual_hash": "d5cd4b242a9d218e3ad1b030cf74f37900c2989627379d1ff371c22c325ef22c",
+    "changed_count": 0,
+    "changed_keys": [],
+    "coverage_certification": "NOT_CERTIFIED",
+    "expected_count": 1,
+    "expected_duplicate_count": 0,
+    "expected_duplicate_keys": [],
+    "expected_hash": "d5cd4b242a9d218e3ad1b030cf74f37900c2989627379d1ff371c22c325ef22c",
+    "missing_count": 0,
+    "missing_keys": [],
+    "receipt_count": 1,
+    "scope_hash": "4e16cef0fe8815cc9487a23b516ef466ee5afaeac2d6eefe1cfe1029ca3de1dc",
+    "status": "passed",
+    "unexpected_count": 0,
+    "unexpected_keys": [],
+    "verification_kind": "source_to_target_exact"
+  },
+  "production_completion_claim": false
+}

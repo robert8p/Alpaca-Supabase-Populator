@@ -1,0 +1,334 @@
+{
+  "d01_compute": [
+    {
+      "proname": "compute_feature_grid",
+      "definition": "CREATE OR REPLACE FUNCTION astra_shared_equity_features_20260928_v1.compute_feature_grid(p_instrument_id uuid, p_session_date date, p_assumed_publication_seconds integer DEFAULT 1)\n RETURNS TABLE(session_date date, provider text, instrument_id uuid, provider_symbol text, source_feed text, provider_interval_start timestamp with time zone, provider_interval_end timestamp with time zone, availability_assumed_ts timestamp with time zone, minute_index integer, minutes_from_open integer, minutes_to_close integer, open double precision, high double precision, low double precision, close double precision, volume double precision, trade_count bigint, provider_vwap double precision, bar_present boolean, bar_valid boolean, dollar_volume_close double precision, dollar_volume_vwap double precision, return_1m double precision, return_5m double precision, return_10m double precision, return_20m double precision, return_60m double precision, return_120m double precision, realized_vol_5m double precision, realized_vol_20m double precision, realized_vol_60m double precision, candle_range_pct double precision, candle_body_pct double precision, upper_wick_pct double precision, lower_wick_pct double precision, range_20m_pct double precision, volume_mean_20m double precision, volume_rel_20m double precision, volume_z_20m double precision, dollar_volume_mean_20m double precision, sma_close_5m double precision, sma_close_20m double precision, sma_close_60m double precision, session_vwap_proxy double precision, close_vs_provider_vwap_bps double precision, close_vs_session_vwap_bps double precision, close_vs_sma20_bps double precision, sma5_vs_sma20_bps double precision, missing_bars_20m integer, coverage_20m double precision, microstructure_available boolean, micro_trade_count bigint, micro_quote_count bigint, micro_avg_spread_bps double precision, micro_last_spread_bps double precision, micro_trade_imbalance double precision, micro_quote_size_imbalance double precision, microprice_dislocation_bps double precision, quality_flags jsonb)\n LANGUAGE sql\n STABLE PARALLEL RESTRICTED\n SET search_path TO 'pg_catalog'\n SET \"TimeZone\" TO 'UTC'\nAS $function$\nwith cal as (\n select c.session_date,c.regular_open,c.regular_close\n from market_governance.us_equity_fixed_session_calendar c where c.session_date=p_session_date\n), grid as (\n select cal.session_date,cal.regular_open,cal.regular_close,g as interval_start,\n        row_number() over(order by g)::integer-1 as minute_index\n from cal cross join lateral\n generate_series(cal.regular_open,cal.regular_close-interval '1 minute',interval '1 minute') g\n), id as (\n select c.provider_symbol,c.mapping_quality\n from research_hub.ai_instrument_catalog c\n where c.provider='alpaca' and c.asset_class='us_equity' and c.instrument_id=p_instrument_id\n order by c.effective_from desc nulls last limit 1\n), raw as (\n select g.*,b.source_feed,\n  b.open as source_open,b.high as source_high,b.low as source_low,b.close as source_close,\n  b.volume as source_volume,b.trade_count as source_trade_count,b.vwap as source_vwap,\n  m.trade_count as micro_trades,m.quote_count as micro_quotes,m.avg_spread_bps as micro_spread,\n  m.last_bid_price,m.last_ask_price,m.last_bid_size,m.last_ask_size,m.last_trade_price,\n  m.buy_volume,m.sell_volume,\n  (b.instrument_id is not null) as bar_present,(m.instrument_id is not null) as micro_present\n from grid g\n left join public.market_bars_1m_alpaca b\n  on b.provider='alpaca' and b.instrument_id=p_instrument_id and b.ts=g.interval_start\n left join public.equity_microstructure_1m m\n  on m.provider='alpaca' and m.instrument_id=p_instrument_id and m.ts=g.interval_start\n), base as (\n select r.*,\n  case when r.source_open>0 and r.source_high>0 and r.source_low>0 and r.source_close>0\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_open)\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_high)\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_low)\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_close)\n   and r.source_high>=greatest(r.source_open,r.source_close,r.source_low)\n   and r.source_low<=least(r.source_open,r.source_close,r.source_high)\n   then true else false end as valid_bar,\n  case when r.source_close>0\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_close)\n   then r.source_close end as valid_close,\n  case when r.source_volume>=0\n   and astra_shared_equity_features_20260928_v1.is_finite_float8(r.source_volume)\n   then r.source_volume end as valid_volume\n from raw r\n), lagged as (\n select b.*,\n  lag(b.valid_close,1) over w as close_lag1,\n  lag(b.valid_close,5) over w as close_lag5,\n  lag(b.valid_close,10) over w as close_lag10,\n  lag(b.valid_close,20) over w as close_lag20,\n  lag(b.valid_close,60) over w as close_lag60,\n  lag(b.valid_close,120) over w as close_lag120,\n  count(b.valid_close) over(order by b.interval_start rows between 1 preceding and current row) as close_n2,\n  count(b.valid_close) over(order by b.interval_start rows between 5 preceding and current row) as close_n6,\n  count(b.valid_close) over(order by b.interval_start rows between 10 preceding and current row) as close_n11,\n  count(b.valid_close) over(order by b.interval_start rows between 20 preceding and current row) as close_n21,\n  count(b.valid_close) over(order by b.interval_start rows between 60 preceding and current row) as close_n61,\n  count(b.valid_close) over(order by b.interval_start rows between 120 preceding and current row) as close_n121,\n  count(b.valid_close) over(order by b.interval_start rows between 4 preceding and current row) as close_n5,\n  count(b.valid_close) over(order by b.interval_start rows between 19 preceding and current row) as close_n20,\n  count(b.valid_close) over(order by b.interval_start rows between 59 preceding and current row) as close_n60,\n  avg(b.valid_close) over(order by b.interval_start rows between 4 preceding and current row) as sma5,\n  avg(b.valid_close) over(order by b.interval_start rows between 19 preceding and current row) as sma20,\n  avg(b.valid_close) over(order by b.interval_start rows between 59 preceding and current row) as sma60,\n  avg(b.valid_volume) over(order by b.interval_start rows between 19 preceding and current row) as vol_mean20,\n  stddev_samp(b.valid_volume) over(order by b.interval_start rows between 19 preceding and current row) as vol_sd20,\n  avg(case when b.valid_close is not null and b.valid_volume is not null then b.valid_close*b.valid_volume end)\n   over(order by b.interval_start rows between 19 preceding and current row) as dv_mean20,\n  max(case when b.valid_bar then b.source_high end)\n   over(order by b.interval_start rows between 19 preceding and current row) as hi20,\n  min(case when b.valid_bar then b.source_low end)\n   over(order by b.interval_start rows between 19 preceding and current row) as lo20,\n  sum(coalesce(b.source_vwap,b.valid_close)*b.valid_volume)\n   filter(where b.valid_volume>0 and coalesce(b.source_vwap,b.valid_close)>0)\n   over(order by b.interval_start rows between unbounded preceding and current row) as cum_pv,\n  sum(b.valid_volume) filter(where b.valid_volume>0)\n   over(order by b.interval_start rows between unbounded preceding and current row) as cum_vol,\n  count(*) filter(where not b.bar_present or not b.valid_bar)\n   over(order by b.interval_start rows between 19 preceding and current row) as missing20\n from base b window w as (order by b.interval_start)\n), returns as (\n select l.*,\n  case when l.close_n2=2 and l.valid_close>0 and l.close_lag1>0\n   then ln(l.valid_close/l.close_lag1) end as logret1\n from lagged l\n), rolled as (\n select r.*,\n  count(r.logret1) over(order by r.interval_start rows between 4 preceding and current row) as lr_n5,\n  count(r.logret1) over(order by r.interval_start rows between 19 preceding and current row) as lr_n20,\n  count(r.logret1) over(order by r.interval_start rows between 59 preceding and current row) as lr_n60,\n  stddev_samp(r.logret1) over(order by r.interval_start rows between 4 preceding and current row) as rv5,\n  stddev_samp(r.logret1) over(order by r.interval_start rows between 19 preceding and current row) as rv20,\n  stddev_samp(r.logret1) over(order by r.interval_start rows between 59 preceding and current row) as rv60\n from returns r\n)\nselect x.session_date,'alpaca'::text,p_instrument_id,(select id.provider_symbol from id),x.source_feed,\n x.interval_start,x.interval_start+interval '60 seconds',\n x.interval_start+interval '60 seconds'+make_interval(secs=>p_assumed_publication_seconds),\n x.minute_index,x.minute_index,\n floor(extract(epoch from (x.regular_close-(x.interval_start+interval '60 seconds')))/60)::integer,\n x.source_open,x.source_high,x.source_low,x.source_close,x.source_volume,x.source_trade_count,x.source_vwap,\n x.bar_present,x.valid_bar,\n case when x.valid_close is not null and x.valid_volume is not null then x.valid_close*x.valid_volume end,\n case when x.source_vwap>0 and x.valid_volume is not null then x.source_vwap*x.valid_volume end,\n case when x.close_n2=2 and x.close_lag1>0 then x.valid_close/x.close_lag1-1 end,\n case when x.close_n6=6 and x.close_lag5>0 then x.valid_close/x.close_lag5-1 end,\n case when x.close_n11=11 and x.close_lag10>0 then x.valid_close/x.close_lag10-1 end,\n case when x.close_n21=21 and x.close_lag20>0 then x.valid_close/x.close_lag20-1 end,\n case when x.close_n61=61 and x.close_lag60>0 then x.valid_close/x.close_lag60-1 end,\n case when x.close_n121=121 and x.close_lag120>0 then x.valid_close/x.close_lag120-1 end,\n case when x.lr_n5=5 then x.rv5 end,case when x.lr_n20=20 then x.rv20 end,\n case when x.lr_n60=60 then x.rv60 end,\n case when x.source_open>0 and x.valid_bar then (x.source_high-x.source_low)/x.source_open end,\n case when x.source_open>0 and x.valid_bar then (x.source_close-x.source_open)/x.source_open end,\n case when x.source_open>0 and x.valid_bar then (x.source_high-greatest(x.source_open,x.source_close))/x.source_open end,\n case when x.source_open>0 and x.valid_bar then (least(x.source_open,x.source_close)-x.source_low)/x.source_open end,\n case when x.close_n20=20 and x.lo20>0 then x.hi20/x.lo20-1 end,\n case when x.close_n20=20 then x.vol_mean20 end,\n case when x.close_n20=20 and x.vol_mean20>0 and x.valid_volume is not null then x.valid_volume/x.vol_mean20 end,\n case when x.close_n20=20 and x.vol_sd20>0 and x.valid_volume is not null then (x.valid_volume-x.vol_mean20)/x.vol_sd20 end,\n case when x.close_n20=20 then x.dv_mean20 end,\n case when x.close_n5=5 then x.sma5 end,case when x.close_n20=20 then x.sma20 end,\n case when x.close_n60=60 then x.sma60 end,\n case when x.cum_vol>0 then x.cum_pv/x.cum_vol end,\n case when x.valid_close>0 and x.source_vwap>0 then (x.valid_close/x.source_vwap-1)*10000 end,\n case when x.valid_close>0 and x.cum_vol>0 and x.cum_pv>0 then (x.valid_close/(x.cum_pv/x.cum_vol)-1)*10000 end,\n case when x.valid_close>0 and x.close_n20=20 and x.sma20>0 then (x.valid_close/x.sma20-1)*10000 end,\n case when x.close_n20=20 and x.sma5>0 and x.sma20>0 then (x.sma5/x.sma20-1)*10000 end,\n x.missing20::integer,case when x.minute_index>=19 then (20-x.missing20)::double precision/20 end,\n x.micro_present,x.micro_trades,x.micro_quotes,x.micro_spread,\n case when x.last_bid_price>0 and x.last_ask_price>0 and x.last_bid_price+x.last_ask_price>0\n  then (x.last_ask_price-x.last_bid_price)/((x.last_ask_price+x.last_bid_price)/2)*10000 end,\n case when coalesce(x.buy_volume,0)+coalesce(x.sell_volume,0)>0\n  then (coalesce(x.buy_volume,0)-coalesce(x.sell_volume,0))/(coalesce(x.buy_volume,0)+coalesce(x.sell_volume,0)) end,\n case when coalesce(x.last_bid_size,0)+coalesce(x.last_ask_size,0)>0\n  then (coalesce(x.last_bid_size,0)-coalesce(x.last_ask_size,0))/(coalesce(x.last_bid_size,0)+coalesce(x.last_ask_size,0)) end,\n case when x.last_trade_price>0 and x.last_bid_price>0 and x.last_ask_price>0\n  and x.last_bid_price+x.last_ask_price>0\n  then (x.last_trade_price/((x.last_bid_price+x.last_ask_price)/2)-1)*10000 end,\n jsonb_build_object(\n  'source_row_present',x.bar_present,'ohlc_valid',x.valid_bar,'volume_valid',x.valid_volume is not null,\n  'exact_clock_grid',true,'missing_bars_20m',x.missing20,'microstructure_available',x.micro_present,\n  'identity_mapping_quality',(select id.mapping_quality from id),\n  'corporate_action_adjustment_status','UNVERIFIED','outcome_independent',true)\nfrom rolled x\nwhere p_assumed_publication_seconds between 0 and 60\norder by x.interval_start\n$function$\n"
+    }
+  ],
+  "daily_functions": [
+    {
+      "proname": "broker_uuid_daily_price_at_v37",
+      "args": "p_key integer, p_decision timestamp with time zone"
+    },
+    {
+      "proname": "build_security_daily_full_v2",
+      "args": "p_lo integer, p_hi integer"
+    },
+    {
+      "proname": "compute_daily_features_equity_patch_v3",
+      "args": "p_lo integer, p_hi integer, p_start date, p_end date"
+    },
+    {
+      "proname": "compute_daily_features_remediated_v1",
+      "args": "p_lo integer, p_hi integer, p_start date, p_end date"
+    },
+    {
+      "proname": "daily_features_as_of_remediated_v1",
+      "args": "p_decision_ts timestamp with time zone, p_allow_archived_proxy boolean"
+    },
+    {
+      "proname": "finalize_daily_factor_v38",
+      "args": ""
+    },
+    {
+      "proname": "finish_daily_features_v2",
+      "args": "p_lo integer, p_hi integer"
+    },
+    {
+      "proname": "news_attention_daily_as_of_remediated_v1",
+      "args": "p_decision_ts timestamp with time zone, p_allow_retrospective_acquired_version boolean"
+    },
+    {
+      "proname": "rebuild_daily_features_remediated_v1",
+      "args": "p_lo integer, p_hi integer, p_start date, p_end date"
+    },
+    {
+      "proname": "repair_daily_adjustments_v34",
+      "args": "p_keys integer[]"
+    },
+    {
+      "proname": "repair_daily_adjustments_v38",
+      "args": "p_keys integer[]"
+    },
+    {
+      "proname": "repair_daily_adjustments_v4",
+      "args": "p_keys integer[]"
+    },
+    {
+      "proname": "repair_daily_adjustments_v5",
+      "args": "p_keys integer[]"
+    },
+    {
+      "proname": "repair_daily_adjustments_v8",
+      "args": "p_keys integer[]"
+    },
+    {
+      "proname": "repair_daily_calendar_bounds_v8",
+      "args": "p_day date, p_keys integer[]"
+    },
+    {
+      "proname": "run_daily_factor_repair_batch_v38",
+      "args": "p_batch_id integer"
+    },
+    {
+      "proname": "security_daily_identity_recovered_at_v49",
+      "args": "p_key integer, p_decision timestamp with time zone"
+    }
+  ],
+  "breadth_underlying": [
+    {
+      "relkind": "r",
+      "relname": "market_internal_adjusted_v38",
+      "definition": null
+    }
+  ],
+  "reference_samples": [
+    {
+      "instrument_key": 41,
+      "alpaca_asset_id": "b0b6dd9d-8b9b-48a9-ba46-b9d54906e415",
+      "symbol": "AAPL",
+      "provenance": {
+        "asset_reference": "reference.alpaca_assets_populator_v1",
+        "bar_source_relations": "public.rd_bars_202509 through public.rd_bars_202608",
+        "bar_source_project_id": "mnmkxjirpwbptdnvjmpw",
+        "security_type_reference": "reference.alpaca_instrument_snapshots_a138_v1"
+      }
+    },
+    {
+      "instrument_key": 7751,
+      "alpaca_asset_id": "b6d1aa75-5c9c-4353-a305-9e2caa1925ab",
+      "symbol": "MSFT",
+      "provenance": {
+        "asset_reference": "reference.alpaca_assets_populator_v1",
+        "bar_source_relations": "public.rd_bars_202509 through public.rd_bars_202608",
+        "bar_source_project_id": "mnmkxjirpwbptdnvjmpw",
+        "security_type_reference": "reference.alpaca_instrument_snapshots_a138_v1"
+      }
+    },
+    {
+      "instrument_key": 8372,
+      "alpaca_asset_id": "4ce9353c-66d1-46c2-898f-fce867ab0247",
+      "symbol": "NVDA",
+      "provenance": {
+        "asset_reference": "reference.alpaca_assets_populator_v1",
+        "bar_source_relations": "public.rd_bars_202509 through public.rd_bars_202608",
+        "bar_source_project_id": "mnmkxjirpwbptdnvjmpw",
+        "security_type_reference": "reference.alpaca_instrument_snapshots_a138_v1"
+      }
+    }
+  ],
+  "retained_row_and_job": [
+    {
+      "source_row": {
+        "low": 172.2,
+        "high": 173.6,
+        "open": 172.4,
+        "vwap": 172.650767,
+        "close": 172.68,
+        "bar_ts": "2025-09-02T08:00:00+00:00",
+        "volume": 65341,
+        "trade_count": 1678,
+        "session_label": "premarket",
+        "instrument_key": 8372,
+        "loaded_by_job_id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea",
+        "source_loaded_at": "2026-08-06T00:24:29.995512+00:00"
+      },
+      "job": {
+        "id": "f09313dc-d537-4f20-8d0d-2c4cf50580ea",
+        "config": {
+          "asof": null,
+          "feed": "sip",
+          "name": "Rapid discovery load",
+          "session": {
+            "mode": "all",
+            "custom_end": "16:00:00",
+            "custom_start": "09:30:00",
+            "weekdays_only": true
+          },
+          "storage": {
+            "conflict_policy": "skip",
+            "feature_session": "all",
+            "keep_staging_files": false,
+            "generate_daily_features": true
+          },
+          "end_date": "2026-06-03",
+          "universe": {
+            "mode": "all_active",
+            "symbols": [],
+            "exchanges": [
+              "NYSE",
+              "NASDAQ",
+              "AMEX",
+              "ARCA",
+              "BATS"
+            ],
+            "symbol_limit": null,
+            "exclude_regex": "[/]",
+            "include_regex": null,
+            "tradable_only": true,
+            "shortable_only": false,
+            "marginable_only": false,
+            "fractionable_only": false,
+            "easy_to_borrow_only": false,
+            "overnight_tradable_only": false
+          },
+          "adjustment": "raw",
+          "start_date": "2025-05-04",
+          "timeframes": [
+            "1Min"
+          ],
+          "performance": {
+            "page_limit": 10000,
+            "target_rpm": 9000,
+            "concurrency": 6,
+            "max_retries": 7,
+            "date_chunk_days": 5,
+            "symbol_batch_size": 20,
+            "retry_backoff_seconds": 1.5
+          }
+        },
+        "status": "completed",
+        "created_at": "2026-08-05T12:03:38.98957+00:00",
+        "rows_loaded": 468773260,
+        "completed_at": "2026-08-07T07:48:09.972437+00:00"
+      }
+    }
+  ],
+  "old_identity_columns": [
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "snapshot_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "security_id",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "listing_episode_id",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "company_id",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "ticker",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "security_type",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "exchange",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "listing_start",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "listing_end",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "links_evidence",
+      "data_type": "jsonb"
+    },
+    {
+      "table_name": "ref01_cohort_instrument_v3",
+      "column_name": "record_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "snapshot_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "approval_verification_id",
+      "data_type": "uuid"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "approval_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "company_manifest_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "instrument_manifest_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "company_count",
+      "data_type": "integer"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "instrument_count",
+      "data_type": "integer"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "publication_manifest",
+      "data_type": "jsonb"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "publication_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_cohort_publication_v3",
+      "column_name": "published_at",
+      "data_type": "timestamp with time zone"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "snapshot_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "root_acceptance_event_id",
+      "data_type": "bigint"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "independent_review_event_id",
+      "data_type": "bigint"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "acceptance_sha256",
+      "data_type": "text"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "content",
+      "data_type": "jsonb"
+    },
+    {
+      "table_name": "ref01_practical_membership_v1",
+      "column_name": "accepted_at",
+      "data_type": "timestamp with time zone"
+    }
+  ]
+}

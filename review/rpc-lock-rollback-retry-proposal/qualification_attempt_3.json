@@ -1,0 +1,171 @@
+{
+  "deployment_hold": "INDEPENDENT_REVIEW_AND_EXACT_PUBLISHED_HEAD_CI_REQUIRED",
+  "errors": 4,
+  "failures": 0,
+  "modules": [
+    "test_rpc_lock_abort_retry",
+    "test_rpc_lock_abort_retry_postgres",
+    "test_rpc_store",
+    "test_rpc_failure_observability_v71"
+  ],
+  "opened_or_imported_dependencies": [
+    {
+      "bytes": 101,
+      "path": "astra_ingestion/__init__.py",
+      "sha256": "c75e04f3c473c9555ef1f06a3c724bbbb2a1402b3b45be8b8b45eb705eeaa197"
+    },
+    {
+      "bytes": 33254,
+      "path": "astra_ingestion/backfill_features_v2.py",
+      "sha256": "3bafb2d87fedf9d126051f8ff53711f69add12c4e75de8dab449fe52eff52a6f"
+    },
+    {
+      "bytes": 18462,
+      "path": "astra_ingestion/backfill_identity_v2.py",
+      "sha256": "7b9fb90c32fea29f5ce3891d38943db1be32258bb15016c026dfaeceb9167f81"
+    },
+    {
+      "bytes": 27423,
+      "path": "astra_ingestion/backfill_provider_v2.py",
+      "sha256": "ff9ef55d5620651bb5d3740cac1724fb267173e363fdd8d1f1d433de95dda5a1"
+    },
+    {
+      "bytes": 22439,
+      "path": "astra_ingestion/backfill_worker_v2.py",
+      "sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2"
+    },
+    {
+      "bytes": 3236,
+      "path": "astra_ingestion/config.py",
+      "sha256": "496d0b5bd99c0d62812f24ea57ca982e2db605c1565b87921da81861f32c1953"
+    },
+    {
+      "bytes": 5672,
+      "path": "astra_ingestion/models.py",
+      "sha256": "b53358075c3bdc52d4a310b92e2d434959be28f706e0fd3d4c056e23b521aee2"
+    },
+    {
+      "bytes": 2081,
+      "path": "astra_ingestion/reconcile.py",
+      "sha256": "09b7c2b60837727031e330eefafcea242d7168349d85a462810701bc0b6e88ba"
+    },
+    {
+      "bytes": 23229,
+      "path": "astra_ingestion/rpc_store.py",
+      "sha256": "1deb7051d4311b22c09d7245a36d751dd10c843192207aaefc0a2d4cf1291403"
+    },
+    {
+      "bytes": 9869,
+      "path": "astra_ingestion/source.py",
+      "sha256": "69efe6ff296c73f5194987da45404de28b20804a206af2a6cebec30fbf9edb9f"
+    },
+    {
+      "bytes": 31621,
+      "path": "astra_ingestion/store.py",
+      "sha256": "26adddf8bc76cfc17f0501b1f989d4bc52dbd394c99a9300e7dd97e5adef93ef"
+    },
+    {
+      "bytes": 7696,
+      "path": "astra_ingestion/worker.py",
+      "sha256": "c137839bee667ad34bf974b7edb6ba95ed2462c19e7def273a7c0a6d5d26cde1"
+    },
+    {
+      "bytes": 20490,
+      "path": "tests/ingestion/test_backfill_claim_capability_filter_v2.py",
+      "sha256": "9d8f00fdabb87b1cbd62ed1e1b5c38e7e60a5a16e26f9c9a3cf6417587f58fd1"
+    },
+    {
+      "bytes": 11247,
+      "path": "tests/ingestion/test_backfill_claim_performance_v2.py",
+      "sha256": "e03d67824f14505cfe8ca6ab5604bd860469b920a7630f75907d5d256f7ceb3d"
+    },
+    {
+      "bytes": 16964,
+      "path": "tests/ingestion/test_backfill_family_report_performance_v2.py",
+      "sha256": "8af01705abb367384279ab2489a1ddb7b4d03004846742096a644ed654a1c424"
+    },
+    {
+      "bytes": 19668,
+      "path": "tests/ingestion/test_backfill_feature_reuse_v2.py",
+      "sha256": "4a1e72c86ca1d387443c8331a9e9cff9fe38d0dd3de66cf04adf0464ae1c9c14"
+    },
+    {
+      "bytes": 44378,
+      "path": "tests/ingestion/test_backfill_identity_v2.py",
+      "sha256": "9061897099da2106c24975f0c62c598b7bbb1865928bf4cbe06a15841be1a0ce"
+    },
+    {
+      "bytes": 15566,
+      "path": "tests/ingestion/test_backfill_nonminute_coverage_v2.py",
+      "sha256": "68b586a7d31a2141fe9b7794457343d50be43681af7f00b3c4d5be246d023aae"
+    },
+    {
+      "bytes": 10844,
+      "path": "tests/ingestion/test_backfill_retained_reuse_v2.py",
+      "sha256": "7c4e9d3f7d4d520cb0828a2ad2aba7716aedfbe95b3a1c0d5193b7f36150c210"
+    },
+    {
+      "bytes": 13753,
+      "path": "tests/ingestion/test_backfill_retained_s02_v2.py",
+      "sha256": "6210115f602aa80e356a60f453ee03e73dff7e264e7a7359fa98ead99ad4b4c4"
+    },
+    {
+      "bytes": 8631,
+      "path": "tests/ingestion/test_backfill_reuse_commit_v2.py",
+      "sha256": "63b25218d168681576bd99447c0b8459c24c7e2466eb6acc36aa0a73f6b47b7f"
+    },
+    {
+      "bytes": 22521,
+      "path": "tests/ingestion/test_backfill_runtime_status_performance_v2.py",
+      "sha256": "6091ed6c58607a09106cc868ae37738fc10e68a11936fd17b861fbbe561d9961"
+    },
+    {
+      "bytes": 15706,
+      "path": "tests/ingestion/test_backfill_runtime_v2.py",
+      "sha256": "7b97a21351f148ce7f3e65071dd66180ae18888b52917e6f344347a99eded048"
+    },
+    {
+      "bytes": 12447,
+      "path": "tests/ingestion/test_backfill_status_index_counts_v2.py",
+      "sha256": "d91fed1a81bd86db93bb6b63c7fbd0265beb4152ef6187756f405a0fa19725e6"
+    },
+    {
+      "bytes": 9063,
+      "path": "tests/ingestion/test_backfill_worker_reuse_v2.py",
+      "sha256": "52ad37a02ea76302b474b36465ace27302eb24c4d5083537047ed74b0b5b28cf"
+    },
+    {
+      "bytes": 21360,
+      "path": "tests/ingestion/test_backfill_worker_v2.py",
+      "sha256": "2d6b46917e653becdb6fee2ebfb5bca7de67338c4bb055416c282821bb738a32"
+    },
+    {
+      "bytes": 17858,
+      "path": "tests/ingestion/test_rpc_lock_abort_retry.py",
+      "sha256": "f0f2bc191b60c4fe737af763fe57c1b939edf2d2ffed7fcaee7df4f726976468"
+    },
+    {
+      "bytes": 18203,
+      "path": "tests/ingestion/test_rpc_lock_abort_retry_postgres.py",
+      "sha256": "8ea877b82753530471c069560735500411335e76328f9d21ecc1d3195b748092"
+    },
+    {
+      "bytes": 57671,
+      "path": "tests/ingestion/test_rpc_postgres.py",
+      "sha256": "8146b3a8c06952954a988d08de2b7d292b4c1acefc5924144f8d12241dc99d96"
+    }
+  ],
+  "postgresql_evidence": {
+    "status": "NOT_IMPORTED"
+  },
+  "production_calls": 0,
+  "provider_calls": 0,
+  "schema": "astra.rpc-confirmed-lock-abort-retry-qualification/1",
+  "seconds": 0.015,
+  "skips": 0,
+  "status": "FAIL_OR_SKIPPED",
+  "stderr": "",
+  "stdout": "",
+  "test_log": "test_rpc_lock_abort_retry (unittest.loader._FailedTest.test_rpc_lock_abort_retry) ... ERROR\ntest_rpc_lock_abort_retry_postgres (unittest.loader._FailedTest.test_rpc_lock_abort_retry_postgres) ... ERROR\ntest_rpc_store (unittest.loader._FailedTest.test_rpc_store) ... ERROR\ntest_rpc_failure_observability_v71 (unittest.loader._FailedTest.test_rpc_failure_observability_v71) ... ERROR\n\n======================================================================\nERROR: test_rpc_lock_abort_retry (unittest.loader._FailedTest.test_rpc_lock_abort_retry)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_rpc_lock_abort_retry\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry.py\", line 17, in <module>\n    from test_rpc_store import Opener, PUBLIC_KEY, Reply, TOKEN\nModuleNotFoundError: No module named 'test_rpc_store'\n\n\n======================================================================\nERROR: test_rpc_lock_abort_retry_postgres (unittest.loader._FailedTest.test_rpc_lock_abort_retry_postgres)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_rpc_lock_abort_retry_postgres\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_rpc_lock_abort_retry_postgres.py\", line 21, in <module>\n    import test_backfill_planner_v2 as planner\nModuleNotFoundError: No module named 'test_backfill_planner_v2'\n\n\n======================================================================\nERROR: test_rpc_store (unittest.loader._FailedTest.test_rpc_store)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_rpc_store\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'test_rpc_store'\n\n\n======================================================================\nERROR: test_rpc_failure_observability_v71 (unittest.loader._FailedTest.test_rpc_failure_observability_v71)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_rpc_failure_observability_v71\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named 'test_rpc_failure_observability_v71'\n\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nFAILED (errors=4)\n",
+  "tests": 4
+}

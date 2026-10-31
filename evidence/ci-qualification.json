@@ -1,0 +1,27 @@
+{
+  "schema": "astra.ingestion.ci-qualification/1",
+  "source_commit": "a0932015ff1085607d22ee6b5c33b2d3c1cc0516",
+  "branch": "feat/astra-ingestion-service",
+  "run_id": 40762186249,
+  "run_url": "https://github.com/robert8p/Alpaca-Supabase-Populator/actions/runs/40762186249",
+  "job_id": 123076751195,
+  "status": "completed",
+  "conclusion": "success",
+  "tests_run": 77,
+  "passed": 77,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "python": "3.12.15",
+  "postgres_service": "postgres:17",
+  "postgres_integration_tests": 10,
+  "asgi_api_tests": 8,
+  "production_deployment": "NOT_RUN",
+  "live_provider_canary": "NOT_RUN",
+  "live_role_rls_tls_verification": "NOT_RUN",
+  "result_lines": [
+    "2026-10-28T20:19:38.5366978Z test_target_value_tampering_is_detected_despite_equal_counts (test_worker_store.StoreWorkerTests.test_target_value_tampering_is_detected_despite_equal_counts) ... ok",
+    "2026-10-28T20:19:38.5367920Z Ran 77 tests in 1.517s",
+    "2026-10-28T20:19:38.5368069Z OK"
+  ]
+}

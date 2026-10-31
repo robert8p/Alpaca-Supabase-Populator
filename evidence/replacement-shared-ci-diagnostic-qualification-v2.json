@@ -1,0 +1,133 @@
+{
+  "version": "fixed3000-shared-ci-diagnostic-qualification-v2",
+  "purpose": "Observe intermittent CI news-page latency without changing production SQL or the12-second regression bound",
+  "test": "SharedRecordsTests.test_report_uses_compact_counters_without_raw_or_canonical_record_scan_and_private_acl",
+  "files": {
+    "tests/ingestion/test_backfill_shared_records_v2.py": "d878da91dd5058f42993bbca057a4bc5a21c8ab4e497575035b0cf0d063c7f94",
+    "sql/astra_backfill_shared_records_v2.sql": "2ba0a87c01e37f6a0542ff5dc8db4c044f0b23982ab948a9050c3c4aac93aa10"
+  },
+  "production_changes": 0,
+  "remote_calls": 0,
+  "relaxed_assertions": false,
+  "syntax_passed": true,
+  "actual_assertion": {
+    "observed_seconds": 0.6574106269981712,
+    "strict_upper_bound_seconds": 12,
+    "operator": "<",
+    "diagnostic": {
+      "database": {
+        "server_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "jit": "on",
+        "jit_above_cost": "100000",
+        "plan_cache_mode": "auto"
+      },
+      "operation_seconds": {
+        "parse_seconds": 0.003886602004058659,
+        "pacing_fixture_seconds": 0.0032175349988392554,
+        "reserve_seconds": 0.011278769998170901,
+        "commit_seconds": 0.1789142549969256,
+        "verify_seconds": 0.45958096299727913
+      },
+      "function_milliseconds": [
+        {
+          "function": "rpc_dispatch",
+          "calls": 3,
+          "total_time": 627.437,
+          "self_time": 10.885
+        },
+        {
+          "function": "backfill_delivery_dispatch_v2",
+          "calls": 1,
+          "total_time": 451.769,
+          "self_time": 0.587
+        },
+        {
+          "function": "backfill_recheck_page_v2",
+          "calls": 1,
+          "total_time": 447.998,
+          "self_time": 4.665
+        },
+        {
+          "function": "backfill_shared_readback_trigger_v2",
+          "calls": 1,
+          "total_time": 324.824,
+          "self_time": 0.046
+        },
+        {
+          "function": "backfill_shared_project_v2",
+          "calls": 1,
+          "total_time": 324.777,
+          "self_time": 61.49
+        },
+        {
+          "function": "backfill_dispatch_v2",
+          "calls": 3,
+          "total_time": 167.281,
+          "self_time": 22.991
+        },
+        {
+          "function": "backfill_shared_meta_v2",
+          "calls": 1000,
+          "total_time": 128.891,
+          "self_time": 96.004
+        },
+        {
+          "function": "backfill_nonminute_readback_trigger_v2",
+          "calls": 1,
+          "total_time": 108.012,
+          "self_time": 0.058
+        },
+        {
+          "function": "backfill_nonminute_project_page_v2",
+          "calls": 1,
+          "total_time": 107.953,
+          "self_time": 52.611
+        },
+        {
+          "function": "backfill_shared_refresh_v2",
+          "calls": 1,
+          "total_time": 107.322,
+          "self_time": 107.322
+        },
+        {
+          "function": "rpc_canonical",
+          "calls": 18001,
+          "total_time": 93.62,
+          "self_time": 62.908
+        },
+        {
+          "function": "rpc_json_unique",
+          "calls": 10003,
+          "total_time": 46.519,
+          "self_time": 46.519
+        }
+      ]
+    }
+  },
+  "tests": 1,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "passed": true,
+  "elapsed_seconds": 1.4178,
+  "diagnostic_fields_verified": true,
+  "inputs_unchanged_during_qualification": true,
+  "ci_context": {
+    "push_run": 41027699347,
+    "push_tests": 551,
+    "push_failures": 1,
+    "push_news_seconds": 162.422890474,
+    "pr_run": 41027705305,
+    "pr_tests": 551,
+    "pr_failures": 0,
+    "interpretation": "Intermittent isolated news-path latency remains undiagnosed; diagnostic instrumentation is not a claimed SQL repair.",
+    "same_head_prefix": "d4d684c"
+  },
+  "no_dsn": {
+    "tests_discovered": 1,
+    "skips": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "python_compile_passed": true
+}

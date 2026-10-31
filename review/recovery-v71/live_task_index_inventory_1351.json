@@ -1,0 +1,184 @@
+[
+  {
+    "evidence": {
+      "table": {
+        "heap_bytes": 859889664,
+        "total_bytes": 1595809792,
+        "estimated_rows": 712899
+      },
+      "indexes": [
+        {
+          "oid": "16061384",
+          "name": "backfill_contract_enum_task_v2",
+          "bytes": 843776,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(kind = 'alpaca_option_contracts'::text)",
+          "definition": "CREATE INDEX backfill_contract_enum_task_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, id) WHERE (kind = 'alpaca_option_contracts'::text)"
+        },
+        {
+          "oid": "16061383",
+          "name": "backfill_contract_old_child_cursor_v2",
+          "bytes": 294912,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(kind = 'alpaca_option_bars'::text)",
+          "definition": "CREATE INDEX backfill_contract_old_child_cursor_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, created_at, id) WHERE (kind = 'alpaca_option_bars'::text)"
+        },
+        {
+          "oid": "16041706",
+          "name": "backfill_daily_month_units_v2",
+          "bytes": 3293184,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(family = 'D03'::text)",
+          "definition": "CREATE INDEX backfill_daily_month_units_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'source_month'::text)), ((scope #>> '{member_ids,0}'::text[])), status) WHERE (family = 'D03'::text)"
+        },
+        {
+          "oid": "16047681",
+          "name": "backfill_identity_derived_member_v2",
+          "bytes": 126861312,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "((kind = ANY (ARRAY['derive_daily'::text, 'derive_intraday'::text])) AND (NOT (scope ? 'identity_refresh_of'::text)))",
+          "definition": "CREATE INDEX backfill_identity_derived_member_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope #>> '{member_ids,0}'::text[])), id) WHERE ((kind = ANY (ARRAY['derive_daily'::text, 'derive_intraday'::text])) AND (NOT (scope ? 'identity_refresh_of'::text)))"
+        },
+        {
+          "oid": "16047696",
+          "name": "backfill_identity_refresh_tasks_v2",
+          "bytes": 8192,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(scope ? 'identity_refresh_of'::text)",
+          "definition": "CREATE INDEX backfill_identity_refresh_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status) WHERE (scope ? 'identity_refresh_of'::text)"
+        },
+        {
+          "oid": "16041024",
+          "name": "backfill_reuse_children_v2",
+          "bytes": 32768,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(scope ? 'reuse_parent'::text)",
+          "definition": "CREATE INDEX backfill_reuse_children_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, ((scope ->> 'reuse_parent'::text))) WHERE (scope ? 'reuse_parent'::text)"
+        },
+        {
+          "oid": "16050045",
+          "name": "backfill_shared_action_tasks_v2",
+          "bytes": 466944,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(kind = 'alpaca_actions'::text)",
+          "definition": "CREATE INDEX backfill_shared_action_tasks_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, id) WHERE (kind = 'alpaca_actions'::text)"
+        },
+        {
+          "oid": "16043346",
+          "name": "backfill_tasks_family_turn_v2",
+          "bytes": 232333312,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text]))",
+          "definition": "CREATE INDEX backfill_tasks_family_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['PENDING'::text, 'RUNNING'::text, 'RETRY_WAIT'::text]))"
+        },
+        {
+          "oid": "16040159",
+          "name": "backfill_tasks_family_v2",
+          "bytes": 6684672,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": null,
+          "definition": "CREATE INDEX backfill_tasks_family_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, status)"
+        },
+        {
+          "oid": "16272445",
+          "name": "backfill_tasks_minute_alias_status_v2",
+          "bytes": 2400256,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "((family = 'P01'::text) AND (kind = ANY (ARRAY['alpaca_stock_bars'::text, 'retained_reuse'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))",
+          "definition": "CREATE INDEX backfill_tasks_minute_alias_status_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, next_retry_at) WHERE ((family = 'P01'::text) AND (kind = ANY (ARRAY['alpaca_stock_bars'::text, 'retained_reuse'::text])) AND (COALESCE((scope ->> 'timeframe'::text), '1Min'::text) = '1Min'::text))"
+        },
+        {
+          "oid": "16040160",
+          "name": "backfill_tasks_provider_v2",
+          "bytes": 6897664,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": null,
+          "definition": "CREATE INDEX backfill_tasks_provider_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, provider, status, kind)"
+        },
+        {
+          "oid": "16043695",
+          "name": "backfill_tasks_recovery_turn_v2",
+          "bytes": 16384,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": "(status = ANY (ARRAY['RETRY_WAIT'::text, 'RUNNING'::text]))",
+          "definition": "CREATE INDEX backfill_tasks_recovery_turn_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, priority, next_retry_at, created_at, id) WHERE (status = ANY (ARRAY['RETRY_WAIT'::text, 'RUNNING'::text]))"
+        },
+        {
+          "oid": "16040158",
+          "name": "backfill_tasks_runnable_v2",
+          "bytes": 235855872,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": null,
+          "definition": "CREATE INDEX backfill_tasks_runnable_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, status, priority, next_retry_at, id)"
+        },
+        {
+          "oid": "16422385",
+          "name": "backfill_tasks_runtime_summary_v2",
+          "bytes": 7020544,
+          "ready": true,
+          "valid": true,
+          "unique": false,
+          "predicate": null,
+          "definition": "CREATE INDEX backfill_tasks_runtime_summary_v2 ON astra_ingestion_v1.backfill_tasks_v2 USING btree (run_id, family, kind, provider, status, records_committed, last_progress_at)"
+        },
+        {
+          "oid": "16040151",
+          "name": "backfill_tasks_v2_pkey",
+          "bytes": 100024320,
+          "ready": true,
+          "valid": true,
+          "unique": true,
+          "predicate": null,
+          "definition": "CREATE UNIQUE INDEX backfill_tasks_v2_pkey ON astra_ingestion_v1.backfill_tasks_v2 USING btree (id)"
+        }
+      ],
+      "observed_at": "2026-10-30T13:51:26.218881+00:00",
+      "family_kind_counts": [
+        {
+          "kind": "derive_daily",
+          "family": "D03",
+          "provider": "DERIVED",
+          "task_count": 24189
+        },
+        {
+          "kind": "alpaca_stock_bars",
+          "family": "P01",
+          "provider": "Alpaca",
+          "task_count": 90
+        },
+        {
+          "kind": "retained_reuse",
+          "family": "P01",
+          "provider": "REUSE",
+          "task_count": 26376
+        }
+      ]
+    }
+  }
+]

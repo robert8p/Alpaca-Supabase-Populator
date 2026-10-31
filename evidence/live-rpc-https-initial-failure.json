@@ -1,0 +1,82 @@
+{
+  "started_at": "2026-10-28T22:19:52.436658+00:00",
+  "completed_at": "2026-10-28T22:19:55.752778+00:00",
+  "project_ref": "oxzabweahkoimtevbbny",
+  "api_origin": "https://oxzabweahkoimtevbbny.supabase.co",
+  "qualification": "live HTTPS authentication and schema boundary; no live ingestion job",
+  "tls_verification": true,
+  "redirects_allowed": false,
+  "service_role_key_used": false,
+  "provider_requests_dispatched": 0,
+  "jobs_submitted": 0,
+  "checks": [
+    {
+      "name": "api_health_via_production_client",
+      "passed": false,
+      "error_type": "RpcAuthenticationError"
+    },
+    {
+      "name": "worker_health_via_production_client",
+      "passed": false,
+      "error_type": "RpcAuthenticationError"
+    },
+    {
+      "name": "api_job_inventory_is_empty",
+      "passed": false,
+      "error_type": "RpcAuthenticationError"
+    },
+    {
+      "name": "missing_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": null
+    },
+    {
+      "name": "unknown_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": null
+    },
+    {
+      "name": "expired_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": null
+    },
+    {
+      "name": "revoked_capability_rejected",
+      "passed": true,
+      "http_status": 401,
+      "expected_status": 401,
+      "safe_error_code": null
+    },
+    {
+      "name": "worker_cannot_call_api_operations",
+      "passed": false,
+      "http_status": 401,
+      "expected_status": 403,
+      "safe_error_code": null
+    },
+    {
+      "name": "api_cannot_claim_worker_jobs",
+      "passed": false,
+      "http_status": 401,
+      "expected_status": 403,
+      "safe_error_code": null
+    },
+    {
+      "name": "private_schema_not_exposed",
+      "passed": true,
+      "http_status": 406,
+      "expected_status": 406,
+      "safe_error_code": "PGRST106"
+    }
+  ],
+  "all_passed": false,
+  "temporary_credential_cleanup": "pending exact-hash revocation and database readback",
+  "sql_sha256": "eac2550cab52917ffd1ad7c884cd6bf97c40512a2090ee71912d81eb602ada2a",
+  "client_sha256": "b79cf713e1fc47aa5382e17d5412ef6ef20f043982a334a42de4cbed155da816"
+}

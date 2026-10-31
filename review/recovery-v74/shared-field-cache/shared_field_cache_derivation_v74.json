@@ -1,0 +1,69 @@
+{
+  "schema": "astra.shared-field-cache-candidate/1",
+  "state": "CONDITIONAL_PREPARATION_NOT_SELECTED_OR_INSTALLED",
+  "source_path": "review/recovery-v73/live_shared_nested_definitions_after_restore_v73.json",
+  "source_file_sha256": "c377705922bd3cee5e9dfa8e8fed9ea3e5e08ae152591d50785ba9ae8138f760",
+  "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+  "baseline_sha256": "b18a30c47e13a9738f111ff739e8cda53120e882eaa7e7e0427144372ab8dbc4",
+  "candidate_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+  "unchanged_metadata": {
+    "oid": "16050105",
+    "proacl": [
+      "postgres=X/postgres",
+      "astra_ingestion_rpc_owner_v1=X/postgres"
+    ],
+    "probin": null,
+    "procost": 100,
+    "prokind": "f",
+    "prolang": "13619",
+    "proname": "backfill_shared_refresh_v2",
+    "prorows": 0,
+    "pronargs": 2,
+    "proowner": "16388",
+    "proconfig": [
+      "search_path=\"\""
+    ],
+    "proretset": false,
+    "prosecdef": false,
+    "prorettype": "2278",
+    "prosqlbody": null,
+    "prosupport": "-",
+    "proargmodes": null,
+    "proargnames": [
+      "p_run",
+      "p_keys"
+    ],
+    "proargtypes": [
+      "25",
+      "3802"
+    ],
+    "proisstrict": false,
+    "proparallel": "u",
+    "protrftypes": null,
+    "provariadic": "0",
+    "provolatile": "v",
+    "proleakproof": false,
+    "pronamespace": "15984556",
+    "proallargtypes": null,
+    "proargdefaults": null,
+    "pronargdefaults": 0
+  },
+  "exact_inverse_restores_baseline": true,
+  "second_link_statement_byte_identical": true,
+  "changes": [
+    "Materialize chosen JSONB fields once for each chosen record",
+    "Left join by the unique record_key/field pair",
+    "Use the joined JSONB value in the existing COALESCE fallback"
+  ],
+  "preserved": [
+    "Missing key SQLNULL and present JSONnull distinctions",
+    "Existing conflict counts and deterministic conflict ordering",
+    "Version ordering and tied/unknown timestamp behavior",
+    "All link/date/identity/accounting/source/fence/lease/authentication semantics",
+    "Function owner ACL OID config and signature"
+  ],
+  "live_evidence": "review/recovery-v74/shared-read-profile/live_refresh_record_select_input_v74.json",
+  "causal_limit": "Additional80000sharedbufferhits in fields aggregate beyond its child are consistent with repeated detoast; node timings were disabled and this is not exclusive whole-phase attribution.",
+  "production_calls": 0,
+  "active_forward_written": false
+}

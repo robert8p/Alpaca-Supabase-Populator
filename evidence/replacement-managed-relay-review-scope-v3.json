@@ -1,0 +1,120 @@
+{
+  "review_id": "managed-massive-relay-v3-review-20261030",
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+  "cohort_manifest_sha256": "4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f",
+  "target_start": "2025-09-01",
+  "target_end": "2026-07-31",
+  "market_timezone": "America/New_York",
+  "origin": "https://oxzabweahkoimtevbbny.supabase.co",
+  "existing_edge_function": "population-top3000-news-v1",
+  "protocol": "astra-massive-relay-v2",
+  "worker_capability_additions": [
+    "backfill_relay_probe",
+    "backfill_relay_dispatch"
+  ],
+  "internal_role": "astra_ingestion_rpc_owner_v1",
+  "new_table": "astra_ingestion_v1.backfill_relay_dispatches_v2",
+  "new_table_grants": [
+    "SELECT",
+    "INSERT"
+  ],
+  "new_function": "astra_ingestion_v1.backfill_relay_v2(text,jsonb)",
+  "new_function_grants": [
+    "EXECUTE"
+  ],
+  "new_credentials": false,
+  "new_roles": false,
+  "service_role_forwarding": false,
+  "managed_key_use": "Existing Edge managed Massive or Polygon key, only after worker capability authorization; never returned",
+  "dispatch": "Single external GET per current counted task/generation/page reservation; durable immutable audit before dispatch",
+  "provider_origin": "https://api.massive.com",
+  "provider_method": "GET",
+  "redirects": false,
+  "provider_fetch_seconds": 25,
+  "provider_response_bytes": 3145728,
+  "member_binding": "Existing frozen run member IDs and exact retained anchor tickers; no new members or aliases",
+  "routes": [
+    {
+      "kind": "massive_reference",
+      "family": "REF01",
+      "path": "/v3/reference/tickers/{frozen_anchor}",
+      "bounds": "asof date within target inclusive; one frozen anchor"
+    },
+    {
+      "kind": "massive_news",
+      "family": "N01",
+      "path": "/v2/reference/news",
+      "bounds": "publication start >=2025-09-01T04:00:00Z; end <2026-08-01T04:00:00Z; start<=end; one frozen anchor"
+    },
+    {
+      "kind": "massive_dividends",
+      "family": "N02",
+      "path": "/stocks/v1/dividends",
+      "bounds": "all entitled event history for frozen anchors, explicitly marked UNBOUNDED_PROVIDER_EVENT_HISTORY and retain_boundary_crossing_events; target dates unchanged"
+    },
+    {
+      "kind": "massive_splits",
+      "family": "N03",
+      "path": "/stocks/v1/splits",
+      "bounds": "all entitled event history for frozen anchors, explicitly marked UNBOUNDED_PROVIDER_EVENT_HISTORY and retain_boundary_crossing_events; target dates unchanged"
+    },
+    {
+      "kind": "massive_short_volume",
+      "family": "S01",
+      "path": "/stocks/v1/short-volume",
+      "bounds": "reporting dates within target inclusive; start<=end"
+    },
+    {
+      "kind": "massive_short_interest",
+      "family": "S02",
+      "path": "/stocks/v1/short-interest",
+      "bounds": "settlement dates within target inclusive; start<=end; no publication cutoff"
+    }
+  ],
+  "approval_gate": "Explicit action-time user confirmation, matching review_id and scope digest, exact submitted migration SQL SHA256, approved existing dispatcher SHA256, exact Edge/Python artifact hashes, approved_at within 15 minutes, and candidate_applied=false; one successful application only; approval remains revocable for probe/dispatch",
+  "new_persistent_review_writes": [
+    "Append MANAGED_MASSIVE_RELAY_REVIEW_APPLIED to existing backfill_audit_v2",
+    "Merge candidate_applied/applied_at/applied_migration_sha256 into existing massive_relay_security_confirmation metadata, preserving its prior fields"
+  ],
+  "approved_rpc_dispatch_baseline_sha256": "0616b84ec99710083681c2ed7bc2b7dd7acff9ef2f809d84b84c5f724a71fe96",
+  "worker_integration": {
+    "base_commit": "947b681735138b0b9052df1e5eba5769d7b2c381",
+    "base_sha256": "90d048a6c535f7f768050c25e396a923e0e4e211457016757e30af16daface3e",
+    "patch_sha256": "4427fe549e86922e0a01afde4aad632fd6d2d7c44225dc7ec0ee5dba3eb17a6e",
+    "proposed_worker_sha256": "b682b2425fd226296cdc141ff5936a49a7cac336fe859a02ebbd7faa4adf49c2",
+    "state": "REVIEW_ONLY_NOT_APPLIED",
+    "new_credential_recipient": "Existing worker X-Astra-Ingestion-Token sent to existing same-project Edge function, then only to the fixed same-project RPC; never to Massive"
+  },
+  "installer_transport": {
+    "migration_name": "astra_backfill_massive_relay_v3",
+    "allowed": [
+      "EXACT_RAW_REVIEWED_FILE",
+      "EXACT_RECONCILED_SUPABASE_APPLY_MIGRATION_WRAPPER_FINAL_LF",
+      "EXACT_RECONCILED_SUPABASE_APPLY_MIGRATION_WRAPPER_NO_FINAL_LF"
+    ],
+    "body_hash": "Exact V3 sentinel-delimited original file bytes; no whitespace or SQL normalization",
+    "history_copy": "Must equal the executable reviewed body byte for byte",
+    "tag": "Exactly 20 ASCII letters with no collision in reviewed body",
+    "account_field": "Bounded safe account identifier inside the same dollar delimiter",
+    "extra_sql": "Rejected before new DDL/grants",
+    "wrapper_terminal_variation": "Exactly the reviewed final LF or its absence; no other whitespace, comment, SQL or wrapper variation",
+    "wrapper_template_final_lf_sha256": "7571b009a9624948ecdccce7797d66b0e8cb7b9a737831d4f71e864b0f8f5cb4",
+    "wrapper_template_no_final_lf_sha256": "0dea7a99908099268f5d716520f16b26b90f3996dc3441bc2c1e252cb547191c",
+    "connector": "Existing project-scoped Supabase Market Data Cloud apply_migration; no new credential configuration or native connection"
+  },
+  "runtime_artifacts": {
+    "edge_index_sha256": "d1cf7bd54392ad834682249cfc33e00cbdcef343fc88053a98c2134330308f97",
+    "edge_module_sha256": "bb13314362122485c0f755664ee9e5bd035157df4f03e4984c295ae04b099a83",
+    "python_adapter_sha256": "76a6eb68f543afdd9637fcafc7d5900cd6e27a802de5ba61b0ea4965cc7b8841"
+  },
+  "review_version": 3,
+  "superseded_review": {
+    "review_id": "managed-massive-relay-v2-review-20261030",
+    "scope_sha256": "7e253852f3173c9c3b7ba6d919e4d8abe82cb949424096beee56ddc0e2c20fbe",
+    "approval_at": "2026-10-30T09:53:00Z",
+    "expired_at": "2026-10-30T10:08:00Z",
+    "state": "EXPIRED_UNCONSUMED_RETAIN_EVIDENCE"
+  },
+  "security_delta_from_v2": "Only a version-bound approval and exactly enumerated terminal-LF transport variant; runtime authorization, credentials, destinations, grants, requests, bounds, fences, idempotency and integrity rules remain otherwise unchanged."
+}

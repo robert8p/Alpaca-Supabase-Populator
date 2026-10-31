@@ -1,0 +1,130 @@
+{
+  "schema": "astra.maintenance-phase-observation-qualification/1",
+  "production_calls": 0,
+  "activation_selected": false,
+  "fixture_adaptations": [
+    "unique disposable schema/run identifiers",
+    "future deadline2100 for positive tests; explicit past/during-call boundary cases",
+    "synthetic helper faults only in named fault-injection cases"
+  ],
+  "local_postgresql_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "actual_permissions_and_event": {
+    "privileges": {
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcanlogin": false,
+      "audit_owned_elsewhere": true,
+      "audit_rls": true,
+      "audit_select": true,
+      "audit_insert": true,
+      "audit_update": false,
+      "audit_delete": false,
+      "sequence_usage": true,
+      "sequence_update": false
+    },
+    "event": {
+      "probe_id": "maintenance-global-phase-observation-v73-20261030T1545Z",
+      "total_ms": 9.744,
+      "phases_ms": {
+        "s02_ms": 1.263,
+        "minute_ms": 0.683,
+        "shared_ms": 0.294,
+        "breadth_ms": 1.939,
+        "contract_ms": 1.085,
+        "finalize_ms": 0.631,
+        "readback_ms": 0.871,
+        "nonminute_ms": 0.412,
+        "gate_admission_ms": 0.064,
+        "identity_refresh_ms": 0.884,
+        "identity_discover_ms": 0.326
+      },
+      "backend_pid": 88561,
+      "timing_scope": "GLOBAL_MAINTENANCE_BEFORE_TELEMETRY",
+      "telemetry_admission_ms": 1.292
+    },
+    "source_snapshot_unchanged": true,
+    "ref03_evidence_increment_only": 1
+  },
+  "audit_nowait": {
+    "seconds": 0.022455885999079328,
+    "ordinary_result_preserved": true
+  },
+  "late_expiry": {
+    "deadline": true,
+    "owner_lease": true,
+    "original_result_preserved": true
+  },
+  "admission_scope_and_time": [
+    "expired deadline",
+    "wrong owner",
+    "expired lease",
+    "absent run",
+    "wrong cohort",
+    "advanced fence"
+  ],
+  "observer_risk_demonstrated": {
+    "kind": "ADDITIONAL_AUDIT_WORK_CAN_EXHAUST_CALLER_DEADLINE",
+    "fixture_caller_budget": "150ms",
+    "runtime_function_config": "unchanged8s/2s",
+    "seconds": 0.1583229259995278,
+    "cancellation_not_suppressed": true,
+    "interpretation": "Risk disclosure; not a promise of zero observer effect."
+  },
+  "ordinary_telemetry_error": {
+    "main_real_readback_committed": true,
+    "no_error_or_payload_export": true
+  },
+  "original_helper_errors": [
+    "22023",
+    "57014",
+    "P0004"
+  ],
+  "concurrent_cap_commit": {
+    "holder_started": "2026-10-30 15:14:35.158009+00:00",
+    "waiter_pid": 88671,
+    "waiter_started": "2026-10-30 15:14:35.160855+00:00",
+    "actual_gate_wait": true,
+    "first_holder_rolled_back": false,
+    "committed_events": 4
+  },
+  "restore": {
+    "exact6c880_schema_adjusted": true,
+    "immutable_events_retained": true
+  },
+  "concurrent_cap_rollback": {
+    "holder_started": "2026-10-30 15:14:35.528312+00:00",
+    "waiter_pid": 88695,
+    "waiter_started": "2026-10-30 15:14:35.531509+00:00",
+    "actual_gate_wait": true,
+    "first_holder_rolled_back": true,
+    "committed_events": 4
+  },
+  "same_transaction_cap": {
+    "calls": 8,
+    "committed_events": 4
+  },
+  "stronger_isolation": [
+    "REPEATABLE READ real readback without telemetry",
+    "SERIALIZABLE real readback without telemetry"
+  ],
+  "telemetry_fatal_errors": [
+    "57014",
+    "P0004"
+  ],
+  "exact_source_preservation": true,
+  "tests": 15,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "passed": false,
+  "elapsed_seconds": 4.557000156004506,
+  "candidate_sha256": "0e220fb47e81e26bbe644909f8801ba65817d995cab3a4d6d64e3045f16052c3",
+  "test_sha256": "1a74130c5084a51dd0fce5d182f975ba6c2c59b761259a7d8d660c927f3f56eb",
+  "errors_detail": [],
+  "failures_detail": [
+    {
+      "test": "test_telemetry_insert_rls_sequence_denials_do_not_change_main_readback (test_backfill_maintenance_phase_observation_v73.PostgreSQLTests.test_telemetry_insert_rls_sequence_denials_do_not_change_main_readback)",
+      "trace": "Traceback (most recent call last):\n  File \"/tmp/replacement-maintenance-index-staged-v72/tests/ingestion/test_backfill_maintenance_phase_observation_v73.py\", line 317, in test_telemetry_insert_rls_sequence_denials_do_not_change_main_readback\n    self.assertEqual(self.events(),[])\nAssertionError: Lists differ: [{'action': 'MAINTENANCE_PHASE_OBSERVATION[566 chars]02}}] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n{'action': 'MAINTENANCE_PHASE_OBSERVATION_V73', 'source_revision': 'maintenance-global-phase-observation-v73-20261030T1545Z', 'evidence': {'probe_id': 'maintenance-global-phase-observation-v73-20261030T1545Z', 'total_ms': 103.141, 'phases_ms': {'s02_ms': 1.3, 'minute_ms': 0.679, 'shared_ms': 0.759, 'breadth_ms': 1.964, 'contract_ms': 1.256, 'finalize_ms': 0.854, 'readback_ms': 92.673, 'nonminute_ms': 1.156, 'gate_admission_ms': 0.084, 'identity_refresh_ms': 0.898, 'identity_discover_ms': 0.316}, 'backend_pid': 88752, 'timing_scope': 'GLOBAL_MAINTENANCE_BEFORE_TELEMETRY', 'telemetry_admission_ms': 1.202}}\n\nDiff is 1024 characters long. Set self.maxDiff to None to see it.\n"
+    }
+  ]
+}
