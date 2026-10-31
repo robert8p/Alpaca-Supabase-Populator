@@ -1,11 +1,11 @@
 {
-  "name": "astra-operations-render-patch-outbound-body-v20",
-  "version": "0.0.20",
+  "name": "astra-operations-terminal-causal-v21-github-focused",
+  "version": "0.0.21",
   "private": true,
   "type": "module",
-  "description": "Dormant source-only controller-owned exact outbound Render PATCH body binding; not provider integration",
+  "description": "Focused executable GitHub review of v21 immutable-original-terminal causal source and regression tests; no provider integration",
   "scripts": {
-    "test": "node --test candidate/lib/*.test.mjs",
-    "check": "node --check candidate/lib/controller-owner-port-v20.mjs && node --check candidate/lib/controller-owner-port-v20.test.mjs"
+    "check": "node --check controller-owner-port-v21.mjs && node --check controller-owner-port-v21.test.mjs",
+    "test": "node --test controller-owner-port-v21.test.mjs"
   }
 }
