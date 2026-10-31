@@ -1,0 +1,11 @@
+{
+  "name": "astra-operations-render-patch-outbound-body-v20",
+  "version": "0.0.20",
+  "private": true,
+  "type": "module",
+  "description": "Dormant source-only controller-owned exact outbound Render PATCH body binding; not provider integration",
+  "scripts": {
+    "test": "node --test candidate/lib/*.test.mjs",
+    "check": "node --check candidate/lib/controller-owner-port-v20.mjs && node --check candidate/lib/controller-owner-port-v20.test.mjs"
+  }
+}
