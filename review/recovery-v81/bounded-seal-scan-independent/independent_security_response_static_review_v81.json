@@ -1,0 +1,96 @@
+{
+  "schema": "astra.bounded-seal-scan-independent-static-review/1",
+  "reviewer": "/root/plugin_handoff_v78",
+  "status": "STATIC_PASS_ACTUAL_PG_AND_BOUNDED_PERFORMANCE_QUALIFICATION_PENDING",
+  "archive": {
+    "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+    "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e"
+  },
+  "retained_source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+  "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+  "exact_source_delta": {
+    "single_SEAL_branch_replacement": true,
+    "unchanged_prefix_bytes": 18221,
+    "unchanged_prefix_sha256": "60e3f68a8c968bbd695af0a26823e0d4e887c1a4a471cbda4b779cf7bfc3255f",
+    "unchanged_final_suffix_bytes": 1542,
+    "unchanged_final_suffix_sha256": "bab0948ab977ee7e9d48aae1ae32177b2a867c0585082b2e416672ba01156afb",
+    "initial_generic_snapshot_path_unchanged": true,
+    "snapshot8b_and_sealer_a93_unchanged": true,
+    "all_existing_admission_checks_precede_branch": true
+  },
+  "worker_response_boundary": {
+    "worker_blob": "e6c75bfbe0ec11198af39229edb49b662f19ed24",
+    "scan_returns_json_boolean_plan_complete_false": true,
+    "last_scan_page_returns_before_final_count_hash_sealer": true,
+    "worker_continues_to_claim_after_successful_scan_return": true,
+    "new_planner_response_only_run_state_and_counts": true,
+    "new_planner_response_excludes_global_cursor_and_other_run_IDs": true,
+    "worker_cadence_or_deployment_changed": false
+  },
+  "security_diff": {
+    "function_signature_owner_ACL_OID_security_mode_and_settings_unchanged": true,
+    "authentication_dispatch_stop_source_cost_grants_credentials_and_retries_unchanged": true,
+    "no_new_runtime_controller_lease_dependency": true,
+    "new_operational_metadata_visibility": "Opaque global task-ID bounds and scan counters are persisted in existing run metadata and are visible through already-authorized status serialization. They must not be described as secret or inaccessible. No new ACL, credential, route, trust relationship, provider data or completion scope is introduced. Later diagnostic readback should project state/counts and cursor hashes rather than publish raw bounds.",
+    "runtime_mutations": "Dedicated planner_seal_snapshot_scan_v81 metadata and unchanged real snapshot-helper inserts only; acquired counters and acquisition last_progress_at are unchanged.",
+    "progress_binding": "Fixed version, run, run fence, cohort/manifest, retained expected count and canonical algorithm/source/catalog basis. Malformed or unknown state fails without automatic reset.",
+    "scan_basis_sha256": "1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb",
+    "catalog_limit": "Five enabled triggers, four trigger function bodies/metadata and origin replication role are current installation premises. Historical trigger availability or continuous future metadata equality is not claimed.",
+    "manifest_trigger_provenance": "Current singular-name read supplies exact OID/function/relation/type/enabled/fullmetadata/definition; archive adds only found:true and the known table name. All observed fields match."
+  },
+  "wrappers": {
+    "forward": {
+      "path": "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1",
+      "bytes": 49424,
+      "all17_source_oid_fullmetadata_pins_before_after_exact": true,
+      "only_planner_source_changes": true,
+      "two_immediate_global_PK_guards_exact": true,
+      "five_full_trigger_guards_and_origin_before_after_exact": true,
+      "missing_or_null_function_guard_fails_closed": true,
+      "replacement_definition_exact": true,
+      "business_DML_or_acl_changes_outside_definition": false,
+      "whole_run_equality_within_exact_migration_transaction_only": true
+    },
+    "inverse": {
+      "path": "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002",
+      "bytes": 41730,
+      "all17_source_oid_fullmetadata_pins_before_after_exact": true,
+      "only_planner_source_changes": true,
+      "two_immediate_global_PK_guards_exact": true,
+      "five_full_trigger_guards_and_origin_before_after_exact": true,
+      "missing_or_null_function_guard_fails_closed": true,
+      "replacement_definition_exact": true,
+      "business_DML_or_acl_changes_outside_definition": false,
+      "whole_run_equality_within_exact_migration_transaction_only": true
+    }
+  },
+  "final_validation_boundary": {
+    "terminal_page_is_separate_from_later_validation": true,
+    "exact_count_full_digest_global_missing_snapshot_coverage_representative_map_checks_unchanged": true,
+    "scan_completion_is_not_plan_completion": true,
+    "inverse_preserves_all_committed_scan_snapshot_manifest_and_run_accounting": true
+  },
+  "remaining_gates": [
+    "Producer actual-PostgreSQL qualification and independent receipt review of new algorithm/guards/final checks.",
+    "Residual cursor/insert/atomicity review remains separately scoped.",
+    "Root-selected finite-page access-path performance observation cannot establish full500-helper-loop or final-seal performance.",
+    "Fresh ownership/source/catalog/history/stop reconciliation, exact additive publication and required CI before any migration.",
+    "Uncertain source/history outcomes require readback and cannot authorize blind reinstallation."
+  ],
+  "prior_revision_reconciliation": {
+    "old53cc_review_attempt": "Stopped at first changed-archive assertion before any artifact write. Old candidate/wrappers/archive retained under pre_counter_consistency_review_v1/.",
+    "corrected_counter_guards": "New b4d891 adds minimum examined count for preceding full pages and consistency of a complete full final page; no new runtime scope."
+  },
+  "holds": {
+    "v79": "Held and uninstalled after failed8s measurement",
+    "v75": "Existing no-retry hold unchanged"
+  },
+  "review_actions": {
+    "external_calls": 0,
+    "production_writes": 0,
+    "new_tests": 0,
+    "frozen_file_edits": 0
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "observed_at": "2026-10-31 00:36:37.627073+00",
+  "functions": [
+    {
+      "signature": "astra_ingestion_v1.backfill_date_v2(text)",
+      "expected_oid": "16041364",
+      "observed_oid": "16041364",
+      "source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+      "metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958",
+      "expected_source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+      "expected_metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "expected_oid": "16040232",
+      "observed_oid": "16040232",
+      "source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+      "expected_source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "expected_metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "expected_oid": "16040226",
+      "observed_oid": "16040226",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278",
+      "expected_source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "expected_metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_maintain_v2(integer)",
+      "expected_oid": "16041463",
+      "observed_oid": "16041463",
+      "source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d",
+      "expected_source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "expected_metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "expected_oid": "16041470",
+      "observed_oid": "16041470",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e",
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63",
+      "expected_source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e",
+      "expected_metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "expected_oid": "16041635",
+      "observed_oid": "16041635",
+      "source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+      "metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875",
+      "expected_source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+      "expected_metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "expected_oid": "16041469",
+      "observed_oid": "16041469",
+      "source_sha256": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "metadata_sha256": "2298d7d2dc6af8f2360df643ed9c05067e625103fe3e09ba59b3fdc1a7ed1f69",
+      "expected_source_sha256": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "expected_metadata_sha256": "2298d7d2dc6af8f2360df643ed9c05067e625103fe3e09ba59b3fdc1a7ed1f69"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "expected_oid": "16040222",
+      "observed_oid": "16040222",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f",
+      "expected_source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "expected_metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "expected_oid": "16041471",
+      "observed_oid": "16041471",
+      "source_sha256": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1",
+      "metadata_sha256": "26059708eb74c9b3f291e98da0a74b3b2c381073ec04feb947c07e5fa91a2f8c",
+      "expected_source_sha256": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1",
+      "expected_metadata_sha256": "26059708eb74c9b3f291e98da0a74b3b2c381073ec04feb947c07e5fa91a2f8c"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+      "expected_oid": "16050105",
+      "observed_oid": "16050105",
+      "source_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "metadata_sha256": "05efbf80a36ecaf99c1ecf1c3bde8372489963c867bd98708f5fc12223b05f43",
+      "expected_source_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "expected_metadata_sha256": "05efbf80a36ecaf99c1ecf1c3bde8372489963c867bd98708f5fc12223b05f43"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "expected_oid": "16041467",
+      "observed_oid": "16041467",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3",
+      "expected_source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "expected_metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "expected_oid": "16041466",
+      "observed_oid": "16041466",
+      "source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2",
+      "metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418",
+      "expected_source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2",
+      "expected_metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "expected_oid": "16041465",
+      "observed_oid": "16041465",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633",
+      "metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc",
+      "expected_source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633",
+      "expected_metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc"
+    },
+    {
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "expected_oid": "16040224",
+      "observed_oid": "16040224",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+      "expected_source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "expected_metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6"
+    },
+    {
+      "signature": "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "expected_oid": "15986014",
+      "observed_oid": "15986014",
+      "source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb",
+      "metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd",
+      "expected_source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb",
+      "expected_metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd"
+    },
+    {
+      "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "expected_oid": "15986028",
+      "observed_oid": "15986028",
+      "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e",
+      "expected_source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "expected_metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e"
+    },
+    {
+      "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "expected_oid": "15986030",
+      "observed_oid": "15986030",
+      "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+      "metadata_sha256": "412040bbed9e8a96e9c7231c1f1474326c0eacf7a8157043703983c68b2d1f51",
+      "expected_source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+      "expected_metadata_sha256": "412040bbed9e8a96e9c7231c1f1474326c0eacf7a8157043703983c68b2d1f51"
+    }
+  ],
+  "all17_match": true,
+  "triggers": [
+    {
+      "oid": "16041362",
+      "trigger_name": "backfill_plan_manifest_immutable_v2",
+      "metadata_sha256": "82707ad7bbf31a1fe5f6296ef81c2fe3867d277be90b06077ba08252748b1aa6",
+      "expected_metadata_sha256": "82707ad7bbf31a1fe5f6296ef81c2fe3867d277be90b06077ba08252748b1aa6"
+    },
+    {
+      "oid": "16041361",
+      "trigger_name": "backfill_plan_units_immutable_v2",
+      "metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5",
+      "expected_metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5"
+    },
+    {
+      "oid": "16040223",
+      "trigger_name": "backfill_run_immutable_v2",
+      "metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c",
+      "expected_metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c"
+    },
+    {
+      "oid": "16041468",
+      "trigger_name": "backfill_static_plan_snapshot_v2",
+      "metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9",
+      "expected_metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9"
+    },
+    {
+      "oid": "16040225",
+      "trigger_name": "backfill_task_scope_v2",
+      "metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1",
+      "expected_metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1"
+    }
+  ],
+  "all5_triggers_match": true,
+  "status": "ACTIVE",
+  "fence": 1,
+  "cohort_sha256": "2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec",
+  "cohort_manifest_sha256": "4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f",
+  "target_start": "2025-09-01",
+  "target_end": "2026-07-31",
+  "owner": "root-replacement-20261030T042603Z",
+  "lease_until": "2026-10-31T01:00:00Z",
+  "held_v75": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+  "held_v79": "CANDIDATE_ESTIMATE_CAPTURED_PERFORMANCE_UNQUALIFIED",
+  "v81_state": "BOUNDED_PAGE_MEASURED_LOCAL_QUALIFICATION_PASSED_AWAITING_FINAL_REVIEW",
+  "runtime_scan_present": false,
+  "planning_complete": false,
+  "planner_phase": "SEAL",
+  "expected_static_count": "979516",
+  "pages_committed": 13326,
+  "records_committed": 1497013,
+  "source_bytes": 1055906724,
+  "latest_audit": 128
+}

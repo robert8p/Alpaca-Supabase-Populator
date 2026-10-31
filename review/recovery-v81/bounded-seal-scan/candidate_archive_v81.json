@@ -1,0 +1,440 @@
+{
+  "base_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "base_tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "files": {
+    "sql/astra_backfill_bounded_seal_scan_restore_v81.sql": {
+      "bytes": 41730,
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002"
+    },
+    "sql/astra_backfill_bounded_seal_scan_v81.sql": {
+      "bytes": 49424,
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1"
+    }
+  },
+  "final_accounting_and_sealer_bytes_unchanged": true,
+  "functions": [
+    {
+      "branch_replacements": 1,
+      "candidate_definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_plan_next_v2(p_payload jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET \"TimeZone\" TO 'UTC'\n SET statement_timeout TO '8s'\n SET lock_timeout TO '1s'\nAS $function$\nDECLARE\n r astra_ingestion_v1.backfill_runs_v2;\n m astra_ingestion_v1.backfill_members_v2;\n v_run text:=COALESCE(p_payload->>'run_id','fixed3000-20250901-20260731-v1-20261030');\n v_limit int:=GREATEST(1,LEAST(COALESCE((p_payload->>'member_limit')::int,1),5));\n v_next int; v_breadth int; v_phase text; v_added int:=0; v_members int:=0; v_expected bigint;\n v_calendar jsonb; v_month_calendar jsonb; v_target_dates jsonb; v_map jsonb; v_workflow jsonb; v_snapshot jsonb;\n v_scope jsonb; v_base jsonb; v_key text; v_source_id text; v_raw_id text; v_split_id text;\n v_anchor_count int; v_instrument int; v_asset text; v_month date; v_first date; v_last date;\n v_input date; v_entry jsonb; v_day date; v_family text; v_adjustment text; v_status text;\n v_count bigint; v_hash text; v_calendar_hash text; v_fallback boolean;\n v_after int; v_result jsonb; v_supported jsonb:=COALESCE(p_payload->'supported_kinds','[]'::jsonb);\nBEGIN\n -- Same transaction lock as the authenticated existing RPC; no lease can be\n -- advanced by a competing planner between its insertions and checkpoint.\n PERFORM pg_advisory_xact_lock(706314020261028);\n SELECT * INTO STRICT r FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=v_run FOR UPDATE;\n IF r.status<>'ACTIVE' THEN RETURN jsonb_build_object('state','PLANNING_PAUSED','run_id',r.id,'run_status',r.status,'plan_complete',false); END IF;\n IF r.metadata->'planning_complete'='true'::jsonb THEN\n  RETURN jsonb_build_object('state','FULL_PLAN_SEALED','run_id',r.id,'plan_complete',true,\n   'expected_task_count',r.metadata->'expected_static_task_count','expected_plan_sha256',r.metadata->'expected_plan_sha256');\n END IF;\n IF r.cohort_sha256<>'2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec'\n OR r.cohort_manifest_sha256<>'4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f'\n OR r.target_start<>'2025-09-01'::date OR r.target_end<>'2026-07-31'::date THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Planner accepts only the frozen replacement cohort and dates';\n END IF;\n SELECT count(*),encode(sha256(convert_to(string_agg(member_id,E'\\n' ORDER BY selection_order,member_id),'UTF8')),'hex')\n INTO v_count,v_hash FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id;\n IF v_count<>3000 OR v_hash<>'a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Frozen actual 3000-member list differs; selection cannot be reopened';\n END IF;\n SELECT jsonb_agg(jsonb_build_object('date',e->>'date','open',e->>'open','close',e->>'close') ORDER BY e->>'date')\n INTO v_calendar FROM jsonb_array_elements(r.scope#>'{calendar,sessions}') e;\n v_calendar_hash:=encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(v_calendar),'UTF8')),'hex');\n IF v_calendar IS NULL OR jsonb_array_length(v_calendar)<>290 OR v_calendar_hash<>'8483822a5553f0d270d87d1ff69c9a30d512d9ea8f660036664aebbf70053d49'\n OR r.scope->>'daily_support_start' IS DISTINCT FROM '2025-06-05'\n OR r.scope->>'intraday_support_start' IS DISTINCT FROM '2025-08-04' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Exact retained 290-session calendar and support history required';\n END IF;\n SELECT jsonb_agg(e->>'date' ORDER BY e->>'date') INTO v_target_dates FROM jsonb_array_elements(v_calendar) e\n WHERE e->>'date' BETWEEN '2025-09-01' AND '2026-07-31';\n v_workflow:=jsonb_build_object('version','fixed3000-plan-v2.1','target_start','2025-09-01','target_end','2026-07-31',\n  'market_timezone','America/New_York','session_dates',v_target_dates,'cohort_classification','RETROSPECTIVE_FIXED_COHORT',\n  'representative_policy','ONE_FROZEN_COMPANY_ONE_EXPLICIT_ANCHOR_SECURITY; ELIGIBILITY_UNKNOWN_UNTIL_EVIDENCED',\n  'daily_support_start','2025-06-05','intraday_support_start','2025-08-04','calendar_sha256',v_calendar_hash,\n  'formula_manifest_sha256','e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65',\n  'families',jsonb_build_array('REF01','REF03','P01','P02','D01','D02','D03','D04','D05','N01','N02','N03','S01','S02','CTX02','CTX06'),\n  'REF03',jsonb_build_object('mode','CONTINUOUS_AUDIT','scope','All replacement tasks/pages/exceptions/readbacks/recovery',\n   'destination','astra_ingestion_v1.backfill_family_ref03_v2'),\n  'P02',jsonb_build_object('mode','SHARED_P01_SOURCE_RETRIEVAL','sessions',jsonb_build_array('PRE','POST')),\n  'event_policy','Retain all supplied action dates and boundary events; no ex-date-only archive restriction',\n  'news_policy','All calendar dates, prefer Massive; separately retained Alpaca alternative if Massive worker configuration unavailable',\n  'short_interest_policy','Settlement-date selection; actual publication/retrieval availability retained separately',\n  'options_policy','Active and inactive underlying contracts; expiry Sep2025 through2099; dynamic individual-contract daily pages',\n  'programme_expires_at',NULL);\n IF r.metadata->>'planner_version' IS NULL THEN\n  v_snapshot:=astra_ingestion_v1.backfill_plan_snapshot_v2(r.id,500);\n  IF v_snapshot->'more'='true'::jsonb THEN\n   RETURN jsonb_build_object('state','SNAPSHOTTING_EXISTING_TASKS','plan_complete',false,'snapshot',v_snapshot);\n  END IF;\n  SELECT count(*) INTO v_expected FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id;\n  r.metadata:=r.metadata||jsonb_build_object('planner_version','fixed3000-plan-v2.1','planner_phase','MEMBERS',\n   'planner_next_selection_order',1,'planner_next_breadth_index',0,'planner_expected_static_count',v_expected,\n   'planner_preexisting_static_count',v_expected,'workflow_plan',v_workflow);\n ELSIF r.metadata->>'planner_version'<>'fixed3000-plan-v2.1' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Existing planner version differs; retain and explicitly reconcile its checkpoint';\n END IF;\n v_next:=(r.metadata->>'planner_next_selection_order')::int;\n v_breadth:=(r.metadata->>'planner_next_breadth_index')::int;\n v_phase:=r.metadata->>'planner_phase';\n v_expected:=(r.metadata->>'planner_expected_static_count')::bigint;\n IF jsonb_typeof(v_supported)<>'array' THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Worker supported kinds must be an explicit array'; END IF;\n v_fallback:=v_supported ? 'alpaca_news' AND NOT (v_supported ? 'massive_news');\n\n IF v_phase='MEMBERS' THEN\n  -- backfill_planner_one_member_v2: commit one complete member before the next existing worker call.\n  FOR m IN SELECT * FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id AND selection_order>=v_next\n   ORDER BY selection_order LIMIT LEAST(v_limit,1)\n  LOOP\n   v_base:=jsonb_build_object('member_ids',jsonb_build_array(m.member_id),'symbols',jsonb_build_array(m.anchor_ticker),\n    'symbol',m.anchor_ticker,'market_timezone','America/New_York','target_start','2025-09-01','target_end','2026-07-31',\n    'identity_status','UNRESOLVED_PROVIDER_ANCHOR','asof','2026-08-03','cohort_classification','RETROSPECTIVE_FIXED_COHORT');\n   v_key:=m.member_id||':';\n   -- Daily raw/split series are fetched once per member for all required support.\n   FOREACH v_adjustment IN ARRAY ARRAY['raw','split'] LOOP\n    v_scope:=v_base||jsonb_build_object('timeframe','1Day','feed','sip','adjustment',v_adjustment,\n     'start','2025-06-05T04:00:00Z','end','2026-08-01T03:59:59.999999Z','input_start','2025-06-05',\n     'calendar',v_calendar,'daily_basis','ALPACA_PROVIDER_DAILY_NOT_ASSERTED_RTH','governing_date','MARKET_DATE',\n     'support_history_policy','Observations before2025-09-01 retained as support history');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'daily-source:'||v_adjustment,'D02','Alpaca','alpaca_stock_bars',v_scope,'{}',20);\n   END LOOP;\n   v_raw_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'daily-source:raw');\n   v_split_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'daily-source:split');\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:alpaca','REF01','Alpaca','alpaca_reference',\n    v_base||jsonb_build_object('reference_policy','CURRENT_PROVIDER_IDENTIFIERS_NOT_HISTORICAL_PROOF'),'{}',10);\n   SELECT count(*),min(instrument_key),min(alpaca_asset_id::text) INTO v_anchor_count,v_instrument,v_asset\n    FROM reference.alpaca_fixed_window_instruments_v1 WHERE symbol=m.anchor_ticker AND alpaca_asset_id IS NOT NULL;\n   -- Twelve monthly minute-source units cover Aug support plus all11 targetmonths.\n   FOR v_month IN SELECT d::date FROM generate_series('2025-08-01'::date,'2026-07-01'::date,interval '1 month') d LOOP\n    v_first:=GREATEST(v_month,'2025-08-04'::date);v_last:=(v_month+interval '1 month')::date-1;\n    SELECT jsonb_agg(e ORDER BY e->>'date') INTO v_month_calendar FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date BETWEEN v_first AND v_last;\n    v_scope:=v_base||jsonb_build_object('source_month',v_month::text,'target_start',v_first::text,'target_end',v_last::text,\n     'input_start',v_first::text,'calendar',COALESCE(v_month_calendar,'[]'::jsonb),'feed','sip','timeframe','1Min','adjustment','raw',\n     'start',to_char(v_first::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'end_exclusive',to_char((v_last+1)::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'support_history',v_last<'2025-09-01'::date,'governing_date','MARKET_SESSION',\n     'shared_families',jsonb_build_array('P01','P02'),'identity_mapping_basis','POST_WINDOW_PROVIDER_ANCHOR_ONLY');\n    IF v_anchor_count=1 THEN\n     v_scope:=v_scope||jsonb_build_object('instrument_key',v_instrument,'alpaca_asset_id',v_asset,\n      'reuse_policy','VERIFY_RETAINED_SOURCE_AND_ADMIT_ONLY_MISSING_OR_UNQUALIFIED_RANGES');\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'minutes:'||v_month::text,'P01','REUSE','retained_reuse',v_scope,'{}',30);\n    ELSE\n     v_scope:=v_scope||jsonb_build_object('end',to_char(((v_last+1)::timestamp AT TIME ZONE 'America/New_York')-interval '1 microsecond','YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"'),\n      'retained_reference_state',CASE WHEN v_anchor_count=0 THEN 'NO_MATCHING_RETAINED_PROVIDER_ANCHOR' ELSE 'AMBIGUOUS_RETAINED_PROVIDER_ANCHOR' END);\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'minutes:'||v_month::text,'P01','Alpaca','alpaca_stock_bars',v_scope,'{}',30);\n    END IF;\n    IF v_month<'2025-09-01'::date THEN CONTINUE; END IF;\n    v_source_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'minutes:'||v_month::text);\n    FOR v_entry IN SELECT e FROM jsonb_array_elements(v_month_calendar) e LOOP\n     v_day:=(v_entry->>'date')::date;\n     v_scope:=v_base||jsonb_build_object('target_start',v_day::text,'target_end',v_day::text,'input_start',v_day::text,\n      'source_month',v_month::text,'calendar',jsonb_build_array(v_entry),'governing_date','MARKET_SESSION',\n      'formula_version','fixed3000-derived-v2.1','prefer_retained_formula_cache',true,\n      'retained_formula_policy','Preserve original qualifying formula version and lineage when equivalent cache is available');\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'D01:'||v_day::text,'D01','DERIVED','derive_intraday',v_scope,ARRAY[v_source_id],160);\n    END LOOP;\n    -- The last60 actual preceding sessions, plus current month, are sufficient\n    -- for all recovered daily horizons. Missing observations are never filled.\n    SELECT min((x.e->>'date')::date) INTO v_input FROM (SELECT e FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date<v_month ORDER BY e->>'date' DESC LIMIT 60) x;\n    SELECT jsonb_agg(e ORDER BY e->>'date') INTO v_month_calendar FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date BETWEEN v_input AND v_last;\n    FOREACH v_family IN ARRAY ARRAY['D02','D03','D04','D05'] LOOP\n     v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,'input_start',v_input::text,\n      'source_month',v_month::text,'calendar',v_month_calendar,'governing_date','MARKET_SESSION',\n      'formula_version','fixed3000-derived-v2.1','prefer_retained_formula_cache',true);\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||v_family||':'||v_month::text,v_family,'DERIVED','derive_daily',v_scope,ARRAY[v_raw_id,v_split_id],100);\n    END LOOP;\n    v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,'asof',v_month::text,\n     'governing_date','REFERENCE_AS_OF','reference_policy','DATED_PROVIDER_SNAPSHOT_ATTRIBUTION_REMAINS_EXPLICIT');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:massive:'||v_month::text,'REF01','Massive','massive_reference',v_scope,'{}',40);\n    v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,\n     'start',to_char(v_month::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'end',to_char(((v_last+1)::timestamp AT TIME ZONE 'America/New_York')-interval '1 microsecond','YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"'),\n     'governing_date','PUBLICATION_TIMESTAMP','include_weekends_holidays',true,'archive_scope','MASSIVE_ENTITLED_ARCHIVE',\n     'permitted_alternative','alpaca_news');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'news:massive:'||v_month::text,'N01','Massive','massive_news',v_scope,'{}',50);\n    IF v_fallback THEN\n     v_scope:=v_scope||jsonb_build_object('archive_scope','ALPACA_ENTITLED_ARCHIVE',\n      'alternative_reason','MASSIVE_WORKER_CONFIGURATION_UNAVAILABLE','does_not_complete_primary_archive',true,\n      'primary_task_id',astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'news:massive:'||v_month::text));\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'news:alpaca:'||v_month::text,'N01','Alpaca','alpaca_news',v_scope,'{}',51);\n    END IF;\n   END LOOP;\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:massive:2026-07-31','REF01','Massive','massive_reference',\n    v_base||jsonb_build_object('asof','2026-07-31','governing_date','REFERENCE_AS_OF'),'{}',40);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'dividends:massive','N02','Massive','massive_dividends',\n    v_base||jsonb_build_object('governing_date','DECLARATION_EX_RECORD_PAYMENT_EFFECTIVE_SEPARATE','archive_date_filter','UNBOUNDED_PROVIDER_EVENT_HISTORY','retain_boundary_crossing_events',true),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'splits:massive','N03','Massive','massive_splits',\n    v_base||jsonb_build_object('governing_date','EXECUTION_EFFECTIVE_DATE','archive_date_filter','UNBOUNDED_PROVIDER_EVENT_HISTORY','retain_boundary_crossing_events',true),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'actions:alpaca','N02','Alpaca','alpaca_actions',\n    v_base||jsonb_build_object('start','2025-06-05','end',(r.created_at AT TIME ZONE 'America/New_York')::date::text,\n     'governing_date','PROVIDER_PROCESS_DATE_WITH_SUPPLIED_ACTION_DATES_RETAINED','retain_boundary_crossing_events',true,\n     'shared_families',jsonb_build_array('N02','N03')),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'short-volume','S01','Massive','massive_short_volume',\n    v_base||jsonb_build_object('start','2025-09-01','end','2026-07-31','governing_date','REPORTING_DATE',\n     'reporting_scope','PROVIDER_FINRA_OFF_EXCHANGE_NOT_TOTAL_MARKET'),'{}',60);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'short-interest','S02','Massive','massive_short_interest',\n    v_base||jsonb_build_object('start','2025-09-01','end','2026-07-31','governing_date','SETTLEMENT_DATE',\n     'publication_date_filter','NONE','retain_later_publications',true,'availability_policy','ACTUAL_PUBLICATION_WHEN_SUPPLIED_ELSE_RETRIEVAL_UPPER_BOUND'),'{}',60);\n   FOREACH v_status IN ARRAY ARRAY['active','inactive'] LOOP\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'options:'||v_status,'CTX02','Alpaca','alpaca_option_contracts',\n     v_base||jsonb_build_object('status',v_status,'expiration_start','2025-09-01','expiration_end','2099-12-31',\n      'governing_date','CONTRACT_EXPIRY_REFERENCE_AND_DAILY_MARKET_DATE','include_adjusted_contracts',true,\n      'historical_enumeration_completeness','UNKNOWN_UNTIL_PROVIDER_REFERENCE_EXHAUSTED'),'{}',70);\n   END LOOP;\n   v_next:=m.selection_order+1;v_members:=v_members+1;\n  END LOOP;\n  IF v_next>3000 THEN v_phase:='BREADTH'; END IF;\n ELSIF v_phase='BREADTH' THEN\n  SELECT jsonb_object_agg(member_id,jsonb_build_object('symbol',anchor_ticker,'eligible',NULL) ORDER BY selection_order)\n   INTO v_map FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id;\n  v_after:=v_breadth;\n  FOR v_entry IN SELECT e FROM jsonb_array_elements(v_calendar) e WHERE e->>'date' BETWEEN '2025-09-01' AND '2026-07-31'\n   ORDER BY e->>'date' OFFSET v_after LIMIT v_limit\n  LOOP\n   v_day:=(v_entry->>'date')::date;\n   v_scope:=jsonb_build_object('target_start',v_day::text,'target_end',v_day::text,'input_start',v_day::text,\n    'market_timezone','America/New_York','calendar',jsonb_build_array(v_entry),'source_family','D03',\n    'source_month',date_trunc('month',v_day)::date::text,'representative_security',v_map,\n    'representative_policy',v_workflow->'representative_policy','governing_date','MARKET_SESSION',\n    'formula_version','fixed3000-derived-v2.1','cohort_classification','RETROSPECTIVE_FIXED_COHORT');\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,'CTX06:'||v_day::text,'CTX06','DERIVED','derive_breadth',v_scope,'{}',250);\n   v_breadth:=v_breadth+1;\n  END LOOP;\n  IF v_breadth=230 THEN v_phase:='SEAL'; END IF;\n ELSIF v_phase='SEAL' THEN\n  -- v81: bounded global-ID examination; only a later call may run final sealing.\n  DECLARE\n   scan_key constant text:='planner_seal_snapshot_scan_v81';\n   scan_basis constant text:='1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb';\n   scan_progress jsonb; scan_upper text; scan_lower text; scan_ids text[]; scan_id text;\n   scan_task record; scan_examined bigint:=0; scan_added bigint:=0; scan_batches bigint:=0;\n   scan_page_count integer; scan_page_added integer:=0; scan_complete boolean:=false;\n   scan_started timestamptz; scan_updated timestamptz;\n  BEGIN\n   IF v_expected IS NULL OR v_expected<0 THEN\n    RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Bounded SEAL scan requires the retained nonnegative expected count'; END IF;\n   IF NOT r.metadata ? scan_key THEN\n    SELECT task.id INTO scan_upper FROM astra_ingestion_v1.backfill_tasks_v2 task ORDER BY task.id DESC LIMIT 1;\n    scan_started:=clock_timestamp();\n    scan_progress:=jsonb_build_object('version','bounded-seal-snapshot-scan-v81','run_id',r.id,'run_fence',r.fence,\n     'cohort_sha256',r.cohort_sha256,'cohort_manifest_sha256',r.cohort_manifest_sha256,\n     'expected_static_count',v_expected,'basis_sha256',scan_basis,'upper_id',scan_upper,'last_examined_id',NULL,\n     'batches',0,'examined_ids',0,'snapshots_added',0,'complete',false,'started_at',scan_started,'last_scan_at',scan_started);\n   ELSE\n    scan_progress:=r.metadata->scan_key;\n    IF jsonb_typeof(scan_progress) IS DISTINCT FROM 'object' THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Malformed bounded SEAL scan progress; reconcile without resetting'; END IF;\n    IF NOT scan_progress ?& ARRAY['version','run_id','run_fence','cohort_sha256','cohort_manifest_sha256',\n     'expected_static_count','basis_sha256','upper_id','last_examined_id','batches','examined_ids','snapshots_added','complete','started_at','last_scan_at']\n     OR (SELECT count(*) FROM jsonb_object_keys(scan_progress))<>15\n     OR scan_progress->>'version' IS DISTINCT FROM 'bounded-seal-snapshot-scan-v81'\n     OR scan_progress->'run_id' IS DISTINCT FROM to_jsonb(r.id)\n     OR scan_progress->'run_fence' IS DISTINCT FROM to_jsonb(r.fence)\n     OR scan_progress->'cohort_sha256' IS DISTINCT FROM to_jsonb(r.cohort_sha256)\n     OR scan_progress->'cohort_manifest_sha256' IS DISTINCT FROM to_jsonb(r.cohort_manifest_sha256)\n     OR scan_progress->'expected_static_count' IS DISTINCT FROM to_jsonb(v_expected)\n     OR scan_progress->>'basis_sha256' IS DISTINCT FROM scan_basis\n     OR jsonb_typeof(scan_progress->'upper_id') NOT IN ('string','null')\n     OR jsonb_typeof(scan_progress->'last_examined_id') NOT IN ('string','null')\n     OR jsonb_typeof(scan_progress->'complete') IS DISTINCT FROM 'boolean'\n     OR jsonb_typeof(scan_progress->'batches') IS DISTINCT FROM 'number'\n     OR jsonb_typeof(scan_progress->'examined_ids') IS DISTINCT FROM 'number'\n     OR jsonb_typeof(scan_progress->'snapshots_added') IS DISTINCT FROM 'number'\n     OR scan_progress->>'batches' !~ '^(0|[1-9][0-9]*)$'\n     OR scan_progress->>'examined_ids' !~ '^(0|[1-9][0-9]*)$'\n     OR scan_progress->>'snapshots_added' !~ '^(0|[1-9][0-9]*)$'\n     OR jsonb_typeof(scan_progress->'started_at') IS DISTINCT FROM 'string'\n     OR jsonb_typeof(scan_progress->'last_scan_at') IS DISTINCT FROM 'string' THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Stale or malformed bounded SEAL scan identity and counters; reconcile without resetting'; END IF;\n    scan_upper:=scan_progress->>'upper_id';scan_lower:=scan_progress->>'last_examined_id';\n    scan_batches:=(scan_progress->>'batches')::bigint;scan_examined:=(scan_progress->>'examined_ids')::bigint;\n    scan_added:=(scan_progress->>'snapshots_added')::bigint;scan_complete:=(scan_progress->>'complete')::boolean;\n    scan_started:=(scan_progress->>'started_at')::timestamptz;scan_updated:=(scan_progress->>'last_scan_at')::timestamptz;\n    IF scan_batches<1 OR scan_added>scan_examined OR scan_examined::numeric>scan_batches::numeric*500\n     OR scan_examined::numeric<(scan_batches::numeric-1)*500\n     OR (scan_examined=0) IS DISTINCT FROM (scan_lower IS NULL)\n     OR (scan_upper IS NULL AND (scan_lower IS NOT NULL OR NOT scan_complete))\n     OR (scan_lower IS NOT NULL AND scan_lower>scan_upper)\n     OR (NOT scan_complete AND (scan_examined::numeric<>scan_batches::numeric*500 OR scan_lower>=scan_upper))\n     OR (scan_complete AND scan_examined::numeric=scan_batches::numeric*500 AND scan_lower IS DISTINCT FROM scan_upper)\n     OR NOT isfinite(scan_started) OR NOT isfinite(scan_updated) OR scan_updated<scan_started OR scan_updated>clock_timestamp() THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Inconsistent bounded SEAL scan range or accounting; reconcile without resetting'; END IF;\n   END IF;\n   IF NOT scan_complete THEN\n    IF scan_upper IS NULL THEN scan_ids:='{}'::text[];\n    ELSIF scan_lower IS NULL THEN\n     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id<=scan_upper ORDER BY task.id LIMIT 500) page;\n    ELSE\n     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id>scan_lower AND task.id<=scan_upper ORDER BY task.id LIMIT 500) page;\n    END IF;\n    scan_page_count:=cardinality(scan_ids);\n    FOREACH scan_id IN ARRAY scan_ids LOOP\n     -- Preserve global task-ID suppression before reading any eligibility scope.\n     IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 unit WHERE unit.task_id=scan_id) THEN CONTINUE; END IF;\n     SELECT task.run_id,task.kind,task.scope INTO scan_task FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id=scan_id;\n     IF NOT FOUND THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Task disappeared within a bounded SEAL scan page'; END IF;\n     IF scan_task.run_id=r.id AND NOT ((scan_task.kind='alpaca_option_bars' AND scan_task.scope ? 'enumeration_parent') OR scan_task.scope ? 'reuse_parent' OR scan_task.scope ? 'identity_refresh_of' OR scan_task.kind IN('retained_identity','retained_massive_archive')) THEN\n      IF astra_ingestion_v1.backfill_snapshot_task_v2(scan_id) THEN scan_page_added:=scan_page_added+1;END IF;\n     END IF;\n    END LOOP;\n    IF scan_page_count>0 THEN scan_lower:=scan_ids[scan_page_count];END IF;\n    scan_complete:=scan_page_count<500 OR scan_lower=scan_upper;\n    scan_progress:=scan_progress||jsonb_build_object('last_examined_id',scan_lower,'batches',scan_batches+1,\n     'examined_ids',scan_examined+scan_page_count,'snapshots_added',scan_added+scan_page_added,\n     'complete',scan_complete,'last_scan_at',clock_timestamp());\n    UPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=r.metadata||jsonb_build_object(scan_key,scan_progress) WHERE id=r.id;\n    -- Always return, including the last page: later count/hash/seal failure must\n    -- not roll back this useful batch. Acquisition timestamps/counters stay intact.\n    RETURN jsonb_build_object('state',CASE WHEN scan_complete THEN 'SEAL_SNAPSHOT_SCAN_COMPLETE_CHECKS_PENDING' ELSE 'SEAL_SNAPSHOT_SCAN_ADVANCED' END,\n     'run_id',r.id,'plan_complete',false,'scan_complete',scan_complete,'examined_ids_this_call',scan_page_count,\n     'snapshotted_this_call',scan_page_added,'total_examined_ids',scan_examined+scan_page_count,'total_snapshots_added',scan_added+scan_page_added);\n   END IF;\n  END;\n  SELECT count(*),encode(sha256(convert_to(COALESCE(string_agg(task_id||':'||definition_sha256,E'\\n' ORDER BY task_id COLLATE \"C\"),''),'UTF8')),'hex')\n   INTO v_count,v_hash FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id;\n  IF v_count<>v_expected THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Actual static plan count differs from transactionally admitted expected count'; END IF;\n  v_result:=astra_ingestion_v1.backfill_seal_plan_v2(r.id,v_expected,v_hash,v_workflow);\n  RETURN v_result||jsonb_build_object('run_id',r.id,'plan_complete',v_result->>'state'='FULL_PLAN_SEALED',\n   'planned_members',3000,'next_selection_order',3001,'breadth_sessions',230);\n ELSE\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Unknown persisted planner phase';\n END IF;\n v_expected:=v_expected+v_added;\n UPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=r.metadata||jsonb_build_object(\n  'planner_phase',v_phase,'planner_next_selection_order',v_next,'planner_next_breadth_index',v_breadth,\n  'planner_expected_static_count',v_expected,'workflow_plan',v_workflow,'planner_last_progress_at',clock_timestamp()),\n  last_progress_at=CASE WHEN v_added>0 THEN clock_timestamp() ELSE last_progress_at END WHERE id=r.id;\n RETURN jsonb_build_object('state','PLAN_ADVANCED','run_id',r.id,'phase',v_phase,'plan_complete',false,\n  'members_admitted_this_call',v_members,'planned_members',v_next-1,'next_selection_order',v_next,\n  'breadth_sessions',v_breadth,'inserted_tasks',v_added,'expected_static_task_count',v_expected);\nEND $function$\n",
+      "candidate_source_sha256": "b4d89146c677d38889ddd15a7986bd03723eb2f1b986582da30e46d24b5e172d",
+      "metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875",
+      "oid": "16041635",
+      "original_definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_plan_next_v2(p_payload jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET \"TimeZone\" TO 'UTC'\n SET statement_timeout TO '8s'\n SET lock_timeout TO '1s'\nAS $function$\nDECLARE\n r astra_ingestion_v1.backfill_runs_v2;\n m astra_ingestion_v1.backfill_members_v2;\n v_run text:=COALESCE(p_payload->>'run_id','fixed3000-20250901-20260731-v1-20261030');\n v_limit int:=GREATEST(1,LEAST(COALESCE((p_payload->>'member_limit')::int,1),5));\n v_next int; v_breadth int; v_phase text; v_added int:=0; v_members int:=0; v_expected bigint;\n v_calendar jsonb; v_month_calendar jsonb; v_target_dates jsonb; v_map jsonb; v_workflow jsonb; v_snapshot jsonb;\n v_scope jsonb; v_base jsonb; v_key text; v_source_id text; v_raw_id text; v_split_id text;\n v_anchor_count int; v_instrument int; v_asset text; v_month date; v_first date; v_last date;\n v_input date; v_entry jsonb; v_day date; v_family text; v_adjustment text; v_status text;\n v_count bigint; v_hash text; v_calendar_hash text; v_fallback boolean;\n v_after int; v_result jsonb; v_supported jsonb:=COALESCE(p_payload->'supported_kinds','[]'::jsonb);\nBEGIN\n -- Same transaction lock as the authenticated existing RPC; no lease can be\n -- advanced by a competing planner between its insertions and checkpoint.\n PERFORM pg_advisory_xact_lock(706314020261028);\n SELECT * INTO STRICT r FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=v_run FOR UPDATE;\n IF r.status<>'ACTIVE' THEN RETURN jsonb_build_object('state','PLANNING_PAUSED','run_id',r.id,'run_status',r.status,'plan_complete',false); END IF;\n IF r.metadata->'planning_complete'='true'::jsonb THEN\n  RETURN jsonb_build_object('state','FULL_PLAN_SEALED','run_id',r.id,'plan_complete',true,\n   'expected_task_count',r.metadata->'expected_static_task_count','expected_plan_sha256',r.metadata->'expected_plan_sha256');\n END IF;\n IF r.cohort_sha256<>'2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec'\n OR r.cohort_manifest_sha256<>'4134b415e2c26fcde9fced749c0d54ef51376e23f0d2f8c6ce9ef562f9fab99f'\n OR r.target_start<>'2025-09-01'::date OR r.target_end<>'2026-07-31'::date THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Planner accepts only the frozen replacement cohort and dates';\n END IF;\n SELECT count(*),encode(sha256(convert_to(string_agg(member_id,E'\\n' ORDER BY selection_order,member_id),'UTF8')),'hex')\n INTO v_count,v_hash FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id;\n IF v_count<>3000 OR v_hash<>'a83310df6a6465ce8d37ffd5352095f6e38d91a3204afd8807fff39092cfd85e' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Frozen actual 3000-member list differs; selection cannot be reopened';\n END IF;\n SELECT jsonb_agg(jsonb_build_object('date',e->>'date','open',e->>'open','close',e->>'close') ORDER BY e->>'date')\n INTO v_calendar FROM jsonb_array_elements(r.scope#>'{calendar,sessions}') e;\n v_calendar_hash:=encode(sha256(convert_to(astra_ingestion_v1.rpc_canonical(v_calendar),'UTF8')),'hex');\n IF v_calendar IS NULL OR jsonb_array_length(v_calendar)<>290 OR v_calendar_hash<>'8483822a5553f0d270d87d1ff69c9a30d512d9ea8f660036664aebbf70053d49'\n OR r.scope->>'daily_support_start' IS DISTINCT FROM '2025-06-05'\n OR r.scope->>'intraday_support_start' IS DISTINCT FROM '2025-08-04' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Exact retained 290-session calendar and support history required';\n END IF;\n SELECT jsonb_agg(e->>'date' ORDER BY e->>'date') INTO v_target_dates FROM jsonb_array_elements(v_calendar) e\n WHERE e->>'date' BETWEEN '2025-09-01' AND '2026-07-31';\n v_workflow:=jsonb_build_object('version','fixed3000-plan-v2.1','target_start','2025-09-01','target_end','2026-07-31',\n  'market_timezone','America/New_York','session_dates',v_target_dates,'cohort_classification','RETROSPECTIVE_FIXED_COHORT',\n  'representative_policy','ONE_FROZEN_COMPANY_ONE_EXPLICIT_ANCHOR_SECURITY; ELIGIBILITY_UNKNOWN_UNTIL_EVIDENCED',\n  'daily_support_start','2025-06-05','intraday_support_start','2025-08-04','calendar_sha256',v_calendar_hash,\n  'formula_manifest_sha256','e0b0835ad53ef7b71d072184bbb1576b3cd8f514c523361fa31865f71a0c8a65',\n  'families',jsonb_build_array('REF01','REF03','P01','P02','D01','D02','D03','D04','D05','N01','N02','N03','S01','S02','CTX02','CTX06'),\n  'REF03',jsonb_build_object('mode','CONTINUOUS_AUDIT','scope','All replacement tasks/pages/exceptions/readbacks/recovery',\n   'destination','astra_ingestion_v1.backfill_family_ref03_v2'),\n  'P02',jsonb_build_object('mode','SHARED_P01_SOURCE_RETRIEVAL','sessions',jsonb_build_array('PRE','POST')),\n  'event_policy','Retain all supplied action dates and boundary events; no ex-date-only archive restriction',\n  'news_policy','All calendar dates, prefer Massive; separately retained Alpaca alternative if Massive worker configuration unavailable',\n  'short_interest_policy','Settlement-date selection; actual publication/retrieval availability retained separately',\n  'options_policy','Active and inactive underlying contracts; expiry Sep2025 through2099; dynamic individual-contract daily pages',\n  'programme_expires_at',NULL);\n IF r.metadata->>'planner_version' IS NULL THEN\n  v_snapshot:=astra_ingestion_v1.backfill_plan_snapshot_v2(r.id,500);\n  IF v_snapshot->'more'='true'::jsonb THEN\n   RETURN jsonb_build_object('state','SNAPSHOTTING_EXISTING_TASKS','plan_complete',false,'snapshot',v_snapshot);\n  END IF;\n  SELECT count(*) INTO v_expected FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id;\n  r.metadata:=r.metadata||jsonb_build_object('planner_version','fixed3000-plan-v2.1','planner_phase','MEMBERS',\n   'planner_next_selection_order',1,'planner_next_breadth_index',0,'planner_expected_static_count',v_expected,\n   'planner_preexisting_static_count',v_expected,'workflow_plan',v_workflow);\n ELSIF r.metadata->>'planner_version'<>'fixed3000-plan-v2.1' THEN\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Existing planner version differs; retain and explicitly reconcile its checkpoint';\n END IF;\n v_next:=(r.metadata->>'planner_next_selection_order')::int;\n v_breadth:=(r.metadata->>'planner_next_breadth_index')::int;\n v_phase:=r.metadata->>'planner_phase';\n v_expected:=(r.metadata->>'planner_expected_static_count')::bigint;\n IF jsonb_typeof(v_supported)<>'array' THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Worker supported kinds must be an explicit array'; END IF;\n v_fallback:=v_supported ? 'alpaca_news' AND NOT (v_supported ? 'massive_news');\n\n IF v_phase='MEMBERS' THEN\n  -- backfill_planner_one_member_v2: commit one complete member before the next existing worker call.\n  FOR m IN SELECT * FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id AND selection_order>=v_next\n   ORDER BY selection_order LIMIT LEAST(v_limit,1)\n  LOOP\n   v_base:=jsonb_build_object('member_ids',jsonb_build_array(m.member_id),'symbols',jsonb_build_array(m.anchor_ticker),\n    'symbol',m.anchor_ticker,'market_timezone','America/New_York','target_start','2025-09-01','target_end','2026-07-31',\n    'identity_status','UNRESOLVED_PROVIDER_ANCHOR','asof','2026-08-03','cohort_classification','RETROSPECTIVE_FIXED_COHORT');\n   v_key:=m.member_id||':';\n   -- Daily raw/split series are fetched once per member for all required support.\n   FOREACH v_adjustment IN ARRAY ARRAY['raw','split'] LOOP\n    v_scope:=v_base||jsonb_build_object('timeframe','1Day','feed','sip','adjustment',v_adjustment,\n     'start','2025-06-05T04:00:00Z','end','2026-08-01T03:59:59.999999Z','input_start','2025-06-05',\n     'calendar',v_calendar,'daily_basis','ALPACA_PROVIDER_DAILY_NOT_ASSERTED_RTH','governing_date','MARKET_DATE',\n     'support_history_policy','Observations before2025-09-01 retained as support history');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'daily-source:'||v_adjustment,'D02','Alpaca','alpaca_stock_bars',v_scope,'{}',20);\n   END LOOP;\n   v_raw_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'daily-source:raw');\n   v_split_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'daily-source:split');\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:alpaca','REF01','Alpaca','alpaca_reference',\n    v_base||jsonb_build_object('reference_policy','CURRENT_PROVIDER_IDENTIFIERS_NOT_HISTORICAL_PROOF'),'{}',10);\n   SELECT count(*),min(instrument_key),min(alpaca_asset_id::text) INTO v_anchor_count,v_instrument,v_asset\n    FROM reference.alpaca_fixed_window_instruments_v1 WHERE symbol=m.anchor_ticker AND alpaca_asset_id IS NOT NULL;\n   -- Twelve monthly minute-source units cover Aug support plus all11 targetmonths.\n   FOR v_month IN SELECT d::date FROM generate_series('2025-08-01'::date,'2026-07-01'::date,interval '1 month') d LOOP\n    v_first:=GREATEST(v_month,'2025-08-04'::date);v_last:=(v_month+interval '1 month')::date-1;\n    SELECT jsonb_agg(e ORDER BY e->>'date') INTO v_month_calendar FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date BETWEEN v_first AND v_last;\n    v_scope:=v_base||jsonb_build_object('source_month',v_month::text,'target_start',v_first::text,'target_end',v_last::text,\n     'input_start',v_first::text,'calendar',COALESCE(v_month_calendar,'[]'::jsonb),'feed','sip','timeframe','1Min','adjustment','raw',\n     'start',to_char(v_first::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'end_exclusive',to_char((v_last+1)::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'support_history',v_last<'2025-09-01'::date,'governing_date','MARKET_SESSION',\n     'shared_families',jsonb_build_array('P01','P02'),'identity_mapping_basis','POST_WINDOW_PROVIDER_ANCHOR_ONLY');\n    IF v_anchor_count=1 THEN\n     v_scope:=v_scope||jsonb_build_object('instrument_key',v_instrument,'alpaca_asset_id',v_asset,\n      'reuse_policy','VERIFY_RETAINED_SOURCE_AND_ADMIT_ONLY_MISSING_OR_UNQUALIFIED_RANGES');\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'minutes:'||v_month::text,'P01','REUSE','retained_reuse',v_scope,'{}',30);\n    ELSE\n     v_scope:=v_scope||jsonb_build_object('end',to_char(((v_last+1)::timestamp AT TIME ZONE 'America/New_York')-interval '1 microsecond','YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"'),\n      'retained_reference_state',CASE WHEN v_anchor_count=0 THEN 'NO_MATCHING_RETAINED_PROVIDER_ANCHOR' ELSE 'AMBIGUOUS_RETAINED_PROVIDER_ANCHOR' END);\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'minutes:'||v_month::text,'P01','Alpaca','alpaca_stock_bars',v_scope,'{}',30);\n    END IF;\n    IF v_month<'2025-09-01'::date THEN CONTINUE; END IF;\n    v_source_id:=astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'minutes:'||v_month::text);\n    FOR v_entry IN SELECT e FROM jsonb_array_elements(v_month_calendar) e LOOP\n     v_day:=(v_entry->>'date')::date;\n     v_scope:=v_base||jsonb_build_object('target_start',v_day::text,'target_end',v_day::text,'input_start',v_day::text,\n      'source_month',v_month::text,'calendar',jsonb_build_array(v_entry),'governing_date','MARKET_SESSION',\n      'formula_version','fixed3000-derived-v2.1','prefer_retained_formula_cache',true,\n      'retained_formula_policy','Preserve original qualifying formula version and lineage when equivalent cache is available');\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'D01:'||v_day::text,'D01','DERIVED','derive_intraday',v_scope,ARRAY[v_source_id],160);\n    END LOOP;\n    -- The last60 actual preceding sessions, plus current month, are sufficient\n    -- for all recovered daily horizons. Missing observations are never filled.\n    SELECT min((x.e->>'date')::date) INTO v_input FROM (SELECT e FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date<v_month ORDER BY e->>'date' DESC LIMIT 60) x;\n    SELECT jsonb_agg(e ORDER BY e->>'date') INTO v_month_calendar FROM jsonb_array_elements(v_calendar) e\n     WHERE (e->>'date')::date BETWEEN v_input AND v_last;\n    FOREACH v_family IN ARRAY ARRAY['D02','D03','D04','D05'] LOOP\n     v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,'input_start',v_input::text,\n      'source_month',v_month::text,'calendar',v_month_calendar,'governing_date','MARKET_SESSION',\n      'formula_version','fixed3000-derived-v2.1','prefer_retained_formula_cache',true);\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||v_family||':'||v_month::text,v_family,'DERIVED','derive_daily',v_scope,ARRAY[v_raw_id,v_split_id],100);\n    END LOOP;\n    v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,'asof',v_month::text,\n     'governing_date','REFERENCE_AS_OF','reference_policy','DATED_PROVIDER_SNAPSHOT_ATTRIBUTION_REMAINS_EXPLICIT');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:massive:'||v_month::text,'REF01','Massive','massive_reference',v_scope,'{}',40);\n    v_scope:=v_base||jsonb_build_object('target_start',v_month::text,'target_end',v_last::text,\n     'start',to_char(v_month::timestamp AT TIME ZONE 'America/New_York' AT TIME ZONE 'UTC','YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),\n     'end',to_char(((v_last+1)::timestamp AT TIME ZONE 'America/New_York')-interval '1 microsecond','YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"'),\n     'governing_date','PUBLICATION_TIMESTAMP','include_weekends_holidays',true,'archive_scope','MASSIVE_ENTITLED_ARCHIVE',\n     'permitted_alternative','alpaca_news');\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'news:massive:'||v_month::text,'N01','Massive','massive_news',v_scope,'{}',50);\n    IF v_fallback THEN\n     v_scope:=v_scope||jsonb_build_object('archive_scope','ALPACA_ENTITLED_ARCHIVE',\n      'alternative_reason','MASSIVE_WORKER_CONFIGURATION_UNAVAILABLE','does_not_complete_primary_archive',true,\n      'primary_task_id',astra_ingestion_v1.backfill_plan_task_id_v2(r.id,v_key||'news:massive:'||v_month::text));\n     v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'news:alpaca:'||v_month::text,'N01','Alpaca','alpaca_news',v_scope,'{}',51);\n    END IF;\n   END LOOP;\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'reference:massive:2026-07-31','REF01','Massive','massive_reference',\n    v_base||jsonb_build_object('asof','2026-07-31','governing_date','REFERENCE_AS_OF'),'{}',40);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'dividends:massive','N02','Massive','massive_dividends',\n    v_base||jsonb_build_object('governing_date','DECLARATION_EX_RECORD_PAYMENT_EFFECTIVE_SEPARATE','archive_date_filter','UNBOUNDED_PROVIDER_EVENT_HISTORY','retain_boundary_crossing_events',true),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'splits:massive','N03','Massive','massive_splits',\n    v_base||jsonb_build_object('governing_date','EXECUTION_EFFECTIVE_DATE','archive_date_filter','UNBOUNDED_PROVIDER_EVENT_HISTORY','retain_boundary_crossing_events',true),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'actions:alpaca','N02','Alpaca','alpaca_actions',\n    v_base||jsonb_build_object('start','2025-06-05','end',(r.created_at AT TIME ZONE 'America/New_York')::date::text,\n     'governing_date','PROVIDER_PROCESS_DATE_WITH_SUPPLIED_ACTION_DATES_RETAINED','retain_boundary_crossing_events',true,\n     'shared_families',jsonb_build_array('N02','N03')),'{}',45);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'short-volume','S01','Massive','massive_short_volume',\n    v_base||jsonb_build_object('start','2025-09-01','end','2026-07-31','governing_date','REPORTING_DATE',\n     'reporting_scope','PROVIDER_FINRA_OFF_EXCHANGE_NOT_TOTAL_MARKET'),'{}',60);\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'short-interest','S02','Massive','massive_short_interest',\n    v_base||jsonb_build_object('start','2025-09-01','end','2026-07-31','governing_date','SETTLEMENT_DATE',\n     'publication_date_filter','NONE','retain_later_publications',true,'availability_policy','ACTUAL_PUBLICATION_WHEN_SUPPLIED_ELSE_RETRIEVAL_UPPER_BOUND'),'{}',60);\n   FOREACH v_status IN ARRAY ARRAY['active','inactive'] LOOP\n    v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,v_key||'options:'||v_status,'CTX02','Alpaca','alpaca_option_contracts',\n     v_base||jsonb_build_object('status',v_status,'expiration_start','2025-09-01','expiration_end','2099-12-31',\n      'governing_date','CONTRACT_EXPIRY_REFERENCE_AND_DAILY_MARKET_DATE','include_adjusted_contracts',true,\n      'historical_enumeration_completeness','UNKNOWN_UNTIL_PROVIDER_REFERENCE_EXHAUSTED'),'{}',70);\n   END LOOP;\n   v_next:=m.selection_order+1;v_members:=v_members+1;\n  END LOOP;\n  IF v_next>3000 THEN v_phase:='BREADTH'; END IF;\n ELSIF v_phase='BREADTH' THEN\n  SELECT jsonb_object_agg(member_id,jsonb_build_object('symbol',anchor_ticker,'eligible',NULL) ORDER BY selection_order)\n   INTO v_map FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=r.id;\n  v_after:=v_breadth;\n  FOR v_entry IN SELECT e FROM jsonb_array_elements(v_calendar) e WHERE e->>'date' BETWEEN '2025-09-01' AND '2026-07-31'\n   ORDER BY e->>'date' OFFSET v_after LIMIT v_limit\n  LOOP\n   v_day:=(v_entry->>'date')::date;\n   v_scope:=jsonb_build_object('target_start',v_day::text,'target_end',v_day::text,'input_start',v_day::text,\n    'market_timezone','America/New_York','calendar',jsonb_build_array(v_entry),'source_family','D03',\n    'source_month',date_trunc('month',v_day)::date::text,'representative_security',v_map,\n    'representative_policy',v_workflow->'representative_policy','governing_date','MARKET_SESSION',\n    'formula_version','fixed3000-derived-v2.1','cohort_classification','RETROSPECTIVE_FIXED_COHORT');\n   v_added:=v_added+astra_ingestion_v1.backfill_plan_insert_v2(r.id,r.fence,'CTX06:'||v_day::text,'CTX06','DERIVED','derive_breadth',v_scope,'{}',250);\n   v_breadth:=v_breadth+1;\n  END LOOP;\n  IF v_breadth=230 THEN v_phase:='SEAL'; END IF;\n ELSIF v_phase='SEAL' THEN\n  v_snapshot:=astra_ingestion_v1.backfill_plan_snapshot_v2(r.id,500);\n  IF v_snapshot->'more'='true'::jsonb THEN RETURN jsonb_build_object('state','SNAPSHOTTING_EXISTING_TASKS','plan_complete',false,'snapshot',v_snapshot); END IF;\n  SELECT count(*),encode(sha256(convert_to(COALESCE(string_agg(task_id||':'||definition_sha256,E'\\n' ORDER BY task_id COLLATE \"C\"),''),'UTF8')),'hex')\n   INTO v_count,v_hash FROM astra_ingestion_v1.backfill_plan_units_v2 WHERE run_id=r.id;\n  IF v_count<>v_expected THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Actual static plan count differs from transactionally admitted expected count'; END IF;\n  v_result:=astra_ingestion_v1.backfill_seal_plan_v2(r.id,v_expected,v_hash,v_workflow);\n  RETURN v_result||jsonb_build_object('run_id',r.id,'plan_complete',v_result->>'state'='FULL_PLAN_SEALED',\n   'planned_members',3000,'next_selection_order',3001,'breadth_sessions',230);\n ELSE\n  RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Unknown persisted planner phase';\n END IF;\n v_expected:=v_expected+v_added;\n UPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=r.metadata||jsonb_build_object(\n  'planner_phase',v_phase,'planner_next_selection_order',v_next,'planner_next_breadth_index',v_breadth,\n  'planner_expected_static_count',v_expected,'workflow_plan',v_workflow,'planner_last_progress_at',clock_timestamp()),\n  last_progress_at=CASE WHEN v_added>0 THEN clock_timestamp() ELSE last_progress_at END WHERE id=r.id;\n RETURN jsonb_build_object('state','PLAN_ADVANCED','run_id',r.id,'phase',v_phase,'plan_complete',false,\n  'members_admitted_this_call',v_members,'planned_members',v_next-1,'next_selection_order',v_next,\n  'breadth_sessions',v_breadth,'inserted_tasks',v_added,'expected_static_task_count',v_expected);\nEND $function$\n",
+      "signature": "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d"
+    }
+  ],
+  "held_v79_candidate_installed": false,
+  "initial_snapshot_helper_unchanged": true,
+  "last_page_committed_before_accounting": true,
+  "new_branch": "  -- v81: bounded global-ID examination; only a later call may run final sealing.\n  DECLARE\n   scan_key constant text:='planner_seal_snapshot_scan_v81';\n   scan_basis constant text:='1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb';\n   scan_progress jsonb; scan_upper text; scan_lower text; scan_ids text[]; scan_id text;\n   scan_task record; scan_examined bigint:=0; scan_added bigint:=0; scan_batches bigint:=0;\n   scan_page_count integer; scan_page_added integer:=0; scan_complete boolean:=false;\n   scan_started timestamptz; scan_updated timestamptz;\n  BEGIN\n   IF v_expected IS NULL OR v_expected<0 THEN\n    RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Bounded SEAL scan requires the retained nonnegative expected count'; END IF;\n   IF NOT r.metadata ? scan_key THEN\n    SELECT task.id INTO scan_upper FROM astra_ingestion_v1.backfill_tasks_v2 task ORDER BY task.id DESC LIMIT 1;\n    scan_started:=clock_timestamp();\n    scan_progress:=jsonb_build_object('version','bounded-seal-snapshot-scan-v81','run_id',r.id,'run_fence',r.fence,\n     'cohort_sha256',r.cohort_sha256,'cohort_manifest_sha256',r.cohort_manifest_sha256,\n     'expected_static_count',v_expected,'basis_sha256',scan_basis,'upper_id',scan_upper,'last_examined_id',NULL,\n     'batches',0,'examined_ids',0,'snapshots_added',0,'complete',false,'started_at',scan_started,'last_scan_at',scan_started);\n   ELSE\n    scan_progress:=r.metadata->scan_key;\n    IF jsonb_typeof(scan_progress) IS DISTINCT FROM 'object' THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Malformed bounded SEAL scan progress; reconcile without resetting'; END IF;\n    IF NOT scan_progress ?& ARRAY['version','run_id','run_fence','cohort_sha256','cohort_manifest_sha256',\n     'expected_static_count','basis_sha256','upper_id','last_examined_id','batches','examined_ids','snapshots_added','complete','started_at','last_scan_at']\n     OR (SELECT count(*) FROM jsonb_object_keys(scan_progress))<>15\n     OR scan_progress->>'version' IS DISTINCT FROM 'bounded-seal-snapshot-scan-v81'\n     OR scan_progress->'run_id' IS DISTINCT FROM to_jsonb(r.id)\n     OR scan_progress->'run_fence' IS DISTINCT FROM to_jsonb(r.fence)\n     OR scan_progress->'cohort_sha256' IS DISTINCT FROM to_jsonb(r.cohort_sha256)\n     OR scan_progress->'cohort_manifest_sha256' IS DISTINCT FROM to_jsonb(r.cohort_manifest_sha256)\n     OR scan_progress->'expected_static_count' IS DISTINCT FROM to_jsonb(v_expected)\n     OR scan_progress->>'basis_sha256' IS DISTINCT FROM scan_basis\n     OR jsonb_typeof(scan_progress->'upper_id') NOT IN ('string','null')\n     OR jsonb_typeof(scan_progress->'last_examined_id') NOT IN ('string','null')\n     OR jsonb_typeof(scan_progress->'complete') IS DISTINCT FROM 'boolean'\n     OR jsonb_typeof(scan_progress->'batches') IS DISTINCT FROM 'number'\n     OR jsonb_typeof(scan_progress->'examined_ids') IS DISTINCT FROM 'number'\n     OR jsonb_typeof(scan_progress->'snapshots_added') IS DISTINCT FROM 'number'\n     OR scan_progress->>'batches' !~ '^(0|[1-9][0-9]*)$'\n     OR scan_progress->>'examined_ids' !~ '^(0|[1-9][0-9]*)$'\n     OR scan_progress->>'snapshots_added' !~ '^(0|[1-9][0-9]*)$'\n     OR jsonb_typeof(scan_progress->'started_at') IS DISTINCT FROM 'string'\n     OR jsonb_typeof(scan_progress->'last_scan_at') IS DISTINCT FROM 'string' THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Stale or malformed bounded SEAL scan identity and counters; reconcile without resetting'; END IF;\n    scan_upper:=scan_progress->>'upper_id';scan_lower:=scan_progress->>'last_examined_id';\n    scan_batches:=(scan_progress->>'batches')::bigint;scan_examined:=(scan_progress->>'examined_ids')::bigint;\n    scan_added:=(scan_progress->>'snapshots_added')::bigint;scan_complete:=(scan_progress->>'complete')::boolean;\n    scan_started:=(scan_progress->>'started_at')::timestamptz;scan_updated:=(scan_progress->>'last_scan_at')::timestamptz;\n    IF scan_batches<1 OR scan_added>scan_examined OR scan_examined::numeric>scan_batches::numeric*500\n     OR scan_examined::numeric<(scan_batches::numeric-1)*500\n     OR (scan_examined=0) IS DISTINCT FROM (scan_lower IS NULL)\n     OR (scan_upper IS NULL AND (scan_lower IS NOT NULL OR NOT scan_complete))\n     OR (scan_lower IS NOT NULL AND scan_lower>scan_upper)\n     OR (NOT scan_complete AND (scan_examined::numeric<>scan_batches::numeric*500 OR scan_lower>=scan_upper))\n     OR (scan_complete AND scan_examined::numeric=scan_batches::numeric*500 AND scan_lower IS DISTINCT FROM scan_upper)\n     OR NOT isfinite(scan_started) OR NOT isfinite(scan_updated) OR scan_updated<scan_started OR scan_updated>clock_timestamp() THEN\n     RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Inconsistent bounded SEAL scan range or accounting; reconcile without resetting'; END IF;\n   END IF;\n   IF NOT scan_complete THEN\n    IF scan_upper IS NULL THEN scan_ids:='{}'::text[];\n    ELSIF scan_lower IS NULL THEN\n     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id<=scan_upper ORDER BY task.id LIMIT 500) page;\n    ELSE\n     SELECT COALESCE(array_agg(page.id ORDER BY page.id),'{}'::text[]) INTO scan_ids FROM\n      (SELECT task.id FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id>scan_lower AND task.id<=scan_upper ORDER BY task.id LIMIT 500) page;\n    END IF;\n    scan_page_count:=cardinality(scan_ids);\n    FOREACH scan_id IN ARRAY scan_ids LOOP\n     -- Preserve global task-ID suppression before reading any eligibility scope.\n     IF EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_plan_units_v2 unit WHERE unit.task_id=scan_id) THEN CONTINUE; END IF;\n     SELECT task.run_id,task.kind,task.scope INTO scan_task FROM astra_ingestion_v1.backfill_tasks_v2 task WHERE task.id=scan_id;\n     IF NOT FOUND THEN RAISE EXCEPTION USING ERRCODE='AI005',MESSAGE='Task disappeared within a bounded SEAL scan page'; END IF;\n     IF scan_task.run_id=r.id AND NOT ((scan_task.kind='alpaca_option_bars' AND scan_task.scope ? 'enumeration_parent') OR scan_task.scope ? 'reuse_parent' OR scan_task.scope ? 'identity_refresh_of' OR scan_task.kind IN('retained_identity','retained_massive_archive')) THEN\n      IF astra_ingestion_v1.backfill_snapshot_task_v2(scan_id) THEN scan_page_added:=scan_page_added+1;END IF;\n     END IF;\n    END LOOP;\n    IF scan_page_count>0 THEN scan_lower:=scan_ids[scan_page_count];END IF;\n    scan_complete:=scan_page_count<500 OR scan_lower=scan_upper;\n    scan_progress:=scan_progress||jsonb_build_object('last_examined_id',scan_lower,'batches',scan_batches+1,\n     'examined_ids',scan_examined+scan_page_count,'snapshots_added',scan_added+scan_page_added,\n     'complete',scan_complete,'last_scan_at',clock_timestamp());\n    UPDATE astra_ingestion_v1.backfill_runs_v2 SET metadata=r.metadata||jsonb_build_object(scan_key,scan_progress) WHERE id=r.id;\n    -- Always return, including the last page: later count/hash/seal failure must\n    -- not roll back this useful batch. Acquisition timestamps/counters stay intact.\n    RETURN jsonb_build_object('state',CASE WHEN scan_complete THEN 'SEAL_SNAPSHOT_SCAN_COMPLETE_CHECKS_PENDING' ELSE 'SEAL_SNAPSHOT_SCAN_ADVANCED' END,\n     'run_id',r.id,'plan_complete',false,'scan_complete',scan_complete,'examined_ids_this_call',scan_page_count,\n     'snapshotted_this_call',scan_page_added,'total_examined_ids',scan_examined+scan_page_count,'total_snapshots_added',scan_added+scan_page_added);\n   END IF;\n  END;\n",
+  "old_branch": "  v_snapshot:=astra_ingestion_v1.backfill_plan_snapshot_v2(r.id,500);\n  IF v_snapshot->'more'='true'::jsonb THEN RETURN jsonb_build_object('state','SNAPSHOTTING_EXISTING_TASKS','plan_complete',false,'snapshot',v_snapshot); END IF;\n",
+  "page_limit": 500,
+  "primary_key_pins": [
+    {
+      "attribute": "id",
+      "collation_oid": "100",
+      "index_definition_sha256": "b5c5e71c2fdc51167b2308a16b62c1838bf90710040a6b274e3a22ed09a37a28",
+      "index_name": "backfill_tasks_v2_pkey",
+      "index_oid": "16040151",
+      "relation_name": "backfill_tasks_v2",
+      "relation_oid": "16040120",
+      "type_oid": "25",
+      "typmod": -1
+    },
+    {
+      "attribute": "task_id",
+      "collation_oid": "100",
+      "index_definition_sha256": "a2fe7dc9f8249fbb3ffdc2ec706982522272751ce28829909b5d47f91170fdbd",
+      "index_name": "backfill_plan_units_v2_pkey",
+      "index_oid": "16041321",
+      "relation_name": "backfill_plan_units_v2",
+      "relation_oid": "16041315",
+      "type_oid": "25",
+      "typmod": -1
+    }
+  ],
+  "protected_function_pins": [
+    {
+      "metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6",
+      "oid": "16040232",
+      "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf"
+    },
+    {
+      "metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875",
+      "oid": "16041635",
+      "signature": "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d"
+    },
+    {
+      "metadata_sha256": "2298d7d2dc6af8f2360df643ed9c05067e625103fe3e09ba59b3fdc1a7ed1f69",
+      "oid": "16041469",
+      "signature": "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "source_sha256": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f"
+    },
+    {
+      "metadata_sha256": "26059708eb74c9b3f291e98da0a74b3b2c381073ec04feb947c07e5fa91a2f8c",
+      "oid": "16041471",
+      "signature": "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "source_sha256": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1"
+    },
+    {
+      "metadata_sha256": "05efbf80a36ecaf99c1ecf1c3bde8372489963c867bd98708f5fc12223b05f43",
+      "oid": "16050105",
+      "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+      "source_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4"
+    },
+    {
+      "metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418",
+      "oid": "16041466",
+      "signature": "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2"
+    },
+    {
+      "metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e",
+      "oid": "15986028",
+      "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520"
+    },
+    {
+      "metadata_sha256": "412040bbed9e8a96e9c7231c1f1474326c0eacf7a8157043703983c68b2d1f51",
+      "oid": "15986030",
+      "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+    },
+    {
+      "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d",
+      "oid": "16041463",
+      "signature": "astra_ingestion_v1.backfill_maintain_v2(integer)",
+      "source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7"
+    },
+    {
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63",
+      "oid": "16041470",
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e"
+    },
+    {
+      "metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd",
+      "oid": "15986014",
+      "signature": "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb"
+    },
+    {
+      "metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958",
+      "oid": "16041364",
+      "signature": "astra_ingestion_v1.backfill_date_v2(text)",
+      "source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9"
+    },
+    {
+      "metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc",
+      "oid": "16041465",
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633"
+    },
+    {
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278",
+      "oid": "16040226",
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8"
+    },
+    {
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f",
+      "oid": "16040222",
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c"
+    },
+    {
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3",
+      "oid": "16041467",
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e"
+    },
+    {
+      "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+      "oid": "16040224",
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+    }
+  ],
+  "qualification_pending": [
+    "focused actual PostgreSQL new-risk cases",
+    "independent cursor/atomicity/security review",
+    "bounded exact-page plan/performance proof selected by root",
+    "exact published-head CI",
+    "current ownership/source/catalog and uncertain-write reconciliation before root activation"
+  ],
+  "runtime_progress_key": "planner_seal_snapshot_scan_v81",
+  "scan_basis": {
+    "algorithm": "bounded-seal-snapshot-scan-v81",
+    "final_sealer_checks_unchanged": true,
+    "page_limit": 500,
+    "primary_keys": [
+      {
+        "attribute": "id",
+        "collation_oid": "100",
+        "index_definition_sha256": "b5c5e71c2fdc51167b2308a16b62c1838bf90710040a6b274e3a22ed09a37a28",
+        "index_name": "backfill_tasks_v2_pkey",
+        "index_oid": "16040151",
+        "relation_name": "backfill_tasks_v2",
+        "relation_oid": "16040120",
+        "type_oid": "25",
+        "typmod": -1
+      },
+      {
+        "attribute": "task_id",
+        "collation_oid": "100",
+        "index_definition_sha256": "a2fe7dc9f8249fbb3ffdc2ec706982522272751ce28829909b5d47f91170fdbd",
+        "index_name": "backfill_plan_units_v2_pkey",
+        "index_oid": "16041321",
+        "relation_name": "backfill_plan_units_v2",
+        "relation_oid": "16041315",
+        "type_oid": "25",
+        "typmod": -1
+      }
+    ],
+    "protected_dependency_sources": {
+      "astra_ingestion_v1.backfill_date_v2(text)": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+      "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "astra_ingestion_v1.backfill_evidence_guard_v2()": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8",
+      "astra_ingestion_v1.backfill_maintain_v2(integer)": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e",
+      "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "astra_ingestion_v1.backfill_run_guard_v2()": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c",
+      "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1",
+      "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "astra_ingestion_v1.backfill_snapshot_insert_v2()": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e",
+      "astra_ingestion_v1.backfill_snapshot_task_v2(text)": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2",
+      "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633",
+      "astra_ingestion_v1.backfill_task_guard_v2()": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e",
+      "astra_ingestion_v1.rpc_canonical(jsonb)": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb",
+      "astra_ingestion_v1.rpc_dispatch(text,jsonb)": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "public.astra_ingestion_rpc_v1(text,jsonb)": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb"
+    },
+    "retained_planner_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+    "trigger_pins": [
+      {
+        "definition": "CREATE TRIGGER backfill_plan_units_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_units_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "found": true,
+        "full_trigger_metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5",
+        "function_oid": "16040226",
+        "relation_oid": "16041315",
+        "table_name": "astra_ingestion_v1.backfill_plan_units_v2",
+        "tgenabled": "O",
+        "tgisinternal": false,
+        "tgtype": 58,
+        "trigger_name": "backfill_plan_units_immutable_v2",
+        "trigger_oid": "16041361"
+      },
+      {
+        "definition": "CREATE TRIGGER backfill_run_immutable_v2 BEFORE UPDATE ON astra_ingestion_v1.backfill_runs_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()",
+        "found": true,
+        "full_trigger_metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c",
+        "function_oid": "16040222",
+        "relation_oid": "16040070",
+        "table_name": "astra_ingestion_v1.backfill_runs_v2",
+        "tgenabled": "O",
+        "tgisinternal": false,
+        "tgtype": 19,
+        "trigger_name": "backfill_run_immutable_v2",
+        "trigger_oid": "16040223"
+      },
+      {
+        "definition": "CREATE TRIGGER backfill_static_plan_snapshot_v2 AFTER INSERT ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()",
+        "found": true,
+        "full_trigger_metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9",
+        "function_oid": "16041467",
+        "relation_oid": "16040120",
+        "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+        "tgenabled": "O",
+        "tgisinternal": false,
+        "tgtype": 5,
+        "trigger_name": "backfill_static_plan_snapshot_v2",
+        "trigger_oid": "16041468"
+      },
+      {
+        "definition": "CREATE TRIGGER backfill_task_scope_v2 BEFORE INSERT OR UPDATE ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()",
+        "found": true,
+        "full_trigger_metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1",
+        "function_oid": "16040224",
+        "relation_oid": "16040120",
+        "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+        "tgenabled": "O",
+        "tgisinternal": false,
+        "tgtype": 23,
+        "trigger_name": "backfill_task_scope_v2",
+        "trigger_oid": "16040225"
+      },
+      {
+        "definition": "CREATE TRIGGER backfill_plan_manifest_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_manifests_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+        "found": true,
+        "full_trigger_metadata_sha256": "82707ad7bbf31a1fe5f6296ef81c2fe3867d277be90b06077ba08252748b1aa6",
+        "function_oid": "16040226",
+        "relation_oid": "16041342",
+        "table_name": "astra_ingestion_v1.backfill_plan_manifests_v2",
+        "tgenabled": "O",
+        "tgisinternal": false,
+        "tgtype": 58,
+        "trigger_name": "backfill_plan_manifest_immutable_v2",
+        "trigger_oid": "16041362"
+      }
+    ]
+  },
+  "scan_basis_sha256": "1bad37b5d426bac083bf54797a7c5c5a1ecfcfa0b4d0d32f58bfbdde01def4eb",
+  "schema": "astra.bounded-seal-scan-candidate/1",
+  "security_diff": {
+    "authentication_or_stop_check_changes": false,
+    "new_grants": false,
+    "new_routes": false,
+    "roles_or_owner_changes": false,
+    "source_cost_scope_changes": false,
+    "timeout_retry_settings_indexes_worker_changes": false
+  },
+  "status": "LOCAL_PREPARATION_NOT_APPLIED_OR_QUALIFIED",
+  "trigger_catalog_receipts": [
+    {
+      "path": "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+      "sha256": "5272f3e5c5c0e1be1fd962a69b01317610db75ac38c8cfb36198afa47f04fadb"
+    },
+    {
+      "path": "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+      "sha256": "a61343966391dfc43e6194d89e6d33d895fddbf3603c9d6f4259040f7c5c99d2"
+    }
+  ],
+  "trigger_pins": [
+    {
+      "definition": "CREATE TRIGGER backfill_plan_units_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_units_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "10a7f1b4ecfdc225e97069f8ce7f0a084f4cad96532cb64bc370e7e7176fc5f5",
+      "function_oid": "16040226",
+      "relation_oid": "16041315",
+      "table_name": "astra_ingestion_v1.backfill_plan_units_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 58,
+      "trigger_name": "backfill_plan_units_immutable_v2",
+      "trigger_oid": "16041361"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_run_immutable_v2 BEFORE UPDATE ON astra_ingestion_v1.backfill_runs_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "324ed022b79f8710c442e2876bd8e4c209f1084a7fb730251e649adce9e3548c",
+      "function_oid": "16040222",
+      "relation_oid": "16040070",
+      "table_name": "astra_ingestion_v1.backfill_runs_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 19,
+      "trigger_name": "backfill_run_immutable_v2",
+      "trigger_oid": "16040223"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_static_plan_snapshot_v2 AFTER INSERT ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "74709c28f3db1ec351d07deaf492e29636c63b39245f5bd77e2aa19964deddf9",
+      "function_oid": "16041467",
+      "relation_oid": "16040120",
+      "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 5,
+      "trigger_name": "backfill_static_plan_snapshot_v2",
+      "trigger_oid": "16041468"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_task_scope_v2 BEFORE INSERT OR UPDATE ON astra_ingestion_v1.backfill_tasks_v2 FOR EACH ROW EXECUTE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "d1705f679536181300a1f6dea3efe94d02068127b5b6d5da908fe78ae27ae4c1",
+      "function_oid": "16040224",
+      "relation_oid": "16040120",
+      "table_name": "astra_ingestion_v1.backfill_tasks_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 23,
+      "trigger_name": "backfill_task_scope_v2",
+      "trigger_oid": "16040225"
+    },
+    {
+      "definition": "CREATE TRIGGER backfill_plan_manifest_immutable_v2 BEFORE DELETE OR UPDATE OR TRUNCATE ON astra_ingestion_v1.backfill_plan_manifests_v2 FOR EACH STATEMENT EXECUTE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "found": true,
+      "full_trigger_metadata_sha256": "82707ad7bbf31a1fe5f6296ef81c2fe3867d277be90b06077ba08252748b1aa6",
+      "function_oid": "16040226",
+      "relation_oid": "16041342",
+      "table_name": "astra_ingestion_v1.backfill_plan_manifests_v2",
+      "tgenabled": "O",
+      "tgisinternal": false,
+      "tgtype": 58,
+      "trigger_name": "backfill_plan_manifest_immutable_v2",
+      "trigger_oid": "16041362"
+    }
+  ],
+  "unchanged_trigger_functions": [
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_evidence_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$ BEGIN RAISE EXCEPTION 'Backfill source evidence and frozen membership are immutable'; END $function$\n",
+      "found": true,
+      "metadata_sha256": "9b757fe27c7ac0713887926ac5c50da7c348f65e325d8c69e355d65af1d01278",
+      "oid": "16040226",
+      "owner_oid": "16388",
+      "proacl": [
+        "postgres=X/postgres"
+      ],
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "signature": "astra_ingestion_v1.backfill_evidence_guard_v2()",
+      "source_sha256": "b96725307395500c65f69238c138e40338a19a922c3ff235198b1ad376289dd8"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_run_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nBEGIN\n IF NEW.id IS DISTINCT FROM OLD.id OR NEW.instruction_sha256 IS DISTINCT FROM OLD.instruction_sha256\n OR NEW.cohort_sha256 IS DISTINCT FROM OLD.cohort_sha256 OR NEW.cohort_manifest_sha256 IS DISTINCT FROM OLD.cohort_manifest_sha256\n OR NEW.cohort_ref IS DISTINCT FROM OLD.cohort_ref OR NEW.scope IS DISTINCT FROM OLD.scope\n OR NEW.target_start IS DISTINCT FROM OLD.target_start OR NEW.target_end IS DISTINCT FROM OLD.target_end\n OR NEW.fence<OLD.fence OR NEW.requests_reserved<OLD.requests_reserved OR NEW.pages_committed<OLD.pages_committed\n OR NEW.records_committed<OLD.records_committed OR NEW.source_bytes<OLD.source_bytes\n OR (OLD.status IN ('SUPERSEDED','COMPLETE','COMPLETE_WITH_DOCUMENTED_GAPS') AND NEW.status IS DISTINCT FROM OLD.status)\n THEN RAISE EXCEPTION 'Replacement run scope, cumulative accounting and terminal stop are immutable'; END IF;\n RETURN NEW;\nEND $function$\n",
+      "found": true,
+      "metadata_sha256": "98615ec21c2bc752328d8ad460d2c33a61117068854d0b6b53756b61ecca287f",
+      "oid": "16040222",
+      "owner_oid": "16388",
+      "proacl": [
+        "postgres=X/postgres"
+      ],
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "signature": "astra_ingestion_v1.backfill_run_guard_v2()",
+      "source_sha256": "6bf61021944840245e8cf66db118aff413c9f7a8809ecafe025ec4d7f2f5512c"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_snapshot_insert_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$ BEGIN PERFORM astra_ingestion_v1.backfill_snapshot_task_v2(NEW.id);RETURN NEW;END $function$\n",
+      "found": true,
+      "metadata_sha256": "628354e3254f593acddd0e874f576073b388126a3a916b1c125932b2321fbee3",
+      "oid": "16041467",
+      "owner_oid": "16388",
+      "proacl": [
+        "postgres=X/postgres",
+        "astra_ingestion_rpc_owner_v1=X/postgres"
+      ],
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "signature": "astra_ingestion_v1.backfill_snapshot_insert_v2()",
+      "source_sha256": "dd4b49c8d3b5ec85d2c144a99464482f3b584628b516c0afcb8218e06094434e"
+    },
+    {
+      "definition": "CREATE OR REPLACE FUNCTION astra_ingestion_v1.backfill_task_guard_v2()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\nDECLARE v_kind text; v_members jsonb; v_member text;\nBEGIN\n IF TG_OP='UPDATE' THEN\n   IF NEW.id IS DISTINCT FROM OLD.id OR NEW.run_id IS DISTINCT FROM OLD.run_id OR NEW.family IS DISTINCT FROM OLD.family\n    OR NEW.provider IS DISTINCT FROM OLD.provider OR NEW.kind IS DISTINCT FROM OLD.kind OR NEW.scope IS DISTINCT FROM OLD.scope\n    OR NEW.dependencies IS DISTINCT FROM OLD.dependencies OR NEW.generation<OLD.generation\n    OR NEW.requests_reserved<OLD.requests_reserved OR NEW.records_committed<OLD.records_committed OR NEW.page_no<OLD.page_no\n    OR NEW.attempts<OLD.attempts OR (OLD.status IN ('INGESTED','NO_DATA_RETURNED','NOT_APPLICABLE','PROVIDER_LIMITATION','IDENTITY_OR_QUALITY_UNRESOLVED','SUPERSEDED_BY_SCOPE_CHANGE') AND NEW.status IS DISTINCT FROM OLD.status)\n   THEN RAISE EXCEPTION 'Task scope, cumulative accounting and terminal result are immutable'; END IF;\n   RETURN NEW;\n END IF;\n IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_runs_v2 WHERE id=NEW.run_id AND status='ACTIVE' AND fence=NEW.run_fence) THEN\n   RAISE EXCEPTION 'Task requires current active replacement run'; END IF;\n IF (NEW.kind LIKE 'alpaca_%' AND NEW.provider<>'Alpaca') OR (NEW.kind LIKE 'massive_%' AND NEW.provider<>'Massive')\n OR (NEW.kind LIKE 'derive_%' AND lower(NEW.provider)<>'derived') OR (NEW.kind='retained_reuse' AND lower(NEW.provider)<>'reuse') THEN\n   RAISE EXCEPTION 'Task kind and permitted provider disagree'; END IF;\n IF NEW.kind='retained_identity' AND (lower(NEW.provider)<>'reuse' OR NEW.family<>'REF01' OR NEW.scope->'shared_cohort_reference' IS DISTINCT FROM 'true'::jsonb OR NEW.scope->>'cohort_sha256' IS DISTINCT FROM '2dc0f766befed6de6b052221c3c87482d507ba1bad931cbb98654eb3af899bec') THEN RAISE EXCEPTION 'Invalid shared fixed-cohort identity source'; END IF;\n IF NEW.kind='retained_massive_archive' AND (NEW.family<>'S02' OR lower(NEW.provider)<>'reuse' OR NEW.scope->'preserve_provider_acquisition' IS DISTINCT FROM 'true'::jsonb) THEN RAISE EXCEPTION 'Invalid retained S02 overlay';END IF;\n v_members:=NEW.scope->'member_ids';\n IF NEW.family NOT IN ('CTX06','REF03') AND NEW.kind<>'retained_identity' AND (jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)=0) THEN\n   RAISE EXCEPTION 'Member-scoped work requires frozen member identifiers'; END IF;\n IF v_members IS NOT NULL THEN\n   IF jsonb_typeof(v_members) IS DISTINCT FROM 'array' OR jsonb_array_length(v_members)>3000 THEN RAISE EXCEPTION 'Invalid member scope'; END IF;\n   FOR v_member IN SELECT jsonb_array_elements_text(v_members) LOOP\n     IF NOT EXISTS(SELECT 1 FROM astra_ingestion_v1.backfill_members_v2 WHERE run_id=NEW.run_id AND member_id=v_member) THEN\n       RAISE EXCEPTION 'Task member is outside the frozen cohort'; END IF;\n   END LOOP;\n END IF;\n RETURN NEW;\nEND $function$\n",
+      "found": true,
+      "metadata_sha256": "14ea179e67155da200192fb05cd1117bc3b0aea892b94ade7956343f7cf2f4a6",
+      "oid": "16040224",
+      "owner_oid": "16388",
+      "proacl": [
+        "postgres=X/postgres"
+      ],
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "prosecdef": false,
+      "signature": "astra_ingestion_v1.backfill_task_guard_v2()",
+      "source_sha256": "94646a710138c821c9779849edca400d6445b84bec270cc2761a019ecac4b13e"
+    }
+  ],
+  "worker_returns_only_counts_and_false_plan_complete": true
+}

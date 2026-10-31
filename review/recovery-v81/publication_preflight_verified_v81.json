@@ -1,0 +1,37 @@
+{
+  "schema": "astra.bounded-seal-publication-preflight/1",
+  "observed_at": "2026-10-31 00:36:37.627073+00",
+  "branch_head": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "expected_base_tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "status": "ACTIVE",
+  "lease_until": "2026-10-31T01:00:00Z",
+  "latest_audit": 128,
+  "all17_function_tuples_individually_matched": true,
+  "all5_trigger_tuples_individually_matched": true,
+  "v81_runtime_cursor_absent": true,
+  "v79_uninstalled_hold": "CANDIDATE_ESTIMATE_CAPTURED_PERFORMANCE_UNQUALIFIED",
+  "held_v75": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD",
+  "worker": {
+    "id": "srv-dbh9fko473hc739an8m0",
+    "auto_deploy": "no",
+    "suspension": "not_suspended",
+    "live_deploy_id": "dep-dbigesegekts73f8mh50",
+    "live_commit": "08bea176e39174f8c39f62caebae79d5cb50cdcf",
+    "finished_at": "2026-10-30T21:09:43.452059Z",
+    "no_inflight_deploy_among_latest3": true
+  },
+  "pages_committed": 13326,
+  "physical_records_or_pointers": 1497013,
+  "source_bytes": 1055906724,
+  "planning_complete": false,
+  "expected_static_count": 979516,
+  "raw_receipts": {
+    "publication_preflight_sources_v81": "13b8420d731d2d1815246807a2d09c6bef389b5086bb61c46c120aeb95f5e47d",
+    "publication_preflight_branch_v81": "b02deeb9bc49a8a1c4411df0fb9f8eec9c519983f4a699b6569b1c069326b280",
+    "publication_preflight_service_v81": "57a68707d177c3acae3bbdcf3c4dd561eea3926eda1f6cfa5ed89e285fbbc23b",
+    "publication_preflight_deploys_v81": "2613036857ef8244ab862cf93cdca13a35b2e03955b746b0ce3e0cf0c01975b2"
+  },
+  "scope": "Read-only preflight; no Git/DDL/deployment mutation."
+}

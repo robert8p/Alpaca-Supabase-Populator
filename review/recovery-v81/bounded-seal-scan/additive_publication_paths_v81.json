@@ -1,0 +1,149 @@
+{
+  "activation_admitted_by_manifest": false,
+  "all_preexisting_fixture_dependencies_in_base": true,
+  "archived_failed_test_source_not_collected": true,
+  "base_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "base_tree": "9855741ba70c56ab74e8229d1d99b931b002a637",
+  "execution_paths": [
+    "sql/astra_backfill_bounded_seal_scan_v81.sql",
+    "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+    "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+    "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json"
+  ],
+  "expected_dedicated_test_total": 746,
+  "files": [
+    {
+      "bytes": 49424,
+      "path": "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1"
+    },
+    {
+      "bytes": 41730,
+      "path": "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002"
+    },
+    {
+      "bytes": 24780,
+      "path": "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+      "sha256": "d48f9c891d6525747b6a8b88f95bb692f47001f9c77f2c6a6fa6878f10b7eae1"
+    },
+    {
+      "bytes": 80536,
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+      "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e"
+    },
+    {
+      "bytes": 6694,
+      "path": "evidence/replacement-bounded-seal-scan-qualification-v81.json",
+      "sha256": "6800c900f12f9cd2581cf0705cacfedcfdd354db713ef052e20141f886a950c9"
+    },
+    {
+      "bytes": 8387,
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_branch_diff_v81.patch",
+      "sha256": "ee594485d2c35527cce4acb53285e91a1a6ac73afbf9079a1b49f00187d0dccc"
+    },
+    {
+      "bytes": 44565,
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt01_v81.json",
+      "sha256": "382239de9907888b466709c5db36eea1602ef74075164771951076cb626ec7cc"
+    },
+    {
+      "bytes": 38275,
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+      "sha256": "b0aceae8eed7191e4b4d2ce3dff39b78f5e774ee943bcbdbc36c7d2690ca01b6"
+    },
+    {
+      "bytes": 24603,
+      "path": "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/test_backfill_bounded_seal_scan_v81.py.txt",
+      "sha256": "9228b336897b6f1143fd77f3c4a2234b815d3f3751720da416413892ef8c9b6d"
+    },
+    {
+      "bytes": 382,
+      "path": "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/binding_diagnosis.json",
+      "sha256": "60acd719c7c531f1d3aa9bbdaf6fc7f86d5db5d3563c3e22ae28a57addb39cbe"
+    },
+    {
+      "bytes": 16785,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+      "sha256": "e89903828b5928768d9475dcc5df3a3088c3c60149389c3149738574cbb39664"
+    },
+    {
+      "bytes": 26129,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+      "sha256": "b0ed819f8e1f7aa44ab6bee40136459adc2b2d7b8646fea3a90df95b7795f798"
+    },
+    {
+      "bytes": 2179,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+      "sha256": "0c1732d93c9611c2386c1db19d91edf0ca3cb4b4dce18f0194b66743e87b6b9c"
+    },
+    {
+      "bytes": 10310,
+      "path": "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+      "sha256": "5272f3e5c5c0e1be1fd962a69b01317610db75ac38c8cfb36198afa47f04fadb"
+    },
+    {
+      "bytes": 2765,
+      "path": "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+      "sha256": "a61343966391dfc43e6194d89e6d33d895fddbf3603c9d6f4259040f7c5c99d2"
+    },
+    {
+      "bytes": 4697,
+      "path": "review/recovery-v81/cursor-integrity/independent_candidate_cursor_atomicity_review_v81.json",
+      "sha256": "a77d7af0e7d3871908ae193f4935fe715fcec8293052eaa0c1baf1e532241f35"
+    },
+    {
+      "bytes": 6157,
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_security_response_static_review_v81.json",
+      "sha256": "8137d31ea9311293837ad8bf75602020976001bb4941a4e98c05ec46705b5cbf"
+    }
+  ],
+  "new_test_ids": [
+    "test_backfill_bounded_seal_scan_v81.BoundedSealSourceTests.test_exact_one_branch_inverse_and_original_final_checks",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_01_global_pages_exclusions_foreign_suppression_and_deleted_upper",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_02_enabled_insert_trigger_handles_behind_and_beyond_range",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_03_missed_inserts_behind_or_beyond_cannot_bypass_final_sealer",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_04_real_snapshot_and_cursor_faults_rollback_then_lost_ack_resumes",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_05_malformed_or_stale_progress_fails_without_reset",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_06_final_page_survives_accounting_failure_and_worker_can_claim"
+  ],
+  "new_tests": 7,
+  "no_github_workflow_or_runtime_files": true,
+  "paths": [
+    "sql/astra_backfill_bounded_seal_scan_v81.sql",
+    "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+    "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+    "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+    "evidence/replacement-bounded-seal-scan-qualification-v81.json",
+    "review/recovery-v81/bounded-seal-scan/candidate_branch_diff_v81.patch",
+    "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt01_v81.json",
+    "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+    "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/test_backfill_bounded_seal_scan_v81.py.txt",
+    "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/binding_diagnosis.json",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+    "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+    "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+    "review/recovery-v81/cursor-integrity/independent_candidate_cursor_atomicity_review_v81.json",
+    "review/recovery-v81/bounded-seal-scan-independent/independent_security_response_static_review_v81.json"
+  ],
+  "root_additional_evidence": "Root may add its exact checkpoint/ownership/observation receipts and final independent review files before freezing; no candidate or test mutation is needed.",
+  "schema": "astra.bounded-seal-additive-publication-paths/1",
+  "status": "EXPLICIT_ADDITIVE_PATHS_FINAL_REVIEW_AND_ROOT_PUBLICATION_PENDING",
+  "supporting_paths": [
+    "evidence/replacement-bounded-seal-scan-qualification-v81.json",
+    "review/recovery-v81/bounded-seal-scan/candidate_branch_diff_v81.patch",
+    "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt01_v81.json",
+    "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+    "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/test_backfill_bounded_seal_scan_v81.py.txt",
+    "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/binding_diagnosis.json",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+    "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+    "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+    "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+    "review/recovery-v81/cursor-integrity/independent_candidate_cursor_atomicity_review_v81.json",
+    "review/recovery-v81/bounded-seal-scan-independent/independent_security_response_static_review_v81.json"
+  ]
+}

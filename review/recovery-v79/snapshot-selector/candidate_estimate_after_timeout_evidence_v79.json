@@ -1,0 +1,492 @@
+{
+  "fence": 1,
+  "nodes": [
+    {
+      "depth": 0,
+      "ordinal": 1,
+      "node_type": "Limit",
+      "total_cost": 117111.52,
+      "startup_cost": 117110.27,
+      "estimated_rows": 500,
+      "parallel_aware": false,
+      "estimated_width": 79
+    },
+    {
+      "depth": 1,
+      "parent": 1,
+      "ordinal": 2,
+      "node_type": "Gather",
+      "total_cost": 79620.63,
+      "startup_cost": 1001.1,
+      "estimated_rows": 13052,
+      "parallel_aware": false,
+      "estimated_width": 79,
+      "workers_planned": 1,
+      "parent_relationship": "InitPlan"
+    },
+    {
+      "depth": 1,
+      "parent": 1,
+      "ordinal": 3,
+      "node_type": "Sort",
+      "total_cost": 37522.27,
+      "startup_cost": 37489.64,
+      "estimated_rows": 13052,
+      "parallel_aware": false,
+      "estimated_width": 79,
+      "parent_relationship": "Outer"
+    },
+    {
+      "depth": 2,
+      "parent": 2,
+      "ordinal": 4,
+      "join_type": "Anti",
+      "node_type": "Merge Join",
+      "total_cost": 77315.43,
+      "inner_unique": false,
+      "startup_cost": 1.1,
+      "estimated_rows": 7678,
+      "parallel_aware": false,
+      "estimated_width": 79,
+      "parent_relationship": "Outer"
+    },
+    {
+      "depth": 2,
+      "parent": 3,
+      "ordinal": 5,
+      "join_type": "Inner",
+      "node_type": "Nested Loop",
+      "total_cost": 36839.27,
+      "inner_unique": false,
+      "startup_cost": 0.55,
+      "estimated_rows": 13052,
+      "parallel_aware": false,
+      "estimated_width": 79,
+      "parent_relationship": "Outer"
+    },
+    {
+      "alias": "all_tasks",
+      "depth": 3,
+      "index": "backfill_tasks_v2_pkey",
+      "parent": 4,
+      "ordinal": 6,
+      "relation": "backfill_tasks_v2",
+      "node_type": "Index Only Scan",
+      "total_cost": 33975.87,
+      "startup_cost": 0.55,
+      "estimated_rows": 582090,
+      "parallel_aware": true,
+      "scan_direction": "Forward",
+      "estimated_width": 79,
+      "parent_relationship": "Outer"
+    },
+    {
+      "alias": "p",
+      "depth": 3,
+      "index": "backfill_plan_units_v2_pkey",
+      "parent": 4,
+      "ordinal": 7,
+      "relation": "backfill_plan_units_v2",
+      "node_type": "Index Only Scan",
+      "total_cost": 33698.96,
+      "startup_cost": 0.55,
+      "estimated_rows": 976501,
+      "parallel_aware": false,
+      "scan_direction": "Forward",
+      "estimated_width": 79,
+      "parent_relationship": "Inner"
+    },
+    {
+      "alias": "missing_id",
+      "depth": 3,
+      "parent": 5,
+      "ordinal": 8,
+      "node_type": "CTE Scan",
+      "total_cost": 261.04,
+      "startup_cost": 0.0,
+      "estimated_rows": 13052,
+      "parallel_aware": false,
+      "estimated_width": 32,
+      "parent_relationship": "Outer"
+    },
+    {
+      "alias": "q",
+      "depth": 3,
+      "parent": 5,
+      "ordinal": 9,
+      "node_type": "Subquery Scan",
+      "total_cost": 2.79,
+      "startup_cost": 0.55,
+      "filter_sha256": "1dd667d53758628091db195c2d9b3262b0a6c5d6539482ed27558dbc81997d15",
+      "estimated_rows": 1,
+      "parallel_aware": false,
+      "estimated_width": 79,
+      "parent_relationship": "Inner"
+    },
+    {
+      "alias": "matched",
+      "depth": 4,
+      "index": "backfill_tasks_v2_pkey",
+      "parent": 9,
+      "ordinal": 10,
+      "relation": "backfill_tasks_v2",
+      "node_type": "Index Scan",
+      "total_cost": 2.77,
+      "startup_cost": 0.55,
+      "estimated_rows": 1,
+      "parallel_aware": false,
+      "scan_direction": "Forward",
+      "estimated_width": 904,
+      "matched_id_equality": true,
+      "parent_relationship": "Subquery",
+      "index_condition_sha256": "a9de9225154608585eaf9a67ce2f2e17f2ea60c3548070a97281bae0848880f4"
+    }
+  ],
+  "owner": "root-replacement-20261030T042603Z",
+  "state": "CANDIDATE_ESTIMATED_PLAN_READ_ONLY_AFTER_TIMEOUT",
+  "limits": [
+    "One estimated plan for the exact failed candidate selector, with zero selector executions; no function installed or business helper invoked.",
+    "Estimates belong to this connector-role snapshot and constant-bound query; they are not actual row or time measurements, RPC/cached-plan replay or proof of the previous cancelled plan.",
+    "No source rows, task IDs, raw predicates, MCVs/histograms or credential values are returned.",
+    "Only explicit application/advisory locks are absent; ordinary relation locks may be acquired.",
+    "The helper second query, snapshot writes, later full hash and sealing stages are not measured by this proposal.",
+    "This estimate cannot satisfy the failed performance gate. No activation, query execution, alternative query, second attempt or retry is authorized by this result."
+  ],
+  "run_id": "fixed3000-20250901-20260731-v1-20261030",
+  "sources": [
+    {
+      "oid": "16040232",
+      "signature": "astra_ingestion_v1.backfill_dispatch_v2(text,jsonb)",
+      "source_sha256": "dbe8eb5a563eaf9e8e00678045f8a28da65c8c4b83b4a3295c4eb32c05f50fbf",
+      "metadata_sha256": "e7c2c36c0fa1db906255f0194e62ae1d1ebbdf3b11c0fb718723b6ec524a79b6"
+    },
+    {
+      "oid": "16041635",
+      "signature": "astra_ingestion_v1.backfill_plan_next_v2(jsonb)",
+      "source_sha256": "54c73bd41769eb6c698a7941d0785e503c9f48f88a3ccb7afcc6448d46c5048d",
+      "metadata_sha256": "ca71e86cf6901b655a7d81b1ca15d39ee8d8db1fa0cef329e2ee92bc0b04f875"
+    },
+    {
+      "oid": "16041469",
+      "signature": "astra_ingestion_v1.backfill_plan_snapshot_v2(text,integer)",
+      "source_sha256": "8b8f595bfca0e6ddf74aa12271314620b8364df26079cd86f843a4a81f92b18f",
+      "metadata_sha256": "2298d7d2dc6af8f2360df643ed9c05067e625103fe3e09ba59b3fdc1a7ed1f69"
+    },
+    {
+      "oid": "16041471",
+      "signature": "astra_ingestion_v1.backfill_seal_plan_v2(text,bigint,text,jsonb)",
+      "source_sha256": "a93e5fbede881afc9e813e8eaaec1c300d636e008fe8c3423d478d55243d2ba1",
+      "metadata_sha256": "26059708eb74c9b3f291e98da0a74b3b2c381073ec04feb947c07e5fa91a2f8c"
+    },
+    {
+      "oid": "16050105",
+      "signature": "astra_ingestion_v1.backfill_shared_refresh_v2(text,jsonb)",
+      "source_sha256": "7f538bf47cb5e74050c20266e01cbe9d6521c1a65663aaf2e0fe38d62041f1a4",
+      "metadata_sha256": "05efbf80a36ecaf99c1ecf1c3bde8372489963c867bd98708f5fc12223b05f43"
+    },
+    {
+      "oid": "16041466",
+      "signature": "astra_ingestion_v1.backfill_snapshot_task_v2(text)",
+      "source_sha256": "66cf1ddad758759353ac0e7ca10aa119cbc88b21bee26d1b5f8356df090518b2",
+      "metadata_sha256": "3b039c556a14a96cec82bbe9cf701f6fd45474393b255460fb14d62648087418"
+    },
+    {
+      "oid": "15986028",
+      "signature": "astra_ingestion_v1.rpc_dispatch(text,jsonb)",
+      "source_sha256": "a9a72d498ca12ec1828721f605d14eb357d7728dc3b0d9d24aab3a636afa2520",
+      "metadata_sha256": "1f123366c142c43aadb28a9a4ea3df9e8c376a74a90c69c81b1363c10afeca7e"
+    },
+    {
+      "oid": "15986030",
+      "signature": "public.astra_ingestion_rpc_v1(text,jsonb)",
+      "source_sha256": "566d2248b8addac92a5dc2659233fb50f12ae1c55869fc278555da6cbd1ffffb",
+      "metadata_sha256": "412040bbed9e8a96e9c7231c1f1474326c0eacf7a8157043703983c68b2d1f51"
+    },
+    {
+      "oid": "16041463",
+      "signature": "astra_ingestion_v1.backfill_maintain_v2(integer)",
+      "source_sha256": "6c880114a645c8a9167d5260c4aeabf58a10617c4244cf0340be1d6cf4bf0ce7",
+      "metadata_sha256": "4497ec91787767ee138d167beb19970a5289f9baec3d01c9eeda6962a8d0460d"
+    },
+    {
+      "oid": "16041470",
+      "signature": "astra_ingestion_v1.backfill_plan_coverage_check_v2(text,datemultirange,datemultirange)",
+      "source_sha256": "b2503ecd484e3fb7023a00d474cfc44410e8cf9489c037f8a69a37dfc8c0cc5e",
+      "metadata_sha256": "f7b0c166958ff0da7fdd453d57fa0c45134cdac1d52c389a72c87ed53bb8bb63"
+    },
+    {
+      "oid": "15986014",
+      "signature": "astra_ingestion_v1.rpc_canonical(jsonb)",
+      "source_sha256": "a7ddedfe281d1494141830d8e89773314856ca94f4d5a4b64b76bb25b3c5e5eb",
+      "metadata_sha256": "0b1c18018c2277b8de57e12248815d1ead7f7ef7634091fe560dc5693a4557fd"
+    },
+    {
+      "oid": "16041364",
+      "signature": "astra_ingestion_v1.backfill_date_v2(text)",
+      "source_sha256": "7adc3f4ac60be32dd4348becbb325aeaf625cfd8c624b4d266fdbb7a038302f9",
+      "metadata_sha256": "e0f12f2f1e16dc4ca3802733c39652defb8437abc8ed652a62229fde6bc2c958"
+    },
+    {
+      "oid": "16041465",
+      "signature": "astra_ingestion_v1.backfill_task_definition_sha256_v2(astra_ingestion_v1.backfill_tasks_v2)",
+      "source_sha256": "ba6d5bfd137045abfedb61524d47e734c0489f01957b153fa913f7686db45633",
+      "metadata_sha256": "0b4e6822e020b5db4a45fc0c84409b2b8b3a70af1a4c76eeef58dd6bcc7f24dc"
+    }
+  ],
+  "plan_count": 1,
+  "lease_until": "2026-10-31T00:25:00Z",
+  "observed_at": "2026-10-31T00:09:20.086109+00:00",
+  "planning_ms": null,
+  "result_rows": null,
+  "execution_ms": null,
+  "guard_passed": true,
+  "role_context": {
+    "current_role": "postgres",
+    "current_user": "postgres",
+    "session_user": "postgres",
+    "current_database": "postgres",
+    "planner_owner_oid": "16388",
+    "planner_proconfig": [
+      "search_path=\"\"",
+      "TimeZone=UTC",
+      "statement_timeout=8s",
+      "lock_timeout=1s"
+    ],
+    "planner_owner_name": "postgres",
+    "server_version_num": "170006",
+    "snapshot_proconfig": [
+      "search_path=\"\""
+    ],
+    "current_role_superuser": false,
+    "current_role_bypass_rls": true,
+    "planner_owner_superuser": false,
+    "planner_owner_bypass_rls": true,
+    "planner_security_definer": true,
+    "snapshot_security_definer": false
+  },
+  "explicit_locks": 0,
+  "session_settings": {
+    "jit": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "off"
+    },
+    "TimeZone": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "UTC"
+    },
+    "work_mem": {
+      "unit": "kB",
+      "source": "configuration file",
+      "setting": "5120"
+    },
+    "enable_sort": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "search_path": {
+      "unit": null,
+      "source": "user",
+      "setting": "\"\\$user\", public, extensions"
+    },
+    "lock_timeout": {
+      "unit": "ms",
+      "source": "session",
+      "setting": "3000"
+    },
+    "row_security": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "on"
+    },
+    "seq_page_cost": {
+      "unit": null,
+      "source": "default",
+      "setting": "1"
+    },
+    "cpu_tuple_cost": {
+      "unit": null,
+      "source": "default",
+      "setting": "0.01"
+    },
+    "enable_memoize": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "enable_seqscan": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "shared_buffers": {
+      "unit": "8kB",
+      "source": "configuration file",
+      "setting": "65536"
+    },
+    "enable_hashjoin": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "enable_material": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "enable_nestloop": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "plan_cache_mode": {
+      "unit": null,
+      "source": "default",
+      "setting": "auto"
+    },
+    "enable_indexscan": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "enable_mergejoin": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "random_page_cost": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "1.1"
+    },
+    "cpu_operator_cost": {
+      "unit": null,
+      "source": "default",
+      "setting": "0.0025"
+    },
+    "enable_bitmapscan": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "statement_timeout": {
+      "unit": "ms",
+      "source": "session",
+      "setting": "8000"
+    },
+    "cpu_index_tuple_cost": {
+      "unit": null,
+      "source": "default",
+      "setting": "0.005"
+    },
+    "effective_cache_size": {
+      "unit": "8kB",
+      "source": "configuration file",
+      "setting": "196608"
+    },
+    "enable_indexonlyscan": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "transaction_isolation": {
+      "unit": null,
+      "source": "session",
+      "setting": "repeatable read"
+    },
+    "transaction_read_only": {
+      "unit": null,
+      "source": "session",
+      "setting": "on"
+    },
+    "enable_incremental_sort": {
+      "unit": null,
+      "source": "default",
+      "setting": "on"
+    },
+    "effective_io_concurrency": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "200"
+    },
+    "default_statistics_target": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "100"
+    },
+    "max_parallel_workers_per_gather": {
+      "unit": null,
+      "source": "configuration file",
+      "setting": "1"
+    }
+  },
+  "planning_complete": false,
+  "primary_key_proof": [
+    {
+      "typmod": -1,
+      "attname": "id",
+      "relkind": "r",
+      "relname": "backfill_tasks_v2",
+      "indnatts": 1,
+      "type_oid": "25",
+      "index_oid": "16040151",
+      "indislive": true,
+      "attnotnull": true,
+      "indisready": true,
+      "indisvalid": true,
+      "condeferred": false,
+      "indisunique": true,
+      "indnkeyatts": 1,
+      "convalidated": true,
+      "indimmediate": true,
+      "indisprimary": true,
+      "relation_oid": "16040120",
+      "collation_oid": "100",
+      "condeferrable": false,
+      "relhassubclass": false,
+      "relispartition": false,
+      "predicate_absent": true,
+      "expressions_absent": true,
+      "inheritance_present": false,
+      "exact_constraint_key": true,
+      "index_definition_sha256": "b5c5e71c2fdc51167b2308a16b62c1838bf90710040a6b274e3a22ed09a37a28"
+    },
+    {
+      "typmod": -1,
+      "attname": "task_id",
+      "relkind": "r",
+      "relname": "backfill_plan_units_v2",
+      "indnatts": 1,
+      "type_oid": "25",
+      "index_oid": "16041321",
+      "indislive": true,
+      "attnotnull": true,
+      "indisready": true,
+      "indisvalid": true,
+      "condeferred": false,
+      "indisunique": true,
+      "indnkeyatts": 1,
+      "convalidated": true,
+      "indimmediate": true,
+      "indisprimary": true,
+      "relation_oid": "16041315",
+      "collation_oid": "100",
+      "condeferrable": false,
+      "relhassubclass": false,
+      "relispartition": false,
+      "predicate_absent": true,
+      "expressions_absent": true,
+      "inheritance_present": false,
+      "exact_constraint_key": true,
+      "index_definition_sha256": "a2fe7dc9f8249fbb3ffdc2ec706982522272751ce28829909b5d47f91170fdbd"
+    }
+  ],
+  "business_helper_calls": 0,
+  "source_selector_sha256": "aaa65a20bc4fd8f5a6b7a12ffbbe3bf27ae6530d728c860a14392ddd87c6da02",
+  "candidate_source_sha256": "9e8efdf1b22893393d31bcf04d9eab785feb2c4579693007ab7ad6e98bc828ac",
+  "selector_execution_count": 0,
+  "candidate_selector_sha256": "2fc72086f1573dfae0496f246ae6e8cb50721ca53d6f108f6043443c146252d9",
+  "installed_bound_selector_sha256": "54d7ab3e18734179ca88ea9f2374ee5a3e055a60c3e42e21b2fd992551b2f34c"
+}

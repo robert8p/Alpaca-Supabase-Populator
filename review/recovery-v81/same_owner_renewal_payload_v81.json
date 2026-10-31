@@ -1,0 +1,50 @@
+{
+  "request_id": "v81-bounded-seal-preparation-same-owner-renewal",
+  "owner": "root-replacement-20261030T042603Z",
+  "fence": 1,
+  "previous_lease_until": "2026-10-31T00:25:00Z",
+  "lease_until": "2026-10-31T01:00:00Z",
+  "reason": "Continue the same active controller through a materially bounded planner-SEAL repair after the v79 real query timed out. No new controller or displaced successor.",
+  "authority_observation": {
+    "observed_at": "2026-10-31 00:17:24.073897+00",
+    "latest_audit": 124,
+    "run_status": "ACTIVE",
+    "held_v75": "RECOVERY_HOST_REJECTED_NO_RETRY_HOLD"
+  },
+  "existing_successor": {
+    "id": "6ae2a4c96bbc819182133e17e9b7f779",
+    "enabled": true,
+    "prompt_sha256": "9bb7bd973d44796fb6c2080f0cbd9de51623f32fe546c9cdd8d0064f244ddb48",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/London:20261029T100000\nRRULE:FREQ=HOURLY;INTERVAL=1;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+    "last_run": {
+      "id": "2b6dd184-cb30-8329-83a0-0fcc18c26e0f",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-10-31T00:00:00Z",
+      "started_at": "2026-10-31T00:04:39.269304Z",
+      "completed_at": "2026-10-31T00:08:08.917235Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6ae2bc80-70b0-83eb-b1f6-4d60e639da9c"
+      }
+    },
+    "read_only_result": "Read-only reconciliation completed at 00:07 UTC on 31 October 2026. The existing ASTRA run remains ACTIVE under root-replacement-20261030T042603Z, fence 1, with its lease through 00:25 UTC. The database reports 13,326 committed pages, 1,497,013 physical records or retained pointers, and 13,326 independent readbacks. The latest readback was at 23:25:43 UTC. No new acquisition was established during this check; a full hash-by-hash comparison was not repeated.\n\nThe v78 planner-SEAL SQL correction is installed, but planning remains unsealed. Audit 122 records that the subsequent v79 measured snapshot-selector diagnostic timed out. The existing owner has independently completed an estimate-only plan read and is qualifying its next candidate. No installation or retry of that failed measurement was attempted.\n\nA source-level continuity defect was independently confirmed. The existing backfill_worker_v2.py invokes backfill_plan_next before backfill_claim on its first execution cycle, while worker.py exits the process on an uncaught persistence exception. Render logs show backfill_plan_next HTTP_ERROR at 23:47:07, 23:57:51 and 00:03:13, with repeated worker starts. Consequently, recurring planner failures can prevent otherwise eligible acquisition tasks from being claimed. The current GitHub branch is one commit ahead of deployed revision 08bea, with 58 additive files and no worker-file modification. There is no verified existing configuration switch that safely isolates planner failures from acquisition.\n\nThe appropriate engineering continuation is to finish the owner's bounded v79 selector qualification, then independently review a fail-closed planner-error isolation mechanism that permits ordinary acquisition only after uncertain planner effects have been reconciled. Do not retry ambiguous plan_next outcomes or represent planning as complete. The previous relay, claim, retry and maintenance repairs must not be replayed.\n\nAn internal handoff carrying these findings was attempted once but rejected with NOT_FOUND. Therefore, this information is preserved in the automation run history, not falsely described as a new database audit or repository publication. No migrations, deployments, restarts, credentials, subscriptions, ownership changes or task-setting changes were made. The existing automation remains enabled with its unchanged schedule and reporting instructions. The fixed 3,000-member, 16-family mission is incomplete, and sustained reliability has not been demonstrated.",
+    "delivery_status": "unknown",
+    "no_settings_change_by_root": true
+  },
+  "retained_v79_state": "CANDIDATE_ESTIMATE_CAPTURED_PERFORMANCE_UNQUALIFIED; both selected observations terminal with zero remaining budgets;9e8 never installed.",
+  "v81_preparation": "Bound\u2264500 global task IDs per ordinary planner call; atomically retain snapshots/cursor, commit terminal page before original full accounting, preserve every final gate. No worker deployment, security/source/cost or timeout/retry change.",
+  "v80_preparation": "Paused before any implementation, test or external call; no active defer receipt.",
+  "subordinate_turns": "Previously interrupted local reviewers resumed from saved state; no production operation was pending from them. Root remains sole production writer.",
+  "fresh_catalog_receipt_sha256": "5272f3e5c5c0e1be1fd962a69b01317610db75ac38c8cfb36198afa47f04fadb",
+  "actual_progress": {
+    "last_independent_page_comparison_at": "2026-10-31T00:02:00.61853Z",
+    "pages": 13326,
+    "matching_readbacks": 13326,
+    "missing": 0,
+    "mismatches": 0,
+    "last_source_commit": "2026-10-30T23:25:43.686927Z",
+    "acquisition_resumed": false
+  },
+  "reporting_policy": "DOT_CONSOLIDATED_CHECKPOINTS_ONLY",
+  "transient_2106_2150_user_message_delivery": "Unverified; not counted as completed work."
+}

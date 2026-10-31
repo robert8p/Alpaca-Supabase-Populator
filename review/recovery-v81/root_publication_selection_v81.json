@@ -1,0 +1,223 @@
+{
+  "schema": "astra.bounded-seal-root-publication-selection/1",
+  "base_commit": "f5cd20baaac9e42b2074afc1d459b4968e8b3306",
+  "local_qualification_passed": true,
+  "independent_review_passed": true,
+  "production_first_page_read_passed": true,
+  "security_diff": "No new credentials, grants, roles, routes or trust relationships. New opaque global cursor bounds are operational run metadata visible through existing authorized status access. Auth, source scope, retries, timeouts, expected counts and final integrity checks are preserved.",
+  "local_qualification": {
+    "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+    "sha256": "b0aceae8eed7191e4b4d2ce3dff39b78f5e774ee943bcbdbc36c7d2690ca01b6",
+    "tests": 7,
+    "actual_postgres": 6,
+    "source_binding": 1,
+    "errors_failures_skips": 0
+  },
+  "independent_review": {
+    "path": "review/recovery-v81/bounded-seal-scan-independent/independent_qualification_and_publication_admission_v81.json",
+    "sha256": "b3a7ca93ce178dbb5da7f34d7c543fa38224478191c60b88131549f88d483d4b"
+  },
+  "production_first_page_read": {
+    "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+    "sha256": "e89903828b5928768d9475dcc5df3a3088c3c60149389c3149738574cbb39664",
+    "actual_ids": 500,
+    "execution_ms": 20.497,
+    "full_helper_performance_claimed": false
+  },
+  "new_test_ids": [
+    "test_backfill_bounded_seal_scan_v81.BoundedSealSourceTests.test_exact_one_branch_inverse_and_original_final_checks",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_01_global_pages_exclusions_foreign_suppression_and_deleted_upper",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_02_enabled_insert_trigger_handles_behind_and_beyond_range",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_03_missed_inserts_behind_or_beyond_cannot_bypass_final_sealer",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_04_real_snapshot_and_cursor_faults_rollback_then_lost_ack_resumes",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_05_malformed_or_stale_progress_fails_without_reset",
+    "test_backfill_bounded_seal_scan_v81.BoundedSealPostgreSQLTests.test_06_final_page_survives_accounting_failure_and_worker_can_claim"
+  ],
+  "files": [
+    {
+      "bytes": 49424,
+      "path": "sql/astra_backfill_bounded_seal_scan_v81.sql",
+      "sha256": "d981231f2510a23c90525ca76cadc6734fbce1f88d18988fb1294b50f41fbbb1"
+    },
+    {
+      "bytes": 41730,
+      "path": "sql/astra_backfill_bounded_seal_scan_restore_v81.sql",
+      "sha256": "c0569ff7fdd9aa3a19e501835c655556d241b37476637a7962f0f941c8a5c002"
+    },
+    {
+      "bytes": 24780,
+      "path": "tests/ingestion/test_backfill_bounded_seal_scan_v81.py",
+      "sha256": "d48f9c891d6525747b6a8b88f95bb692f47001f9c77f2c6a6fa6878f10b7eae1"
+    },
+    {
+      "bytes": 80536,
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_archive_v81.json",
+      "sha256": "bbbac696ff371ff3d19cc1866dff9179c74fa33fe6666593c6dfca04f4235f8e"
+    },
+    {
+      "bytes": 6694,
+      "path": "evidence/replacement-bounded-seal-scan-qualification-v81.json",
+      "sha256": "6800c900f12f9cd2581cf0705cacfedcfdd354db713ef052e20141f886a950c9"
+    },
+    {
+      "bytes": 8387,
+      "path": "review/recovery-v81/bounded-seal-scan/candidate_branch_diff_v81.patch",
+      "sha256": "ee594485d2c35527cce4acb53285e91a1a6ac73afbf9079a1b49f00187d0dccc"
+    },
+    {
+      "bytes": 44565,
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt01_v81.json",
+      "sha256": "382239de9907888b466709c5db36eea1602ef74075164771951076cb626ec7cc"
+    },
+    {
+      "bytes": 38275,
+      "path": "review/recovery-v81/bounded-seal-scan/producer_qualification_attempt02_v81.json",
+      "sha256": "b0aceae8eed7191e4b4d2ce3dff39b78f5e774ee943bcbdbc36c7d2690ca01b6"
+    },
+    {
+      "bytes": 24603,
+      "path": "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/test_backfill_bounded_seal_scan_v81.py.txt",
+      "sha256": "9228b336897b6f1143fd77f3c4a2234b815d3f3751720da416413892ef8c9b6d"
+    },
+    {
+      "bytes": 382,
+      "path": "review/recovery-v81/bounded-seal-scan/prior_test_run_id_binding_attempt01/binding_diagnosis.json",
+      "sha256": "60acd719c7c531f1d3aa9bbdaf6fc7f86d5db5d3563c3e22ae28a57addb39cbe"
+    },
+    {
+      "bytes": 16785,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_evidence_v81.json",
+      "sha256": "e89903828b5928768d9475dcc5df3a3088c3c60149389c3149738574cbb39664"
+    },
+    {
+      "bytes": 26129,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_readonly_v81.sql",
+      "sha256": "b0ed819f8e1f7aa44ab6bee40136459adc2b2d7b8646fea3a90df95b7795f798"
+    },
+    {
+      "bytes": 2179,
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_proposal_v81.json",
+      "sha256": "0c1732d93c9611c2386c1db19d91edf0ca3cb4b4dce18f0194b66743e87b6b9c"
+    },
+    {
+      "bytes": 10310,
+      "path": "review/recovery-v79/pre_v81_trigger_catalog_evidence.json",
+      "sha256": "5272f3e5c5c0e1be1fd962a69b01317610db75ac38c8cfb36198afa47f04fadb"
+    },
+    {
+      "bytes": 2765,
+      "path": "review/recovery-v81/renewal_and_manifest_trigger_independent_readback_v81.json",
+      "sha256": "a61343966391dfc43e6194d89e6d33d895fddbf3603c9d6f4259040f7c5c99d2"
+    },
+    {
+      "bytes": 4697,
+      "path": "review/recovery-v81/cursor-integrity/independent_candidate_cursor_atomicity_review_v81.json",
+      "sha256": "a77d7af0e7d3871908ae193f4935fe715fcec8293052eaa0c1baf1e532241f35"
+    },
+    {
+      "bytes": 6157,
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_security_response_static_review_v81.json",
+      "sha256": "8137d31ea9311293837ad8bf75602020976001bb4941a4e98c05ec46705b5cbf"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/additive_publication_paths_v81.json",
+      "bytes": 8194,
+      "sha256": "2b7b49ab4bbaff36fc31b81bf727446b0ad405968eff231496337eeacc880175"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_qualification_and_publication_admission_v81.json",
+      "bytes": 10889,
+      "sha256": "b3a7ca93ce178dbb5da7f34d7c543fa38224478191c60b88131549f88d483d4b"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan-independent/independent_first_id_page_read_safety_review_v81.json",
+      "bytes": 3748,
+      "sha256": "2988a6b3899646e82b7956a3be802c127782a40ebd56d5fe66604568f4dd7423"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_performance_actual_result_v81.json",
+      "bytes": 18147,
+      "sha256": "1e39068aa8c099235123e815fdd59d5e82fe8d041710bd0297322fe905e5fb53"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_read_reservation_result_v81.json",
+      "bytes": 587,
+      "sha256": "d797e3e797ae368432bc12337f6c1a07462c797a330df5ee9536be15ca430773"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_reservation_abort_readback_v81.json",
+      "bytes": 1888,
+      "sha256": "a32c82b59300e7338a085c651190c8fd78dd5c308d38766aee78f7827ec74611"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_read_reservation_attempt02_result_v81.json",
+      "bytes": 792,
+      "sha256": "ce3206238eacaabcbce123cbd4d01328e4f2f6702dd4516b6712da565e953c0a"
+    },
+    {
+      "path": "review/recovery-v81/bounded-seal-scan/first_id_page_read_completed_result_v81.json",
+      "bytes": 801,
+      "sha256": "774f2969b35ff9d989c9dae6ced3f8e05f5f0cd946e09f0c8fe173f7b020f6a9"
+    },
+    {
+      "path": "review/recovery-v81/cursor-integrity/current_trigger_scope_assessment_v81.json",
+      "bytes": 7822,
+      "sha256": "9702884aa786beb37e239a5b615bc7b44c000e56416b0ceb2cce525f75839259"
+    },
+    {
+      "path": "review/recovery-v81/cursor-integrity/task_id_constraint_correction_v81.json",
+      "bytes": 1376,
+      "sha256": "fdb84a08aa6ad32c7718ee62fb7df2e266fd6ded4d589430150b0d66ef704759"
+    },
+    {
+      "path": "review/recovery-v81/publication_preflight_sources_evidence_v81.json",
+      "bytes": 11615,
+      "sha256": "97bf5e2a578fc1f1c0d846183b1249924633b93921d1c559ad21657f8b0a99a1"
+    },
+    {
+      "path": "review/recovery-v81/publication_preflight_verified_v81.json",
+      "bytes": 1683,
+      "sha256": "2853cf226fdd14a1c1de630e822a8c93802a634a52d9ebb3845519f96c4a5183"
+    },
+    {
+      "path": "evidence/replacement-controller-checkpoint-v81.json",
+      "bytes": 6395,
+      "sha256": "7b61edec271d11b0aed99893aed9cbf19e71a4f6aa8af19d67515f1242c05416"
+    },
+    {
+      "path": "evidence/replacement-planner-seal-installed-next-fault-handoff-v78.json",
+      "bytes": 17449,
+      "sha256": "4bd3e00469e8d98ed6cc81e112f7b5c12fc80e0534f0d68e6509f5324bac0fc4"
+    },
+    {
+      "path": "evidence/replacement-planner-seal-release-gates-v78.json",
+      "bytes": 9785,
+      "sha256": "97da22d792934b60587b76dde5b9907056490d1ba2c9f123e35048c943a13689"
+    },
+    {
+      "path": "review/recovery-v79/snapshot-selector/candidate_performance_read_timeout_evidence_v79.json",
+      "bytes": 2342,
+      "sha256": "b61fe1fb2b61c8845798297d98288f36e42abce81bfbd561fd49caeb87017ef7"
+    },
+    {
+      "path": "review/recovery-v79/snapshot-selector/candidate_estimate_after_timeout_evidence_v79.json",
+      "bytes": 15149,
+      "sha256": "24f4afd3bab3d34d49214b47432fb362ed7cf30d78b82ad6fcf00b7a1aa539f7"
+    },
+    {
+      "path": "review/recovery-v79/snapshot-selector/independent_candidate_estimate_after_timeout_evidence_review_v79.json",
+      "bytes": 4054,
+      "sha256": "afb8308ca8e77f10969b72103d652d6fb68edad8d3857a11cabdcee3d1671c83"
+    },
+    {
+      "path": "review/recovery-v81/same_owner_renewal_payload_v81.json",
+      "bytes": 5165,
+      "sha256": "58426b823b7f52478d3d4877fa923495e480e19787abbb6beba24fedc3225ba9"
+    },
+    {
+      "path": "review/recovery-v81/same_owner_renewal_result_v81.json",
+      "bytes": 779,
+      "sha256": "2a620317faf03aa65c28787b8a305f4b335154535efb7144b6b8a58f8fe7953a"
+    }
+  ]
+}

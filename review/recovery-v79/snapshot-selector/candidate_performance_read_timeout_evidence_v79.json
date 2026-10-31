@@ -1,0 +1,32 @@
+{
+  "request_id": "v79-first-candidate-measurement-terminal-timeout",
+  "state": "CANDIDATE_MEASUREMENT_TIMED_OUT_NO_ACTIVATION",
+  "query_sha256": "4765829852b289d8b0e04d6839d7fe49ff393fa941aec555ef9727e39dee2464",
+  "candidate_source_sha256": "9e8efdf1b22893393d31bcf04d9eab785feb2c4579693007ab7ad6e98bc828ac",
+  "candidate_selector_sha256": "2fc72086f1573dfae0496f246ae6e8cb50721ca53d6f108f6043443c146252d9",
+  "reservation_audit_id": 121,
+  "result_path": "review/recovery-v79/snapshot-selector/candidate_performance_read_actual_result_v79.json",
+  "result_sha256": "54c18e8af2d29c9361ce390e5f63a6c8243dcf8adf406332717f5f5227de0c75",
+  "outcome": {
+    "terminal_sqlstate": "57014",
+    "native_message": "canceling statement due to statement timeout",
+    "context": "At the selected EXPLAIN ANALYZE EXECUTE for the pure candidate selector.",
+    "configured_statement_timeout_seconds": 8,
+    "selected_statement_reached": true,
+    "pre_read_guards_reached_and_not_raised": "Inferred from native EXPLAIN EXECUTE context; no full projected guard payload returned.",
+    "completed_actual_plan_received": false,
+    "actual_result_rows": null,
+    "measured_execution_ms": null,
+    "performance_gate_passed": false
+  },
+  "dispatch_count": 1,
+  "remaining_dispatch_budget": 0,
+  "automatic_retry_budget": 0,
+  "business_helper_calls": 0,
+  "business_writes": 0,
+  "candidate_installation_dispatches": 0,
+  "worker_restart_or_deploy_dispatches": 0,
+  "independent_semantic_tests": "Six actual PostgreSQL cases passed locally; this does not override the failed production performance gate.",
+  "observed_cause_limits": "This exact candidate read has an explicit statement-timeout cause. It does not prove the plan shape or identify the expensive operator; no completed actual-plan payload exists.",
+  "next_executable_step": "Retain candidate 9e8 and its local qualification without activation. Prepare and independently review one separate estimate-only EXPLAIN of the exact failed candidate to identify its chosen plan without executing the selector, then separately select that bounded read. In parallel, inspect existing worker controls for an authorized way to continue admitted acquisition while planner repair remains pending. Do not repeat the consumed measurement, increase timeouts, reset counters or redeploy prior repairs."
+}
