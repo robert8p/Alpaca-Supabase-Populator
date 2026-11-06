@@ -30,7 +30,9 @@ def compact(value):
     return json.dumps(value, separators=(",", ":"), sort_keys=True)
 
 
-class AugustPilotPostgres(unittest.TestCase):
+class DisposableD02Fixture(unittest.TestCase):
+    source_company_count = 10
+
     @classmethod
     def setUpClass(cls):
         if not URL and os.environ.get("GITHUB_JOB") == "qualify":
@@ -70,7 +72,7 @@ class AugustPilotPostgres(unittest.TestCase):
         q(f"""CREATE TABLE {self.src}.ref01_practical_dated_instrument_v3(company_id text,
              point_date date,cohort_sha256 text,ticker text,record_sha256 text,content jsonb)""")
         prices, refs, members, anchor_lines = [], [], [], []
-        for n in range(1, 11):
+        for n in range(1, self.source_company_count + 1):
             cik, symbol = f"{n:010d}", f"TEST{n}"
             cf, sf, venue, issue = f"CF{n}", f"SF{n}", "XNAS", "CS"
             member = dict(ordinal=n,company_id="CIK:"+cik,ticker=symbol,composite_figi=cf,
@@ -104,14 +106,15 @@ class AugustPilotPostgres(unittest.TestCase):
               (m["company_id"],DATE,COHORT,m["ticker"],pg_hash(cross),compact(cross)))
             m.update(identity_record_sha256=refsha,identity_source_sha256=sha(ref_body),raw_record_sha256=pg_hash(prices[n]))
         self.manifest = compact(dict(schema="astra-aug-d02-pilot/v1",date=DATE,cohort_sha256=COHORT,
-                                     source_sha256=sha(self.price),members=members))
+                                     source_sha256=sha(self.price),members=members[:10]))
+        self.source_members = members
         self.pin = sha(self.manifest)
         sql = SQL.read_text()
         # Parameterise *only* fixture schemas, role names and the pins derived
         # from these synthetic inputs. The production installer has no override.
         for old,new in [("population_top3000_202608_202609_v1",self.src),("astra_ingestion_v1",self.app),
                         ("astra_ingestion_rpc_owner_v1",self.writer),("astra_ingestion_verifier_owner_v1",self.reader),
-                        (MANIFEST,self.pin),(SOURCE,sha(self.price)),(ANCHORS,sha("\n".join(anchor_lines)))]:
+                        (MANIFEST,self.pin),(SOURCE,sha(self.price)),(ANCHORS,sha("\n".join(anchor_lines[:10])))]:
             self.assertIn(old,sql)
             sql = sql.replace(old,new)
         q(sql)
@@ -133,6 +136,8 @@ class AugustPilotPostgres(unittest.TestCase):
         return self.conn.execute(f"SELECT {self.app}.aug_d02_pilot_commit_v1(%s,%s)",
                                  (self.pin,attempt)).fetchone()[0]
 
+
+class AugustPilotPostgres(DisposableD02Fixture):
     def test_real_source_to_target_separate_readback_and_duplicate(self):
         self.assertEqual(self.register(),self.pin)
         self.assertEqual(self.commit(),10)
