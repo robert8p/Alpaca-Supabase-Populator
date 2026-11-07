@@ -4,6 +4,8 @@ This public builder creates an Ubuntu 24.04 amd64 guest containing PostgreSQL 17
 
 The workflow runs only on a push to `codex/native-postgres-runtime-20261107` that changes the workflow or `runtime/`. It uses a standard `ubuntu-24.04` runner, read-only repository permissions, no stored checkout credentials, a 40-minute job limit and one-day artifact retention. It has no schedule or manual-dispatch trigger. PostgreSQL packages come from the official PGDG repository, using its published signing-key fingerprint and APT signature validation.
 
+The workflow retains only the public synthetic smoke's console/extraction/launch logs as a separate diagnostic artifact even when the smoke fails. A failed smoke prevents delivery of the runtime archive. Diagnostics alone do not establish a working runtime.
+
 ## Local launch
 
 Use an amd64 Linux host with Python 3.11 or newer, memory for the guest plus host overhead, and at least 6 GiB free disk space plus payload/output requirements. Guest memory defaults to 4 GiB (`--memory-mib` allows 1,024 to 8,192 MiB); the smoke uses 2 GiB. No host sudo, UID change, kernel module, KVM, container runtime or privileged mount is required. Host and guest have their own kernels and real user accounts. PostgreSQL keeps its normal root-user prohibition; payloads run as the guest's actual `pgtrial` UID 1000. Never patch privilege checks or identity functions.

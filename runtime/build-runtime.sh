@@ -134,7 +134,17 @@ with (root/'SHA256SUMS').open('w') as index:
             index.write(f'{digest}  {p.relative_to(root)}\n')
 INDEX
 # This verifies the packaged launcher and real guest UID, PostgreSQL and psycopg.
-python3 "$bundle/launch.py" --input "$bundle/smoke" --output "$task_root/smoke-result" --timeout 600 --output-mib 512 --memory-mib 2048
+if ! python3 "$bundle/launch.py" --input "$bundle/smoke" --output "$task_root/smoke-result" --timeout 600 --output-mib 512 --memory-mib 2048; then
+  # This job's input is the public synthetic smoke only. Preserve boot evidence
+  # without uploading any root filesystem, payload disk or private workload.
+  for name in launch.json console.log extract.log; do
+    if test -f "$task_root/smoke-result/$name"; then
+      printf '\n--- Generic runtime smoke failure: %s ---\n' "$name"
+      cat "$task_root/smoke-result/$name"
+    fi
+  done
+  exit 1
+fi
 cp "$task_root/smoke-result/results/work/smoke.json" "$bundle/provenance/smoke-result.json"
 cp "$task_root/smoke-result/launch.json" "$bundle/provenance/smoke-launch.json"
 cp "$task_root/smoke-result/console.log" "$bundle/provenance/smoke-console.log"

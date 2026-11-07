@@ -30,6 +30,17 @@ jobs:
       - name: Build and smoke-test generic runtime
         shell: bash
         run: bash runtime/build-runtime.sh
+      - name: Preserve generic smoke diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-postgres17-build-diagnostics
+          path: |
+            ${{ runner.temp }}/native-pg-runtime-build/smoke-result/console.log
+            ${{ runner.temp }}/native-pg-runtime-build/smoke-result/extract.log
+            ${{ runner.temp }}/native-pg-runtime-build/smoke-result/launch.json
+          if-no-files-found: warn
+          retention-days: 1
       - name: Upload generic runtime bundle
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
