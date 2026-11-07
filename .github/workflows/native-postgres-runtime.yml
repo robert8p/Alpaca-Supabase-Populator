@@ -1,0 +1,42 @@
+name: Portable native PostgreSQL runtime
+
+on:
+  push:
+    branches:
+      - codex/native-postgres-runtime-20261107
+    paths:
+      - .github/workflows/native-postgres-runtime.yml
+      - runtime/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-postgres-runtime-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/codex/native-postgres-runtime-20261107'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out public runtime sources only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # observed v4 ref
+        with:
+          persist-credentials: false
+          sparse-checkout: runtime
+          sparse-checkout-cone-mode: true
+      - name: Build and smoke-test generic runtime
+        shell: bash
+        run: bash runtime/build-runtime.sh
+      - name: Upload generic runtime bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-postgres17-amd64
+          path: |
+            ${{ runner.temp }}/native-pg-runtime-delivery/native-postgres17-amd64.tar.xz
+            ${{ runner.temp }}/native-pg-runtime-delivery/native-postgres17-amd64.tar.xz.sha256
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
